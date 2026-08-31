@@ -1,10 +1,9 @@
 {
   "schema_version": 1,
   "models": [
-    {"package_model": 8, "image_model": "8.3", "product": "Play:1", "model_number": "S1"},
-    {"package_model": 9, "image_model": "9.1", "product": "Playbar", "model_number": "S9"},
-    {"package_model": 13, "image_model": "13.1", "product": "Play:5 (Gen 2)", "model_number": "S6"},
-    {"package_model": 25, "image_model": "25.1", "product": "Move", "model_number": "S17"}
+    {"package_model": 8, "image_model": "8.3", "display_name": "Fenway family (includes Play:1)", "observed_product": "Play:1", "observed_model_number": "S1", "mapping_scope": "family-observation"},
+    {"package_model": 9, "image_model": "9.1", "display_name": "Model 9 family (includes Playbar)", "observed_product": "Playbar", "observed_model_number": "S9", "mapping_scope": "family-observation"},
+    {"package_model": 13, "image_model": "13.1", "display_name": "Model 13 family (includes Play:5 Gen 2)", "observed_product": "Play:5 (Gen 2)", "observed_model_number": "S6", "mapping_scope": "family-observation"},
+    {"package_model": 25, "image_model": "25.1", "display_name": "Model 25 family (includes Move)", "observed_product": "Move", "observed_model_number": "S17", "mapping_scope": "family-observation"}
   ]
 }
-

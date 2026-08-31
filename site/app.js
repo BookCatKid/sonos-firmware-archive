@@ -8,15 +8,15 @@ const pill=s=>`<span class="pill ${css(s)}">${s}</span>`;
 function render(){
   const q=search.value.toLowerCase();
   const filtered=packages.filter(p=>(!status.value||p.artifact_status===status.value)&&JSON.stringify(p).toLowerCase().includes(q));
-  rows.innerHTML=filtered.map(p=>`<tr><td>${p.product}<br><code>${p.model_number}</code></td><td>${p.version}</td><td>${p.package_model}</td><td>${pill(p.artifact_status)}</td><td>${pill(p.raw_status)}</td><td><code>${p.sha256?p.sha256.slice(0,12)+'…':'—'}</code></td></tr>`).join('');
+  rows.innerHTML=filtered.map(p=>`<tr><td>${p.product||`Package model ${p.package_model}`}${p.model_number?`<br><code>${p.model_number}</code>`:''}</td><td>${p.release_tag?`<a href="https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/${p.release_tag}">${p.version}</a>`:p.version}</td><td>${p.package_model}</td><td>${pill(p.artifact_status)}</td><td>${pill(p.raw_status)}</td><td><code>${p.sha256?p.sha256.slice(0,12)+'…':'—'}</code></td></tr>`).join('');
   empty.hidden=filtered.length!==0;
 }
-fetch('../data/catalog.json').then(r=>r.json()).then(data=>{
+const loadCatalog=window.SONOS_FIRMWARE_CATALOG?Promise.resolve(window.SONOS_FIRMWARE_CATALOG):fetch('../data/catalog.json').then(r=>r.json());
+loadCatalog.then(data=>{
   packages=data.packages;
   [...new Set(packages.map(p=>p.artifact_status))].sort().forEach(s=>status.add(new Option(s,s)));
   const preserved=packages.filter(p=>p.artifact_status.startsWith('preserved')).length;
   document.querySelector('#stats').innerHTML=`<span><b>${packages.length}</b>records</span><span><b>${preserved}</b>preserved</span>`;
   render();
-}).catch(()=>{empty.hidden=false;empty.textContent='Serve the repository root with a local HTTP server to load the catalog.'});
+}).catch(()=>{empty.hidden=false;empty.textContent='Catalog could not be loaded.'});
 search.addEventListener('input',render);status.addEventListener('change',render);
-

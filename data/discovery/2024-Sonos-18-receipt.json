@@ -1,0 +1,53 @@
+{
+  "source": "sonos-2024-Sonos-18-new.json",
+  "artifacts": [
+    {
+      "version": "2.10.4",
+      "package_model": 44,
+      "url": "https://update-firmware.sonos.com/firmware/Duke/Prod/2.10.4-6ce4c3635-RC-3/QCC518X_dfu_file_encrypted_2.10.4-6ce4c3635.bin",
+      "source": "image",
+      "filename": "QCC518X_dfu_file_encrypted_2.10.4-6ce4c3635.bin",
+      "available": true,
+      "http_status": 200,
+      "bytes": 4768652,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Duke/Prod/2.10.4-6ce4c3635-RC-3/QCC518X_dfu_file_encrypted_2.10.4-6ce4c3635.bin",
+      "etag": "\"6005440d65c9afeb3cf21b5c2a62ffff\"",
+      "last_modified": null,
+      "local_file": "QCC518X_dfu_file_encrypted_2.10.4-6ce4c3635.bin",
+      "sha256": "918bd9a0bb5b08f586b34aa3d1c3bce0779602d4818af2f8ab1ea366cca4175f",
+      "downloaded": true
+    },
+    {
+      "version": "80.1-55014",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-3.exe",
+      "source": "image",
+      "filename": "80.1-55014-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 57526488,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-3.exe",
+      "etag": "\"f1ae22b9f61d246d8faeaf7478174a70-7\"",
+      "last_modified": null,
+      "local_file": "80.1-55014-1-3.exe",
+      "sha256": "9f9385e54ef9eaf62044d10a2d4b4af129897565419810398cca1941a4fe69fb",
+      "downloaded": true
+    },
+    {
+      "version": "80.1-55014",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-4.dmg",
+      "source": "image",
+      "filename": "80.1-55014-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 63011667,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-4.dmg",
+      "etag": "\"2a3679f321eb60bc04387d9b5ca6b85f-8\"",
+      "last_modified": null,
+      "local_file": "80.1-55014-1-4.dmg",
+      "sha256": "cac8a5f9e13c2959bd2dff239a8576c40c2fb84afa7f412ac393dabf7b120461",
+      "downloaded": true
+    }
+  ]
+}

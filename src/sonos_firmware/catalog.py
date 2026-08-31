@@ -40,6 +40,13 @@ def validate_catalog(root: str | Path) -> list[str]:
             errors.append(f"{package_id}: invalid sha256")
         if package.get("artifact_status") == "preserved" and not package.get("release_asset"):
             errors.append(f"{package_id}: preserved package has no release_asset")
+        if package.get("artifact_status") == "preserved" and package.get("artifact_type") == "upd":
+            manifest = root / "data/upd" / f"{package_id}.json"
+            if not manifest.exists():
+                errors.append(f"{package_id}: preserved UPD has no section manifest")
+    for manifest in catalog.get("source_manifests", []):
+        if not manifest.get("release_tag") or not manifest.get("release_asset"):
+            errors.append(f"source manifest {manifest.get('filename')}: missing release location")
     return errors
 
 
@@ -68,4 +75,3 @@ def filesystem_manifest(root: str | Path) -> dict:
             entry.update(type="special")
         entries.append(entry)
     return {"root": root.name, "entries": entries}
-

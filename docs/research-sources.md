@@ -1,0 +1,138 @@
+# Sonos firmware source and discovery research
+
+Research date: 2026-08-31. This is an evidence map and collection plan, not a claim of completeness. It deliberately contains no device identifiers, household identifiers, private keys, or firmware binaries.
+
+## Bottom line
+
+The largest defensible archive will need to combine five veins:
+
+1. live Sonos update metadata for modern S2, legacy S2, and S1;
+2. every URL and conditional upgrade rule in each signed Sonos `.upm` manifest;
+3. historical manifests and package mappings already preserved in public source repositories and bug reports;
+4. direct Internet Archive CDX evidence; and
+5. Sonos's separately published GPL/LGPL source releases.
+
+A version number alone is not enough to reconstruct a download URL. Sonos CDN directories include opaque release/channel tokens, for example `96.1-79270-v18.7-4b07MiHfnw-RC-2`. Preserve each manifest and every complete URL as soon as it is observed.
+
+## 1. Live Sonos metadata
+
+### Discovery feed
+
+An update client requests:
+
+```text
+GET https://update.sonos.com/firmware/latest/default-1-1.ups
+    ?cmaj=...&cmin=...&cbld=...&subm=...&rev=...&reg=...
+    &serial=...&sonosid=...&householdid=...
+```
+
+This endpoint is not documented in Sonos's public API documentation, but it is implemented in the public `sonostool` source. The code defines TLV type `7` as the base firmware URI and type `14` as the manifest URI, sends the request, and expands the returned caret URL into a model package ([constants and TLV types](https://github.com/blasty/sonos/blob/27be43832f6106d068541534ed0f151b841d1fa4/sonostool/sonostool.py#L47-L56), [request and extraction](https://github.com/blasty/sonos/blob/27be43832f6106d068541534ed0f151b841d1fa4/sonostool/sonostool.py#L182-L216)). A live request with dummy values on the research date returned a valid S1 response, demonstrating that synthetic probes do not necessarily select the modern S2 branch.
+
+The binary `.ups` records use a 16-byte little-endian header `(magic, type, size, unknown)` with magic `0x35167f49`. Archive the raw response and parsed fields, but never persist a real query string: `serial`, `sonosid`, and `householdid` are user/device identifiers. Store only a redacted request profile such as controller version, region, and software generation.
+
+The best source for the exact active branch is a real device's read-only `AvailableSoftwareUpdate` / `R_AvailableSoftwareUpdate` state. Public Home Assistant diagnostics demonstrate that this field contains `Version`, `UpdateURL`, `ManifestURL`, `Swgen`, and `ManifestRevision` for both [S1 57.14-37030](https://github.com/home-assistant/core/issues/88486) and [S1 57.22-59130 plus S2 81.1-58210](https://github.com/home-assistant/core/issues/131381). Extract only those update fields; public diagnostics often contain room names, LAN addresses, UUIDs, and household IDs that must not enter this archive.
+
+### Signed manifests and URL expansion
+
+Sonos `.upm` files are signed XML. Preserve the exact bytes, including the trailing `SIGNATURE` comment. Important root fields are `revision`, `system_version`, `default_version`, `base_url`, and `swgen`. `supported_models` contains numeric model/submodel selectors. Each `<image>` rule may add `submodel_min`, `submodel_max`, `fromver_min`, `fromver_max`, `flags`, and `milestone_index`; those conditions are part of the historical record and must not be flattened away.
+
+For the common caret form:
+
+```text
+.../RELEASE-DIRECTORY/^VERSION
+```
+
+the observed package expansion is:
+
+```text
+.../RELEASE-DIRECTORY/VERSION-1-MODEL.upd
+```
+
+This is directly implemented by `sonostool` for variant/submodel `1` and a numeric model ([source](https://github.com/blasty/sonos/blob/27be43832f6106d068541534ed0f151b841d1fa4/sonostool/sonostool.py#L207-L216)). Treat this as an observed pattern, not a timeless guarantee: retain the original manifest expression and validate every expanded candidate before cataloguing it.
+
+Use a metadata-only `HEAD` first, falling back to a small ranged `GET` if a CDN does not implement `HEAD`. Require a successful status, `application/octet-stream`, a plausible length, and then hash the full artifact after download. On 2026-08-31 these official examples still answered `200`:
+
+| Version/model | Official URL | Content length |
+|---|---|---:|
+| 57.19-46310 / 8 | [57.19-46310-1-8.upd](https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-8.upd) | 9,059,978 |
+| 73.0-42060 / 8 | [73.0-42060-1-8.upd](https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-8.upd) | 11,872,089 |
+| 86.8-78270 / 9 | [86.8-78270-1-9.upd](https://update-firmware.sonos.com/firmware/Prod/86.8-78270-v17.2.6-HlGdHczqmy-RC-1/86.8-78270-1-9.upd) | 15,886,259 |
+
+### Three active preservation tracks
+
+- **Modern S2:** the current signed [96.1-79270 manifest](https://update.sonos.com/firmware/Prod/2026-Sonos-17-aiVIZ66IGK-GA-1/update.upm) has default base `96.1-79270-v18.7-4b07MiHfnw-RC-2` and a large S2 model list.
+- **Legacy S2:** the same manifest routes selected older S2 models to `86.8-78270`. Sonos's [system release notes](https://support.sonos.com/en-us/article/release-notes-sonos-system-updates) explicitly distinguish the current system and current legacy system versions, while warning that product-specific minor updates may not be listed.
+- **S1:** a live metadata probe returned base `57.23-74170-v11.16.1-DILU1Q33hC-GA-1` and signed manifest [57.23-80060](https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm). This is a separate line from what Sonos now labels “legacy” in the S2 release notes.
+
+The current modern manifest is also a historical gold mine. Its conditional rules expose the exact opaque directories for upgrade milestones `34.16-37101`, `55.1-74250`, `57.5-87010`, `57.19-46310`, `73.0-42060`, and `86.8-78270`, in addition to `96.1-79270`. The current S1 manifest adds `25.2-50130`, `36.5-50160`, and `45.1-56150`, while its default points to `57.23-74170`. Expand each rule only across the models and version ranges to which it applies.
+
+Sonos's [app compatibility matrix](https://support.sonos.com/en-ca/article/sonos-app-version-compatibility) is authoritative for product names and S1/S2 eligibility, but it does not map those names to numeric manifest model IDs. Keep numeric-model mappings evidence-scoped. For example, a preserved 2021 manifest/package collection explicitly maps model `26` to Sonos One, `32` to Sub Gen 3, and `20` to IKEA Bookshelf ([13.4 index](https://github.com/systemcrash/sonos-firmware/blob/47eb96ae5415de7088659bb3cb8afeaeec68415f/README.md#L7-L24)); the Fenway research repository says model `0x08` is a hardware family including Play:1 and other products, not a one-product identity ([source](https://github.com/trulyspinach/sonos-fenway#what)).
+
+## 2. Historical manifests and exact-version leads
+
+### Public repositories with actual artifacts or mappings
+
+The public [systemcrash/sonos-firmware](https://github.com/systemcrash/sonos-firmware) repository preserves signed manifests and selected packages for S2 `13.0`, `13.3.2`, and `13.4`. Its committed manifests contain exact Sonos CDN paths and conditional milestone URLs:
+
+- [62.1-87200 / S2 13.0.2 manifest](https://github.com/systemcrash/sonos-firmware/blob/47eb96ae5415de7088659bb3cb8afeaeec68415f/62.1-87200-v13.0.2-vqwxip-GA-1/update.upm)
+- [65.1-21040 / S2 13.3 manifest](https://github.com/systemcrash/sonos-firmware/blob/47eb96ae5415de7088659bb3cb8afeaeec68415f/65.1-21040-v13.3-maswnk-GA-1/update.upm)
+- [66.4-23130 / S2 13.4 manifest](https://github.com/systemcrash/sonos-firmware/blob/47eb96ae5415de7088659bb3cb8afeaeec68415f/66.4-23130-v13.4-ezhbor-GA-3/update.upm)
+
+Treat third-party repositories as provenance leads. Independently hash every blob, preserve the commit SHA and original path, and prefer the official Sonos URL whenever it is still live. The repository has no declared license, so its presence on GitHub is not itself permission to republish.
+
+Public issue diagnostics reveal additional exact directories that are otherwise difficult to guess, including [67.1-27100](https://github.com/home-assistant/core/issues/69759), [57.14-37030](https://github.com/home-assistant/core/issues/88486), and [57.22-59130 / 81.1-58210](https://github.com/home-assistant/core/issues/131381). Search issue bodies for `ManifestURL`, `UpdateURL`, and `AvailableSoftwareUpdate`, but retain only firmware metadata and a source permalink.
+
+First-party Sonos staff announcements can supply version evidence even when the package token is missing. For example, the [28 July 2026 announcement](https://en.community.sonos.com/product-updates/28th-july-2026-new-sonos-app-player-updates-now-available-6934395) identifies modern `96.0-79160` and legacy `86.8-78270`. Record `96.0-79160` as “version evidenced, package URL unknown” until a signed manifest, complete CDN URL, or matching blob is found; do not guess an opaque directory token.
+
+The public [trulyspinach/sonos-fenway](https://github.com/trulyspinach/sonos-fenway) tree contains historical Fenway dumps/raw images labeled `16.6-00002-diag`, `18.0-50150`, `20.2-01616-diag`, and `57.10-25140`. These are useful hash/version leads but include modified/custom material too. Catalog `stock`, `diagnostic`, `custom`, and `unknown` as separate artifact classes, and never treat a custom image as an official Sonos release.
+
+### Internet Archive CDX evidence
+
+Query CDX by prefix and extension rather than relying on normal web search. On 2026-08-31, this direct [CDX query for `.upd` captures](https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/firmware/Prod/&matchType=prefix&output=json&fl=timestamp,original,statuscode,mimetype,digest,length&filter=statuscode:200&filter=original:.*%5C.upd%24&collapse=urlkey&limit=10000) returned only two distinct successful package URLs:
+
+- `34.16-37101-1-16.upd`, captured 2022-02-14, archived length 4,693,821;
+- `57.15-39070-1-26.upd`, captured 2023-06-19, archived length 39,866,595.
+
+The analogous [CDX query for `.upm` captures](https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/firmware/Prod/&matchType=prefix&output=json&fl=timestamp,original,statuscode,mimetype,digest,length&filter=statuscode:200&filter=original:.*%5C.upm%24&collapse=urlkey&limit=10000) returned manifests for `80.1-56190`, `81.1-58074`, `81.1-58210`, `82.2-59204`, and `90.0-67171`; a separate query against `update.sonos.com` returned one year-token manifest. Re-run both hosts because manifests have appeared under both `update.sonos.com` and `update-firmware.sonos.com`.
+
+CDX results are direct evidence of a capture, not a completeness oracle. Missing rows can mean no crawl, access restrictions, deduplication, robots policy, or a capture stored under a different hostname/path. Validate replay content and record both CDX digest and a locally computed SHA-256. Do not treat a Wayback redirect or error page as firmware merely because its status is `200`.
+
+Historical snapshots of the [Sonos system release-notes page](https://support.sonos.com/en-us/article/release-notes-sonos-system-updates) and Sonos staff update posts should be mined for version/date evidence, then correlated with manifests and CDX. Sonos explicitly says the live release page omits some product-specific minor updates, so it cannot define completeness by itself.
+
+## 3. Official GPL/LGPL source releases
+
+Archive these as a separate, clearly licensed collection. Sonos's current [14.18 GPL/LGPL index](https://www.sonos.com/documents/gpl/14.18/gpl.html) publishes attribution documents and patched sources including BusyBox, FFmpeg, drivers, and `linux-sonos` trees for 2.6.35, 2.6.39.4, 3.10.53-nxp, 4.4.24-mtk, and 4.9.99. Historical official indexes still available include:
+
+- [7.2](https://www.sonos.com/documents/gpl/7.2/gpl.html) and [7.3](https://www.sonos.com/documents/gpl/7.3/gpl.html)
+- [9.2](https://www.sonos.com/documents/gpl/9.2/gpl.html)
+- [10.2](https://www.sonos.com/documents/gpl/10.2/gpl.html) and [10.6](https://www.sonos.com/documents/gpl/10.6/gpl.html)
+- [12.0](https://www.sonos.com/documents/gpl/12.0/gpl.html)
+- [13.2](https://www.sonos.com/documents/gpl/13.2/gpl.html)
+- [14.4](https://www.sonos.com/documents/gpl/14.4/gpl.html)
+
+For each index, preserve the HTML, attribution PDF(s), every first-party source archive, original filename/URL, retrieval time, response headers, and SHA-256. Deduplicate storage by hash while retaining every release-page alias. Do not mix GPL source bundles with proprietary `.upd` licensing or imply that a GPL component archive is a complete buildable firmware image.
+
+## 4. Recommended collection order
+
+1. **Snapshot metadata immediately:** fetch and hash the modern S2 and S1 `.ups` responses and every referenced `.upm`; parse without discarding signatures or conditional fields.
+2. **Enumerate manifest candidates:** expand each caret URL only for its matching numeric models/submodels and version ranges. Include default bases and every milestone rule.
+3. **Validate, then fetch:** `HEAD`/ranged-GET candidates, reject non-binary/error responses, download accepted assets once, hash with SHA-256, and preserve HTTP metadata.
+4. **Backfill known historical manifests:** import the three signed manifests from `systemcrash/sonos-firmware`, the five-plus CDX manifest captures, and exact URLs from public diagnostics. Attempt official CDN retrieval before using a third-party blob.
+5. **Mine evidence-only versions:** Sonos release notes, historical snapshots, and staff announcements. Mark these `evidenced-version` until a package or manifest is found.
+6. **Crawl GPL indexes separately:** archive all official source bundles and attribution documents under their own licenses.
+7. **Poll conservatively:** a daily metadata check is sufficient. Cache by manifest revision/URL, use conditional requests, and avoid brute-forcing opaque directory tokens or sending device-specific requests at scale.
+
+Suggested provenance states are `official-live`, `official-wayback-replay`, `third-party-byte-identical-to-official`, `third-party-unverified`, `device-observed-version`, `first-party-announcement-only`, `diagnostic`, `custom`, and `missing`. “Missing” should always state exactly which sources and dates were checked.
+
+## 5. Legal and publication considerations
+
+This is not legal advice. Sonos's [U.S. terms](https://www.sonos.com/en-us/legal/terms-of-use#software) state that product software is licensed rather than sold and restrict transfer, copying, and reverse engineering except where applicable law overrides. GPL/LGPL archives are different: Sonos publishes them specifically under the component licenses and attribution terms.
+
+For now:
+
+- keep proprietary `.upd` files and extracted images in the private repository/release storage;
+- keep MIT licensing scoped to archive tooling and original metadata, not firmware blobs;
+- retain Sonos copyright/license notices and each artifact's provenance;
+- never commit model private keys, device OTP/MDP dumps, serials, Sonos IDs, household IDs, room names, or LAN addresses;
+- add a contact/takedown policy before wider sharing; and
+- obtain legal review before making proprietary packages or extracted files public.

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from .catalog import filesystem_manifest, validate_catalog
+from .discovery import download_all, parse_manifest, probe_all, write_json
 from .upd import parse_file
 
 
@@ -41,12 +42,35 @@ def main() -> int:
     manifest = sub.add_parser("fs-manifest", help="inventory an extracted rootfs")
     manifest.add_argument("directory", type=Path)
     manifest.add_argument("--output", type=Path)
+    discover = sub.add_parser("discover", help="probe every artifact named by a Sonos UPM")
+    discover.add_argument("manifest", type=Path)
+    discover.add_argument("--output", type=Path, required=True)
+    discover.add_argument("--workers", type=int, default=6)
+    fetch = sub.add_parser("fetch", help="download available artifacts from discovery JSON")
+    fetch.add_argument("discovery", type=Path)
+    fetch.add_argument("--directory", type=Path, required=True)
+    fetch.add_argument("--receipt", type=Path, required=True)
+    fetch.add_argument("--workers", type=int, default=3)
     args = parser.parse_args()
 
     if args.command == "inspect":
         return _inspect(args.file)
     if args.command == "verify":
         return _verify(args.root)
+    if args.command == "discover":
+        metadata, candidates = parse_manifest(args.manifest)
+        results = probe_all(candidates, args.workers)
+        write_json(args.output, {**metadata, "candidates": results})
+        available = sum(item["available"] for item in results)
+        print(f"discovered {len(results)} candidates; {available} available")
+        return 0
+    if args.command == "fetch":
+        discovery = json.loads(args.discovery.read_text(encoding="utf-8"))
+        results = download_all(discovery["candidates"], args.directory, args.workers)
+        write_json(args.receipt, {"source": args.discovery.name, "artifacts": results})
+        downloaded = sum(item["downloaded"] for item in results)
+        print(f"downloaded {downloaded}/{len(results)} available artifacts")
+        return 0 if downloaded == len(results) else 1
     result = filesystem_manifest(args.directory)
     rendered = json.dumps(result, indent=2) + "\n"
     if args.output:
@@ -58,4 +82,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

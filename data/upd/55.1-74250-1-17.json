@@ -1,0 +1,111 @@
+{
+  "package_id": "55.1-74250-1-17",
+  "bytes": 5682418,
+  "sha256": "d9e593b1535dcf12e63bf816c78a476953a1c24004c0f9076dd0f7ec4b1c0975",
+  "sections": [
+    {
+      "index": 0,
+      "offset": 0,
+      "section_type": 1,
+      "name": "unknown",
+      "length": 28,
+      "payload_length": 12,
+      "flags": 0,
+      "encrypted": false,
+      "sha256": "eb6bc5ec8b9fcf6e406033066da29eb74a9026fb54ca58fccdf061dfe2b42eac",
+      "payload_magic": "3700000001000000",
+      "recipient_id": null
+    },
+    {
+      "index": 1,
+      "offset": 28,
+      "section_type": 2,
+      "name": "unknown",
+      "length": 44,
+      "payload_length": 28,
+      "flags": 0,
+      "encrypted": false,
+      "sha256": "7546bb7078cbd6bed0aa17a69545e156aaea35be168fe5bb052abc0664c94955",
+      "payload_magic": "0100000011000000",
+      "recipient_id": null
+    },
+    {
+      "index": 2,
+      "offset": 72,
+      "section_type": 2,
+      "name": "unknown",
+      "length": 148,
+      "payload_length": 132,
+      "flags": 0,
+      "encrypted": false,
+      "sha256": "d33c2404149e40e0a890249f97cf9591ddc6499ea75fae4bcff97d1dc608339a",
+      "payload_magic": "fdffffff02000000",
+      "recipient_id": null
+    },
+    {
+      "index": 3,
+      "offset": 220,
+      "section_type": 2,
+      "name": "unknown",
+      "length": 44,
+      "payload_length": 28,
+      "flags": 0,
+      "encrypted": false,
+      "sha256": "72a07112f150b88982440cb3fadc7d51afb90e01956ddee8f82a9aa43370be1b",
+      "payload_magic": "feffffff30000000",
+      "recipient_id": null
+    },
+    {
+      "index": 4,
+      "offset": 264,
+      "section_type": 3,
+      "name": "preinstall",
+      "length": 176026,
+      "payload_length": 176010,
+      "flags": 4,
+      "encrypted": true,
+      "sha256": "2c857f0babb5da88b5db97c79a7a91909c50e936187159fff6e0ed6d2ddc9106",
+      "payload_magic": "886499ca0000013a",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "index": 5,
+      "offset": 176290,
+      "section_type": 6,
+      "name": "kernel",
+      "length": 708970,
+      "payload_length": 708954,
+      "flags": 4,
+      "encrypted": true,
+      "sha256": "1406058b7e9caf9e1c4b0d6501734c302cf0fd1e0f76c749acf48a5465a8d297",
+      "payload_magic": "886499ca0000013a",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "index": 6,
+      "offset": 885260,
+      "section_type": 4,
+      "name": "rootfs",
+      "length": 4796778,
+      "payload_length": 4796762,
+      "flags": 4,
+      "encrypted": true,
+      "sha256": "d01ad753070a29adb14af6070e5814fa24212134f963140475e83d0369b64f62",
+      "payload_magic": "886499ca0000013a",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "index": 7,
+      "offset": 5682038,
+      "section_type": 17,
+      "name": "application",
+      "length": 380,
+      "payload_length": 364,
+      "flags": 1,
+      "encrypted": false,
+      "sha256": "73a108d2b696a355041d1bdfca0d2460658ac844261891dc49e67e40b30ca087",
+      "payload_magic": "621da74d0000016c",
+      "recipient_id": null
+    }
+  ]
+}
