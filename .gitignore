@@ -1,0 +1,25 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+
+# Firmware and extracted filesystems belong in private GitHub Releases, not Git.
+artifacts/
+*.upd
+*.upm
+*.uImage
+*.squashfs
+*.bin
+rootfs-extracted/
+
+# Never commit recovered private keys or device/household captures.
+keys/
+recovery-work/
+captures/
+*.pem
+*.key
+

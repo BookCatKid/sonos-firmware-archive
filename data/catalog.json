@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "generated": "2026-08-31",
+  "release_tag": "seed-2026-08-31",
+  "source_manifests": [
+    {
+      "version": "96.1-79270",
+      "filename": "update-96.1-79270.upm",
+      "bytes": 13623,
+      "sha256": "ada8c9f3fad4fe5e71e24d6067a7bb0c1f133f3393711c807e1898489de5cd5f",
+      "source_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-17-aiVIZ66IGK-GA-1/update.upm",
+      "release_asset": "update-96.1-79270.upm"
+    }
+  ],
+  "packages": [
+    {
+      "id": "34.16-37101-1-9",
+      "version": "34.16-37101",
+      "package_model": 9,
+      "product": "Playbar",
+      "model_number": "S9",
+      "filename": "34.16-37101-1-9.upd",
+      "bytes": 9243867,
+      "sha256": "fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7",
+      "artifact_status": "preserved",
+      "raw_status": "complete",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-9.upd",
+      "release_asset": "34.16-37101-1-9.upd"
+    },
+    {
+      "id": "34.16-37101-1-13",
+      "version": "34.16-37101",
+      "package_model": 13,
+      "product": "Play:5 (Gen 2)",
+      "model_number": "S6",
+      "filename": "34.16-37101-1-13.upd",
+      "bytes": 9904177,
+      "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+      "artifact_status": "preserved",
+      "raw_status": "blocked-model-key",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-13.upd",
+      "release_asset": "34.16-37101-1-13.upd"
+    },
+    {
+      "id": "86.8-78270-1-8",
+      "version": "86.8-78270",
+      "package_model": 8,
+      "product": "Play:1",
+      "model_number": "S1",
+      "filename": "86.8-78270-1-8.upd",
+      "bytes": 21290793,
+      "sha256": "1cb3e84b30a06117489bd21b141d892d90c01329cdc811c85a21afb0960f932c",
+      "artifact_status": "preserved",
+      "raw_status": "complete",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/86.8-78270-v17.2.6-HlGdHczqmy-RC-1/86.8-78270-1-8.upd",
+      "release_asset": "86.8-78270-1-8.upd"
+    },
+    {
+      "id": "86.8-78270-1-9",
+      "version": "86.8-78270",
+      "package_model": 9,
+      "product": "Playbar",
+      "model_number": "S9",
+      "filename": "86.8-78270-1-9.upd",
+      "bytes": 15886259,
+      "sha256": "a60be7389187de7f5b54a38a34e66d2376acb7f73693e2988923f4d5a17db3dd",
+      "artifact_status": "preserved",
+      "raw_status": "complete",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/86.8-78270-v17.2.6-HlGdHczqmy-RC-1/86.8-78270-1-9.upd",
+      "release_asset": "86.8-78270-1-9.upd"
+    },
+    {
+      "id": "86.8-78270-1-13",
+      "version": "86.8-78270",
+      "package_model": 13,
+      "product": "Play:5 (Gen 2)",
+      "model_number": "S6",
+      "filename": "86.8-78270-1-13.upd",
+      "bytes": 24279475,
+      "sha256": "02779618415c881599e415b4cd1964d695619381242aaec2293ac9820271bac7",
+      "artifact_status": "preserved",
+      "raw_status": "blocked-model-key",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/86.8-78270-v17.2.6-HlGdHczqmy-RC-1/86.8-78270-1-13.upd",
+      "release_asset": "86.8-78270-1-13.upd"
+    },
+    {
+      "id": "96.0-79160-1-25",
+      "version": "96.0-79160",
+      "package_model": 25,
+      "product": "Move",
+      "model_number": "S17",
+      "filename": null,
+      "bytes": null,
+      "sha256": null,
+      "artifact_status": "missing-exact-package",
+      "raw_status": "missing",
+      "evidence": "Version observed installed on a Move; exact package was absent from the current Sonos manifest and public web archives checked on 2026-08-30."
+    },
+    {
+      "id": "96.1-79270-1-25",
+      "version": "96.1-79270",
+      "package_model": 25,
+      "product": "Move",
+      "model_number": "S17",
+      "filename": "96.1-79270-1-25.upd",
+      "bytes": 100409662,
+      "sha256": "b6e1b93674098569c0e901fb74ac27eb28c61edfbaee6fab14de5175d7052b67",
+      "artifact_status": "preserved-reference-only",
+      "raw_status": "encrypted",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-25.upd",
+      "release_asset": "96.1-79270-1-25.upd",
+      "note": "Not a substitute for the missing 96.0-79160 package."
+    }
+  ],
+  "raw_images": [
+    {"package_id": "86.8-78270-1-8", "kind": "kernel", "filename": "86.8-78270-1-8-kernel.uImage", "bytes": 1495436, "sha256": "e7e92b4d79f2a3bfef22c165b2bacdda226fb72a31039d77145d06e308fe9254"},
+    {"package_id": "86.8-78270-1-8", "kind": "rootfs", "filename": "86.8-78270-1-8-rootfs.squashfs", "bytes": 5459968, "sha256": "f6fdba2289d1d99cf622c5dd83f6907d749c7edb874a5213bde6d5d3a54c0b54"},
+    {"package_id": "86.8-78270-1-8", "kind": "preinstall", "filename": "86.8-78270-1-8-preinstall.sh", "bytes": 1599, "sha256": "feddb7ad14034b06c316ccbed244a11925093a882a9d7bd81ea64a61364cbe70"},
+    {"package_id": "86.8-78270-1-9", "kind": "kernel", "filename": "86.8-78270-1-9-kernel.uImage", "bytes": 1792724, "sha256": "fb2d170631483949331a87f6bf24c843ff9bc9dd17a0f6c692ce528129198cfb"},
+    {"package_id": "86.8-78270-1-9", "kind": "rootfs", "filename": "86.8-78270-1-9-rootfs.squashfs", "bytes": 13885440, "sha256": "058db7b4e31178877f4594f093d6bc48a7bec3323d93c5e00b82de16cfb1192b"},
+    {"package_id": "86.8-78270-1-9", "kind": "preinstall", "filename": "86.8-78270-1-9-preinstall.sh", "bytes": 1599, "sha256": "feddb7ad14034b06c316ccbed244a11925093a882a9d7bd81ea64a61364cbe70"},
+    {"package_id": "86.8-78270-1-9", "kind": "fpga", "filename": "86.8-78270-1-9-fpga.bin", "bytes": 54757, "sha256": "36b47a4c7ef9e974ccfa82efda203754f0316ddc38b836e66b050e71074ae7cc"},
+    {"package_id": "34.16-37101-1-9", "kind": "kernel", "filename": "34.16-37101-1-9-kernel.uImage", "bytes": 1746134, "sha256": "2297d027797006cafa017a8c4266d6ff3f3431578db678bd73dbb710ad0b2fa3"},
+    {"package_id": "34.16-37101-1-9", "kind": "rootfs", "filename": "34.16-37101-1-9-rootfs.bin", "bytes": 7438336, "sha256": "8f53bbc43de1c18881ccff01f690928fad55e83d76d929c41a58de31b7b1e9da"},
+    {"package_id": "34.16-37101-1-9", "kind": "preinstall", "filename": "34.16-37101-1-9-preinstall.sh", "bytes": 3243, "sha256": "fcfacd4af5e19e8bdd4890e4f5cdd5e19bc6e24d51204e384a898ef1df4cedc7"}
+  ]
+}

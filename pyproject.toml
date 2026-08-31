@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sonos-firmware-archive"
+version = "0.1.0"
+description = "Catalog and analysis tooling for archived Sonos firmware"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[project.scripts]
+sonos-fw = "sonos_firmware.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

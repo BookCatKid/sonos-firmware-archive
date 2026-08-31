@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "updated": "2026-08-31",
+  "targets": [
+    {"product": "Play:1", "model_number": "S1", "package_model": 8, "target_version": "86.8-78270", "package": "preserved", "kernel": "preserved", "rootfs": "preserved", "status": "complete"},
+    {"product": "Playbar", "model_number": "S9", "package_model": 9, "target_version": "86.8-78270", "package": "preserved", "kernel": "preserved", "rootfs": "preserved", "status": "complete"},
+    {"product": "Play:5 (Gen 2)", "model_number": "S6", "package_model": 13, "target_version": "86.8-78270", "package": "preserved", "kernel": "encrypted", "rootfs": "encrypted", "status": "blocked-model-key"},
+    {"product": "Move", "model_number": "S17", "package_model": 25, "target_version": "96.0-79160", "package": "missing", "kernel": "missing", "rootfs": "missing", "status": "missing-exact-version", "note": "96.1-79270 is cataloged separately as a reference only."}
+  ]
+}
+

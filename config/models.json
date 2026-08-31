@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "models": [
+    {"package_model": 8, "image_model": "8.3", "product": "Play:1", "model_number": "S1"},
+    {"package_model": 9, "image_model": "9.1", "product": "Playbar", "model_number": "S9"},
+    {"package_model": 13, "image_model": "13.1", "product": "Play:5 (Gen 2)", "model_number": "S6"},
+    {"package_model": 25, "image_model": "25.1", "product": "Move", "model_number": "S17"}
+  ]
+}
+

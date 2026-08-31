@@ -1,0 +1,2473 @@
+{
+  "root": "rootfs-extracted",
+  "entries": [
+    {
+      "path": "LEGACYCOMPATVER",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "ee22aa9ca28edb870170c612a3ef59ea2cb063c8c2816994e986aae308c67c69"
+    },
+    {
+      "path": "MINCOMPATVER",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "41915dcb2732e231c1106044676f9225ac6040164dd713f291fcc9f92f18c848"
+    },
+    {
+      "path": "VERSION",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "285014090de166468063d20d889cf1e5dc3ccd3237d05a2302f70fb10623d7d6"
+    },
+    {
+      "path": "bin",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "bin/ash",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/busybox",
+      "mode": 493,
+      "type": "file",
+      "size": 526096,
+      "sha256": "8dbf11961404b24db43450b4ee81d29c562e08851d46aee55deb8095aeb4941c"
+    },
+    {
+      "path": "bin/cat",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/chgrp",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/chmod",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/chown",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/chronyc",
+      "mode": 493,
+      "type": "file",
+      "size": 132812,
+      "sha256": "d71349dca6097c168036175351212020709490b282704061478c3308c5a0c663"
+    },
+    {
+      "path": "bin/cp",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/cttyhack",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/date",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/dd",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/df",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/dmesg",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/dnsdomainname",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/dropbearmulti",
+      "mode": 493,
+      "type": "file",
+      "size": 264552,
+      "sha256": "16a21b2f18faee46dd98e132a7cc31eb235bc3613953dd4e8c798790bdcbb5f1"
+    },
+    {
+      "path": "bin/echo",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/egrep",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/false",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/fgrep",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/getopt",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/grep",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/gunzip",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/gzip",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/hostname",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/iostat",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/kill",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/ln",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/login",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/ls",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/mdputil",
+      "mode": 493,
+      "type": "file",
+      "size": 67596,
+      "sha256": "bad58b14c21d14b8bef631511e4d07737acbddf319ff81df95b378d2164c8a10"
+    },
+    {
+      "path": "bin/mkdir",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/mknod",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/more",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/mount",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/mpstat",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/mv",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/netstat",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/pcap",
+      "mode": 493,
+      "type": "file",
+      "size": 66996,
+      "sha256": "1f774e76d0904d94c3321eead021c9063e111a3bd6a82e2ad476aa250d8fb52f"
+    },
+    {
+      "path": "bin/pidof",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/ping",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/ping6",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/ps",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/pwd",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/rm",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/rmdir",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/sed",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/sh",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/sleep",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/stty",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/sync",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/tar",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/touch",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/true",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/umount",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/uname",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/upgrade",
+      "mode": 493,
+      "type": "file",
+      "size": 200036,
+      "sha256": "7daa9e87a27e6089b1cd963095a9d96d226d27a2a88449680e7d294d800c5abe"
+    },
+    {
+      "path": "bin/upgrade_mgr",
+      "mode": 493,
+      "type": "file",
+      "size": 67088,
+      "sha256": "2cdab8b71df15bdb11004c71841ff11f594aa6fb7b884b5bad4ed1fbba73807e"
+    },
+    {
+      "path": "bin/usleep",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/vi",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "bin/zcat",
+      "mode": 493,
+      "type": "symlink",
+      "target": "busybox"
+    },
+    {
+      "path": "build.properties",
+      "mode": 292,
+      "type": "file",
+      "size": 807,
+      "sha256": "b1c8ba9c8ac3ffcc8c099adf6d650a85c7765fe099c24467f217d89486fc5390"
+    },
+    {
+      "path": "dev",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/audio",
+      "mode": 493,
+      "type": "symlink",
+      "target": "audio0"
+    },
+    {
+      "path": "dev/dmfm",
+      "mode": 493,
+      "type": "symlink",
+      "target": "dmfm0"
+    },
+    {
+      "path": "dev/dspW",
+      "mode": 493,
+      "type": "symlink",
+      "target": "dspW0"
+    },
+    {
+      "path": "dev/dspdefault",
+      "mode": 493,
+      "type": "symlink",
+      "target": "dsp0"
+    },
+    {
+      "path": "dev/fb",
+      "mode": 493,
+      "type": "symlink",
+      "target": "fb0"
+    },
+    {
+      "path": "dev/input",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/midi",
+      "mode": 493,
+      "type": "symlink",
+      "target": "midi00"
+    },
+    {
+      "path": "dev/mixer",
+      "mode": 493,
+      "type": "symlink",
+      "target": "mixer0"
+    },
+    {
+      "path": "dev/mtd",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/pts",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/root",
+      "mode": 493,
+      "type": "symlink",
+      "target": "ram0"
+    },
+    {
+      "path": "dev/snd",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/touchscreen",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "dev/video",
+      "mode": 493,
+      "type": "symlink",
+      "target": "video0"
+    },
+    {
+      "path": "etc",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/Configure",
+      "mode": 365,
+      "type": "file",
+      "size": 2488,
+      "sha256": "7820e289f6266bd6b11b02b979a700cb0c767417ef347676ac5969f26ca97460"
+    },
+    {
+      "path": "etc/arch",
+      "mode": 420,
+      "type": "file",
+      "size": 10,
+      "sha256": "e014957c02d19fce55760cb98e40b2613f849ac985abdeef6a7a267bf55e1065"
+    },
+    {
+      "path": "etc/arch_attrs",
+      "mode": 420,
+      "type": "file",
+      "size": 1020,
+      "sha256": "56c5c16a238b04190906c57e617e05a4e4dcbcdb18a3adc4a24f908b42bccf8b"
+    },
+    {
+      "path": "etc/chrony.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 915,
+      "sha256": "6245ff35b9e68a1d8738dcc430bc8b28e53efaa0c9a834010fde3c72fcc32789"
+    },
+    {
+      "path": "etc/default",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/dhcp.script",
+      "mode": 365,
+      "type": "file",
+      "size": 1209,
+      "sha256": "e21b831e538f132d86422ead668e0f6e9c3e1d7c7f6a2e0aed4e0783e22c7f07"
+    },
+    {
+      "path": "etc/dhcpc",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/diagprocessd",
+      "mode": 365,
+      "type": "file",
+      "size": 2304,
+      "sha256": "b5489037250b71ffaf6f6bf22192730dd9b36da829141a0ef886dd157285a079"
+    },
+    {
+      "path": "etc/fallback_trusted_roots.rcb",
+      "mode": 292,
+      "type": "file",
+      "size": 33644,
+      "sha256": "b8c1d7548eecc4c885a0a68b846be0f21b70d3e4a880c3560a7f2eddb5662586"
+    },
+    {
+      "path": "etc/fstab",
+      "mode": 292,
+      "type": "file",
+      "size": 501,
+      "sha256": "f8d2d28e0d0f6c3f37b2a5635f02d9801d5f9b5b7e257891fe79ac6b19706af4"
+    },
+    {
+      "path": "etc/group",
+      "mode": 292,
+      "type": "file",
+      "size": 504,
+      "sha256": "662a6eac5e3759afce5eaee7200c75525d8ffae965c9d958a60d5a9d8180668c"
+    },
+    {
+      "path": "etc/host.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 26,
+      "sha256": "83b331f98a128e1721c54be5c07bd38ad0d146e89cdecbe0eb53cbc23ff6b86a"
+    },
+    {
+      "path": "etc/hosts",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/jffs/hosts"
+    },
+    {
+      "path": "etc/hosts.orig",
+      "mode": 292,
+      "type": "file",
+      "size": 100,
+      "sha256": "cc9e641227208bec49d4f7b234aeb564656daa63b4ab542e4a70cba6c12bb828"
+    },
+    {
+      "path": "etc/init.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/init.d/Krandom",
+      "mode": 365,
+      "type": "file",
+      "size": 499,
+      "sha256": "43ba173153df8d85b25e6257324ea471938a7bd0cd1ce12faeea81791ba50b0f"
+    },
+    {
+      "path": "etc/init.d/Srandom",
+      "mode": 365,
+      "type": "file",
+      "size": 246,
+      "sha256": "0a52cb3a89b1b93982143ba9bfc9f426249e4a6dfc7090887798f91e39635219"
+    },
+    {
+      "path": "etc/init.d/rcK",
+      "mode": 365,
+      "type": "file",
+      "size": 719,
+      "sha256": "1970b0bb740fb4d244af646e2567fb6f16aaea2c9cbf2987403605058729e08b"
+    },
+    {
+      "path": "etc/inittab",
+      "mode": 292,
+      "type": "file",
+      "size": 679,
+      "sha256": "44c96d00788087c4e852552c19a557abe6642b4fcdfc4ef543a53dc1ad32a3ec"
+    },
+    {
+      "path": "etc/inputrc",
+      "mode": 292,
+      "type": "file",
+      "size": 421,
+      "sha256": "01946fd5134804a8f5ba087fb4fe9dbf17f450213e8a47b9973eec167a588fd2"
+    },
+    {
+      "path": "etc/issue",
+      "mode": 292,
+      "type": "file",
+      "size": 29,
+      "sha256": "c99e814fd5e8a7a6753ab2a693bc2451f225d64723f8e513b11dddc158ebe19a"
+    },
+    {
+      "path": "etc/issue.net",
+      "mode": 292,
+      "type": "file",
+      "size": 38,
+      "sha256": "b2efa8dd090865fb16c2a2246992cdc1514fb6afa1589627f80cf72fef62e7c5"
+    },
+    {
+      "path": "etc/motd",
+      "mode": 292,
+      "type": "file",
+      "size": 29,
+      "sha256": "c99e814fd5e8a7a6753ab2a693bc2451f225d64723f8e513b11dddc158ebe19a"
+    },
+    {
+      "path": "etc/mtab",
+      "mode": 365,
+      "type": "file",
+      "size": 193,
+      "sha256": "2b4f42d7e66f82fe677f6b514512f877cee048147a8ccdd87a33848d882c2206"
+    },
+    {
+      "path": "etc/nsswitch.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 452,
+      "sha256": "5c24de7911e2eab827332ff98c40aa79f951b951c3106940ac049bdee7d083cc"
+    },
+    {
+      "path": "etc/passwd",
+      "mode": 292,
+      "type": "file",
+      "size": 868,
+      "sha256": "a44fe8e73007ba8dba381d054e99bda955bb1a7d39ed5403187a40be906296b8"
+    },
+    {
+      "path": "etc/pointercal",
+      "mode": 292,
+      "type": "file",
+      "size": 14,
+      "sha256": "2e7213cec5f47e7e9aade9d17b6d565d64395a39a1117f6dac56ce079478a84b"
+    },
+    {
+      "path": "etc/profile",
+      "mode": 292,
+      "type": "file",
+      "size": 375,
+      "sha256": "3b4fd21ee8a7ad3a7de4894e7515759cfaf54cf0448810e900a1bc11a7fe5275"
+    },
+    {
+      "path": "etc/protocols",
+      "mode": 292,
+      "type": "file",
+      "size": 5834,
+      "sha256": "aa00b2cb0b6f77291c6e244774438f367e1407cb96e6c76189451243c26d9ca1"
+    },
+    {
+      "path": "etc/rc.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc2.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc3.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc4.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc5.d",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/resolv.conf",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/var/run/resolv.conf"
+    },
+    {
+      "path": "etc/rpc",
+      "mode": 292,
+      "type": "file",
+      "size": 1595,
+      "sha256": "ebc43541c32b314942f92b105755b192ac8451e0e50e9a5c196e3b02c4a789a7"
+    },
+    {
+      "path": "etc/runanacapa",
+      "mode": 365,
+      "type": "file",
+      "size": 568,
+      "sha256": "3c701e472a5ea6ff664deb092dbecbb1642e12799f8f92095955dc0e3cc999fb"
+    },
+    {
+      "path": "etc/runchrony",
+      "mode": 365,
+      "type": "file",
+      "size": 2851,
+      "sha256": "dca6c5babccbc7a1166106912ea0dc736aab27c10a2a3effb12457e55934194f"
+    },
+    {
+      "path": "etc/rundaemon.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 847,
+      "sha256": "6f76a74572f19e09223d9876b30b0d9bef2dfaf4036529bf7aa6a5a55f4a7c38"
+    },
+    {
+      "path": "etc/rundiagprocessd",
+      "mode": 365,
+      "type": "file",
+      "size": 160,
+      "sha256": "391f9002a197c91e482230680636757415fdfd2b26e8fc90ba8e9983af9003ff"
+    },
+    {
+      "path": "etc/runledmgrd",
+      "mode": 365,
+      "type": "file",
+      "size": 995,
+      "sha256": "5dd6c8b9b8e4ea32fecd923aa6b281ef4037199b1e477c6f9de912f79ab3a2b2"
+    },
+    {
+      "path": "etc/runmdns",
+      "mode": 365,
+      "type": "file",
+      "size": 94,
+      "sha256": "3172ecf3a73d634a681441d73e371ac41e47e62e5eccc4989f5fb0e8541350b2"
+    },
+    {
+      "path": "etc/runnetstartd",
+      "mode": 365,
+      "type": "file",
+      "size": 134,
+      "sha256": "79a483bfb764152467a90515b8c597b7381e64a0ddee82823840f1b7705bf3a8"
+    },
+    {
+      "path": "etc/runsddp",
+      "mode": 365,
+      "type": "file",
+      "size": 651,
+      "sha256": "60984a4598d37a6ac93bc3be3a29708537bbd8c4118ca884452ed2d99bcc66aa"
+    },
+    {
+      "path": "etc/scripts",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "etc/scripts/mount_jffs.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 389,
+      "sha256": "af1c5c97306ffd2b06366562b5ea601814310739d671c2f938a4958cabee4d69"
+    },
+    {
+      "path": "etc/scripts/run_sshd.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 499,
+      "sha256": "822523d641bd6ee7ea0b271e4dadb05ebe598249f86d0717f03cc6394ba97732"
+    },
+    {
+      "path": "etc/sddpd.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 644,
+      "sha256": "7f5c87bfb326d7fa91e28cf30f5696c2e4c6b789d71f9695d7486ca55029d204"
+    },
+    {
+      "path": "etc/services",
+      "mode": 292,
+      "type": "file",
+      "size": 15319,
+      "sha256": "9bc2ae7e79ef825a57eecb90681b0d9e2415fe8fc1be0cc5a2ecefebfb3ac611"
+    },
+    {
+      "path": "etc/shadow",
+      "mode": 292,
+      "type": "file",
+      "size": 565,
+      "sha256": "afc48fabd32551dc1a00d4e52cb378b01887cac850724a4e78fd7d7ed870f26e"
+    },
+    {
+      "path": "etc/shells",
+      "mode": 292,
+      "type": "file",
+      "size": 53,
+      "sha256": "82f4ce9af632497f688c4e48917e6f8aa00ad959677a4980731ef1dfd983b58d"
+    },
+    {
+      "path": "etc/soc_arch",
+      "mode": 420,
+      "type": "file",
+      "size": 10,
+      "sha256": "e014957c02d19fce55760cb98e40b2613f849ac985abdeef6a7a267bf55e1065"
+    },
+    {
+      "path": "etc/syslog.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 1670,
+      "sha256": "0141a530669a95b7c8eb63b29e74b136660fa8d989d8b394acaa78e71483fcda"
+    },
+    {
+      "path": "home",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "jffs",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "lib",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "lib/ld.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 202084,
+      "sha256": "925663a234c829c93f0a154a888d475cd5f529d4e8bb78093052db73a0286484"
+    },
+    {
+      "path": "lib/libanl.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 67216,
+      "sha256": "bf44349ff423df018391a8c8c33717e3b43bcb82f3e710f7a69ced43276ff374"
+    },
+    {
+      "path": "lib/libatomic.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 66888,
+      "sha256": "936d09871114ec00675d9dca65d9ee65602f8cfff561a9d1600f2f0951765d8e"
+    },
+    {
+      "path": "lib/libavcodec.so.59",
+      "mode": 493,
+      "type": "file",
+      "size": 526112,
+      "sha256": "346252d30510a20970c39818a3d3efdd3998bd3c56cb80517eef2a290ca7665d"
+    },
+    {
+      "path": "lib/libavformat.so.59",
+      "mode": 493,
+      "type": "file",
+      "size": 329396,
+      "sha256": "9d8abcd8c9b7903b39979dc1a90344e8bcca3202ee5f21d87d5d0a34afa57046"
+    },
+    {
+      "path": "lib/libavutil.so.57",
+      "mode": 493,
+      "type": "file",
+      "size": 788656,
+      "sha256": "2cb4ea9e363fecf6597a42458b1cc9a92a9ada6702a5cf9e95e643c71261a791"
+    },
+    {
+      "path": "lib/libc.so.6",
+      "mode": 365,
+      "type": "file",
+      "size": 1593260,
+      "sha256": "68480e345dae7c02b16cce5797c23f7205baf08e0b491e11c34eccaae4121c74"
+    },
+    {
+      "path": "lib/libcrypt.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 67152,
+      "sha256": "6045bf5a663a0b035f0dde6fb858ecb01b53215ee81ad27411d1d799db5bf39d"
+    },
+    {
+      "path": "lib/libdcadec.so.0",
+      "mode": 420,
+      "type": "file",
+      "size": 394888,
+      "sha256": "d28bba3259e758a837f4955806489968b8bb33ed7e5490ae242a863f2148a991"
+    },
+    {
+      "path": "lib/libdl.so.2",
+      "mode": 365,
+      "type": "file",
+      "size": 67268,
+      "sha256": "4af444ffc67a8ce5e9a7c69b6890a9a28de563c97ccd083020be98213d332faf"
+    },
+    {
+      "path": "lib/libdns_sd.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 66968,
+      "sha256": "ecf16233b0374ad77d32760821ae4314886a34686d950207866b7b8b444a29d0"
+    },
+    {
+      "path": "lib/libflash.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67016,
+      "sha256": "40886cefe75c75dd2ea94a144adeab97c00698751899fcd756d5572239c8a072"
+    },
+    {
+      "path": "lib/libgcc_s.so.1",
+      "mode": 292,
+      "type": "file",
+      "size": 132564,
+      "sha256": "3210e9d6b8605e995224f9f65cd1eb2a09edd67d2b690198059184d785450ae2"
+    },
+    {
+      "path": "lib/libhwmessagelib.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67068,
+      "sha256": "f9a8118a37378555d5e0015135c53db84119f4cda90b4ac5eab95c411c58e1c4"
+    },
+    {
+      "path": "lib/libm.so.6",
+      "mode": 365,
+      "type": "file",
+      "size": 1196608,
+      "sha256": "b50c76409e06d9d4d44318a5ef80acebe3bb20e99f28946a31419c51fa782363"
+    },
+    {
+      "path": "lib/libmbedcrypto.so.16",
+      "mode": 493,
+      "type": "file",
+      "size": 329412,
+      "sha256": "4e196ea44c5832f82f33023a242742e4f2a77973d5fa155e469cdfa981a17667"
+    },
+    {
+      "path": "lib/libmbedtls.so.21",
+      "mode": 493,
+      "type": "file",
+      "size": 132560,
+      "sha256": "00151acf366a3ccf0d341f50b487081fc6ff11bf8479fcb14ffdec73ca89f588"
+    },
+    {
+      "path": "lib/libmbedx509.so.7",
+      "mode": 493,
+      "type": "file",
+      "size": 66976,
+      "sha256": "8fef4e766194b2c0a0409a6f7e024363293b8f01c548da5e3c58238245c1bd54"
+    },
+    {
+      "path": "lib/libmpg123.so.0",
+      "mode": 493,
+      "type": "file",
+      "size": 198636,
+      "sha256": "713c3d8ee35d68ebd90bc19de873235e4315bcbb11157662ac5bdd0d5dbecae1"
+    },
+    {
+      "path": "lib/libnl-3.so.200",
+      "mode": 493,
+      "type": "file",
+      "size": 132980,
+      "sha256": "ff871fbf0d4c81e2d2ca6400cbe0d86b05fa86fc1c9fd1716fcbf3cf2cfaa752"
+    },
+    {
+      "path": "lib/libnl-genl-3.so.200",
+      "mode": 493,
+      "type": "file",
+      "size": 67584,
+      "sha256": "0b66ac00325046eea9636377359d6a48c1ebbd12ac736418b7abcb782461705d"
+    },
+    {
+      "path": "lib/libnss_dns.so.2",
+      "mode": 365,
+      "type": "file",
+      "size": 67060,
+      "sha256": "dbd9e2ce0f5805dfabdcbcf41068d44b2c23e0ec9160db8e9123b02a434f288a"
+    },
+    {
+      "path": "lib/libnss_files.so.2",
+      "mode": 365,
+      "type": "file",
+      "size": 67228,
+      "sha256": "0dacf4f54ea6e3bf02dd6839aa0e15686220c9860e78e69d34d33b112c4a3a4b"
+    },
+    {
+      "path": "lib/libpcap.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 266780,
+      "sha256": "eabcbd41d96af7ca269f340696ca549b3c66c79d52a08a6dc0bf5c3d8e4853df"
+    },
+    {
+      "path": "lib/libprotobuf-nanopb.so.0",
+      "mode": 493,
+      "type": "file",
+      "size": 66976,
+      "sha256": "b7eeb50df47147b0cd64c3bc59b37fe133e7bcb768c949fd53eb8813b6346d9e"
+    },
+    {
+      "path": "lib/libpthread.so.0",
+      "mode": 365,
+      "type": "file",
+      "size": 134284,
+      "sha256": "a7e61be7e6fc906d4a8ae1b241c02fedca47c5aac4d3161b4e3687e43d06fec1"
+    },
+    {
+      "path": "lib/libresolv.so.2",
+      "mode": 365,
+      "type": "file",
+      "size": 133324,
+      "sha256": "36bd8c24be52922455395f6399ac6d02cb5d7b03ba1d1d797be7c33d9a7117a3"
+    },
+    {
+      "path": "lib/libsbc.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 132612,
+      "sha256": "ae6b7d16221c9d9d3663585f65c64e861ed109f63ee7a53f3de442a0dad434b8"
+    },
+    {
+      "path": "lib/libsmb2.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 198556,
+      "sha256": "fb966782d31e49efe14695680f3a220ed67388a77b2b0e47c02ed339bb90f63c"
+    },
+    {
+      "path": "lib/libsonos-certval.so.2",
+      "mode": 493,
+      "type": "file",
+      "size": 1706972,
+      "sha256": "1b29d38eef60c4f21901dfa41352c83088db5dff8e0694803fc9584b22c3e075"
+    },
+    {
+      "path": "lib/libsonos-mdp.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 66888,
+      "sha256": "37ff3623df95cd449ada070bbf521647187b27e717132ac6eec004ed1a8c76b1"
+    },
+    {
+      "path": "lib/libsonos-root-cert-bundle.so.2",
+      "mode": 493,
+      "type": "file",
+      "size": 66984,
+      "sha256": "b1b1316f5bcd8f2505142c3cb1e1d5dbadb43eb4adc7700ce8c7e3da59239116"
+    },
+    {
+      "path": "lib/libsonos-time-c.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67116,
+      "sha256": "a0b515f5cbe667094e58644690bf71615d0a30bf5fe4c9c3c2017b3c85135591"
+    },
+    {
+      "path": "lib/libsonoscrypto.so.3",
+      "mode": 493,
+      "type": "file",
+      "size": 67316,
+      "sha256": "940f0ea9430116686621b9826f4b08d3bcaa4805c8f32aa6e5567866fb22aa56"
+    },
+    {
+      "path": "lib/libsonoseventreporter.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 66984,
+      "sha256": "ebbb0659bdc52abb9d07cf9a4e6c95608ed607fd959dd2c93a0c27f8729fcf42"
+    },
+    {
+      "path": "lib/libsonosminiutils.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67500,
+      "sha256": "20f125478123dc06c842e73d08d9dc7fad9eaabdb3f6dc0ae187bd1bc7f881ea"
+    },
+    {
+      "path": "lib/libsonossbcpacket.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 66976,
+      "sha256": "d94e35e53c66e044dc680e6cd2c3d8d1e7a8e4c741909e3220548b69fef70e62"
+    },
+    {
+      "path": "lib/libsonossyslog.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67056,
+      "sha256": "e3c9cd8ab4a4768315f09f827b4345437b623c98381488da9e76a6e9cda05033"
+    },
+    {
+      "path": "lib/libsonosutils.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67388,
+      "sha256": "f960a82101fcc173de01514edf8def8131a7f35001d743cf05e5760589e9452c"
+    },
+    {
+      "path": "lib/libsqlite3.so.0",
+      "mode": 493,
+      "type": "file",
+      "size": 926600,
+      "sha256": "70bc8bde8a11ecc9ae9c215e6868b024e6a288b86b54b5a5a4a4cc1497f449b4"
+    },
+    {
+      "path": "lib/libsyslib_hal.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 66972,
+      "sha256": "d853caf42ea741a5f562ebe3c2442620710fdbc278b245afa78d73f2fbd01b49"
+    },
+    {
+      "path": "lib/libthread_db.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 67680,
+      "sha256": "e8be7d7c581e0d939c54812d6ddaf1be4c146303034b97b055b03209794f4840"
+    },
+    {
+      "path": "lib/libtomlc99.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67052,
+      "sha256": "3e0297b3e05f6557acd0a38d69a69d6415f781bdfc6af70f8d47c1ca15b54cd2"
+    },
+    {
+      "path": "lib/libutil.so.1",
+      "mode": 365,
+      "type": "file",
+      "size": 67004,
+      "sha256": "9c933e83204eb337114efeed4e6beefa6869e9e9f7c19282492e3f6974e53fbf"
+    },
+    {
+      "path": "lib/libuuid.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 67184,
+      "sha256": "837e82886a09cd8a9058634a85104af3f4947ba7b6603f1ff28a1a0677f1072d"
+    },
+    {
+      "path": "lib/libwifi.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 66964,
+      "sha256": "5df4d577c786c9e11e689962485daed8b727ffc2d1a143a031ce0187db213bf1"
+    },
+    {
+      "path": "lib/libz.so.1",
+      "mode": 493,
+      "type": "file",
+      "size": 132740,
+      "sha256": "b93e688d3d87da877da3018fc56dcb5c4eefccd57d9a7ad66038275df2e0cd5e"
+    },
+    {
+      "path": "mnt",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "modules",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "modules/audiodev.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 146328,
+      "sha256": "1aa2bc4529830eb2ce978ad4e23be6e1c2205271558740721236a25f2f185c21"
+    },
+    {
+      "path": "modules/chk.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 4736,
+      "sha256": "84b0e5db88ef0e403b77bc51a09b3670f0e471632ccfc986cbec1bde2339c0a8"
+    },
+    {
+      "path": "modules/hwevent_queue.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 17596,
+      "sha256": "c5d8ee1d379b5d3adfb2360e80089cb133164a8aaafdb69e6d32dfc4163a7edb"
+    },
+    {
+      "path": "modules/ir_rcvr.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 7948,
+      "sha256": "417089628e11be7e6ae34fa88761d23554a5153e1be5fc4e2d9f6a500113b056"
+    },
+    {
+      "path": "modules/sonos_device.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 3640,
+      "sha256": "86c5cb5bc905bb47c0d2ab343eb3a67696911600a96d8021747d013de7771c1d"
+    },
+    {
+      "path": "opt",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/bin",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/bin/anacapactl",
+      "mode": 365,
+      "type": "file",
+      "size": 2015,
+      "sha256": "546ecdef28593ecdd6dfdbe81cf96e62b0bd41773cf9984dd469b287a3a9d0c5"
+    },
+    {
+      "path": "opt/bin/anacapad",
+      "mode": 493,
+      "type": "file",
+      "size": 17262868,
+      "sha256": "cc7528dd345d3ad9a2c9507b2a03a63edbb76138cae1108f0e75f5d5b327b3c5"
+    },
+    {
+      "path": "opt/bin/sonosledmgrd",
+      "mode": 493,
+      "type": "file",
+      "size": 1248340,
+      "sha256": "503cb679e93b2730d7ac3ca157ef65d3cdb657f6a8c6a35f3a3bb854c300fbe4"
+    },
+    {
+      "path": "opt/buzzers",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/buzzers/0.mp3",
+      "mode": 292,
+      "type": "file",
+      "size": 87989,
+      "sha256": "9448835023747a67c6a060bc168b32fa11c9bb4018727a27d10e9961da3dc250"
+    },
+    {
+      "path": "opt/buzzers/1.mp3",
+      "mode": 292,
+      "type": "file",
+      "size": 41288,
+      "sha256": "e9ccea41f9c98e27b355fe68034dbf77274f3df004cfef18f9ead1817c33a28d"
+    },
+    {
+      "path": "opt/buzzers/100.mp3",
+      "mode": 292,
+      "type": "file",
+      "size": 42061,
+      "sha256": "35669519666e9a07838c621dfaf809fe2086d53790d02ddcfa5ed19622e41733"
+    },
+    {
+      "path": "opt/buzzers/101.mp3",
+      "mode": 292,
+      "type": "file",
+      "size": 5054,
+      "sha256": "6e68b9122065d617ec6c081365345d04091a48b646699e8f478798923c9f9a45"
+    },
+    {
+      "path": "opt/buzzers/speaker-detect.mp3",
+      "mode": 292,
+      "type": "file",
+      "size": 254725,
+      "sha256": "1611d71bab8d9a7a7d72ae6afc662c6637a9d4eaca9272166de6e54e9c1ff934"
+    },
+    {
+      "path": "opt/conf",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/conf/anacapa.conf",
+      "mode": 292,
+      "type": "file",
+      "size": 2794,
+      "sha256": "1522fd684c95e47626f8f5c33fa10ef043f35d736954264edcce94ee1d1dbc8b"
+    },
+    {
+      "path": "opt/conf/anacapa_logger.toml",
+      "mode": 292,
+      "type": "file",
+      "size": 5074,
+      "sha256": "e16a8f0743a54a27e93bb3dd913b1af01c72de851d0a57d8a973d42986f8165b"
+    },
+    {
+      "path": "opt/conf/mime.types",
+      "mode": 292,
+      "type": "file",
+      "size": 140,
+      "sha256": "c9f310db9fc13a8f9a59a717e3c37f337aac5620d10480046d2259b9da5b3742"
+    },
+    {
+      "path": "opt/conf/sonosledmgrd_logger.toml",
+      "mode": 292,
+      "type": "file",
+      "size": 1042,
+      "sha256": "6dc66acb328836dd2139ffa4c12003fb493954614c4b03c8983eeff2cc81fd1d"
+    },
+    {
+      "path": "opt/conf/v1_auth_offline_policy_guest.json",
+      "mode": 292,
+      "type": "file",
+      "size": 2090,
+      "sha256": "4006046d5b8375a6b174af5ea402152dc42d066a8cd6de55a770401a3c664035"
+    },
+    {
+      "path": "opt/conf/v1_auth_offline_policy_owner.json",
+      "mode": 292,
+      "type": "file",
+      "size": 2516,
+      "sha256": "f898c9b3911350641aa6b197c6da0f663ea73669106bfbfeaf3a4164a48a1561"
+    },
+    {
+      "path": "opt/conf/v1_auth_offline_policy_p2p.json",
+      "mode": 292,
+      "type": "file",
+      "size": 1999,
+      "sha256": "a4dd1533de4cc2e61e1ab3dd9c66cc4e1b2e759b31e25d253ab50969e086041c"
+    },
+    {
+      "path": "opt/conf/zpMetricsConfigV2.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 8015,
+      "sha256": "22632157b4ff286933f1792da55a19e673a1361d9b597e5d0c804041632ba7ab"
+    },
+    {
+      "path": "opt/dsp",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/dsp/S9_array.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 13775,
+      "sha256": "9f918ed4a9ea9d584af2e72d5d9e61083a482fa55bf73b98bd02ac8841758e46"
+    },
+    {
+      "path": "opt/htdocs",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/img",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/img/icon-S9.png",
+      "mode": 292,
+      "type": "file",
+      "size": 1263,
+      "sha256": "c3a409a2ae628cab55fb09e4f83fc0e11e28bd4978d43ae399e9dbaba7aa7d15"
+    },
+    {
+      "path": "opt/htdocs/perfcounters.js",
+      "mode": 292,
+      "type": "file",
+      "size": 9230,
+      "sha256": "ac4fb0d72fa0a4dfffcd4921e0461cb14018ab929841d18028bc0c89b52efaff"
+    },
+    {
+      "path": "opt/htdocs/pub",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/tmp/pub"
+    },
+    {
+      "path": "opt/htdocs/review.js",
+      "mode": 292,
+      "type": "file",
+      "size": 15822,
+      "sha256": "58300bba90ff52b053921a08e494df9d839bb747a08fbe701ecfbbf99ce6b710"
+    },
+    {
+      "path": "opt/htdocs/xml",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/xml/AVTransport1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 52213,
+      "sha256": "a2c3e2a7e8e4996776d3a439e5febe583e96e20b74ff010b3952d20ca948935c"
+    },
+    {
+      "path": "opt/htdocs/xml/AlarmClock1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 14871,
+      "sha256": "548d73b396023dfb1bc1125cf195ff224dda63563f012a6ab43af38e9d1d0387"
+    },
+    {
+      "path": "opt/htdocs/xml/AudioIn1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 4282,
+      "sha256": "86b16d72f97cf9acd2838755c2fa2e1316e64328eb5b0a59618779f7d9bf9b2a"
+    },
+    {
+      "path": "opt/htdocs/xml/ConnectionManager1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 4410,
+      "sha256": "e83cb407f88ee426584e81b72ec0cf6f81c9f7cc93d1fe0c781a76050e999c9f"
+    },
+    {
+      "path": "opt/htdocs/xml/ContentDirectory1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 12412,
+      "sha256": "da7fba3dbe2a6e1b2a5800d405acd9224ccc21b670486ba5b799da2b94d2759d"
+    },
+    {
+      "path": "opt/htdocs/xml/DeviceProperties1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 21692,
+      "sha256": "e28dca20dc7acd059a6793cb9b703b51b079204685772f50788e19c85909d95f"
+    },
+    {
+      "path": "opt/htdocs/xml/GroupManagement1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 4192,
+      "sha256": "5d0aecb87832118364f3f0ebc25034d40d3d6113cddb20fdbd86966b4e187c67"
+    },
+    {
+      "path": "opt/htdocs/xml/GroupRenderingControl1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 3847,
+      "sha256": "b57c4da0060d81daeddbdcce776f6450e86b3a29444c9dd0f30d24b06d011fc1"
+    },
+    {
+      "path": "opt/htdocs/xml/HTControl1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 4096,
+      "sha256": "77f2bbc05da5be3f69c111e18caa6d0e382f9906ed3423f637fefe06ab9b2759"
+    },
+    {
+      "path": "opt/htdocs/xml/MusicServices1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 2437,
+      "sha256": "443c68da88cfaa81fb693ae95d61554d8d4cbf15636a56e88d2fe753e49141c4"
+    },
+    {
+      "path": "opt/htdocs/xml/QPlay1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 1541,
+      "sha256": "f24c1e176d29b120a34d4e45fdf08c624cc412a7456b50a4c1d0bfe04d58d7e3"
+    },
+    {
+      "path": "opt/htdocs/xml/Queue1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 16218,
+      "sha256": "dc3a1fbf9ab423435c47898efe6155e70087aaece34f8b7de386fc9e1e14c897"
+    },
+    {
+      "path": "opt/htdocs/xml/RenderingControl1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 24173,
+      "sha256": "f2f3a113a1b4b1b6fc30466e6b63c7f38e92c24cf87ed396d698ac7d1175c656"
+    },
+    {
+      "path": "opt/htdocs/xml/SystemProperties1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 14284,
+      "sha256": "b28a3a00f1d8cadae1b518a1205366fc9bc19011106f36b30729fb8b637db993"
+    },
+    {
+      "path": "opt/htdocs/xml/VirtualLineIn1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 4665,
+      "sha256": "5cac437abedee9e253984bad999a9094c6b6b03dbb1792995719390dd80d5396"
+    },
+    {
+      "path": "opt/htdocs/xml/ZoneGroupTopology1.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 8661,
+      "sha256": "326ef256aedc954c06984039a6c9940a9e537e27b37c5ed2031728a835fe330f"
+    },
+    {
+      "path": "opt/htdocs/xml/device_description.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 9936,
+      "sha256": "58dabd2bfc174cafa5d524805c681a2c759bc1ee0636d364702df56b1d80633d"
+    },
+    {
+      "path": "opt/htdocs/xml/factory_reset.xsl",
+      "mode": 292,
+      "type": "file",
+      "size": 647,
+      "sha256": "27510614835b3191e769680c2a3bcd4fa618dcf9980cf966146bf54a67ba44d2"
+    },
+    {
+      "path": "opt/htdocs/xml/group_description.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 825,
+      "sha256": "cf5570ddb9e3f7ba505ef790c0f599bda7476390b856f58b7e413a8ee2513cc6"
+    },
+    {
+      "path": "opt/htdocs/xml/review.xsl",
+      "mode": 292,
+      "type": "file",
+      "size": 92259,
+      "sha256": "61d6e6c46d29a2cb2a85d49cef6a01221ce4091422807894d37942300d8f0f82"
+    },
+    {
+      "path": "opt/htdocs_locked",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/configDSP.css",
+      "mode": 292,
+      "type": "file",
+      "size": 5958,
+      "sha256": "e0f5761e73fd0e00e15400ca5a285b0303576457c1f5e35b67d9ded25cb51780"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/configDSP.htm",
+      "mode": 292,
+      "type": "file",
+      "size": 1699,
+      "sha256": "c0c1ab3d462adeb5847244c9f353d338d1d8345898d5bc2cb9cbdbba8fec5af6"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/configDSP.js",
+      "mode": 292,
+      "type": "file",
+      "size": 96410,
+      "sha256": "f5218ecb1c633c9634d4b25014a10a99f66c2773fa56b9f4ea6ec5d9912f1bb2"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/meters.css",
+      "mode": 292,
+      "type": "file",
+      "size": 240,
+      "sha256": "160125d1a65cb0d7242daef7195264d29e6b32d7929952ce4e9d937c44bd4c20"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/meters.htm",
+      "mode": 292,
+      "type": "file",
+      "size": 587,
+      "sha256": "aad190d5fd301239fe1cd4f014e177f8c5fb13b0d56b7c44a6c56fe0bc2797e0"
+    },
+    {
+      "path": "opt/htdocs_locked/dsp/meters.js",
+      "mode": 292,
+      "type": "file",
+      "size": 12471,
+      "sha256": "1bf1c14a27e27e9b08ae6b3206a6d266ba8a93515540a9c4c525cef4b8bd914b"
+    },
+    {
+      "path": "opt/ir",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/ir/irconfig.txt",
+      "mode": 292,
+      "type": "file",
+      "size": 98,
+      "sha256": "bd06bfd84d8332241b98afc27c38dbc2f375f1e850f291c38541323348811af6"
+    },
+    {
+      "path": "opt/lib",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/localsettings",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/localsettings/global_attrdata.json",
+      "mode": 420,
+      "type": "file",
+      "size": 547,
+      "sha256": "1f6910354c4eb6c2e7d587d824418d76e7634bb237b309b40cabe49358a18086"
+    },
+    {
+      "path": "opt/localsettings/models",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/localsettings/playback_attrdata.json",
+      "mode": 420,
+      "type": "file",
+      "size": 584,
+      "sha256": "62e6d8e70979057c44d86116018034d73c6aac12bcf601a135b26fe7197749d5"
+    },
+    {
+      "path": "opt/localsettings/playerBasic_attrdata.json",
+      "mode": 420,
+      "type": "file",
+      "size": 1591,
+      "sha256": "3d0a4d482df44f5e4e39da4d59e3cad7ed7e528a5adb0b692c879c58c30f29f9"
+    },
+    {
+      "path": "opt/localsettings/playerUI_attrdata.json",
+      "mode": 420,
+      "type": "file",
+      "size": 560,
+      "sha256": "45ed16ae4064c927d1989f70d4486d1a6b7d90a5227e3fada01b7019e3fd067e"
+    },
+    {
+      "path": "opt/localsettings/security_attrdata.json",
+      "mode": 420,
+      "type": "file",
+      "size": 751,
+      "sha256": "a43e141699c153e8979a0f63af9e10a63cf6f98b5c3b8c5f5654f0799ec177c4"
+    },
+    {
+      "path": "opt/localsettings/settings_targettypes.json",
+      "mode": 292,
+      "type": "file",
+      "size": 128,
+      "sha256": "58ddeee7de9389b2cd3dfc53d04746bf142b4f190b6b6b6010071ef499b6214d"
+    },
+    {
+      "path": "opt/log",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/ramdisk/optlog"
+    },
+    {
+      "path": "opt/musicservices",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/musicservices/musicservices.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 293,
+      "sha256": "d3b7e14ddaf84f03c59b21ae228efc0dafe44c8d6800a849676ea4c10f361e8b"
+    },
+    {
+      "path": "opt/timezones",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "opt/timezones/timezones.xml",
+      "mode": 292,
+      "type": "file",
+      "size": 7293,
+      "sha256": "2b944103333dae5995405bbf961f2e2efd5e3e7a9afd79594ac799206b27d879"
+    },
+    {
+      "path": "proc",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "ramdisk",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "run",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "sbin",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "sbin/blkid",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/capsh",
+      "mode": 493,
+      "type": "file",
+      "size": 68432,
+      "sha256": "a27165f241b3294cbeea76bcaf475993b63922e760fe97fc625c0051f416c6f5"
+    },
+    {
+      "path": "sbin/chronyd",
+      "mode": 493,
+      "type": "file",
+      "size": 264144,
+      "sha256": "777bb54e2bf2e90a5bd92db87dc879fe318c182ac59a27d6fc0c3a1c13080887"
+    },
+    {
+      "path": "sbin/frcheck",
+      "mode": 493,
+      "type": "file",
+      "size": 67080,
+      "sha256": "4b51830bec3d23d601b75f8a8f16a782fb78f8d924a724a2f024ebf2750c9329"
+    },
+    {
+      "path": "sbin/getty",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/halt",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/hwclock",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/ifconfig",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/ifdown",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/ifup",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/init",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/insmod",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/lsmod",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/makedevs",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/mdev",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/mdnsd",
+      "mode": 493,
+      "type": "file",
+      "size": 526152,
+      "sha256": "de8a6ec9bd435ae02df60056a01a083c5ecb80eb3d04f208d1f91c82003ae10d"
+    },
+    {
+      "path": "sbin/modinfo",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/poweroff",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/reboot",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/rmmod",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/route",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/sddpd",
+      "mode": 493,
+      "type": "file",
+      "size": 67464,
+      "sha256": "b55a8260f3102f2cffd73e60c109ec57517c352b03633241bdd8234dcba917da"
+    },
+    {
+      "path": "sbin/sysctl",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sbin/udhcpc",
+      "mode": 493,
+      "type": "file",
+      "size": 67852,
+      "sha256": "5ab1b3b29d3752e0acb4905ca903faad591211070604e3c6f7bde07ce4a642ec"
+    },
+    {
+      "path": "sbin/watchdog",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../bin/busybox"
+    },
+    {
+      "path": "sys",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "tmp",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/ramdisk/tmp"
+    },
+    {
+      "path": "usr",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "usr/bin",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "usr/bin/[",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/[[",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/awk",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/basename",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/chvt",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/clear",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/cmp",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/cut",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/dirname",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/dropbear",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/dropbearmulti"
+    },
+    {
+      "path": "usr/bin/dropbearkey",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/dropbearmulti"
+    },
+    {
+      "path": "usr/bin/du",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/env",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/expand",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/expr",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/find",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/fold",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/free",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/ftpget",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/ftpput",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/head",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/hexdump",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/killall",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/lsof",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/lspci",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/md5sum",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/mkfifo",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/nc",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/nslookup",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/od",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/patch",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/pmap",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/printf",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/reset",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/rx",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/scp",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/dropbearmulti"
+    },
+    {
+      "path": "usr/bin/seq",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/sha1sum",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/sha256sum",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/sha512sum",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/sort",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/strings",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/tail",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/taskset",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/tee",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/test",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/time",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/top",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/traceroute",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/traceroute6",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/tty",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/uniq",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/uptime",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/uudecode",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/uuencode",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/wc",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/wget",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/which",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/xargs",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/bin/yes",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/lib",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "usr/lib/libcap.so.2",
+      "mode": 493,
+      "type": "file",
+      "size": 67196,
+      "sha256": "168eb885f626c33d706b69f81f650a67ce4dae925caaacc51eade9c2b9bb9503"
+    },
+    {
+      "path": "usr/libexec",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "usr/sbin",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "usr/sbin/arping",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/sbin/brctl",
+      "mode": 493,
+      "type": "file",
+      "size": 67624,
+      "sha256": "49261a12a905c59887284dc285cb0f6ecf846249104be84120bbe0ee49f3b53b"
+    },
+    {
+      "path": "usr/sbin/fbset",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/sbin/keyval",
+      "mode": 493,
+      "type": "file",
+      "size": 67128,
+      "sha256": "3bd52f3d28928b29ca3da547485bf4e5b71744b3db22c57a0930a4a73b99c859"
+    },
+    {
+      "path": "usr/sbin/netconfig.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 10932,
+      "sha256": "13f8bb6219d077e3eac73df1005b42547306f7d506ce62752a5db9cbcd2aea83"
+    },
+    {
+      "path": "usr/sbin/rtcwake",
+      "mode": 493,
+      "type": "symlink",
+      "target": "../../bin/busybox"
+    },
+    {
+      "path": "usr/sbin/secure_console.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 236,
+      "sha256": "fa1827c45a7048097e57a0660942022f10ef4420b0e53d50fb35e68078f4f30b"
+    },
+    {
+      "path": "usr/sbin/secure_console_login.sh",
+      "mode": 365,
+      "type": "file",
+      "size": 1048,
+      "sha256": "69e775c702e96d1688c33ab498e286f88bbf682d503eef70a1223ed8b1ce59de"
+    },
+    {
+      "path": "usr/sbin/setmac",
+      "mode": 493,
+      "type": "file",
+      "size": 67248,
+      "sha256": "fb3f727de446ffe5100c85b314eec2f19f037b15476aa189201e4ea9b7ea32c2"
+    },
+    {
+      "path": "usr/share",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "var",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/ramdisk/var"
+    },
+    {
+      "path": "wifi",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/G",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/N",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/N/adf.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 24776,
+      "sha256": "d2f4613c02dc04f42da7de20eef19b24c911ff529c5dd1ea921f27bc09aefbd9"
+    },
+    {
+      "path": "wifi/N/asf.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 13124,
+      "sha256": "3847bd152a0be05f38a36a0706534b51840939dab4afd407e9ad973f87a2e021"
+    },
+    {
+      "path": "wifi/N/ath_driver.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 362328,
+      "sha256": "24d88a7812b097173436a7cb97680cf13c1d2723d79825a29aef4462189fef11"
+    },
+    {
+      "path": "wifi/N/ath_hal.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 349744,
+      "sha256": "3908ce43cc34a358f9b8e394abd8e74910be0212f1c21a76b804519ae7b6f8d0"
+    },
+    {
+      "path": "wifi/N/athconfig",
+      "mode": 493,
+      "type": "symlink",
+      "target": "/wifi/athconfig"
+    },
+    {
+      "path": "wifi/N/dfs.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 58024,
+      "sha256": "c6d6929ccc22b349c79565bda00317db8396adf1fc9c6834313dc0fab3bc95cd"
+    },
+    {
+      "path": "wifi/N/radartool",
+      "mode": 493,
+      "type": "file",
+      "size": 67084,
+      "sha256": "1c986c71385e17f2d4d41f3f2931532d93b2ae2266c514b0bc9f24a9fe3e9910"
+    },
+    {
+      "path": "wifi/athconfig",
+      "mode": 493,
+      "type": "file",
+      "size": 67208,
+      "sha256": "ece73ed231f5ef64b7b53a1b15625cb2abaed06a5e9aa77d2861b1d25fd850ab"
+    },
+    {
+      "path": "wifi/bridge.ko",
+      "mode": 292,
+      "type": "file",
+      "size": 78056,
+      "sha256": "ec3fa8625bcaf47c88687d6124c2eeb3d568eb4c755ce11adba2907c153df328"
+    },
+    {
+      "path": "wifi/netstartd",
+      "mode": 493,
+      "type": "file",
+      "size": 264076,
+      "sha256": "0487bd8ba80510d31061e33dbaf2b02df2d5264628f79a1d4369b6856efa2adf"
+    },
+    {
+      "path": "wifi/sta-assoc",
+      "mode": 365,
+      "type": "file",
+      "size": 1169,
+      "sha256": "a376a1f0774a09b3a642ce4626ccd335d81a52d9a527a21cb9cfd3d0c2c3267e"
+    },
+    {
+      "path": "wifi/wacd",
+      "mode": 493,
+      "type": "file",
+      "size": 67128,
+      "sha256": "c2c4d933bfe99694a5f3da280ff4c36e9d5406b9ec8ac994c06c07a988259ac1"
+    },
+    {
+      "path": "wifi/wpa_supplicant",
+      "mode": 493,
+      "type": "file",
+      "size": 329684,
+      "sha256": "4b13a1786431deaf2b261ef652ce0c2f0dd95f29fabeb33bc7396feeb2f73aa4"
+    },
+    {
+      "path": "wifi/wpaconfig",
+      "mode": 365,
+      "type": "file",
+      "size": 3641,
+      "sha256": "dfe279208aea12a2508d50ebb4fcc2a0325ca50d05e2abb9cd006838beb3164c"
+    }
+  ]
+}

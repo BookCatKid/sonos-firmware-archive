@@ -1,0 +1,71 @@
+"""Catalog validation and filesystem inventory helpers."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import stat
+from pathlib import Path
+
+REQUIRED_PACKAGE_FIELDS = {
+    "id",
+    "version",
+    "package_model",
+    "artifact_status",
+    "raw_status",
+}
+
+
+def load_json(path: str | Path):
+    with Path(path).open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def validate_catalog(root: str | Path) -> list[str]:
+    root = Path(root)
+    catalog = load_json(root / "data/catalog.json")
+    errors: list[str] = []
+    ids: set[str] = set()
+    for index, package in enumerate(catalog.get("packages", [])):
+        missing = REQUIRED_PACKAGE_FIELDS - package.keys()
+        if missing:
+            errors.append(f"packages[{index}] missing: {', '.join(sorted(missing))}")
+        package_id = package.get("id")
+        if package_id in ids:
+            errors.append(f"duplicate package id: {package_id}")
+        ids.add(package_id)
+        sha = package.get("sha256")
+        if sha is not None and (len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha)):
+            errors.append(f"{package_id}: invalid sha256")
+        if package.get("artifact_status") == "preserved" and not package.get("release_asset"):
+            errors.append(f"{package_id}: preserved package has no release_asset")
+    return errors
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def filesystem_manifest(root: str | Path) -> dict:
+    root = Path(root)
+    entries = []
+    for path in sorted(root.rglob("*"), key=lambda item: item.as_posix()):
+        relative = path.relative_to(root).as_posix()
+        mode = path.lstat().st_mode
+        entry = {"path": relative, "mode": stat.S_IMODE(mode)}
+        if path.is_symlink():
+            entry.update(type="symlink", target=os.readlink(path))
+        elif path.is_dir():
+            entry.update(type="directory")
+        elif path.is_file():
+            entry.update(type="file", size=path.stat().st_size, sha256=_sha256(path))
+        else:
+            entry.update(type="special")
+        entries.append(entry)
+    return {"root": root.name, "entries": entries}
+

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sonos Firmware Archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">PRIVATE RESEARCH CATALOG</p>
+        <h1>Sonos firmware archive</h1>
+        <p class="lede">Exact artifacts, hashes, container metadata, and honest gaps.</p>
+      </div>
+      <div id="stats" class="stats"></div>
+    </header>
+    <section class="controls">
+      <input id="search" type="search" placeholder="Filter product, version, model, or status…" autofocus>
+      <select id="status"><option value="">All artifact states</option></select>
+    </section>
+    <section class="table-wrap">
+      <table>
+        <thead><tr><th>Product</th><th>Version</th><th>Image</th><th>Package</th><th>Raw</th><th>SHA-256</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p id="empty" hidden>No matching packages.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
+
