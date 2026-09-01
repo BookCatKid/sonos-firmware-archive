@@ -10,6 +10,16 @@ body as a mutable-campaign observation, not as evidence for a `96.0-79160`
 package path. This demonstrates why every manifest body needs an immediate
 content hash rather than provenance based on URL alone.
 
+The same history also recovered two more live official manifest URLs. The
+`57.22-68080-v11.15.6-NUPz7mPXln-SP-8` URL still serves a signed S1 manifest
+with system version `57.22-68080` and default version `57.22-63071`. The retired
+`2026-Sonos-14-WyD18XznPL-GA-1` campaign URL currently serves a signed S2
+manifest with system/default version `96.0-78270` and revision
+`e8411407-9584-4831-a637-2fde268c67a4`. Both exact response bodies and their
+expanded discovery receipts are cataloged. The `96.0-78270` campaign is useful
+historical coverage but is not evidence for the distinct Move `96.0-79160`
+build.
+
 ## Bottom line
 
 The largest defensible archive will need to combine five veins:
