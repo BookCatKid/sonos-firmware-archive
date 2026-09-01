@@ -11,13 +11,13 @@ substitute for an exact missing version.
 
 ## Archive snapshot
 
-As of 2026-08-31, the private archive contains:
+As of 2026-09-01, the private archive contains:
 
-- **308 preserved artifacts** across **38 exact version labels**;
-- **275 Sonos UPD packages** with section-level manifests;
-- **11 preserved update manifests** and **18 recovered/raw image components**;
-- **11.34 GiB** of unique cataloged package/installer/DFU bytes; and
-- **46 explicit gaps**: 45 manifest candidates no longer on the CDN, plus the
+- **337 preserved artifacts** across **43 exact version labels**;
+- **304 Sonos UPD packages** with section-level manifests;
+- **14 preserved update manifests** and **18 recovered/raw image components**;
+- **12.81 GiB** of unique cataloged package/installer/DFU bytes; and
+- **55 explicit gaps**: 54 manifest candidates no longer on the CDN, plus the
   device-observed but still-unrecovered Move `96.0-79160` package.
 
 The GitHub Releases currently contain 344 assets (11.57 GiB including seed
@@ -40,6 +40,11 @@ GitHub's server-reported byte size and SHA-256 digest.
 
 The preserved Move `96.1-79270` OTA is cataloged as a reference artifact only.
 It is explicitly not considered completion of the `96.0-79160` target.
+
+The retired `2026-Sonos-16-oTC1hrxrvi-GA-1` campaign URL is also preserved as
+evidence, but Sonos replaced its body in place with a `96.1-79270` manifest.
+It is therefore labeled as a mutated campaign snapshot and is not represented
+as the missing `96.0-79160` manifest.
 
 ## Repository layout
 

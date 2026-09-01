@@ -2,6 +2,14 @@
 
 Research date: 2026-08-31. This is an evidence map and collection plan, not a claim of completeness. It deliberately contains no device identifiers, household identifiers, private keys, or firmware binaries.
 
+Update 2026-09-01: historical local task logs recovered the retired official
+campaign identifier `2026-Sonos-16-oTC1hrxrvi-GA-1`. The URL remains live, but
+its response body was replaced in place with a signed `96.1-79270` manifest
+(revision `22ed0620-ee2c-4b83-811e-9d54cf6840db`). The archive records that
+body as a mutable-campaign observation, not as evidence for a `96.0-79160`
+package path. This demonstrates why every manifest body needs an immediate
+content hash rather than provenance based on URL alone.
+
 ## Bottom line
 
 The largest defensible archive will need to combine five veins:

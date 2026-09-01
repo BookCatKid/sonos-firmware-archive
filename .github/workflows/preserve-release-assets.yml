@@ -1,0 +1,51 @@
+name: preserve release assets
+
+on:
+  workflow_dispatch:
+    inputs:
+      receipt:
+        description: Checked-in discovery receipt to preserve
+        required: true
+        default: data/discovery/2025-Sonos-19-Prima-receipt.json
+
+permissions:
+  contents: write
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download, verify, and upload missing assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECEIPT: ${{ inputs.receipt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          jq -c '.artifacts[] | select(.downloaded == true)' "$RECEIPT" |
+          while IFS= read -r artifact; do
+            filename=$(jq -r '.filename' <<<"$artifact")
+            version=$(jq -r '.version' <<<"$artifact")
+            url=$(jq -r '.resolved_url // .url' <<<"$artifact")
+            expected_bytes=$(jq -r '.bytes' <<<"$artifact")
+            expected_sha256=$(jq -r '.sha256' <<<"$artifact")
+            tag="firmware-$version"
+
+            if gh release view "$tag" --json assets \
+              --jq ".assets[] | select(.name == \"$filename\") | .name" |
+              grep -Fxq "$filename"; then
+              echo "already preserved: $tag/$filename"
+              continue
+            fi
+
+            destination="$RUNNER_TEMP/$filename"
+            curl --fail --location --retry 4 --output "$destination" "$url"
+
+            actual_bytes=$(stat --format='%s' "$destination")
+            actual_sha256=$(sha256sum "$destination" | awk '{print $1}')
+            test "$actual_bytes" = "$expected_bytes"
+            test "$actual_sha256" = "$expected_sha256"
+
+            gh release upload "$tag" "$destination"
+          done
