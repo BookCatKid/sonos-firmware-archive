@@ -1,0 +1,38 @@
+{
+  "source": "34.16-37101-1-7.upd",
+  "components": [
+    {
+      "package_id": "34.16-37101-1-7",
+      "section_index": 2,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "34.16-37101-1-7-preinstall.sh",
+      "bytes": 3483,
+      "sha256": "f5bac27ace91f7908efa7ea3d5aa002098b6f50c5be06993165d8a5c658f1f39",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "34.16-37101-1-7",
+      "section_index": 3,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "34.16-37101-1-7-kernel.uImage",
+      "bytes": 768565,
+      "sha256": "88ec34d9489be3f4605827e55aaf6a638bc73c2a24ddc032dcd99a6ee0c7394e",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "34.16-37101-1-7",
+      "section_index": 4,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "34.16-37101-1-7-rootfs.bin",
+      "bytes": 2269184,
+      "sha256": "db3985f6a8e3a7df98e431608f16cd2c8a8592bdba9f8334219be186ced8f012",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}

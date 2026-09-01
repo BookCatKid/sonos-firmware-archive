@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .catalog import filesystem_manifest, validate_catalog
 from .discovery import download_all, parse_manifest, probe_all, write_json
+from .extract import extract_components
 from .upd import parse_file
 
 
@@ -51,6 +52,11 @@ def main() -> int:
     fetch.add_argument("--directory", type=Path, required=True)
     fetch.add_argument("--receipt", type=Path, required=True)
     fetch.add_argument("--workers", type=int, default=3)
+    extract = sub.add_parser("extract", help="extract raw firmware components from a UPD")
+    extract.add_argument("file", type=Path)
+    extract.add_argument("--directory", type=Path, required=True)
+    extract.add_argument("--private-key", type=Path)
+    extract.add_argument("--receipt", type=Path)
     args = parser.parse_args()
 
     if args.command == "inspect":
@@ -71,6 +77,16 @@ def main() -> int:
         downloaded = sum(item["downloaded"] for item in results)
         print(f"downloaded {downloaded}/{len(results)} available artifacts")
         return 0 if downloaded == len(results) else 1
+    if args.command == "extract":
+        records = extract_components(args.file, args.directory, args.private_key)
+        result = {"source": args.file.name, "components": records}
+        rendered = json.dumps(result, indent=2) + "\n"
+        if args.receipt:
+            args.receipt.write_text(rendered, encoding="utf-8")
+        else:
+            print(rendered, end="")
+        print(f"extracted {len(records)} components from {args.file.name}")
+        return 0
     result = filesystem_manifest(args.directory)
     rendered = json.dumps(result, indent=2) + "\n"
     if args.output:

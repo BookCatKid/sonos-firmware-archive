@@ -9,10 +9,10 @@ description = "Catalog and analysis tooling for archived Sonos firmware"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
+dependencies = ["cryptography>=41"]
 
 [project.scripts]
 sonos-fw = "sonos_firmware.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

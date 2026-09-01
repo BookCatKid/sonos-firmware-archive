@@ -1,0 +1,49 @@
+{
+  "source": "86.1-68260-1-9.upd",
+  "components": [
+    {
+      "package_id": "86.1-68260-1-9",
+      "section_index": 6,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "86.1-68260-1-9-preinstall.sh",
+      "bytes": 1409,
+      "sha256": "0b270cda22438c49e20336547d4a7d46f0dc3c3c0d23e30b5c47d759ca875f13",
+      "source_encrypted": true,
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb"
+    },
+    {
+      "package_id": "86.1-68260-1-9",
+      "section_index": 7,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "86.1-68260-1-9-kernel.uImage",
+      "bytes": 1792691,
+      "sha256": "9485919dfd54e62c09fa44dae6565f27c5726078fe7683bb176b8e83e3398ce5",
+      "source_encrypted": true,
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb"
+    },
+    {
+      "package_id": "86.1-68260-1-9",
+      "section_index": 8,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "86.1-68260-1-9-rootfs.squashfs",
+      "bytes": 12836864,
+      "sha256": "0e4ebcc3ffea99b8715cdce8a5d326ca822f67956d0d66bad224ccf031fb2e15",
+      "source_encrypted": true,
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb"
+    },
+    {
+      "package_id": "86.1-68260-1-9",
+      "section_index": 9,
+      "section_type": 13,
+      "kind": "device-payload",
+      "filename": "86.1-68260-1-9-device-payload.bin",
+      "bytes": 54757,
+      "sha256": "36b47a4c7ef9e974ccfa82efda203754f0316ddc38b836e66b050e71074ae7cc",
+      "source_encrypted": true,
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb"
+    }
+  ]
+}
