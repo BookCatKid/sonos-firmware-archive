@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "kind",
+      "version",
+      "manifest_revision",
+      "manifest_url",
+      "update_url",
+      "swgen",
+      "latest_swgen",
+      "source_type",
+      "source_url",
+      "observed",
+      "redacted"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {"type": "string"},
+      "kind": {"const": "available-software-update"},
+      "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+-[0-9]+$"},
+      "manifest_revision": {"type": "string"},
+      "manifest_url": {"type": "string", "format": "uri"},
+      "update_url": {"type": "string", "format": "uri"},
+      "swgen": {"type": "integer", "minimum": 1},
+      "latest_swgen": {"type": "integer", "minimum": 1},
+      "source_type": {"const": "public-issue-diagnostic"},
+      "source_url": {"type": "string", "format": "uri"},
+      "observed": {"type": "string", "format": "date"},
+      "redacted": {"const": true}
+    }
+  }
+}

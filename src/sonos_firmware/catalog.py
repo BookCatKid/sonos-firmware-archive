@@ -16,6 +16,36 @@ REQUIRED_PACKAGE_FIELDS = {
     "raw_status",
 }
 
+EVIDENCE_FIELDS = {
+    "id",
+    "kind",
+    "version",
+    "manifest_revision",
+    "manifest_url",
+    "update_url",
+    "swgen",
+    "latest_swgen",
+    "source_type",
+    "source_url",
+    "observed",
+    "redacted",
+}
+
+FORBIDDEN_EVIDENCE_FIELDS = {
+    "body",
+    "comment",
+    "description",
+    "household",
+    "householdid",
+    "ip",
+    "lan",
+    "room",
+    "serial",
+    "serialnumber",
+    "sonosid",
+    "uuid",
+}
+
 
 def load_json(path: str | Path):
     with Path(path).open(encoding="utf-8") as handle:
@@ -47,6 +77,25 @@ def validate_catalog(root: str | Path) -> list[str]:
     for manifest in catalog.get("source_manifests", []):
         if not manifest.get("release_tag") or not manifest.get("release_asset"):
             errors.append(f"source manifest {manifest.get('filename')}: missing release location")
+    evidence_ids: set[str] = set()
+    for index, record in enumerate(catalog.get("evidence", [])):
+        record_id = record.get("id")
+        if not record_id:
+            errors.append(f"evidence[{index}] missing id")
+        if record_id in evidence_ids:
+            errors.append(f"duplicate evidence id: {record_id}")
+        evidence_ids.add(record_id)
+        forbidden = FORBIDDEN_EVIDENCE_FIELDS & record.keys()
+        if forbidden:
+            errors.append(
+                f"evidence[{index}] has forbidden fields: "
+                f"{', '.join(sorted(forbidden))}"
+            )
+        if record.get("redacted") is not True:
+            errors.append(f"evidence[{record_id}]: redacted must be true")
+        missing = EVIDENCE_FIELDS - record.keys()
+        if missing:
+            errors.append(f"evidence[{record_id}] missing: {', '.join(sorted(missing))}")
     return errors
 
 

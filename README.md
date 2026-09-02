@@ -56,6 +56,9 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `config/models.json` — evidence-scoped package-family observations; numeric
   package models are not assumed to map one-to-one to retail products.
 - `data/catalog.json` — package provenance, hashes, release assets, and raw-image records.
+- `data/discovery/` — complete candidate/receipt pairs for safe metadata probes.
+- `data/manifests/` — exact signed manifest snapshots retained in the repository.
+- `schemas/` — validation rules for redacted evidence records.
 - `data/completeness.json` — evidence-based target ledger, including unresolved gaps.
 - `data/upd/` — section-level manifests generated from each preserved UPD.
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
@@ -135,3 +138,19 @@ python scripts/import_discovery.py \
 ```
 
 Discovery misses remain in the catalog as `missing-cdn`; they are not erased.
+
+## Release layout
+
+Upload each exact UPD package to its matching `firmware-<system-version>`
+Release. Keep `.upm` snapshots in `manifest-snapshots-<date>` Releases. Raw
+extracted components remain beside the source OTA in their package's firmware
+Release. Do not mix firmware packages into manifest snapshot Releases.
+
+## Redacted evidence records
+
+Diagnostic and announcement evidence may expose device identifiers or private
+network context even when copied accidentally. Preserve only structured,
+minimum-necessary firmware fields in `data/catalog.json` under the `evidence`
+key. The validator rejects common identifier fields and requires an explicit
+`redacted: true` flag. Full issue text, diagnostics, and raw comments are never
+checked in.

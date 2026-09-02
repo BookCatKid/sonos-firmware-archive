@@ -2,6 +2,18 @@
 
 Research date: 2026-08-31. This is an evidence map and collection plan, not a claim of completeness. It deliberately contains no device identifiers, household identifiers, private keys, or firmware binaries.
 
+Update 2026-09-02: the three exact diagnostic leads from Home Assistant issue
+reports were recovered, validated against official live URLs, and archived:
+`67.1-27100`, `57.22-59130`, and `57.14-37030`. Only redacted
+`AvailableSoftwareUpdate` fields and public issue permalinks were retained;
+no issue bodies, device identifiers, household IDs, serials, room names, or LAN
+addresses were persisted. Discovery observed 111 live candidate responses
+across the three manifests; after deduplication against earlier campaign
+coverage, 63 artifacts from the three exact versions are preserved and 18
+remaining exact-version candidates are cataloged as `missing-cdn`. The
+63 packages are organized under one `firmware-<system-version>` Release per
+update. Exact `.upm` snapshots remain in a separate manifest snapshot Release.
+
 Update 2026-09-01: historical local task logs recovered the retired official
 campaign identifier `2026-Sonos-16-oTC1hrxrvi-GA-1`. The URL remains live, but
 its response body was replaced in place with a signed `96.1-79270` manifest
