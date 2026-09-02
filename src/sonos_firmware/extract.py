@@ -35,7 +35,7 @@ def load_private_key(path: str | Path):
     return serialization.load_pem_private_key(Path(path).read_bytes(), password=None)
 
 
-def decrypt_envelope(payload: bytes, private_key) -> tuple[bytes, str]:
+def decrypt_envelope(payload: bytes, private_key, *, legacy_model8: bool = False) -> tuple[bytes, str]:
     if not payload.startswith(ENVELOPE_MAGIC):
         raise ValueError("encrypted section has no Sonos envelope")
     header_len = int.from_bytes(payload[4:8], "big")
@@ -56,7 +56,7 @@ def decrypt_envelope(payload: bytes, private_key) -> tuple[bytes, str]:
     cipher_id = int.from_bytes(payload[rsa_offset + rsa_len : rsa_offset + rsa_len + 4], "big")
     data_len = int.from_bytes(payload[rsa_offset + rsa_len + 4 : header_len], "big")
     encrypted = payload[header_len : header_len + data_len]
-    if cipher_id != 1 or len(encrypted) != data_len or len(encrypted) < 32:
+    if cipher_id != 1 or len(encrypted) != data_len or len(encrypted) < 16:
         raise ValueError("unsupported or truncated encrypted payload")
 
     aes_key = private_key.decrypt(
@@ -69,19 +69,31 @@ def decrypt_envelope(payload: bytes, private_key) -> tuple[bytes, str]:
     )
     if len(aes_key) != 16:
         raise ValueError("unexpected wrapped AES key length")
-    iv, ciphertext = encrypted[:16], encrypted[16:]
+    if legacy_model8:
+        # Model-8 OTA envelopes store no IV alongside the ciphertext. Their
+        # updater uses an all-zero CBC IV and discards a 16-byte plaintext
+        # prefix after decrypting and unpadding.
+        iv, ciphertext = bytes(16), encrypted
+    else:
+        iv, ciphertext = encrypted[:16], encrypted[16:]
     decryptor = Cipher(algorithms.AES(aes_key), modes.CBC(iv)).decryptor()
     plaintext = decryptor.update(ciphertext) + decryptor.finalize()
     padding_length = plaintext[-1]
     if not 1 <= padding_length <= 16 or plaintext[-padding_length:] != bytes([padding_length]) * padding_length:
         raise ValueError("invalid PKCS#7 padding")
-    return plaintext[:-padding_length], recipient
+    plaintext = plaintext[:-padding_length]
+    if legacy_model8:
+        if len(plaintext) < 16:
+            raise ValueError("legacy model-8 plaintext lacks its random prefix")
+        plaintext = plaintext[16:]
+    return plaintext, recipient
 
 
 def extract_components(
     upd_path: str | Path,
     output_dir: str | Path,
     private_key_path: str | Path | None = None,
+    legacy_model8: bool = False,
 ) -> list[dict]:
     upd_path = Path(upd_path)
     output_dir = Path(output_dir)
@@ -101,7 +113,7 @@ def extract_components(
         if section.encrypted:
             if private_key is None:
                 raise ValueError(f"section {section.index} requires recipient {section.recipient_id}")
-            payload, recipient = decrypt_envelope(payload, private_key)
+            payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
 
         kind, extension = component
         if kind == "rootfs" and payload.startswith(b"hsqs"):

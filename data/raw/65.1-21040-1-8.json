@@ -1,0 +1,38 @@
+{
+  "source": "65.1-21040-1-8.upd",
+  "components": [
+    {
+      "package_id": "65.1-21040-1-8",
+      "section_index": 4,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "65.1-21040-1-8-preinstall.sh",
+      "bytes": 209080,
+      "sha256": "b354fbdfe9d352e441376a275b1b1b16133e6bf7e0dc5ed67247bf3c9ae62bd0",
+      "source_encrypted": true,
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd"
+    },
+    {
+      "package_id": "65.1-21040-1-8",
+      "section_index": 5,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "65.1-21040-1-8-kernel.uImage",
+      "bytes": 1460787,
+      "sha256": "8d8e2fae58285af8da1512aaac4e6fb833c7aa5e7518ee8ffb4bef848051771b",
+      "source_encrypted": true,
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd"
+    },
+    {
+      "package_id": "65.1-21040-1-8",
+      "section_index": 6,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "65.1-21040-1-8-rootfs.bin",
+      "bytes": 8568832,
+      "sha256": "b45f18cb8c1b8e9aefab29a4c93ae1e43e82e6d986ed93b177650697b7ecc8bd",
+      "source_encrypted": true,
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd"
+    }
+  ]
+}

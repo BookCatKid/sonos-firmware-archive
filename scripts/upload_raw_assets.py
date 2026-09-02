@@ -17,6 +17,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--directory", type=Path, default=ROOT / "artifacts/raw")
     parser.add_argument("--workers", type=int, default=3)
+    parser.add_argument("--package-id", action="append", default=[])
     args = parser.parse_args()
 
     catalog = json.loads((ROOT / "data/catalog.json").read_text(encoding="utf-8"))
@@ -25,10 +26,11 @@ def main() -> int:
         for item in catalog["raw_images"]
         if item.get("release_tag") and item.get("release_asset")
     }
+    requested = set(args.package_id)
     groups: dict[str, list[Path]] = defaultdict(list)
     for path in sorted(args.directory.glob("*/*")):
         item = expected.get(path.name)
-        if item:
+        if item and (not requested or item.get("package_id") in requested):
             groups[item["release_tag"]].append(path)
 
     def upload(entry: tuple[str, list[Path]]) -> tuple[str, int]:

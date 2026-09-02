@@ -56,6 +56,7 @@ def main() -> int:
     extract.add_argument("file", type=Path)
     extract.add_argument("--directory", type=Path, required=True)
     extract.add_argument("--private-key", type=Path)
+    extract.add_argument("--legacy-model8", action="store_true")
     extract.add_argument("--receipt", type=Path)
     args = parser.parse_args()
 
@@ -78,7 +79,12 @@ def main() -> int:
         print(f"downloaded {downloaded}/{len(results)} available artifacts")
         return 0 if downloaded == len(results) else 1
     if args.command == "extract":
-        records = extract_components(args.file, args.directory, args.private_key)
+        records = extract_components(
+            args.file,
+            args.directory,
+            args.private_key,
+            legacy_model8=args.legacy_model8,
+        )
         result = {"source": args.file.name, "components": records}
         rendered = json.dumps(result, indent=2) + "\n"
         if args.receipt:

@@ -15,8 +15,8 @@ As of 2026-09-01, the private archive contains:
 
 - **389 preserved artifacts** across **47 exact version labels**;
 - **354 Sonos UPD packages** with section-level manifests;
-- **16 preserved update manifests** and **92 recovered/raw image components**
-  from **24 packages**;
+- **16 preserved update manifests** and **134 recovered/raw image components**
+  from **38 packages**;
 - **14.86 GiB** of unique cataloged package/installer/DFU bytes; and
 - **71 explicit gaps**: 70 manifest candidates no longer on the CDN, plus the
   device-observed but still-unrecovered Move `96.0-79160` package.
@@ -85,6 +85,12 @@ Raw component assets use package-prefixed names and live in the same private
 GitHub Release as their encrypted source OTA. Private keys are never committed
 or uploaded; extraction receipts contain only source recipient fingerprints,
 component sizes, and SHA-256 hashes.
+
+The archive contains a compatibility mode for the legacy model-8 envelope used
+by the Play:1 family. Its recovered key is deliberately retained only in local
+ignored recovery storage; the checked-in tooling and receipts are sufficient to
+verify, reproduce extraction when that key is supplied, and audit every raw
+asset without exposing the key.
 
 Regenerate checked-in metadata from a local artifact directory:
 
