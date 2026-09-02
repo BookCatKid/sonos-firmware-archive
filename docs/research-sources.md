@@ -151,6 +151,10 @@ are valid downloadable files but are labeled as replay-transformed because
 Wayback returned different bytes and lengths from its CDX payload digest. Keep
 this distinction explicit until exact captures are recovered.
 
+Update 2026-09-02: all 167 archived GPL/LGPL files were published to the
+separate `gpl-7.2` through `gpl-14.18` releases and were re-audited by exact
+asset filename and byte count against the local capture catalog.
+
 ## 4. Recommended collection order
 
 1. **Snapshot metadata immediately:** fetch and hash the modern S2 and S1 `.ups` responses and every referenced `.upm`; parse without discarding signatures or conditional fields.
