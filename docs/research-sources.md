@@ -142,6 +142,15 @@ Archive these as a separate, clearly licensed collection. Sonos's current [14.18
 
 For each index, preserve the HTML, attribution PDF(s), every first-party source archive, original filename/URL, retrieval time, response headers, and SHA-256. Deduplicate storage by hash while retaining every release-page alias. Do not mix GPL source bundles with proprietary `.upd` licensing or imply that a GPL component archive is a complete buildable firmware image.
 
+Update 2026-09-02: the Sonos-hosted `7.2`, `7.3`, `9.2`, `10.2`, `10.6`, `12.0`,
+`13.2`, `14.4`, and `14.18` indexes were archived through Wayback with 167
+first-party artifact records in `data/gpl/`. The importer records each artifact's
+original URL, Wayback timestamp, local SHA-256, and CDX SHA-1 digest. Wayback
+currently reports 161 exact CDX digest matches; the 16 remaining `7.3` records
+are valid downloadable files but are labeled as replay-transformed because
+Wayback returned different bytes and lengths from its CDX payload digest. Keep
+this distinction explicit until exact captures are recovered.
+
 ## 4. Recommended collection order
 
 1. **Snapshot metadata immediately:** fetch and hash the modern S2 and S1 `.ups` responses and every referenced `.upm`; parse without discarding signatures or conditional fields.

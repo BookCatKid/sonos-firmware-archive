@@ -1,0 +1,4135 @@
+{
+  "schema_version": 1,
+  "releases": [
+    {
+      "release": "7.2",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/7.2/gpl.html",
+        "wayback_timestamp": "20250822071109",
+        "wayback_url": "https://web.archive.org/web/20250822071109id_/https://www.sonos.com/documents/gpl/7.2/gpl.html",
+        "bytes": 3291,
+        "sha256": "e047b24b90a5a17238dbeba054d5d4d5a504f51a1a6bb00397ea2f87247331d7",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/bridge-utils.tgz",
+            "text": "bridge-utils.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/busybox1.tgz",
+            "text": "busybox1.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/busybox2.tgz",
+            "text": "busybox2.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/busybox3.tgz",
+            "text": "busybox3.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/event_reporter.tgz",
+            "text": "event_reporter.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/fscrypt.tgz",
+            "text": "fscrypt.tgz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
+            "text": "glibc-2.2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.5.tar.gz",
+            "text": "glibc-2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
+            "text": "glibc-2.19.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/includes1.tgz",
+            "text": "includes1.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/includes2.tgz",
+            "text": "includes2.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-2.4.22.tgz",
+            "text": "linux-2.4.22.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-2.4.25.tgz",
+            "text": "linux-2.4.25.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-2.6.15.tgz",
+            "text": "linux-2.6.15.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-2.6.21.tgz",
+            "text": "linux-2.6.21.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-2.6.35.tgz",
+            "text": "linux-2.6.35.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/linux-3.10.53.tgz",
+            "text": "linux-3.10.53.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/mpg123.tgz",
+            "text": "mpg123.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/salsa-lib-0.0.13.tgz",
+            "text": "salsa-lib-0.0.13.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/sbclib.tgz",
+            "text": "sbclib.tgz"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
+            "text": "uClibc-0.9.26.tar.bz2"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.28.tar.bz2",
+            "text": "uClibc-0.9.28.tar.bz2"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/uClibc-0.9.30.tar.bz2",
+            "text": "uClibc-0.9.30.tar.bz2"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.2/udhcp-0.9.8.tgz",
+            "text": "udhcp-0.9.8.tgz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "https://www.sonos.com/documents/gpl/7.2/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20250822084409",
+          "wayback_url": "https://web.archive.org/web/20250822084409id_/https://www.sonos.com/documents/gpl/7.2/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 139110,
+          "cdx_sha1": "CAB3224678CC95058EA7EBF02AA3A300D15B0EB6",
+          "local_bytes": 144410,
+          "local_sha256": "4bbaae0e0b5837b6466a6e6581858c5d5028e552df201afa1a4641d3afd26d4e",
+          "local_sha1": "CAB3224678CC95058EA7EBF02AA3A300D15B0EB6",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/7.2/gpl.html",
+          "wayback_timestamp": "20170508225641",
+          "wayback_url": "https://web.archive.org/web/20170508225641id_/http://www.sonos.com/documents/gpl/7.2/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 912,
+          "cdx_sha1": "B26BA08189504567D99B36A5BEF2444A3B2336D4",
+          "local_bytes": 2900,
+          "local_sha256": "e998390aedb820021d8f65eb16982bf44951f56b3c12ffea9a736577e1cba71d",
+          "local_sha1": "B26BA08189504567D99B36A5BEF2444A3B2336D4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "7.3",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/7.3/gpl.html",
+        "wayback_timestamp": "20250720094958",
+        "wayback_url": "https://web.archive.org/web/20250720094958id_/https://www.sonos.com/documents/gpl/7.3/gpl.html",
+        "bytes": 3499,
+        "sha256": "a284747738adf04275a620612518a9f12d54636ff322019381118e4d3d988e89",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/bridge-utils.tgz",
+            "text": "bridge-utils.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/busybox1.tgz",
+            "text": "busybox1.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/busybox2.tgz",
+            "text": "busybox2.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/busybox3.tgz",
+            "text": "busybox3.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/event_reporter.tgz",
+            "text": "event_reporter.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/fscrypt.tgz",
+            "text": "fscrypt.tgz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
+            "text": "glibc-2.2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.5.tar.gz",
+            "text": "glibc-2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
+            "text": "glibc-2.19.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/includes1.tgz",
+            "text": "includes1.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/includes2.tgz",
+            "text": "includes2.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-2.4.22.tgz",
+            "text": "linux-2.4.22.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-2.4.25.tgz",
+            "text": "linux-2.4.25.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-2.6.15.tgz",
+            "text": "linux-2.6.15.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-2.6.21.tgz",
+            "text": "linux-2.6.21.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-2.6.35.tgz",
+            "text": "linux-2.6.35.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/linux-3.10.53.tgz",
+            "text": "linux-3.10.53.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/mpg123.tgz",
+            "text": "mpg123.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/rng-tools.tgz",
+            "text": "rng-tools.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/salsa-lib-0.0.13.tgz",
+            "text": "salsa-lib-0.0.13.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/sbclib.tgz",
+            "text": "sbclib.tgz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/sonos-kernel.tgz",
+            "text": "sonos-kernel.tgz"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
+            "text": "uClibc-0.9.26.tar.bz2"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.28.tar.bz2",
+            "text": "uClibc-0.9.28.tar.bz2"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/uClibc-0.9.30.tar.bz2",
+            "text": "uClibc-0.9.30.tar.bz2"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/7.3/udhcp-0.9.8.tgz",
+            "text": "udhcp-0.9.8.tgz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20170822233305",
+          "wayback_url": "https://web.archive.org/web/20170822233305id_/http://www.sonos.com/documents/gpl/7.3/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 141408,
+          "cdx_sha1": "1CD770628B4E7517F962649583620EEAAB153331",
+          "local_bytes": 145655,
+          "local_sha256": "2e130166f184a78e13bf329844147c86e2599b0e090542fb80bfa6c7b3d8e2fc",
+          "local_sha1": "DCA47FE8EA58B226D82CA39869BB6CAA5A970551",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bridge-utils.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/bridge-utils.tgz",
+          "wayback_timestamp": "20170822233304",
+          "wayback_url": "https://web.archive.org/web/20170822233304id_/http://www.sonos.com/documents/gpl/7.3/bridge-utils.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 64827,
+          "cdx_sha1": "01BE675AB91CFFAB9346B88D88327A936B7BFE01",
+          "local_bytes": 63836,
+          "local_sha256": "0295b0deac820321b06f651e564691618ec2cde64d30d10da5cb2a6cd495d9bf",
+          "local_sha1": "3CAD7CF81F7833A2B7FCC93E312C412795AD706C",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox1.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/busybox1.tgz",
+          "wayback_timestamp": "20170822233301",
+          "wayback_url": "https://web.archive.org/web/20170822233301id_/http://www.sonos.com/documents/gpl/7.3/busybox1.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1357022,
+          "cdx_sha1": "C28BA2E2ACF43975B2DA8261C365EC51C7294EB2",
+          "local_bytes": 1355221,
+          "local_sha256": "5bd3580e5b773c8d7ddd446ece0c835fd8a31a501ff4a72b2fcab157ac6e682a",
+          "local_sha1": "42B956F928149666BB451F3E31BB95012C558B44",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox2.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/busybox2.tgz",
+          "wayback_timestamp": "20170822233303",
+          "wayback_url": "https://web.archive.org/web/20170822233303id_/http://www.sonos.com/documents/gpl/7.3/busybox2.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1299341,
+          "cdx_sha1": "7E7FE28AA5898F18AE225315D5A1E5C995F7724B",
+          "local_bytes": 1297855,
+          "local_sha256": "d52e18c4adbf83532da9c4da789b773b93d05604abe298f05bcc862966709844",
+          "local_sha1": "4E89E0104CEDB6F719F5C66DA385B09FCAE5B9C6",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox3.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/busybox3.tgz",
+          "wayback_timestamp": "20170822233302",
+          "wayback_url": "https://web.archive.org/web/20170822233302id_/http://www.sonos.com/documents/gpl/7.3/busybox3.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2586087,
+          "cdx_sha1": "F0B43742119D47623460E1A520C65D8CD7AF4A42",
+          "local_bytes": 2582121,
+          "local_sha256": "06c9f5cd60b124d438cb8de100c4f503cd5d3f0eaf90d43415e6e6f3b0710ff4",
+          "local_sha1": "18BE72C2DDDACC8BE3DF2BD03DF7CF27149B0675",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "event_reporter.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/event_reporter.tgz",
+          "wayback_timestamp": "20170822233322",
+          "wayback_url": "https://web.archive.org/web/20170822233322id_/http://www.sonos.com/documents/gpl/7.3/event_reporter.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2849,
+          "cdx_sha1": "A72446A8975C307023C6FBE0E56F3078ABD88BF4",
+          "local_bytes": 1907,
+          "local_sha256": "05395d4d623bbddd70a0361a9be25febbd121d7631a030a689af5f7c73a3cc05",
+          "local_sha1": "A72446A8975C307023C6FBE0E56F3078ABD88BF4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "fscrypt.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/fscrypt.tgz",
+          "wayback_timestamp": "20170822233324",
+          "wayback_url": "https://web.archive.org/web/20170822233324id_/http://www.sonos.com/documents/gpl/7.3/fscrypt.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 88037,
+          "cdx_sha1": "919811EC53E9EE6321ED47B2EC72B830B7E2456A",
+          "local_bytes": 86961,
+          "local_sha256": "1f35a764bf177b709514fae4aa9818fa783fda36e24815b39c45f10e4dab923d",
+          "local_sha1": "0A0E5CB2D42043644F4EB5BF3B6F299E3096C76C",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/gpl.html",
+          "wayback_timestamp": "20170822222411",
+          "wayback_url": "https://web.archive.org/web/20170822222411id_/http://www.sonos.com/documents/gpl/7.3/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 1235,
+          "cdx_sha1": "98032501165FA947EF95B31340993F88841D96BF",
+          "local_bytes": 3086,
+          "local_sha256": "e1bc6b5def0e1317601d1d8b83241d5db9cd2f9f8af67437c43d5a8c4cc74411",
+          "local_sha1": "98032501165FA947EF95B31340993F88841D96BF",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes1.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/includes1.tgz",
+          "wayback_timestamp": "20170822233336",
+          "wayback_url": "https://web.archive.org/web/20170822233336id_/http://www.sonos.com/documents/gpl/7.3/includes1.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 14369,
+          "cdx_sha1": "EC08925BA229D066621118A7830C6C02778B6A86",
+          "local_bytes": 13415,
+          "local_sha256": "cf0e33041f912868452de81d082263144308a4bbda2718121dbdacf48544c886",
+          "local_sha1": "EC08925BA229D066621118A7830C6C02778B6A86",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes2.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/includes2.tgz",
+          "wayback_timestamp": "20170822233301",
+          "wayback_url": "https://web.archive.org/web/20170822233301id_/http://www.sonos.com/documents/gpl/7.3/includes2.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 7930,
+          "cdx_sha1": "D0BCD5C08D7C51669ABAB3C553F4B4B4EE30BDAA",
+          "local_bytes": 6973,
+          "local_sha256": "f8776e949670a86cb81e81dd8cefde8303e73faa106a05ca2e2c2f5a0f9eee7d",
+          "local_sha1": "D0BCD5C08D7C51669ABAB3C553F4B4B4EE30BDAA",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.22.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-2.4.22.tgz",
+          "wayback_timestamp": "20170822233326",
+          "wayback_url": "https://web.archive.org/web/20170822233326id_/http://www.sonos.com/documents/gpl/7.3/linux-2.4.22.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 15050782,
+          "cdx_sha1": "153B16B1F62C908D70B421336F62A5DD8E7604A4",
+          "local_bytes": 15062821,
+          "local_sha256": "e500ec2a01275c276af3ecef27859afcd83291f7606c6123a14b55b44a82b160",
+          "local_sha1": "36251B9A5BA4704B12D3FAE1FDF72EA8FB2D7E9D",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.25.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-2.4.25.tgz",
+          "wayback_timestamp": "20170822233339",
+          "wayback_url": "https://web.archive.org/web/20170822233339id_/http://www.sonos.com/documents/gpl/7.3/linux-2.4.25.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 15605928,
+          "cdx_sha1": "67390B16ECE58696D3CC5A22E7CB0E6888ED5DC2",
+          "local_bytes": 15626578,
+          "local_sha256": "b597ef1e5037f96f9937e8735e6cb53da4146d77b7e73f1b1c14b93a94277307",
+          "local_sha1": "3A9077EE75B65A1B25EECCF4FC7D77B3DF571008",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.15.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-2.6.15.tgz",
+          "wayback_timestamp": "20170822233303",
+          "wayback_url": "https://web.archive.org/web/20170822233303id_/http://www.sonos.com/documents/gpl/7.3/linux-2.6.15.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 51676419,
+          "cdx_sha1": "6FED06A7EBD2ACBC44537A4E5E11D9EAF3FFD979",
+          "local_bytes": 51701254,
+          "local_sha256": "5c8edc0c3c8d6e5aee41903a62a5617c42efbdecdf044ac40ec1deafb9f5890b",
+          "local_sha1": "4CC940A6020398334010469DEBA1BA3488B76613",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.21.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-2.6.21.tgz",
+          "wayback_timestamp": "20170822233338",
+          "wayback_url": "https://web.archive.org/web/20170822233338id_/http://www.sonos.com/documents/gpl/7.3/linux-2.6.21.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 43360950,
+          "cdx_sha1": "662620481D5D74FBB9E08A4DE4A9ACE746C8AD7A",
+          "local_bytes": 43415283,
+          "local_sha256": "793910522866b1042b210332bee5afbc63be96397fa1d850f8789dc9f8f22155",
+          "local_sha1": "4D7258509A7F91DEE2DDBE96A37498234EFB2EBB",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.35.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-2.6.35.tgz",
+          "wayback_timestamp": "20170822233303",
+          "wayback_url": "https://web.archive.org/web/20170822233303id_/http://www.sonos.com/documents/gpl/7.3/linux-2.6.35.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 92638739,
+          "cdx_sha1": "F0E9744B4EE9435DAF0859D0803E70AD47A81E40",
+          "local_bytes": 92717545,
+          "local_sha256": "c3577183dd9ec74fdc5f11c0aeaade724c8a0c719ad9c2992ee122303b7aea0a",
+          "local_sha1": "A24909836957A0DB93E1107C5C5435A6C9572DB2",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-3.10.53.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/linux-3.10.53.tgz",
+          "wayback_timestamp": "20170822233305",
+          "wayback_url": "https://web.archive.org/web/20170822233305id_/http://www.sonos.com/documents/gpl/7.3/linux-3.10.53.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 115864094,
+          "cdx_sha1": "FC4CB49ACBA1935D5D52EBC5A5080AE5CBD854E8",
+          "local_bytes": 116431722,
+          "local_sha256": "6cd8dbbc09e25ee02dad8238bb57ed1d49f790d4cfa888f033c4d2051bc5e68e",
+          "local_sha1": "FBCBCC3ACFA0AC07A3DFDBD15D0F7BCD7B146E76",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "mpg123.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/mpg123.tgz",
+          "wayback_timestamp": "20170822233309",
+          "wayback_url": "https://web.archive.org/web/20170822233309id_/http://www.sonos.com/documents/gpl/7.3/mpg123.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 878050,
+          "cdx_sha1": "24118ED7B855F0BEEC819334EB0AB5B6965F1749",
+          "local_bytes": 875614,
+          "local_sha256": "21b94999a6b79101bb6195950ccdc4e0aa14c063d9daef3b2a84d9940edc0db4",
+          "local_sha1": "5F8F8F8E134D8C68B7895E87FFE2B25F393F4D6C",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "rng-tools.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/rng-tools.tgz",
+          "wayback_timestamp": "20170822233310",
+          "wayback_url": "https://web.archive.org/web/20170822233310id_/http://www.sonos.com/documents/gpl/7.3/rng-tools.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 123998,
+          "cdx_sha1": "C3309B800C277DC04FCC4E04AA7463277E97687E",
+          "local_bytes": 122826,
+          "local_sha256": "ceec673e6461c1502dbed69c688e789a8b0352bef37dbc95f42945685ce95e6e",
+          "local_sha1": "E339FD8D9B15B821740CAB968DBE2ED02CAAB883",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "salsa-lib-0.0.13.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/salsa-lib-0.0.13.tgz",
+          "wayback_timestamp": "20170822233302",
+          "wayback_url": "https://web.archive.org/web/20170822233302id_/http://www.sonos.com/documents/gpl/7.3/salsa-lib-0.0.13.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 402189,
+          "cdx_sha1": "697B0A7646759310350D95F9F4910E6A3E51671D",
+          "local_bytes": 401857,
+          "local_sha256": "3cde58fefa8b97dee2150793da96be3a42e91c88e8ab6e1b76881c04e66d795f",
+          "local_sha1": "48D9EBEBDDB70705E17B264146D8152A6CDB5335",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sbclib.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/sbclib.tgz",
+          "wayback_timestamp": "20170822233325",
+          "wayback_url": "https://web.archive.org/web/20170822233325id_/http://www.sonos.com/documents/gpl/7.3/sbclib.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 21670,
+          "cdx_sha1": "A5E9D7FB06846CAB4190E1F8A895380935CE0288",
+          "local_bytes": 20764,
+          "local_sha256": "0ab88555a05ba5c656ff3686fef5b138b96399197f9f19d175b83a4c2eab5e24",
+          "local_sha1": "A5E9D7FB06846CAB4190E1F8A895380935CE0288",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-kernel.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/sonos-kernel.tgz",
+          "wayback_timestamp": "20170822233304",
+          "wayback_url": "https://web.archive.org/web/20170822233304id_/http://www.sonos.com/documents/gpl/7.3/sonos-kernel.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 37765,
+          "cdx_sha1": "DF7FC5937D1A0FA186DE8CEE65126E45B271E20D",
+          "local_bytes": 36763,
+          "local_sha256": "f5d8684968b4885d1c6660cfb734f9b996147c38ddf02e908c7ec157393deba0",
+          "local_sha1": "DF7FC5937D1A0FA186DE8CEE65126E45B271E20D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "udhcp-0.9.8.tgz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/7.3/udhcp-0.9.8.tgz",
+          "wayback_timestamp": "20170822233302",
+          "wayback_url": "https://web.archive.org/web/20170822233302id_/http://www.sonos.com/documents/gpl/7.3/udhcp-0.9.8.tgz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 65595,
+          "cdx_sha1": "6004E888518D206594AFB21B0E7D31DFF7462FF4",
+          "local_bytes": 64524,
+          "local_sha256": "93bd4cd7da559e494f78cab49a139638cc5a94b5c56c0ada2cc07ff151ff335c",
+          "local_sha1": "F75F1ACDB59F13C991AB2AD2DBD1CB43A2EFBBD2",
+          "cdx_digest_match": false,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "9.2",
+      "index": {
+        "original_url": "http://www.sonos.com/documents/gpl/9.2/gpl.html",
+        "wayback_timestamp": "20181112143817",
+        "wayback_url": "https://web.archive.org/web/20181112143817id_/http://www.sonos.com/documents/gpl/9.2/gpl.html",
+        "bytes": 3187,
+        "sha256": "0dd2d174f4072f9bfd7b8c95152eca95d4db343e4f22ce66931cd40868265e5d",
+        "links": [
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/busybox1.txz",
+            "text": "busybox1.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/busybox2.txz",
+            "text": "busybox2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/busybox3.txz",
+            "text": "busybox3.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/busybox4.txz",
+            "text": "busybox4.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
+            "text": "glibc-2.2.5.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
+            "text": "glibc-2.19.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/linux-2.4.22.txz",
+            "text": "linux-2.4.22.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/linux-2.4.25.txz",
+            "text": "linux-2.4.25.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
+            "text": "uClibc-0.9.26.tar.bz2"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/9.2/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/9.2/gpl.html",
+          "wayback_timestamp": "20181112143817",
+          "wayback_url": "https://web.archive.org/web/20181112143817id_/http://www.sonos.com/documents/gpl/9.2/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 1068,
+          "cdx_sha1": "E8E25376E2E71CBF90A42005FF7200EED7333598",
+          "local_bytes": 3187,
+          "local_sha256": "0dd2d174f4072f9bfd7b8c95152eca95d4db343e4f22ce66931cd40868265e5d",
+          "local_sha1": "E8E25376E2E71CBF90A42005FF7200EED7333598",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "10.2",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/10.2/gpl.html",
+        "wayback_timestamp": "20250614044125",
+        "wayback_url": "https://web.archive.org/web/20250614044125id_/https://www.sonos.com/documents/gpl/10.2/gpl.html",
+        "bytes": 4204,
+        "sha256": "9e53914c061be123e6863c00bff3c9d6d2462c8eb8f7979d52551210449d981e",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/busybox1.txz",
+            "text": "busybox1.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/busybox2.txz",
+            "text": "busybox2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/chrony.txz",
+            "text": "chrony.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/cryptsetup.txz",
+            "text": "cryptsetup.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/e2fsprogs.txz",
+            "text": "e2fsprogs.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
+            "text": "glibc-2.2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
+            "text": "glibc-2.19.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/libgcrypt.txz",
+            "text": "libgcrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/libgpg-error.txz",
+            "text": "libgpg-error.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-2.4.22.txz",
+            "text": "linux-2.4.22.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-2.4.25.txz",
+            "text": "linux-2.4.25.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/linux-4.9.99.txz",
+            "text": "linux-4.9.99.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/lvm2.txz",
+            "text": "lvm2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
+            "text": "uClibc-0.9.26.tar.bz2"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.2/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/10.2/gpl.html",
+          "wayback_timestamp": "20190818114741",
+          "wayback_url": "https://web.archive.org/web/20190818114741id_/http://www.sonos.com/documents/gpl/10.2/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 2939,
+          "cdx_sha1": "8C3B9611F83BADC6223A1E327085CA21044A7E51",
+          "local_bytes": 7042,
+          "local_sha256": "ad728aac6be0d47c331f7ad37fefd830ac340441126f4b2b88e8a8c5cf26a095",
+          "local_sha1": "8C3B9611F83BADC6223A1E327085CA21044A7E51",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.2/includes2.txz",
+          "wayback_timestamp": "20200708170634",
+          "wayback_url": "https://web.archive.org/web/20200708170634id_/http://www.sonos.com/documents/gpl/10.2/includes2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 6364,
+          "cdx_sha1": "C5A1D7F1F1A771AED6B8ECFB2A4674A87DD76F61",
+          "local_bytes": 5456,
+          "local_sha256": "609b05060a2f127b5fc83ff518dc6a5cf93546afc2c7dce54fd5b23c75543e02",
+          "local_sha1": "C5A1D7F1F1A771AED6B8ECFB2A4674A87DD76F61",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "10.6",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/10.6/gpl.html",
+        "wayback_timestamp": "20250826224354",
+        "wayback_url": "https://web.archive.org/web/20250826224354id_/https://www.sonos.com/documents/gpl/10.6/gpl.html",
+        "bytes": 4268,
+        "sha256": "a4d4e1e92dc76bf6401410b5c643311b823e81b323cc84b766c5defeff56df1a",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/busybox1.txz",
+            "text": "busybox1.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/busybox2.txz",
+            "text": "busybox2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/chrony.txz",
+            "text": "chrony.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/cryptsetup.txz",
+            "text": "cryptsetup.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/e2fsprogs.txz",
+            "text": "e2fsprogs.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/eigen.txz",
+            "text": "eigen.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
+            "text": "glibc-2.2.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
+            "text": "glibc-2.19.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/libgcrypt.txz",
+            "text": "libgcrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/libgpg-error.txz",
+            "text": "libgpg-error.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-2.4.22.txz",
+            "text": "linux-2.4.22.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-2.4.25.txz",
+            "text": "linux-2.4.25.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/linux-4.9.99.txz",
+            "text": "linux-4.9.99.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/lvm2.txz",
+            "text": "lvm2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
+            "text": "uClibc-0.9.26.tar.bz2"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/10.6/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20200918171954",
+          "wayback_url": "https://web.archive.org/web/20200918171954id_/http://www.sonos.com/documents/gpl/10.6/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 215776,
+          "cdx_sha1": "09C338D6C92A0454D10B225794703E894E0CADF6",
+          "local_bytes": 224054,
+          "local_sha256": "96d5ba08d79bdb0a0f33b06fca4f39622788832a820bc68b54fd59130ecb117a",
+          "local_sha1": "09C338D6C92A0454D10B225794703E894E0CADF6",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bluez.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/bluez.txz",
+          "wayback_timestamp": "20200918172007",
+          "wayback_url": "https://web.archive.org/web/20200918172007id_/http://www.sonos.com/documents/gpl/10.6/bluez.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1717507,
+          "cdx_sha1": "EEB4D862DD989B5DD1DADCF597BEBBC8F88E2D69",
+          "local_bytes": 1716008,
+          "local_sha256": "bab62ac89cbf2f62f1ea5a4854ab6789758d4d52855489a51df95c6c60743672",
+          "local_sha1": "EEB4D862DD989B5DD1DADCF597BEBBC8F88E2D69",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bridge-utils.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/bridge-utils.txz",
+          "wayback_timestamp": "20200918171925",
+          "wayback_url": "https://web.archive.org/web/20200918171925id_/http://www.sonos.com/documents/gpl/10.6/bridge-utils.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 54152,
+          "cdx_sha1": "A28186C1FD0D31D9D60C1D0D4D3F1E22A71AF108",
+          "local_bytes": 53152,
+          "local_sha256": "d54785b52d463010d332583b3c27a1960f044e0c7ed6560ce26647d2275cfe7b",
+          "local_sha1": "A28186C1FD0D31D9D60C1D0D4D3F1E22A71AF108",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox1.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/busybox1.txz",
+          "wayback_timestamp": "20200918171959",
+          "wayback_url": "https://web.archive.org/web/20200918171959id_/http://www.sonos.com/documents/gpl/10.6/busybox1.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1843218,
+          "cdx_sha1": "65BCA79440FF9D84D8D5602325AC40F3A69F82DF",
+          "local_bytes": 1841680,
+          "local_sha256": "452123fb8cece9cbf689e41028cb4a3026d3cc48b3d5768249c06c7aacd80d03",
+          "local_sha1": "65BCA79440FF9D84D8D5602325AC40F3A69F82DF",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/busybox2.txz",
+          "wayback_timestamp": "20200918171941",
+          "wayback_url": "https://web.archive.org/web/20200918171941id_/http://www.sonos.com/documents/gpl/10.6/busybox2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 981293,
+          "cdx_sha1": "BF37311CA237F440E45071D8852C8ED2E92D21E3",
+          "local_bytes": 980020,
+          "local_sha256": "8b67caac909f58c536a9bce0de22b7f95a3678b0c247e32ba202d7804a69d331",
+          "local_sha1": "BF37311CA237F440E45071D8852C8ED2E92D21E3",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "chrony.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/chrony.txz",
+          "wayback_timestamp": "20200918171939",
+          "wayback_url": "https://web.archive.org/web/20200918171939id_/http://www.sonos.com/documents/gpl/10.6/chrony.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 315200,
+          "cdx_sha1": "CF4D1F643F38B9FDBE25DB1A3BB2DC78469167C7",
+          "local_bytes": 314128,
+          "local_sha256": "e2e73e3371aed1dfd1db93366d2e801cf78b21cb92714906d8569e5eaefd1e32",
+          "local_sha1": "CF4D1F643F38B9FDBE25DB1A3BB2DC78469167C7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "cryptsetup.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/cryptsetup.txz",
+          "wayback_timestamp": "20200918171927",
+          "wayback_url": "https://web.archive.org/web/20200918171927id_/http://www.sonos.com/documents/gpl/10.6/cryptsetup.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 10559863,
+          "cdx_sha1": "DF2C5B7325A91C8F7735B342C73CCA912EF45D44",
+          "local_bytes": 10557744,
+          "local_sha256": "3c08146efefde12f790a77e79395138a559b01c8c61b23222d919897d513fdf1",
+          "local_sha1": "DF2C5B7325A91C8F7735B342C73CCA912EF45D44",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "dbus.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/dbus.txz",
+          "wayback_timestamp": "20200918172003",
+          "wayback_url": "https://web.archive.org/web/20200918172003id_/http://www.sonos.com/documents/gpl/10.6/dbus.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1994787,
+          "cdx_sha1": "4EF6D0F23690621F8002EC12BBD6FBBF756BC3DA",
+          "local_bytes": 1993756,
+          "local_sha256": "980ed27127e5cca3d50a1581019201ac8083b27e7e9520f6afa29b22314a3ee7",
+          "local_sha1": "4EF6D0F23690621F8002EC12BBD6FBBF756BC3DA",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "drivers.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/drivers.txz",
+          "wayback_timestamp": "20200918171913",
+          "wayback_url": "https://web.archive.org/web/20200918171913id_/http://www.sonos.com/documents/gpl/10.6/drivers.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 167599,
+          "cdx_sha1": "0EF567CB53F4577687F8B7049DA93A2DB44C4FFB",
+          "local_bytes": 166568,
+          "local_sha256": "820dfd427496b666a7772d3879cbd483c20b887fea8dfcf1c8c5185730990ff5",
+          "local_sha1": "0EF567CB53F4577687F8B7049DA93A2DB44C4FFB",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "e2fsprogs.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/e2fsprogs.txz",
+          "wayback_timestamp": "20200918171919",
+          "wayback_url": "https://web.archive.org/web/20200918171919id_/http://www.sonos.com/documents/gpl/10.6/e2fsprogs.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 5515144,
+          "cdx_sha1": "FA6DF6B5D516E25748FCA3AF5E3F2C012F9FF6A5",
+          "local_bytes": 5513388,
+          "local_sha256": "826918cf30b11396f942b8d14170dbf16c4d34fc562593105c7eedf79d7a248c",
+          "local_sha1": "FA6DF6B5D516E25748FCA3AF5E3F2C012F9FF6A5",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "eigen.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/eigen.txz",
+          "wayback_timestamp": "20200918171951",
+          "wayback_url": "https://web.archive.org/web/20200918171951id_/http://www.sonos.com/documents/gpl/10.6/eigen.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1415731,
+          "cdx_sha1": "2C48AFD6475E28EAB8C9B13AF8A35E0FF0560067",
+          "local_bytes": 1414320,
+          "local_sha256": "826abcb964306b9513cdf93d66aa98e8393863f091f435ba72539eb1d03d3d58",
+          "local_sha1": "2C48AFD6475E28EAB8C9B13AF8A35E0FF0560067",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "event_reporter.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/event_reporter.txz",
+          "wayback_timestamp": "20200918171929",
+          "wayback_url": "https://web.archive.org/web/20200918171929id_/http://www.sonos.com/documents/gpl/10.6/event_reporter.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2967,
+          "cdx_sha1": "8C3FDE522E47461A5EA037ED6B8D842F8841AA2C",
+          "local_bytes": 2020,
+          "local_sha256": "8951779b30583a27514792b112b4f38036b5cee014ecfca6994dc39c2d147195",
+          "local_sha1": "8C3FDE522E47461A5EA037ED6B8D842F8841AA2C",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "fscrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/fscrypt.txz",
+          "wayback_timestamp": "20200918171957",
+          "wayback_url": "https://web.archive.org/web/20200918171957id_/http://www.sonos.com/documents/gpl/10.6/fscrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 63877,
+          "cdx_sha1": "E900F04D6B357E066BDA092E5CF44F495ECC7020",
+          "local_bytes": 62880,
+          "local_sha256": "bb389ca7a65eaeb495f36a6d850c8917969c5211c9d5ecc49592597106b4b190",
+          "local_sha1": "E900F04D6B357E066BDA092E5CF44F495ECC7020",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "glib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/glib.txz",
+          "wayback_timestamp": "20200918171949",
+          "wayback_url": "https://web.archive.org/web/20200918171949id_/http://www.sonos.com/documents/gpl/10.6/glib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 7686159,
+          "cdx_sha1": "08494195D8EA00EF1E260578F831AEBA84C2C0C7",
+          "local_bytes": 7682840,
+          "local_sha256": "c73da4ace078e30666e20169ed39005e7d5c04c28a2508dd96ddcdf07df1a66a",
+          "local_sha1": "08494195D8EA00EF1E260578F831AEBA84C2C0C7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/gpl.html",
+          "wayback_timestamp": "20200918170620",
+          "wayback_url": "https://web.archive.org/web/20200918170620id_/http://www.sonos.com/documents/gpl/10.6/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 3055,
+          "cdx_sha1": "53FA35C6A163C55DD58701A0634E5342B21EBFB8",
+          "local_bytes": 7176,
+          "local_sha256": "3fab9d106da1511851e9b5e6270b78f8c188479501eb54b57d3b796437c46022",
+          "local_sha1": "53FA35C6A163C55DD58701A0634E5342B21EBFB8",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes1.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/includes1.txz",
+          "wayback_timestamp": "20200918172003",
+          "wayback_url": "https://web.archive.org/web/20200918172003id_/http://www.sonos.com/documents/gpl/10.6/includes1.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 16573,
+          "cdx_sha1": "BFBA6787500ECD4F66DEE2376476441489068DF8",
+          "local_bytes": 15588,
+          "local_sha256": "e04acd1cedc04200bab79d3d939e534413817ff6a3deb039fa7d95efbce1059d",
+          "local_sha1": "BFBA6787500ECD4F66DEE2376476441489068DF8",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/includes2.txz",
+          "wayback_timestamp": "20200918171935",
+          "wayback_url": "https://web.archive.org/web/20200918171935id_/http://www.sonos.com/documents/gpl/10.6/includes2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 6480,
+          "cdx_sha1": "481A48B883DE86E36BCA197F80A83D8287D413C9",
+          "local_bytes": 5500,
+          "local_sha256": "b95b2bddd6719893b511153286cef266e11944227584950411ef3617458d97d5",
+          "local_sha1": "481A48B883DE86E36BCA197F80A83D8287D413C9",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgcrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/libgcrypt.txz",
+          "wayback_timestamp": "20200918171931",
+          "wayback_url": "https://web.archive.org/web/20200918171931id_/http://www.sonos.com/documents/gpl/10.6/libgcrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2542236,
+          "cdx_sha1": "C2FE67B9E2277D59FB695B06A75EFC4EDB306BB4",
+          "local_bytes": 2540476,
+          "local_sha256": "1a54bcfd1bbba10b005294147bdbb149d20d2bf31693d7e5beea2c7d6e10104b",
+          "local_sha1": "C2FE67B9E2277D59FB695B06A75EFC4EDB306BB4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgpg-error.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/libgpg-error.txz",
+          "wayback_timestamp": "20200918171952",
+          "wayback_url": "https://web.archive.org/web/20200918171952id_/http://www.sonos.com/documents/gpl/10.6/libgpg-error.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 736257,
+          "cdx_sha1": "2D7DD9651B0A2B6414BFE4C2A5CC41241EEA6EB7",
+          "local_bytes": 735052,
+          "local_sha256": "4a082328d7c8dff404f7bf7a7854ab18b891b5264e7538497d1b68a34f0faace",
+          "local_sha1": "2D7DD9651B0A2B6414BFE4C2A5CC41241EEA6EB7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.22.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-2.4.22.txz",
+          "wayback_timestamp": "20200918171917",
+          "wayback_url": "https://web.archive.org/web/20200918171917id_/http://www.sonos.com/documents/gpl/10.6/linux-2.4.22.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 10089235,
+          "cdx_sha1": "B98588854ED0AEF39E4D87F5C655195744568CB9",
+          "local_bytes": 10085172,
+          "local_sha256": "4f8d1cda10814b1295b7b7e902a2754420e5a2039cf2d00c445de13480d4d790",
+          "local_sha1": "B98588854ED0AEF39E4D87F5C655195744568CB9",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.25.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-2.4.25.txz",
+          "wayback_timestamp": "20200918171947",
+          "wayback_url": "https://web.archive.org/web/20200918171947id_/http://www.sonos.com/documents/gpl/10.6/linux-2.4.25.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 10398111,
+          "cdx_sha1": "2EE368875B0594FA46544B5B2E3E2CD71061B3DB",
+          "local_bytes": 10393952,
+          "local_sha256": "1538f0a7171b1a4ad598af2e364916e83dbab26cceee17387f9edba57b683f65",
+          "local_sha1": "2EE368875B0594FA46544B5B2E3E2CD71061B3DB",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.35.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-2.6.35.txz",
+          "wayback_timestamp": "20200918171940",
+          "wayback_url": "https://web.archive.org/web/20200918171940id_/http://www.sonos.com/documents/gpl/10.6/linux-2.6.35.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 60538494,
+          "cdx_sha1": "844D9455E72B874743CEDD794DF17C90BD39C7DB",
+          "local_bytes": 60519044,
+          "local_sha256": "6c6c15dec4a14f58bb79228d6734eb6237763ac034a43cc4c71105c2a4ad3e33",
+          "local_sha1": "844D9455E72B874743CEDD794DF17C90BD39C7DB",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-3.10.53.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-3.10.53.txz",
+          "wayback_timestamp": "20200918171933",
+          "wayback_url": "https://web.archive.org/web/20200918171933id_/http://www.sonos.com/documents/gpl/10.6/linux-3.10.53.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 77361635,
+          "cdx_sha1": "3CD010C65C7154B7A7CB1087E5A1F745E19387CD",
+          "local_bytes": 77337072,
+          "local_sha256": "bb7c3ed861e3127b47ab8cf69a738d29a8aa8305f1580a480f30b8b15aaf730a",
+          "local_sha1": "3CD010C65C7154B7A7CB1087E5A1F745E19387CD",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.4.24.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-4.4.24.txz",
+          "wayback_timestamp": "20200918171911",
+          "wayback_url": "https://web.archive.org/web/20200918171911id_/http://www.sonos.com/documents/gpl/10.6/linux-4.4.24.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 93428416,
+          "cdx_sha1": "974BF1BA4078F4D458F0EEC5784574C0209C909A",
+          "local_bytes": 93398932,
+          "local_sha256": "6422885948b5f45b655b357b0124c00dedf9e770daec5272ca136d424ac5df1a",
+          "local_sha1": "974BF1BA4078F4D458F0EEC5784574C0209C909A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.9.99.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/linux-4.9.99.txz",
+          "wayback_timestamp": "20200918171910",
+          "wayback_url": "https://web.archive.org/web/20200918171910id_/http://www.sonos.com/documents/gpl/10.6/linux-4.9.99.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 103240957,
+          "cdx_sha1": "BFD9589183383BBA7F0D0DCE1BC026B4982AF3FF",
+          "local_bytes": 103208480,
+          "local_sha256": "ec24ef94b7a16c9749af7d16b23e4dc7803993bc46407a3bdfee0df59477cbcd",
+          "local_sha1": "BFD9589183383BBA7F0D0DCE1BC026B4982AF3FF",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "lvm2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/lvm2.txz",
+          "wayback_timestamp": "20200918172007",
+          "wayback_url": "https://web.archive.org/web/20200918172007id_/http://www.sonos.com/documents/gpl/10.6/lvm2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1684254,
+          "cdx_sha1": "13D65E4D98074BAF0D713CB8AE2E05E4343D536E",
+          "local_bytes": 1682760,
+          "local_sha256": "28796aeadace22c21738ccc1299f7c1cb8f23acfe9562e9becd0e1b25e461c81",
+          "local_sha1": "13D65E4D98074BAF0D713CB8AE2E05E4343D536E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "mpg123.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/mpg123.txz",
+          "wayback_timestamp": "20200918171923",
+          "wayback_url": "https://web.archive.org/web/20200918171923id_/http://www.sonos.com/documents/gpl/10.6/mpg123.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 768947,
+          "cdx_sha1": "576FC5E3D4C7FDAB2FA8DDA173A3B72205EF01F2",
+          "local_bytes": 767740,
+          "local_sha256": "52d93a999a1404a11ff3503d746d43d68245dc894c95c91a254f72c9410dd088",
+          "local_sha1": "576FC5E3D4C7FDAB2FA8DDA173A3B72205EF01F2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "rng-tools.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/rng-tools.txz",
+          "wayback_timestamp": "20200918171921",
+          "wayback_url": "https://web.archive.org/web/20200918171921id_/http://www.sonos.com/documents/gpl/10.6/rng-tools.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 124435,
+          "cdx_sha1": "CA0EA14D21B4036623EBD7ABB2E329042CE37D94",
+          "local_bytes": 123416,
+          "local_sha256": "fe1bf15399d069b3cdff173e1e10c3e517176b69941a28b0a87e8d751def3141",
+          "local_sha1": "CA0EA14D21B4036623EBD7ABB2E329042CE37D94",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sbclib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/sbclib.txz",
+          "wayback_timestamp": "20200918171917",
+          "wayback_url": "https://web.archive.org/web/20200918171917id_/http://www.sonos.com/documents/gpl/10.6/sbclib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 17852,
+          "cdx_sha1": "E311D2C02FE230D844C13D0AEB74EDDBCB4D5263",
+          "local_bytes": 16868,
+          "local_sha256": "3ecbb3e64add554bc30b0f1598c962e8996fa439ab1d2f67bea610030a376ea6",
+          "local_sha1": "E311D2C02FE230D844C13D0AEB74EDDBCB4D5263",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-kernel.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/sonos-kernel.txz",
+          "wayback_timestamp": "20200918171945",
+          "wayback_url": "https://web.archive.org/web/20200918171945id_/http://www.sonos.com/documents/gpl/10.6/sonos-kernel.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 33001,
+          "cdx_sha1": "3A8AAB508FF5C66083CBD23F524905617C7D956B",
+          "local_bytes": 32012,
+          "local_sha256": "3c1dbdd2ab372b7df953c277ad8db3b18681410818f988c962bf0659153893e2",
+          "local_sha1": "3A8AAB508FF5C66083CBD23F524905617C7D956B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "udhcp-0.9.8.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/10.6/udhcp-0.9.8.txz",
+          "wayback_timestamp": "20200918171953",
+          "wayback_url": "https://web.archive.org/web/20200918171953id_/http://www.sonos.com/documents/gpl/10.6/udhcp-0.9.8.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 51941,
+          "cdx_sha1": "FEE0EC6339C33BD3AD32323D3BDF2449BB5E7D03",
+          "local_bytes": 50944,
+          "local_sha256": "056a1a72d3eb59e4447633f60cf06ef93939ecd07180f4fe4fed59efaa4927e4",
+          "local_sha1": "FEE0EC6339C33BD3AD32323D3BDF2449BB5E7D03",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "12.0",
+      "index": {
+        "original_url": "http://www.sonos.com/documents/gpl/12.0/gpl.html",
+        "wayback_timestamp": "20201201062450",
+        "wayback_url": "https://web.archive.org/web/20201201062450id_/http://www.sonos.com/documents/gpl/12.0/gpl.html",
+        "bytes": 6954,
+        "sha256": "11a2437f4555141c05e3c95c6765918da9ce77169ea8922c3722023e48b03b9e",
+        "links": [
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/alsa-lib.txz",
+            "text": "alsa-lib.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/alsa-utils.txz",
+            "text": "alsa-utils.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/busybox.txz",
+            "text": "busybox.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/chrony.txz",
+            "text": "chrony.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/cryptsetup.txz",
+            "text": "cryptsetup.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/e2fsprogs.txz",
+            "text": "e2fsprogs.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/eigen.txz",
+            "text": "eigen.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/libgcrypt.txz",
+            "text": "libgcrypt.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/libgpg-error.txz",
+            "text": "libgpg-error.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/linux-2.4.22.txz",
+            "text": "linux-2.4.22.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/linux-4.9.99.txz",
+            "text": "linux-4.9.99.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/lvm2.txz",
+            "text": "lvm2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/Sii9437.txz",
+            "text": "Sii9437.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/12.0/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "Sii9437.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/Sii9437.txz",
+          "wayback_timestamp": "20200918172209",
+          "wayback_url": "https://web.archive.org/web/20200918172209id_/http://www.sonos.com/documents/gpl/12.0/Sii9437.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 261571,
+          "cdx_sha1": "30D177662D14AE0B42A7A5A753F4FBF0E77EB54A",
+          "local_bytes": 260524,
+          "local_sha256": "da721aeec94ac9800f6e4a8eeaf938e2dd0d0b6f4684c62a36ad3b017b209d27",
+          "local_sha1": "30D177662D14AE0B42A7A5A753F4FBF0E77EB54A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20200918172158",
+          "wayback_url": "https://web.archive.org/web/20200918172158id_/http://www.sonos.com/documents/gpl/12.0/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 209753,
+          "cdx_sha1": "A61CCC82EA1DA3C3C9076AA8ED1E6B47C86FA485",
+          "local_bytes": 218768,
+          "local_sha256": "10b74bf9ceece138ce6d4691c170bc2e94793f81c0d6e6128b26695092bbd4b1",
+          "local_sha1": "A61CCC82EA1DA3C3C9076AA8ED1E6B47C86FA485",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-lib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/alsa-lib.txz",
+          "wayback_timestamp": "20200918172228",
+          "wayback_url": "https://web.archive.org/web/20200918172228id_/http://www.sonos.com/documents/gpl/12.0/alsa-lib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 759129,
+          "cdx_sha1": "6F64CD9A65A5781DAED40B91769A67F86E12EA7D",
+          "local_bytes": 757924,
+          "local_sha256": "73350e42b6f890eca2e2f81b2d18c62d16acf0b8afd81d43a9bc99155ffe0cd5",
+          "local_sha1": "6F64CD9A65A5781DAED40B91769A67F86E12EA7D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-utils.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/alsa-utils.txz",
+          "wayback_timestamp": "20200918172215",
+          "wayback_url": "https://web.archive.org/web/20200918172215id_/http://www.sonos.com/documents/gpl/12.0/alsa-utils.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1111946,
+          "cdx_sha1": "BBE1E310B8CAE7C286234A8050A318E061ADF26D",
+          "local_bytes": 1110636,
+          "local_sha256": "ac5c7351e523766cae84f44daa8c58a6206f70a067bba00d619f9318d9bb21fd",
+          "local_sha1": "BBE1E310B8CAE7C286234A8050A318E061ADF26D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bluez.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/bluez.txz",
+          "wayback_timestamp": "20200918172229",
+          "wayback_url": "https://web.archive.org/web/20200918172229id_/http://www.sonos.com/documents/gpl/12.0/bluez.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1717606,
+          "cdx_sha1": "FECAD1DF054B73B8C0EB92852F5ED84E55E22DFC",
+          "local_bytes": 1716112,
+          "local_sha256": "c05ba5b0254fed75adbee4684097e25157b660db85692762e524fa346868ef62",
+          "local_sha1": "FECAD1DF054B73B8C0EB92852F5ED84E55E22DFC",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bridge-utils.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/bridge-utils.txz",
+          "wayback_timestamp": "20200918172151",
+          "wayback_url": "https://web.archive.org/web/20200918172151id_/http://www.sonos.com/documents/gpl/12.0/bridge-utils.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 54164,
+          "cdx_sha1": "058C7D704482CEFA31581D5C1A700376D1110EE4",
+          "local_bytes": 53172,
+          "local_sha256": "eb9dd565b82f6fa5f050a3d71d1d58e76539bdd89a24076c9d6360303304711f",
+          "local_sha1": "058C7D704482CEFA31581D5C1A700376D1110EE4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/busybox.txz",
+          "wayback_timestamp": "20200918172219",
+          "wayback_url": "https://web.archive.org/web/20200918172219id_/http://www.sonos.com/documents/gpl/12.0/busybox.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2047655,
+          "cdx_sha1": "E3EB22F407B51D456A53492C181A821ADC2CB277",
+          "local_bytes": 2080250,
+          "local_sha256": "b0bdac5d0adbb82eb0d7988dc0b2c6f668467fa50cce238238c93398cea2e36d",
+          "local_sha1": "E3EB22F407B51D456A53492C181A821ADC2CB277",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "chrony.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/chrony.txz",
+          "wayback_timestamp": "20200918172213",
+          "wayback_url": "https://web.archive.org/web/20200918172213id_/http://www.sonos.com/documents/gpl/12.0/chrony.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 315209,
+          "cdx_sha1": "AF280CD2672907ADA2DD80C03C33D8E00DCE55BC",
+          "local_bytes": 314140,
+          "local_sha256": "e586caaaf6319d8ce02d1817772cf2164d55c6b25760b5b8ed23ba34ae0ce76b",
+          "local_sha1": "AF280CD2672907ADA2DD80C03C33D8E00DCE55BC",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "cryptsetup.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/cryptsetup.txz",
+          "wayback_timestamp": "20200918172238",
+          "wayback_url": "https://web.archive.org/web/20200918172238id_/http://www.sonos.com/documents/gpl/12.0/cryptsetup.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 10561472,
+          "cdx_sha1": "5B8B638F878A3869B2B52BEB605265E7DBCB0C6E",
+          "local_bytes": 10559352,
+          "local_sha256": "fe9a29074314866ff00b403aa2368898dd44261f9d21ff2f76544228ef35f1f0",
+          "local_sha1": "5B8B638F878A3869B2B52BEB605265E7DBCB0C6E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "dbus.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/dbus.txz",
+          "wayback_timestamp": "20200918172149",
+          "wayback_url": "https://web.archive.org/web/20200918172149id_/http://www.sonos.com/documents/gpl/12.0/dbus.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1994782,
+          "cdx_sha1": "BDAE2F6E462A823DF993735A73FF135825E7878B",
+          "local_bytes": 1993760,
+          "local_sha256": "be86095118dbe76f249bb42bd511bcf525f705e9531175a80b6b63bb52eeed6a",
+          "local_sha1": "BDAE2F6E462A823DF993735A73FF135825E7878B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "drivers.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/drivers.txz",
+          "wayback_timestamp": "20200918172221",
+          "wayback_url": "https://web.archive.org/web/20200918172221id_/http://www.sonos.com/documents/gpl/12.0/drivers.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 187653,
+          "cdx_sha1": "48EDF4808C9A82F46F4A42DBFEFAB9270A24FBED",
+          "local_bytes": 186620,
+          "local_sha256": "9cdbdd9c1ed7b9e570a20028784e090ba184db57eba2969e55f16c216c5e26aa",
+          "local_sha1": "48EDF4808C9A82F46F4A42DBFEFAB9270A24FBED",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "e2fsprogs.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/e2fsprogs.txz",
+          "wayback_timestamp": "20200918172246",
+          "wayback_url": "https://web.archive.org/web/20200918172246id_/http://www.sonos.com/documents/gpl/12.0/e2fsprogs.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 5793819,
+          "cdx_sha1": "621DEA87FA5323F102852FF56DF0775C53CB0B47",
+          "local_bytes": 5792744,
+          "local_sha256": "77d4d738b6cbce5d63444e622daa0afdb46528e287b2a743b2184e21591ce10e",
+          "local_sha1": "621DEA87FA5323F102852FF56DF0775C53CB0B47",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "eigen.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/eigen.txz",
+          "wayback_timestamp": "20200918172239",
+          "wayback_url": "https://web.archive.org/web/20200918172239id_/http://www.sonos.com/documents/gpl/12.0/eigen.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1416225,
+          "cdx_sha1": "729EC3203D11FD6343CABBD16D956DEB163E5F82",
+          "local_bytes": 1414820,
+          "local_sha256": "12611e7fa6595aa701f4f7b8c69bce118cf9ef6904c135bf4f44cf42b6e551b2",
+          "local_sha1": "729EC3203D11FD6343CABBD16D956DEB163E5F82",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "event_reporter.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/event_reporter.txz",
+          "wayback_timestamp": "20200918172231",
+          "wayback_url": "https://web.archive.org/web/20200918172231id_/http://www.sonos.com/documents/gpl/12.0/event_reporter.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2950,
+          "cdx_sha1": "E5E95BE1CE2CEDFB0C9A84C01093062312D4602B",
+          "local_bytes": 2016,
+          "local_sha256": "9f59bf22468465c433ec2efccaec29b75924a0d217b82e9cb61f0d7cf736d843",
+          "local_sha1": "E5E95BE1CE2CEDFB0C9A84C01093062312D4602B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "fscrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/fscrypt.txz",
+          "wayback_timestamp": "20200918172201",
+          "wayback_url": "https://web.archive.org/web/20200918172201id_/http://www.sonos.com/documents/gpl/12.0/fscrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 63400,
+          "cdx_sha1": "250F23CFD3BC0D30EBA5B665B46CC5FBFF73211E",
+          "local_bytes": 62412,
+          "local_sha256": "1e56f5b696a7efbe7637cb0cf76024f3f63f95b9eeab51eeeb4f8884497ae80e",
+          "local_sha1": "250F23CFD3BC0D30EBA5B665B46CC5FBFF73211E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "glib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/glib.txz",
+          "wayback_timestamp": "20200918172203",
+          "wayback_url": "https://web.archive.org/web/20200918172203id_/http://www.sonos.com/documents/gpl/12.0/glib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 7686152,
+          "cdx_sha1": "C29CBAA0B44E75109664C225B3F7D21AC791C758",
+          "local_bytes": 7682844,
+          "local_sha256": "7bd204cfcd6d8c439452623e8f8bb1747a2f931efdb06851d15fec006689cd78",
+          "local_sha1": "C29CBAA0B44E75109664C225B3F7D21AC791C758",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/gpl.html",
+          "wayback_timestamp": "20200811190522",
+          "wayback_url": "https://web.archive.org/web/20200811190522id_/http://www.sonos.com/documents/gpl/12.0/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 3147,
+          "cdx_sha1": "67ACCB44F8E7B0DE6B783A11DD81B2C32D0BC6B5",
+          "local_bytes": 6954,
+          "local_sha256": "4c584ff8b20d82228745e1b1bd9aba9e31698f318fc574ca488db9950678e949",
+          "local_sha1": "67ACCB44F8E7B0DE6B783A11DD81B2C32D0BC6B5",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes1.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/includes1.txz",
+          "wayback_timestamp": "20200918172157",
+          "wayback_url": "https://web.archive.org/web/20200918172157id_/http://www.sonos.com/documents/gpl/12.0/includes1.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 16827,
+          "cdx_sha1": "A0C72DB2704AF28E883799B35FCC7CF1A6F76579",
+          "local_bytes": 15844,
+          "local_sha256": "56f3323877ce1b2471c55947540b8d976265a0d031efbc0fd0036c8ac180c9be",
+          "local_sha1": "A0C72DB2704AF28E883799B35FCC7CF1A6F76579",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/includes2.txz",
+          "wayback_timestamp": "20200918172223",
+          "wayback_url": "https://web.archive.org/web/20200918172223id_/http://www.sonos.com/documents/gpl/12.0/includes2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 6432,
+          "cdx_sha1": "5741A13928BBC5576903E55D497A735786B20DAB",
+          "local_bytes": 5464,
+          "local_sha256": "9cfe9cd272eebdf6dc1b2f596c996f834c01b1c891aedbed08138d19419ff79a",
+          "local_sha1": "5741A13928BBC5576903E55D497A735786B20DAB",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgcrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/libgcrypt.txz",
+          "wayback_timestamp": "20200918172149",
+          "wayback_url": "https://web.archive.org/web/20200918172149id_/http://www.sonos.com/documents/gpl/12.0/libgcrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 2542786,
+          "cdx_sha1": "CE38BBBDC1427AB3B415B78D4485E28DADE61B9B",
+          "local_bytes": 2541036,
+          "local_sha256": "51f2d9e1478efbcfaad528644c2da4e5ac37803d791debbe0db0ddb84a21c83c",
+          "local_sha1": "CE38BBBDC1427AB3B415B78D4485E28DADE61B9B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgpg-error.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/libgpg-error.txz",
+          "wayback_timestamp": "20200918172242",
+          "wayback_url": "https://web.archive.org/web/20200918172242id_/http://www.sonos.com/documents/gpl/12.0/libgpg-error.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 736314,
+          "cdx_sha1": "F328947160F73E344418F5DF249EE8C4934B3C6D",
+          "local_bytes": 735116,
+          "local_sha256": "5564b93156b26f98e24fc67456430d7f3af2df89cd0356a3cf1edbe1af9c2889",
+          "local_sha1": "F328947160F73E344418F5DF249EE8C4934B3C6D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.22.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/linux-2.4.22.txz",
+          "wayback_timestamp": "20200918172205",
+          "wayback_url": "https://web.archive.org/web/20200918172205id_/http://www.sonos.com/documents/gpl/12.0/linux-2.4.22.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 10087941,
+          "cdx_sha1": "C67FA0B9DB0FEFCE9F5C656D450C137B89B2902D",
+          "local_bytes": 10083884,
+          "local_sha256": "b02001c2e14ccf65f0638ae92f2824692025083f1e5393a6af7f43c51212cc50",
+          "local_sha1": "C67FA0B9DB0FEFCE9F5C656D450C137B89B2902D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.35.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/linux-2.6.35.txz",
+          "wayback_timestamp": "20200918172153",
+          "wayback_url": "https://web.archive.org/web/20200918172153id_/http://www.sonos.com/documents/gpl/12.0/linux-2.6.35.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 60538566,
+          "cdx_sha1": "B411A31E5B708372B5FBBB7BD0C6B2671B86E13D",
+          "local_bytes": 60519128,
+          "local_sha256": "0e93d728a38a8fe820c9930f4594758c8f09911b1e8ee4105d5f78d47f0efa18",
+          "local_sha1": "B411A31E5B708372B5FBBB7BD0C6B2671B86E13D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-3.10.53.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/linux-3.10.53.txz",
+          "wayback_timestamp": "20200918172244",
+          "wayback_url": "https://web.archive.org/web/20200918172244id_/http://www.sonos.com/documents/gpl/12.0/linux-3.10.53.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 77363804,
+          "cdx_sha1": "F48C09CC04BCD859CC8324B48E3AEC571EC6FF2D",
+          "local_bytes": 77339248,
+          "local_sha256": "15c22b3311e248d7fa39dc015c1781ccb82bdf7dba8b5201fe18523722823576",
+          "local_sha1": "F48C09CC04BCD859CC8324B48E3AEC571EC6FF2D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.4.24.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/linux-4.4.24.txz",
+          "wayback_timestamp": "20200918172211",
+          "wayback_url": "https://web.archive.org/web/20200918172211id_/http://www.sonos.com/documents/gpl/12.0/linux-4.4.24.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 93432223,
+          "cdx_sha1": "76CF972B7C986FE9A4EAEECB68637A3552C84052",
+          "local_bytes": 93402752,
+          "local_sha256": "aca59e3707b91eff7717b016ea5f65aeaf595d54a258c9c7fc00b65664a6cdb7",
+          "local_sha1": "76CF972B7C986FE9A4EAEECB68637A3552C84052",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.9.99.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/linux-4.9.99.txz",
+          "wayback_timestamp": "20200918172233",
+          "wayback_url": "https://web.archive.org/web/20200918172233id_/http://www.sonos.com/documents/gpl/12.0/linux-4.9.99.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 103280277,
+          "cdx_sha1": "5F60C0C57B14D4FF20A8F2AFF8AB19C8E7A01179",
+          "local_bytes": 103247796,
+          "local_sha256": "91fc6506bb2ffa51d3f72fdb388bf07b7effb2a751520ccb791f4af4ac734de6",
+          "local_sha1": "5F60C0C57B14D4FF20A8F2AFF8AB19C8E7A01179",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "lvm2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/lvm2.txz",
+          "wayback_timestamp": "20200918172207",
+          "wayback_url": "https://web.archive.org/web/20200918172207id_/http://www.sonos.com/documents/gpl/12.0/lvm2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1684048,
+          "cdx_sha1": "B9E49F59985E0394DE199CF13CA37F7F61EC7558",
+          "local_bytes": 1682572,
+          "local_sha256": "32892989d76ee067a1259207481c2dc30235a506e0f487285200dc94efa94e9c",
+          "local_sha1": "B9E49F59985E0394DE199CF13CA37F7F61EC7558",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "mpg123.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/mpg123.txz",
+          "wayback_timestamp": "20200918172236",
+          "wayback_url": "https://web.archive.org/web/20200918172236id_/http://www.sonos.com/documents/gpl/12.0/mpg123.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 769181,
+          "cdx_sha1": "A3566A0F8CAEBB2B1FF6DF354DBA9D153E074C23",
+          "local_bytes": 767984,
+          "local_sha256": "034007d03c835ee04c424cbd5d33e88e0b4c17503a1fd062a82b1d4b1f8b2dfa",
+          "local_sha1": "A3566A0F8CAEBB2B1FF6DF354DBA9D153E074C23",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "rng-tools.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/rng-tools.txz",
+          "wayback_timestamp": "20200918172217",
+          "wayback_url": "https://web.archive.org/web/20200918172217id_/http://www.sonos.com/documents/gpl/12.0/rng-tools.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 124425,
+          "cdx_sha1": "BBF2759820DE982952A75E2D03A4721E8F78D040",
+          "local_bytes": 123416,
+          "local_sha256": "8cdab53ba88b7975a9d50079d678a5db48de23c0583054dd1a2c424dd896fe86",
+          "local_sha1": "BBF2759820DE982952A75E2D03A4721E8F78D040",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sbclib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/sbclib.txz",
+          "wayback_timestamp": "20200918172225",
+          "wayback_url": "https://web.archive.org/web/20200918172225id_/http://www.sonos.com/documents/gpl/12.0/sbclib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 17831,
+          "cdx_sha1": "E07D6ACE8BF8E373C8E109C159818144481EA9F9",
+          "local_bytes": 16856,
+          "local_sha256": "80f6a117661c2c41ea052f4a1057027f8e1eb879cd4b24a0f51dac67c882a517",
+          "local_sha1": "E07D6ACE8BF8E373C8E109C159818144481EA9F9",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-kernel.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/sonos-kernel.txz",
+          "wayback_timestamp": "20200918172156",
+          "wayback_url": "https://web.archive.org/web/20200918172156id_/http://www.sonos.com/documents/gpl/12.0/sonos-kernel.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 32991,
+          "cdx_sha1": "3C69480FC085EDF0451F23A188643125163B4AE2",
+          "local_bytes": 32016,
+          "local_sha256": "281bbfdb12b0ae07bb81586af22cacd22d88b08b65eea026515ad2e86874b74e",
+          "local_sha1": "3C69480FC085EDF0451F23A188643125163B4AE2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "udhcp-0.9.8.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/12.0/udhcp-0.9.8.txz",
+          "wayback_timestamp": "20200918172145",
+          "wayback_url": "https://web.archive.org/web/20200918172145id_/http://www.sonos.com/documents/gpl/12.0/udhcp-0.9.8.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 52182,
+          "cdx_sha1": "9ED9255844C1292BFCCC6232A7CF11EDD656E395",
+          "local_bytes": 51196,
+          "local_sha256": "c4a759828d3c62e2cdac8f6e8ac59df8f4735a5be99eacf0f8be72df7a878090",
+          "local_sha1": "9ED9255844C1292BFCCC6232A7CF11EDD656E395",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "13.2",
+      "index": {
+        "original_url": "http://www.sonos.com/documents/gpl/13.2/gpl.html",
+        "wayback_timestamp": "20211022094905",
+        "wayback_url": "https://web.archive.org/web/20211022094905id_/http://www.sonos.com/documents/gpl/13.2/gpl.html",
+        "bytes": 7532,
+        "sha256": "adc14d3fee28566606bd60d6b3ba3f96f663934942e1d79295d7040926879dca",
+        "links": [
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/alsa-lib.txz",
+            "text": "alsa-lib.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/alsa-utils.txz",
+            "text": "alsa-utils.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/busybox.txz",
+            "text": "busybox.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/chrony.txz",
+            "text": "chrony.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/common.txz",
+            "text": "common.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/cryptsetup.txz",
+            "text": "cryptsetup.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/e2fsprogs.txz",
+            "text": "e2fsprogs.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/eigen.txz",
+            "text": "eigen.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
+            "text": "glibc-2.3.5.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
+            "text": "glibc-2.8.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "http://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/libgcrypt.txz",
+            "text": "libgcrypt.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/libgpg-error.txz",
+            "text": "libgpg-error.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/libnl.txz",
+            "text": "libnl.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/libusb.txz",
+            "text": "libusb.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/linux-2.4.22.txz",
+            "text": "linux-2.4.22.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/linux-4.9.99.txz",
+            "text": "linux-4.9.99.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/lvm2.txz",
+            "text": "lvm2.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/Sii9437.txz",
+            "text": "Sii9437.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/simple80211.txz",
+            "text": "simple80211.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          },
+          {
+            "url": "http://www.sonos.com/documents/gpl/13.2/wireless_tools.txz",
+            "text": "wireless_tools.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "Sii9437.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/Sii9437.txz",
+          "wayback_timestamp": "20211018095829",
+          "wayback_url": "https://web.archive.org/web/20211018095829id_/http://www.sonos.com/documents/gpl/13.2/Sii9437.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 262248,
+          "cdx_sha1": "5E6E70F92B00E9A6B0FB62115A110EB9F8B3A1C2",
+          "local_bytes": 261116,
+          "local_sha256": "3c19a848b9f8c4d9dc42cf72358adc57ee5fef9a42baef422bddc8eb8446a686",
+          "local_sha1": "5E6E70F92B00E9A6B0FB62115A110EB9F8B3A1C2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20211018104425",
+          "wayback_url": "https://web.archive.org/web/20211018104425id_/http://www.sonos.com/documents/gpl/13.2/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 289392,
+          "cdx_sha1": "AA52BE31F8F29078AE4A04B977AB6447B1CC048E",
+          "local_bytes": 308898,
+          "local_sha256": "ea1f5df3682394afe532cafa8f2ea895ecbe21dac1a1a5076a7ebaf55a64e040",
+          "local_sha1": "AA52BE31F8F29078AE4A04B977AB6447B1CC048E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-lib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/alsa-lib.txz",
+          "wayback_timestamp": "20211018095510",
+          "wayback_url": "https://web.archive.org/web/20211018095510id_/http://www.sonos.com/documents/gpl/13.2/alsa-lib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 759701,
+          "cdx_sha1": "3C1787A881AC60125A4D261A3E276DB0432C7F75",
+          "local_bytes": 758416,
+          "local_sha256": "ad48a96f09610121e92fc6c3107c50929e0ce20efdad4892daf79e5fd3c0bf6e",
+          "local_sha1": "3C1787A881AC60125A4D261A3E276DB0432C7F75",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-utils.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/alsa-utils.txz",
+          "wayback_timestamp": "20211018113248",
+          "wayback_url": "https://web.archive.org/web/20211018113248id_/http://www.sonos.com/documents/gpl/13.2/alsa-utils.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049988,
+          "cdx_sha1": "70A35D462F6FC6F085D6110C0EEF0E012E16589F",
+          "local_bytes": 1048576,
+          "local_sha256": "6e701093aec0d42d32a1722bc49f9772702b5015e653f632dee4c1c499e1fefa",
+          "local_sha1": "70A35D462F6FC6F085D6110C0EEF0E012E16589F",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bluez.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/bluez.txz",
+          "wayback_timestamp": "20211018102936",
+          "wayback_url": "https://web.archive.org/web/20211018102936id_/http://www.sonos.com/documents/gpl/13.2/bluez.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049976,
+          "cdx_sha1": "C1B298A437008F42655EE62138CD62102B49229E",
+          "local_bytes": 1048576,
+          "local_sha256": "eb2d23b1507c4daf77185f889b1f9a39c5799d78ce5826d6a7e0bed94542a250",
+          "local_sha1": "C1B298A437008F42655EE62138CD62102B49229E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bridge-utils.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/bridge-utils.txz",
+          "wayback_timestamp": "20211018111146",
+          "wayback_url": "https://web.archive.org/web/20211018111146id_/http://www.sonos.com/documents/gpl/13.2/bridge-utils.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 54333,
+          "cdx_sha1": "7099C5F408DA8094C6629653AA77240F2009A39D",
+          "local_bytes": 53252,
+          "local_sha256": "765596d8b578e5336f25a61fec0012993f62f520211d95bfc40afdef17af2c4f",
+          "local_sha1": "7099C5F408DA8094C6629653AA77240F2009A39D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/busybox.txz",
+          "wayback_timestamp": "20211018104740",
+          "wayback_url": "https://web.archive.org/web/20211018104740id_/http://www.sonos.com/documents/gpl/13.2/busybox.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049983,
+          "cdx_sha1": "512A4C404E7CCFF23627B370E2910FC9A4968325",
+          "local_bytes": 1048576,
+          "local_sha256": "994732b614e551a1e014bdc7df77eba066281dd137984cd75a36c6e7c0a1c5d8",
+          "local_sha1": "512A4C404E7CCFF23627B370E2910FC9A4968325",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "chrony.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/chrony.txz",
+          "wayback_timestamp": "20211018102049",
+          "wayback_url": "https://web.archive.org/web/20211018102049id_/http://www.sonos.com/documents/gpl/13.2/chrony.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 315671,
+          "cdx_sha1": "CB6AAF01BCBC20D7A798814894B594B1640F6A79",
+          "local_bytes": 314512,
+          "local_sha256": "3676e7ca9e830f113868bbd329b075b99ca80179de43afe71959be09005d07b1",
+          "local_sha1": "CB6AAF01BCBC20D7A798814894B594B1640F6A79",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "common.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/common.txz",
+          "wayback_timestamp": "20211018095143",
+          "wayback_url": "https://web.archive.org/web/20211018095143id_/http://www.sonos.com/documents/gpl/13.2/common.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 19405,
+          "cdx_sha1": "404DB39BD922EE8429A6649653DBA5A3FB232863",
+          "local_bytes": 18352,
+          "local_sha256": "b63e6c2e01a61d42d08d1afddc5d9910a5d9adb48103458dc32a5608b85b4c93",
+          "local_sha1": "404DB39BD922EE8429A6649653DBA5A3FB232863",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "cryptsetup.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/cryptsetup.txz",
+          "wayback_timestamp": "20211018095601",
+          "wayback_url": "https://web.archive.org/web/20211018095601id_/http://www.sonos.com/documents/gpl/13.2/cryptsetup.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1048955,
+          "cdx_sha1": "0CB767600F23CBDD08F092997381A184D3C98D39",
+          "local_bytes": 1048576,
+          "local_sha256": "b0ae17c2a9e29180cdb4a507bb356b3bd7b0eabcc1f56933a7d511c6581c3144",
+          "local_sha1": "0CB767600F23CBDD08F092997381A184D3C98D39",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "dbus.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/dbus.txz",
+          "wayback_timestamp": "20211018101009",
+          "wayback_url": "https://web.archive.org/web/20211018101009id_/http://www.sonos.com/documents/gpl/13.2/dbus.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049817,
+          "cdx_sha1": "C496569238F950FF46A7AA847B99BC4E9981427A",
+          "local_bytes": 1048576,
+          "local_sha256": "ed7d7caca78a237bc632450c812ecdf9d28aaaa2aad197235ef7c946c373689c",
+          "local_sha1": "C496569238F950FF46A7AA847B99BC4E9981427A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "drivers.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/drivers.txz",
+          "wayback_timestamp": "20211018114056",
+          "wayback_url": "https://web.archive.org/web/20211018114056id_/http://www.sonos.com/documents/gpl/13.2/drivers.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 271226,
+          "cdx_sha1": "885649C6DD5D5D28D12D70EC8EE4EF5FD9E31270",
+          "local_bytes": 270092,
+          "local_sha256": "6f1636414e70f359a613d9f40d8b96fc06cd9bb54cd62f8287ca8d9eab0b1278",
+          "local_sha1": "885649C6DD5D5D28D12D70EC8EE4EF5FD9E31270",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "e2fsprogs.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/e2fsprogs.txz",
+          "wayback_timestamp": "20211018110319",
+          "wayback_url": "https://web.archive.org/web/20211018110319id_/http://www.sonos.com/documents/gpl/13.2/e2fsprogs.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049990,
+          "cdx_sha1": "2DD3B45F164DFFAECA65A15CC76F8369824DE1DD",
+          "local_bytes": 1048576,
+          "local_sha256": "ed3db29972349d0aa632243617886d190f84e05ffb23e12b017b701ced70a53b",
+          "local_sha1": "2DD3B45F164DFFAECA65A15CC76F8369824DE1DD",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "eigen.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/eigen.txz",
+          "wayback_timestamp": "20211018095738",
+          "wayback_url": "https://web.archive.org/web/20211018095738id_/http://www.sonos.com/documents/gpl/13.2/eigen.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049981,
+          "cdx_sha1": "01C8ECBEBF608889FEE01BC2AA0BDC4764406D76",
+          "local_bytes": 1048576,
+          "local_sha256": "f06777932e2118cde40f4c18c66db5446acf3ab044bbdc5ead59179442567fbb",
+          "local_sha1": "01C8ECBEBF608889FEE01BC2AA0BDC4764406D76",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "event_reporter.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/event_reporter.txz",
+          "wayback_timestamp": "20211018103018",
+          "wayback_url": "https://web.archive.org/web/20211018103018id_/http://www.sonos.com/documents/gpl/13.2/event_reporter.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 3050,
+          "cdx_sha1": "399C55CA5F665766A12925E03B1A6DA84A467E3A",
+          "local_bytes": 2048,
+          "local_sha256": "41c7006f1efdc593ce5fcf940b00e5cae92121adcb0ca3e3371ac80edaef97ec",
+          "local_sha1": "399C55CA5F665766A12925E03B1A6DA84A467E3A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "fscrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/fscrypt.txz",
+          "wayback_timestamp": "20211018111851",
+          "wayback_url": "https://web.archive.org/web/20211018111851id_/http://www.sonos.com/documents/gpl/13.2/fscrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 63395,
+          "cdx_sha1": "6813FE83950D724FE3B676C1CB94207A707CCB68",
+          "local_bytes": 62320,
+          "local_sha256": "4c094b3b344884a3005a162add3a2e23e4ac213ae27c10416a74503dc04eed46",
+          "local_sha1": "6813FE83950D724FE3B676C1CB94207A707CCB68",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "glib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/glib.txz",
+          "wayback_timestamp": "20211018104306",
+          "wayback_url": "https://web.archive.org/web/20211018104306id_/http://www.sonos.com/documents/gpl/13.2/glib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049986,
+          "cdx_sha1": "4D3D9E68A6758A2FDFF2535548E3B852FECB6FC9",
+          "local_bytes": 1048576,
+          "local_sha256": "818dfc4bcb5625842011ac091f0d2d9de63361e435dce390489b29a5b6f44ab7",
+          "local_sha1": "4D3D9E68A6758A2FDFF2535548E3B852FECB6FC9",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/gpl.html",
+          "wayback_timestamp": "20210923185014",
+          "wayback_url": "https://web.archive.org/web/20210923185014id_/http://www.sonos.com/documents/gpl/13.2/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 3245,
+          "cdx_sha1": "305123D9060310005A7FA48754A5B0D08D45F1CA",
+          "local_bytes": 7531,
+          "local_sha256": "ba31b9f8a7de85e76563556cec44b46baf87e038a63b87290fc3659f4af038e8",
+          "local_sha1": "305123D9060310005A7FA48754A5B0D08D45F1CA",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes1.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/includes1.txz",
+          "wayback_timestamp": "20211018110713",
+          "wayback_url": "https://web.archive.org/web/20211018110713id_/http://www.sonos.com/documents/gpl/13.2/includes1.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 17753,
+          "cdx_sha1": "9BA2F110D5DB1D367E74F235786AF19E71F4927C",
+          "local_bytes": 16688,
+          "local_sha256": "b29e342ad638f2f01ee981039de477de85754e1d64400defbb77c7373dd33699",
+          "local_sha1": "9BA2F110D5DB1D367E74F235786AF19E71F4927C",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "includes2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/includes2.txz",
+          "wayback_timestamp": "20211018110632",
+          "wayback_url": "https://web.archive.org/web/20211018110632id_/http://www.sonos.com/documents/gpl/13.2/includes2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 7101,
+          "cdx_sha1": "68781E49C385FCD61CE4EB3C582DE68F31E45E38",
+          "local_bytes": 6060,
+          "local_sha256": "f4950e86deaf52578a8bd2d32f2ea81535bd2cd2d37658a9342b38bc6dadb452",
+          "local_sha1": "68781E49C385FCD61CE4EB3C582DE68F31E45E38",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgcrypt.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/libgcrypt.txz",
+          "wayback_timestamp": "20211018095649",
+          "wayback_url": "https://web.archive.org/web/20211018095649id_/http://www.sonos.com/documents/gpl/13.2/libgcrypt.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049979,
+          "cdx_sha1": "E78999356D4F14854D59473677959167FB5082E4",
+          "local_bytes": 1048576,
+          "local_sha256": "ddc6625b5fc5c5970e03dc58dc28a63071696568937b73dff881e792411fba6c",
+          "local_sha1": "E78999356D4F14854D59473677959167FB5082E4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libgpg-error.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/libgpg-error.txz",
+          "wayback_timestamp": "20211018102851",
+          "wayback_url": "https://web.archive.org/web/20211018102851id_/http://www.sonos.com/documents/gpl/13.2/libgpg-error.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 736626,
+          "cdx_sha1": "30A21F54DECF8130253A544D86ECB0F613CE310B",
+          "local_bytes": 735344,
+          "local_sha256": "e6ca096b1a18eeaada9a60d18558ad7abc738f4ebe950523ca59d51564e40bba",
+          "local_sha1": "30A21F54DECF8130253A544D86ECB0F613CE310B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libnl.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/libnl.txz",
+          "wayback_timestamp": "20211018100058",
+          "wayback_url": "https://web.archive.org/web/20211018100058id_/http://www.sonos.com/documents/gpl/13.2/libnl.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 556244,
+          "cdx_sha1": "420C9DB4C010C429014E5777CB33DC53E7C4493E",
+          "local_bytes": 555016,
+          "local_sha256": "070066db622d04d8595c23957d752e305648409b41b14174c69f8ae94b95e6f9",
+          "local_sha1": "420C9DB4C010C429014E5777CB33DC53E7C4493E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libusb.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/libusb.txz",
+          "wayback_timestamp": "20211018113024",
+          "wayback_url": "https://web.archive.org/web/20211018113024id_/http://www.sonos.com/documents/gpl/13.2/libusb.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 498329,
+          "cdx_sha1": "39C9433601E76418C763FB34065E14B5FEB96520",
+          "local_bytes": 497124,
+          "local_sha256": "c46a54badc9d8822b2ac40ff6caa161022e3ab9fa7ad88d41e76d5436464eecf",
+          "local_sha1": "39C9433601E76418C763FB34065E14B5FEB96520",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.4.22.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/linux-2.4.22.txz",
+          "wayback_timestamp": "20211018112459",
+          "wayback_url": "https://web.archive.org/web/20211018112459id_/http://www.sonos.com/documents/gpl/13.2/linux-2.4.22.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049995,
+          "cdx_sha1": "ECA67D2856F44BAE0F3B238B9756116C8BB7CE16",
+          "local_bytes": 1048576,
+          "local_sha256": "9f004bc73e54881ad0beae0c613c658381aa1c0bc313bcfec3d6740f52823723",
+          "local_sha1": "ECA67D2856F44BAE0F3B238B9756116C8BB7CE16",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-2.6.35.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/linux-2.6.35.txz",
+          "wayback_timestamp": "20211018105841",
+          "wayback_url": "https://web.archive.org/web/20211018105841id_/http://www.sonos.com/documents/gpl/13.2/linux-2.6.35.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049999,
+          "cdx_sha1": "1FCD8040312E15EF543EBAF0D4FD1FC4727BD08A",
+          "local_bytes": 1048576,
+          "local_sha256": "3d794959b9def5cabed03dcc39fa04990cc7afdd1b42e6b2760273a6c153a755",
+          "local_sha1": "1FCD8040312E15EF543EBAF0D4FD1FC4727BD08A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-3.10.53.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/linux-3.10.53.txz",
+          "wayback_timestamp": "20211018113914",
+          "wayback_url": "https://web.archive.org/web/20211018113914id_/http://www.sonos.com/documents/gpl/13.2/linux-3.10.53.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1050003,
+          "cdx_sha1": "1FE5F7403A5A88897462F93F998BB74350989E93",
+          "local_bytes": 1048576,
+          "local_sha256": "35e451b05b12ea3883084f0be64b58a8a7bad875a9b933334e2c629a7577302e",
+          "local_sha1": "1FE5F7403A5A88897462F93F998BB74350989E93",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.4.24.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/linux-4.4.24.txz",
+          "wayback_timestamp": "20211018094952",
+          "wayback_url": "https://web.archive.org/web/20211018094952id_/http://www.sonos.com/documents/gpl/13.2/linux-4.4.24.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1050002,
+          "cdx_sha1": "649B0524B1A94A5DD11EC4B608997C3F83A9D020",
+          "local_bytes": 1048576,
+          "local_sha256": "ee602ab6857bc974a2b3d7e970b586bdffc31742589209ae3c7c8527963883bc",
+          "local_sha1": "649B0524B1A94A5DD11EC4B608997C3F83A9D020",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-4.9.99.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/linux-4.9.99.txz",
+          "wayback_timestamp": "20211018112612",
+          "wayback_url": "https://web.archive.org/web/20211018112612id_/http://www.sonos.com/documents/gpl/13.2/linux-4.9.99.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049993,
+          "cdx_sha1": "6AA50E4F43BAB83724ABA307D19B16B260DE5B0A",
+          "local_bytes": 1048576,
+          "local_sha256": "484435e5b4123705636fd5ab8913eeb010de1613a1ca2ac393d6a0aad6d86193",
+          "local_sha1": "6AA50E4F43BAB83724ABA307D19B16B260DE5B0A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "lvm2.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/lvm2.txz",
+          "wayback_timestamp": "20211018105128",
+          "wayback_url": "https://web.archive.org/web/20211018105128id_/http://www.sonos.com/documents/gpl/13.2/lvm2.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 1049988,
+          "cdx_sha1": "A5AA4E4FB928817D8C859E14F6D300048897251A",
+          "local_bytes": 1048576,
+          "local_sha256": "f1a0814be1c3cef1d6fd013fc7f922ddb27d85cdf6559f9417cd3602ace83a83",
+          "local_sha1": "A5AA4E4FB928817D8C859E14F6D300048897251A",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "mpg123.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/mpg123.txz",
+          "wayback_timestamp": "20211018114425",
+          "wayback_url": "https://web.archive.org/web/20211018114425id_/http://www.sonos.com/documents/gpl/13.2/mpg123.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 772711,
+          "cdx_sha1": "E3A495763BDFF178FD78190958D1FDE2DDB262B1",
+          "local_bytes": 771424,
+          "local_sha256": "6b414b2defb568469a912383364bb4477df73fe2bad634b3a217a37a6ad38c09",
+          "local_sha1": "E3A495763BDFF178FD78190958D1FDE2DDB262B1",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "rng-tools.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/rng-tools.txz",
+          "wayback_timestamp": "20211018104546",
+          "wayback_url": "https://web.archive.org/web/20211018104546id_/http://www.sonos.com/documents/gpl/13.2/rng-tools.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 124105,
+          "cdx_sha1": "FF22BABFF691D04F0FFB5C9EFD61B4DBD05C67D2",
+          "local_bytes": 123008,
+          "local_sha256": "c7d8537020b708de04fe09e55addcaf8b9b0f7e5cf8acfe3fd2e9bb232df45d4",
+          "local_sha1": "FF22BABFF691D04F0FFB5C9EFD61B4DBD05C67D2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sbclib.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/sbclib.txz",
+          "wayback_timestamp": "20211018104624",
+          "wayback_url": "https://web.archive.org/web/20211018104624id_/http://www.sonos.com/documents/gpl/13.2/sbclib.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 17945,
+          "cdx_sha1": "2B0B94102050749AE6FC02C3822F63D3DC3B1CA2",
+          "local_bytes": 16884,
+          "local_sha256": "17801f47c3172002e6a44777b99ca81a862a27fb1b1da4a12d246bd81b2593eb",
+          "local_sha1": "2B0B94102050749AE6FC02C3822F63D3DC3B1CA2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "simple80211.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/simple80211.txz",
+          "wayback_timestamp": "20211018114230",
+          "wayback_url": "https://web.archive.org/web/20211018114230id_/http://www.sonos.com/documents/gpl/13.2/simple80211.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 15884,
+          "cdx_sha1": "590FA9103D5D0E7661B7A1BDBC992203EC09A104",
+          "local_bytes": 14824,
+          "local_sha256": "f0ab4cf77933389c3a4cac5d504fafee858b87dd0edc1a6611f6a02c8d2c84db",
+          "local_sha1": "590FA9103D5D0E7661B7A1BDBC992203EC09A104",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-kernel.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/sonos-kernel.txz",
+          "wayback_timestamp": "20211018114128",
+          "wayback_url": "https://web.archive.org/web/20211018114128id_/http://www.sonos.com/documents/gpl/13.2/sonos-kernel.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 33154,
+          "cdx_sha1": "9E04C789137B72314DD0F3EE6F11AF01F6346D73",
+          "local_bytes": 32084,
+          "local_sha256": "0a0efb674e8084b9ff571a4e82b091e6687a098680a9968f100910ab35df2c8c",
+          "local_sha1": "9E04C789137B72314DD0F3EE6F11AF01F6346D73",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "wireless_tools.txz",
+          "kind": "source",
+          "original_url": "http://www.sonos.com/documents/gpl/13.2/wireless_tools.txz",
+          "wayback_timestamp": "20211018112648",
+          "wayback_url": "https://web.archive.org/web/20211018112648id_/http://www.sonos.com/documents/gpl/13.2/wireless_tools.txz",
+          "cdx_mimetype": "application/x-tar",
+          "cdx_length": 169392,
+          "cdx_sha1": "80B627704FA8610B95D982D5E5351813DA81F379",
+          "local_bytes": 168276,
+          "local_sha256": "11c63075a5662adc425842b49c980a0b35de24bc186651f53e594794c3ee5344",
+          "local_sha1": "80B627704FA8610B95D982D5E5351813DA81F379",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "14.4",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/14.4/gpl.html",
+        "wayback_timestamp": "20230628115440",
+        "wayback_url": "https://web.archive.org/web/20230628115440id_/https://www.sonos.com/documents/gpl/14.4/gpl.html",
+        "bytes": 4465,
+        "sha256": "af9f076e141dce22fc3402f56cc58d0c6508a6be3790ef2533bad40c8b8d2634",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/alsa-lib.txz",
+            "text": "alsa-lib.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/alsa-utils.txz",
+            "text": "alsa-utils.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/bluez.txz",
+            "text": "bluez.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/bridge-utils.txz",
+            "text": "bridge-utils.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/busybox.txz",
+            "text": "busybox.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/chrony.txz",
+            "text": "chrony.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/common.txz",
+            "text": "common.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/cryptsetup.txz",
+            "text": "cryptsetup.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/dbus.txz",
+            "text": "dbus.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/e2fsprogs.txz",
+            "text": "e2fsprogs.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/eigen.txz",
+            "text": "eigen.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/event_reporter.txz",
+            "text": "event_reporter.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/glib.txz",
+            "text": "glib.txz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz",
+            "text": "glibc-2.29.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/includes1.txz",
+            "text": "includes1.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/includes2.txz",
+            "text": "includes2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libdash.txz",
+            "text": "libdash.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libdcadec.txz",
+            "text": "libdcadec.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libgcrypt.txz",
+            "text": "libgcrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libgpg-error.txz",
+            "text": "libgpg-error.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libnl.txz",
+            "text": "libnl.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libsmb2.txz",
+            "text": "libsmb2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/libusb.txz",
+            "text": "libusb.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/linux-2.6.35.txz",
+            "text": "linux-2.6.35.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/linux-2.6.39.4.txz",
+            "text": "linux-2.6.39.4.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/linux-3.10.53.txz",
+            "text": "linux-3.10.53.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/linux-4.4.24.txz",
+            "text": "linux-4.4.24.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/linux-4.9.99.txz",
+            "text": "linux-4.9.99.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/lvm2.txz",
+            "text": "lvm2.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/mpg123.txz",
+            "text": "mpg123.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/rng-tools.txz",
+            "text": "rng-tools.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/sbclib.txz",
+            "text": "sbclib.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/Sii9437.txz",
+            "text": "Sii9437.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/simple80211.txz",
+            "text": "simple80211.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/sonos-kernel.txz",
+            "text": "sonos-kernel.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.4/wireless_tools.txz",
+            "text": "wireless_tools.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "https://www.sonos.com/documents/gpl/14.4/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20230628115601",
+          "wayback_url": "https://web.archive.org/web/20230628115601id_/https://www.sonos.com/documents/gpl/14.4/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 296724,
+          "cdx_sha1": "2D0648FA137E82A273B93BC004313C1C4F0ED8F7",
+          "local_bytes": 314401,
+          "local_sha256": "58d6eff3d6c123b64179d4973a4ce1a12f125f47ee16cbb65b87e484d0ef7b38",
+          "local_sha1": "2D0648FA137E82A273B93BC004313C1C4F0ED8F7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "https://www.sonos.com/documents/gpl/14.4/gpl.html",
+          "wayback_timestamp": "20220927110105",
+          "wayback_url": "https://web.archive.org/web/20220927110105id_/https://www.sonos.com/documents/gpl/14.4/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 3305,
+          "cdx_sha1": "54EBFC9A01CED9D6F079D7244E97F4E8809168A9",
+          "local_bytes": 7767,
+          "local_sha256": "02e65f2cfdd4d296425cf075d50c92123b51e95318ab2438e98f098530fcb59e",
+          "local_sha1": "54EBFC9A01CED9D6F079D7244E97F4E8809168A9",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "release": "14.18",
+      "index": {
+        "original_url": "https://www.sonos.com/documents/gpl/14.18/gpl.html",
+        "wayback_timestamp": "20260314081923",
+        "wayback_url": "https://web.archive.org/web/20260314081923id_/https://www.sonos.com/documents/gpl/14.18/gpl.html",
+        "bytes": 6016,
+        "sha256": "7d917021ddcfb6db37b1a3a1cb606f5214b59aee69359b683b59b7033b9455b8",
+        "links": [
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributions.pdf",
+            "text": "SonosOpenSourceAttributions.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributionsRust.pdf",
+            "text": "SonosOpenSourceAttributionsRust.pdf"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/alsa-lib-1.2.1.2-r0-patched.txz",
+            "text": "alsa-lib-1.2.1.2-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/alsa-utils-1.2.1-r0-patched.txz",
+            "text": "alsa-utils-1.2.1-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/bluez5-5.58-r0-patched.txz",
+            "text": "bluez5-5.58-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/bridge-utils-0.9.6-r0-patched.txz",
+            "text": "bridge-utils-0.9.6-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/busybox-1.31.1-r0-patched.txz",
+            "text": "busybox-1.31.1-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/cc-includes-1.0-r0-patched.txz",
+            "text": "cc-includes-1.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/chrony-4.2-r0-patched.txz",
+            "text": "chrony-4.2-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/cryptsetup-2.0.4-r0-patched.txz",
+            "text": "cryptsetup-2.0.4-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/dbus-1.12.20-r0-patched.txz",
+            "text": "dbus-1.12.20-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/dcadec-0.2.0-r0-patched.txz",
+            "text": "dcadec-0.2.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/drivers.txz",
+            "text": "drivers.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/e2fsprogs-1.45.7-r0-patched.txz",
+            "text": "e2fsprogs-1.45.7-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/ffmpeg-4.3.1-r0-patched.txz",
+            "text": "ffmpeg-4.3.1-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/fscrypt.txz",
+            "text": "fscrypt.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/glib-2.0-1_2.62.6-r0-patched.txz",
+            "text": "glib-2.0-1_2.62.6-r0-patched.txz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
+            "text": "glibc-2.17.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz",
+            "text": "glibc-2.23.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.24.tar.gz",
+            "text": "glibc-2.24.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.25.tar.gz",
+            "text": "glibc-2.25.tar.gz"
+          },
+          {
+            "url": "https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz",
+            "text": "glibc-2.29.tar.gz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libcap-2.63-r0-patched.txz",
+            "text": "libcap-2.63-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libdash-2.2-gitAUTOINC-eb7a09ce37-r0-patched.txz",
+            "text": "libdash-2.2-gitAUTOINC-eb7a09ce37-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libdevmapper-2.02.177-r0-patched.txz",
+            "text": "libdevmapper-2.02.177-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libeigen-3.3.7-r0-patched.txz",
+            "text": "libeigen-3.3.7-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libnl-1_3.5.0-r0-patched.txz",
+            "text": "libnl-1_3.5.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libsmb2-4.0.0-gitAUTOINC-f1697fe696-r0-patched.txz",
+            "text": "libsmb2-4.0.0-gitAUTOINC-f1697fe696-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/libusb1-1.0.23-r0-patched.txz",
+            "text": "libusb1-1.0.23-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.35-r0-patched.txz",
+            "text": "linux-sonos-2.6.35-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.39.4-r0-patched.txz",
+            "text": "linux-sonos-2.6.39.4-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-3.10.53-nxp-r0-patched.txz",
+            "text": "linux-sonos-3.10.53-nxp-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.4.24-mtk-r0-patched.txz",
+            "text": "linux-sonos-4.4.24-mtk-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.9.99-r0-patched.txz",
+            "text": "linux-sonos-4.9.99-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/mpg123-1.25.13-r0-patched.txz",
+            "text": "mpg123-1.25.13-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/platforms-ctl-1.0-r0-patched.txz",
+            "text": "platforms-ctl-1.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/platforms-includes-1.0-r0-patched.txz",
+            "text": "platforms-includes-1.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/rng-tools-6.9-r0-patched.txz",
+            "text": "rng-tools-6.9-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/sbc-1.5-r0-patched.txz",
+            "text": "sbc-1.5-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/sonos-eventreporter-1.0.0-r0-patched.txz",
+            "text": "sonos-eventreporter-1.0.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/sonos-syslog-1.5.0-r0-patched.txz",
+            "text": "sonos-syslog-1.5.0-r0-patched.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/udhcp-0.9.8.txz",
+            "text": "udhcp-0.9.8.txz"
+          },
+          {
+            "url": "https://www.sonos.com/documents/gpl/14.18/wireless-tools-1_30.pre9-r0-patched.txz",
+            "text": "wireless-tools-1_30.pre9-r0-patched.txz"
+          }
+        ]
+      },
+      "artifacts": [
+        {
+          "filename": "SonosOpenSourceAttributions.pdf",
+          "kind": "attribution",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributions.pdf",
+          "wayback_timestamp": "20230628120209",
+          "wayback_url": "https://web.archive.org/web/20230628120209id_/https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributions.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 289769,
+          "cdx_sha1": "843231855B77BF50840B6E1BEFA209D315D6D32C",
+          "local_bytes": 307377,
+          "local_sha256": "b84451541801673570e2e9a0171f0dfc2e29471035d100b7ffd61e17ac870292",
+          "local_sha1": "843231855B77BF50840B6E1BEFA209D315D6D32C",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "SonosOpenSourceAttributionsRust.pdf",
+          "kind": "attribution",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributionsRust.pdf",
+          "wayback_timestamp": "20230628115931",
+          "wayback_url": "https://web.archive.org/web/20230628115931id_/https://www.sonos.com/documents/gpl/14.18/SonosOpenSourceAttributionsRust.pdf",
+          "cdx_mimetype": "application/pdf",
+          "cdx_length": 234961,
+          "cdx_sha1": "C1167205CA76E77E1A4902803DBBD8A6260F39BA",
+          "local_bytes": 271691,
+          "local_sha256": "93c3deafb9f539cf01f5fc2999b12fc7c4e67622201d60a81921ebcee96accba",
+          "local_sha1": "C1167205CA76E77E1A4902803DBBD8A6260F39BA",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-lib-1.2.1.2-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/alsa-lib-1.2.1.2-r0-patched.txz",
+          "wayback_timestamp": "20240612000052",
+          "wayback_url": "https://web.archive.org/web/20240612000052id_/https://www.sonos.com/documents/gpl/14.18/alsa-lib-1.2.1.2-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 767222,
+          "cdx_sha1": "BED852CD47144B80E9F72FFC4AE9C4812A47A5D7",
+          "local_bytes": 765068,
+          "local_sha256": "9881348faa3f6a5c873f0ece2d9820365444e6d7ae8801f4b25ded0c04ae3fbd",
+          "local_sha1": "BED852CD47144B80E9F72FFC4AE9C4812A47A5D7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "alsa-utils-1.2.1-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/alsa-utils-1.2.1-r0-patched.txz",
+          "wayback_timestamp": "20240612001414",
+          "wayback_url": "https://web.archive.org/web/20240612001414id_/https://www.sonos.com/documents/gpl/14.18/alsa-utils-1.2.1-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 1174858,
+          "cdx_sha1": "CEA9451482F396F8EBDEE552FA38277CD846375B",
+          "local_bytes": 1172572,
+          "local_sha256": "3f9193feb18733beb671037d0100dac031713e908faf52e32bbb7ae2d99d01c1",
+          "local_sha1": "CEA9451482F396F8EBDEE552FA38277CD846375B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bluez5-5.58-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/bluez5-5.58-r0-patched.txz",
+          "wayback_timestamp": "20240612001413",
+          "wayback_url": "https://web.archive.org/web/20240612001413id_/https://www.sonos.com/documents/gpl/14.18/bluez5-5.58-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 2091676,
+          "cdx_sha1": "F542838865D75AFAA471A112BF2E8B2A8E82451B",
+          "local_bytes": 2089124,
+          "local_sha256": "596ad66121569a7301a769a212313a2eb7dbf3ac1f553a465ead877c3c7773c5",
+          "local_sha1": "F542838865D75AFAA471A112BF2E8B2A8E82451B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "bridge-utils-0.9.6-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/bridge-utils-0.9.6-r0-patched.txz",
+          "wayback_timestamp": "20250114090902",
+          "wayback_url": "https://web.archive.org/web/20250114090902id_/https://www.sonos.com/documents/gpl/14.18/bridge-utils-0.9.6-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 33430,
+          "cdx_sha1": "3BDBBFE415C2CE613D39C3A210F9DECA0590F07B",
+          "local_bytes": 31204,
+          "local_sha256": "9877847589347934b0f11bec766a61aa33e2f7af8d19e9aa48610b3680242867",
+          "local_sha1": "3BDBBFE415C2CE613D39C3A210F9DECA0590F07B",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "busybox-1.31.1-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/busybox-1.31.1-r0-patched.txz",
+          "wayback_timestamp": "20250114090903",
+          "wayback_url": "https://web.archive.org/web/20250114090903id_/https://www.sonos.com/documents/gpl/14.18/busybox-1.31.1-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 2140149,
+          "cdx_sha1": "5E62EB08A2F81FE3BAE647711304CFD8E3F9BF8C",
+          "local_bytes": 2137292,
+          "local_sha256": "b8e77099e720ed353855ceab3a902e2db3a2be669a906c18642e0df88e2ca6eb",
+          "local_sha1": "5E62EB08A2F81FE3BAE647711304CFD8E3F9BF8C",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "cc-includes-1.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/cc-includes-1.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090930",
+          "wayback_url": "https://web.archive.org/web/20250114090930id_/https://www.sonos.com/documents/gpl/14.18/cc-includes-1.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 21072,
+          "cdx_sha1": "1B1317DE6C9F0664C0321D4FCB506DF839261AB2",
+          "local_bytes": 18836,
+          "local_sha256": "40a2c5fcb26104a350ed2680f1c8925fa5462c9e5e9957b06e09ebd95074e76b",
+          "local_sha1": "1B1317DE6C9F0664C0321D4FCB506DF839261AB2",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "chrony-4.2-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/chrony-4.2-r0-patched.txz",
+          "wayback_timestamp": "20250114090902",
+          "wayback_url": "https://web.archive.org/web/20250114090902id_/https://www.sonos.com/documents/gpl/14.18/chrony-4.2-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 408394,
+          "cdx_sha1": "D3A24EC8200020DB30CD9AC7841681D6AA01A303",
+          "local_bytes": 406064,
+          "local_sha256": "e08fa0371b9fc278bafb6d7ef84690ed9c41b39ff1942fcbbfe32bb474aeb8d7",
+          "local_sha1": "D3A24EC8200020DB30CD9AC7841681D6AA01A303",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "cryptsetup-2.0.4-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/cryptsetup-2.0.4-r0-patched.txz",
+          "wayback_timestamp": "20250114090924",
+          "wayback_url": "https://web.archive.org/web/20250114090924id_/https://www.sonos.com/documents/gpl/14.18/cryptsetup-2.0.4-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 10526662,
+          "cdx_sha1": "A06435E1B95B9A1CC4696F30337231DDC953A0DC",
+          "local_bytes": 10523460,
+          "local_sha256": "1cf7da410b873dad16657177742b85b08671a1b52666f1c40d5b16e73bfada6b",
+          "local_sha1": "A06435E1B95B9A1CC4696F30337231DDC953A0DC",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "dbus-1.12.20-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/dbus-1.12.20-r0-patched.txz",
+          "wayback_timestamp": "20250114090929",
+          "wayback_url": "https://web.archive.org/web/20250114090929id_/https://www.sonos.com/documents/gpl/14.18/dbus-1.12.20-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 1437967,
+          "cdx_sha1": "3458930366259F6D5E617E09341F978787462356",
+          "local_bytes": 1435304,
+          "local_sha256": "b5f899685cdcb4b2f17a4cca178a74c7c6c887d93fa6132b5ab6ae674bd9e11e",
+          "local_sha1": "3458930366259F6D5E617E09341F978787462356",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "dcadec-0.2.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/dcadec-0.2.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090902",
+          "wayback_url": "https://web.archive.org/web/20250114090902id_/https://www.sonos.com/documents/gpl/14.18/dcadec-0.2.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 184838,
+          "cdx_sha1": "8A9E187952CBA11F32A90012C55CFE18F8A80F28",
+          "local_bytes": 182568,
+          "local_sha256": "03ff02b1d9bf87239bacad7afc086ff5943d5a204226e1e965033055038a312f",
+          "local_sha1": "8A9E187952CBA11F32A90012C55CFE18F8A80F28",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "drivers.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/drivers.txz",
+          "wayback_timestamp": "20250114090914",
+          "wayback_url": "https://web.archive.org/web/20250114090914id_/https://www.sonos.com/documents/gpl/14.18/drivers.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 586373,
+          "cdx_sha1": "253626DF498FCC8381221440E104A849343EC967",
+          "local_bytes": 583992,
+          "local_sha256": "4584203ee8e8a23e386663cf9f38f166f48c7b36b4fdce64d6ee29af2080e46e",
+          "local_sha1": "253626DF498FCC8381221440E104A849343EC967",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "e2fsprogs-1.45.7-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/e2fsprogs-1.45.7-r0-patched.txz",
+          "wayback_timestamp": "20250114090920",
+          "wayback_url": "https://web.archive.org/web/20250114090920id_/https://www.sonos.com/documents/gpl/14.18/e2fsprogs-1.45.7-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 5657348,
+          "cdx_sha1": "E165FA17C0DE04BF90D250FEF941F7B20EA35C45",
+          "local_bytes": 5654356,
+          "local_sha256": "143beff7c40315b4075c594fad7cb9055707fd19a180e8cf8088da3b528fca10",
+          "local_sha1": "E165FA17C0DE04BF90D250FEF941F7B20EA35C45",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "ffmpeg-4.3.1-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/ffmpeg-4.3.1-r0-patched.txz",
+          "wayback_timestamp": "20250114090948",
+          "wayback_url": "https://web.archive.org/web/20250114090948id_/https://www.sonos.com/documents/gpl/14.18/ffmpeg-4.3.1-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 9389182,
+          "cdx_sha1": "0F7FC9CA2F9DE95B30A297831BDB69FBF30CC435",
+          "local_bytes": 9384104,
+          "local_sha256": "a1cd2d04bd037129bf484a1530c149b9950d5432af34f5c6432a7687d86bea11",
+          "local_sha1": "0F7FC9CA2F9DE95B30A297831BDB69FBF30CC435",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "fscrypt.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/fscrypt.txz",
+          "wayback_timestamp": "20250114090920",
+          "wayback_url": "https://web.archive.org/web/20250114090920id_/https://www.sonos.com/documents/gpl/14.18/fscrypt.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 64285,
+          "cdx_sha1": "084D78B00B6C44B9A6AFEE752FE6CD348AB90256",
+          "local_bytes": 62072,
+          "local_sha256": "19c4cc731229d98877af5f98b44fe0a07527ca1dc35c75c4e916cc64ac631a9c",
+          "local_sha1": "084D78B00B6C44B9A6AFEE752FE6CD348AB90256",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "glib-2.0-1_2.62.6-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/glib-2.0-1_2.62.6-r0-patched.txz",
+          "wayback_timestamp": "20250114090944",
+          "wayback_url": "https://web.archive.org/web/20250114090944id_/https://www.sonos.com/documents/gpl/14.18/glib-2.0-1_2.62.6-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 4749665,
+          "cdx_sha1": "F42B41ABFE54AAFFD76F18BDFDD4C748592E68C5",
+          "local_bytes": 4746004,
+          "local_sha256": "d21c9298985ba08707759282877213e8377d3f9e4cb338d419ab2597cc8c42f6",
+          "local_sha1": "F42B41ABFE54AAFFD76F18BDFDD4C748592E68C5",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "gpl.html",
+          "kind": "index",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/gpl.html",
+          "wayback_timestamp": "20230628115831",
+          "wayback_url": "https://web.archive.org/web/20230628115831id_/https://www.sonos.com/documents/gpl/14.18/gpl.html",
+          "cdx_mimetype": "text/html",
+          "cdx_length": 1958,
+          "cdx_sha1": "D32684701FF6E94C147EF999027B97FF4C82408D",
+          "local_bytes": 5737,
+          "local_sha256": "d77ee163f9cef3a44bbd16ce0ca9369c5b5bc716fef10ba05738b0cce4b4d134",
+          "local_sha1": "D32684701FF6E94C147EF999027B97FF4C82408D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libcap-2.63-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libcap-2.63-r0-patched.txz",
+          "wayback_timestamp": "20250114090900",
+          "wayback_url": "https://web.archive.org/web/20250114090900id_/https://www.sonos.com/documents/gpl/14.18/libcap-2.63-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 178144,
+          "cdx_sha1": "3844F0DAC69147838158677F9E128214B488FF79",
+          "local_bytes": 175876,
+          "local_sha256": "228172afb047d8deea284c8900c623cd9c55ea2cf0fe8f219f4888247a66ad27",
+          "local_sha1": "3844F0DAC69147838158677F9E128214B488FF79",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libdash-2.2-gitAUTOINC-eb7a09ce37-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libdash-2.2-gitAUTOINC-eb7a09ce37-r0-patched.txz",
+          "wayback_timestamp": "20250114090900",
+          "wayback_url": "https://web.archive.org/web/20250114090900id_/https://www.sonos.com/documents/gpl/14.18/libdash-2.2-gitAUTOINC-eb7a09ce37-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 9582612,
+          "cdx_sha1": "A33445AC058B035B55BB5E3A0CEE0EE84BCDCCF8",
+          "local_bytes": 9577652,
+          "local_sha256": "78e77abc1fb567960102eab478ff85d59e84d3988d131a1e276da7b4e4b97e0f",
+          "local_sha1": "A33445AC058B035B55BB5E3A0CEE0EE84BCDCCF8",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libdevmapper-2.02.177-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libdevmapper-2.02.177-r0-patched.txz",
+          "wayback_timestamp": "20250114090928",
+          "wayback_url": "https://web.archive.org/web/20250114090928id_/https://www.sonos.com/documents/gpl/14.18/libdevmapper-2.02.177-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 1694513,
+          "cdx_sha1": "23AB2E75ACF5055DFA5BD90995FDB9732FDC1820",
+          "local_bytes": 1691772,
+          "local_sha256": "770493804d84e3e289cd5f222f09a9cac03cbac965a7b493aebef2a74b443a9e",
+          "local_sha1": "23AB2E75ACF5055DFA5BD90995FDB9732FDC1820",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libeigen-3.3.7-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libeigen-3.3.7-r0-patched.txz",
+          "wayback_timestamp": "20250114090936",
+          "wayback_url": "https://web.archive.org/web/20250114090936id_/https://www.sonos.com/documents/gpl/14.18/libeigen-3.3.7-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 1422710,
+          "cdx_sha1": "65A7C84C5FFBF5546ECC068856A0EA8EC2D0AF65",
+          "local_bytes": 1420060,
+          "local_sha256": "4fbd2fa478c2fb8a5fdc44870459a98eb82376f236199446bdcf40172cc0af2c",
+          "local_sha1": "65A7C84C5FFBF5546ECC068856A0EA8EC2D0AF65",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libnl-1_3.5.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libnl-1_3.5.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090903",
+          "wayback_url": "https://web.archive.org/web/20250114090903id_/https://www.sonos.com/documents/gpl/14.18/libnl-1_3.5.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 693053,
+          "cdx_sha1": "932EEF99280F44D686792BEB4A440D5B7F46BC5E",
+          "local_bytes": 690632,
+          "local_sha256": "b5742b50d642059623f51fd37ff555355b52f4d96f7a07bc702746819e5827e7",
+          "local_sha1": "932EEF99280F44D686792BEB4A440D5B7F46BC5E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libsmb2-4.0.0-gitAUTOINC-f1697fe696-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libsmb2-4.0.0-gitAUTOINC-f1697fe696-r0-patched.txz",
+          "wayback_timestamp": "20250114090903",
+          "wayback_url": "https://web.archive.org/web/20250114090903id_/https://www.sonos.com/documents/gpl/14.18/libsmb2-4.0.0-gitAUTOINC-f1697fe696-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 130620,
+          "cdx_sha1": "334EE90A70F85F7928AD7DCF8FF8F5151C3380BB",
+          "local_bytes": 128340,
+          "local_sha256": "9b4e250ef277b9de170d9d4ea16593fa18651307d25beba84c65e45c5d98f1f1",
+          "local_sha1": "334EE90A70F85F7928AD7DCF8FF8F5151C3380BB",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "libusb1-1.0.23-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/libusb1-1.0.23-r0-patched.txz",
+          "wayback_timestamp": "20250114090914",
+          "wayback_url": "https://web.archive.org/web/20250114090914id_/https://www.sonos.com/documents/gpl/14.18/libusb1-1.0.23-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 499391,
+          "cdx_sha1": "4CCF47F1FD8B253EB1B1DE3CB23BA0753126EC84",
+          "local_bytes": 497028,
+          "local_sha256": "5942add8d3f7b4cd072588816775b7cacfd5b4d1818b9139f5e28c19109befca",
+          "local_sha1": "4CCF47F1FD8B253EB1B1DE3CB23BA0753126EC84",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-sonos-2.6.35-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.35-r0-patched.txz",
+          "wayback_timestamp": "20250114090920",
+          "wayback_url": "https://web.archive.org/web/20250114090920id_/https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.35-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 60460850,
+          "cdx_sha1": "AF610EB8B40C787F14B630FDD0501B3BFDB66134",
+          "local_bytes": 60440188,
+          "local_sha256": "796bb16f1d296395c1f08cba05934dad36c9f446daba0db7b54ff263ef413ff5",
+          "local_sha1": "AF610EB8B40C787F14B630FDD0501B3BFDB66134",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-sonos-2.6.39.4-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.39.4-r0-patched.txz",
+          "wayback_timestamp": "20250114090904",
+          "wayback_url": "https://web.archive.org/web/20250114090904id_/https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.39.4-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 66338838,
+          "cdx_sha1": "399180769B4B8B53836A8DC0C07D58F7B853B118",
+          "local_bytes": 66316404,
+          "local_sha256": "43f84ea4cf10ea619f97c7f49aee1ae00445377f5bc277754128489210db3dd7",
+          "local_sha1": "399180769B4B8B53836A8DC0C07D58F7B853B118",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-sonos-3.10.53-nxp-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-3.10.53-nxp-r0-patched.txz",
+          "wayback_timestamp": "20250114090903",
+          "wayback_url": "https://web.archive.org/web/20250114090903id_/https://www.sonos.com/documents/gpl/14.18/linux-sonos-3.10.53-nxp-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 77430573,
+          "cdx_sha1": "EE9D7A666894641BE18427C11604C24FCA400AB7",
+          "local_bytes": 77404744,
+          "local_sha256": "4a0e2b8f209c767012c552e7ea50fd647f7cf94c14af478853c2c7d367be5eaa",
+          "local_sha1": "EE9D7A666894641BE18427C11604C24FCA400AB7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-sonos-4.4.24-mtk-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.4.24-mtk-r0-patched.txz",
+          "wayback_timestamp": "20250114090904",
+          "wayback_url": "https://web.archive.org/web/20250114090904id_/https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.4.24-mtk-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 93556972,
+          "cdx_sha1": "1FF3558D30C0AC2EA32CB50114F5BA0B2B687064",
+          "local_bytes": 93526224,
+          "local_sha256": "9993a3d8a8e875afc2ebb8bb97f51188e0a2e76f59b0673b992112540d0143e4",
+          "local_sha1": "1FF3558D30C0AC2EA32CB50114F5BA0B2B687064",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "linux-sonos-4.9.99-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.9.99-r0-patched.txz",
+          "wayback_timestamp": "20250114090932",
+          "wayback_url": "https://web.archive.org/web/20250114090932id_/https://www.sonos.com/documents/gpl/14.18/linux-sonos-4.9.99-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 104061024,
+          "cdx_sha1": "4B3DE7375147B29E0F74ED5484FE48D621F7771E",
+          "local_bytes": 104027064,
+          "local_sha256": "e5d9d04cd8d1acb757e99c285f3d008a9a1f7d8ab3670fc70b6b43e19ca6cad2",
+          "local_sha1": "4B3DE7375147B29E0F74ED5484FE48D621F7771E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "mpg123-1.25.13-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/mpg123-1.25.13-r0-patched.txz",
+          "wayback_timestamp": "20250114090934",
+          "wayback_url": "https://web.archive.org/web/20250114090934id_/https://www.sonos.com/documents/gpl/14.18/mpg123-1.25.13-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 773594,
+          "cdx_sha1": "3C453B7D8715E37BB5405EE5B7A38C4FCE20AFE4",
+          "local_bytes": 771140,
+          "local_sha256": "c0954356c5ca3ec0fcb571d4c10c21252a7562ba61c2e2e56b9d4e11d099c3bb",
+          "local_sha1": "3C453B7D8715E37BB5405EE5B7A38C4FCE20AFE4",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "platforms-ctl-1.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/platforms-ctl-1.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090929",
+          "wayback_url": "https://web.archive.org/web/20250114090929id_/https://www.sonos.com/documents/gpl/14.18/platforms-ctl-1.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 3396,
+          "cdx_sha1": "3E012034337953425EDD22BF99B4266C47D8CA7D",
+          "local_bytes": 1400,
+          "local_sha256": "7cea109d6420eaa3b372c5789e0b0a0506250d6d01b6c183426d6895d7bff470",
+          "local_sha1": "3E012034337953425EDD22BF99B4266C47D8CA7D",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "platforms-includes-1.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/platforms-includes-1.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090948",
+          "wayback_url": "https://web.archive.org/web/20250114090948id_/https://www.sonos.com/documents/gpl/14.18/platforms-includes-1.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 31729,
+          "cdx_sha1": "A92E3F365C81F8E8622FFCFC6586C4187D2A9F31",
+          "local_bytes": 29500,
+          "local_sha256": "7ef48e8a7cdef4f0de47d80df7e808a8540cec48950b568dd1aa296986fd0f4b",
+          "local_sha1": "A92E3F365C81F8E8622FFCFC6586C4187D2A9F31",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "rng-tools-6.9-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/rng-tools-6.9-r0-patched.txz",
+          "wayback_timestamp": "20250114090922",
+          "wayback_url": "https://web.archive.org/web/20250114090922id_/https://www.sonos.com/documents/gpl/14.18/rng-tools-6.9-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 48935,
+          "cdx_sha1": "1CF7435A59EB789E5E8B7B1E525BC50D12084C3F",
+          "local_bytes": 46732,
+          "local_sha256": "e59fda3bb3ba941f1ec4c15390832030019b15a39d89faea6f614b7910473934",
+          "local_sha1": "1CF7435A59EB789E5E8B7B1E525BC50D12084C3F",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sbc-1.5-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/sbc-1.5-r0-patched.txz",
+          "wayback_timestamp": "20250114090936",
+          "wayback_url": "https://web.archive.org/web/20250114090936id_/https://www.sonos.com/documents/gpl/14.18/sbc-1.5-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 265968,
+          "cdx_sha1": "3C2232A697C539F91666813A4377801003262258",
+          "local_bytes": 263680,
+          "local_sha256": "5e9c2cc5fbe28bdc19bc66ff738f61350be41832d7992cacd6da7473f9101dbb",
+          "local_sha1": "3C2232A697C539F91666813A4377801003262258",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-eventreporter-1.0.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/sonos-eventreporter-1.0.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090901",
+          "wayback_url": "https://web.archive.org/web/20250114090901id_/https://www.sonos.com/documents/gpl/14.18/sonos-eventreporter-1.0.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 10762,
+          "cdx_sha1": "C72D4413D1025E17B8D92ABC6AAFA4EE9BF981C7",
+          "local_bytes": 8584,
+          "local_sha256": "bc15901f95015cdc402578ad3c7488405f6f8d92e4ecd75a5b03ecf5b108af44",
+          "local_sha1": "C72D4413D1025E17B8D92ABC6AAFA4EE9BF981C7",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "sonos-syslog-1.5.0-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/sonos-syslog-1.5.0-r0-patched.txz",
+          "wayback_timestamp": "20250114090930",
+          "wayback_url": "https://web.archive.org/web/20250114090930id_/https://www.sonos.com/documents/gpl/14.18/sonos-syslog-1.5.0-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 12744,
+          "cdx_sha1": "02F84CD45AF2B274680FA2179E7E9B84D8588B1E",
+          "local_bytes": 10536,
+          "local_sha256": "850ccf1eb453991842df51f982d2d2dc35dbce39e108a8582c171c1546e0f3ad",
+          "local_sha1": "02F84CD45AF2B274680FA2179E7E9B84D8588B1E",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "udhcp-0.9.8.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/udhcp-0.9.8.txz",
+          "wayback_timestamp": "20250114090929",
+          "wayback_url": "https://web.archive.org/web/20250114090929id_/https://www.sonos.com/documents/gpl/14.18/udhcp-0.9.8.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 53658,
+          "cdx_sha1": "D5F7DC9E9BE5C89078FC1FBEA02EC080B4DB2500",
+          "local_bytes": 51424,
+          "local_sha256": "4b4c18c05b1cd5afd1392bbfcdb570ed5e631c06563abc2f55ff545f0ec93e70",
+          "local_sha1": "D5F7DC9E9BE5C89078FC1FBEA02EC080B4DB2500",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        },
+        {
+          "filename": "wireless-tools-1_30.pre9-r0-patched.txz",
+          "kind": "source",
+          "original_url": "https://www.sonos.com/documents/gpl/14.18/wireless-tools-1_30.pre9-r0-patched.txz",
+          "wayback_timestamp": "20250114090930",
+          "wayback_url": "https://web.archive.org/web/20250114090930id_/https://www.sonos.com/documents/gpl/14.18/wireless-tools-1_30.pre9-r0-patched.txz",
+          "cdx_mimetype": "application/x-xz-compressed-tar",
+          "cdx_length": 185252,
+          "cdx_sha1": "61C2A8A5C88EAC316C42E1E0292170B712997E40",
+          "local_bytes": 182972,
+          "local_sha256": "86f8296c3ca3982f6095041857408b775381eee8d998579d3877c967983537dc",
+          "local_sha1": "61C2A8A5C88EAC316C42E1E0292170B712997E40",
+          "cdx_digest_match": true,
+          "downloaded": true,
+          "error": null
+        }
+      ]
+    }
+  ]
+}
