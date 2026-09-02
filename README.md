@@ -92,6 +92,9 @@ ignored recovery storage; the checked-in tooling and receipts are sufficient to
 verify, reproduce extraction when that key is supplied, and audit every raw
 asset without exposing the key.
 
+See [model-key handling](docs/key-material.md) for the verified key-family
+fingerprints, provenance summary, and the archive's withheld-material policy.
+
 Regenerate checked-in metadata from a local artifact directory:
 
 ```bash
