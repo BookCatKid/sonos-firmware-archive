@@ -63,6 +63,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `data/upd/` — section-level manifests generated from each preserved UPD.
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
 - `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
+- `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
 - `tests/` — parser and catalog tests.

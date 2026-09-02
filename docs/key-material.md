@@ -12,6 +12,12 @@ The fingerprints are SHA-1 values of the public-key representation carried in
 the package envelope. They allow an independent reviewer to identify which
 key family was used.
 
+As of 2026-09-02, the full archived UPD catalog contains 399 encrypted
+packages using 33 distinct RSA recipients. The two locally recovered keys cover
+32 of those packages exactly. The remaining 31 recipient identities and their
+affected package IDs are tracked in `data/key-recovery-ledger.json`. No claim is
+made that a single firmware-specific key can decrypt other Sonos models.
+
 ## How the key identities were recovered
 
 ### Model 8 / Play:1
