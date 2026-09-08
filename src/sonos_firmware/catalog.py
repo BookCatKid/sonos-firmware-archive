@@ -16,7 +16,7 @@ REQUIRED_PACKAGE_FIELDS = {
     "raw_status",
 }
 
-EVIDENCE_FIELDS = {
+DIAGNOSTIC_EVIDENCE_FIELDS = {
     "id",
     "kind",
     "version",
@@ -25,6 +25,17 @@ EVIDENCE_FIELDS = {
     "update_url",
     "swgen",
     "latest_swgen",
+    "source_type",
+    "source_url",
+    "observed",
+    "redacted",
+}
+
+RELEASE_NOTE_EVIDENCE_FIELDS = {
+    "id",
+    "kind",
+    "version",
+    "release_scope",
     "source_type",
     "source_url",
     "observed",
@@ -93,7 +104,15 @@ def validate_catalog(root: str | Path) -> list[str]:
             )
         if record.get("redacted") is not True:
             errors.append(f"evidence[{record_id}]: redacted must be true")
-        missing = EVIDENCE_FIELDS - record.keys()
+        kind = record.get("kind")
+        if kind == "available-software-update":
+            required = DIAGNOSTIC_EVIDENCE_FIELDS
+        elif kind == "evidenced-version":
+            required = RELEASE_NOTE_EVIDENCE_FIELDS
+        else:
+            errors.append(f"evidence[{record_id}]: unknown kind: {kind}")
+            continue
+        missing = required - record.keys()
         if missing:
             errors.append(f"evidence[{record_id}] missing: {', '.join(sorted(missing))}")
     return errors

@@ -8,6 +8,7 @@ from pathlib import Path
 from .catalog import filesystem_manifest, validate_catalog
 from .discovery import download_all, parse_manifest, probe_all, write_json
 from .extract import extract_components
+from .metadata import snapshot_update_metadata
 from .upd import parse_file
 
 
@@ -52,6 +53,9 @@ def main() -> int:
     fetch.add_argument("--directory", type=Path, required=True)
     fetch.add_argument("--receipt", type=Path, required=True)
     fetch.add_argument("--workers", type=int, default=3)
+    metadata = sub.add_parser("metadata", help="snapshot synthetic Sonos UPS metadata")
+    metadata.add_argument("--raw", type=Path, required=True)
+    metadata.add_argument("--receipt", type=Path, required=True)
     extract = sub.add_parser("extract", help="extract raw firmware components from a UPD")
     extract.add_argument("file", type=Path)
     extract.add_argument("--directory", type=Path, required=True)
@@ -78,6 +82,13 @@ def main() -> int:
         downloaded = sum(item["downloaded"] for item in results)
         print(f"downloaded {downloaded}/{len(results)} available artifacts")
         return 0 if downloaded == len(results) else 1
+    if args.command == "metadata":
+        result = snapshot_update_metadata(args.raw, args.receipt)
+        print(
+            f"snapshotted {len(result['records'])} metadata records "
+            f"to {args.raw.name}; receipt {args.receipt.name}"
+        )
+        return 0
     if args.command == "extract":
         records = extract_components(
             args.file,

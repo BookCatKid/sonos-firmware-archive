@@ -23,3 +23,6 @@ captures/
 *.pem
 *.key
 
+# Local research scratch (downloaded release assets, extractions, diffs).
+sonos-research/
+

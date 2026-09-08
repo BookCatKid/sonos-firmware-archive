@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-31",
+  "generated": "2026-09-08",
   "source_manifests": [
     {
       "version": "80.1-56190",
@@ -8748,7 +8748,7 @@
       "sha256": null,
       "artifact_status": "missing-exact-package",
       "raw_status": "missing",
-      "evidence": "Version observed installed on a Move; exact package was absent from the current Sonos manifest and public web archives checked on 2026-08-30."
+      "evidence": "Version observed installed on a Move; exact package was absent from the current Sonos manifest and public web archives checked on 2026-08-30 and re-verified 2026-09-03 (CDX empty on both update hosts; 19 source manifests contain no 96.0-79160)."
     },
     {
       "id": "96.1-79270-1-8",
@@ -11018,6 +11018,386 @@
       "source_type": "public-issue-diagnostic",
       "source_url": "https://github.com/home-assistant/core/issues/88486",
       "observed": "2023-01-10",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2024-10-29-81.1-58210",
+      "kind": "evidenced-version",
+      "version": "81.1-58210",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2024-10-29",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2024-12-10-82.2-59204",
+      "kind": "evidenced-version",
+      "version": "82.2-59204",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2024-12-10",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-01-07-82.3-60160",
+      "kind": "evidenced-version",
+      "version": "82.3-60160",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-01-07",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-01-28-83.1-61130",
+      "kind": "evidenced-version",
+      "version": "83.1-61130",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-01-28",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-02-04-83.1-61240",
+      "kind": "evidenced-version",
+      "version": "83.1-61240",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-02-04",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-02-19-83.1-62052",
+      "kind": "evidenced-version",
+      "version": "83.1-62052",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-02-19",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-03-17-84.1-63110",
+      "kind": "evidenced-version",
+      "version": "84.1-63110",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-03-17",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-04-15-84.1-64070",
+      "kind": "evidenced-version",
+      "version": "84.1-64070",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-04-15",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-05-06-85.0-64200",
+      "kind": "evidenced-version",
+      "version": "85.0-64200",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-05-06",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-06-10-85.0-65270",
+      "kind": "evidenced-version",
+      "version": "85.0-65270",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-06-10",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-07-08-85.0-66270",
+      "kind": "evidenced-version",
+      "version": "85.0-66270",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-07-08",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-08-05-90.0-67171",
+      "kind": "evidenced-version",
+      "version": "90.0-67171",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-08-05",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-09-02-90.0-68140",
+      "kind": "evidenced-version",
+      "version": "90.0-68140",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-09-02",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-09-16-91.0-68261",
+      "kind": "evidenced-version",
+      "version": "91.0-68261",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-09-16",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-10-08-91.0-70011",
+      "kind": "evidenced-version",
+      "version": "91.0-70011",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-10-08",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-11-04-86.2-70230",
+      "kind": "evidenced-version",
+      "version": "86.2-70230",
+      "release_scope": "legacy",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-11-04",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-11-04-92.0-70280",
+      "kind": "evidenced-version",
+      "version": "92.0-70280",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-11-04",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-12-03-92.0-71170",
+      "kind": "evidenced-version",
+      "version": "92.0-71170",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-12-03",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-12-16-92.0-71170",
+      "kind": "evidenced-version",
+      "version": "92.0-71170",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-12-16",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2025-12-16-92.0-72090",
+      "kind": "evidenced-version",
+      "version": "92.0-72090",
+      "release_scope": "product-specific",
+      "products": [
+        "Selected products"
+      ],
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2025-12-16",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-01-06-92.0-71170",
+      "kind": "evidenced-version",
+      "version": "92.0-71170",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-01-06",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-01-06-92.0-72171",
+      "kind": "evidenced-version",
+      "version": "92.0-72171",
+      "release_scope": "product-specific",
+      "products": [
+        "Selected products"
+      ],
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-01-06",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-01-27-86.4-73190",
+      "kind": "evidenced-version",
+      "version": "86.4-73190",
+      "release_scope": "legacy",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-01-27",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-01-27-86.4-73220",
+      "kind": "evidenced-version",
+      "version": "86.4-73220",
+      "release_scope": "product-specific",
+      "products": [
+        "Play:1",
+        "Play:3"
+      ],
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-01-27",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-01-27-93.1-73190",
+      "kind": "evidenced-version",
+      "version": "93.1-73190",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-01-27",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-02-18-93.1-74010",
+      "kind": "evidenced-version",
+      "version": "93.1-74010",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-02-18",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-03-10-86.6-75010",
+      "kind": "evidenced-version",
+      "version": "86.6-75010",
+      "release_scope": "legacy",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-03-10",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-03-10-94.1-75011",
+      "kind": "evidenced-version",
+      "version": "94.1-75011",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-03-10",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-03-31-94.1-75140",
+      "kind": "evidenced-version",
+      "version": "94.1-75140",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-03-31",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-04-14-94.1-76070",
+      "kind": "evidenced-version",
+      "version": "94.1-76070",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-04-14",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-05-12-86.7-77050",
+      "kind": "evidenced-version",
+      "version": "86.7-77050",
+      "release_scope": "legacy",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-05-12",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-05-12-95.0-77060",
+      "kind": "evidenced-version",
+      "version": "95.0-77060",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-05-12",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-06-09-95.1-78010",
+      "kind": "evidenced-version",
+      "version": "95.1-78010",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-06-09",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-07-14-86.8-78270",
+      "kind": "evidenced-version",
+      "version": "86.8-78270",
+      "release_scope": "legacy",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-07-14",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-07-14-96.0-78270",
+      "kind": "evidenced-version",
+      "version": "96.0-78270",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-07-14",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-08-11-96.1-79270",
+      "kind": "evidenced-version",
+      "version": "96.1-79270",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-08-11",
+      "redacted": true
+    },
+    {
+      "id": "sonos-release-notes-2026-09-08-97.1-80312",
+      "kind": "evidenced-version",
+      "version": "97.1-80312",
+      "release_scope": "system",
+      "source_type": "first-party-release-notes",
+      "source_url": "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates",
+      "observed": "2026-09-08",
       "redacted": true
     }
   ]

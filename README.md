@@ -11,14 +11,14 @@ substitute for an exact missing version.
 
 ## Archive snapshot
 
-As of 2026-09-01, the private archive contains:
+As of 2026-09-08, the private archive contains:
 
-- **389 preserved artifacts** across **47 exact version labels**;
-- **354 Sonos UPD packages** with section-level manifests;
-- **16 preserved update manifests** and **134 recovered/raw image components**
+- **453 preserved artifacts** across **49 exact version labels**;
+- **412 Sonos UPD packages** with section-level manifests;
+- **19 preserved update manifests** and **134 recovered/raw image components**
   from **38 packages**;
-- **14.86 GiB** of unique cataloged package/installer/DFU bytes; and
-- **71 explicit gaps**: 70 manifest candidates no longer on the CDN, plus the
+- **16.22 GiB** of unique cataloged package/installer/DFU bytes; and
+- **89 explicit gaps**: 88 manifest candidates no longer on the CDN, plus the
   device-observed but still-unrecovered Move `96.0-79160` package.
 
 Every cataloged Release asset is reconciled against GitHub's server-reported
@@ -57,6 +57,8 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   package models are not assumed to map one-to-one to retail products.
 - `data/catalog.json` — package provenance, hashes, release assets, and raw-image records.
 - `data/discovery/` — complete candidate/receipt pairs for safe metadata probes.
+- `data/metadata/` — exact synthetic `.ups` response snapshots and redacted parsed receipts.
+- `data/evidence/` — minimal first-party version/date evidence import records.
 - `data/manifests/` — exact signed manifest snapshots retained in the repository.
 - `schemas/` — validation rules for redacted evidence records.
 - `data/completeness.json` — evidence-based target ledger, including unresolved gaps.
@@ -79,6 +81,8 @@ python -m venv .venv
 pip install -e .
 
 sonos-fw verify
+sonos-fw metadata --raw data/metadata/default-1-1-YYYY-MM-DD.ups \
+  --receipt data/metadata/default-1-1-YYYY-MM-DD.json
 sonos-fw inspect /path/to/package.upd
 sonos-fw extract /path/to/package.upd --directory /path/to/raw
 sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
@@ -140,6 +144,16 @@ python scripts/import_discovery.py \
 ```
 
 Discovery misses remain in the catalog as `missing-cdn`; they are not erased.
+
+Recheck every current miss without downloading firmware, and independently
+check its exact opaque release directory in Wayback CDX:
+
+```bash
+python scripts/audit_missing_live.py \
+  --output data/discovery/missing-live-audit-YYYY-MM-DD.json
+python scripts/audit_missing_wayback.py \
+  --output data/discovery/missing-wayback-audit-YYYY-MM-DD.json
+```
 
 ## Release layout
 

@@ -1,0 +1,35 @@
+{
+ "schema_version": 1,
+ "checked": "2026-09-03",
+ "live_reprobe": {
+  "method": "HEAD metadata-only, User-Agent sonos-firmware-archive/0.1",
+  "total": 88,
+  "results": {
+   "404": 88
+  },
+  "note": "All 88 missing-cdn candidates returned HTTP 404 on 2026-09-03; preserved controls (e.g. 57.22-59130-1-8) still return 200, confirming the probe path works."
+ },
+ "exact_version_subset": {
+  "versions": [
+   "67.1-27100",
+   "57.22-59130",
+   "57.14-37030"
+  ],
+  "note": "18 of the 88 are the exact-version candidates from the three diagnostic manifests (10+7+4 minus shared milestone URLs); remainder are conditional milestone/desktop artifacts."
+ },
+ "wayback_96_0_79160": {
+  "hosts": [
+   "update-firmware.sonos.com/firmware/Prod/",
+   "update.sonos.com/firmware/Prod/"
+  ],
+  "filter": "original:.*96.0-79160.*",
+  "result": "no captures on either host (2026-09-03)",
+  "manifests_checked": "19 source manifests contain no 96.0-79160 string"
+ },
+ "gpl_7_3": {
+  "total": 22,
+  "mismatch": 16,
+    "capture_audit": "The 15 mismatched source archives have one successful 2017-08-22 capture each. The mismatched attribution PDF has two later captures, both with a different digest. No alternate matching capture exists (re-verified 2026-09-08).",
+  "local_validation": "20/20 .tgz open as valid tar archives on 2026-09-03; retained as replay-transformed per doc policy"
+ }
+}

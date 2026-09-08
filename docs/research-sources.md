@@ -2,6 +2,43 @@
 
 Research date: 2026-08-31. This is an evidence map and collection plan, not a claim of completeness. It deliberately contains no device identifiers, household identifiers, private keys, or firmware binaries.
 
+Update 2026-09-03: full re-verification pass (receipt
+`data/discovery/reverify-2026-09-03.json`). All 88 `missing-cdn`
+candidates returned HTTP 404 via metadata-only `HEAD` on 2026-09-03,
+while preserved controls (for example `57.22-59130-1-8`) still return
+`200`, confirming the probe path. This includes the 18 remaining
+exact-version candidates from the three diagnostic manifests; the rest
+are conditional milestone/desktop artifacts. Wayback CDX on both
+`update-firmware.sonos.com` and `update.sonos.com` returns no captures
+matching `96.0-79160`, and none of the 19 source manifests contains that
+string, so `96.0-79160` remains `missing-exact-package` (version
+evidenced, package URL unknown; opaque tokens are not brute-forced per
+section 4). Fifteen mismatched GPL `7.3` source archives have only a single
+2017-08-22 capture each; the mismatched attribution PDF has two later captures,
+but both carry a different digest. No alternate matching capture exists. All
+20 local `.tgz` files open as valid tar archives and remain labeled
+`replay-transformed` until exact captures are recovered.
+
+The live discovery feed is now reproducibly covered too. A raw synthetic
+`default-1-1.ups` response and its redacted parsed receipt are retained under
+`data/metadata/`. The request uses only the public `sonostool` placeholder
+identifiers, and the receipt omits even those placeholder values. The captured
+response validates as 11 size-delimited records and contains the S1 base URI
+and manifest URI described below. Sonos serves this binary response with the
+misleading `text/html` content type, so validation relies on the record framing,
+magic value, byte count, and SHA-256 rather than MIME type alone.
+
+Update 2026-09-08: every one of the 88 `missing-cdn` URLs was checked again
+against both official update hosts. All 176 host/path combinations return
+`404`, while all 13 preserved same-directory controls return `200`
+(`data/discovery/missing-live-audit-2026-09-08.json`).
+The 15 exact opaque release directories were also queried through Wayback CDX
+without errors (`data/discovery/missing-wayback-audit-2026-09-08.json`). CDX
+contains two already-cataloged `.upm` captures in those directories but no
+exact capture for any of the 88 missing packages. This closes the currently
+known live-CDN and exact-directory Wayback leads without pretending that an
+uncrawled private copy cannot exist.
+
 Update 2026-09-02: the three exact diagnostic leads from Home Assistant issue
 reports were recovered, validated against official live URLs, and archived:
 `67.1-27100`, `57.22-59130`, and `57.14-37030`. Only redacted
@@ -146,10 +183,18 @@ Update 2026-09-02: the Sonos-hosted `7.2`, `7.3`, `9.2`, `10.2`, `10.6`, `12.0`,
 `13.2`, `14.4`, and `14.18` indexes were archived through Wayback with 167
 first-party artifact records in `data/gpl/`. The importer records each artifact's
 original URL, Wayback timestamp, local SHA-256, and CDX SHA-1 digest. Wayback
-currently reports 161 exact CDX digest matches; the 16 remaining `7.3` records
+currently reports 151 exact CDX digest matches; the 16 remaining `7.3` records
 are valid downloadable files but are labeled as replay-transformed because
 Wayback returned different bytes and lengths from its CDX payload digest. Keep
 this distinction explicit until exact captures are recovered.
+
+In practical terms, `replay-transformed` does not mean the files are broken or
+missing: all 20 release-7.3 `.tgz` files open as tar archives. It means 16
+downloaded files (15 source archives and one attribution PDF) are not
+byte-for-byte identical to the payload hash recorded in Wayback's CDX index.
+Metadata alone cannot establish whether replay transformation or a changed
+payload caused the mismatch. The files are retained as usable, best-available
+copies but are not mislabeled as exact historical bytes.
 
 Update 2026-09-02: all 167 archived GPL/LGPL files were published to the
 separate `gpl-7.2` through `gpl-14.18` releases and were re-audited by exact
@@ -164,6 +209,15 @@ asset filename and byte count against the local capture catalog.
 5. **Mine evidence-only versions:** Sonos release notes, historical snapshots, and staff announcements. Mark these `evidenced-version` until a package or manifest is found.
 6. **Crawl GPL indexes separately:** archive all official source bundles and attribution documents under their own licenses.
 7. **Poll conservatively:** a daily metadata check is sufficient. Cache by manifest revision/URL, use conditional requests, and avoid brute-forcing opaque directory tokens or sending device-specific requests at scale.
+
+As of 2026-09-08, steps 1–6 have been executed for every currently known
+source: the raw synthetic `.ups` snapshot is preserved, all 19 source manifests
+have been expanded, live candidates and available artifacts have receipts,
+known repository/diagnostic/CDX leads have been backfilled, 37 official
+release-note build/date facts have been cataloged, and all nine listed GPL
+release families are archived. Step 7 is intentionally ongoing and is covered by a quiet daily
+monitor. The remaining `missing-cdn` and `replay-transformed` labels describe
+external evidence limits, not unexecuted collection steps.
 
 Suggested provenance states are `official-live`, `official-wayback-replay`, `third-party-byte-identical-to-official`, `third-party-unverified`, `device-observed-version`, `first-party-announcement-only`, `diagnostic`, `custom`, and `missing`. “Missing” should always state exactly which sources and dates were checked.
 

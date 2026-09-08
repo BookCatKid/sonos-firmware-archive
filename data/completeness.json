@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-31",
+  "updated": "2026-09-03",
   "targets": [
     {"product": "Play:1", "model_number": "S1", "package_model": 8, "target_version": "86.8-78270", "package": "preserved", "kernel": "preserved", "rootfs": "preserved", "status": "complete"},
     {"product": "Playbar", "model_number": "S9", "package_model": 9, "target_version": "86.8-78270", "package": "preserved", "kernel": "preserved", "rootfs": "preserved", "status": "complete"},
