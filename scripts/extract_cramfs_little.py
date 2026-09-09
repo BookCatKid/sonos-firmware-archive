@@ -7,16 +7,18 @@ import struct
 import zlib
 from pathlib import Path
 
+ROOT_INODE_OFFSET = 0x40
+
 
 def inode_at(fs, offset):
     w1, w2, w3 = struct.unpack_from("<III", fs, offset)
     return {
-        "mode": w1 >> 16,
-        "uid": w1 & 0xFFFF,
-        "size": w2 >> 8,
-        "gid": w2 & 0xFF,
-        "namelen": (w3 >> 26) * 4,
-        "offset": (w3 & 0x03FFFFFF) * 4,
+        "mode": w1 & 0xFFFF,
+        "uid": w1 >> 16,
+        "size": w2 & 0x00FFFFFF,
+        "gid": w2 >> 24,
+        "namelen": (w3 & 0x3F) * 4,
+        "offset": (w3 >> 6) * 4,
     }
 
 
@@ -32,7 +34,7 @@ def entries(fs, inode):
 
 
 def find_inode(fs, path):
-    current = inode_at(fs, 0x4C)
+    current = inode_at(fs, ROOT_INODE_OFFSET)
     for part in [part for part in path.split("/") if part]:
         for name, child in entries(fs, current):
             if name == part:
