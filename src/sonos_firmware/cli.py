@@ -8,7 +8,15 @@ from pathlib import Path
 from .catalog import filesystem_manifest, validate_catalog
 from .discovery import download_all, parse_manifest, probe_all, write_json
 from .extract import extract_components
+from .legacy import recover_legacy_updater_key, write_recovery_evidence_exclusive
 from .metadata import snapshot_update_metadata
+from .mdp import (
+    inspect_mdp,
+    key_recipient_id,
+    recipient_id_for_key_file,
+    recover_amlogic_model_key,
+    write_private_key_exclusive,
+)
 from .upd import parse_file
 
 
@@ -62,6 +70,34 @@ def main() -> int:
     extract.add_argument("--private-key", type=Path)
     extract.add_argument("--legacy-model8", action="store_true")
     extract.add_argument("--receipt", type=Path)
+    mdp_inspect = sub.add_parser("mdp-inspect", help="inspect an MDP3 or complete manufacturing-page dump")
+    mdp_inspect.add_argument("file", type=Path)
+    recover = sub.add_parser(
+        "recover-amlogic-mdp-key",
+        help="recover an RSA model key from the known Amlogic MDP3/OTP layout",
+    )
+    recover.add_argument("mdp", type=Path)
+    recover.add_argument("--otp", type=Path, required=True)
+    recover.add_argument("--output", type=Path, required=True)
+    recover.add_argument("--expect-model", type=int)
+    recover.add_argument("--expect-recipient")
+    key_id = sub.add_parser("key-id", help="print a model private key's UPD recipient fingerprint")
+    key_id.add_argument("private_key", type=Path)
+    legacy = sub.add_parser(
+        "recover-legacy-updater-key",
+        help="recover a legacy RSA model key embedded in a plaintext updater",
+    )
+    legacy.add_argument("updater", type=Path)
+    legacy.add_argument("--model", type=int, required=True)
+    legacy.add_argument("--system-word", type=lambda value: int(value, 0), default=0x1996)
+    legacy.add_argument("--wrapper-offset", type=lambda value: int(value, 0))
+    legacy.add_argument("--output", type=Path, required=True)
+    legacy.add_argument("--expect-recipient")
+    legacy.add_argument(
+        "--evidence-directory",
+        type=Path,
+        help="securely retain the seed, wrapper, and decryptor intermediates",
+    )
     args = parser.parse_args()
 
     if args.command == "inspect":
@@ -103,6 +139,55 @@ def main() -> int:
         else:
             print(rendered, end="")
         print(f"extracted {len(records)} components from {args.file.name}")
+        return 0
+    if args.command == "mdp-inspect":
+        result = {"file": args.file.name, **inspect_mdp(args.file.read_bytes())}
+        print(json.dumps(result, indent=2))
+        return 0
+    if args.command == "recover-amlogic-mdp-key":
+        key = recover_amlogic_model_key(
+            args.mdp.read_bytes(),
+            args.otp.read_bytes(),
+            expected_model=args.expect_model,
+        )
+        recipient = key_recipient_id(key)
+        if args.expect_recipient:
+            expected = args.expect_recipient.lower()
+            if len(expected) != 40 or any(character not in "0123456789abcdef" for character in expected):
+                raise ValueError("expected recipient must be a 40-character hexadecimal SHA-1 value")
+            if recipient != expected:
+                raise ValueError(f"recovered key recipient mismatch: got {recipient}, expected {expected}")
+        write_private_key_exclusive(args.output, key)
+        print(json.dumps({"output": str(args.output), "recipient_id": recipient}, indent=2))
+        return 0
+    if args.command == "key-id":
+        print(recipient_id_for_key_file(args.private_key))
+        return 0
+    if args.command == "recover-legacy-updater-key":
+        recovered = recover_legacy_updater_key(
+            args.updater.read_bytes(),
+            args.model,
+            system_word=args.system_word,
+            wrapper_offset=args.wrapper_offset,
+        )
+        recipient = key_recipient_id(recovered.key)
+        if args.expect_recipient and recipient != args.expect_recipient.lower():
+            raise ValueError(
+                f"recovered key recipient mismatch: got {recipient}, expected {args.expect_recipient.lower()}"
+            )
+        write_private_key_exclusive(args.output, recovered.key)
+        if args.evidence_directory:
+            write_recovery_evidence_exclusive(args.evidence_directory, recovered)
+        print(
+            json.dumps(
+                {
+                    "output": str(args.output),
+                    "recipient_id": recipient,
+                    "wrapper_offset": recovered.wrapper_offset,
+                },
+                indent=2,
+            )
+        )
         return 0
     result = filesystem_manifest(args.directory)
     rendered = json.dumps(result, indent=2) + "\n"

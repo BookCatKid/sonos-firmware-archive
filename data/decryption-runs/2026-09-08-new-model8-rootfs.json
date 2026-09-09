@@ -1,0 +1,192 @@
+{
+  "date": "2026-09-08",
+  "purpose": "Decrypt preserved model-8 UPDs, publish the plaintext component assets, and remove local binary copies",
+  "key_source": {
+    "model": 8,
+    "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+    "key_supplied_out_of_band": true,
+    "new_private_key": false
+  },
+  "release_asset_audit": {
+    "repository": "BookCatKid/sonos-firmware-archive",
+    "audited_at": "2026-09-08",
+    "method": "GitHub Releases asset listings",
+    "rule": "For each package, the release had the encrypted .upd but no matching package-prefixed plaintext asset",
+    "content_rule": "The kernel and rootfs SHA-256 values below were absent from all GitHub Release asset digests; the generic preinstall script is byte-identical to an already published asset and is not counted as novel"
+  },
+  "publication": {
+    "uploaded_to_matching_release": true,
+    "uploader": "scripts/upload_raw_assets.py",
+    "server_size_and_sha256_verified": true,
+    "local_binary_copies_removed_after_verification": true
+  },
+  "packages": [
+    {
+      "package_id": "57.14-37030-1-8",
+      "release_tag": "firmware-57.14-37030",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.14-37030",
+      "package_sha256": "dbff7d85dc388ba7180dab565833d0cf8f04963c9762fea53e468e6a14e7dac9",
+      "new_plaintext_assets": [
+        {
+          "filename": "57.14-37030-1-8-kernel.uImage",
+          "sha256": "53c4b6b510e20e5da8aa491c6a583ac330dea42e7e7f5b932e4732cab5be5398"
+        },
+        {
+          "filename": "57.14-37030-1-8-rootfs.bin",
+          "sha256": "eacfb0b1dbccb775796819f1cc9a72ac097313b8a6a29a01cf20de3c68f895ce"
+        }
+      ],
+      "plaintext_assets_already_present_by_hash": [
+        {
+          "filename": "57.14-37030-1-8-preinstall.sh",
+          "sha256": "b354fbdfe9d352e441376a275b1b1b16133e6bf7e0dc5ed67247bf3c9ae62bd0"
+        }
+      ],
+      "release_assets_before": [
+        "57.14-37030-1-8.upd",
+        "57.14-37030-1-9.upd",
+        "57.14-37030-1-1.upd",
+        "57.14-37030-1-5.upd",
+        "57.14-37030-1-12.upd",
+        "57.14-37030-1-13.upd",
+        "57.14-37030-1-14.upd",
+        "57.14-37030-1-16.upd",
+        "57.14-37030-1-17.upd",
+        "57.14-37030-1-20.upd",
+        "57.14-37030-1-21.upd",
+        "57.14-37030-1-22.upd",
+        "57.14-37030-1-23.upd",
+        "57.14-37030-1-24.upd",
+        "57.14-37030-1-25.upd",
+        "57.14-37030-1-26.upd",
+        "57.14-37030-1-28.upd",
+        "57.14-37030-1-29.upd",
+        "57.14-37030-1-3.exe",
+        "57.14-37030-1-4.dmg"
+      ],
+      "plaintext_assets_missing_before": [
+        "57.14-37030-1-8-kernel.uImage",
+        "57.14-37030-1-8-preinstall.sh",
+        "57.14-37030-1-8-rootfs.bin"
+      ],
+      "receipt": "../raw/57.14-37030-1-8.json",
+      "output_directory": "../../artifacts/raw/57.14-37030-1-8"
+    },
+    {
+      "package_id": "57.22-59130-1-8",
+      "release_tag": "firmware-57.22-59130",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.22-59130",
+      "package_sha256": "8363db65b462ec51ba78a34f7e490f549edf510bfd226a0fb579f2bb7da07fd0",
+      "new_plaintext_assets": [
+        {
+          "filename": "57.22-59130-1-8-kernel.uImage",
+          "sha256": "bd892d43c3dd292bc629033b5325f15faa66c11046a430e81329fa5c37a9ea5d"
+        },
+        {
+          "filename": "57.22-59130-1-8-rootfs.bin",
+          "sha256": "d5aad87bf400a2b5cfd43556aa9c4bf0ab06b11af9727329d66fd3663ee469fa"
+        }
+      ],
+      "plaintext_assets_already_present_by_hash": [
+        {
+          "filename": "57.22-59130-1-8-preinstall.sh",
+          "sha256": "b354fbdfe9d352e441376a275b1b1b16133e6bf7e0dc5ed67247bf3c9ae62bd0"
+        }
+      ],
+      "release_assets_before": [
+        "57.22-59130-1-8.upd",
+        "57.22-59130-1-9.upd",
+        "57.22-59130-1-1.upd",
+        "57.22-59130-1-5.upd",
+        "57.22-59130-1-12.upd",
+        "57.22-59130-1-13.upd",
+        "57.22-59130-1-14.upd",
+        "57.22-59130-1-16.upd",
+        "57.22-59130-1-17.upd",
+        "57.22-59130-1-20.upd",
+        "57.22-59130-1-21.upd",
+        "57.22-59130-1-22.upd",
+        "57.22-59130-1-23.upd",
+        "57.22-59130-1-24.upd",
+        "57.22-59130-1-25.upd",
+        "57.22-59130-1-26.upd",
+        "57.22-59130-1-28.upd",
+        "57.22-59130-1-29.upd",
+        "57.22-59130-1-3.exe",
+        "57.22-59130-1-4.dmg"
+      ],
+      "plaintext_assets_missing_before": [
+        "57.22-59130-1-8-kernel.uImage",
+        "57.22-59130-1-8-preinstall.sh",
+        "57.22-59130-1-8-rootfs.bin"
+      ],
+      "receipt": "../raw/57.22-59130-1-8.json",
+      "output_directory": "../../artifacts/raw/57.22-59130-1-8"
+    },
+    {
+      "package_id": "67.1-27100-1-8",
+      "release_tag": "firmware-67.1-27100",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-67.1-27100",
+      "package_sha256": "1599c31c87b905957f734fbd17ac64e62856d56b2161f0fab6a0278573eb2586",
+      "new_plaintext_assets": [
+        {
+          "filename": "67.1-27100-1-8-kernel.uImage",
+          "sha256": "6b6387a1104117dcdb2974b68c6c6d4698dde6afd1b7af2a7fe43310b695324c"
+        },
+        {
+          "filename": "67.1-27100-1-8-rootfs.bin",
+          "sha256": "1f46225f845d5d07f51d0ae62fea8537a5d4cab8b1e266e6b41fec4a4e76da7e"
+        }
+      ],
+      "plaintext_assets_already_present_by_hash": [
+        {
+          "filename": "67.1-27100-1-8-preinstall.sh",
+          "sha256": "b354fbdfe9d352e441376a275b1b1b16133e6bf7e0dc5ed67247bf3c9ae62bd0"
+        }
+      ],
+      "release_assets_before": [
+        "67.1-27100-1-8.upd",
+        "67.1-27100-1-9.upd",
+        "67.1-27100-1-12.upd",
+        "67.1-27100-1-13.upd",
+        "67.1-27100-1-14.upd",
+        "67.1-27100-1-17.upd",
+        "67.1-27100-1-20.upd",
+        "67.1-27100-1-21.upd",
+        "67.1-27100-1-22.upd",
+        "67.1-27100-1-23.upd",
+        "67.1-27100-1-24.upd",
+        "67.1-27100-1-25.upd",
+        "67.1-27100-1-26.upd",
+        "67.1-27100-1-27.upd",
+        "67.1-27100-1-28.upd",
+        "67.1-27100-1-29.upd",
+        "67.1-27100-1-30.upd",
+        "67.1-27100-1-32.upd",
+        "67.1-27100-1-33.upd",
+        "67.1-27100-1-34.upd",
+        "67.1-27100-1-35.upd",
+        "67.1-27100-1-3.exe",
+        "67.1-27100-1-4.dmg"
+      ],
+      "plaintext_assets_missing_before": [
+        "67.1-27100-1-8-kernel.uImage",
+        "67.1-27100-1-8-preinstall.sh",
+        "67.1-27100-1-8-rootfs.bin"
+      ],
+      "receipt": "../raw/67.1-27100-1-8.json",
+      "output_directory": "../../artifacts/raw/67.1-27100-1-8"
+    }
+  ],
+  "verification": {
+    "source_sha256_checked": true,
+    "encrypted_recipient_checked": true,
+    "component_sha256_checked": true,
+    "release_asset_hashes_checked": true,
+    "new_kernel_and_rootfs_hashes_absent_from_release_assets": true,
+    "github_release_upload_verified": true,
+    "local_outputs_removed": true,
+    "format_checked": true,
+    "private_keys_committed": false
+  }
+}

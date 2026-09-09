@@ -8,6 +8,7 @@ import concurrent.futures
 import json
 import subprocess
 from collections import defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +19,12 @@ def main() -> int:
     parser.add_argument("--directory", type=Path, default=ROOT / "artifacts/raw")
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--package-id", action="append", default=[])
+    parser.add_argument("--preflight-output", type=Path)
+    parser.add_argument(
+        "--require-absent",
+        action="store_true",
+        help="abort if any intended plaintext filename already exists in its release",
+    )
     args = parser.parse_args()
 
     catalog = json.loads((ROOT / "data/catalog.json").read_text(encoding="utf-8"))
@@ -32,6 +39,45 @@ def main() -> int:
         item = expected.get(path.name)
         if item and (not requested or item.get("package_id") in requested):
             groups[item["release_tag"]].append(path)
+
+    preflight: list[dict] = []
+    existing_targets: list[str] = []
+    for tag, paths in sorted(groups.items()):
+        result = subprocess.run(
+            ["gh", "release", "view", tag, "--json", "assets"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        assets = {item["name"]: item for item in json.loads(result.stdout)["assets"]}
+        names = [path.name for path in paths]
+        existing = [name for name in names if name in assets]
+        existing_targets.extend(f"{tag}/{name}" for name in existing)
+        preflight.append(
+            {
+                "release_tag": tag,
+                "intended_assets": names,
+                "intended_assets_already_present": existing,
+            }
+        )
+    if args.preflight_output:
+        args.preflight_output.write_text(
+            json.dumps(
+                {
+                    "audited_at": datetime.now(timezone.utc).isoformat(),
+                    "repository": "BookCatKid/sonos-firmware-archive",
+                    "releases": preflight,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    if args.require_absent and existing_targets:
+        for target in existing_targets:
+            print(f"error: intended asset already exists: {target}")
+        return 1
 
     def upload(entry: tuple[str, list[Path]]) -> tuple[str, int]:
         tag, paths = entry

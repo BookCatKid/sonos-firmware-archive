@@ -3,8 +3,8 @@
     "mechanism": "Each encrypted UPD envelope names an RSA-2048 recipient key. The public sonostool implementation validates one recovery layout for its hardcoded SONOS_MODEL 26 target: an RSA blob in an MDP3 flash region (0x4000 bytes) at offset 0x0780, encrypted with an AES key derived as SHA256(OTP[0xD0:0xE0])[:16] from a 0x100-byte OTP/eFUSE dump. That storage layout has not been established for every other package model and must not be generalized without model-specific evidence.",
     "needed_per_model": "Decrypting a package requires the private key matching its envelope recipient. For a model verified to use the sonostool MDP3 design, recovery requires the matching device's 16 KiB MDP and 256-byte OTP dump plus sufficient access to read them. Other hardware generations may store or derive the key differently. Device dumps contain secrets: never commit them; supply them out-of-band and retain only recipient fingerprints and component hashes.",
     "public_paths": "Fenway model-8 family (MPC8314, includes Play:1): UART + diagnostic firmware gives root shell; mdputil reads flash; public dumps exist (trulyspinach/sonos-fenway) - origin of the model-8 key. Amlogic-era models (Sonos One and siblings): public EL3 exploit dumps OTP/eFUSE and sonostool derives MDP/LUKS/OTA keys without a device oracle (blasty/sonos, HITB Amsterdam 2023); requires the physical device and the exploit chain. Sonos One Gen 2 (Amlogic A113): published PCIe DMA attack yields root shell and cleartext firmware (Synacktiv, 2021). Sonos One / Era 100: OTA remote kernel exploitation and secure-boot chain research (NCC Group, BlackHat USA 2024).",
-    "searched_2026_09_03": "No published private keys were found for any of the 31 missing recipients (checked: Fenway repo is model-8 only; Sonoisseurs/sonor covers S18-One/ZP120 research with no key dumps; blasty/sonos ships tooling, not keys; systemcrash/sonos-firmware ships packages/manifests only). Recovery requires model-specific evidence and access to matching hardware or another verified key source.",
-    "local_status_2026_09_03": "The two recovered model-8/9 private keys are absent from this checkout (keys/, recovery-work/, captures/ do not exist and never entered git by design). Re-extracting even model-8/9 packages here requires re-supplying the keys out-of-band."
+    "searched_2026_09_03": "No published private keys were found for the then-missing recipients (checked: Fenway repo is model-8 only; trulyspinach/sonor has public Sub Gen1 MTD dumps but its published sample contains only MDP1 and no MDP3/model-private-key field; blasty/sonos ships tooling, not keys; systemcrash/sonos-firmware ships packages/manifests only). Recovery requires model-specific evidence and access to matching hardware or another verified key source.",
+    "local_status_2026_09_09": "Five recipient keys have now been recovered for package models 8, 9, 12, 16, and 17. All five are reproducible from encrypted wrappers in their plaintext 34.16-37101 updater binaries. Private keys and exact recovery intermediates are retained in the local gitignored recovery-work vault and never enter Git; its integrity can be checked with scripts/audit_recovery_vault.py. Twenty-eight recipient groups remain missing."
   },
   "missing_keys": [
     {
@@ -1924,107 +1924,6 @@
       "packages": [
         {
           "artifact_status": "preserved",
-          "package_id": "81.1-58074-1-12",
-          "package_model": 12,
-          "version": "81.1-58074"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-63071-1-12",
-          "package_model": 12,
-          "version": "57.22-63071"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-59130-1-12",
-          "package_model": 12,
-          "version": "57.22-59130"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "82.2-59204-1-12",
-          "package_model": 12,
-          "version": "82.2-59204"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "73.0-42060-1-12",
-          "package_model": 12,
-          "version": "73.0-42060"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.23-74170-1-12",
-          "package_model": 12,
-          "version": "57.23-74170"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "80.1-56190-1-12",
-          "package_model": 12,
-          "version": "80.1-56190"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.14-37030-1-12",
-          "package_model": 12,
-          "version": "57.14-37030"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "67.1-27100-1-12",
-          "package_model": 12,
-          "version": "67.1-27100"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.19-46310-1-12",
-          "package_model": 12,
-          "version": "57.19-46310"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "86.8-78270-1-12",
-          "package_model": 12,
-          "version": "86.8-78270"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "66.4-23090-1-12",
-          "package_model": 12,
-          "version": "66.4-23090"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "86.1-68260-1-12",
-          "package_model": 12,
-          "version": "86.1-68260"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "81.1-58210-1-12",
-          "package_model": 12,
-          "version": "81.1-58210"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "65.1-21040-1-12",
-          "package_model": 12,
-          "version": "65.1-21040"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "62.1-86220-1-12",
-          "package_model": 12,
-          "version": "62.1-86220"
-        }
-      ],
-      "recipient_id": "e35f7c21c0ec00a768bfbd364a9a105cf300f023"
-    },
-    {
-      "packages": [
-        {
-          "artifact_status": "preserved",
           "package_id": "65.1-21040-1-30",
           "package_model": 30,
           "version": "65.1-21040"
@@ -2114,113 +2013,6 @@
         }
       ],
       "recipient_id": "f28d3c15f69a514984436e9ec129cc1a89aec6f3"
-    },
-    {
-      "packages": [
-        {
-          "artifact_status": "preserved",
-          "package_id": "86.8-78270-1-17",
-          "package_model": 17,
-          "version": "86.8-78270"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "66.4-23090-1-17",
-          "package_model": 17,
-          "version": "66.4-23090"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "86.1-68260-1-17",
-          "package_model": 17,
-          "version": "86.1-68260"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "81.1-58210-1-17",
-          "package_model": 17,
-          "version": "81.1-58210"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "67.1-27100-1-17",
-          "package_model": 17,
-          "version": "67.1-27100"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.19-46310-1-17",
-          "package_model": 17,
-          "version": "57.19-46310"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "55.1-74250-1-17",
-          "package_model": 17,
-          "version": "55.1-74250"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "62.1-86220-1-17",
-          "package_model": 17,
-          "version": "62.1-86220"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "65.1-21040-1-17",
-          "package_model": 17,
-          "version": "65.1-21040"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-59130-1-17",
-          "package_model": 17,
-          "version": "57.22-59130"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-63071-1-17",
-          "package_model": 17,
-          "version": "57.22-63071"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "81.1-58074-1-17",
-          "package_model": 17,
-          "version": "81.1-58074"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "73.0-42060-1-17",
-          "package_model": 17,
-          "version": "73.0-42060"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "80.1-56190-1-17",
-          "package_model": 17,
-          "version": "80.1-56190"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.23-74170-1-17",
-          "package_model": 17,
-          "version": "57.23-74170"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.14-37030-1-17",
-          "package_model": 17,
-          "version": "57.14-37030"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "82.2-59204-1-17",
-          "package_model": 17,
-          "version": "82.2-59204"
-        }
-      ],
-      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
     },
     {
       "packages": [
@@ -2334,35 +2126,6 @@
         }
       ],
       "recipient_id": "fd5f06180d724cf26e42548a8501133a273ed516"
-    },
-    {
-      "packages": [
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-63071-1-16",
-          "package_model": 16,
-          "version": "57.22-63071"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-59130-1-16",
-          "package_model": 16,
-          "version": "57.22-59130"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.14-37030-1-16",
-          "package_model": 16,
-          "version": "57.14-37030"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.23-74170-1-16",
-          "package_model": 16,
-          "version": "57.23-74170"
-        }
-      ],
-      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437"
     }
   ],
   "note": "RSA recipient identifiers are SHA-1 hashes of the SPKI representation embedded in Sonos UPD envelopes. Private keys are deliberately not committed.",
@@ -2650,6 +2413,246 @@
       ],
       "key_family": "model 8 / Play:1 family",
       "package_model": 8
+    },
+    "fd88f2642a9c89a44747c7b4342cdb483fe1d437": {
+      "coverage_packages": [
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-63071-1-16",
+          "package_model": 16,
+          "version": "57.22-63071"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-59130-1-16",
+          "package_model": 16,
+          "version": "57.22-59130"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.14-37030-1-16",
+          "package_model": 16,
+          "version": "57.14-37030"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.23-74170-1-16",
+          "package_model": 16,
+          "version": "57.23-74170"
+        }
+      ],
+      "key_family": "model 16 legacy family",
+      "package_model": 16
+    },
+    "f2acc70d8db3ee388c534d99d4bff64d9dab8154": {
+      "coverage_packages": [
+        {
+          "artifact_status": "preserved",
+          "package_id": "86.8-78270-1-17",
+          "package_model": 17,
+          "version": "86.8-78270"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "66.4-23090-1-17",
+          "package_model": 17,
+          "version": "66.4-23090"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "86.1-68260-1-17",
+          "package_model": 17,
+          "version": "86.1-68260"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "81.1-58210-1-17",
+          "package_model": 17,
+          "version": "81.1-58210"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "67.1-27100-1-17",
+          "package_model": 17,
+          "version": "67.1-27100"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.19-46310-1-17",
+          "package_model": 17,
+          "version": "57.19-46310"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "55.1-74250-1-17",
+          "package_model": 17,
+          "version": "55.1-74250"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "62.1-86220-1-17",
+          "package_model": 17,
+          "version": "62.1-86220"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "65.1-21040-1-17",
+          "package_model": 17,
+          "version": "65.1-21040"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-59130-1-17",
+          "package_model": 17,
+          "version": "57.22-59130"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-63071-1-17",
+          "package_model": 17,
+          "version": "57.22-63071"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "81.1-58074-1-17",
+          "package_model": 17,
+          "version": "81.1-58074"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "73.0-42060-1-17",
+          "package_model": 17,
+          "version": "73.0-42060"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "80.1-56190-1-17",
+          "package_model": 17,
+          "version": "80.1-56190"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.23-74170-1-17",
+          "package_model": 17,
+          "version": "57.23-74170"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.14-37030-1-17",
+          "package_model": 17,
+          "version": "57.14-37030"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "82.2-59204-1-17",
+          "package_model": 17,
+          "version": "82.2-59204"
+        }
+      ],
+      "key_family": "model 17 legacy family",
+      "package_model": 17
+    },
+    "e35f7c21c0ec00a768bfbd364a9a105cf300f023": {
+      "coverage_packages": [
+        {
+          "artifact_status": "preserved",
+          "package_id": "81.1-58074-1-12",
+          "package_model": 12,
+          "version": "81.1-58074"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-63071-1-12",
+          "package_model": 12,
+          "version": "57.22-63071"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-59130-1-12",
+          "package_model": 12,
+          "version": "57.22-59130"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "82.2-59204-1-12",
+          "package_model": 12,
+          "version": "82.2-59204"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "73.0-42060-1-12",
+          "package_model": 12,
+          "version": "73.0-42060"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.23-74170-1-12",
+          "package_model": 12,
+          "version": "57.23-74170"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "80.1-56190-1-12",
+          "package_model": 12,
+          "version": "80.1-56190"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.14-37030-1-12",
+          "package_model": 12,
+          "version": "57.14-37030"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "67.1-27100-1-12",
+          "package_model": 12,
+          "version": "67.1-27100"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.19-46310-1-12",
+          "package_model": 12,
+          "version": "57.19-46310"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "86.8-78270-1-12",
+          "package_model": 12,
+          "version": "86.8-78270"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "66.4-23090-1-12",
+          "package_model": 12,
+          "version": "66.4-23090"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "86.1-68260-1-12",
+          "package_model": 12,
+          "version": "86.1-68260"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "81.1-58210-1-12",
+          "package_model": 12,
+          "version": "81.1-58210"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "65.1-21040-1-12",
+          "package_model": 12,
+          "version": "65.1-21040"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "62.1-86220-1-12",
+          "package_model": 12,
+          "version": "62.1-86220"
+        }
+      ],
+      "key_family": "model 12 legacy family",
+      "package_model": 12
     }
   },
   "schema_version": 1,

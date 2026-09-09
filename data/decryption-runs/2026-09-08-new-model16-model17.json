@@ -1,0 +1,229 @@
+{
+  "date": "2026-09-08",
+  "purpose": "Recover two legacy model-family private keys, decrypt every preserved package using those recipients, publish the plaintext components, and remove local binary copies",
+  "key_sources": {
+    "model_16": {
+      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437",
+      "new_private_key_recovered": true,
+      "source_package": "34.16-37101-1-16",
+      "updater_wrapper_offset": "0x19118"
+    },
+    "model_17": {
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "new_private_key_recovered": true,
+      "source_package": "34.16-37101-1-17",
+      "updater_wrapper_offset": "0x18f98"
+    },
+    "recovery_mechanism": "Reproduced the plaintext updater AES-256 CTR-DRBG seed construction, decrypted its AES-CBC wrapper, derived the PKCS#12 SHA-1 PBE key, and decrypted the embedded RSA-2048 PKCS#8 key",
+    "private_keys_committed": false
+  },
+  "publication": {
+    "repository": "BookCatKid/sonos-firmware-archive",
+    "uploaded_to_matching_releases": true,
+    "package_count": 21,
+    "component_count": 63,
+    "component_bytes": 130882260,
+    "server_size_and_sha256_verified": true,
+    "local_source_upds_and_plaintext_components_removed_after_verification": true
+  },
+  "packages": [
+    {
+      "package_id": "57.14-37030-1-16",
+      "release_tag": "firmware-57.14-37030",
+      "package_sha256": "1d0c71e8e6d60e5ec593a393b1b06f8997bd494b4b65dd736598d016a06d8194",
+      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437",
+      "receipt": "../raw/57.14-37030-1-16.json",
+      "component_count": 3,
+      "component_bytes": 5443131
+    },
+    {
+      "package_id": "57.22-59130-1-16",
+      "release_tag": "firmware-57.22-59130",
+      "package_sha256": "1f5a2cede4585cbdcf123c644c829cb946fc2c23db3d595c7b510016402220da",
+      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437",
+      "receipt": "../raw/57.22-59130-1-16.json",
+      "component_count": 3,
+      "component_bytes": 5451323
+    },
+    {
+      "package_id": "57.22-63071-1-16",
+      "release_tag": "firmware-57.22-63071",
+      "package_sha256": "5ddd04137b8b8afdb9fa63f11afd7e89eb8f08f033373a39c29fe9e1f21e6bcd",
+      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437",
+      "receipt": "../raw/57.22-63071-1-16.json",
+      "component_count": 3,
+      "component_bytes": 5451323
+    },
+    {
+      "package_id": "57.23-74170-1-16",
+      "release_tag": "firmware-57.23-74170",
+      "package_sha256": "e19a7bb28f2d940346c605ccfcff81f8d9a7dd1771ee991841ac1f9e07223ad4",
+      "recipient_id": "fd88f2642a9c89a44747c7b4342cdb483fe1d437",
+      "receipt": "../raw/57.23-74170-1-16.json",
+      "component_count": 3,
+      "component_bytes": 5455419
+    },
+    {
+      "package_id": "55.1-74250-1-17",
+      "release_tag": "firmware-55.1-74250",
+      "package_sha256": "d9e593b1535dcf12e63bf816c78a476953a1c24004c0f9076dd0f7ec4b1c0975",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/55.1-74250-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5680699
+    },
+    {
+      "package_id": "57.14-37030-1-17",
+      "release_tag": "firmware-57.14-37030",
+      "package_sha256": "ac45e96627c1febff9b980de21689b6eb52847fe4a6f01244276fd7a30f2285a",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/57.14-37030-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5709371
+    },
+    {
+      "package_id": "57.19-46310-1-17",
+      "release_tag": "firmware-57.19-46310",
+      "package_sha256": "2d7bfe64d6a0bda015600fbd537e55b5ccab543e07445173b4952e3fa809fd45",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/57.19-46310-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5721659
+    },
+    {
+      "package_id": "57.22-59130-1-17",
+      "release_tag": "firmware-57.22-59130",
+      "package_sha256": "590548cdc2dbea0c300b8f0877b97b5ec61d65a75a8c2e2f61a3ee29961d12a3",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/57.22-59130-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5721659
+    },
+    {
+      "package_id": "57.22-63071-1-17",
+      "release_tag": "firmware-57.22-63071",
+      "package_sha256": "414dacc2f1999e024d3e2e20fe510e19c7c32ad1c7f44bd2bea0038f15226905",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/57.22-63071-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5721659
+    },
+    {
+      "package_id": "57.23-74170-1-17",
+      "release_tag": "firmware-57.23-74170",
+      "package_sha256": "aad8981038e71e868bf71c78e26a88493e443cd1bec2d80066412738d4631830",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/57.23-74170-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5721659
+    },
+    {
+      "package_id": "62.1-86220-1-17",
+      "release_tag": "firmware-62.1-86220",
+      "package_sha256": "fd0ebfada4541f745df1d2c6d511a3e397be2cbd79bf02250dff7e749d2922fb",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/62.1-86220-1-17.json",
+      "component_count": 3,
+      "component_bytes": 6532667
+    },
+    {
+      "package_id": "65.1-21040-1-17",
+      "release_tag": "firmware-65.1-21040",
+      "package_sha256": "b0f8e1fc887ada8b88384e981b7446b371c7811c74383de957f128b105304c58",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/65.1-21040-1-17.json",
+      "component_count": 3,
+      "component_bytes": 6737467
+    },
+    {
+      "package_id": "66.4-23090-1-17",
+      "release_tag": "firmware-66.4-23090",
+      "package_sha256": "931535498363a7503c04b06e0ab84a03991cd8cade59f64d0fbb9921946661e1",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/66.4-23090-1-17.json",
+      "component_count": 3,
+      "component_bytes": 6737467
+    },
+    {
+      "package_id": "67.1-27100-1-17",
+      "release_tag": "firmware-67.1-27100",
+      "package_sha256": "e2d41a1767be384671cc417c659633cb9914805f3cfd393fa4ec1f3bd01f07e1",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/67.1-27100-1-17.json",
+      "component_count": 3,
+      "component_bytes": 8351051
+    },
+    {
+      "package_id": "73.0-42060-1-17",
+      "release_tag": "firmware-73.0-42060",
+      "package_sha256": "c6f85eedb24ab648875ff5235797e907064db7aa5193ed4e9577cab3e4a0b751",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/73.0-42060-1-17.json",
+      "component_count": 3,
+      "component_bytes": 10295531
+    },
+    {
+      "package_id": "80.1-56190-1-17",
+      "release_tag": "firmware-80.1-56190",
+      "package_sha256": "827fd85730ce29458adb6d7473e1681231c433559f2f79302e9ca79f450ec9d6",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/80.1-56190-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5929745
+    },
+    {
+      "package_id": "81.1-58074-1-17",
+      "release_tag": "firmware-81.1-58074",
+      "package_sha256": "7d4f38b2284886af88bd75a25bf7bc2bb9ed228a16c1caa85cf07acd4f21d1ae",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/81.1-58074-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5942028
+    },
+    {
+      "package_id": "81.1-58210-1-17",
+      "release_tag": "firmware-81.1-58210",
+      "package_sha256": "2aedaa152a0a399754659851d8dce3e725c49153e91fe898f77751120a91ace5",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/81.1-58210-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5942028
+    },
+    {
+      "package_id": "82.2-59204-1-17",
+      "release_tag": "firmware-82.2-59204",
+      "package_sha256": "368df5f08fd7e2d37f3f0595d19d288e5b3fa081b25a4eefa55017eef7ab96c0",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/82.2-59204-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5937919
+    },
+    {
+      "package_id": "86.1-68260-1-17",
+      "release_tag": "firmware-86.1-68260",
+      "package_sha256": "b42b1f5f9445c12658fc0187dc01621cc6b994208c793e4a8bd1ecf9ccbdb99b",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/86.1-68260-1-17.json",
+      "component_count": 3,
+      "component_bytes": 5832559
+    },
+    {
+      "package_id": "86.8-78270-1-17",
+      "release_tag": "firmware-86.8-78270",
+      "package_sha256": "48ea99b5528d1dead3ba7f87dcabb93237ac29650f3a2b50207ff990030a5a79",
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "receipt": "../raw/86.8-78270-1-17.json",
+      "component_count": 3,
+      "component_bytes": 6565896
+    }
+  ],
+  "verification": {
+    "source_sha256_checked_against_catalog": true,
+    "recovered_recipient_fingerprints_matched_envelopes": true,
+    "all_preserved_packages_for_both_recipients_decrypted": true,
+    "component_sha256_checked": true,
+    "github_release_upload_verified": true,
+    "catalog_verify_passed": true,
+    "private_keys_committed": false
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "audited_at": "2026-09-09T17:04:11.641277+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "releases": [
+    {
+      "release_tag": "firmware-57.14-37030",
+      "intended_assets": [
+        "57.14-37030-1-12-kernel.uImage",
+        "57.14-37030-1-12-preinstall.sh",
+        "57.14-37030-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.19-46310",
+      "intended_assets": [
+        "57.19-46310-1-12-kernel.uImage",
+        "57.19-46310-1-12-preinstall.sh",
+        "57.19-46310-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.22-59130",
+      "intended_assets": [
+        "57.22-59130-1-12-kernel.uImage",
+        "57.22-59130-1-12-preinstall.sh",
+        "57.22-59130-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.22-63071",
+      "intended_assets": [
+        "57.22-63071-1-12-kernel.uImage",
+        "57.22-63071-1-12-preinstall.sh",
+        "57.22-63071-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.23-74170",
+      "intended_assets": [
+        "57.23-74170-1-12-kernel.uImage",
+        "57.23-74170-1-12-preinstall.sh",
+        "57.23-74170-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-62.1-86220",
+      "intended_assets": [
+        "62.1-86220-1-12-kernel.uImage",
+        "62.1-86220-1-12-preinstall.sh",
+        "62.1-86220-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-65.1-21040",
+      "intended_assets": [
+        "65.1-21040-1-12-kernel.uImage",
+        "65.1-21040-1-12-preinstall.sh",
+        "65.1-21040-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-66.4-23090",
+      "intended_assets": [
+        "66.4-23090-1-12-kernel.uImage",
+        "66.4-23090-1-12-preinstall.sh",
+        "66.4-23090-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-67.1-27100",
+      "intended_assets": [
+        "67.1-27100-1-12-kernel.uImage",
+        "67.1-27100-1-12-preinstall.sh",
+        "67.1-27100-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-73.0-42060",
+      "intended_assets": [
+        "73.0-42060-1-12-kernel.uImage",
+        "73.0-42060-1-12-preinstall.sh",
+        "73.0-42060-1-12-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-80.1-56190",
+      "intended_assets": [
+        "80.1-56190-1-12-kernel.uImage",
+        "80.1-56190-1-12-preinstall.sh",
+        "80.1-56190-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-81.1-58074",
+      "intended_assets": [
+        "81.1-58074-1-12-kernel.uImage",
+        "81.1-58074-1-12-preinstall.sh",
+        "81.1-58074-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-81.1-58210",
+      "intended_assets": [
+        "81.1-58210-1-12-kernel.uImage",
+        "81.1-58210-1-12-preinstall.sh",
+        "81.1-58210-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-82.2-59204",
+      "intended_assets": [
+        "82.2-59204-1-12-kernel.uImage",
+        "82.2-59204-1-12-preinstall.sh",
+        "82.2-59204-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-86.1-68260",
+      "intended_assets": [
+        "86.1-68260-1-12-kernel.uImage",
+        "86.1-68260-1-12-preinstall.sh",
+        "86.1-68260-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-86.8-78270",
+      "intended_assets": [
+        "86.8-78270-1-12-kernel.uImage",
+        "86.8-78270-1-12-preinstall.sh",
+        "86.8-78270-1-12-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    }
+  ]
+}

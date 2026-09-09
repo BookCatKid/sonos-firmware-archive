@@ -15,8 +15,8 @@ As of 2026-09-08, the private archive contains:
 
 - **453 preserved artifacts** across **49 exact version labels**;
 - **412 Sonos UPD packages** with section-level manifests;
-- **19 preserved update manifests** and **134 recovered/raw image components**
-  from **38 packages**;
+- **19 preserved update manifests** and **266 recovered/raw image components**
+  including extracted components from **81 packages**;
 - **16.22 GiB** of unique cataloged package/installer/DFU bytes; and
 - **89 explicit gaps**: 88 manifest candidates no longer on the CDN, plus the
   device-observed but still-unrecovered Move `96.0-79160` package.
@@ -46,6 +46,41 @@ evidence, but Sonos replaced its body in place with a `96.1-79270` manifest.
 It is therefore labeled as a mutated campaign snapshot and is not represented
 as the missing `96.0-79160` manifest.
 
+On 2026-09-08, extraction runs decrypted and uploaded the model-8 and model-9
+payloads for `57.14-37030`, `57.22-59130`, and `67.1-27100`. Before upload,
+their GitHub Releases contained the encrypted `.upd` files but no matching
+package-prefixed plaintext assets. The kernel and rootfs hashes were absent
+from the repository's Release asset digests; generic preinstall/FPGA payloads
+are explicitly recorded as reused hashes. GitHub's server-reported sizes and
+SHA-256 values were verified, then the local binary inputs/outputs were
+removed. The receipts and release-asset audits are recorded in
+[`data/decryption-runs/2026-09-08-new-model8-rootfs.json`](data/decryption-runs/2026-09-08-new-model8-rootfs.json)
+and
+[`data/decryption-runs/2026-09-08-new-model9-rootfs.json`](data/decryption-runs/2026-09-08-new-model9-rootfs.json);
+only metadata and hashes remain locally.
+
+The same research run then recovered previously unavailable model-16 and
+model-17 RSA keys from encrypted wrappers embedded in their plaintext
+`34.16-37101` updater binaries. Those keys exactly matched the missing OTA
+recipient fingerprints and decrypted all 21 preserved packages for the two
+families. The resulting 63 components were hash-verified, uploaded to 17
+matching GitHub Releases, reconciled against the server, and removed locally.
+The complete receipt is
+[`data/decryption-runs/2026-09-08-new-model16-model17.json`](data/decryption-runs/2026-09-08-new-model16-model17.json).
+
+On 2026-09-09, the model-12 updater yielded a fifth previously unavailable
+RSA key after a complete 16-bit system-word search identified the unique value
+`0x0000`. It decrypted all 16 preserved encrypted packages for that recipient,
+producing 48 components. A preserved preflight proves those exact filenames
+were absent before upload; all 48 server assets were then size/hash reconciled.
+See
+[`data/decryption-runs/2026-09-09-new-model12.json`](data/decryption-runs/2026-09-09-new-model12.json).
+
+The next preserved plaintext gaps are tracked in
+[`data/decryption-runs/2026-09-08-next-model13-model25-targets.json`](data/decryption-runs/2026-09-08-next-model13-model25-targets.json).
+They require model-specific key recovery; no large source UPD is downloaded
+until matching key material is available.
+
 Two additional retired campaign URLs recovered from local task history remain
 live. Their exact current bodies preserve the S1 `57.22-68080` manifest and the
 S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
@@ -63,6 +98,8 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `schemas/` — validation rules for redacted evidence records.
 - `data/completeness.json` — evidence-based target ledger, including unresolved gaps.
 - `data/upd/` — section-level manifests generated from each preserved UPD.
+- `data/raw/` — extracted-component receipts with recipient fingerprints and hashes.
+- `data/decryption-runs/` — tracked receipts for successful local decryption runs.
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
 - `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
@@ -72,6 +109,12 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 
 Recovered private keys, device captures, serial numbers, household identifiers,
 and room names are deliberately excluded.
+
+An optional local `recovery-work/` vault retains private keys, their exact
+historical updater inputs, recovery intermediates, and a hash inventory while
+remaining Git-ignored. See [local recovery vault](docs/recovery-vault.md) and
+run `python scripts/audit_recovery_vault.py` to verify it without exposing key
+material.
 
 ## Use the tools
 
@@ -88,6 +131,20 @@ sonos-fw extract /path/to/package.upd --directory /path/to/raw
 sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
   --directory /path/to/raw --receipt /path/to/raw-receipt.json
 sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
+
+# Inspect a device manufacturing-page capture (no secrets are printed)
+sonos-fw mdp-inspect /secure/device-mdp.bin
+# The offline path applies only to the documented Amlogic MDP3/OTP layout.
+sonos-fw recover-amlogic-mdp-key /secure/device-mdp.bin \
+  --otp /secure/device-otp.bin --output /secure/model-key.pem \
+  --expect-model 26 \
+  --expect-recipient RECIPIENT_SHA1
+sonos-fw key-id /secure/model-key.pem
+
+# Recover the documented deterministic legacy updater wrapper (models 8/9/16/17).
+sonos-fw recover-legacy-updater-key /path/to/upgrade \
+  --model 16 --output /secure/model16-private.pem \
+  --expect-recipient fd88f2642a9c89a44747c7b4342cdb483fe1d437
 ```
 
 Raw component assets use package-prefixed names and live in the same private
@@ -103,6 +160,10 @@ asset without exposing the key.
 
 See [model-key handling](docs/key-material.md) for the verified key-family
 fingerprints, provenance summary, and the archive's withheld-material policy.
+For the blocked Encore/model-13, Dhuez/model-25, and Tupelo/model-26 families,
+see the [model-13 recovery note](docs/model13-recovery.md),
+[model-25 recovery note](docs/model25-recovery.md), and
+[model-26 recovery note](docs/model26-recovery.md).
 
 Regenerate checked-in metadata from a local artifact directory:
 
