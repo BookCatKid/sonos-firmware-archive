@@ -25,8 +25,17 @@ def _der(tag: int, value: bytes) -> bytes:
     return bytes([tag]) + length + value
 
 
-def _synthetic_updater(model: int, private_key: rsa.RSAPrivateKey) -> bytes:
-    key, iv, password = _legacy_random_material(model, SYSTEM_WORD)
+def _synthetic_updater(
+    model: int,
+    private_key: rsa.RSAPrivateKey,
+    *,
+    byte_order: str = "big",
+) -> bytes:
+    key, iv, password = _legacy_random_material(
+        model,
+        SYSTEM_WORD,
+        byte_order=byte_order,
+    )
     salt = bytes.fromhex("0102030405060708")
     iterations = 2048
     private_der = private_key.private_bytes(
@@ -51,6 +60,21 @@ def test_model9_derivation_vector():
     assert key.hex() == "b3c8fea138eb958c5b8258bf7f1c39f8"
     assert iv.hex() == "2ec62422288491671f8d8f26bf204a72"
     assert password.hex() == "8ce8fdc46b0156aea374a7f3aec88b86a8fd97bdd522257df2f94c4226177a"
+
+
+def test_model1_little_endian_derivation_vector():
+    assert legacy_seed(1, 0, byte_order="little").hex() == (
+        "32304a9b98ca00007de410ce01000000"
+        "436f7079726967687420000000010001"
+    )
+
+
+def test_recovers_little_endian_wrapper():
+    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    updater = _synthetic_updater(1, expected, byte_order="little")
+    recovered = recover_legacy_updater_key(updater, 1, byte_order="little")
+    assert recovered.byte_order == "little"
+    assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
 
 def test_recovers_key_from_complete_synthetic_updater():

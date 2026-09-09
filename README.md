@@ -76,6 +76,13 @@ were absent before upload; all 48 server assets were then size/hash reconciled.
 See
 [`data/decryption-runs/2026-09-09-new-model12.json`](data/decryption-runs/2026-09-09-new-model12.json).
 
+The same run recovered a sixth previously unavailable key from the Renesas SH
+model-1 updater. Static analysis established its native little-endian seed
+layout, and the exhaustive system-word search selected only `0x0000`. The key
+matches all four preserved encrypted model-1 packages; their 12 plaintext
+components were uploaded and server-hash reconciled. See
+[`data/decryption-runs/2026-09-09-new-model1.json`](data/decryption-runs/2026-09-09-new-model1.json).
+
 The next preserved plaintext gaps are tracked in
 [`data/decryption-runs/2026-09-08-next-model13-model25-targets.json`](data/decryption-runs/2026-09-08-next-model13-model25-targets.json).
 They require model-specific key recovery; no large source UPD is downloaded
@@ -141,10 +148,16 @@ sonos-fw recover-amlogic-mdp-key /secure/device-mdp.bin \
   --expect-recipient RECIPIENT_SHA1
 sonos-fw key-id /secure/model-key.pem
 
-# Recover the documented deterministic legacy updater wrapper (models 8/9/16/17).
+# Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \
   --model 16 --output /secure/model16-private.pem \
   --expect-recipient fd88f2642a9c89a44747c7b4342cdb483fe1d437
+
+# Model 1's Renesas SH updater uses native little-endian MDP fields.
+sonos-fw recover-legacy-updater-key /path/to/model1/upgrade \
+  --model 1 --system-word 0 --byte-order little --wrapper-offset 0xe528 \
+  --output /secure/model1-private.pem \
+  --expect-recipient 21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c
 ```
 
 Raw component assets use package-prefixed names and live in the same private

@@ -1,0 +1,42 @@
+{
+  "audited_at": "2026-09-09T21:13:19.645363+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "releases": [
+    {
+      "release_tag": "firmware-57.14-37030",
+      "intended_assets": [
+        "57.14-37030-1-1-kernel.uImage",
+        "57.14-37030-1-1-preinstall.sh",
+        "57.14-37030-1-1-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.22-59130",
+      "intended_assets": [
+        "57.22-59130-1-1-kernel.uImage",
+        "57.22-59130-1-1-preinstall.sh",
+        "57.22-59130-1-1-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.22-63071",
+      "intended_assets": [
+        "57.22-63071-1-1-kernel.uImage",
+        "57.22-63071-1-1-preinstall.sh",
+        "57.22-63071-1-1-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    },
+    {
+      "release_tag": "firmware-57.23-74170",
+      "intended_assets": [
+        "57.23-74170-1-1-kernel.uImage",
+        "57.23-74170-1-1-preinstall.sh",
+        "57.23-74170-1-1-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    }
+  ]
+}

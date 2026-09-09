@@ -26,6 +26,7 @@ def main() -> int:
     parser.add_argument("updater", type=Path)
     parser.add_argument("--model", type=int, required=True)
     parser.add_argument("--wrapper-offset", type=lambda value: int(value, 0), required=True)
+    parser.add_argument("--byte-order", choices=("big", "little"), default="big")
     parser.add_argument("--expect-recipient")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -38,7 +39,11 @@ def main() -> int:
     candidates: list[dict] = []
     candidate_keys = []
     for system_word in range(0x10000):
-        aes_key, iv, _password = _legacy_random_material(args.model, system_word)
+        aes_key, iv, _password = _legacy_random_material(
+            args.model,
+            system_word,
+            byte_order=args.byte_order,
+        )
         decryptor = Cipher(algorithms.AES(aes_key), modes.CBC(iv)).decryptor()
         first = decryptor.update(wrapper[:16])
         if not first.startswith(b"\x30\x82"):
@@ -49,6 +54,7 @@ def main() -> int:
                 args.model,
                 system_word=system_word,
                 wrapper_offset=args.wrapper_offset,
+                byte_order=args.byte_order,
             )
         except (TypeError, ValueError):
             continue
@@ -60,6 +66,7 @@ def main() -> int:
                 "system_word": f"0x{system_word:04x}",
                 "recipient_id": recipient,
                 "wrapper_offset": args.wrapper_offset,
+                "byte_order": args.byte_order,
             }
         )
         candidate_keys.append(recovered.key)

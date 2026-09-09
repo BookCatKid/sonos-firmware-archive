@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VAULT = ROOT / "recovery-work"
 INVENTORY = VAULT / "inventory.json"
 RECIPIENTS = {
+    "keys/model1/private.pem": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
     "keys/model8/private.pem": "346ce6e38225ca8177024fbebfaad7043344b3bd",
     "keys/model9/private.pem": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
     "keys/model12/private.pem": "e35f7c21c0ec00a768bfbd364a9a105cf300f023",
@@ -39,7 +40,7 @@ def main() -> int:
         "schema_version": 1,
         "created": date.today().isoformat(),
         "purpose": "Integrity inventory for the Git-ignored private recovery vault",
-        "key_models": [8, 9, 12, 16, 17],
+        "key_models": [1, 8, 9, 12, 16, 17],
         "files": files,
     }
     flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC

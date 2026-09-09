@@ -4,7 +4,7 @@
     "needed_per_model": "Decrypting a package requires the private key matching its envelope recipient. For a model verified to use the sonostool MDP3 design, recovery requires the matching device's 16 KiB MDP and 256-byte OTP dump plus sufficient access to read them. Other hardware generations may store or derive the key differently. Device dumps contain secrets: never commit them; supply them out-of-band and retain only recipient fingerprints and component hashes.",
     "public_paths": "Fenway model-8 family (MPC8314, includes Play:1): UART + diagnostic firmware gives root shell; mdputil reads flash; public dumps exist (trulyspinach/sonos-fenway) - origin of the model-8 key. Amlogic-era models (Sonos One and siblings): public EL3 exploit dumps OTP/eFUSE and sonostool derives MDP/LUKS/OTA keys without a device oracle (blasty/sonos, HITB Amsterdam 2023); requires the physical device and the exploit chain. Sonos One Gen 2 (Amlogic A113): published PCIe DMA attack yields root shell and cleartext firmware (Synacktiv, 2021). Sonos One / Era 100: OTA remote kernel exploitation and secure-boot chain research (NCC Group, BlackHat USA 2024).",
     "searched_2026_09_03": "No published private keys were found for the then-missing recipients (checked: Fenway repo is model-8 only; trulyspinach/sonor has public Sub Gen1 MTD dumps but its published sample contains only MDP1 and no MDP3/model-private-key field; blasty/sonos ships tooling, not keys; systemcrash/sonos-firmware ships packages/manifests only). Recovery requires model-specific evidence and access to matching hardware or another verified key source.",
-    "local_status_2026_09_09": "Five recipient keys have now been recovered for package models 8, 9, 12, 16, and 17. All five are reproducible from encrypted wrappers in their plaintext 34.16-37101 updater binaries. Private keys and exact recovery intermediates are retained in the local gitignored recovery-work vault and never enter Git; its integrity can be checked with scripts/audit_recovery_vault.py. Twenty-eight recipient groups remain missing."
+    "local_status_2026_09_09": "Six recipient keys have now been recovered for package models 1, 8, 9, 12, 16, and 17. All six are reproducible from encrypted wrappers in their plaintext 34.16-37101 updater binaries. Private keys and exact recovery intermediates are retained in the local gitignored recovery-work vault and never enter Git; its integrity can be checked with scripts/audit_recovery_vault.py. Twenty-seven recipient groups remain missing."
   },
   "missing_keys": [
     {
@@ -154,35 +154,6 @@
         }
       ],
       "recipient_id": "13c6f1c74b396d2ad490381d12ccdd7c545fe1d7"
-    },
-    {
-      "packages": [
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-63071-1-1",
-          "package_model": 1,
-          "version": "57.22-63071"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.14-37030-1-1",
-          "package_model": 1,
-          "version": "57.14-37030"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.23-74170-1-1",
-          "package_model": 1,
-          "version": "57.23-74170"
-        },
-        {
-          "artifact_status": "preserved",
-          "package_id": "57.22-59130-1-1",
-          "package_model": 1,
-          "version": "57.22-59130"
-        }
-      ],
-      "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c"
     },
     {
       "packages": [
@@ -2653,6 +2624,36 @@
       ],
       "key_family": "model 12 legacy family",
       "package_model": 12
+    },
+    "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c": {
+      "coverage_packages": [
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-63071-1-1",
+          "package_model": 1,
+          "version": "57.22-63071"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.14-37030-1-1",
+          "package_model": 1,
+          "version": "57.14-37030"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.23-74170-1-1",
+          "package_model": 1,
+          "version": "57.23-74170"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "57.22-59130-1-1",
+          "package_model": 1,
+          "version": "57.22-59130"
+        }
+      ],
+      "key_family": "model 1 / legacy ZonePlayer family",
+      "package_model": 1
     }
   },
   "schema_version": 1,

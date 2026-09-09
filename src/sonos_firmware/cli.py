@@ -90,6 +90,7 @@ def main() -> int:
     legacy.add_argument("updater", type=Path)
     legacy.add_argument("--model", type=int, required=True)
     legacy.add_argument("--system-word", type=lambda value: int(value, 0), default=0x1996)
+    legacy.add_argument("--byte-order", choices=("big", "little"), default="big")
     legacy.add_argument("--wrapper-offset", type=lambda value: int(value, 0))
     legacy.add_argument("--output", type=Path, required=True)
     legacy.add_argument("--expect-recipient")
@@ -169,6 +170,7 @@ def main() -> int:
             args.model,
             system_word=args.system_word,
             wrapper_offset=args.wrapper_offset,
+            byte_order=args.byte_order,
         )
         recipient = key_recipient_id(recovered.key)
         if args.expect_recipient and recipient != args.expect_recipient.lower():
@@ -184,6 +186,7 @@ def main() -> int:
                     "output": str(args.output),
                     "recipient_id": recipient,
                     "wrapper_offset": recovered.wrapper_offset,
+                    "byte_order": recovered.byte_order,
                 },
                 indent=2,
             )

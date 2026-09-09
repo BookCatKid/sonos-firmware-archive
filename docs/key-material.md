@@ -1,10 +1,11 @@
 # Model-key handling
 
-This archive records five locally verified Sonos model-key identities used to
+This archive records six locally verified Sonos model-key identities used to
 decrypt historical firmware containers:
 
 | Package family | Recipient fingerprint | Coverage in this archive |
 |---|---|---|
+| Model 1 / legacy ZonePlayer family | `21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c` | All four preserved encrypted model-1 packages |
 | Model 8 / Play:1 family | `346ce6e38225ca8177024fbebfaad7043344b3bd` | Archived model-8 packages |
 | Model 9 / Playbar family | `12e82a182af27801eba0ff3c94e8e649ed962dbb` | Archived model-9 packages |
 | Model 12 legacy family | `e35f7c21c0ec00a768bfbd364a9a105cf300f023` | All 16 preserved encrypted model-12 packages |
@@ -15,9 +16,9 @@ The fingerprints are SHA-1 values of the public-key representation carried in
 the package envelope. They allow an independent reviewer to identify which
 key family was used.
 
-As of 2026-09-02, the full archived UPD catalog contains 399 encrypted
-packages using 33 distinct RSA recipients. The five locally recovered keys cover
-69 of those packages exactly. The remaining 28 recipient identities and their
+As of 2026-09-09, the full archived UPD catalog contains 399 encrypted
+packages using 33 distinct RSA recipients. The six locally recovered keys cover
+73 of those packages exactly. The remaining 27 recipient identities and their
 affected package IDs are tracked in `data/key-recovery-ledger.json`. No claim is
 made that a single firmware-specific key can decrypt other Sonos models.
 
@@ -75,6 +76,19 @@ components. The pre-upload audit found none of those exact plaintext
 filenames in their releases; server sizes and SHA-256 values were reconciled
 after upload. See
 [`data/decryption-runs/2026-09-09-new-model12.json`](../data/decryption-runs/2026-09-09-new-model12.json).
+
+### Model 1 / legacy ZonePlayer
+
+The plaintext `34.16-37101` model-1 package contains a Renesas SH updater and
+a 1,264-byte wrapper at file offset `0xe528`. Headless Ghidra analysis showed
+that its seed construction is the same legacy MDP/RSAref selection performed
+in native SH little-endian order. An exhaustive search found exactly one valid
+system word, `0x0000`, and recovered recipient
+`21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c`. That recipient matches all four
+preserved encrypted model-1 packages. The resulting 12 components were
+uploaded to their matching releases and reconciled by server-reported size and
+SHA-256. See
+[`data/decryption-runs/2026-09-09-new-model1.json`](../data/decryption-runs/2026-09-09-new-model1.json).
 
 ### Models 16 and 17
 
@@ -137,7 +151,7 @@ packages, `completeness.json` target), then models 23, 24, 21, 29, 28, 26
 (12–19 packages each). Model 25 (Move, 17 packages) is moot until the
 `96.0-79160` package itself is recovered. Dumps contain device secrets and
 must be supplied out-of-band; only recipient fingerprints and component
-hashes enter the archive. Note the five recovered private keys are absent from
+hashes enter the archive. Note the six recovered private keys are absent from
 fresh checkouts by design (the local `recovery-work/` vault never entered
 git), so re-extraction still needs the appropriate key re-supplied or locally
 recovered from an authorized plaintext updater.

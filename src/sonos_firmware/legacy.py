@@ -33,6 +33,7 @@ class LegacyRecovery:
     password: bytes
     wrapper: bytes
     encrypted_key_info: bytes
+    byte_order: str
 
 
 def _aes_ecb(key: bytes, block: bytes) -> bytes:
@@ -97,28 +98,40 @@ class _CTRDRBG:
         return output[:size]
 
 
-def legacy_seed(model: int, system_word: int = SYSTEM_WORD) -> bytes:
+def legacy_seed(
+    model: int,
+    system_word: int = SYSTEM_WORD,
+    *,
+    byte_order: str = "big",
+) -> bytes:
     """Reproduce the updater's fixed MDP/RSAref seed selection."""
     if not 0 <= model <= 0xFFFFFFFF:
         raise ValueError("model must fit in an unsigned 32-bit integer")
     if not 0 <= system_word <= 0xFFFFFFFF:
         raise ValueError("system word must fit in an unsigned 32-bit integer")
+    if byte_order not in {"big", "little"}:
+        raise ValueError("byte order must be 'big' or 'little'")
 
     # MDP2[0xec:0x10c] selects the final 32 bytes of RSAref's fixed-width
     # public exponent. For exponent 65537, only its final three bytes are set.
     seed = bytearray(bytes(29) + b"\x01\x00\x01")
-    seed[2:6] = MDP2_MAGIC
+    seed[2:6] = int.from_bytes(MDP2_MAGIC, "big").to_bytes(4, byte_order)
     seed[0:2] = COPYRIGHT[10:12]
-    seed[8:12] = MDP1_MAGIC
-    seed[12:16] = model.to_bytes(4, "big")
+    seed[8:12] = int.from_bytes(MDP1_MAGIC, "big").to_bytes(4, byte_order)
+    seed[12:16] = model.to_bytes(4, byte_order)
     seed[16:26] = COPYRIGHT[:10]
     for index in range(4):
         seed[26 + index] ^= (system_word >> (8 * index)) & 0xFF
     return bytes(seed)
 
 
-def _legacy_random_material(model: int, system_word: int) -> tuple[bytes, bytes, bytes]:
-    drbg = _CTRDRBG(legacy_seed(model, system_word))
+def _legacy_random_material(
+    model: int,
+    system_word: int,
+    *,
+    byte_order: str = "big",
+) -> tuple[bytes, bytes, bytes]:
+    drbg = _CTRDRBG(legacy_seed(model, system_word, byte_order=byte_order))
     iv = drbg.random(16)
     key = drbg.random(16)
     password = bytearray(31)
@@ -219,6 +232,7 @@ def recover_legacy_updater_key(
     *,
     system_word: int = SYSTEM_WORD,
     wrapper_offset: int | None = None,
+    byte_order: str = "big",
 ) -> LegacyRecovery:
     """Recover an RSA-2048 key from the legacy updater's embedded wrapper."""
     if wrapper_offset is None:
@@ -234,8 +248,12 @@ def recover_legacy_updater_key(
     if len(wrapper) != WRAPPER_BYTES:
         raise ValueError("truncated legacy updater wrapper")
 
-    seed = legacy_seed(model, system_word)
-    aes_key, iv, password = _legacy_random_material(model, system_word)
+    seed = legacy_seed(model, system_word, byte_order=byte_order)
+    aes_key, iv, password = _legacy_random_material(
+        model,
+        system_word,
+        byte_order=byte_order,
+    )
     decryptor = Cipher(algorithms.AES(aes_key), modes.CBC(iv)).decryptor()
     padded = decryptor.update(wrapper) + decryptor.finalize()
     padding = padded[-1]
@@ -256,6 +274,7 @@ def recover_legacy_updater_key(
         password,
         wrapper,
         encrypted_key_info,
+        byte_order,
     )
 
 
@@ -278,6 +297,7 @@ def write_recovery_evidence_exclusive(
                 {
                     "wrapper_offset": recovery.wrapper_offset,
                     "recipient_id": key_recipient_id(recovery.key),
+                    "byte_order": recovery.byte_order,
                 },
                 indent=2,
             )
