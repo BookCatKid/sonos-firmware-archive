@@ -34,6 +34,7 @@ class LegacyRecovery:
     wrapper: bytes
     encrypted_key_info: bytes
     byte_order: str
+    seed_source: str = "fixed-system-word"
 
 
 def _aes_ecb(key: bytes, block: bytes) -> bytes:
@@ -125,13 +126,38 @@ def legacy_seed(
     return bytes(seed)
 
 
-def _legacy_random_material(
+def legacy_flash_seed(
+    mtd_prefix: bytes,
     model: int,
-    system_word: int,
     *,
     byte_order: str = "big",
-) -> tuple[bytes, bytes, bytes]:
-    drbg = _CTRDRBG(legacy_seed(model, system_word, byte_order=byte_order))
+) -> bytes:
+    """Reproduce the flash-derived seed used by the model-5 updater path.
+
+    The updater hashes exactly the first 16 KiB read from ``/dev/mtd/0``, then
+    overlays the same MDP1 fields used by the fixed legacy construction. The
+    twelve digest bytes at offsets 2..7 and 26..31 remain device/platform
+    specific.
+    """
+    if len(mtd_prefix) != 0x4000:
+        raise ValueError("MTD prefix must be exactly 16 KiB (0x4000 bytes)")
+    if not 0 <= model <= 0xFFFFFFFF:
+        raise ValueError("model must fit in an unsigned 32-bit integer")
+    if byte_order not in {"big", "little"}:
+        raise ValueError("byte order must be 'big' or 'little'")
+
+    seed = bytearray(hashlib.sha256(mtd_prefix).digest())
+    seed[0:2] = COPYRIGHT[10:12]
+    seed[8:12] = int.from_bytes(MDP1_MAGIC, "big").to_bytes(4, byte_order)
+    seed[12:16] = model.to_bytes(4, byte_order)
+    seed[16:26] = COPYRIGHT[:10]
+    return bytes(seed)
+
+
+def _random_material_from_seed(seed: bytes) -> tuple[bytes, bytes, bytes]:
+    if len(seed) != 32:
+        raise ValueError("legacy DRBG seed must be exactly 32 bytes")
+    drbg = _CTRDRBG(seed)
     iv = drbg.random(16)
     key = drbg.random(16)
     password = bytearray(31)
@@ -139,6 +165,15 @@ def _legacy_random_material(
         while password[index] in (0, 10):
             password[index] = drbg.random(1)[0]
     return key, iv, bytes(password)
+
+
+def _legacy_random_material(
+    model: int,
+    system_word: int,
+    *,
+    byte_order: str = "big",
+) -> tuple[bytes, bytes, bytes]:
+    return _random_material_from_seed(legacy_seed(model, system_word, byte_order=byte_order))
 
 
 def _read_length(data: bytes, offset: int) -> tuple[int, int]:
@@ -226,15 +261,14 @@ def _rc4(key: bytes, data: bytes) -> bytes:
     return bytes(output)
 
 
-def recover_legacy_updater_key(
+def _recover_legacy_updater_key_with_seed(
     updater: bytes,
-    model: int,
+    seed: bytes,
     *,
-    system_word: int = SYSTEM_WORD,
     wrapper_offset: int | None = None,
     byte_order: str = "big",
+    seed_source: str,
 ) -> LegacyRecovery:
-    """Recover an RSA-2048 key from the legacy updater's embedded wrapper."""
     if wrapper_offset is None:
         marker_offset = updater.find(UPDATER_MARKER)
         if marker_offset < 0:
@@ -248,12 +282,7 @@ def recover_legacy_updater_key(
     if len(wrapper) != WRAPPER_BYTES:
         raise ValueError("truncated legacy updater wrapper")
 
-    seed = legacy_seed(model, system_word, byte_order=byte_order)
-    aes_key, iv, password = _legacy_random_material(
-        model,
-        system_word,
-        byte_order=byte_order,
-    )
+    aes_key, iv, password = _random_material_from_seed(seed)
     decryptor = Cipher(algorithms.AES(aes_key), modes.CBC(iv)).decryptor()
     padded = decryptor.update(wrapper) + decryptor.finalize()
     padding = padded[-1]
@@ -275,6 +304,45 @@ def recover_legacy_updater_key(
         wrapper,
         encrypted_key_info,
         byte_order,
+        seed_source,
+    )
+
+
+def recover_legacy_updater_key(
+    updater: bytes,
+    model: int,
+    *,
+    system_word: int = SYSTEM_WORD,
+    wrapper_offset: int | None = None,
+    byte_order: str = "big",
+) -> LegacyRecovery:
+    """Recover a key from a legacy updater using the fixed system-word seed."""
+    seed = legacy_seed(model, system_word, byte_order=byte_order)
+    return _recover_legacy_updater_key_with_seed(
+        updater,
+        seed,
+        wrapper_offset=wrapper_offset,
+        byte_order=byte_order,
+        seed_source="fixed-system-word",
+    )
+
+
+def recover_legacy_flash_updater_key(
+    updater: bytes,
+    mtd_prefix: bytes,
+    model: int,
+    *,
+    wrapper_offset: int | None = None,
+    byte_order: str = "big",
+) -> LegacyRecovery:
+    """Recover a key using the updater's flash-hash seed construction."""
+    seed = legacy_flash_seed(mtd_prefix, model, byte_order=byte_order)
+    return _recover_legacy_updater_key_with_seed(
+        updater,
+        seed,
+        wrapper_offset=wrapper_offset,
+        byte_order=byte_order,
+        seed_source="mtd-prefix-sha256",
     )
 
 
@@ -298,6 +366,7 @@ def write_recovery_evidence_exclusive(
                     "wrapper_offset": recovery.wrapper_offset,
                     "recipient_id": key_recipient_id(recovery.key),
                     "byte_order": recovery.byte_order,
+                    "seed_source": recovery.seed_source,
                 },
                 indent=2,
             )

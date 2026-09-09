@@ -158,6 +158,12 @@ sonos-fw recover-legacy-updater-key /path/to/model1/upgrade \
   --model 1 --system-word 0 --byte-order little --wrapper-offset 0xe528 \
   --output /secure/model1-private.pem \
   --expect-recipient 21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c
+
+# Model 5 needs the exact first 16 KiB of /dev/mtd/0 from an authorized unit.
+sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
+  --model 5 --byte-order big --wrapper-offset 0x16880 \
+  --mtd-prefix /secure/model5-mtd0-first-16k.bin \
+  --output /secure/model5-private.pem --expect-recipient RECIPIENT_SHA1
 ```
 
 Raw component assets use package-prefixed names and live in the same private

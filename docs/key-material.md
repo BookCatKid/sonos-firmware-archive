@@ -90,6 +90,39 @@ uploaded to their matching releases and reconciled by server-reported size and
 SHA-256. See
 [`data/decryption-runs/2026-09-09-new-model1.json`](../data/decryption-runs/2026-09-09-new-model1.json).
 
+### Model 5 / ZoneBridge (recovery path established, key still missing)
+
+Static analysis of the plaintext `34.16-37101` model-5 MIPS updater identified
+the complete seed construction for its 1,264-byte wrapper at file offset
+`0x16880`. The updater reads exactly `0x4000` bytes from `/dev/mtd/0`, hashes
+them with SHA-256, and then overlays these bytes in the 32-byte digest:
+
+| Seed bytes | Value |
+|---|---|
+| `0..1` | MDP1 bytes `0x2e..0x2f` (`20`) |
+| `2..7` | SHA-256 digest bytes `2..7` |
+| `8..11` | MDP1 magic from offset `0`, big-endian (`ce10e47d`) |
+| `12..15` | MDP1 model from offset `8`, big-endian (`00000005`) |
+| `16..25` | MDP1 bytes `0x24..0x2d` (`Copyright `) |
+| `26..31` | SHA-256 digest bytes `26..31` |
+
+That seed drives the same CTR-DRBG, AES-CBC, and PKCS#12 wrapper chain used by
+the recovered legacy families. The implementation and a synthetic end-to-end
+test are checked in, but the actual private key cannot be recovered without
+the exact first 16 KiB from a matching authorized model-5 `/dev/mtd/0` image.
+A public model-8 flash prefix and every plausible package-contained substitute
+tested so far fail to decrypt the wrapper, so no model-5 key is claimed.
+
+Once that exact prefix is available, the offline reproduction command is:
+
+```bash
+sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
+  --model 5 --byte-order big --wrapper-offset 0x16880 \
+  --mtd-prefix /secure/model5-mtd0-first-16k.bin \
+  --expect-recipient MODEL5_RECIPIENT_SHA1 \
+  --output /secure/model5-private.pem
+```
+
 ### Models 16 and 17
 
 The plaintext `34.16-37101` packages for models 16 and 17 contain PowerPC

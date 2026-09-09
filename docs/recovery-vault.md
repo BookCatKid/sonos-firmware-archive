@@ -23,7 +23,7 @@ recipient fingerprints, restrictive file permissions, and Git ignore status.
 The custom recovery workflow is preserved in tracked source:
 
 - `src/sonos_firmware/legacy.py` implements the complete legacy wrapper
-  recovery construction;
+  recovery construction, including model 5's flash-hash seed variant;
 - `scripts/find_legacy_system_word.py` reproduces the bounded search that
   discovered the unique model 1 and model 12 parameters;
 - `scripts/ghidra/` preserves the headless reference-following, decompilation,

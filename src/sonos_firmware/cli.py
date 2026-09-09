@@ -8,7 +8,11 @@ from pathlib import Path
 from .catalog import filesystem_manifest, validate_catalog
 from .discovery import download_all, parse_manifest, probe_all, write_json
 from .extract import extract_components
-from .legacy import recover_legacy_updater_key, write_recovery_evidence_exclusive
+from .legacy import (
+    recover_legacy_flash_updater_key,
+    recover_legacy_updater_key,
+    write_recovery_evidence_exclusive,
+)
 from .metadata import snapshot_update_metadata
 from .mdp import (
     inspect_mdp,
@@ -89,7 +93,13 @@ def main() -> int:
     )
     legacy.add_argument("updater", type=Path)
     legacy.add_argument("--model", type=int, required=True)
-    legacy.add_argument("--system-word", type=lambda value: int(value, 0), default=0x1996)
+    legacy_seed = legacy.add_mutually_exclusive_group()
+    legacy_seed.add_argument("--system-word", type=lambda value: int(value, 0), default=0x1996)
+    legacy_seed.add_argument(
+        "--mtd-prefix",
+        type=Path,
+        help="derive the seed from an exact 16 KiB /dev/mtd/0 prefix (model-5 path)",
+    )
     legacy.add_argument("--byte-order", choices=("big", "little"), default="big")
     legacy.add_argument("--wrapper-offset", type=lambda value: int(value, 0))
     legacy.add_argument("--output", type=Path, required=True)
@@ -165,13 +175,23 @@ def main() -> int:
         print(recipient_id_for_key_file(args.private_key))
         return 0
     if args.command == "recover-legacy-updater-key":
-        recovered = recover_legacy_updater_key(
-            args.updater.read_bytes(),
-            args.model,
-            system_word=args.system_word,
-            wrapper_offset=args.wrapper_offset,
-            byte_order=args.byte_order,
-        )
+        updater = args.updater.read_bytes()
+        if args.mtd_prefix:
+            recovered = recover_legacy_flash_updater_key(
+                updater,
+                args.mtd_prefix.read_bytes(),
+                args.model,
+                wrapper_offset=args.wrapper_offset,
+                byte_order=args.byte_order,
+            )
+        else:
+            recovered = recover_legacy_updater_key(
+                updater,
+                args.model,
+                system_word=args.system_word,
+                wrapper_offset=args.wrapper_offset,
+                byte_order=args.byte_order,
+            )
         recipient = key_recipient_id(recovered.key)
         if args.expect_recipient and recipient != args.expect_recipient.lower():
             raise ValueError(
@@ -187,6 +207,7 @@ def main() -> int:
                     "recipient_id": recipient,
                     "wrapper_offset": recovered.wrapper_offset,
                     "byte_order": recovered.byte_order,
+                    "seed_source": recovered.seed_source,
                 },
                 indent=2,
             )
