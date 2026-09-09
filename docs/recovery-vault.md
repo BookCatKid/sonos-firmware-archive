@@ -30,8 +30,8 @@ The custom recovery workflow is preserved in tracked source:
   and instruction-listing helpers used to recover model 1's SH byte order;
 - `scripts/decrypt_recipient_batch.py` performs resumable, hash-verified batch
   extraction while retaining only one downloaded source at a time;
-- `scripts/extract_cramfs_little.py` preserves the little-endian CramFS
-  extractor used to reach model 6's updater;
+- `scripts/extract_cramfs_little.py` preserves the dual-endian CramFS
+  extractor used to reach model 5's utilities and model 6's updater;
 - `scripts/generate_recovery_vault_inventory.py` regenerates the complete
   private SHA-256 manifest, while `scripts/audit_recovery_vault.py` rejects
   missing, altered, or unlisted vault files;
