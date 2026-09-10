@@ -73,6 +73,11 @@ def main() -> int:
     extract.add_argument("--directory", type=Path, required=True)
     extract.add_argument("--private-key", type=Path)
     extract.add_argument("--legacy-model8", action="store_true")
+    extract.add_argument(
+        "--skip-encrypted",
+        action="store_true",
+        help="extract plaintext components while leaving wrapped sections untouched",
+    )
     extract.add_argument("--receipt", type=Path)
     mdp_inspect = sub.add_parser("mdp-inspect", help="inspect an MDP3 or complete manufacturing-page dump")
     mdp_inspect.add_argument("file", type=Path)
@@ -142,6 +147,7 @@ def main() -> int:
             args.directory,
             args.private_key,
             legacy_model8=args.legacy_model8,
+            skip_encrypted=args.skip_encrypted,
         )
         result = {"source": args.file.name, "components": records}
         rendered = json.dumps(result, indent=2) + "\n"

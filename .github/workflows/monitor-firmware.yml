@@ -31,10 +31,17 @@ jobs:
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Reconcile GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/audit_release_assets.py --output release-asset-audit.json
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: firmware-monitor-report
-          path: monitor-report.json
+          path: |
+            monitor-report.json
+            release-asset-audit.json
           retention-days: 30
       - name: Open or update discovery issue
         if: steps.check.outputs.exit_code == '2'

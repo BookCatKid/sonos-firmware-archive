@@ -15,7 +15,7 @@ As of 2026-09-10, the private archive contains:
 
 - **454 preserved artifacts** across **50 exact version labels**;
 - **413 Sonos UPD packages** with section-level manifests;
-- **19 preserved update manifests** and **281 recovered/raw image components**;
+- **19 preserved update manifests** and **286 recovered/raw image components**;
 - **16.22 GiB** of unique cataloged package/installer/DFU bytes; and
 - **169 explicit gaps**: 88 signed-manifest candidates and 80 bounded
   base-URI model expansions no longer on the CDN, plus the device-observed but
@@ -37,6 +37,17 @@ CramFS root filesystem, so no private key was needed. The exact package is
 preserved in the `firmware-10.20-75300` Release; the complete redacted sweep,
 raw unique UPS bodies, and model probes are retained under `data/metadata/`
 and `data/discovery/`.
+
+Every named component that is plaintext—or decryptable with a recovered
+key—is also retained as its own Release asset. An archive-wide enforcement pass
+on 2026-09-10 uploaded the three model-27 components plus two older plaintext
+kernels that were embedded beside encrypted sections in models 13 and 20.
+Repository validation now rejects any extractable UPD section without a
+cataloged Release location, and the scheduled monitor reconciles every
+canonical asset against GitHub's server-reported byte count and SHA-256. See
+[`data/decryption-runs/2026-09-10-extractable-section-backfill.json`](data/decryption-runs/2026-09-10-extractable-section-backfill.json)
+and
+[`data/discovery/release-asset-audit-2026-09-10.json`](data/discovery/release-asset-audit-2026-09-10.json).
 
 > [!IMPORTANT]
 > This is an independent research archive, not a Sonos project. Firmware and

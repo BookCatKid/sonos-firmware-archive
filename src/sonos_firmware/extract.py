@@ -94,6 +94,7 @@ def extract_components(
     output_dir: str | Path,
     private_key_path: str | Path | None = None,
     legacy_model8: bool = False,
+    skip_encrypted: bool = False,
 ) -> list[dict]:
     upd_path = Path(upd_path)
     output_dir = Path(output_dir)
@@ -112,6 +113,8 @@ def extract_components(
         recipient = None
         if section.encrypted:
             if private_key is None:
+                if skip_encrypted:
+                    continue
                 raise ValueError(f"section {section.index} requires recipient {section.recipient_id}")
             payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
 
