@@ -113,6 +113,15 @@ the exact first 16 KiB from a matching authorized model-5 `/dev/mtd/0` image.
 A public model-8 flash prefix and every plausible package-contained substitute
 tested so far fail to decrypt the wrapper, so no model-5 key is claimed.
 
+The official Sonos `linux-2.4.25` source resolves an important ambiguity in
+that requirement. Its model-5-era RedBoot parser explicitly registers MTD
+partition zero as `whole flash`, while the separate AR531X MDP driver locates
+the manufacturing page by its `Mfr Data Page` partition name. A public Fenway
+image independently has MDP1 magic at offset `0x4000`. Therefore the bytes
+hashed by the updater are the flash's model-stable leading boot block, not a
+per-device MDP secret. A compatible ZoneBridge boot/whole-flash image should
+be sufficient; no write access to a device is required by the offline tool.
+
 Once that exact prefix is available, the offline reproduction command is:
 
 ```bash
@@ -122,6 +131,11 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
   --expect-recipient MODEL5_RECIPIENT_SHA1 \
   --output /secure/model5-private.pem
 ```
+
+For collections of possible bootloader or whole-flash images,
+`scripts/test_legacy_flash_prefixes.py` recursively tests the first and last
+16 KiB of every eligible file. It deduplicates identical blocks, prints only
+successful recipient IDs, and never writes recovered private-key material.
 
 ### Models 16 and 17
 

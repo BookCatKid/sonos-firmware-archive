@@ -32,6 +32,9 @@ The custom recovery workflow is preserved in tracked source:
   extraction while retaining only one downloaded source at a time;
 - `scripts/extract_cramfs_little.py` preserves the dual-endian CramFS
   extractor used to reach model 5's utilities and model 6's updater;
+- `scripts/test_legacy_flash_prefixes.py` recursively tests candidate model-5
+  boot/flash blocks, deduplicates them, and reports recipients without writing
+  private-key material;
 - `scripts/generate_recovery_vault_inventory.py` regenerates the complete
   private SHA-256 manifest, while `scripts/audit_recovery_vault.py` rejects
   missing, altered, or unlisted vault files;
@@ -41,9 +44,10 @@ The custom recovery workflow is preserved in tracked source:
 - `tests/test_legacy.py` independently exercises the full wrapper round trip.
 
 The ignored vault is not included in Git clones or GitHub backups. A second
-local copy of the PEMs exists under the adjacent firmware-download workspace,
-but both copies are on the same physical machine. Back up `recovery-work/` to
-encrypted offline storage to protect against disk loss.
+local copy of the PEMs and a complete vault snapshot exist under the adjacent
+firmware-download workspace, but all copies are on the same physical machine.
+Back up the complete snapshot to encrypted offline storage to protect against
+disk loss.
 
 The vault also contains a `candidates/` subtree with every model 1, 5, 6, and
 7 updater used in recovery work, the tested model-5 flash
