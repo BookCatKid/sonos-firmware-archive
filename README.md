@@ -208,6 +208,25 @@ against `data/catalog.json` before analysis.
 The archive records observable evidence and does not claim that the current
 seed is a complete history of all Sonos firmware.
 
+### Completeness boundary and monitoring
+
+There is no authoritative public Sonos index of every historical build, so
+this archive cannot prove that it contains every version ever released. Its
+defensible claim is narrower: every version and artifact exposed by the
+currently recorded signed manifests, live metadata responses, exact public
+diagnostic URLs, selected first-party announcements, public repository leads,
+and queried Wayback CDX results is either preserved or represented by an
+explicit gap. `data/catalog.json`, `data/completeness.json`, and the discovery
+receipts make that boundary auditable rather than silently treating unknown
+history as complete.
+
+No Codex heartbeat is used, and no automatic new-version detection is
+currently running. The GitHub Actions workflows validate committed state and
+can preserve an explicitly selected discovery receipt, but they do not
+discover releases on a schedule. The public metadata, signed manifests, known
+CDN misses, Wayback CDX, and first-party release evidence can all be checked
+manually with the documented discovery commands.
+
 ## Expand the archive
 
 The discovery pipeline expands every concrete image and placeholder URL in a

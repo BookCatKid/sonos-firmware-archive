@@ -215,9 +215,11 @@ source: the raw synthetic `.ups` snapshot is preserved, all 19 source manifests
 have been expanded, live candidates and available artifacts have receipts,
 known repository/diagnostic/CDX leads have been backfilled, 37 official
 release-note build/date facts have been cataloged, and all nine listed GPL
-release families are archived. Step 7 is intentionally ongoing and is covered by a quiet daily
-monitor. The remaining `missing-cdn` and `replay-transformed` labels describe
-external evidence limits, not unexecuted collection steps.
+release families are archived. No Codex heartbeat is used and automatic
+monitoring is not currently running; step 7 is manual unless a repository-
+native scheduled workflow is added later. The remaining `missing-cdn` and
+`replay-transformed` labels describe external evidence limits, not unexecuted
+collection steps.
 
 Suggested provenance states are `official-live`, `official-wayback-replay`, `third-party-byte-identical-to-official`, `third-party-unverified`, `device-observed-version`, `first-party-announcement-only`, `diagnostic`, `custom`, and `missing`. “Missing” should always state exactly which sources and dates were checked.
 
