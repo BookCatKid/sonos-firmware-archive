@@ -220,12 +220,28 @@ explicit gap. `data/catalog.json`, `data/completeness.json`, and the discovery
 receipts make that boundary auditable rather than silently treating unknown
 history as complete.
 
-No Codex heartbeat is used, and no automatic new-version detection is
-currently running. The GitHub Actions workflows validate committed state and
-can preserve an explicitly selected discovery receipt, but they do not
-discover releases on a schedule. The public metadata, signed manifests, known
-CDN misses, Wayback CDX, and first-party release evidence can all be checked
-manually with the documented discovery commands.
+No Codex heartbeat or AI service is used. The repository-native
+`monitor firmware sources` GitHub Actions workflow runs daily and can also be
+started manually. It fetches the public synthetic update-metadata profile,
+parses every referenced signed manifest, probes its candidates, and rechecks
+every exact catalog URL marked `missing-cdn`. It also extracts build numbers
+from Sonos's first-party system release-notes page, which provides early
+warning when the opaque manifest URL is not publicly discoverable. It uploads
+a JSON audit and opens or updates one GitHub issue only when it sees an unknown
+manifest, hash, version, downloadable uncataloged candidate, or revived missing
+URL. Monitoring errors fail the workflow instead of being interpreted as
+absence.
+
+This proves a useful but bounded statement about current availability: all
+artifacts currently downloadable through that public profile and the catalog's
+known exact URLs are accounted for when the latest audit is green. It cannot
+enumerate opaque URLs that no public source references, private/device-specific
+update profiles, or every historical release. Run the identical check locally
+with:
+
+```bash
+python scripts/check_new_versions.py --output monitor-report.json
+```
 
 ## Expand the archive
 

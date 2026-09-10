@@ -1,0 +1,84 @@
+name: monitor firmware sources
+
+on:
+  schedule:
+    - cron: "17 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: monitor-firmware-sources
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - name: Check current public sources
+        id: check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_versions.py --output monitor-report.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firmware-monitor-report
+          path: monitor-report.json
+          retention-days: 30
+      - name: Open or update discovery issue
+        if: steps.check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('monitor-report.json', 'utf8'));
+            const title = '[monitor] New Sonos firmware evidence detected';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const details = [
+              `Automated, non-AI source monitoring detected a change.`,
+              ``,
+              `- Unknown manifest URLs: ${report.unknown_manifest_urls?.length ?? 0}`,
+              `- Unknown manifest hashes: ${report.unknown_manifest_hashes?.length ?? 0}`,
+              `- Unknown versions: ${(report.unknown_versions ?? []).join(', ') || 'none'}`,
+              `- New release-note versions: ${(report.unknown_release_note_versions ?? []).join(', ') || 'none'}`,
+              `- Downloadable uncatalogued candidates: ${report.available_uncatalogued_candidates?.length ?? 0}`,
+              `- Known missing URLs now available: ${report.known_missing_now_available?.length ?? 0}`,
+              ``,
+              `Review the full JSON report artifact in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body: details,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body: details,
+              });
+            }
+      - name: Fail on monitoring errors
+        if: steps.check.outputs.exit_code == '1'
+        run: exit 1
