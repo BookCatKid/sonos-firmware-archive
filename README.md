@@ -11,18 +11,32 @@ substitute for an exact missing version.
 
 ## Archive snapshot
 
-As of 2026-09-08, the private archive contains:
+As of 2026-09-10, the private archive contains:
 
-- **453 preserved artifacts** across **49 exact version labels**;
-- **412 Sonos UPD packages** with section-level manifests;
-- **19 preserved update manifests** and **266 recovered/raw image components**
-  including extracted components from **81 packages**;
+- **454 preserved artifacts** across **50 exact version labels**;
+- **413 Sonos UPD packages** with section-level manifests;
+- **19 preserved update manifests** and **281 recovered/raw image components**;
 - **16.22 GiB** of unique cataloged package/installer/DFU bytes; and
-- **89 explicit gaps**: 88 manifest candidates no longer on the CDN, plus the
-  device-observed but still-unrecovered Move `96.0-79160` package.
+- **169 explicit gaps**: 88 signed-manifest candidates and 80 bounded
+  base-URI model expansions no longer on the CDN, plus the device-observed but
+  still-unrecovered Move `96.0-79160` package.
 
 Every cataloged Release asset is reconciled against GitHub's server-reported
 byte size and SHA-256 digest.
+
+On 2026-09-10, a rate-limited sweep of 1,200 synthetic metadata profiles found
+three byte-distinct UPS responses. Most profiles returned the already archived
+S1 manifest. Low/invalid controller profiles additionally exposed two
+previously uncataloged historical base URIs: `54.2-72160` StubInstaller and
+`10.20-75300` in the `Gold/Kanye-v2.8` channel. A bounded model 0–80 expansion
+found one surviving package, official model-27
+`10.20-75300-1-27.upd` (4,745,434 bytes; SHA-256
+`296b1c892fe92ee1fbf73cba2b6566d3c0d7a58d08e32004d44d3b14c82fd07b`).
+All ten UPD sections are plaintext, including its Linux kernel and little-endian
+CramFS root filesystem, so no private key was needed. The exact package is
+preserved in the `firmware-10.20-75300` Release; the complete redacted sweep,
+raw unique UPS bodies, and model probes are retained under `data/metadata/`
+and `data/discovery/`.
 
 > [!IMPORTANT]
 > This is an independent research archive, not a Sonos project. Firmware and
@@ -241,6 +255,16 @@ with:
 
 ```bash
 python scripts/check_new_versions.py --output monitor-report.json
+```
+
+The higher-volume metadata-profile sweep is intentionally manual and
+rate-limited rather than scheduled daily. It checkpoints progress and stores
+only redacted numeric profiles plus unique response bodies:
+
+```bash
+python scripts/sweep_metadata_profiles.py \
+  --output data/discovery/metadata-profile-sweep-YYYY-MM-DD.json \
+  --raw-directory data/metadata/sweep-YYYY-MM-DD
 ```
 
 ## Expand the archive

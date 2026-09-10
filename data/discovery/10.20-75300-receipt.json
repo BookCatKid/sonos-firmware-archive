@@ -1,0 +1,21 @@
+{
+  "source": "10.20-75300-model-probe-2026-09-10.json",
+  "artifacts": [
+    {
+      "version": "10.20-75300",
+      "package_model": 27,
+      "url": "https://update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-27.upd",
+      "source": "metadata-sweep",
+      "filename": "10.20-75300-1-27.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 4745434,
+      "resolved_url": "https://update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-27.upd",
+      "etag": null,
+      "last_modified": null,
+      "local_file": "10.20-75300-1-27.upd",
+      "sha256": "296b1c892fe92ee1fbf73cba2b6566d3c0d7a58d08e32004d44d3b14c82fd07b",
+      "downloaded": true
+    }
+  ]
+}

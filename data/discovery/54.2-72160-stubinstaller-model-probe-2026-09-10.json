@@ -1,0 +1,824 @@
+{
+  "schema_version": 1,
+  "checked": "2026-09-10T18:43:32.792287+00:00",
+  "method": "bounded HEAD expansion of an observed caret base URI",
+  "system_version": "54.2-72160",
+  "base_uri": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/^StubInstaller",
+  "model_min": 0,
+  "model_max": 80,
+  "candidate_total": 81,
+  "available_total": 0,
+  "error_total": 0,
+  "candidates": [
+    {
+      "version": "54.2-72160",
+      "package_model": 0,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-0.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-0.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 1,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-1.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-1.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 2,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-2.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-2.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 3,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-3.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-3.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 4,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-4.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-4.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 5,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-5.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-5.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 6,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-6.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-6.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 7,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-7.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-7.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 8,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-8.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-8.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 9,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-9.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-9.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 10,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-10.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-10.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 11,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-11.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-11.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 12,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-12.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-12.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 13,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-13.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-13.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 14,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-14.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-14.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 15,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-15.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-15.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 16,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-16.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-16.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 17,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-17.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-17.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 18,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-18.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-18.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 19,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-19.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-19.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 20,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-20.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-20.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 21,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-21.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-21.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 22,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-22.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-22.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 23,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-23.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-23.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 24,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-24.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-24.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 25,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-25.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-25.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 26,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-26.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-26.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 27,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-27.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-27.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 28,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-28.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-28.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 29,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-29.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-29.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 30,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-30.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-30.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 31,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-31.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-31.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 32,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-32.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-32.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 33,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-33.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-33.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 34,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-34.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-34.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 35,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-35.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-35.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 36,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-36.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-36.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 37,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-37.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-37.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 38,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-38.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-38.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 39,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-39.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-39.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 40,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-40.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-40.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 41,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-41.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-41.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 42,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-42.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-42.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 43,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-43.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-43.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 44,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-44.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-44.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 45,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-45.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-45.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 46,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-46.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-46.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 47,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-47.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-47.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 48,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-48.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-48.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 49,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-49.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-49.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 50,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-50.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-50.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 51,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-51.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-51.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 52,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-52.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-52.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 53,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-53.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-53.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 54,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-54.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-54.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 55,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-55.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-55.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 56,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-56.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-56.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 57,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-57.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-57.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 58,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-58.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-58.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 59,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-59.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-59.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 60,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-60.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-60.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 61,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-61.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-61.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 62,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-62.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-62.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 63,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-63.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-63.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 64,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-64.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-64.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 65,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-65.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-65.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 66,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-66.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-66.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 67,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-67.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-67.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 68,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-68.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-68.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 69,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-69.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-69.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 70,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-70.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-70.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 71,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-71.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-71.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 72,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-72.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-72.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 73,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-73.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-73.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 74,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-74.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-74.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 75,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-75.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-75.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 76,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-76.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-76.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 77,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-77.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-77.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 78,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-78.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-78.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 79,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-79.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-79.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    },
+    {
+      "version": "54.2-72160",
+      "package_model": 80,
+      "url": "https://update.sonos.com/firmware/Prod/54.2-72160-v10.6.1-stbins-GA-1/StubInstaller-1-80.upd",
+      "source": "metadata-sweep",
+      "filename": "StubInstaller-1-80.upd",
+      "available": false,
+      "http_status": 404,
+      "bytes": null
+    }
+  ]
+}

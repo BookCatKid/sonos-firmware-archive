@@ -2,6 +2,21 @@
 
 Research date: 2026-08-31. This is an evidence map and collection plan, not a claim of completeness. It deliberately contains no device identifiers, household identifiers, private keys, or firmware binaries.
 
+Update 2026-09-10: a resumable, rate-limited sweep queried 1,200 deterministic
+combinations of `cmaj`, `cmin`, `cbld`, `subm`, `rev`, and `reg` using only the
+public `sonostool` placeholder identifiers. Query strings and identifiers were
+not retained. Three unique UPS bodies were observed with zero request/parser
+errors. Besides the already-cataloged S1 response, low/invalid profiles exposed
+historical base URIs for `54.2-72160` StubInstaller and
+`Gold/Kanye-v2.8` `10.20-75300`. Neither supplied a manifest. Bounded model
+0–80 expansion found no live StubInstaller package and exactly one live Kanye
+package: model 27 `10.20-75300-1-27.upd`. Its official bytes are preserved in
+the `firmware-10.20-75300` Release, and its section receipt proves that the
+kernel and CramFS rootfs are plaintext. The sweep plan, all 1,200 redacted
+profile results, three exact UPS bodies, and 162 HEAD results are retained in
+the repository. This is new archive evidence, not evidence of a current S2
+package.
+
 Update 2026-09-03: full re-verification pass (receipt
 `data/discovery/reverify-2026-09-03.json`). All 88 `missing-cdn`
 candidates returned HTTP 404 via metadata-only `HEAD` on 2026-09-03,

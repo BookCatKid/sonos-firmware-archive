@@ -51,6 +51,17 @@ def main() -> int:
         )
         prior = existing.get(package_id, {})
         model = model_map.get(candidate["package_model"], {})
+        sections = None
+        if artifact and candidate["filename"].endswith(".upd"):
+            sections = parse_file(args.artifacts / candidate["filename"])
+        raw_status = prior.get(
+            "raw_status",
+            "complete"
+            if sections is not None and all(not section.encrypted for section in sections)
+            else "encrypted"
+            if artifact
+            else "unknown",
+        )
         item = {
             "id": package_id,
             "version": candidate["version"],
@@ -62,7 +73,7 @@ def main() -> int:
             "bytes": artifact.get("bytes") if artifact else candidate.get("bytes"),
             "sha256": artifact.get("sha256") if artifact else None,
             "artifact_status": "preserved" if artifact else "missing-cdn",
-            "raw_status": prior.get("raw_status", "encrypted" if candidate["filename"].endswith(".upd") else "not-applicable"),
+            "raw_status": raw_status if candidate["filename"].endswith(".upd") else "not-applicable",
             "source_url": candidate["url"],
             "source_manifest": discovery.get("system_version"),
         }
@@ -81,14 +92,13 @@ def main() -> int:
         packages_by_id[package_id] = item
 
         if artifact and candidate["filename"].endswith(".upd"):
-            path = args.artifacts / candidate["filename"]
             write_json(
                 ROOT / "data/upd" / f"{package_id}.json",
                 {
                     "package_id": package_id,
-                    "bytes": path.stat().st_size,
+                    "bytes": (args.artifacts / candidate["filename"]).stat().st_size,
                     "sha256": artifact["sha256"],
-                    "sections": [section.to_dict() for section in parse_file(path)],
+                    "sections": [section.to_dict() for section in sections],
                 },
             )
             generated += 1
