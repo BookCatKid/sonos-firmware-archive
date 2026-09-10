@@ -22,6 +22,14 @@ packages using 33 distinct RSA recipients. The six locally recovered keys cover
 affected package IDs are tracked in `data/key-recovery-ledger.json`. No claim is
 made that a single firmware-specific key can decrypt other Sonos models.
 
+An older model-2 package (`25.2-50130`) establishes the lower boundary of the
+legacy updater-wrapper technique. Its Renesas SH updater contains the same
+misspelled no-op-update marker seen in later updaters, but the bytes following
+it are ordinary diagnostic strings rather than a 1,264-byte encrypted key
+wrapper. Complete 16-bit searches under both byte orders produced no RSA
+candidate, and package model 2 has no encrypted recipient group in the archive
+ledger.
+
 ## How the key identities were recovered
 
 ### Model 8 / Play:1
@@ -210,6 +218,12 @@ unwrap. The storage layout, exported `sonos_key_encdec()` call, validation
 fingerprint, and a non-destructive workflow are documented in
 [`docs/model13-recovery.md`](model13-recovery.md). Do not apply the Amlogic
 OTP formula to Encore.
+
+Package model 20 (`Royale`) is another i.MX6 SoloX/CAAM platform. Its
+plaintext 34.16 kernel, bootloader, official Royale kernel configuration, MDP3
+layout, exact missing recipient, and read-only on-device unwrap requirements
+are established in [`docs/model20-recovery.md`](model20-recovery.md). One
+verified recovery would cover 17 preserved model-20 packages.
 
 For the two Amlogic A113 families now backed by model-specific evidence,
 [`docs/model26-recovery.md`](model26-recovery.md) records the publicly proven

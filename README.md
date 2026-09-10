@@ -179,8 +179,10 @@ asset without exposing the key.
 
 See [model-key handling](docs/key-material.md) for the verified key-family
 fingerprints, provenance summary, and the archive's withheld-material policy.
-For the blocked Encore/model-13, Dhuez/model-25, and Tupelo/model-26 families,
-see the [model-13 recovery note](docs/model13-recovery.md),
+For the blocked Encore/model-13, Royale/model-20, Dhuez/model-25, and
+Tupelo/model-26 families, see the
+[model-13 recovery note](docs/model13-recovery.md),
+[model-20 recovery note](docs/model20-recovery.md),
 [model-25 recovery note](docs/model25-recovery.md), and
 [model-26 recovery note](docs/model26-recovery.md).
 
