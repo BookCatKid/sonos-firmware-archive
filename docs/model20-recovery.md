@@ -92,6 +92,17 @@ An exact source snapshot at Depthcharge commit
 vault. The archive SHA-256 is
 `9a9156a7c1c13faacc18f16f02cb9dd7d07fcb018e208bc61669823aa38ae0e8`.
 
+The older unlocked command set names `dek_blob`, but that name is misleading
+for this recovery target. The public Freescale/NXP implementation accepts a
+plaintext DEK and invokes only CAAM **encapsulation**. Its companion CAAM
+library contains a separate `blob_decap()` function, but `dek_blob` does not
+expose it. The exact preserved Royale Rev1.1 image also contains no
+`dek_blob`, `encapsulate`, or `decapsulate` command string. Consequently,
+neither the public Rev0.2 command nor the retained Rev1.1 command table offers
+a read-only model-key unwrap primitive; the Linux helper path remains
+necessary. The two public reference source files and their exact commit are
+retained in the ignored recovery vault.
+
 ## Safe completion criteria
 
 On an owned Royale unit with pre-existing authorized administrative access:

@@ -119,7 +119,12 @@ the recovered legacy families. The implementation and a synthetic end-to-end
 test are checked in, but the actual private key cannot be recovered without
 the exact first 16 KiB from a matching authorized model-5 `/dev/mtd/0` image.
 A public model-8 flash prefix and every plausible package-contained substitute
-tested so far fail to decrypt the wrapper, so no model-5 key is claimed.
+tested so far fail to decrypt the wrapper, so no model-5 key is claimed. The
+search now also covers every 16-KiB-aligned position in the public ZP120
+Wembley NOR and NAND dumps: 2,116 positions, 1,369 unique blocks, and no
+match. The public Sub Gen1 `mtdblock0` reduces to the already rejected Fenway
+reference. These negatives rule out two more public cross-model shortcuts but
+do not replace the required ZoneBridge boot block.
 
 The official Sonos `linux-2.4.25` source resolves an important ambiguity in
 that requirement. Its model-5-era RedBoot parser explicitly registers MTD
@@ -142,8 +147,9 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
 
 For collections of possible bootloader or whole-flash images,
 `scripts/test_legacy_flash_prefixes.py` recursively tests the first and last
-16 KiB of every eligible file. It deduplicates identical blocks, prints only
-successful recipient IDs, and never writes recovered private-key material.
+16 KiB of every eligible file, or every 16-KiB-aligned block with
+`--all-aligned`. It deduplicates identical blocks, prints only successful
+recipient IDs, and never writes recovered private-key material.
 
 ### Models 16 and 17
 

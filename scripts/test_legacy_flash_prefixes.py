@@ -3,8 +3,9 @@
 
 The model-5 updater hashes exactly 16 KiB from the start of ``/dev/mtd/0``.
 This helper recursively checks the first and last 16 KiB of supplied files,
-deduplicates identical prefixes, and reports only successful key recipients.
-It never serializes private keys or recovery secrets.
+or every 16-KiB-aligned block when ``--all-aligned`` is requested. It
+deduplicates identical blocks and reports only successful key recipients. It
+never serializes private keys or recovery secrets.
 """
 
 from __future__ import annotations
@@ -42,10 +43,15 @@ def candidate_files(paths: list[Path]):
             yield path
 
 
-def file_prefixes(path: Path):
-    """Yield the distinct leading and trailing 16-KiB blocks of a file."""
+def file_prefixes(path: Path, *, all_aligned: bool = False):
+    """Yield candidate 16-KiB blocks from a file."""
     size = path.stat().st_size
     with path.open("rb") as handle:
+        if all_aligned:
+            for offset in range(0, size - PREFIX_BYTES + 1, PREFIX_BYTES):
+                handle.seek(offset)
+                yield f"offset-0x{offset:x}", handle.read(PREFIX_BYTES)
+            return
         first = handle.read(PREFIX_BYTES)
         yield "first", first
         if size > PREFIX_BYTES:
@@ -66,6 +72,11 @@ def main() -> int:
     parser.add_argument("--model", type=parse_int, default=5)
     parser.add_argument("--wrapper-offset", type=parse_int)
     parser.add_argument("--byte-order", choices=("big", "little"), default="big")
+    parser.add_argument(
+        "--all-aligned",
+        action="store_true",
+        help="test every 16-KiB-aligned block instead of only the first and last",
+    )
     parser.add_argument("--json", action="store_true", help="emit a machine-readable receipt")
     args = parser.parse_args()
 
@@ -78,7 +89,7 @@ def main() -> int:
         files = candidate_files(args.candidates)
         for path in files:
             files_tested += 1
-            for location, prefix in file_prefixes(path):
+            for location, prefix in file_prefixes(path, all_aligned=args.all_aligned):
                 prefixes_tested += 1
                 digest = hashlib.sha256(prefix).hexdigest()
                 if digest in unique_prefixes:
@@ -111,6 +122,7 @@ def main() -> int:
         "model": args.model,
         "wrapper_offset": args.wrapper_offset,
         "byte_order": args.byte_order,
+        "all_aligned": args.all_aligned,
         "files_tested": files_tested,
         "prefix_positions_tested": prefixes_tested,
         "unique_prefixes_tested": len(unique_prefixes),
