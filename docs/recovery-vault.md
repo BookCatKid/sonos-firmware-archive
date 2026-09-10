@@ -43,12 +43,18 @@ The custom recovery workflow is preserved in tracked source:
   steps; and
 - `tests/test_legacy.py` independently exercises the full wrapper round trip.
 
+The tracked `uv.lock` pins the complete Python dependency graph, including
+artifact hashes, so the portable recovery environment is reproducible rather
+than depending on whatever package versions happen to be current later.
+
 The ignored vault is not included in Git clones or GitHub backups. A second
 local copy of the PEMs and a complete vault snapshot exist under the adjacent
 firmware-download workspace, but all copies are on the same physical machine.
 Back up the complete snapshot to encrypted offline storage to protect against
 disk loss.
 
-The vault also contains a `candidates/` subtree with every model 1, 5, 6, and
-7 updater used in recovery work, the tested model-5 flash
-reference, hashes, and the present reverse-engineering conclusions.
+The vault also contains a `candidates/` subtree with every model 1, 2, 5, 6,
+7, and 20 updater or extracted binary used in recovery work, the tested
+model-5 flash reference, a complete source snapshot of the Depthcharge commit
+used in the model-20 analysis, hashes, and the present reverse-engineering
+conclusions.
