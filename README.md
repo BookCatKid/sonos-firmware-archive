@@ -173,6 +173,11 @@ sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
   --directory /path/to/raw --receipt /path/to/raw-receipt.json
 sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
 
+# Capture read-only, privacy-redacted playback/network telemetry. Press Enter
+# whenever an audible dropout occurs; Ctrl-C stops the capture.
+python scripts/diagnose_smapi_playback.py --room Kitchen \
+  --output /path/to/smapi-dropout.jsonl
+
 # Inspect a device manufacturing-page capture (no secrets are printed)
 sonos-fw mdp-inspect /secure/device-mdp.bin
 # The offline path applies only to the documented Amlogic MDP3/OTP layout.
