@@ -108,6 +108,15 @@ matches all four preserved encrypted model-1 packages; their 12 plaintext
 components were uploaded and server-hash reconciled. See
 [`data/decryption-runs/2026-09-09-new-model1.json`](data/decryption-runs/2026-09-09-new-model1.json).
 
+On 2026-09-12, an authorized speaker's redacted update-check response exposed
+the signed `97.1-80312` manifest and its otherwise opaque release directory.
+The archive preserved 23 current `97.1-80312` UPDs, eight `86.10-80260`
+compatibility UPDs, and one model-53 accessory image. Recovered model-8, -9,
+-12, and -17 keys extracted 13 components from the compatibility packages;
+all source and extracted assets were reconciled against GitHub's server-side
+sizes and SHA-256 digests. The raw extraction receipt is
+[`data/decryption-runs/2026-09-12-86.10-80260.json`](data/decryption-runs/2026-09-12-86.10-80260.json).
+
 The next preserved plaintext gaps are tracked in
 [`data/decryption-runs/2026-09-08-next-model13-model25-targets.json`](data/decryption-runs/2026-09-08-next-model13-model25-targets.json).
 They require model-specific key recovery; no large source UPD is downloaded
@@ -261,8 +270,10 @@ This proves a useful but bounded statement about current availability: all
 artifacts currently downloadable through that public profile and the catalog's
 known exact URLs are accounted for when the latest audit is green. It cannot
 enumerate opaque URLs that no public source references, private/device-specific
-update profiles, or every historical release. Run the identical check locally
-with:
+update profiles, or every historical release. The `97.1-80312` capture is a
+concrete example: release notes exposed the version, while a real authorized
+speaker exposed the signed manifest URL and per-model download namespace.
+Run the identical public check locally with:
 
 ```bash
 python scripts/check_new_versions.py --output monitor-report.json

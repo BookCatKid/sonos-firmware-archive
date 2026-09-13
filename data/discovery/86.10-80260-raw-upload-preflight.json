@@ -1,0 +1,25 @@
+{
+  "audited_at": "2026-09-13T03:04:53.087430+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "releases": [
+    {
+      "release_tag": "firmware-86.10-80260",
+      "intended_assets": [
+        "86.10-80260-1-12-kernel.uImage",
+        "86.10-80260-1-12-preinstall.sh",
+        "86.10-80260-1-12-rootfs.squashfs",
+        "86.10-80260-1-17-kernel.uImage",
+        "86.10-80260-1-17-preinstall.sh",
+        "86.10-80260-1-17-rootfs.squashfs",
+        "86.10-80260-1-8-kernel.uImage",
+        "86.10-80260-1-8-preinstall.sh",
+        "86.10-80260-1-8-rootfs.squashfs",
+        "86.10-80260-1-9-device-payload.bin",
+        "86.10-80260-1-9-kernel.uImage",
+        "86.10-80260-1-9-preinstall.sh",
+        "86.10-80260-1-9-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    }
+  ]
+}

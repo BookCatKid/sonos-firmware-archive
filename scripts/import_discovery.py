@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,7 +76,7 @@ def main() -> int:
             "artifact_status": "preserved" if artifact else "missing-cdn",
             "raw_status": raw_status if candidate["filename"].endswith(".upd") else "not-applicable",
             "source_url": candidate["url"],
-            "source_manifest": discovery.get("system_version"),
+            "source_manifest": prior.get("source_manifest", discovery.get("system_version")),
         }
         if artifact:
             item.update(release_tag=f"firmware-{candidate['version']}", release_asset=candidate["filename"])
@@ -103,7 +104,7 @@ def main() -> int:
             )
             generated += 1
 
-    catalog["generated"] = "2026-08-31"
+    catalog["generated"] = datetime.now(timezone.utc).date().isoformat()
     catalog.pop("release_tag", None)
     catalog["packages"] = sorted(packages_by_id.values(), key=lambda item: (item["version"], item["package_model"], item["id"]))
     write_json(catalog_path, catalog)

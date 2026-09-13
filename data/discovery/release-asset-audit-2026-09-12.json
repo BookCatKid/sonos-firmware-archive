@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "checked": "2026-09-13T03:05:19.809379+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "release_total": 66,
+  "github_asset_total": 989,
+  "recorded_asset_total": 972,
+  "missing_total": 0,
+  "mismatched_total": 0,
+  "unrecorded_extra_total": 17,
+  "missing": [],
+  "mismatched": [],
+  "unrecorded_extras": [
+    {
+      "release_tag": "manifest-snapshots-2026-08-31",
+      "release_asset": "96.1-79270.upm",
+      "bytes": 13623,
+      "sha256": "ada8c9f3fad4fe5e71e24d6067a7bb0c1f133f3393711c807e1898489de5cd5f",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-snapshots-2026-08-31/96.1-79270.upm"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "34.16-37101-1-13.upd",
+      "bytes": 9904177,
+      "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/34.16-37101-1-13.upd"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "34.16-37101-1-9-kernel.uImage",
+      "bytes": 1746134,
+      "sha256": "2297d027797006cafa017a8c4266d6ff3f3431578db678bd73dbb710ad0b2fa3",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/34.16-37101-1-9-kernel.uImage"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "34.16-37101-1-9-preinstall.sh",
+      "bytes": 3243,
+      "sha256": "fcfacd4af5e19e8bdd4890e4f5cdd5e19bc6e24d51204e384a898ef1df4cedc7",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/34.16-37101-1-9-preinstall.sh"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "34.16-37101-1-9-rootfs.bin",
+      "bytes": 7438336,
+      "sha256": "8f53bbc43de1c18881ccff01f690928fad55e83d76d929c41a58de31b7b1e9da",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/34.16-37101-1-9-rootfs.bin"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "34.16-37101-1-9.upd",
+      "bytes": 9243867,
+      "sha256": "fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/34.16-37101-1-9.upd"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-13.upd",
+      "bytes": 24279475,
+      "sha256": "02779618415c881599e415b4cd1964d695619381242aaec2293ac9820271bac7",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-13.upd"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-8-kernel.uImage",
+      "bytes": 1495436,
+      "sha256": "e7e92b4d79f2a3bfef22c165b2bacdda226fb72a31039d77145d06e308fe9254",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-8-kernel.uImage"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-8-preinstall.sh",
+      "bytes": 1599,
+      "sha256": "feddb7ad14034b06c316ccbed244a11925093a882a9d7bd81ea64a61364cbe70",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-8-preinstall.sh"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-8-rootfs.squashfs",
+      "bytes": 5459968,
+      "sha256": "f6fdba2289d1d99cf622c5dd83f6907d749c7edb874a5213bde6d5d3a54c0b54",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-8-rootfs.squashfs"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-8.upd",
+      "bytes": 21290793,
+      "sha256": "1cb3e84b30a06117489bd21b141d892d90c01329cdc811c85a21afb0960f932c",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-8.upd"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-9-fpga.bin",
+      "bytes": 54757,
+      "sha256": "36b47a4c7ef9e974ccfa82efda203754f0316ddc38b836e66b050e71074ae7cc",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-9-fpga.bin"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-9-kernel.uImage",
+      "bytes": 1792724,
+      "sha256": "fb2d170631483949331a87f6bf24c843ff9bc9dd17a0f6c692ce528129198cfb",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-9-kernel.uImage"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-9-preinstall.sh",
+      "bytes": 1599,
+      "sha256": "feddb7ad14034b06c316ccbed244a11925093a882a9d7bd81ea64a61364cbe70",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-9-preinstall.sh"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-9-rootfs.squashfs",
+      "bytes": 13885440,
+      "sha256": "058db7b4e31178877f4594f093d6bc48a7bec3323d93c5e00b82de16cfb1192b",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-9-rootfs.squashfs"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "86.8-78270-1-9.upd",
+      "bytes": 15886259,
+      "sha256": "a60be7389187de7f5b54a38a34e66d2376acb7f73693e2988923f4d5a17db3dd",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/86.8-78270-1-9.upd"
+    },
+    {
+      "release_tag": "seed-2026-08-31",
+      "release_asset": "96.1-79270-1-25.upd",
+      "bytes": 100409662,
+      "sha256": "b6e1b93674098569c0e901fb74ac27eb28c61edfbaee6fab14de5175d7052b67",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/seed-2026-08-31/96.1-79270-1-25.upd"
+    }
+  ]
+}
