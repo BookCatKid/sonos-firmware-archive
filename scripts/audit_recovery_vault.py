@@ -28,11 +28,11 @@ def main() -> int:
         cwd=ROOT,
     ).returncode != 0:
         errors.append("not gitignored: inventory.json")
-    inventoried = {item["path"] for item in inventory["files"]}
+    inventoried = {item["path"] for item in inventory["files"] if Path(item["path"]).name != ".DS_Store"}
     present = {
         str(path.relative_to(VAULT))
         for path in VAULT.rglob("*")
-        if path.is_file() and path.name != "inventory.json"
+        if path.is_file() and path.name not in ("inventory.json", ".DS_Store")
     }
     for relative in sorted(inventoried - present):
         errors.append(f"inventoried file is missing: {relative}")
@@ -42,6 +42,8 @@ def main() -> int:
         if stat.S_IMODE(directory.stat().st_mode) & 0o077:
             errors.append(f"directory permissions too broad: {directory.relative_to(ROOT)}")
     for item in inventory["files"]:
+        if Path(item["path"]).name == ".DS_Store":
+            continue  # Finder metadata is not recovery material and changes without notice.
         path = VAULT / item["path"]
         if not path.is_file():
             errors.append(f"missing: {item['path']}")
@@ -68,7 +70,7 @@ def main() -> int:
     if errors:
         print("\n".join(f"error: {error}" for error in errors))
         return 1
-    print(f"verified {len(inventory['files'])} private recovery-vault files")
+    print(f"verified {len(inventoried)} private recovery-vault files")
     return 0
 
 

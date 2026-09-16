@@ -25,7 +25,7 @@ RECIPIENTS = {
 def main() -> int:
     files = []
     for path in sorted(VAULT.rglob("*")):
-        if not path.is_file() or path == INVENTORY:
+        if not path.is_file() or path == INVENTORY or path.name == ".DS_Store":
             continue
         relative = str(path.relative_to(VAULT))
         item = {

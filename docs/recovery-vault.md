@@ -19,6 +19,9 @@ python scripts/audit_recovery_vault.py
 
 That command verifies every inventoried SHA-256 hash, all six public-key
 recipient fingerprints, restrictive file permissions, and Git ignore status.
+Finder-created `.DS_Store` files are excluded from the inventory/audit because
+macOS can change them without any recovery-material change. The 2026-09-15
+audit verified all 100 remaining vault files and all six key recipients.
 
 The custom recovery workflow is preserved in tracked source:
 
