@@ -24,6 +24,14 @@ As of 2026-09-10, the private archive contains:
 Every cataloged Release asset is reconciled against GitHub's server-reported
 byte size and SHA-256 digest.
 
+The application archive additionally preserves **97 live official Sonos
+Windows/macOS installers** discovered through the four canonical Sonos
+redirects, WinGet, Homebrew history, and a Wayback CDX sweep, plus **33 valid
+official Sonos-hosted APKs**. One truncated historical APK capture is recorded
+as an explicit gap rather than misrepresented as installable. See
+[`data/apps/`](data/apps/) and the
+[application preservation report](docs/sonos-app-preservation-2026-09-20.md).
+
 On 2026-09-10, a rate-limited sweep of 1,200 synthetic metadata profiles found
 three byte-distinct UPS responses. Most profiles returned the already archived
 S1 manifest. Low/invalid controller profiles additionally exposed two
@@ -143,6 +151,8 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `data/decryption-runs/` — tracked receipts for successful local decryption runs.
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
 - `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
+- `data/apps/` — discovery inventories and verified GitHub Release receipts for
+  historical desktop installers and official Sonos-hosted APKs.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
@@ -186,6 +196,17 @@ sonos-fw recover-amlogic-mdp-key /secure/device-mdp.bin \
   --expect-model 26 \
   --expect-recipient RECIPIENT_SHA1
 sonos-fw key-id /secure/model-key.pem
+
+# Rebuild historical app URL inventories without downloading every binary.
+python scripts/discover_desktop_installers.py \
+  --output data/apps/desktop-discovery.json
+python scripts/discover_mobile_installers.py \
+  --output data/apps/mobile-discovery.json
+
+# Stream newly discovered app binaries into GitHub Releases. Each verified
+# upload is checkpointed, so interrupted runs are safe to resume.
+python scripts/archive_desktop_installers.py
+python scripts/archive_mobile_installers.py
 
 # Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \

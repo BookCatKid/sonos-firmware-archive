@@ -1,0 +1,1926 @@
+{
+  "schema_version": 1,
+  "checked": "2026-09-20T07:47:54.364509+00:00",
+  "sources": [
+    "microsoft/winget-pkgs",
+    "Homebrew/homebrew-cask",
+    "Sonos CDN HEAD"
+  ],
+  "direct_redirects": [
+    {
+      "name": "s2-windows",
+      "url": "https://www.sonos.com/redir/controller_software_pc2",
+      "http_status": 403,
+      "location": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe",
+      "location_source": "wayback-latest-redirect"
+    },
+    {
+      "name": "s2-macos",
+      "url": "https://www.sonos.com/redir/controller_software_mac2",
+      "http_status": 403,
+      "location": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.dmg",
+      "location_source": "wayback-latest-redirect"
+    },
+    {
+      "name": "s1-windows",
+      "url": "https://www.sonos.com/redir/controller_software_pc",
+      "http_status": 403,
+      "location": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.exe",
+      "location_source": "wayback-latest-redirect"
+    },
+    {
+      "name": "s1-macos",
+      "url": "https://www.sonos.com/redir/controller_software_mac",
+      "http_status": 403,
+      "location": "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.dmg",
+      "location_source": "wayback-latest-redirect"
+    }
+  ],
+  "wayback": {
+    "status": "ok",
+    "row_total": 75,
+    "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.%28exe%7Cdmg%29%24&collapse=urlkey&limit=5000"
+  },
+  "candidate_total": 136,
+  "available_total": 97,
+  "candidates": [
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "11.1",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController111.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47921929,
+      "etag": "\"8522ad0b71b8979535c293dfdbeee584-6\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-31",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController31.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-32",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController32.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-33",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController33.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-361b",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController361b.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-92",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController92.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20181114014841:KTVW3GLYDDYJZOE2LUURY4AYHXLA2K23:9987369",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 32404611,
+      "etag": "\"723af35e17e2527169b311ea5d5a2329-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "11.1",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController111.exe",
+      "expected_sha256": "62ff280cacde781211d9723c2a7bf9c1858678ae1ae648c2c576107d267eb3a9",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:YI25O63W3NGZXKPJ4YGFM63JDF2DXSL2:38735675"
+      ],
+      "http_status": 200,
+      "content_length": 39263320,
+      "etag": "\"25efe5f06176ebdcc01fc9c67ada709d-5\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-31",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController31.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20240630140515:Z5TSRCV7F7XPB3PIWIWVKPMQMLE2TC4K:33774518"
+      ],
+      "http_status": 200,
+      "content_length": 35645520,
+      "etag": "\"1d77a25bf7768db48c9b1eb5de16e4bb-5\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-32",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController32.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20140807112041:HBHSZXBIA72XFN6FGGSTRHXOHJC376O7:5635213"
+      ],
+      "http_status": 200,
+      "content_length": 7728640,
+      "etag": "\"d03dec2ecec0bd05cd00853ffb35a08b\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-33",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController33.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20220612201102:2CXI4QDHFPAXY45CBEU43LMZLSPNDXEQ:5609301"
+      ],
+      "http_status": 200,
+      "content_length": 6118184,
+      "etag": "\"f775b8aea0c62b6df8f3f8177cfbb43f\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-361b",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController361b.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20130115215255:XUWNVR6UGVWTHEIDUM3LZHYZCGBCNAYK:6239411"
+      ],
+      "http_status": 200,
+      "content_length": 6745248,
+      "etag": "\"821d733965fa7a5d67c31ed8e4ce86ca\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-92",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController92.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20181114014835:RLGXC2RJHPTKE4MZVCIKY2EFNT65PHTI:9435187",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 24657384,
+      "etag": "\"692de8f1af66c4f723afeeff60748f6a-3\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "11.2",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController112.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47865607,
+      "etag": "\"7ed329bd7ecac20981689bf356a515ea-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.12-31030",
+      "url": "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20220814200017:KDQOSXPPOKDIQCZ22CC2FAXJHBXUTE2A:43876433"
+      ],
+      "http_status": 200,
+      "content_length": 43968312,
+      "etag": "\"1c8fc1f9e23098efaa88306c018effa1-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.16-41110",
+      "url": "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49017378,
+      "etag": "\"c67d9224e947aff792969b54987a898a-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.21-50280",
+      "url": "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.dmg",
+      "expected_sha256": "e65db06684aab6cd70d1b638ebcc28ba04dedd24e63802775543ed680377da19",
+      "sources": [
+        "homebrew-history:1057c8e9cbb5",
+        "homebrew-history:831af44bebe5",
+        "homebrew-history:fb50a1d5174b",
+        "wayback-cdx:20240314002930:Q7YZ5JGLHCLJPK622DKVRQLG5KDOWIMP:48926192",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49028536,
+      "etag": "\"94e35e245bafc9cf9c6d3779b9181545-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-59130",
+      "url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.dmg",
+      "expected_sha256": "18d8e7f79db9ab0951846d8f1c94d4a92cf3e6426f94dc7ee40a552a349f8443",
+      "sources": [
+        "homebrew-history:d2031840358b",
+        "homebrew-history:d0edd5008fb5",
+        "homebrew-history:b2e7ad4eda25",
+        "wayback-cdx:20250114015713:JZ7W2BXLKCWDKR4GQC6LS4K6XTK7AN6A:48954151",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49055471,
+      "etag": "\"12aa5ba90bc73e3bbb941e95e3d0bf50-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-67080",
+      "url": "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.dmg",
+      "expected_sha256": "7bbcb1bb2c6f6b147e916c72858955c3b055595dc81b02b05d8ede9c1a47cf21",
+      "sources": [
+        "homebrew-history:807ad67ca5e7",
+        "wayback-cdx:20250818090132:TKF2VLL7WNL66FTOYJS7XPBGCCEOLNRL:48959493"
+      ],
+      "http_status": 200,
+      "content_length": 49053384,
+      "etag": "\"0435e68b9642bd4b988c9279b63d8aff-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-71190",
+      "url": "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.dmg",
+      "expected_sha256": "5793fddf23276cb8930396001f37fbaf5624222e3f3cd914204bcebb49855b2c",
+      "sources": [
+        "homebrew-history:b25118597f75",
+        "wayback-cdx:20251209161922:NDSTMT7JHMYO6LKCR2PFMRSGUC63PQEO:49041232",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49054093,
+      "etag": "\"0e2099f3d92ed10abd79138fef51e0dc-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22.68080",
+      "url": "https://update-software.sonos.com/software/NUPz7mPXln/Sonos_57.22-68080.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.23-74170",
+      "url": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.dmg",
+      "expected_sha256": "3f3495441881b7767d1724aeabed595aa053cdf4780b156dbece56943f023377",
+      "sources": [
+        "homebrew-history:4a8173137a60",
+        "homebrew-history:6772780335c7",
+        "wayback-cdx:20260304033226:5Z3NTPR7X3W4EAYK5QPVL6PBYENSNOHG:49040391",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49054481,
+      "etag": "\"96ec24880ad319ac1cc464ee15aca06d-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.23-80060",
+      "url": "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20260829011712:EAEX7MA2HQ2U2BZR2BARMIMFANP35UMV:56042137",
+        "official-direct:s1-macos:wayback-latest-redirect"
+      ],
+      "http_status": 200,
+      "content_length": 56051852,
+      "etag": "\"f4d06fe360417438cdce76fef65f5c8a-7\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-11213",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController11213.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20220328101148:45JVUG3PQYDHBEEP7DVWHB54ZGRRKS25:48369251",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 48445626,
+      "etag": "\"0fd4c8bb0a10f81e1b30e760c8e1f48e-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1122",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1122.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20200831014132:OENF37M6F7SW3J2N3FFUUBHBRT3FT2RC:47319857",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47390212,
+      "etag": "\"6536cc1f97a375b387e523f98f45fb46-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1123",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1123.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20201021101939:NJVGXEZFH4YWBFUFHFWNETFUTR657I5X:1043815",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47406997,
+      "etag": "\"10f83faac3a5a1c53a661edd3f07cb9b-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1124",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1124.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20210126194612:FTOIPSGXJMWYGGMXV2WTSIATKHHN4J3Y:47260630",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47427429,
+      "etag": "\"e15c83ed15ca93169b727e6b75e350c3-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1126",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1126.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20210414180759:D24C55EFXMFF4VJVM3QWQS6TFONYIUYN:1043708",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47628321,
+      "etag": "\"763404076350ddc50fec364793195d30-6\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController112.exe",
+      "expected_sha256": "0662d22698d1b798e3a817960b45bf614160518ef59c958efa2272cf4583611c",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212320:FWDXQ3BMSC22RIX6RV7RL3JWZPFEZZL6:38712819"
+      ],
+      "http_status": 200,
+      "content_length": 39244856,
+      "etag": "\"f1c0e5f80030be72b6bbcfce7d568148-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.2",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1122.exe",
+      "expected_sha256": "a748b16cb43eb3c64435816f24b6dc3819ce062abf5dbd841ed132733d4b8090",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20200831014146:TZYOAADNF7PTHCJFZGG4BRM3WHIMA5JC:37553884",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 38115264,
+      "etag": "\"f4a74529470131d2484612ef5d31e98e-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.4",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1124.exe",
+      "expected_sha256": "5df497b809f69c437483b6291c3a1427bfd8898aaa77623396a95afaf8bd0a20",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212321:M5P4E3INISGQQSPKIOZ4GDCVX2TQJL7X:37628670",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 38162208,
+      "etag": "\"435b54c21e76b562c616b87bbf749c43-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.6",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1126.exe",
+      "expected_sha256": "614ca005275ca9893bc6f7dc769b48457068721ab2e952adeb1abc94fc3e48f5",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20210411045130:6MVHOENVFVPKN2PEAGDG7PC47FBLAV7V:37724751",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 38302000,
+      "etag": "\"78cfb275cb02755d4423926375d868f3-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.12-31030",
+      "url": "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37852832,
+      "etag": "\"7a232a17f1d5ee4eced349f2c3dab54b-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.16-41110",
+      "url": "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20230531092530:TT77AEBTXMXRMJXDLRAZLFYR6TBBDSHW:491955"
+      ],
+      "http_status": 200,
+      "content_length": 37944944,
+      "etag": "\"d1731d0d0ccb30406ccbc20810a4f5c4-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.21.50280",
+      "url": "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.exe",
+      "expected_sha256": "8f2bff45fed2e8ace52b029d5b9bac374c44b592d1afdc6fa1cef798830477e0",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20240314002928:WIWVFEUOEZCCVA7ZFCYOC2DJ7WVWDZPU:37391667",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37953840,
+      "etag": "\"884369937748cfb42ff2ca22b0822c3d-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22-67080",
+      "url": "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37952352,
+      "etag": "\"8be68ba7b8b53822d35edd5d0e3081c3-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.59130",
+      "url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.exe",
+      "expected_sha256": "dd26a2fd6cb3084ff3dcc90c7a37b179e43542ba4caeae2dc99b7820c5e98501",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250114015707:GA3IO5PERB3TEB5LR72HYKYVTLIHQJD2:37390894",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37953416,
+      "etag": "\"b44cac9793ab1a1db6fffe70c9c3f587-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.68080",
+      "url": "https://update-software.sonos.com/software/NUPz7mPXln/Sonos_57.22-68080.exe",
+      "expected_sha256": "8e5c5929b23acdf7ff63982f9e5a2b9508c8e513e7a2c6a07ad54919909bf30f",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250823180735:PXT3TMVXP6ETP7WTETMORLZZ3MIILA7C:37419261"
+      ],
+      "http_status": 200,
+      "content_length": 37954624,
+      "etag": "\"35337c89ec8c055d3c49cdd06c4c7063-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.71190",
+      "url": "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.exe",
+      "expected_sha256": "4dfe77785aa98f640430ddf9d4acd6766337bbbf95d65450265b420e72229c34",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20260131025731:DOOQM7Y5ZF5ZI6ZUO6CKWDMBKIJTZGZ6:37414169",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37947768,
+      "etag": "\"3eca0cfe00c698d4707e8ac95a4f1c1b-3\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.23-80060",
+      "url": "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.23.74170",
+      "url": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.exe",
+      "expected_sha256": "3f055bfb194403890875a9d6042aafe708d81e0da9d54cd9ea698d81982569be",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20260227152916:RKLEVQUBU436WLFSMUUWJMQ5K3WRCUJD:37420486",
+        "official-direct:s1-windows:wayback-latest-redirect",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37946736,
+      "etag": "\"d25242602460d4d214857aa2b2109afd-3\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.9.23010",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController11213.exe",
+      "expected_sha256": "1d59d04d044fe7052db2b4d5f5b51a100bbe433b908b9111384d46ece7c8681e",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212321:FFCQJOJ2T52JAMDQCEFS7DCCV7T3LFZC:37229092",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 37763680,
+      "etag": "\"6edda7938d103cd5340596b71fb8fde6-5\""
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "classic-1123",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1123.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20201021104507:TWLVLFMRM2NJVRHP3O7DKPQVE2IVB7KL:491963",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 38127832,
+      "etag": "\"c24e8a935d5870bf7ce6c50d7a859f10-5\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "12.0.1",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1201.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 49142937,
+      "etag": "\"797ea6739be967cae384a26dab8f746e-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "12.1",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController121.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 55665335,
+      "etag": "\"97b20c9ece336aef2171e09f226d4b16-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "13.0.0",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController130.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57041732,
+      "etag": "\"b6c202dc969959ac91bdffa3bdf7b63f-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.10",
+      "url": "https://update-software.sonos.com/software/76.2.46300/Sonos_15.10.dmg",
+      "expected_sha256": "b6818fdaa4689cb559d69bc8142a6faccb056dae7c1642ae04e9561c1538444d",
+      "sources": [
+        "homebrew-history:f6f9fc6122a8"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.11",
+      "url": "https://update-software.sonos.com/software/76.2.47270/Sonos_15.11.dmg",
+      "expected_sha256": "62f6f978660c4a553ed82bcb2c27712ee53b09c51b9922671ed52484924690d0",
+      "sources": [
+        "homebrew-history:8aac475c2205"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.2",
+      "url": "https://update-software.sonos.com/software/72.2.39150/Sonos_15.2.dmg",
+      "expected_sha256": "cd6ec19343371907e2683aea45b84f9e6b3e4bad7d801f5b4eb2f8663f9fbb0c",
+      "sources": [
+        "homebrew-history:0c6f4e578ab5"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.3",
+      "url": "https://update-software.sonos.com/software/72.2.40060/Sonos_15.3.dmg",
+      "expected_sha256": "5778943d5517d1f0da07808cc43f87fd45d99d0a657912ac24a1de7e49cb0bf2",
+      "sources": [
+        "homebrew-history:e62a535a0f0a"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.4",
+      "url": "https://update-software.sonos.com/software/73.0.41050/Sonos_15.4.dmg",
+      "expected_sha256": "3925b4f116e90318752e120ab8739133fe8daca5c92094a8145982f10fc696a1",
+      "sources": [
+        "homebrew-history:7cb03dfd9198"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.5",
+      "url": "https://update-software.sonos.com/software/73.0.42060/Sonos_15.5.dmg",
+      "expected_sha256": "5ac0feeeb40b4241aaafacf76a343f359342b4cd3725532e6518c00a5fdcf653",
+      "sources": [
+        "homebrew-history:8ea76eb09a5b"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.6",
+      "url": "https://update-software.sonos.com/software/74.0.43110/Sonos_15.6.dmg",
+      "expected_sha256": "797310d0e604c395dc50061e1375e0f1921bdc811c43311473b0b3320840ddf9",
+      "sources": [
+        "homebrew-history:aa461148bbb5",
+        "homebrew-history:3a86ce28a17e"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.7",
+      "url": "https://update-software.sonos.com/software/74.0.43312/Sonos_15.7.dmg",
+      "expected_sha256": "62f2da20c14e0e24bc387c6771f71b8d4d629ad8bfd713a19b1c7c26e317b44f",
+      "sources": [
+        "homebrew-history:0c5c8f4ec21a"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.8",
+      "url": "https://update-software.sonos.com/software/75.1.45120/Sonos_15.8.dmg",
+      "expected_sha256": "c9056c4c4bf2078f12d48e49e9169b9c1280d6aaa6f2061088f60afbaa8f63e1",
+      "sources": [
+        "homebrew-history:e541dfa8909a",
+        "homebrew-history:74ef6ab738b3"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "15.9",
+      "url": "https://update-software.sonos.com/software/75.1.46030/Sonos_15.9.dmg",
+      "expected_sha256": "7e173a1d693cd22a097245adf5246da443165b88ee61d8d97b66c94aa2877a96",
+      "sources": [
+        "homebrew-history:3bc7e090dbe4"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "16.0",
+      "url": "https://update-software.sonos.com/software/77.4.49290/Sonos_16.0.dmg",
+      "expected_sha256": "56cd4b46ab02b3eb2e3c3d94e53881465a12e6e881b5cab6d4c655adf4d84955",
+      "sources": [
+        "homebrew-history:103c44fe94d2"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "16.1",
+      "url": "https://update-software.sonos.com/software/78.1.51030/Sonos_16.1.dmg",
+      "expected_sha256": "3c141f4b46b6f7372819634b89288cdb41fd425e57f17370d50da2e84e51c921",
+      "sources": [
+        "homebrew-history:ed30fea33f84"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "16.2",
+      "url": "https://update-software.sonos.com/software/79.0.52294/Sonos_16.2.dmg",
+      "expected_sha256": "e23a4a69511f9ed67f75ebb7fc45bc2c434643a4790a33305e429f7570ce0dd4",
+      "sources": [
+        "homebrew-history:1d042977391c"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "16.2",
+      "url": "https://update-software.sonos.com/software/79.1.53290/Sonos_16.2.dmg",
+      "expected_sha256": "a502d6641b56de20c4caf95261daf80c6c8b45ee4782f3227194a3f59430f43e",
+      "sources": [
+        "homebrew-history:aba7b9990554"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "16.3",
+      "url": "https://update-software.sonos.com/software/80.1.55014/Sonos_16.3.dmg",
+      "expected_sha256": "cac8a5f9e13c2959bd2dff239a8576c40c2fb84afa7f412ac393dabf7b120461",
+      "sources": [
+        "homebrew-history:bfd5811327d8"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "70.1-34112",
+      "url": "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221104194938:KGBUJYQZU3YQOG3ZUEYNIJ7EZNSKG6RF:63148739",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63265508,
+      "etag": "\"6ae967f3489d6b63c1db18a812887238-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "70.3.35070",
+      "url": "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63895193,
+      "etag": "\"7a7387578c3c61e58353bdbe12052025-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "71.1-38240",
+      "url": "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20230307205010:4FJVB2F5R3RNS7LPRDTGFY3UWSCSLJAK:61854782"
+      ],
+      "http_status": 200,
+      "content_length": 61950131,
+      "etag": "\"4445a6fe382288750e11f7633e6db267-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "73.0-41050",
+      "url": "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20230617161752:4REBMMSOSO7RU63P6AHNVPHIKUE4JU4L:62580496",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 62691109,
+      "etag": "\"2977ab70407c8bf6549c22bda328a709-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "75.1-46030",
+      "url": "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20231018073306:YFUF46QLFTBJLH7JUB2EDLMYZOJM3WZ4:62715119"
+      ],
+      "http_status": 200,
+      "content_length": 62771427,
+      "etag": "\"9209b870f5bf3c662e31c3374e96a58d-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "77.4-49290",
+      "url": "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20240227083533:V2JHQGQT2P3EJXOPTEF6MXBGF5PDXEP7:62935416"
+      ],
+      "http_status": 200,
+      "content_length": 63044254,
+      "etag": "\"1c562e26f46689c183ee9836044424e4-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "79.0.52294",
+      "url": "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63007644,
+      "etag": "\"342e6b575ed6d9265fd1a4b3ebe7d118-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "79.1.53290",
+      "url": "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 62979199,
+      "etag": "\"2b0b47911973ca66b4a0f21581bf4390-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "80.1-55014",
+      "url": "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.dmg",
+      "expected_sha256": "cac8a5f9e13c2959bd2dff239a8576c40c2fb84afa7f412ac393dabf7b120461",
+      "sources": [
+        "homebrew-history:9f94e0973d52",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63011667,
+      "etag": "\"2a3679f321eb60bc04387d9b5ca6b85f-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "81.1-58074",
+      "url": "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.dmg",
+      "expected_sha256": "9eac889a38810a321fcffc6c23b0481474b1480576e23bba5d01d026eac5f6d7",
+      "sources": [
+        "homebrew-history:d81b6c2a4db8",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63011869,
+      "etag": "\"49ee4927e9005648b41848fa6cb858e9-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "82.2-59204",
+      "url": "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.dmg",
+      "expected_sha256": "ae795723d93e432557b42998e4f9db81067a4c8c8790fc9835769e19c1a86be0",
+      "sources": [
+        "homebrew-history:ac0458add818",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63011642,
+      "etag": "\"26cc2979eea506312017a9e08c1039fb-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "82.3-60160",
+      "url": "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.dmg",
+      "expected_sha256": "48465557d4432517c2dcb34ef7da2a1be45301173537a4dbf9240fe32243af3f",
+      "sources": [
+        "homebrew-history:203bb45cec53",
+        "wayback-cdx:20250114015707:G2GG32IVIXKCU5FISXYA5I2FR7CCDZ3I:62873764",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 62982507,
+      "etag": "\"844299b7fa00aae7da1d624dc7677180-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "83.1-61210",
+      "url": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.dmg",
+      "expected_sha256": "659e02edf693b3191c25dad6a9c73b1654f38337b21cf707ef921c3bf6c9b6a4",
+      "sources": [
+        "homebrew-history:f4c832d599c1",
+        "homebrew-history:9482e54ede66",
+        "wayback-cdx:20250313005019:JPXQ2IQFPNDP2ILHSPC3Z7WJZZMP3ZKH:62992130",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63012390,
+      "etag": "\"eba8954329932f1a47984a2de76cc684-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "84.1-63110",
+      "url": "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.dmg",
+      "expected_sha256": "9cf3dc666edb0d7a4c30555170fb84727fbe62d82415bfd16e35379d38d73b50",
+      "sources": [
+        "homebrew-history:20c7754666b5",
+        "wayback-cdx:20250404143228:WU24F4LK47KJC32HC32LAGBBAAJ5YJCO:62992217",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63011014,
+      "etag": "\"662dbf3a4fd54f62440ecb653cde6767-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "85.0-64200",
+      "url": "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.dmg",
+      "expected_sha256": "1b8322ddeb1240989594775f1944f72f5bf363495fa909f5cfb3cb34f885858c",
+      "sources": [
+        "homebrew-history:9852867ed19f",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63014291,
+      "etag": "\"35c25c8e07d87df871bb5ce9e0f7a713-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-67171",
+      "url": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.dmg",
+      "expected_sha256": "248703bb6ec9ad4753363a6d3b7bd1145184af42d1e4ade62d213a4ffed21942",
+      "sources": [
+        "homebrew-history:4a8173137a60",
+        "homebrew-history:5aaba4db37f3",
+        "homebrew-history:c6502e10bc6e",
+        "wayback-cdx:20250823180735:UNXHVVUOUNR3IYNPQCH26LNZUQU236WV:63002508",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63021038,
+      "etag": "\"4d5fd67fc5432014936785fee73e7194-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-77070",
+      "url": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.dmg",
+      "expected_sha256": "3a3cc74fa35e79e0499e67712ee70cc3eb51836d00970b2139cb131fc20b4cf1",
+      "sources": [
+        "homebrew-history:dcbd49c015dd",
+        "homebrew-history:4a3dc508e03e",
+        "wayback-cdx:20260627013544:LOPYLSKFFXPAE25XDJGN562GKNOC7KLP:63181336",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 63196467,
+      "etag": "\"0f1a7bcce76398f06f766fd26b9fab55-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-79210",
+      "url": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.dmg",
+      "expected_sha256": "f088496273b6c524f3a59ec02453bad39236e5b0b5793068e1ef547f1f255272",
+      "sources": [
+        "homebrew-history:df3dae8567bb",
+        "wayback-cdx:20260829011712:H225RXKA4J7233LHIUIHWLMBKCI5A4QM:71814697",
+        "official-direct:s2-macos:wayback-latest-redirect"
+      ],
+      "http_status": 200,
+      "content_length": 71832943,
+      "etag": "\"4d12c97ffc9868305225f8516eaec8fc-9\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0.67300",
+      "url": "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0.68190",
+      "url": "https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-120",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController120.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20200617064708:OMUHEKTI5TESUQMU7FV32XQWWHPMXKEL:48686828",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 48763494,
+      "etag": "\"193bd890270d2f5902e0084de4bc476a-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1222",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1222.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20210126200615:TIKLKIMXJNG2FKEYBI2V5RBJKC5WNMGQ:56936703",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57147132,
+      "etag": "\"4c3b8758e6ee19f8dfad8389ef04c522-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-131",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController131.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20250114200859:ASKUYLCM7OEA3X2YECB55UCCIR7VDAK5:57523139",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57602765,
+      "etag": "\"e78c457763f7a008b2cdc5f71a3d0e23-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1311",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1311.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57645109,
+      "etag": "\"eda362c9c4affb0abecc4c2c42b7a9c7-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1312",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1312.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57688315,
+      "etag": "\"5cddb854ed62c14765674da0c4c53ff6-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1314",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1314.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57688626,
+      "etag": "\"c280d43283ebd9aaf7578dde6a05a67c-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-132",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController132.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 58704871,
+      "etag": "\"08a77f4edd59d61c522245a73b08ab2d-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-133",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController133.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20210929213137:SYIQRUOKVFNMSBAX5UTDWPCYMLDICKCA:62596492",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 62673347,
+      "etag": "\"c46b395ca5f71255d089315bc5f0c582-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1341",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1341.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20220122233404:EIRXI7MAWPTTQZTCYL5UTO7JBZSFKE7R:62492706",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 62584399,
+      "etag": "\"98114b8020b51e4ca249c4b53e19af5b-8\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.0",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController120.exe",
+      "expected_sha256": "d557193e96e71d498ef408508846b8a5256816f10568fc642e8389fafc5b1a56",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20200618065031:QZKKNIOZBQNA5EFO5JP7UIO7QX4SKQKQ:37803463",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 38365400,
+      "etag": "\"7ddcf2d31167a5d0f9848e3947682eee-5\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.0.1",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1201.exe",
+      "expected_sha256": "2854e067218598198a8a099d484268f9f4c976d1e730220702863fca94582544",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:26UQ77Z3X2NKAHTKRQPL6WEGHPW2SPDV:37843111"
+      ],
+      "http_status": 200,
+      "content_length": 38368000,
+      "etag": "\"a7f4a0ad87d0da3878083a005a6c91bb-5\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.1",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController121.exe",
+      "expected_sha256": "bbd3629ad1e13b4783af391b176014f163852385eda00b0356d02b4f30cbf171",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:EAALRBLYQ2WQYX27Z5UNP3EEA5MO5BF3:43535368"
+      ],
+      "http_status": 200,
+      "content_length": 44067296,
+      "etag": "\"e69df3cb99d9b6c724e178a52753a0a3-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.2.2",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1222.exe",
+      "expected_sha256": "047b9e93f24ccacecd8baf29931fcc177ee797e302e7a0b84fffb549800e9431",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:ET2MLJV63PB5BS7YV5BL6DVVSACILLE2:43591772",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 44127416,
+      "etag": "\"f552a330387bca9aff77bf57fb8d5017-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "13.0.0",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController130.exe",
+      "expected_sha256": "69890655251b1c3ac69696a02153162375e596e014ddb21fe28e0926b4490d80",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221112092151:WTP67NGXMONWWDXZYF7TWYYNSUG6UO4M:46686099"
+      ],
+      "http_status": 200,
+      "content_length": 47252112,
+      "etag": "\"e52b900f89137bcf1c708857c816b112-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.10",
+      "url": "https://update-software.sonos.com/software/76.2.46300/Sonos_15.10.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.11",
+      "url": "https://update-software.sonos.com/software/76.2.47270/Sonos_15.11.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.2",
+      "url": "https://update-software.sonos.com/software/72.2.39150/Sonos_15.2.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.3",
+      "url": "https://update-software.sonos.com/software/72.2.40060/Sonos_15.3.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.4",
+      "url": "https://update-software.sonos.com/software/73.0.41050/Sonos_15.4.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.5",
+      "url": "https://update-software.sonos.com/software/73.0.42060/Sonos_15.5.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.6",
+      "url": "https://update-software.sonos.com/software/74.0.43110/Sonos_15.6.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.7",
+      "url": "https://update-software.sonos.com/software/74.0.43312/Sonos_15.7.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.8",
+      "url": "https://update-software.sonos.com/software/75.1.45120/Sonos_15.8.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "15.9",
+      "url": "https://update-software.sonos.com/software/75.1.46030/Sonos_15.9.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "16.0",
+      "url": "https://update-software.sonos.com/software/77.4.49290/Sonos_16.0.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "16.1",
+      "url": "https://update-software.sonos.com/software/78.1.51030/Sonos_16.1.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "16.2",
+      "url": "https://update-software.sonos.com/software/79.0.52294/Sonos_16.2.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "16.2",
+      "url": "https://update-software.sonos.com/software/79.1.53290/Sonos_16.2.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "16.3",
+      "url": "https://update-software.sonos.com/software/80.1.55014/Sonos_16.3.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "66.4.23300",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1341.exe",
+      "expected_sha256": "6f9ce7a3841725ebabb4adeea0be0fbc77c0ac4e78517f4e479662b71fa5aecd",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20220122234621:5EYC3VUOKP56ZV24UYTFRZYSLM2CBEOF:51978538",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 52539320,
+      "etag": "\"72f219a7bdae2704a1c401aa27bf977e-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "70.1.34112",
+      "url": "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.exe",
+      "expected_sha256": "033f4bb13dfe2cccc6d8b00ed78ee6c24aa42649ca20de43698d243863f7eb2e",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212320:2XSCK46CATMXLYUHPCXS7QAOD7GJPGCV:56049877",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 56580528,
+      "etag": "\"368b2bf594800893780362a81a4e42b2-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "70.3.35070",
+      "url": "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.exe",
+      "expected_sha256": "92b51e70a449156e3195621c07dd1bbb0dd4fdc007cbc84ac4b73451f4cf66b9",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212320:TNTI667UUWMMKQDFFYKBGC4OXNIU2SWA:56668680"
+      ],
+      "http_status": 200,
+      "content_length": 57199264,
+      "etag": "\"45af69d7d4d5b7e864ed0d9270f2ef34-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "71.1-38240",
+      "url": "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57026296,
+      "etag": "\"e41703ada6c661368af8f35157d44f7d-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "73.0-41050",
+      "url": "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20230617161759:BNYHEOMFXXK6PJDWBU44K6GQGSS7F3W6:56640563",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57200984,
+      "etag": "\"17de077d4cb692a34d2434d028b43a3e-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "75.1-46030",
+      "url": "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57247032,
+      "etag": "\"a3be53538a50c769219cdfbea5f5a80a-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "77.4-49290",
+      "url": "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57533224,
+      "etag": "\"d3762fcfb7a80d2d18fc728cfa164c51-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "79.0.52294",
+      "url": "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.exe",
+      "expected_sha256": "540a642aca3f97b7ac70aa564217ff399b90487d3d907b5714c55449b6e78e2e",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102803:62MYXXAMRWHJEA2UTZ6JV7WWHPRLGOIX:56961048"
+      ],
+      "http_status": 200,
+      "content_length": 57494280,
+      "etag": "\"496a9eaea3da4c1573b23f9c6da0ad38-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "79.1.53290",
+      "url": "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.exe",
+      "expected_sha256": "8feed0243f49b3140e567e75f7fcf16f0e8297a0a5363dc263447848d40b8c37",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102803:W74D5XHMQ6NGO5LABHP6FMESTNCADQBR:56986842"
+      ],
+      "http_status": 200,
+      "content_length": 57518304,
+      "etag": "\"02e54e98f0a53bc6e8ea8b18d7768d50-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "80.1.55014",
+      "url": "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.exe",
+      "expected_sha256": "9f9385e54ef9eaf62044d10a2d4b4af129897565419810398cca1941a4fe69fb",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20241006015250:4PHYWPFKDH4GE2A3LT3XZNJWIYD3AL56:56995033",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57526488,
+      "etag": "\"f1ae22b9f61d246d8faeaf7478174a70-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "81.1.58074",
+      "url": "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.exe",
+      "expected_sha256": "2777c625b27a7eb9f9b27a4f263e8d1da5e3eceb388d179bfcb4130330ca9e64",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20241112230928:ERPUX4ND7HX5D3LWJNMC75IWTO5TBUVJ:56984594",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57516040,
+      "etag": "\"aebb3e1bb51bea4f62513183b2f5792c-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "82.2.59204",
+      "url": "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.exe",
+      "expected_sha256": "9a24ca3d0917f9d32e16ceb89558da1a80103cc27ff24fc1b3ad8779bd4f20dd",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102804:OLTV36MDFK4EDTARA5VFVZDDV2ITTDXD:56973684",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57505120,
+      "etag": "\"e9224f99786e7011fa883c8cb1cb4008-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "82.3.60160",
+      "url": "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.exe",
+      "expected_sha256": "ad0bbc069e992d0b36f3b01f97e84165253527414f88c98933e1c32d710dbbbd",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250114015720:PUYQEBQG6ZLQXXKB5CKN4D7B2TXEAMOU:56942495",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57502960,
+      "etag": "\"877f2de782acacf0c319299a041204fd-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "83.1.61210",
+      "url": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.exe",
+      "expected_sha256": "d3dcbfb41537ff8dd953430ea0d54dbce05167b67ff7d3c53a0db3d5ea273be1",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:FWW7XQWUC6DAJC56QNL65KFUIHZD2IMN:56983699",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57515136,
+      "etag": "\"6e723f5d1af8afddbb060552db5048b7-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "84.1.63110",
+      "url": "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.exe",
+      "expected_sha256": "32cb1aa032ff288e98ed51b0f531efc3d9c0c5aa2a0626135a40ec69b7d0c362",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250319093414:OL3J7JGVXBV3D2UMCUKUF4L5QCQBONBL:56982113",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57513552,
+      "etag": "\"5d90534afcd477a51fa534732a4f8431-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "85.0.64200",
+      "url": "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.exe",
+      "expected_sha256": "9ebae60536b74ed97066744bbd4eb75335cf28e498fd410c6f69a8174651d2cf",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:GGJTDOXG5IIAO2ONMZV6FMU66C3XZUJ6:56981714",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57513168,
+      "etag": "\"463df5b5b4434e559ac1986f7e668d19-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0-79210",
+      "url": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.67171",
+      "url": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.exe",
+      "expected_sha256": "c10067768acbd78eb022027a7f4096a6de551acfeb997c79d56cbf36cf94863e",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:TY6EA7LALBIO5AT7REVUF2IFO7JVRL5Q:56983558",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57515008,
+      "etag": "\"339c19c98ea3416161aea76cfa51c5fe-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.67300",
+      "url": "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.exe",
+      "expected_sha256": "1a90fb565d9a2d077af52441d1f66312ca134a4732ad0c084587f72bdc4e14d0",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250823180736:TTWT2ERAC2CGU5NMGIDQYKVSKLU62KAR:56977987"
+      ],
+      "http_status": 200,
+      "content_length": 57509160,
+      "etag": "\"72534ea66e24567843f07853f5858e22-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.68190",
+      "url": "https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.exe",
+      "expected_sha256": "a5876796498a24241b5a4e94e5f9e3fe8dd50de79d573e9ca75bf25c9494768f",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20251126172348:2FAP54OTHBZHZGEMRI464P6SBVHQ7C3P:56997296"
+      ],
+      "http_status": 200,
+      "content_length": 57528736,
+      "etag": "\"a8a66e2cc568248ac8f66e3b5e8c8dd4-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.77070",
+      "url": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe",
+      "expected_sha256": "041d3a74d60f94d2b2c4f63909e765efd9648fc5407e970ef6441e66db8bd8ca",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20260627013544:YKVYWJPUC2DT2AOFDDFRGYUTCQXBIW5D:57067674",
+        "official-direct:s2-windows:wayback-latest-redirect",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 57599144,
+      "etag": "\"fd7afd6da6d507cd1ed9d3b3c9e4c855-7\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-131",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController131.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221112090936:EWSF4GDZVKKLJQCYVCBVCJYZUMRGVUSZ:47121580",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 47687088,
+      "etag": "\"0367b748e3642745be2cb2e0abcc6644-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1311",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1311.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221112092036:SHQEDV2Y6VS3NR4KDPPFSCFQ5XAWYPLL:47194337"
+      ],
+      "http_status": 200,
+      "content_length": 47759944,
+      "etag": "\"626e1bd3ddb6f359ce1e62b4607698fe-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1312",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1312.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221112092059:4DUXR73OZMCIOR6LM6LI3XZIBU6PYBCE:47230757"
+      ],
+      "http_status": 200,
+      "content_length": 47796264,
+      "etag": "\"2407e0e0b6fcf62d95d130c57e73a3bb-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1314",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1314.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221112092124:GIYG7CNFBSG3DIR3IOH6ZTNK5F3WRE44:47230304"
+      ],
+      "http_status": 200,
+      "content_length": 47795784,
+      "etag": "\"448f6f80efb39bd443f3bf3a7d098744-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-132",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController132.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20221112091835:DRBJU4GJ6FUAUAP6YHAM7WUCTHFMOVJI:47552471"
+      ],
+      "http_status": 200,
+      "content_length": 48117944,
+      "etag": "\"9042f6e4b35d122d6e8273f8dbfe33b9-6\""
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-133",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController133.exe",
+      "expected_sha256": null,
+      "sources": [
+        "wayback-cdx:20210929220612:EKTSIV5YPS6GA7UNT3ANCFKD5RCCC3P6:52086367",
+        "derived-cross-platform"
+      ],
+      "http_status": 200,
+      "content_length": 52646960,
+      "etag": "\"9690bfdb887cbccc460574aa85395062-7\""
+    }
+  ]
+}

@@ -1,0 +1,681 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-20T08:05:26.165770+00:00",
+  "discovery": "data/apps/mobile-discovery.json",
+  "artifact_total": 33,
+  "gap_total": 1,
+  "gaps": [
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "family": "legacy",
+      "version": "1305",
+      "reason": "downloaded body is not a valid ZIP/APK: https://web.archive.org/web/20210422173744id_/https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20210422173744"
+    }
+  ],
+  "artifacts": [
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "120",
+      "original_filename": "SonosAndroidController120.apk",
+      "bytes": 62361240,
+      "sha256": "c17adac9fb022a042e7bc428d60684463b45b825f7f8feb5a9abc2bb4672ffe3",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20200617020532",
+      "wayback_digest": "2A5RGY2OKIRLCVDPBNYNMINSHTNUZMMX",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController120--c17adac9fb02.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController120--c17adac9fb02.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1206",
+      "original_filename": "SonosAndroidController1206.apk",
+      "bytes": 61117467,
+      "sha256": "2530d7cc08392474ac11b0d3b0272cca5429b1485b44a4b5844d59d1fc3dd6d9",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20200923064748",
+      "wayback_digest": "4UZJE2UP7K5PSCVLAKARF4GFULJAUZ4I",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1206--2530d7cc0839.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1206--2530d7cc0839.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1221",
+      "original_filename": "SonosAndroidController1221.apk",
+      "bytes": 87970941,
+      "sha256": "bbc4c10a515cd64286f3f230d57c5dbc5e8b8e725ee0d2a5963ed9fcdf467353",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20201124151138",
+      "wayback_digest": "ZCK7MJN3GM66CPTX2XG4W76DDO2CJMQF",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1221--bbc4c10a515c.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1221--bbc4c10a515c.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1303",
+      "original_filename": "SonosAndroidController1303.apk",
+      "bytes": 93870579,
+      "sha256": "ed6774c915db8b50889883e66dd02512677e7d1d948121baeaaacb853f4fef4a",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20210419121122",
+      "wayback_digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1303--ed6774c915db.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1303--ed6774c915db.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1312",
+      "original_filename": "SonosAndroidController1312.apk",
+      "bytes": 98237700,
+      "sha256": "5b5bf34724ac936f579f20320a00f9aba0ee07e3bb6efefa46139e8b37f8a429",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20210615091901",
+      "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1312--5b5bf34724ac.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1312--5b5bf34724ac.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1322",
+      "original_filename": "SonosAndroidController1322.apk",
+      "bytes": 80211520,
+      "sha256": "867462a620725cee79034a2689f7fc7ce9e7d8a0192599bfbd7595eb99d8dfc1",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20210916102256",
+      "wayback_digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1322--867462a62072.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1322--867462a62072.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "133",
+      "original_filename": "SonosAndroidController133.apk",
+      "bytes": 84993581,
+      "sha256": "14dea3da4a078d2d24f4fba02de55869fe0d158dd10d7844a5e2fa0c69fcb65e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20210929233833",
+      "wayback_digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController133--14dea3da4a07.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController133--14dea3da4a07.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1332",
+      "original_filename": "SonosAndroidController1332.apk",
+      "bytes": 84993603,
+      "sha256": "73bd082ea07a5ec3e8179fd016ca0c7dbee7b47a36841561b8efba34bb0b68d5",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20211022084736",
+      "wayback_digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1332--73bd082ea07a.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1332--73bd082ea07a.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "134",
+      "original_filename": "SonosAndroidController134.apk",
+      "bytes": 85307135,
+      "sha256": "481ef38a5ea3e43088e586c871a2ab4b7e6f7b9331b628b267a730342eba2cce",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20211203074125",
+      "wayback_digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController134--481ef38a5ea3.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController134--481ef38a5ea3.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1341",
+      "original_filename": "SonosAndroidController1341.apk",
+      "bytes": 84325203,
+      "sha256": "c405bb18ae0558fe6c5b36cae5f4da3ae0b32a141ee514c8274eaa2e57489bd2",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20220118132836",
+      "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1341--c405bb18ae05.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1341--c405bb18ae05.apk"
+    },
+    {
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1461",
+      "original_filename": "SonosAndroidController1461.apk",
+      "bytes": 98571541,
+      "sha256": "7e324dff65862e019d6bf96a453f5b83111c4280b4bd6d452dcc77f1e27f3135",
+      "source_urls": [
+        "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20220519083448",
+      "wayback_digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+      "release_tag": "apps-fireos-legacy",
+      "release_asset": "SonosAndroidController1461--7e324dff6586.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-legacy/SonosAndroidController1461--7e324dff6586.apk"
+    },
+    {
+      "family": "s1",
+      "platform": "fireos-android-apk",
+      "version": "57.22-59130_32bit",
+      "original_filename": "Sonos_57.22-59130_32bit.apk",
+      "bytes": 57936894,
+      "sha256": "bd409ff4a84d4e4969a2440adeb185436dc2be9265c06fece50af61c32a0f214",
+      "source_urls": [
+        "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250114031618",
+      "wayback_digest": "Q2NWZCZOBUELADUXELR3WGXMUG4V2S2A",
+      "release_tag": "apps-fireos-s1",
+      "release_asset": "Sonos_57.22-59130_32bit--bd409ff4a84d.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s1/Sonos_57.22-59130_32bit--bd409ff4a84d.apk"
+    },
+    {
+      "family": "s1",
+      "platform": "fireos-android-apk",
+      "version": "57.22-61300_32bit",
+      "original_filename": "Sonos_57.22-61300_32bit.apk",
+      "bytes": 58150860,
+      "sha256": "3ba97ae74d4503bf7c58e834f402505291fffa21517284e35003dee9ee118e66",
+      "source_urls": [
+        "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250420170811",
+      "wayback_digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4",
+      "release_tag": "apps-fireos-s1",
+      "release_asset": "Sonos_57.22-61300_32bit--3ba97ae74d45.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s1/Sonos_57.22-61300_32bit--3ba97ae74d45.apk"
+    },
+    {
+      "family": "s1",
+      "platform": "fireos-android-apk",
+      "version": "57.22-71190_32bit",
+      "original_filename": "Sonos_57.22-71190_32bit.apk",
+      "bytes": 57377553,
+      "sha256": "ee8e34e5510b18e19948dcdd882e71715aa3cba71f79f7b4e87afb87c8f31e38",
+      "source_urls": [
+        "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20251219062406",
+      "wayback_digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI",
+      "release_tag": "apps-fireos-s1",
+      "release_asset": "Sonos_57.22-71190_32bit--ee8e34e5510b.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s1/Sonos_57.22-71190_32bit--ee8e34e5510b.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "68.3-30100_32bit",
+      "original_filename": "Sonos_68.3-30100_32bit.apk",
+      "bytes": 99023223,
+      "sha256": "74e3f7d55c62750083120e7e6e27d8bac7f438b9e28694fc7dee0b0b9527582e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20220711112338",
+      "wayback_digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_68.3-30100_32bit--74e3f7d55c62.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_68.3-30100_32bit--74e3f7d55c62.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-31120_32bit",
+      "original_filename": "Sonos_69.1-31120_32bit.apk",
+      "bytes": 95791310,
+      "sha256": "7de6a78ea8ef56a67b2f1a9c312b072804d191525e38048aa844a529e9063117",
+      "source_urls": [
+        "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20220814155951",
+      "wayback_digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_69.1-31120_32bit--7de6a78ea8ef.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_69.1-31120_32bit--7de6a78ea8ef.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-33120_32bit",
+      "original_filename": "Sonos_69.1-33120_32bit.apk",
+      "bytes": 96021769,
+      "sha256": "62d4db193885284d5688ca92ac29e13410a1a78b512e61928b640010eab4be0d",
+      "source_urls": [
+        "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20220927103639",
+      "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_69.1-33120_32bit--62d4db193885.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_69.1-33120_32bit--62d4db193885.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "original_filename": "Sonos_70.3-35094_32bit.apk",
+      "bytes": 101965732,
+      "sha256": "4cb114bd5a13ed044eb3fb4b4296627bea3d8618a43e01ad0c8395c8bd34a2da",
+      "source_urls": [
+        "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20221129172319",
+      "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_70.3-35094_32bit--4cb114bd5a13.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_70.3-35094_32bit--4cb114bd5a13.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.4-36090_32bit",
+      "original_filename": "Sonos_70.4-36090_32bit.apk",
+      "bytes": 102622102,
+      "sha256": "25d66cd5af28b0dbb19eb04c74d18bb2f809b5cd4a2b920ba430ccece99b9c58",
+      "source_urls": [
+        "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20230205151206",
+      "wayback_digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_70.4-36090_32bit--25d66cd5af28.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_70.4-36090_32bit--25d66cd5af28.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "72.2-39150_32bit",
+      "original_filename": "Sonos_72.2-39150_32bit.apk",
+      "bytes": 105374124,
+      "sha256": "f2e39419677a8af2a3d671794338981a3c49c5c1dca3ec7d29c5515d9e12d862",
+      "source_urls": [
+        "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20230401195618",
+      "wayback_digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_72.2-39150_32bit--f2e39419677a.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_72.2-39150_32bit--f2e39419677a.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "76.2-46300_32bit",
+      "original_filename": "Sonos_76.2-46300_32bit.apk",
+      "bytes": 86226156,
+      "sha256": "ce755ef02ca6d6339b90ac0144397bb7e8d3ce54a90ab4ceac088c7cd87d65c3",
+      "source_urls": [
+        "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20231129144008",
+      "wayback_digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_76.2-46300_32bit--ce755ef02ca6.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_76.2-46300_32bit--ce755ef02ca6.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.09.04",
+      "original_filename": "Sonos_80.09.04.apk",
+      "bytes": 250687372,
+      "sha256": "3edee14222451593aa04ca2b233cdbdb0e9183b1e98dacba8376aad99533eaf0",
+      "source_urls": [
+        "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20241005225439",
+      "wayback_digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.09.04--3edee1422245.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.09.04--3edee1422245.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.15.01",
+      "original_filename": "Sonos_80.15.01.apk",
+      "bytes": 209338805,
+      "sha256": "57464ba924a58a122657dd9de7752fbe5432a540146c68c6d6bfd31132f33f14",
+      "source_urls": [
+        "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250114015717",
+      "wayback_digest": "VWYKIEYQGAJTE4PFHLNSQMGHIZMF2BTP",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.15.01--57464ba924a5.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.15.01--57464ba924a5.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.18.24",
+      "original_filename": "Sonos_80.18.24.apk",
+      "bytes": 219829834,
+      "sha256": "e8f8323940e21c9e83c7efb791c5c165a1f5ae1133efb0f371a73cd32eb4e870",
+      "source_urls": [
+        "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250404160652",
+      "wayback_digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.18.24--e8f8323940e2.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.18.24--e8f8323940e2.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.24.32",
+      "original_filename": "Sonos_80.24.32.apk",
+      "bytes": 237770085,
+      "sha256": "b564a814df12df6b998e327954cd0331fb9c3cdc7f262ed706b4b08eb7429c4c",
+      "source_urls": [
+        "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250823180737",
+      "wayback_digest": "FC7PV63MJLJGSISDUE2WNN3TOA7WRAM6",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.24.32--b564a814df12.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.24.32--b564a814df12.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.27.6",
+      "original_filename": "Sonos_80.27.6.apk",
+      "bytes": 238798382,
+      "sha256": "2a432d8f5e3b98a958af1470f90043b736a704696671143b8668c611b931d58e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250904163945",
+      "wayback_digest": "ZMJMP2Q3AVM6DP7PCNYZKLASXQXJUQRB",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.27.6--2a432d8f5e3b.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.27.6--2a432d8f5e3b.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.27.8",
+      "original_filename": "Sonos_80.27.8.apk",
+      "bytes": 238798382,
+      "sha256": "7ea308199d3b529564011c7ea17fa706756b33884229cea28d02a1fa680f8c59",
+      "source_urls": [
+        "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250909210844",
+      "wayback_digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.27.8--7ea308199d3b.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.27.8--7ea308199d3b.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.28.36",
+      "original_filename": "Sonos_80.28.36.apk",
+      "bytes": 272452301,
+      "sha256": "86afb193d571d8d8101d44695ee1902ddeaf0f752c74d85d8951e895a92a2d0d",
+      "source_urls": [
+        "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20250919023606",
+      "wayback_digest": "3S5PVHXU3BLSTXW2OZNVVE7GNANL5B5B",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.28.36--86afb193d571.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.28.36--86afb193d571.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.32.32",
+      "original_filename": "Sonos_80.32.32.apk",
+      "bytes": 260110118,
+      "sha256": "076ddb779fa0f698bda2d9771ab97564bf8cde90c704e160b42460726ddef086",
+      "source_urls": [
+        "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20251202090036",
+      "wayback_digest": "5EL2RFM4VRULIHH4DXKFKDWRJWYBU3BF",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.32.32--076ddb779fa0.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.32.32--076ddb779fa0.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "81.00.51",
+      "original_filename": "Sonos_81.00.51.apk",
+      "bytes": 284682402,
+      "sha256": "256fe8db891ee496571cbdaf5052aa4b4c9bd6d2ef1d924c35ab5ce7c162aa99",
+      "source_urls": [
+        "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20260131025730",
+      "wayback_digest": "MAYGRECPJDEIVXLI2STWA67HJYZMDNWK",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_81.00.51--256fe8db891e.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_81.00.51--256fe8db891e.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "83.00.35",
+      "original_filename": "Sonos_83.00.35.apk",
+      "bytes": 304910262,
+      "sha256": "be9c6affc0df33f139746fce76000afd3e55190486ef160520d3a613875d5cf3",
+      "source_urls": [
+        "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20260324152647",
+      "wayback_digest": "OA7RL6SFM7QEJGA7BLOS5DXDWWX2VR2H",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_83.00.35--be9c6affc0df.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_83.00.35--be9c6affc0df.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "85.00.31",
+      "original_filename": "Sonos_85.00.31.apk",
+      "bytes": 341211232,
+      "sha256": "1a1fbccc41cbdef5e37eebca1a53855851e504f5d97e9f6cc3830a67856c51af",
+      "source_urls": [
+        "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
+      "sources": [
+        "wayback-cdx"
+      ],
+      "wayback_timestamp": "20260526094100",
+      "wayback_digest": "EN2CJJYZKTMGWS5DS6BYGAV5AUCDXC5I",
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_85.00.31--1a1fbccc41cb.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_85.00.31--1a1fbccc41cb.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "89.00.49",
+      "original_filename": "Sonos_89.00.49.apk",
+      "bytes": 327874794,
+      "sha256": "0d38a02e6c9198215909b856fc13f4253c39b660be75b98cf91ab94ce00d0244",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk"
+      ],
+      "fetched_from": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
+      "sources": [
+        "official-current-fireos-redirect"
+      ],
+      "wayback_timestamp": null,
+      "wayback_digest": null,
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_89.00.49--0d38a02e6c91.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_89.00.49--0d38a02e6c91.apk"
+    }
+  ]
+}

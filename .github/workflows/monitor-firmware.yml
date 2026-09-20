@@ -35,6 +35,30 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python scripts/audit_release_assets.py --output release-asset-audit.json
+      - name: Check for new desktop app installers
+        id: app_check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_desktop_apps.py \
+            --output desktop-app-monitor-report.json \
+            --discovery-output desktop-app-discovery.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Check for new official mobile APKs
+        id: mobile_app_check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_mobile_apps.py \
+            --output mobile-app-monitor-report.json \
+            --discovery-output mobile-app-discovery.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -42,6 +66,10 @@ jobs:
           path: |
             monitor-report.json
             release-asset-audit.json
+            desktop-app-monitor-report.json
+            desktop-app-discovery.json
+            mobile-app-monitor-report.json
+            mobile-app-discovery.json
           retention-days: 30
       - name: Open or update discovery issue
         if: steps.check.outputs.exit_code == '2'
@@ -87,5 +115,74 @@ jobs:
               });
             }
       - name: Fail on monitoring errors
-        if: steps.check.outputs.exit_code == '1'
+        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1'
         run: exit 1
+      - name: Open or update desktop-app discovery issue
+        if: steps.app_check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('desktop-app-monitor-report.json', 'utf8'));
+            const title = '[monitor] New Sonos desktop installer detected';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const candidates = [
+              ...(report.unknown_installers ?? []).map(x => `- ${x.family}/${x.platform} ${x.version}: ${x.url}`),
+              ...(report.unknown_direct_redirects ?? []).map(x => `- direct ${x.name}: ${x.location}`),
+            ];
+            const details = [
+              `Automated, non-AI desktop-app monitoring detected an unarchived Sonos installer.`,
+              ``,
+              `- Live candidates checked: ${report.live_candidate_total}`,
+              `- Unknown indexed installers: ${report.unknown_installer_total}`,
+              `- Unknown direct redirect targets: ${report.unknown_direct_redirect_total}`,
+              ``,
+              ...candidates.slice(0, 50),
+              candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
+              ``,
+              `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body: details,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body: details,
+              });
+            }
+      - name: Open or update mobile-app discovery issue
+        if: steps.mobile_app_check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('mobile-app-monitor-report.json', 'utf8'));
+            const title = '[monitor] New official Sonos mobile APK detected';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const candidates = (report.unknown_installers ?? []).map(x => `- ${x.family} ${x.version}: ${x.url}`);
+            const details = [
+              `Automated, non-AI mobile-app monitoring detected an unarchived official Sonos APK.`,
+              ``, `- Candidates checked: ${report.candidate_total}`,
+              `- Live originals: ${report.live_total}`, `- Unknown: ${report.unknown_total}`,
+              `- Known invalid/unrecoverable captures: ${report.known_gap_total ?? 0}`, ``,
+              ...candidates.slice(0, 50),
+              candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
+              ``, `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body: details});
+            } else {
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo,
+                title, body: details});
+            }

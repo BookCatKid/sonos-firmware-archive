@@ -35,6 +35,12 @@ def recorded_assets(root: Path) -> dict:
         str(catalog_path.relative_to(root)),
         expected,
     )
+    for app_path in sorted((root / "data/apps").glob("*.json")):
+        walk_release_records(
+            json.loads(app_path.read_text(encoding="utf-8")),
+            str(app_path.relative_to(root)),
+            expected,
+        )
 
     # The GPL catalog predates explicit release_tag fields. Its publication
     # convention is stable and documented as gpl-<release>.

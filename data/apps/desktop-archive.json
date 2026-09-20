@@ -1,0 +1,1857 @@
+{
+  "schema_version": 1,
+  "updated": "2026-09-20T07:49:11.759518+00:00",
+  "discovery": "data/apps/desktop-discovery.json",
+  "artifact_total": 97,
+  "artifacts": [
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-111",
+      "original_filename": "SonosDesktopController111.dmg",
+      "bytes": 47921929,
+      "sha256": "f93830f89073598eccf92c7c3d9e064330252e8e7152cdcb75094a4890ec13e8",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController111.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController111.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-legacy-macos",
+      "release_asset": "SonosDesktopController111--f93830f89073.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-macos/SonosDesktopController111--f93830f89073.dmg"
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-92",
+      "original_filename": "SonosDesktopController92.dmg",
+      "bytes": 32404611,
+      "sha256": "a4d731960cd4dd75c8eac2b557efc75f4870641665c71b500434507149ca4596",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController92.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController92.dmg",
+      "sources": [
+        "wayback-cdx:20181114014841:KTVW3GLYDDYJZOE2LUURY4AYHXLA2K23:9987369",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-legacy-macos",
+      "release_asset": "SonosDesktopController92--a4d731960cd4.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-macos/SonosDesktopController92--a4d731960cd4.dmg"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-111",
+      "original_filename": "SonosDesktopController111.exe",
+      "bytes": 39263320,
+      "sha256": "62ff280cacde781211d9723c2a7bf9c1858678ae1ae648c2c576107d267eb3a9",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController111.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController111.exe",
+      "sources": [
+        "wayback-cdx:20221213212319:YI25O63W3NGZXKPJ4YGFM63JDF2DXSL2:38735675"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController111--62ff280cacde.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController111--62ff280cacde.exe"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-31",
+      "original_filename": "SonosDesktopController31.exe",
+      "bytes": 35645520,
+      "sha256": "c1fc76d48cb8bef7d57209cdfafacea175ac893ebe2f0069b4d7c3ea0a2397fd",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController31.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController31.exe",
+      "sources": [
+        "wayback-cdx:20240630140515:Z5TSRCV7F7XPB3PIWIWVKPMQMLE2TC4K:33774518"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController31--c1fc76d48cb8.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController31--c1fc76d48cb8.exe"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-32",
+      "original_filename": "SonosDesktopController32.exe",
+      "bytes": 7728640,
+      "sha256": "3fd6aa53e0458655d9b4f0f4b54067f498fbd7d4c20ada7e206120ae6330b6c9",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController32.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController32.exe",
+      "sources": [
+        "wayback-cdx:20140807112041:HBHSZXBIA72XFN6FGGSTRHXOHJC376O7:5635213"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController32--3fd6aa53e045.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController32--3fd6aa53e045.exe"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-33",
+      "original_filename": "SonosDesktopController33.exe",
+      "bytes": 6118184,
+      "sha256": "c29ed66183197a867b60f614a87864c85e6efbb89ea80d6982782aa54b50ba8f",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController33.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController33.exe",
+      "sources": [
+        "wayback-cdx:20220612201102:2CXI4QDHFPAXY45CBEU43LMZLSPNDXEQ:5609301"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController33--c29ed6618319.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController33--c29ed6618319.exe"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-361b",
+      "original_filename": "SonosDesktopController361b.exe",
+      "bytes": 6745248,
+      "sha256": "7e2580698b6026a8e02db497b149096f103719dca60ad866a0668f8efce2e4ba",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController361b.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController361b.exe",
+      "sources": [
+        "wayback-cdx:20130115215255:XUWNVR6UGVWTHEIDUM3LZHYZCGBCNAYK:6239411"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController361b--7e2580698b60.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController361b--7e2580698b60.exe"
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-92",
+      "original_filename": "SonosDesktopController92.exe",
+      "bytes": 24657384,
+      "sha256": "ec26659c815524e37547b1a9a86a286d3492d06e3e8b5f1358cc70f1c530f7c9",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController92.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController92.exe",
+      "sources": [
+        "wayback-cdx:20181114014835:RLGXC2RJHPTKE4MZVCIKY2EFNT65PHTI:9435187",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-legacy-windows",
+      "release_asset": "SonosDesktopController92--ec26659c8155.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-legacy-windows/SonosDesktopController92--ec26659c8155.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "11.2",
+      "original_filename": "SonosDesktopController112.dmg",
+      "bytes": 47865607,
+      "sha256": "1a98300bd16bb2f727eb1921db80777cc23178a483d56b44a9bb5d95d9ea6602",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController112.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController112.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController112--1a98300bd16b.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController112--1a98300bd16b.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.12-31030",
+      "original_filename": "Sonos_57.12-31030.dmg",
+      "bytes": 43968312,
+      "sha256": "d1a2f22dc0a9e4e7563b301698cdf8c5c5ddb54471216ce25ba8c5d225d95859",
+      "source_urls": [
+        "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.dmg",
+      "sources": [
+        "wayback-cdx:20220814200017:KDQOSXPPOKDIQCZ22CC2FAXJHBXUTE2A:43876433"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.12-31030--d1a2f22dc0a9.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.12-31030--d1a2f22dc0a9.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.16-41110",
+      "original_filename": "Sonos_57.16-41110.dmg",
+      "bytes": 49017378,
+      "sha256": "c1cd7a6e2573e0d046517336f02404befc505567f4ed22f388a0026ecae11b68",
+      "source_urls": [
+        "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.16-41110--c1cd7a6e2573.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.16-41110--c1cd7a6e2573.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.21-50280",
+      "original_filename": "Sonos_57.21-50280.dmg",
+      "bytes": 49028536,
+      "sha256": "e65db06684aab6cd70d1b638ebcc28ba04dedd24e63802775543ed680377da19",
+      "source_urls": [
+        "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:1057c8e9cbb5",
+        "homebrew-history:831af44bebe5",
+        "homebrew-history:fb50a1d5174b",
+        "wayback-cdx:20240314002930:Q7YZ5JGLHCLJPK622DKVRQLG5KDOWIMP:48926192"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.21-50280--e65db06684aa.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.21-50280--e65db06684aa.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-59130",
+      "original_filename": "Sonos_57.22-59130.dmg",
+      "bytes": 49055471,
+      "sha256": "18d8e7f79db9ab0951846d8f1c94d4a92cf3e6426f94dc7ee40a552a349f8443",
+      "source_urls": [
+        "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:b2e7ad4eda25",
+        "homebrew-history:d0edd5008fb5",
+        "homebrew-history:d2031840358b",
+        "wayback-cdx:20250114015713:JZ7W2BXLKCWDKR4GQC6LS4K6XTK7AN6A:48954151"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.22-59130--18d8e7f79db9.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.22-59130--18d8e7f79db9.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-67080",
+      "original_filename": "Sonos_57.22-67080.dmg",
+      "bytes": 49053384,
+      "sha256": "7bbcb1bb2c6f6b147e916c72858955c3b055595dc81b02b05d8ede9c1a47cf21",
+      "source_urls": [
+        "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.dmg",
+      "sources": [
+        "homebrew-history:807ad67ca5e7",
+        "wayback-cdx:20250818090132:TKF2VLL7WNL66FTOYJS7XPBGCCEOLNRL:48959493"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.22-67080--7bbcb1bb2c6f.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.22-67080--7bbcb1bb2c6f.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.22-71190",
+      "original_filename": "Sonos_57.22-71190.dmg",
+      "bytes": 49054093,
+      "sha256": "5793fddf23276cb8930396001f37fbaf5624222e3f3cd914204bcebb49855b2c",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:b25118597f75",
+        "wayback-cdx:20251209161922:NDSTMT7JHMYO6LKCR2PFMRSGUC63PQEO:49041232"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.22-71190--5793fddf2327.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.22-71190--5793fddf2327.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.23-74170",
+      "original_filename": "Sonos_57.23-74170.dmg",
+      "bytes": 49054481,
+      "sha256": "3f3495441881b7767d1724aeabed595aa053cdf4780b156dbece56943f023377",
+      "source_urls": [
+        "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:4a8173137a60",
+        "homebrew-history:6772780335c7",
+        "wayback-cdx:20260304033226:5Z3NTPR7X3W4EAYK5QPVL6PBYENSNOHG:49040391"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.23-74170--3f3495441881.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.23-74170--3f3495441881.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "57.23-80060",
+      "original_filename": "Sonos_57.23-80060.dmg",
+      "bytes": 56051852,
+      "sha256": "642281b4d914a88554efab9aef173eee85e0a58d40dcc23b2d6fea6331b4024d",
+      "source_urls": [
+        "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.dmg",
+      "sources": [
+        "wayback-cdx:20260829011712:EAEX7MA2HQ2U2BZR2BARMIMFANP35UMV:56042137"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.23-80060--642281b4d914.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.23-80060--642281b4d914.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-11213",
+      "original_filename": "SonosDesktopController11213.dmg",
+      "bytes": 48445626,
+      "sha256": "9cdb5a758be05923d6f8ee500bb30284d1ce5223ffc3702420e9e89af4066e48",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController11213.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController11213.dmg",
+      "sources": [
+        "wayback-cdx:20220328101148:45JVUG3PQYDHBEEP7DVWHB54ZGRRKS25:48369251",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController11213--9cdb5a758be0.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController11213--9cdb5a758be0.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1122",
+      "original_filename": "SonosDesktopController1122.dmg",
+      "bytes": 47390212,
+      "sha256": "ca9d7cdbc8d60970cd4933cbdff3c7600acaa905dc38d131777cef26bdd6eef8",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1122.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1122.dmg",
+      "sources": [
+        "wayback-cdx:20200831014132:OENF37M6F7SW3J2N3FFUUBHBRT3FT2RC:47319857",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController1122--ca9d7cdbc8d6.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController1122--ca9d7cdbc8d6.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1123",
+      "original_filename": "SonosDesktopController1123.dmg",
+      "bytes": 47406997,
+      "sha256": "5176892eff5a52afe07a85a39d2b43438cf0c3b116b9e206e19d119d53ade901",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1123.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1123.dmg",
+      "sources": [
+        "wayback-cdx:20201021101939:NJVGXEZFH4YWBFUFHFWNETFUTR657I5X:1043815",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController1123--5176892eff5a.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController1123--5176892eff5a.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1124",
+      "original_filename": "SonosDesktopController1124.dmg",
+      "bytes": 47427429,
+      "sha256": "b469563891e0b6f9bfa709044c4dc40ebda15e9f49bc2b0919d5d76b007c35b0",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1124.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1124.dmg",
+      "sources": [
+        "wayback-cdx:20210126194612:FTOIPSGXJMWYGGMXV2WTSIATKHHN4J3Y:47260630",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController1124--b469563891e0.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController1124--b469563891e0.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
+      "version": "classic-1126",
+      "original_filename": "SonosDesktopController1126.dmg",
+      "bytes": 47628321,
+      "sha256": "e7a196c98a7ba65e8dacf627e7d9b9a3dce80e445efd396cf6cf09367961c76e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1126.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1126.dmg",
+      "sources": [
+        "wayback-cdx:20210414180759:D24C55EFXMFF4VJVM3QWQS6TFONYIUYN:1043708",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "SonosDesktopController1126--e7a196c98a7b.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/SonosDesktopController1126--e7a196c98a7b.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2",
+      "original_filename": "SonosDesktopController112.exe",
+      "bytes": 39244856,
+      "sha256": "0662d22698d1b798e3a817960b45bf614160518ef59c958efa2272cf4583611c",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController112.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController112.exe",
+      "sources": [
+        "wayback-cdx:20221213212320:FWDXQ3BMSC22RIX6RV7RL3JWZPFEZZL6:38712819",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController112--0662d22698d1.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController112--0662d22698d1.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.2",
+      "original_filename": "SonosDesktopController1122.exe",
+      "bytes": 38115264,
+      "sha256": "a748b16cb43eb3c64435816f24b6dc3819ce062abf5dbd841ed132733d4b8090",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1122.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1122.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20200831014146:TZYOAADNF7PTHCJFZGG4BRM3WHIMA5JC:37553884",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController1122--a748b16cb43e.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController1122--a748b16cb43e.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.4",
+      "original_filename": "SonosDesktopController1124.exe",
+      "bytes": 38162208,
+      "sha256": "5df497b809f69c437483b6291c3a1427bfd8898aaa77623396a95afaf8bd0a20",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1124.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1124.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20221213212321:M5P4E3INISGQQSPKIOZ4GDCVX2TQJL7X:37628670",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController1124--5df497b809f6.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController1124--5df497b809f6.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "11.2.6",
+      "original_filename": "SonosDesktopController1126.exe",
+      "bytes": 38302000,
+      "sha256": "614ca005275ca9893bc6f7dc769b48457068721ab2e952adeb1abc94fc3e48f5",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1126.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1126.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20210411045130:6MVHOENVFVPKN2PEAGDG7PC47FBLAV7V:37724751",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController1126--614ca005275c.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController1126--614ca005275c.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.12-31030",
+      "original_filename": "Sonos_57.12-31030.exe",
+      "bytes": 37852832,
+      "sha256": "020c2b4c6ffb03024abab47a0629b41a53f51b347268f38f51becc4108d5bf49",
+      "source_urls": [
+        "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/ukxehnnu/Sonos_57.12-31030.exe",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.12-31030--020c2b4c6ffb.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.12-31030--020c2b4c6ffb.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.16-41110",
+      "original_filename": "Sonos_57.16-41110.exe",
+      "bytes": 37944944,
+      "sha256": "6d6ab25c74caa526d8a45906598b6293e3fbfb8d95af7b306d73dc5ad65d12a2",
+      "source_urls": [
+        "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/wzhipjet/Sonos_57.16-41110.exe",
+      "sources": [
+        "wayback-cdx:20230531092530:TT77AEBTXMXRMJXDLRAZLFYR6TBBDSHW:491955"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.16-41110--6d6ab25c74ca.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.16-41110--6d6ab25c74ca.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.21.50280",
+      "original_filename": "Sonos_57.21-50280.exe",
+      "bytes": 37953840,
+      "sha256": "8f2bff45fed2e8ace52b029d5b9bac374c44b592d1afdc6fa1cef798830477e0",
+      "source_urls": [
+        "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20240314002928:WIWVFEUOEZCCVA7ZFCYOC2DJ7WVWDZPU:37391667",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.21-50280--8f2bff45fed2.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.21-50280--8f2bff45fed2.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22-67080",
+      "original_filename": "Sonos_57.22-67080.exe",
+      "bytes": 37952352,
+      "sha256": "1b6df7a87a8b299df042325fdeb66141bdb698970f769c8f5fee82c5a4ee2dab",
+      "source_urls": [
+        "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/yNhAXS5QQR/Sonos_57.22-67080.exe",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.22-67080--1b6df7a87a8b.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.22-67080--1b6df7a87a8b.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.59130",
+      "original_filename": "Sonos_57.22-59130.exe",
+      "bytes": 37953416,
+      "sha256": "dd26a2fd6cb3084ff3dcc90c7a37b179e43542ba4caeae2dc99b7820c5e98501",
+      "source_urls": [
+        "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20250114015707:GA3IO5PERB3TEB5LR72HYKYVTLIHQJD2:37390894",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.22-59130--dd26a2fd6cb3.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.22-59130--dd26a2fd6cb3.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.68080",
+      "original_filename": "Sonos_57.22-68080.exe",
+      "bytes": 37954624,
+      "sha256": "8e5c5929b23acdf7ff63982f9e5a2b9508c8e513e7a2c6a07ad54919909bf30f",
+      "source_urls": [
+        "https://update-software.sonos.com/software/NUPz7mPXln/Sonos_57.22-68080.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/NUPz7mPXln/Sonos_57.22-68080.exe",
+      "sources": [
+        "wayback-cdx:20250823180735:PXT3TMVXP6ETP7WTETMORLZZ3MIILA7C:37419261",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.22-68080--8e5c5929b23a.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.22-68080--8e5c5929b23a.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.22.71190",
+      "original_filename": "Sonos_57.22-71190.exe",
+      "bytes": 37947768,
+      "sha256": "4dfe77785aa98f640430ddf9d4acd6766337bbbf95d65450265b420e72229c34",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mEHO1buPlR/Sonos_57.22-71190.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20260131025731:DOOQM7Y5ZF5ZI6ZUO6CKWDMBKIJTZGZ6:37414169",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.22-71190--4dfe77785aa9.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.22-71190--4dfe77785aa9.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.23.74170",
+      "original_filename": "Sonos_57.23-74170.exe",
+      "bytes": 37946736,
+      "sha256": "3f055bfb194403890875a9d6042aafe708d81e0da9d54cd9ea698d81982569be",
+      "source_urls": [
+        "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20260227152916:RKLEVQUBU436WLFSMUUWJMQ5K3WRCUJD:37420486",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.23-74170--3f055bfb1944.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.23-74170--3f055bfb1944.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.9.23010",
+      "original_filename": "SonosDesktopController11213.exe",
+      "bytes": 37763680,
+      "sha256": "1d59d04d044fe7052db2b4d5f5b51a100bbe433b908b9111384d46ece7c8681e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController11213.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController11213.exe",
+      "sources": [
+        "derived-cross-platform",
+        "wayback-cdx:20221213212321:FFCQJOJ2T52JAMDQCEFS7DCCV7T3LFZC:37229092",
+        "winget-current"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController11213--1d59d04d044f.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController11213--1d59d04d044f.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "classic-1123",
+      "original_filename": "SonosDesktopController1123.exe",
+      "bytes": 38127832,
+      "sha256": "a5938516f17b31aef5911beefa3c7dd8e4ed842a4342ba3d339c5b9b8446826e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1123.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1123.exe",
+      "sources": [
+        "wayback-cdx:20201021104507:TWLVLFMRM2NJVRHP3O7DKPQVE2IVB7KL:491963",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "SonosDesktopController1123--a5938516f17b.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/SonosDesktopController1123--a5938516f17b.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "12.0.1",
+      "original_filename": "SonosDesktopController1201.dmg",
+      "bytes": 49142937,
+      "sha256": "7420cc84d3eaf3537df73f8cfbf3a9c8457b51206d1212bfb422912825df98b4",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1201.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1201.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1201--7420cc84d3ea.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1201--7420cc84d3ea.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "12.1",
+      "original_filename": "SonosDesktopController121.dmg",
+      "bytes": 55665335,
+      "sha256": "2322294f582dcb53c905d4a2df38db8519d0f551302a8f7afde03968958a46ca",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController121.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController121.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController121--2322294f582d.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController121--2322294f582d.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "13.0.0",
+      "original_filename": "SonosDesktopController130.dmg",
+      "bytes": 57041732,
+      "sha256": "f4a0112cbd5b8340ca25e6349daa8000690dd80f182702bdc399787e0e861101",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController130.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController130.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController130--f4a0112cbd5b.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController130--f4a0112cbd5b.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "70.1-34112",
+      "original_filename": "Sonos_70.1-34112.dmg",
+      "bytes": 63265508,
+      "sha256": "de091fcd1ac585260a3f4115a950031fd399114498bdfe5ac1e6a573484bc5ab",
+      "source_urls": [
+        "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.dmg",
+      "sources": [
+        "wayback-cdx:20221104194938:KGBUJYQZU3YQOG3ZUEYNIJ7EZNSKG6RF:63148739",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_70.1-34112--de091fcd1ac5.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_70.1-34112--de091fcd1ac5.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "70.3.35070",
+      "original_filename": "Sonos_70.3-35070.dmg",
+      "bytes": 63895193,
+      "sha256": "02bb81c1f24e40491511cf3e3e13c20256cbe9eb562c00d53dce9cd675be6347",
+      "source_urls": [
+        "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_70.3-35070--02bb81c1f24e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_70.3-35070--02bb81c1f24e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "71.1-38240",
+      "original_filename": "Sonos_71.1-38240.dmg",
+      "bytes": 61950131,
+      "sha256": "0a482144e610c9f62a8d9d653c4ab2dbb8676c585aba678d7ea2c4ab9735cb65",
+      "source_urls": [
+        "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.dmg",
+      "sources": [
+        "wayback-cdx:20230307205010:4FJVB2F5R3RNS7LPRDTGFY3UWSCSLJAK:61854782"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_71.1-38240--0a482144e610.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_71.1-38240--0a482144e610.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "73.0-41050",
+      "original_filename": "Sonos_73.0-41050.dmg",
+      "bytes": 62691109,
+      "sha256": "3925b4f116e90318752e120ab8739133fe8daca5c92094a8145982f10fc696a1",
+      "source_urls": [
+        "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.dmg",
+      "sources": [
+        "wayback-cdx:20230617161752:4REBMMSOSO7RU63P6AHNVPHIKUE4JU4L:62580496",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_73.0-41050--3925b4f116e9.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_73.0-41050--3925b4f116e9.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "75.1-46030",
+      "original_filename": "Sonos_75.1-46030.dmg",
+      "bytes": 62771427,
+      "sha256": "7e173a1d693cd22a097245adf5246da443165b88ee61d8d97b66c94aa2877a96",
+      "source_urls": [
+        "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.dmg",
+      "sources": [
+        "wayback-cdx:20231018073306:YFUF46QLFTBJLH7JUB2EDLMYZOJM3WZ4:62715119"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_75.1-46030--7e173a1d693c.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_75.1-46030--7e173a1d693c.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "77.4-49290",
+      "original_filename": "Sonos_77.4-49290.dmg",
+      "bytes": 63044254,
+      "sha256": "56cd4b46ab02b3eb2e3c3d94e53881465a12e6e881b5cab6d4c655adf4d84955",
+      "source_urls": [
+        "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.dmg",
+      "sources": [
+        "wayback-cdx:20240227083533:V2JHQGQT2P3EJXOPTEF6MXBGF5PDXEP7:62935416"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_77.4-49290--56cd4b46ab02.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_77.4-49290--56cd4b46ab02.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "79.0.52294",
+      "original_filename": "Sonos_79.0-52294.dmg",
+      "bytes": 63007644,
+      "sha256": "e23a4a69511f9ed67f75ebb7fc45bc2c434643a4790a33305e429f7570ce0dd4",
+      "source_urls": [
+        "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_79.0-52294--e23a4a69511f.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_79.0-52294--e23a4a69511f.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "79.1.53290",
+      "original_filename": "Sonos_79.1-53290.dmg",
+      "bytes": 62979199,
+      "sha256": "a502d6641b56de20c4caf95261daf80c6c8b45ee4782f3227194a3f59430f43e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_79.1-53290--a502d6641b56.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_79.1-53290--a502d6641b56.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "80.1-55014",
+      "original_filename": "Sonos_80.1-55014.dmg",
+      "bytes": 63011667,
+      "sha256": "cac8a5f9e13c2959bd2dff239a8576c40c2fb84afa7f412ac393dabf7b120461",
+      "source_urls": [
+        "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:9f94e0973d52"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_80.1-55014--cac8a5f9e13c.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_80.1-55014--cac8a5f9e13c.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "81.1-58074",
+      "original_filename": "Sonos_81.1-58074.dmg",
+      "bytes": 63011869,
+      "sha256": "9eac889a38810a321fcffc6c23b0481474b1480576e23bba5d01d026eac5f6d7",
+      "source_urls": [
+        "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:d81b6c2a4db8"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_81.1-58074--9eac889a3881.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_81.1-58074--9eac889a3881.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "82.2-59204",
+      "original_filename": "Sonos_82.2-59204.dmg",
+      "bytes": 63011642,
+      "sha256": "ae795723d93e432557b42998e4f9db81067a4c8c8790fc9835769e19c1a86be0",
+      "source_urls": [
+        "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:ac0458add818"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_82.2-59204--ae795723d93e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_82.2-59204--ae795723d93e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "82.3-60160",
+      "original_filename": "Sonos_82.3-60160.dmg",
+      "bytes": 62982507,
+      "sha256": "48465557d4432517c2dcb34ef7da2a1be45301173537a4dbf9240fe32243af3f",
+      "source_urls": [
+        "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:203bb45cec53",
+        "wayback-cdx:20250114015707:G2GG32IVIXKCU5FISXYA5I2FR7CCDZ3I:62873764"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_82.3-60160--48465557d443.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_82.3-60160--48465557d443.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "83.1-61210",
+      "original_filename": "Sonos_83.1-61210.dmg",
+      "bytes": 63012390,
+      "sha256": "659e02edf693b3191c25dad6a9c73b1654f38337b21cf707ef921c3bf6c9b6a4",
+      "source_urls": [
+        "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:9482e54ede66",
+        "homebrew-history:f4c832d599c1",
+        "wayback-cdx:20250313005019:JPXQ2IQFPNDP2ILHSPC3Z7WJZZMP3ZKH:62992130"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_83.1-61210--659e02edf693.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_83.1-61210--659e02edf693.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "84.1-63110",
+      "original_filename": "Sonos_84.1-63110.dmg",
+      "bytes": 63011014,
+      "sha256": "9cf3dc666edb0d7a4c30555170fb84727fbe62d82415bfd16e35379d38d73b50",
+      "source_urls": [
+        "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:20c7754666b5",
+        "wayback-cdx:20250404143228:WU24F4LK47KJC32HC32LAGBBAAJ5YJCO:62992217"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_84.1-63110--9cf3dc666edb.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_84.1-63110--9cf3dc666edb.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "85.0-64200",
+      "original_filename": "Sonos_85.0-64200.dmg",
+      "bytes": 63014291,
+      "sha256": "1b8322ddeb1240989594775f1944f72f5bf363495fa909f5cfb3cb34f885858c",
+      "source_urls": [
+        "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:9852867ed19f"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_85.0-64200--1b8322ddeb12.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_85.0-64200--1b8322ddeb12.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-67171",
+      "original_filename": "Sonos_90.0-67171.dmg",
+      "bytes": 63021038,
+      "sha256": "248703bb6ec9ad4753363a6d3b7bd1145184af42d1e4ade62d213a4ffed21942",
+      "source_urls": [
+        "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:4a8173137a60",
+        "homebrew-history:5aaba4db37f3",
+        "homebrew-history:c6502e10bc6e",
+        "wayback-cdx:20250823180735:UNXHVVUOUNR3IYNPQCH26LNZUQU236WV:63002508"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_90.0-67171--248703bb6ec9.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_90.0-67171--248703bb6ec9.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-77070",
+      "original_filename": "Sonos_90.0-77070.dmg",
+      "bytes": 63196467,
+      "sha256": "3a3cc74fa35e79e0499e67712ee70cc3eb51836d00970b2139cb131fc20b4cf1",
+      "source_urls": [
+        "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.dmg",
+      "sources": [
+        "derived-cross-platform",
+        "homebrew-history:4a3dc508e03e",
+        "homebrew-history:dcbd49c015dd",
+        "wayback-cdx:20260627013544:LOPYLSKFFXPAE25XDJGN562GKNOC7KLP:63181336"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_90.0-77070--3a3cc74fa35e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_90.0-77070--3a3cc74fa35e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-79210",
+      "original_filename": "Sonos_90.0-79210.dmg",
+      "bytes": 71832943,
+      "sha256": "f088496273b6c524f3a59ec02453bad39236e5b0b5793068e1ef547f1f255272",
+      "source_urls": [
+        "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.dmg",
+      "sources": [
+        "homebrew-history:df3dae8567bb",
+        "wayback-cdx:20260829011712:H225RXKA4J7233LHIUIHWLMBKCI5A4QM:71814697"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_90.0-79210--f088496273b6.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_90.0-79210--f088496273b6.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-120",
+      "original_filename": "SonosDesktopController120.dmg",
+      "bytes": 48763494,
+      "sha256": "7dcab807a75f9faef5941f96eff3e823771187e9f6fea3892d2674f192c0a02f",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController120.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController120.dmg",
+      "sources": [
+        "wayback-cdx:20200617064708:OMUHEKTI5TESUQMU7FV32XQWWHPMXKEL:48686828",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController120--7dcab807a75f.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController120--7dcab807a75f.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1222",
+      "original_filename": "SonosDesktopController1222.dmg",
+      "bytes": 57147132,
+      "sha256": "c4eeba983d7f0fa6637b14a40abe40908b7db9e3bb4ef9d7cdb99cd1f4ec769d",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1222.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1222.dmg",
+      "sources": [
+        "wayback-cdx:20210126200615:TIKLKIMXJNG2FKEYBI2V5RBJKC5WNMGQ:56936703",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1222--c4eeba983d7f.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1222--c4eeba983d7f.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-131",
+      "original_filename": "SonosDesktopController131.dmg",
+      "bytes": 57602765,
+      "sha256": "f5a5987f0c54bc20d204eb9f99991a0e3c1ed346ec89e25ae3d80dffae380c2a",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController131.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController131.dmg",
+      "sources": [
+        "wayback-cdx:20250114200859:ASKUYLCM7OEA3X2YECB55UCCIR7VDAK5:57523139",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController131--f5a5987f0c54.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController131--f5a5987f0c54.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1311",
+      "original_filename": "SonosDesktopController1311.dmg",
+      "bytes": 57645109,
+      "sha256": "7f230079d95e2eecded7585e1ab48d7e264d922fa43f7aeb5b41848de448971d",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1311.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1311.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1311--7f230079d95e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1311--7f230079d95e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1312",
+      "original_filename": "SonosDesktopController1312.dmg",
+      "bytes": 57688315,
+      "sha256": "e7e06baf8254553a1a0d1e1d625b222734a2cb1b6ce2d59877f90083f18476ad",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1312.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1312.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1312--e7e06baf8254.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1312--e7e06baf8254.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1314",
+      "original_filename": "SonosDesktopController1314.dmg",
+      "bytes": 57688626,
+      "sha256": "01dc6e61c54f8cad64be16b33c9ee71afb06f42b5449abcb85fb7f56aa7fe2ca",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1314.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1314.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1314--01dc6e61c54f.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1314--01dc6e61c54f.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-132",
+      "original_filename": "SonosDesktopController132.dmg",
+      "bytes": 58704871,
+      "sha256": "68867497849ea49a0f6eaf49a53eada1ce97522a5e4e1db231fcd4858ec9bbde",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController132.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController132.dmg",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController132--68867497849e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController132--68867497849e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-133",
+      "original_filename": "SonosDesktopController133.dmg",
+      "bytes": 62673347,
+      "sha256": "1a03da1e60de06e6a7af3bb52687a22379a44b3d1c1b96766a46abab9b9fc466",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController133.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController133.dmg",
+      "sources": [
+        "wayback-cdx:20210929213137:SYIQRUOKVFNMSBAX5UTDWPCYMLDICKCA:62596492",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController133--1a03da1e60de.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController133--1a03da1e60de.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "classic-1341",
+      "original_filename": "SonosDesktopController1341.dmg",
+      "bytes": 62584399,
+      "sha256": "f92473d3959ef36ef174a5b0e57c2883d170f5a2a904f134df783357c39fd188",
+      "source_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1341.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController1341.dmg",
+      "sources": [
+        "wayback-cdx:20220122233404:EIRXI7MAWPTTQZTCYL5UTO7JBZSFKE7R:62492706",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "SonosDesktopController1341--f92473d3959e.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/SonosDesktopController1341--f92473d3959e.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.0",
+      "original_filename": "SonosDesktopController120.exe",
+      "bytes": 38365400,
+      "sha256": "d557193e96e71d498ef408508846b8a5256816f10568fc642e8389fafc5b1a56",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController120.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController120.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20200618065031:QZKKNIOZBQNA5EFO5JP7UIO7QX4SKQKQ:37803463",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController120--d557193e96e7.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController120--d557193e96e7.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.0.1",
+      "original_filename": "SonosDesktopController1201.exe",
+      "bytes": 38368000,
+      "sha256": "2854e067218598198a8a099d484268f9f4c976d1e730220702863fca94582544",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1201.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1201.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:26UQ77Z3X2NKAHTKRQPL6WEGHPW2SPDV:37843111"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1201--2854e0672185.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1201--2854e0672185.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.1",
+      "original_filename": "SonosDesktopController121.exe",
+      "bytes": 44067296,
+      "sha256": "bbd3629ad1e13b4783af391b176014f163852385eda00b0356d02b4f30cbf171",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController121.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController121.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:EAALRBLYQ2WQYX27Z5UNP3EEA5MO5BF3:43535368"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController121--bbd3629ad1e1.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController121--bbd3629ad1e1.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "12.2.2",
+      "original_filename": "SonosDesktopController1222.exe",
+      "bytes": 44127416,
+      "sha256": "047b9e93f24ccacecd8baf29931fcc177ee797e302e7a0b84fffb549800e9431",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1222.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1222.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212319:ET2MLJV63PB5BS7YV5BL6DVVSACILLE2:43591772",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1222--047b9e93f24c.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1222--047b9e93f24c.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "13.0.0",
+      "original_filename": "SonosDesktopController130.exe",
+      "bytes": 47252112,
+      "sha256": "69890655251b1c3ac69696a02153162375e596e014ddb21fe28e0926b4490d80",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController130.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController130.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221112092151:WTP67NGXMONWWDXZYF7TWYYNSUG6UO4M:46686099"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController130--69890655251b.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController130--69890655251b.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "66.4.23300",
+      "original_filename": "SonosDesktopController1341.exe",
+      "bytes": 52539320,
+      "sha256": "6f9ce7a3841725ebabb4adeea0be0fbc77c0ac4e78517f4e479662b71fa5aecd",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1341.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1341.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20220122234621:5EYC3VUOKP56ZV24UYTFRZYSLM2CBEOF:51978538",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1341--6f9ce7a38417.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1341--6f9ce7a38417.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "70.1.34112",
+      "original_filename": "Sonos_70.1-34112.exe",
+      "bytes": 56580528,
+      "sha256": "033f4bb13dfe2cccc6d8b00ed78ee6c24aa42649ca20de43698d243863f7eb2e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/imaqiycw/Sonos_70.1-34112.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212320:2XSCK46CATMXLYUHPCXS7QAOD7GJPGCV:56049877",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_70.1-34112--033f4bb13dfe.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_70.1-34112--033f4bb13dfe.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "70.3.35070",
+      "original_filename": "Sonos_70.3-35070.exe",
+      "bytes": 57199264,
+      "sha256": "92b51e70a449156e3195621c07dd1bbb0dd4fdc007cbc84ac4b73451f4cf66b9",
+      "source_urls": [
+        "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/epqbkaso/Sonos_70.3-35070.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20221213212320:TNTI667UUWMMKQDFFYKBGC4OXNIU2SWA:56668680"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_70.3-35070--92b51e70a449.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_70.3-35070--92b51e70a449.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "71.1-38240",
+      "original_filename": "Sonos_71.1-38240.exe",
+      "bytes": 57026296,
+      "sha256": "e41d63d22464d356262bfb00b954eb747ba9fbfff3edff4a2f624a8898c7b7af",
+      "source_urls": [
+        "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/veqbtaxi/Sonos_71.1-38240.exe",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_71.1-38240--e41d63d22464.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_71.1-38240--e41d63d22464.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "73.0-41050",
+      "original_filename": "Sonos_73.0-41050.exe",
+      "bytes": 57200984,
+      "sha256": "0281d45a5be4956709d0811cf19947fbe8be384d2a7b4ab9d1d9fb98eebd7196",
+      "source_urls": [
+        "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/iwkvpnqy/Sonos_73.0-41050.exe",
+      "sources": [
+        "wayback-cdx:20230617161759:BNYHEOMFXXK6PJDWBU44K6GQGSS7F3W6:56640563",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_73.0-41050--0281d45a5be4.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_73.0-41050--0281d45a5be4.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "75.1-46030",
+      "original_filename": "Sonos_75.1-46030.exe",
+      "bytes": 57247032,
+      "sha256": "73c29e25bb109531814ec88c3eb55f1e1e17e3ef2424a3bc989ff0e60877c541",
+      "source_urls": [
+        "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/irbxsaud/Sonos_75.1-46030.exe",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_75.1-46030--73c29e25bb10.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_75.1-46030--73c29e25bb10.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "77.4-49290",
+      "original_filename": "Sonos_77.4-49290.exe",
+      "bytes": 57533224,
+      "sha256": "8343f7e1fb97059038dadff52b2185623ba173110e33001a40af6872b2c2c191",
+      "source_urls": [
+        "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/IkQJJWUcVE/Sonos_77.4-49290.exe",
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_77.4-49290--8343f7e1fb97.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_77.4-49290--8343f7e1fb97.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "79.0.52294",
+      "original_filename": "Sonos_79.0-52294.exe",
+      "bytes": 57494280,
+      "sha256": "540a642aca3f97b7ac70aa564217ff399b90487d3d907b5714c55449b6e78e2e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102803:62MYXXAMRWHJEA2UTZ6JV7WWHPRLGOIX:56961048"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_79.0-52294--540a642aca3f.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_79.0-52294--540a642aca3f.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "79.1.53290",
+      "original_filename": "Sonos_79.1-53290.exe",
+      "bytes": 57518304,
+      "sha256": "8feed0243f49b3140e567e75f7fcf16f0e8297a0a5363dc263447848d40b8c37",
+      "source_urls": [
+        "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/6T0nrTOYJg/Sonos_79.1-53290.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102803:W74D5XHMQ6NGO5LABHP6FMESTNCADQBR:56986842"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_79.1-53290--8feed0243f49.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_79.1-53290--8feed0243f49.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "80.1.55014",
+      "original_filename": "Sonos_80.1-55014.exe",
+      "bytes": 57526488,
+      "sha256": "9f9385e54ef9eaf62044d10a2d4b4af129897565419810398cca1941a4fe69fb",
+      "source_urls": [
+        "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/xqkmivn9QB/Sonos_80.1-55014.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20241006015250:4PHYWPFKDH4GE2A3LT3XZNJWIYD3AL56:56995033",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_80.1-55014--9f9385e54ef9.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_80.1-55014--9f9385e54ef9.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "81.1.58074",
+      "original_filename": "Sonos_81.1-58074.exe",
+      "bytes": 57516040,
+      "sha256": "2777c625b27a7eb9f9b27a4f263e8d1da5e3eceb388d179bfcb4130330ca9e64",
+      "source_urls": [
+        "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/R3MV5bKh64/Sonos_81.1-58074.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20241112230928:ERPUX4ND7HX5D3LWJNMC75IWTO5TBUVJ:56984594",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_81.1-58074--2777c625b27a.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_81.1-58074--2777c625b27a.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "82.2.59204",
+      "original_filename": "Sonos_82.2-59204.exe",
+      "bytes": 57505120,
+      "sha256": "9a24ca3d0917f9d32e16ceb89558da1a80103cc27ff24fc1b3ad8779bd4f20dd",
+      "source_urls": [
+        "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/tNGSLOBaIg/Sonos_82.2-59204.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102804:OLTV36MDFK4EDTARA5VFVZDDV2ITTDXD:56973684",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_82.2-59204--9a24ca3d0917.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_82.2-59204--9a24ca3d0917.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "82.3.60160",
+      "original_filename": "Sonos_82.3-60160.exe",
+      "bytes": 57502960,
+      "sha256": "ad0bbc069e992d0b36f3b01f97e84165253527414f88c98933e1c32d710dbbbd",
+      "source_urls": [
+        "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/BMh6lQokUO/Sonos_82.3-60160.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250114015720:PUYQEBQG6ZLQXXKB5CKN4D7B2TXEAMOU:56942495",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_82.3-60160--ad0bbc069e99.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_82.3-60160--ad0bbc069e99.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "83.1.61210",
+      "original_filename": "Sonos_83.1-61210.exe",
+      "bytes": 57515136,
+      "sha256": "d3dcbfb41537ff8dd953430ea0d54dbce05167b67ff7d3c53a0db3d5ea273be1",
+      "source_urls": [
+        "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:FWW7XQWUC6DAJC56QNL65KFUIHZD2IMN:56983699",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_83.1-61210--d3dcbfb41537.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_83.1-61210--d3dcbfb41537.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "84.1.63110",
+      "original_filename": "Sonos_84.1-63110.exe",
+      "bytes": 57513552,
+      "sha256": "32cb1aa032ff288e98ed51b0f531efc3d9c0c5aa2a0626135a40ec69b7d0c362",
+      "source_urls": [
+        "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250319093414:OL3J7JGVXBV3D2UMCUKUF4L5QCQBONBL:56982113",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_84.1-63110--32cb1aa032ff.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_84.1-63110--32cb1aa032ff.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "85.0.64200",
+      "original_filename": "Sonos_85.0-64200.exe",
+      "bytes": 57513168,
+      "sha256": "9ebae60536b74ed97066744bbd4eb75335cf28e498fd410c6f69a8174651d2cf",
+      "source_urls": [
+        "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:GGJTDOXG5IIAO2ONMZV6FMU66C3XZUJ6:56981714",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_85.0-64200--9ebae60536b7.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_85.0-64200--9ebae60536b7.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.67171",
+      "original_filename": "Sonos_90.0-67171.exe",
+      "bytes": 57515008,
+      "sha256": "c10067768acbd78eb022027a7f4096a6de551acfeb997c79d56cbf36cf94863e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250807102806:TY6EA7LALBIO5AT7REVUF2IFO7JVRL5Q:56983558",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_90.0-67171--c10067768acb.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_90.0-67171--c10067768acb.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.67300",
+      "original_filename": "Sonos_90.0-67300.exe",
+      "bytes": 57509160,
+      "sha256": "1a90fb565d9a2d077af52441d1f66312ca134a4732ad0c084587f72bdc4e14d0",
+      "source_urls": [
+        "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20250823180736:TTWT2ERAC2CGU5NMGIDQYKVSKLU62KAR:56977987"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_90.0-67300--1a90fb565d9a.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_90.0-67300--1a90fb565d9a.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.68190",
+      "original_filename": "Sonos_90.0-68190.exe",
+      "bytes": 57528736,
+      "sha256": "a5876796498a24241b5a4e94e5f9e3fe8dd50de79d573e9ca75bf25c9494768f",
+      "source_urls": [
+        "https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20251126172348:2FAP54OTHBZHZGEMRI464P6SBVHQ7C3P:56997296"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_90.0-68190--a5876796498a.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_90.0-68190--a5876796498a.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0.77070",
+      "original_filename": "Sonos_90.0-77070.exe",
+      "bytes": 57599144,
+      "sha256": "041d3a74d60f94d2b2c4f63909e765efd9648fc5407e970ef6441e66db8bd8ca",
+      "source_urls": [
+        "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe",
+      "sources": [
+        "winget-current",
+        "wayback-cdx:20260627013544:YKVYWJPUC2DT2AOFDDFRGYUTCQXBIW5D:57067674",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "Sonos_90.0-77070--041d3a74d60f.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/Sonos_90.0-77070--041d3a74d60f.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-131",
+      "original_filename": "SonosDesktopController131.exe",
+      "bytes": 47687088,
+      "sha256": "86d4230ff0ce171233b0da1ae63be7ea26686b9d71b157ba9ca64f0f3c583808",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController131.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController131.exe",
+      "sources": [
+        "wayback-cdx:20221112090936:EWSF4GDZVKKLJQCYVCBVCJYZUMRGVUSZ:47121580",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController131--86d4230ff0ce.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController131--86d4230ff0ce.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1311",
+      "original_filename": "SonosDesktopController1311.exe",
+      "bytes": 47759944,
+      "sha256": "4b4ca28e05e1c268de396f5e62218fb8d6a65b6ecc9019b3394ad16a3bbc8311",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1311.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1311.exe",
+      "sources": [
+        "wayback-cdx:20221112092036:SHQEDV2Y6VS3NR4KDPPFSCFQ5XAWYPLL:47194337"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1311--4b4ca28e05e1.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1311--4b4ca28e05e1.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1312",
+      "original_filename": "SonosDesktopController1312.exe",
+      "bytes": 47796264,
+      "sha256": "bbeb494076f9d0f1ef8380be0f3b5847eef0831dac192320bef4fb2a8eb30bea",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1312.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1312.exe",
+      "sources": [
+        "wayback-cdx:20221112092059:4DUXR73OZMCIOR6LM6LI3XZIBU6PYBCE:47230757"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1312--bbeb494076f9.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1312--bbeb494076f9.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-1314",
+      "original_filename": "SonosDesktopController1314.exe",
+      "bytes": 47795784,
+      "sha256": "202f090b573c0fbb428941f2c09af1904c270c7b448650e9f715a37ccf8ced9e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1314.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1314.exe",
+      "sources": [
+        "wayback-cdx:20221112092124:GIYG7CNFBSG3DIR3IOH6ZTNK5F3WRE44:47230304"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController1314--202f090b573c.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController1314--202f090b573c.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-132",
+      "original_filename": "SonosDesktopController132.exe",
+      "bytes": 48117944,
+      "sha256": "1e0f6a6e9371272bb7887399198d7511601d0a1dc48c685488d124b4ca319134",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController132.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController132.exe",
+      "sources": [
+        "wayback-cdx:20221112091835:DRBJU4GJ6FUAUAP6YHAM7WUCTHFMOVJI:47552471"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController132--1e0f6a6e9371.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController132--1e0f6a6e9371.exe"
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "classic-133",
+      "original_filename": "SonosDesktopController133.exe",
+      "bytes": 52646960,
+      "sha256": "f22e2ef17d7eeb4c01b1ac22afcabac0f0d8dbc2c2cf476343f30d1f35dd141b",
+      "source_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController133.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController133.exe",
+      "sources": [
+        "wayback-cdx:20210929220612:EKTSIV5YPS6GA7UNT3ANCFKD5RCCC3P6:52086367",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s2-windows",
+      "release_asset": "SonosDesktopController133--f22e2ef17d7e.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-windows/SonosDesktopController133--f22e2ef17d7e.exe"
+    }
+  ]
+}
