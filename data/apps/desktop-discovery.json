@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-09-20T07:47:54.364509+00:00",
+  "checked": "2026-09-20T16:20:09.875456+00:00",
   "sources": [
     "microsoft/winget-pkgs",
     "Homebrew/homebrew-cask",
@@ -10,30 +10,30 @@
     {
       "name": "s2-windows",
       "url": "https://www.sonos.com/redir/controller_software_pc2",
-      "http_status": 403,
+      "http_status": 302,
       "location": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe",
-      "location_source": "wayback-latest-redirect"
+      "location_source": "live-redirect"
     },
     {
       "name": "s2-macos",
       "url": "https://www.sonos.com/redir/controller_software_mac2",
-      "http_status": 403,
-      "location": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.dmg",
-      "location_source": "wayback-latest-redirect"
+      "http_status": 302,
+      "location": "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.dmg",
+      "location_source": "live-redirect"
     },
     {
       "name": "s1-windows",
       "url": "https://www.sonos.com/redir/controller_software_pc",
-      "http_status": 403,
+      "http_status": 302,
       "location": "https://update-software.sonos.com/software/DILU1Q33hC/Sonos_57.23-74170.exe",
-      "location_source": "wayback-latest-redirect"
+      "location_source": "live-redirect"
     },
     {
       "name": "s1-macos",
       "url": "https://www.sonos.com/redir/controller_software_mac",
-      "http_status": 403,
+      "http_status": 302,
       "location": "https://update-software.sonos.com/software/9tmT45qD4t/Sonos_57.23-80060.dmg",
-      "location_source": "wayback-latest-redirect"
+      "location_source": "live-redirect"
     }
   ],
   "wayback": {
@@ -41,8 +41,8 @@
     "row_total": 75,
     "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.%28exe%7Cdmg%29%24&collapse=urlkey&limit=5000"
   },
-  "candidate_total": 136,
-  "available_total": 97,
+  "candidate_total": 138,
+  "available_total": 98,
   "candidates": [
     {
       "family": "legacy",
@@ -342,7 +342,7 @@
       "expected_sha256": null,
       "sources": [
         "wayback-cdx:20260829011712:EAEX7MA2HQ2U2BZR2BARMIMFANP35UMV:56042137",
-        "official-direct:s1-macos:wayback-latest-redirect"
+        "official-direct:s1-macos:live-redirect"
       ],
       "http_status": 200,
       "content_length": 56051852,
@@ -597,7 +597,7 @@
       "sources": [
         "winget-current",
         "wayback-cdx:20260227152916:RKLEVQUBU436WLFSMUUWJMQ5K3WRCUJD:37420486",
-        "official-direct:s1-windows:wayback-latest-redirect",
+        "official-direct:s1-windows:live-redirect",
         "derived-cross-platform"
       ],
       "http_status": 200,
@@ -1118,12 +1118,24 @@
       "expected_sha256": "f088496273b6c524f3a59ec02453bad39236e5b0b5793068e1ef547f1f255272",
       "sources": [
         "homebrew-history:df3dae8567bb",
-        "wayback-cdx:20260829011712:H225RXKA4J7233LHIUIHWLMBKCI5A4QM:71814697",
-        "official-direct:s2-macos:wayback-latest-redirect"
+        "wayback-cdx:20260829011712:H225RXKA4J7233LHIUIHWLMBKCI5A4QM:71814697"
       ],
       "http_status": 200,
       "content_length": 71832943,
       "etag": "\"4d12c97ffc9868305225f8516eaec8fc-9\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-81181",
+      "url": "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "official-direct:s2-macos:live-redirect"
+      ],
+      "http_status": 200,
+      "content_length": 71830690,
+      "etag": "\"a78fdb04b70e0dddf818b1779ae40397-9\""
     },
     {
       "family": "s2",
@@ -1786,6 +1798,19 @@
     {
       "family": "s2",
       "platform": "windows",
+      "version": "90.0-81181",
+      "url": "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
       "version": "90.0.67171",
       "url": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.exe",
       "expected_sha256": "c10067768acbd78eb022027a7f4096a6de551acfeb997c79d56cbf36cf94863e",
@@ -1835,7 +1860,7 @@
       "sources": [
         "winget-current",
         "wayback-cdx:20260627013544:YKVYWJPUC2DT2AOFDDFRGYUTCQXBIW5D:57067674",
-        "official-direct:s2-windows:wayback-latest-redirect",
+        "official-direct:s2-windows:live-redirect",
         "derived-cross-platform"
       ],
       "http_status": 200,

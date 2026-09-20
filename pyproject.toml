@@ -11,6 +11,7 @@ requires-python = ">=3.10"
 license = {text = "MIT"}
 dependencies = [
   "cryptography>=41",
+  "curl-cffi>=0.13",
   "jsonschema>=4.21",
 ]
 

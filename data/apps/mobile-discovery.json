@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "checked": "2026-09-20T07:17:20.022046+00:00",
+  "checked": "2026-09-20T16:15:46.141250+00:00",
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
-    "live_http_status": 403,
-    "location": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
-    "location_source": "wayback"
+    "live_http_status": 302,
+    "location": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
+    "location_source": "live"
   },
   "wayback": {
     "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.apk%24&collapse=urlkey&limit=5000",
@@ -512,14 +512,14 @@
     {
       "family": "s2",
       "platform": "fireos-android-apk",
-      "version": "89.00.49",
-      "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
+      "version": "89.00.51",
+      "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
       "sources": [
         "official-current-fireos-redirect"
       ],
       "http_status": 200,
       "content_length": 327874794,
-      "etag": "\"64bcea54beac1a548b0f429d03c538be-40\""
+      "etag": "\"acaa97fee10d1048e72d5f59febf393d-40\""
     }
   ]
 }

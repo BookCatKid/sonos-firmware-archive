@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-20T07:49:11.759518+00:00",
+  "updated": "2026-09-20T16:18:44.530287+00:00",
   "discovery": "data/apps/desktop-discovery.json",
-  "artifact_total": 97,
+  "artifact_total": 98,
   "artifacts": [
     {
       "family": "legacy",
@@ -1090,6 +1090,24 @@
       "release_tag": "apps-s2-macos",
       "release_asset": "Sonos_90.0-79210--f088496273b6.dmg",
       "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_90.0-79210--f088496273b6.dmg"
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-81181",
+      "original_filename": "Sonos_90.0-81181.dmg",
+      "bytes": 71830690,
+      "sha256": "f4c49635cb06cf615c2b3bebd35fbf3e3abeb7a38dbc4c5519784070c0dcdc3b",
+      "source_urls": [
+        "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.dmg"
+      ],
+      "fetched_from": "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.dmg",
+      "sources": [
+        "official-direct:s2-macos:live-redirect"
+      ],
+      "release_tag": "apps-s2-macos",
+      "release_asset": "Sonos_90.0-81181--f4c49635cb06.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s2-macos/Sonos_90.0-81181--f4c49635cb06.dmg"
     },
     {
       "family": "s2",

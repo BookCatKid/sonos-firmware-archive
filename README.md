@@ -24,9 +24,9 @@ As of 2026-09-10, the private archive contains:
 Every cataloged Release asset is reconciled against GitHub's server-reported
 byte size and SHA-256 digest.
 
-The application archive additionally preserves **97 live official Sonos
+The application archive additionally preserves **98 live official Sonos
 Windows/macOS installers** discovered through the four canonical Sonos
-redirects, WinGet, Homebrew history, and a Wayback CDX sweep, plus **33 valid
+redirects, WinGet, Homebrew history, and a Wayback CDX sweep, plus **34 valid
 official Sonos-hosted APKs**. One truncated historical APK capture is recorded
 as an explicit gap rather than misrepresented as installable. See
 [`data/apps/`](data/apps/) and the

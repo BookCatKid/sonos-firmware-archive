@@ -13,6 +13,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from curl_cffi import requests as tls_requests
+
 CDX = "https://web.archive.org/cdx/search/cdx"
 REDIRECT = "https://www.sonos.com/redir/controller_software_android2"
 
@@ -24,36 +26,50 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 def resolve_latest_redirect() -> dict:
     opener = urllib.request.build_opener(NoRedirect)
-    current = REDIRECT
     live_status = None
-    for phase in ("live", "wayback"):
-        if phase == "wayback":
-            current = f"https://web.archive.org/web/2id_/{REDIRECT}"
+    try:
+        session = tls_requests.Session(impersonate="chrome")
+        current = REDIRECT
         for _ in range(12):
-            try:
-                opener.open(urllib.request.Request(current, method="HEAD", headers={
-                    "User-Agent": "Mozilla/5.0 SonosArchiveMonitor/1",
-                    "Referer": "https://support.sonos.com/en-us/downloads",
-                }), timeout=30)
+            response = session.get(
+                current, allow_redirects=False, timeout=30,
+                headers={"Referer": "https://support.sonos.com/en-us/downloads"},
+            )
+            if live_status is None:
+                live_status = response.status_code
+            location = response.headers.get("location")
+            if not location:
                 break
-            except urllib.error.HTTPError as error:
-                if phase == "live" and live_status is None:
-                    live_status = error.code
-                location = error.headers.get("Location")
-                if not location:
-                    break
-                embedded = re.search(r"/web/\d+id_/(https?://.+)$", location)
-                original = embedded.group(1) if embedded else location
-                if re.search(r"https?://update-(?:software|beta)\.sonos\.com/.+\.apk$", original):
-                    return {"live_http_status": live_status, "location": original,
-                            "location_source": phase}
-                current = location
-            except Exception as error:
-                if phase == "live":
-                    return {"live_http_status": None, "location": None,
-                            "location_source": None, "error": str(error)}
+            current = urllib.parse.urljoin(current, location)
+            if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.apk$", current):
+                return {"live_http_status": live_status, "location": current,
+                        "location_source": "live"}
+    except Exception as error:
+        live_error = str(error)
+    else:
+        live_error = None
+
+    current = f"https://web.archive.org/web/2id_/{REDIRECT}"
+    for _ in range(12):
+        try:
+            opener.open(urllib.request.Request(current, method="HEAD"), timeout=30)
+            break
+        except urllib.error.HTTPError as error:
+            location = error.headers.get("Location")
+            if not location:
                 break
-    return {"live_http_status": live_status, "location": None, "location_source": None}
+            embedded = re.search(r"/web/\d+id_/(https?://.+)$", location)
+            original = embedded.group(1) if embedded else location
+            if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.apk$", original):
+                return {"live_http_status": live_status, "location": original,
+                        "location_source": "wayback"}
+            current = location
+        except Exception:
+            break
+    result = {"live_http_status": live_status, "location": None, "location_source": None}
+    if live_error:
+        result["error"] = live_error
+    return result
 
 
 def probe(item: dict) -> dict:

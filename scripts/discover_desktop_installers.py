@@ -15,11 +15,14 @@ import json
 import os
 import re
 import subprocess
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+
+from curl_cffi import requests as tls_requests
 
 WINGET_PACKAGES = {"Controller": "s2", "S1Controller": "s1"}
 HOMEBREW_PATHS = {
@@ -148,10 +151,17 @@ def wayback_candidates(target: dict) -> dict:
         "collapse": "urlkey", "limit": "5000",
     }, doseq=True)
     url = f"{WAYBACK_CDX}?{query}"
-    try:
-        rows = json.loads(urllib.request.urlopen(url, timeout=90).read())
-    except Exception as error:
-        return {"status": "error", "error": str(error), "url": url}
+    error = None
+    for attempt in range(3):
+        try:
+            rows = json.loads(urllib.request.urlopen(url, timeout=90).read())
+            break
+        except Exception as caught:
+            error = caught
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+    else:
+        raise RuntimeError(f"Wayback CDX query failed after 3 attempts: {error}")
     for timestamp, original, _status, _mime, digest, length in rows[1:]:
         live_url = original.replace("http://", "https://", 1)
         platform = "windows" if live_url.lower().endswith(".exe") else "macos"
@@ -172,25 +182,32 @@ def check_direct_redirects() -> list[dict]:
     opener = urllib.request.build_opener(NoRedirect)
     results = []
     for name, url in DIRECT_ENDPOINTS.items():
-        request = urllib.request.Request(url, method="GET", headers={
-            "User-Agent": "Mozilla/5.0 SonosArchiveMonitor/1",
-            "Referer": "https://support.sonos.com/en-us/downloads",
-        })
         location = None
         source = None
         try:
-            opener.open(request, timeout=30)
-        except urllib.error.HTTPError as error:
-            location = error.headers.get("Location")
-            status = error.code
+            session = tls_requests.Session(impersonate="chrome")
+            current = url
+            status = None
+            for _ in range(10):
+                response = session.get(
+                    current, allow_redirects=False, timeout=30,
+                    headers={"Referer": "https://support.sonos.com/en-us/downloads"},
+                )
+                if status is None:
+                    status = response.status_code
+                next_url = response.headers.get("location")
+                if not next_url:
+                    break
+                next_url = urllib.parse.urljoin(current, next_url)
+                if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.(?:exe|dmg)$", next_url):
+                    location = next_url
+                    source = "live-redirect"
+                    break
+                current = next_url
         except Exception as error:
             results.append({"name": name, "url": url, "http_status": None,
                             "location": None, "error": str(error)})
             continue
-        else:
-            status = 200
-        if location:
-            source = "live-redirect"
         if not location:
             current = f"https://web.archive.org/web/2id_/{url}"
             for _ in range(10):

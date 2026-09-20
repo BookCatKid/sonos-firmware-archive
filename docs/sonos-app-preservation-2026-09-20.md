@@ -24,11 +24,12 @@ The canonical current checks are Sonos's own redirect endpoints:
 - `https://www.sonos.com/redir/controller_software_mac`
 
 The first pair is the modern/S2 controller and the second pair is S1. The
-discovery program checks these first. Sonos's Akamai edge returns `403` to the
-repository's automated client at present, so the program also follows each
-endpoint's latest Wayback capture to recover its current redirect target. This
-is fallback resolution of an official Sonos URL, not a substitute third-party
-binary.
+discovery program checks these first. Sonos's Akamai edge rejects ordinary
+Python and `curl` clients with `403`; the monitor therefore uses `curl-cffi`
+with a Chrome-compatible TLS fingerprint and follows the redirect chain one
+hop at a time without downloading the target body. This resolves the live
+canonical endpoints directly. Wayback remains historical discovery only, not
+the source of truth for the current version.
 
 Historical candidates are combined from:
 
@@ -38,8 +39,8 @@ Historical candidates are combined from:
 4. a Wayback CDX prefix query for `.exe` and `.dmg` URLs under
    `update-software.sonos.com/software/`.
 
-The normalized 2026-09-20 inventory contains **136 candidate URLs**, of which
-**97 still return HTTP 200 from Sonos**. That includes 24 live Sonos URLs added by the
+The refreshed 2026-09-20 inventory contains **138 candidate URLs**, of which
+**98 return HTTP 200 from Sonos**. That includes 24 live Sonos URLs added by the
 Wayback sweep beyond the initial WinGet/Homebrew-derived inventory. The
 machine-readable evidence is
 [`data/apps/desktop-discovery.json`](../data/apps/desktop-discovery.json), and
@@ -51,9 +52,9 @@ verified uploaded artifacts are recorded in
 Sonos's [downloads page](https://support.sonos.com/en-us/downloads) identifies
 Fire OS as a supported download and routes the modern Fire OS download through
 `https://www.sonos.com/redir/controller_software_android2`. The live redirect
-is likewise blocked to this automated client by Akamai, but its latest Wayback
-redirect chain resolves to an official Sonos CDN APK. A Wayback CDX prefix
-sweep over the same Sonos software namespace found **33 historical APK URLs**;
+is resolved directly with the same Chrome-compatible TLS client used for the
+desktop endpoints. A Wayback CDX prefix sweep over the same Sonos software
+namespace found **33 historical APK URLs**;
 adding the current redirect target produces **34 candidates**. At discovery
 time, **33 originals remain live on the Sonos CDN**. The one dead original,
 `SonosAndroidController1305.apk`, has only a 1 MiB truncated Wayback response;
@@ -64,9 +65,10 @@ The discovery receipt is
 [`data/apps/mobile-discovery.json`](../data/apps/mobile-discovery.json); the
 hash-verified Release receipt is
 [`data/apps/mobile-archive.json`](../data/apps/mobile-archive.json). The completed
-sweep preserves **33 valid APKs** and records the single truncated capture as a
-gap. These are
-described as official Sonos-hosted APKs. They must not be assumed byte-for-byte
+sweep preserves **34 valid APKs** and records the single truncated capture as a
+gap. The live redirects currently resolve to macOS `90.0-81181` and APK
+`89.00.51`; both are preserved. These are described as official Sonos-hosted
+APKs. They must not be assumed byte-for-byte
 identical to Google Play variants without comparing package metadata,
 architectures, split configuration, and signing certificates.
 
