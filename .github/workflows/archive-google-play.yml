@@ -1,0 +1,65 @@
+name: archive Google Play delivery sets
+
+on:
+  workflow_dispatch:
+    inputs:
+      accept_google_play_tos:
+        description: "I reviewed and explicitly accept the Google Play terms presented by apkeep"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archive-google-play
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    if: inputs.accept_google_play_tos
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GOOGLE_PLAY_EMAIL: ${{ secrets.GOOGLE_PLAY_EMAIL }}
+      GOOGLE_PLAY_AAS_TOKEN: ${{ secrets.GOOGLE_PLAY_AAS_TOKEN }}
+      GOOGLE_PLAY_AUTH_TOKEN: ${{ secrets.GOOGLE_PLAY_AUTH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Verify vendored tool payloads
+        working-directory: tools/vendor
+        run: sha256sum --check SHA256SUMS
+      - name: Build pinned apkeep from vendored source
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$RUNNER_TEMP/apkeep-bin"
+          tar -xzf tools/vendor/apkeep-1.0.0.tar.gz \
+            --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src" \
+            --root "$RUNNER_TEMP/apkeep-bin"
+      - name: Acquire, verify, and upload current delivery sets
+        run: |
+          python scripts/archive_android_store_apps.py \
+            --source google-play-direct \
+            --accept-google-play-tos \
+            --apkeep "$RUNNER_TEMP/apkeep-bin/bin/apkeep"
+      - name: Commit updated immutable receipt
+        shell: bash
+        run: |
+          if git diff --quiet -- data/apps/android-store-archive.json; then
+            echo "No new Google Play version was returned."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apps/android-store-archive.json
+          git commit -m "Archive current Google Play delivery sets"
+          git push

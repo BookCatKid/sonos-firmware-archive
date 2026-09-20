@@ -59,6 +59,17 @@ jobs:
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Check official Google Play listings
+        id: google_play_check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_google_play_apps.py \
+            --output google-play-monitor-report.json \
+            --discovery-output google-play-discovery.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -70,6 +81,8 @@ jobs:
             desktop-app-discovery.json
             mobile-app-monitor-report.json
             mobile-app-discovery.json
+            google-play-monitor-report.json
+            google-play-discovery.json
           retention-days: 30
       - name: Open or update discovery issue
         if: steps.check.outputs.exit_code == '2'
@@ -115,7 +128,7 @@ jobs:
               });
             }
       - name: Fail on monitoring errors
-        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1'
+        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1' || steps.google_play_check.outputs.exit_code == '1'
         run: exit 1
       - name: Open or update desktop-app discovery issue
         if: steps.app_check.outputs.exit_code == '2'
@@ -174,6 +187,34 @@ jobs:
               ...candidates.slice(0, 50),
               candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
               ``, `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body: details});
+            } else {
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo,
+                title, body: details});
+            }
+      - name: Open or update Google Play discovery issue
+        if: steps.google_play_check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('google-play-monitor-report.json', 'utf8'));
+            const title = '[monitor] Sonos Google Play listing changed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const rows = (report.changed_listings ?? []).map(x =>
+              `- ${x.package}: updated ${x.updated_on ?? 'unknown'} (${x.url})`);
+            const details = [
+              `Automated, credential-free monitoring detected a change to an official Google Play listing.`,
+              `This is a discovery signal, not a claim that a new binary was downloaded.`, ``,
+              ...rows, ``,
+              `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,

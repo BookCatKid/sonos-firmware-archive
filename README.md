@@ -28,7 +28,10 @@ The application archive additionally preserves **98 live official Sonos
 Windows/macOS installers** discovered through the four canonical Sonos
 redirects, WinGet, Homebrew history, and a Wayback CDX sweep, plus **34 valid
 official Sonos-hosted APKs**. One truncated historical APK capture is recorded
-as an explicit gap rather than misrepresented as installable. See
+as an explicit gap rather than misrepresented as installable. A separately
+labeled Google Play recovery snapshot preserves the current modern base plus
+12 splits and wrapper, and the current standalone S1 APK; all APK signatures
+match the official Sonos signer anchors. See
 [`data/apps/`](data/apps/) and the
 [application preservation report](docs/sonos-app-preservation-2026-09-20.md).
 
@@ -152,7 +155,8 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
 - `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
 - `data/apps/` — discovery inventories and verified GitHub Release receipts for
-  historical desktop installers and official Sonos-hosted APKs.
+  historical desktop installers, official Sonos-hosted APKs, and separately
+  labeled Android store recovery/direct-delivery sets.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
@@ -207,6 +211,7 @@ python scripts/discover_mobile_installers.py \
 # upload is checkpointed, so interrupted runs are safe to resume.
 python scripts/archive_desktop_installers.py
 python scripts/archive_mobile_installers.py
+python scripts/archive_android_store_apps.py --source apkpure-recovery
 
 # Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \
@@ -291,6 +296,13 @@ a JSON audit and opens or updates one GitHub issue only when it sees an unknown
 manifest, hash, version, downloadable uncataloged candidate, or revived missing
 URL. Monitoring errors fail the workflow instead of being interpreted as
 absence.
+
+The same deterministic workflow also checks Sonos's canonical desktop and
+Fire OS redirects and both official Google Play listing update dates. A listing
+date change opens a discovery issue; it does not claim the binary was acquired.
+Authenticated direct-Google acquisition is intentionally a separate manual
+workflow using a dedicated account, explicit terms acceptance, and repository
+secrets. No Codex heartbeat or AI service participates in either path.
 
 This proves a useful but bounded statement about current availability: all
 artifacts currently downloadable through that public profile and the catalog's

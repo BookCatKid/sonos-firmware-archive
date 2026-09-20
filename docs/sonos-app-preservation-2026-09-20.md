@@ -94,9 +94,38 @@ copies. They remain a useful second phase only if each package's version code,
 architecture/configuration, and Sonos signing-certificate fingerprint are
 verified and split packages are preserved as complete install sets.
 
-The first-party Sonos APK sweep is deliberately kept separate from a future
-third-party Google Play recovery ledger. This avoids marking a Play release as
-preserved merely because a similarly named Fire OS APK exists.
+The current recovery snapshot has now been archived separately from the
+first-party Sonos-hosted APKs. The modern recovery set contains a base APK and
+12 configuration splits plus its original XAPK wrapper; the current S1 build is
+a standalone APK. Every APK passes Google's `apksig` verifier and has the same
+Sonos signing certificate as the corresponding official Sonos-hosted package.
+This strongly authenticates the contents but does not turn APKPure acquisition
+into direct-Google provenance.
+
+The immutable receipt is
+[`data/apps/android-store-archive.json`](../data/apps/android-store-archive.json),
+and the binaries are in the
+[`apps-google-play-recovery-s2`](https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/apps-google-play-recovery-s2)
+and
+[`apps-google-play-recovery-s1`](https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/apps-google-play-recovery-s1)
+Releases. See the [Google Play acquisition report](google-play-acquisition-2026-09-20.md)
+for the direct-download boundary and signer evidence.
+
+## Fire OS is not a separate Fire TV controller
+
+The official current Fire OS APK is a mobile/tablet controller. Its decoded
+manifest has the ordinary Android `LAUNCHER` category and no
+`LEANBACK_LAUNCHER` or `amazon.hardware.fire_tv` declaration. Sonos describes
+Fire OS under its mobile-device requirements, while its Fire TV setup article
+uses the Alexa app on an iOS or Android device rather than a Sonos TV app:
+[Sonos app requirements](https://support.sonos.com/en/article/sonos-app-requirements),
+[Fire TV setup](https://support.sonos.com/en/article/set-up-amazon-fire-tv-with-sonos).
+Amazon also says an existing Amazon app normally needs a separate Fire TV APK
+and identifies `amazon.hardware.fire_tv` as the platform feature
+([Amazon Fire TV FAQ](https://developer.amazon.com/docs/fire-tv/faq-general.html)).
+No separately identifiable official Sonos Fire TV controller package was found,
+so the existing Fire OS release series is tablet coverage—not a missing TV
+archive disguised under another name.
 
 ## iOS and jailbroken-device recovery
 
@@ -123,11 +152,12 @@ than treating an exported IPA as universally installable.
 
 ## Automated monitoring
 
-The existing daily GitHub Actions workflow now runs three independent checks:
+The existing daily GitHub Actions workflow now runs four independent checks:
 
 - signed firmware/manifests and known public firmware sources;
-- the four desktop redirects plus WinGet, Homebrew, and Wayback evidence; and
-- the official APK redirect plus the Sonos-CDN Wayback prefix inventory.
+- the four desktop redirects plus WinGet, Homebrew, and Wayback evidence;
+- the official APK redirect plus the Sonos-CDN Wayback prefix inventory; and
+- the official public Google Play listing update dates for both package IDs.
 
 Each checker is deterministic and does not use AI. A newly observed unarchived
 URL or redirect target opens or updates a dedicated GitHub issue, and the full
@@ -143,5 +173,11 @@ space:
 ```bash
 python scripts/archive_desktop_installers.py
 python scripts/archive_mobile_installers.py
+python scripts/archive_android_store_apps.py --source apkpure-recovery
 python scripts/audit_release_assets.py --output release-asset-audit.json
 ```
+
+Direct Google Play acquisition is a separate manually dispatched workflow. It
+uses the vendored pinned `apkeep` source, refuses implicit terms acceptance,
+requires a dedicated account's repository secrets, verifies every returned APK,
+uploads the complete served set, and commits the resulting receipt.

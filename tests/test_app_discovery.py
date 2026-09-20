@@ -15,6 +15,8 @@ def load(name: str):
 
 DESKTOP = load("discover_desktop_installers")
 MOBILE = load("discover_mobile_installers")
+GOOGLE_PLAY = load("discover_google_play_listings")
+ASSET_AUDIT = load("audit_release_assets")
 family_for_wayback_url = DESKTOP.family_for_wayback_url
 version_for_url = DESKTOP.version_for_url
 mobile_family = MOBILE.family
@@ -37,3 +39,26 @@ def test_mobile_legacy_s1_and_modern_families_are_distinct():
     assert mobile_family("https://example/SonosAndroidController1305.apk") == "legacy"
     assert mobile_family("https://example/Sonos_57.23-80060.apk") == "s1"
     assert mobile_family("https://example/Sonos_89.00.49.apk") == "s2"
+
+
+def test_google_play_updated_date_parser_handles_listing_markup():
+    listing = (
+        '<div>Updated on</div><div class="xg1aie">Sep 14, 2026</div>'
+        '<div>Developer contact</div>'
+    )
+    assert GOOGLE_PLAY.parse_updated_on(listing) == "Sep 14, 2026"
+
+
+def test_google_play_updated_date_parser_fails_closed():
+    assert GOOGLE_PLAY.parse_updated_on("no update metadata") is None
+
+
+def test_android_store_receipt_exposes_every_uploaded_asset_to_audit():
+    assets = ASSET_AUDIT.recorded_assets(ROOT)
+    android = {
+        key: value for key, value in assets.items()
+        if key[0].startswith("apps-google-play-recovery-")
+    }
+    assert len(android) == 15
+    assert all(record["bytes"] > 0 and len(record["sha256"]) == 64
+               for record in android.values())
