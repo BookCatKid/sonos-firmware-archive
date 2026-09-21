@@ -109,8 +109,16 @@ Cross-checking `payload_magic` across all 559 preserved section manifests:
 - Types 9 and 10 always start with `0x653503e4` (`PT_MAGIC`) — flash
   partition-table descriptors (e.g. model 5 carries KERNEL/ROOT entries).
 - Type 21 is the capability-flag list described above.
-- Type 22 always starts with `0x621da74d` (`SS_MAGIC`) — the signature blob,
-  which wraps the certificate/CA material.
+- Type 22 always starts with `0x621da74d` (`SS_MAGIC`) — a signed root-CA
+  bundle. Parsing one (model 28, 149,511 bytes) yields ~132 public X.509
+  roots (Amazon, GlobalSign, Google Trust Services…) plus 7 Sonos-internal
+  anchors (`Sonos Root CA`, `Sonos Dev Root CA`, `Sonos Device
+  Authentication Root CA`, `Sonos Client Device Root CA`, and TEST/STAGE
+  variants). No embedded key fingerprints to any package recipient.
+- In the model-5 `34.16-37101` package, the two identical type-9/10 tables
+  decode to `KERNEL` at block 0 (40 blocks) and `ROOT` at block 40
+  (128 blocks) — the update's target regions only; they do not cover the
+  boot-block area the wrapper hashes.
 - Type 15 always starts with `0x886499ca` — an RSA-OAEP/AES envelope, i.e.
   another encrypted payload kind alongside type 13.
 - `SECTION_NAMES` in `src/sonos_firmware/upd.py` now reflects these names.
