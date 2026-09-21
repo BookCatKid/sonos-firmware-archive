@@ -14,9 +14,14 @@ SECTION_NAMES = {
     3: "preinstall",
     4: "rootfs",
     6: "kernel",
+    9: "partition-table",
+    10: "partition-table",
     13: "device-payload",
+    15: "encrypted-payload",
     16: "metadata",
     17: "application",
+    21: "capabilities",
+    22: "signature",
 }
 
 

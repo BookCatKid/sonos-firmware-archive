@@ -15,6 +15,14 @@ archived artifacts (device icons, console logs, public manifests, or the
 recovery docs); an empty product cell means the codename is established but
 the retail product is not confirmed in this archive.
 
+Models 24–52 are corroborated (or first named) by the plaintext
+capability-flag section every modern `.upd` carries: section type 21 holds a
+small header (magic `0x35167f49`) followed by newline-separated `FLAG:`
+strings — generic `*_PATCHES:` entries plus per-platform hardware flags such
+as `MONACO_AMPS:` or `PALLAS_SUPPORTS_DVT3:`. The flag prefix is the platform
+codename, which is how models 28, 33, 35, 36, 38, 40, 46, 51 and 52 below got
+their names without any `mdp.h` coverage.
+
 | Model | Codename | Evidenced product / notes |
 |---:|---|---|
 | 0 | — | Legacy/base package family (10.20-75300 model-0 probes only) |
@@ -41,16 +49,27 @@ the retail product is not confirmed in this archive.
 | 21 | `BOOTLEG` | S2-era (2016+) device. **Key missing** |
 | 22 | `PARAMOUNT` | i.MX6 SoloX (`PARAMOUNT_MP_SOLOX` revision). **Key missing** |
 | 23 | `ELREY` | Secure-boot era (`ELREY_AUTH_3_0` revision). **Key missing** |
-| 24 | `HIDEOUT` | Secure-boot era (`HIDEOUT_AUTH_3_0`). **Key missing** |
-| 25 | `DHUEZ` | Move (S17). Amlogic path candidate in `model25-recovery.md`. **Key missing** |
-| 26 | `TUPELO` | Sonos One Gen 2 (S18). Amlogic MDP3+OTP path in `model26-recovery.md`. **Key missing** |
-| 27 | `APOLLO` | Pre-envelope updater uses on-device `upgradekey.priv` (see `key-material.md`). **Key missing** |
-| 28 | `CHAPLIN` | **Key missing** — 25 blocked packages |
-| 29 | `NEPTUNE` | **Key missing** |
-| 30 | `DOMINO` | **Key missing** |
+| 24 | `HIDEOUT` | Secure-boot era (`HIDEOUT_AUTH_3_0`); confirmed by `HIDEOUT_ADP8863`/`HIDEOUT_STM32`/`HIDEOUT_FNI_PSOC`/`HIDEOUT_PSOC_4248` strings. **Key missing** |
+| 25 | `DHUEZ` | Move (S17); confirmed by `DHUEZ_PSOC_BL483` string. Amlogic path candidate in `model25-recovery.md`. **Key missing** |
+| 26 | `TUPELO` | Sonos One Gen 2 (S18); confirmed by `TUPELO_LED_NTC` string. Amlogic MDP3+OTP path in `model26-recovery.md`. **Key missing** |
+| 27 | `APOLLO` | Confirmed by `APOLLO_PSOC_FNI`/`APOLLO_RICHTEK`/`APOLLO_GB11` strings. Pre-envelope updater uses on-device `upgradekey.priv` (see `key-material.md`). **Key missing** |
+| 28 | `CHAPLIN` / `KAPITAL` | GPL header says CHAPLIN; UPD capability strings say `KAPITAL_PSOC_FNI` (probably a rename or board variant). **Key missing** — 25 blocked packages |
+| 29 | `NEPTUNE` | Capability strings expose no platform name, only `CS43198_DAC_support` + `PSOC_4128` (Cirrus DAC + Cypress PSoC). **Key missing** |
+| 30 | `DOMINO` | Confirmed by `DOMINO_BMA420`/`DOMINO_PSOC` capability strings. **Key missing** |
 | 31 | `TRIDENT` | **Key missing** |
-| 32 | `VERTIGO` | Sub Gen 3 (per public systemcrash manifest mapping). **Key missing** |
-| 33–52 | — | Not named in the GPL 10.6 header (post-2019 devices). Models 33–38, 40–42, 46, 49, 51, 52 have blocked packages; models 44, 47, 48, 53 appear in manifests but have no preserved encrypted package |
+| 32 | `VERTIGO` | Sub Gen 3 (per public systemcrash manifest mapping); confirmed by `VERTIGO_Skyhigh_Flash` string. **Key missing** |
+| 33 | `MONACO` | `MONACO_AMPS`, `MONACO_MULTI_FG`, `MONACO_SUPPORTS_SIDECAR` + `SIDECAR_SUPPORTS_NEW_QI_CHG` (Qi-charging sidecar accessory). **Key missing** |
+| 34 | — | Generic patch flags only. **Key missing** |
+| 35 | `BRAVO` | `BRAVO_GB21_V2`, `BRAVO_GB33`, `BRAVO_GB34`, `BRAVO_GB21_FINAL` board revisions. **Key missing** |
+| 36 | `FURY` | `FURY_MA12070P` (Infineon MERUS class-D amp) + `FURY_MULTI_LED_AMP`. **Key missing** |
+| 37 | — | Generic patch flags only. **Key missing** |
+| 38 | `OPTIMO` / `RAVEN` | `OPTIMO_SUPPORTS_EVT/DVT/CORNELL1_MIC` + `RAVEN_SUPPORTS_ETHERNET/P2C` — the UPD carries both names (paired platform or mainboard/sub-board). **Key missing** |
+| 40 | `PRIMA` | `PRIMA_SUPPORTS_P2B`, `!PRIMA_SUPPORTS_BOOTSOUND` (a `!` negation flag). **Key missing** |
+| 41, 42, 49 | — | Generic patch flags only. **Key missing** |
+| 46 | `PALLAS` | `PALLAS_SUPPORTS_P2B/EVT/DVT/DVT3` board revisions. **Key missing** |
+| 51 | `MOJAVE` | `MOJAVE_SUPPORTS_DDR4/MULTI_PMU` + `A113X2_2025_BL31` — the **Amlogic A113X2** SoC with ARM Trusted Firmware BL31, i.e. the same SoC family as DHUEZ/TUPELO. **Key missing** |
+| 52 | `GAMBIT` | `GAMBIT_SUPPORTS_P2A/P2B` board revisions. **Key missing** |
+| 44, 47, 48, 53 | — | Appear in manifests but have no preserved encrypted package |
 
 ## Structural constants confirmed by the same headers
 
@@ -82,3 +101,16 @@ the retail product is not confirmed in this archive.
 - Section upgrade header (`sect_upgrade_header.h`): magic `0x536f7821`
   ("Sox!"), rootfs format values `PLAINTEXT`, `FIXED_KEY`, `RED_KEY`,
   `BLACK_KEY`.
+
+## UPD section types identified from payload magics
+
+Cross-checking `payload_magic` across all 559 preserved section manifests:
+
+- Types 9 and 10 always start with `0x653503e4` (`PT_MAGIC`) — flash
+  partition-table descriptors (e.g. model 5 carries KERNEL/ROOT entries).
+- Type 21 is the capability-flag list described above.
+- Type 22 always starts with `0x621da74d` (`SS_MAGIC`) — the signature blob,
+  which wraps the certificate/CA material.
+- Type 15 always starts with `0x886499ca` — an RSA-OAEP/AES envelope, i.e.
+  another encrypted payload kind alongside type 13.
+- `SECTION_NAMES` in `src/sonos_firmware/upd.py` now reflects these names.

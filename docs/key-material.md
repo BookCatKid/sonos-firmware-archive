@@ -244,7 +244,20 @@ Amlogic MDP3/OTP family; model 27 (APOLLO) is the pre-envelope key-file
 design; and models 21, 23, 24, 28–32 plus the unnamed 33–52 are
 secure-boot-era devices whose storage layout still needs model-specific
 evidence. The model-specific cautions in this document apply per row of
-that map.
+that map. UPD capability flags since put names on nine more models
+(28 KAPITAL, 33 MONACO, 35 BRAVO, 36 FURY, 38 OPTIMO/RAVEN, 40 PRIMA,
+46 PALLAS, 51 MOJAVE, 52 GAMBIT — see `docs/model-map.md`); model 51
+(MOJAVE) is notable because its `A113X2_2025_BL31` flag places it on the
+Amlogic A113X2, making it a third candidate for the MDP3/OTP family if a
+matching authorized dump ever appears.
+
+The GPL 7.3 release assets (`includes1/2`, `sbclib`, `event_reporter`,
+`fscrypt` tarballs, fetched from this repository's own `gpl-7.3` GitHub
+release after the live Sonos URLs returned 403) were also audited: the
+7.3 `mdp.h` matches the 2016 fenway copy (models through 22 only),
+`sbclib` is the SBC Bluetooth audio codec (not a boot library), and
+`fscrypt` is the same LUKS/dm update-staging plumbing already seen in
+14.18 — nothing adds a new key-storage or unwrap path.
 
 Priority order by blocked-package count: model 13 (Play:5 Gen 2, 17
 packages, `completeness.json` target), then models 23, 24, 21, 29, 28, 26
