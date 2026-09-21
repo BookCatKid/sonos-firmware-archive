@@ -123,8 +123,17 @@ tested so far fail to decrypt the wrapper, so no model-5 key is claimed. The
 search now also covers every 16-KiB-aligned position in the public ZP120
 Wembley NOR and NAND dumps: 2,116 positions, 1,369 unique blocks, and no
 match. The public Sub Gen1 `mtdblock0` reduces to the already rejected Fenway
-reference. These negatives rule out two more public cross-model shortcuts but
-do not replace the required ZoneBridge boot block.
+reference; its MDP1 model field reads `8`, confirming that dump family maps to
+the recovered model-8 recipient rather than any missing group. The scan also
+covers every aligned block inside the preserved plaintext
+`34.16-37101-1-5.upd` itself (255 unique prefixes — the boot block is not
+embedded in its own update package) and all six public AR231x/AR531x RedBoot
+ROM images published on the OpenWrt mirror (15 unique prefixes, no match).
+The model-5 rootfs confirms the device is the AR531x-based ZB100 with an SPI
+flash parsed by a RedBoot FIS table, so the required prefix is a
+Sonos-specific ZoneBridge boot block; generic reference RedBoots do not match.
+These negatives rule out the remaining public cross-model shortcuts but do not
+replace the required ZoneBridge boot block.
 
 The official Sonos `linux-2.4.25` source resolves an important ambiguity in
 that requirement. Its model-5-era RedBoot parser explicitly registers MTD
@@ -199,13 +208,15 @@ package model stores its key the same way. No published private keys were
 found for any missing recipient (Fenway repo is model-8 only;
 `trulyspinach/sonor` includes public Sub Gen1 MTD dumps, but the published
 sample contains only MDP1 and no MDP3/model-private-key field;
-`blasty/sonos` ships tooling, not keys; `systemcrash/sonos-firmware` ships
-packages/manifests only). Known public access techniques are useful leads,
-not interchangeable key-recovery recipes: Fenway/MPC8314 UART plus diagnostic
-firmware and `mdputil`; Amlogic-era EL3 OTP dumping plus `sonostool` (HITB
-Amsterdam 2023); Sonos One Gen 2 PCIe DMA root shell (Synacktiv, 2021); and
-Sonos One / Era 100 OTA and secure-boot research (NCC Group, BlackHat USA
-2024). Every hardware generation still needs model-specific validation.
+`darkarnium/sonor` documents the S18-One MDP/OTP layout but publishes console
+logs and scripts, not raw MDP or OTP bytes; `blasty/sonos` ships tooling, not
+keys; `systemcrash/sonos-firmware` ships packages/manifests only). Known
+public access techniques are useful leads, not interchangeable key-recovery
+recipes: Fenway/MPC8314 UART plus diagnostic firmware and `mdputil`; Amlogic-
+era EL3 OTP dumping plus `sonostool` (HITB Amsterdam 2023); Sonos One Gen 2
+PCIe DMA root shell (Synacktiv, 2021); and Sonos One / Era 100 OTA and secure-
+boot research (NCC Group, BlackHat USA 2024). Every hardware generation still
+needs model-specific validation.
 
 Update 2026-09-21: the plaintext `10.20-75300` model-27 updater was examined
 and ruled out as a key source. It predates the envelope scheme entirely — its
