@@ -7,11 +7,17 @@ import argparse
 import concurrent.futures
 import json
 import subprocess
+import sys
+import time
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from archive_web_apps import public_release, remote_assets, upload_asset  # noqa: E402
+from upload_firmware_release import upload_streaming, verified_remote_digest  # noqa: E402
 
 
 def main() -> int:
@@ -43,14 +49,7 @@ def main() -> int:
     preflight: list[dict] = []
     existing_targets: list[str] = []
     for tag, paths in sorted(groups.items()):
-        result = subprocess.run(
-            ["gh", "release", "view", tag, "--json", "assets"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        assets = {item["name"]: item for item in json.loads(result.stdout)["assets"]}
+        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
         names = [path.name for path in paths]
         existing = [name for name in names if name in assets]
         existing_targets.extend(f"{tag}/{name}" for name in existing)
@@ -81,11 +80,13 @@ def main() -> int:
 
     def upload(entry: tuple[str, list[Path]]) -> tuple[str, int]:
         tag, paths = entry
-        subprocess.run(
-            ["gh", "release", "upload", tag, *map(str, paths), "--clobber"],
-            cwd=ROOT,
-            check=True,
-        )
+        release = public_release("BookCatKid/sonos-firmware-archive", tag)
+        for path in paths:
+            if path.stat().st_size >= 32 * 1024 * 1024:
+                upload_streaming("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
+            else:
+                upload_asset("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
+            time.sleep(1.1)
         return tag, len(paths)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -94,21 +95,14 @@ def main() -> int:
 
     errors: list[str] = []
     for tag, paths in sorted(groups.items()):
-        result = subprocess.run(
-            ["gh", "release", "view", tag, "--json", "assets"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        assets = {item["name"]: item for item in json.loads(result.stdout)["assets"]}
+        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
         for path in paths:
             item = expected[path.name]
             asset = assets.get(path.name)
             if asset is None:
                 errors.append(f"{tag}/{path.name}: missing")
                 continue
-            digest = (asset.get("digest") or "").removeprefix("sha256:")
+            digest = verified_remote_digest(asset)
             if asset["size"] != item["bytes"] or digest != item["sha256"]:
                 errors.append(f"{tag}/{path.name}: size or digest mismatch")
     if errors:

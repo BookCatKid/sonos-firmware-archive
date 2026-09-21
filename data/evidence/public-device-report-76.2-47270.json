@@ -1,0 +1,14 @@
+[
+  {
+    "id": "public-device-report-2025-02-15-76.2-47270",
+    "kind": "exact-firmware-url",
+    "version": "76.2-47270",
+    "package_model": 17,
+    "update_url": "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-17.upd",
+    "source_type": "public-device-repair-report",
+    "source_url": "https://github.com/trulyspinach/sonos-fenway/issues/2",
+    "observed": "2025-02-15",
+    "verified_live": "2026-09-21",
+    "redacted": true
+  }
+]

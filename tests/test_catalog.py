@@ -42,6 +42,19 @@ class CatalogTests(unittest.TestCase):
         self.assertIn("97.1-80312", {record["version"] for record in release_notes})
         self.assertTrue(all(record["redacted"] is True for record in release_notes))
 
+    def test_exact_firmware_url_evidence_is_cataloged(self):
+        root = Path(__file__).resolve().parents[1]
+        catalog = json.loads((root / "data/catalog.json").read_text(encoding="utf-8"))
+        reports = [
+            record
+            for record in catalog.get("evidence", [])
+            if record["source_type"] == "public-device-repair-report"
+        ]
+        self.assertEqual(len(reports), 1)
+        self.assertEqual(reports[0]["version"], "76.2-47270")
+        self.assertTrue(reports[0]["update_url"].endswith("76.2-47270-1-17.upd"))
+        self.assertTrue(reports[0]["redacted"] is True)
+
     def test_product_specific_release_note_requires_products(self):
         root = Path(__file__).resolve().parents[1]
         schema = json.loads((root / "schemas/evidence.schema.json").read_text())

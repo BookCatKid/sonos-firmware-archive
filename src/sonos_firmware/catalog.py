@@ -42,6 +42,19 @@ RELEASE_NOTE_EVIDENCE_FIELDS = {
     "redacted",
 }
 
+EXACT_URL_EVIDENCE_FIELDS = {
+    "id",
+    "kind",
+    "version",
+    "package_model",
+    "update_url",
+    "source_type",
+    "source_url",
+    "observed",
+    "verified_live",
+    "redacted",
+}
+
 FORBIDDEN_EVIDENCE_FIELDS = {
     "body",
     "comment",
@@ -153,6 +166,8 @@ def validate_catalog(root: str | Path) -> list[str]:
             required = DIAGNOSTIC_EVIDENCE_FIELDS
         elif kind == "evidenced-version":
             required = RELEASE_NOTE_EVIDENCE_FIELDS
+        elif kind == "exact-firmware-url":
+            required = EXACT_URL_EVIDENCE_FIELDS
         else:
             errors.append(f"evidence[{record_id}]: unknown kind: {kind}")
             continue

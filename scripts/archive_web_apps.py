@@ -290,7 +290,7 @@ def remote_assets(repository: str, tag: str) -> dict[str, dict]:
     for page in range(1, 101):
         request = urllib.request.Request(
             f"https://api.github.com/repos/{repository}/releases/{release['id']}"
-            f"/assets?per_page=100&page={page}",
+            f"/assets?per_page=100&page={page}&_archive_ts={int(time.time())}",
             headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
         )
         with urllib.request.urlopen(request, timeout=60) as response:

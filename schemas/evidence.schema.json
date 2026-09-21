@@ -4,7 +4,8 @@
   "items": {
     "oneOf": [
       {"$ref": "#/$defs/availableSoftwareUpdate"},
-      {"$ref": "#/$defs/releaseNote"}
+      {"$ref": "#/$defs/releaseNote"},
+      {"$ref": "#/$defs/exactFirmwareUrl"}
     ]
   },
   "$defs": {
@@ -80,6 +81,34 @@
           "then": {"required": ["products"]}
         }
       ]
+    },
+    "exactFirmwareUrl": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "version",
+        "package_model",
+        "update_url",
+        "source_type",
+        "source_url",
+        "observed",
+        "verified_live",
+        "redacted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"const": "exact-firmware-url"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+-[0-9]+$"},
+        "package_model": {"type": "integer", "minimum": 0},
+        "update_url": {"type": "string", "format": "uri"},
+        "source_type": {"const": "public-device-repair-report"},
+        "source_url": {"type": "string", "format": "uri"},
+        "observed": {"type": "string", "format": "date"},
+        "verified_live": {"type": "string", "format": "date"},
+        "redacted": {"const": true}
+      }
     }
   }
 }

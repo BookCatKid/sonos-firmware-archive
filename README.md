@@ -136,6 +136,16 @@ all source and extracted assets were reconciled against GitHub's server-side
 sizes and SHA-256 digests. The raw extraction receipt is
 [`data/decryption-runs/2026-09-12-86.10-80260.json`](data/decryption-runs/2026-09-12-86.10-80260.json).
 
+On 2026-09-21, a public device-repair report exposed an exact official
+model-17 URL for the previously uncataloged `76.2-47270` line. The opaque
+directory expanded to **25 live UPDs** across package models 8–40, totaling
+1,028,933,580 bytes. All 25 source packages are preserved in the
+[`firmware-76.2-47270`](https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-76.2-47270)
+Release. Existing keys decrypted models 8, 9, 12, and 17, adding **13 extracted
+components** beside their sources; the other 21 packages remain explicitly
+blocked on their model-specific recipients. See the complete
+[`76.2-47270 discovery report`](docs/firmware-discovery-76.2-47270-2026-09-21.md).
+
 The next preserved plaintext gaps are tracked in
 [`data/decryption-runs/2026-09-08-next-model13-model25-targets.json`](data/decryption-runs/2026-09-08-next-model13-model25-targets.json).
 They require model-specific key recovery; no large source UPD is downloaded
@@ -167,6 +177,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   labeled Android store recovery/direct-delivery sets, and public Web
   deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
+- `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
 - `tests/` — parser and catalog tests.
