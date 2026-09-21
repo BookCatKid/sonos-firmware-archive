@@ -4144,7 +4144,17 @@
         "release_asset": "sonos-pro-20260921T010656Z--232a9dbd4d43--complete.tar.gz",
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20260921T010656Z--232a9dbd4d43--complete.tar.gz"
-      }
+      },
+      "alternate_bundles": [
+        {
+          "provenance": "GitHub-hosted runner capture of the same deployment; retained because CDN-visible dependencies differed by runner location.",
+          "bytes": 1021464,
+          "sha256": "100eb66978f9c7a4d87389f83ae3179d955e92fecebc76db6f0c4eb074752016",
+          "release_asset": "sonos-pro-20260921T010656Z--complete.tar.gz",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20260921T010656Z--complete.tar.gz"
+        }
+      ]
     }
   ],
   "updated": "2026-09-21T02:28:53.843691+00:00",
