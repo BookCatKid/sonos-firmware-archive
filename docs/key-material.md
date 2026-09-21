@@ -234,6 +234,18 @@ local artifact for stray RSA private keys or public keys matching the 28
 missing recipients — all negative. See the model-27 and cross-binary sections
 of `recovery-work/candidates/README.md`.
 
+The GPL 10.6 `includes1/mdp.h` groups the missing models by platform
+evidence (codename map in [`docs/model-map.md`](model-map.md)): model 5
+(LINK) is the only remaining legacy-updater path; models 13 (ENCORE), 14
+(SOLBASE, with an `IMX6SX` revision marker), 20 (ROYALE), and 22
+(PARAMOUNT, with an `MP_SOLOX` revision marker) are the i.MX6/CAAM
+family; models 25 (DHUEZ) and 26 (TUPELO) are the publicly evidenced
+Amlogic MDP3/OTP family; model 27 (APOLLO) is the pre-envelope key-file
+design; and models 21, 23, 24, 28–32 plus the unnamed 33–52 are
+secure-boot-era devices whose storage layout still needs model-specific
+evidence. The model-specific cautions in this document apply per row of
+that map.
+
 Priority order by blocked-package count: model 13 (Play:5 Gen 2, 17
 packages, `completeness.json` target), then models 23, 24, 21, 29, 28, 26
 (12–19 packages each). Model 25 (Move, 17 packages) is moot until the
