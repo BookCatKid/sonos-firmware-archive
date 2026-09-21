@@ -17,6 +17,7 @@ import re
 import subprocess
 import tarfile
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -183,9 +184,12 @@ def public_probe(app: str) -> dict:
     return {"app": app, "fingerprint": fingerprint, "resources": evidence}
 
 
-def capture(app: str, destination: Path, max_assets: int = 500) -> tuple[dict, Path]:
+def capture(
+    app: str, destination: Path, max_assets: int = 500,
+    capture_id: str | None = None,
+) -> tuple[dict, Path]:
     config = APPS[app]
-    capture_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    capture_id = capture_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     capture_dir = destination / app / capture_id
     bodies_dir = capture_dir / "bodies"
     bodies_dir.mkdir(parents=True, exist_ok=False)
@@ -270,29 +274,31 @@ def ensure_release(repository: str, tag: str, title: str) -> None:
         ], check=True)
 
 
-def upload_capture(document: dict, metadata: Path, repository: str) -> None:
-    config = APPS[document["app"]]
-    ensure_release(repository, config["release_tag"], config["title"])
-    capture_dir = metadata.parent
-    paths = [capture_dir / item["file"] for item in document["resources"] if item.get("file")]
-    bundle = Path(document["bundle"]["file"])
-    renamed_bundle = bundle.with_name(document["bundle"]["release_asset"])
-    if renamed_bundle != bundle:
-        bundle.rename(renamed_bundle)
-        document["bundle"]["file"] = str(renamed_bundle)
-    paths.append(renamed_bundle)
-    subprocess.run([
-        "gh", "release", "upload", config["release_tag"], "--repo", repository,
-        "--clobber", *map(str, paths),
-    ], check=True)
+def remote_assets(repository: str, tag: str) -> dict[str, dict]:
     release = json.loads(subprocess.check_output([
-        "gh", "api", f"repos/{repository}/releases/tags/{config['release_tag']}",
+        "gh", "api", f"repos/{repository}/releases/tags/{tag}",
     ], text=True))
     pages = json.loads(subprocess.check_output([
         "gh", "api", "--paginate", "--slurp",
         f"repos/{repository}/releases/{release['id']}/assets?per_page=100",
     ], text=True))
-    observed = {item["name"]: item for page in pages for item in page}
+    return {item["name"]: item for page in pages for item in page}
+
+
+def upload_capture(document: dict, metadata: Path, repository: str) -> None:
+    config = APPS[document["app"]]
+    ensure_release(repository, config["release_tag"], config["title"])
+    capture_dir = metadata.parent
+    paths = {
+        item["release_asset"]: capture_dir / item["file"]
+        for item in document["resources"] if item.get("file")
+    }
+    bundle = Path(document["bundle"]["file"])
+    renamed_bundle = bundle.with_name(document["bundle"]["release_asset"])
+    if renamed_bundle != bundle:
+        bundle.rename(renamed_bundle)
+        document["bundle"]["file"] = str(renamed_bundle)
+    paths[document["bundle"]["release_asset"]] = renamed_bundle
     expected = {
         item["release_asset"]: (item["bytes"], item["sha256"])
         for item in document["resources"] if item.get("release_asset")
@@ -300,6 +306,20 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
     expected[document["bundle"]["release_asset"]] = (
         document["bundle"]["bytes"], document["bundle"]["sha256"]
     )
+    observed = remote_assets(repository, config["release_tag"])
+    for name, path in paths.items():
+        size, digest = expected[name]
+        remote = observed.get(name)
+        remote_digest = ((remote or {}).get("digest") or "").removeprefix("sha256:")
+        if remote is not None and remote["size"] == size and remote_digest == digest:
+            continue
+        subprocess.run([
+            "gh", "release", "upload", config["release_tag"], str(path),
+            "--repo", repository, "--clobber",
+        ], check=True)
+        # GitHub's secondary limit permits about 80 content creations/minute.
+        time.sleep(1.1)
+    observed = remote_assets(repository, config["release_tag"])
     for name, (size, digest) in expected.items():
         remote = observed.get(name)
         remote_digest = ((remote or {}).get("digest") or "").removeprefix("sha256:")
@@ -346,16 +366,19 @@ def main() -> int:
     parser.add_argument("--receipt", type=Path, default=ROOT / "data/apps/web-app-archive.json")
     parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--max-assets", type=int, default=500)
+    parser.add_argument("--capture-id", help="fixed UTC capture ID for a resumable single-app run")
     parser.add_argument("--upload", action="store_true")
     parser.add_argument("--probe", action="store_true", help="print lightweight JSON fingerprints only")
     args = parser.parse_args()
     apps = list(APPS) if args.app == "all" else [args.app]
+    if args.capture_id and len(apps) != 1:
+        parser.error("--capture-id requires --app controller or --app pro")
     if args.probe:
         print(json.dumps({"schema_version": 1, "probes": [public_probe(app) for app in apps]}, indent=2))
         return 0
     captured = []
     for app in apps:
-        document, metadata = capture(app, args.capture_dir, args.max_assets)
+        document, metadata = capture(app, args.capture_dir, args.max_assets, args.capture_id)
         if args.upload:
             upload_capture(document, metadata, args.repo)
         captured.append(document)

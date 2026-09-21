@@ -2,6 +2,16 @@ name: archive public Sonos web deployments
 
 on:
   workflow_dispatch:
+    inputs:
+      app:
+        description: "Web surface to archive"
+        type: choice
+        options: [all, controller, pro]
+        default: all
+      capture_id:
+        description: "Optional fixed UTC capture ID when resuming one surface"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -21,10 +31,15 @@ jobs:
         with:
           python-version: "3.12"
       - name: Capture, upload, and verify public deployment bodies
+        env:
+          WEB_APP: ${{ inputs.app }}
+          WEB_CAPTURE_ID: ${{ inputs.capture_id }}
         run: |
-          python scripts/archive_web_apps.py \
-            --capture-dir "$RUNNER_TEMP/web-captures" \
-            --upload
+          args=(--capture-dir "$RUNNER_TEMP/web-captures" --upload --app "${WEB_APP:-all}")
+          if [[ -n "$WEB_CAPTURE_ID" ]]; then
+            args+=(--capture-id "$WEB_CAPTURE_ID")
+          fi
+          python scripts/archive_web_apps.py "${args[@]}"
       - name: Commit immutable deployment receipt
         shell: bash
         run: |
