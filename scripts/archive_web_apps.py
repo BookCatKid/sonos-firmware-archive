@@ -261,28 +261,64 @@ def capture(
 
 
 def ensure_release(repository: str, tag: str, title: str) -> None:
-    exists = subprocess.run(
-        ["gh", "release", "view", tag, "--repo", repository],
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    ).returncode == 0
-    if not exists:
-        subprocess.run([
-            "gh", "release", "create", tag, "--repo", repository,
-            "--title", title, "--notes",
-            "Account-free deployment snapshots. Every public response body is uploaded "
-            "individually and in a reconstruction bundle; authentication/cloud APIs are excluded.",
-        ], check=True)
+    try:
+        public_release(repository, tag)
+        return
+    except urllib.error.HTTPError as error:
+        if error.code != 404:
+            raise
+    subprocess.run([
+        "gh", "release", "create", tag, "--repo", repository,
+        "--title", title, "--notes",
+        "Account-free deployment snapshots. Every public response body is uploaded "
+        "individually and in a reconstruction bundle; authentication/cloud APIs are excluded.",
+    ], check=True)
+
+
+def public_release(repository: str, tag: str) -> dict:
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{repository}/releases/tags/{tag}",
+        headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        return json.load(response)
 
 
 def remote_assets(repository: str, tag: str) -> dict[str, dict]:
-    release = json.loads(subprocess.check_output([
-        "gh", "api", f"repos/{repository}/releases/tags/{tag}",
-    ], text=True))
-    pages = json.loads(subprocess.check_output([
-        "gh", "api", "--paginate", "--slurp",
-        f"repos/{repository}/releases/{release['id']}/assets?per_page=100",
-    ], text=True))
-    return {item["name"]: item for page in pages for item in page}
+    release = public_release(repository, tag)
+    assets = {}
+    for page in range(1, 101):
+        request = urllib.request.Request(
+            f"https://api.github.com/repos/{repository}/releases/{release['id']}"
+            f"/assets?per_page=100&page={page}",
+            headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
+        )
+        with urllib.request.urlopen(request, timeout=60) as response:
+            items = json.load(response)
+        assets.update((item["name"], item) for item in items)
+        if len(items) < 100:
+            break
+    return assets
+
+
+def upload_asset(repository: str, release_id: int, name: str, path: Path) -> None:
+    token = subprocess.check_output(["gh", "auth", "token"], text=True).strip()
+    query = urllib.parse.urlencode({"name": name})
+    request = urllib.request.Request(
+        f"https://uploads.github.com/repos/{repository}/releases/{release_id}/assets?{query}",
+        data=path.read_bytes(),
+        method="POST",
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "Content-Type": mimetypes.guess_type(name)[0] or "application/octet-stream",
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=300) as response:
+        if response.status != 201:
+            raise RuntimeError(f"GitHub upload failed for {name}: HTTP {response.status}")
 
 
 def upload_capture(document: dict, metadata: Path, repository: str) -> None:
@@ -306,6 +342,7 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
     expected[document["bundle"]["release_asset"]] = (
         document["bundle"]["bytes"], document["bundle"]["sha256"]
     )
+    release = public_release(repository, config["release_tag"])
     observed = remote_assets(repository, config["release_tag"])
     for name, path in paths.items():
         size, digest = expected[name]
@@ -313,18 +350,27 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
         remote_digest = ((remote or {}).get("digest") or "").removeprefix("sha256:")
         if remote is not None and remote["size"] == size and remote_digest == digest:
             continue
-        subprocess.run([
-            "gh", "release", "upload", config["release_tag"], str(path),
-            "--repo", repository, "--clobber",
-        ], check=True)
+        if remote is not None:
+            raise RuntimeError(f"refusing to overwrite mismatched GitHub asset: {name}")
+        upload_asset(repository, release["id"], name, path)
         # GitHub's secondary limit permits about 80 content creations/minute.
         time.sleep(1.1)
-    observed = remote_assets(repository, config["release_tag"])
-    for name, (size, digest) in expected.items():
-        remote = observed.get(name)
-        remote_digest = ((remote or {}).get("digest") or "").removeprefix("sha256:")
-        if remote is None or remote["size"] != size or remote_digest != digest:
-            raise RuntimeError(f"GitHub asset verification failed: {config['release_tag']}/{name}")
+    failures = []
+    for attempt in range(10):
+        observed = remote_assets(repository, config["release_tag"])
+        failures = []
+        for name, (size, digest) in expected.items():
+            remote = observed.get(name)
+            remote_digest = ((remote or {}).get("digest") or "").removeprefix("sha256:")
+            if remote is None or remote["size"] != size or remote_digest != digest:
+                failures.append(name)
+        if not failures:
+            break
+        time.sleep(2)
+    if failures:
+        raise RuntimeError(
+            f"GitHub asset verification failed: {config['release_tag']}/{failures[0]}"
+        )
     base = f"https://github.com/{repository}/releases/download/{config['release_tag']}"
     for item in document["resources"]:
         if item.get("release_asset"):
@@ -367,18 +413,44 @@ def main() -> int:
     parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--max-assets", type=int, default=500)
     parser.add_argument("--capture-id", help="fixed UTC capture ID for a resumable single-app run")
+    parser.add_argument("--resume-metadata", type=Path,
+                        help="upload a retained capture.json instead of crawling again")
     parser.add_argument("--upload", action="store_true")
     parser.add_argument("--probe", action="store_true", help="print lightweight JSON fingerprints only")
     args = parser.parse_args()
     apps = list(APPS) if args.app == "all" else [args.app]
     if args.capture_id and len(apps) != 1:
         parser.error("--capture-id requires --app controller or --app pro")
+    if args.resume_metadata:
+        document = json.loads(args.resume_metadata.read_text(encoding="utf-8"))
+        if args.app != document["app"]:
+            parser.error("--app must match the retained capture metadata")
+        if args.capture_id:
+            document["capture_id"] = args.capture_id
+            for item in document["resources"]:
+                if item.get("file"):
+                    item["release_asset"] = safe_asset_name(
+                        args.capture_id, item["requested_url"], item["sha256"]
+                    )
+        bundle = document["bundle"]
+        bundle["release_asset"] = (
+            f"sonos-{document['app']}-{args.capture_id or document['capture_id']}--"
+            f"{bundle['sha256'][:12]}--complete.tar.gz"
+        )
+        upload_capture(document, args.resume_metadata, args.repo)
+        update_receipt(args.receipt, [document])
+        print(f"{document['app']}: resumed captured={document['captured_total']} gaps={document['gap_total']}")
+        return 0
     if args.probe:
         print(json.dumps({"schema_version": 1, "probes": [public_probe(app) for app in apps]}, indent=2))
         return 0
     captured = []
     for app in apps:
         document, metadata = capture(app, args.capture_dir, args.max_assets, args.capture_id)
+        document["bundle"]["release_asset"] = (
+            f"sonos-{app}-{document['capture_id']}--"
+            f"{document['bundle']['sha256'][:12]}--complete.tar.gz"
+        )
         if args.upload:
             upload_capture(document, metadata, args.repo)
         captured.append(document)

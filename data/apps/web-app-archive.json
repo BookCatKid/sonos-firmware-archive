@@ -1579,7 +1579,7 @@
       "app": "pro",
       "entry_url": "https://pro.sonos.com/",
       "captured_at": "2026-09-21T01:05:29.401369+00:00",
-      "capture_id": "20260921T010511Z",
+      "capture_id": "20260921T010656Z",
       "probe_fingerprint": "ffd82273f02bc2f1da8ddd62e0e07b437782f672a4ebca41d7566645954008c6",
       "deployment_fingerprint": "ffd82273f02bc2f1da8ddd62e0e07b437782f672a4ebca41d7566645954008c6",
       "resource_total": 82,
@@ -1620,7 +1620,9 @@
           "bytes": 3710,
           "sha256": "cfc6ac9e05d45100d0aed572dd863e708d30918b7bfebdf21be5a72ecc55f802",
           "file": "bodies/20260921T010511Z--index--cfc6ac9e05d4.html",
-          "release_asset": "20260921T010511Z--index--cfc6ac9e05d4.html"
+          "release_asset": "20260921T010656Z--index--cfc6ac9e05d4.html",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--index--cfc6ac9e05d4.html"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/3df745c4/_buildManifest.js",
@@ -1649,7 +1651,9 @@
           "bytes": 6473,
           "sha256": "b0ed616212bddfee6e43b0a28874b8885d8de2c648b8746f8dd4d10beb609ddf",
           "file": "bodies/20260921T010511Z--_buildManifest--b0ed616212bd.js",
-          "release_asset": "20260921T010511Z--_buildManifest--b0ed616212bd.js"
+          "release_asset": "20260921T010656Z--_buildManifest--b0ed616212bd.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_buildManifest--b0ed616212bd.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/3df745c4/_ssgManifest.js",
@@ -1678,7 +1682,9 @@
           "bytes": 77,
           "sha256": "6f5b4aa00d2f8d6aed9935b471806bf7acef464d0c1d390260e5fe27f800c67e",
           "file": "bodies/20260921T010511Z--_ssgManifest--6f5b4aa00d2f.js",
-          "release_asset": "20260921T010511Z--_ssgManifest--6f5b4aa00d2f.js"
+          "release_asset": "20260921T010656Z--_ssgManifest--6f5b4aa00d2f.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_ssgManifest--6f5b4aa00d2f.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/4240-fd0c4c4493369ff1.js",
@@ -1707,7 +1713,9 @@
           "bytes": 10259,
           "sha256": "3566df0bd07db679c2b40a9b6d760b1347db5d965b1b0d1bc3d063f33a9dedc9",
           "file": "bodies/20260921T010511Z--4240-fd0c4c4493369ff1--3566df0bd07d.js",
-          "release_asset": "20260921T010511Z--4240-fd0c4c4493369ff1--3566df0bd07d.js"
+          "release_asset": "20260921T010656Z--4240-fd0c4c4493369ff1--3566df0bd07d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--4240-fd0c4c4493369ff1--3566df0bd07d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/618-9792c44427e2b119.js",
@@ -1736,7 +1744,9 @@
           "bytes": 33812,
           "sha256": "ef25bed7ccfff4b8643d30fb949c745510145abb8500bddde50e9002b3ec4b8b",
           "file": "bodies/20260921T010511Z--618-9792c44427e2b119--ef25bed7ccff.js",
-          "release_asset": "20260921T010511Z--618-9792c44427e2b119--ef25bed7ccff.js"
+          "release_asset": "20260921T010656Z--618-9792c44427e2b119--ef25bed7ccff.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--618-9792c44427e2b119--ef25bed7ccff.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/6781-aee683f626b6151c.js",
@@ -1765,7 +1775,9 @@
           "bytes": 22791,
           "sha256": "a9d51c8b351d1cc909705b7ebea005ee122a41cbfba59aff90e891a864ce7c09",
           "file": "bodies/20260921T010511Z--6781-aee683f626b6151c--a9d51c8b351d.js",
-          "release_asset": "20260921T010511Z--6781-aee683f626b6151c--a9d51c8b351d.js"
+          "release_asset": "20260921T010656Z--6781-aee683f626b6151c--a9d51c8b351d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--6781-aee683f626b6151c--a9d51c8b351d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/751-86b876f0c29b20eb.js",
@@ -1794,7 +1806,9 @@
           "bytes": 31690,
           "sha256": "c9a267379e6d21044e3a63b076821865afea0d9e93f2bff59ce21f33be0ec9c6",
           "file": "bodies/20260921T010511Z--751-86b876f0c29b20eb--c9a267379e6d.js",
-          "release_asset": "20260921T010511Z--751-86b876f0c29b20eb--c9a267379e6d.js"
+          "release_asset": "20260921T010656Z--751-86b876f0c29b20eb--c9a267379e6d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--751-86b876f0c29b20eb--c9a267379e6d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/7515-81428ab8fc30c74f.js",
@@ -1823,7 +1837,9 @@
           "bytes": 13755,
           "sha256": "ad217b9db62347d95ec9ed0e8844d79dbd883744e05835d83e39fda099f23ca8",
           "file": "bodies/20260921T010511Z--7515-81428ab8fc30c74f--ad217b9db623.js",
-          "release_asset": "20260921T010511Z--7515-81428ab8fc30c74f--ad217b9db623.js"
+          "release_asset": "20260921T010656Z--7515-81428ab8fc30c74f--ad217b9db623.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--7515-81428ab8fc30c74f--ad217b9db623.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/9370-e4c696d61d48f4e6.js",
@@ -1852,7 +1868,9 @@
           "bytes": 7722,
           "sha256": "5875b7dec91572bf58ccef3202c31d738a269b94eca9ffb18a8c621dddee2c8c",
           "file": "bodies/20260921T010511Z--9370-e4c696d61d48f4e6--5875b7dec915.js",
-          "release_asset": "20260921T010511Z--9370-e4c696d61d48f4e6--5875b7dec915.js"
+          "release_asset": "20260921T010656Z--9370-e4c696d61d48f4e6--5875b7dec915.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--9370-e4c696d61d48f4e6--5875b7dec915.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/framework-4220c39442bee090.js",
@@ -1881,7 +1899,9 @@
           "bytes": 189699,
           "sha256": "a455529ca5b082b90509f35f6ea0b8c8a3d9cdc682eaaf0719788ec6d6d33568",
           "file": "bodies/20260921T010511Z--framework-4220c39442bee090--a455529ca5b0.js",
-          "release_asset": "20260921T010511Z--framework-4220c39442bee090--a455529ca5b0.js"
+          "release_asset": "20260921T010656Z--framework-4220c39442bee090--a455529ca5b0.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--framework-4220c39442bee090--a455529ca5b0.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/main-9e4d0efbf18f0c61.js",
@@ -1910,7 +1930,9 @@
           "bytes": 426345,
           "sha256": "77283d6a8f47d55e719a4d47e6a7457ae4080c6c16d5ee078840850415f85e09",
           "file": "bodies/20260921T010511Z--main-9e4d0efbf18f0c61--77283d6a8f47.js",
-          "release_asset": "20260921T010511Z--main-9e4d0efbf18f0c61--77283d6a8f47.js"
+          "release_asset": "20260921T010656Z--main-9e4d0efbf18f0c61--77283d6a8f47.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--main-9e4d0efbf18f0c61--77283d6a8f47.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/_app-16a95677f44ab56e.js",
@@ -1939,7 +1961,9 @@
           "bytes": 1320596,
           "sha256": "52ea31910694bafc4148e38fe80f1e4d265cc641451ddea7c147af4882f173b7",
           "file": "bodies/20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js",
-          "release_asset": "20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js"
+          "release_asset": "20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/overview-108252b1cd126f2c.js",
@@ -1968,7 +1992,9 @@
           "bytes": 254,
           "sha256": "4d2983369e51bf4056549d8f33f35d5cc3ea33dfb7228226d93d6ca11968b777",
           "file": "bodies/20260921T010511Z--overview-108252b1cd126f2c--4d2983369e51.js",
-          "release_asset": "20260921T010511Z--overview-108252b1cd126f2c--4d2983369e51.js"
+          "release_asset": "20260921T010656Z--overview-108252b1cd126f2c--4d2983369e51.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--overview-108252b1cd126f2c--4d2983369e51.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/polyfills-42372ed130431b0a.js",
@@ -1997,7 +2023,9 @@
           "bytes": 112594,
           "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683",
           "file": "bodies/20260921T010511Z--polyfills-42372ed130431b0a--0973c1d64c88.js",
-          "release_asset": "20260921T010511Z--polyfills-42372ed130431b0a--0973c1d64c88.js"
+          "release_asset": "20260921T010656Z--polyfills-42372ed130431b0a--0973c1d64c88.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--polyfills-42372ed130431b0a--0973c1d64c88.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/webpack-74f38a4655bb2d8f.js",
@@ -2026,7 +2054,9 @@
           "bytes": 4242,
           "sha256": "ddef5b1680d9cdb0db400f2899d892321e321d82e06c95c2bda558a6373560f6",
           "file": "bodies/20260921T010511Z--webpack-74f38a4655bb2d8f--ddef5b1680d9.js",
-          "release_asset": "20260921T010511Z--webpack-74f38a4655bb2d8f--ddef5b1680d9.js"
+          "release_asset": "20260921T010656Z--webpack-74f38a4655bb2d8f--ddef5b1680d9.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--webpack-74f38a4655bb2d8f--ddef5b1680d9.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/css/c75699a9ee73fd10.css",
@@ -2055,7 +2085,9 @@
           "bytes": 104483,
           "sha256": "14dbb4db361ebade7484be3f0143c2c5788969902e0beb34709847a2938fbf68",
           "file": "bodies/20260921T010511Z--c75699a9ee73fd10--14dbb4db361e.css",
-          "release_asset": "20260921T010511Z--c75699a9ee73fd10--14dbb4db361e.css"
+          "release_asset": "20260921T010656Z--c75699a9ee73fd10--14dbb4db361e.css",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--c75699a9ee73fd10--14dbb4db361e.css"
         },
         {
           "requested_url": "https://pro.sonos.com/assets/favicon.ico",
@@ -2084,7 +2116,9 @@
           "bytes": 7452,
           "sha256": "f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719",
           "file": "bodies/20260921T010511Z--favicon--f1a0d0c97685.ico",
-          "release_asset": "20260921T010511Z--favicon--f1a0d0c97685.ico"
+          "release_asset": "20260921T010656Z--favicon--f1a0d0c97685.ico",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--favicon--f1a0d0c97685.ico"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/1542-430570b679f692b5.js",
@@ -2113,7 +2147,9 @@
           "bytes": 46299,
           "sha256": "9fd5ada60ba786b7607ef4a3682d0e0f81429987860c725f8b84da0049401c5d",
           "file": "bodies/20260921T010511Z--1542-430570b679f692b5--9fd5ada60ba7.js",
-          "release_asset": "20260921T010511Z--1542-430570b679f692b5--9fd5ada60ba7.js"
+          "release_asset": "20260921T010656Z--1542-430570b679f692b5--9fd5ada60ba7.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--1542-430570b679f692b5--9fd5ada60ba7.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/168-021f9e771e45bb29.js",
@@ -2142,7 +2178,9 @@
           "bytes": 22580,
           "sha256": "2728a2030ac62e2403e498f5fcdd38175ba29bb771c00607b817ef6a1bb81ba2",
           "file": "bodies/20260921T010511Z--168-021f9e771e45bb29--2728a2030ac6.js",
-          "release_asset": "20260921T010511Z--168-021f9e771e45bb29--2728a2030ac6.js"
+          "release_asset": "20260921T010656Z--168-021f9e771e45bb29--2728a2030ac6.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--168-021f9e771e45bb29--2728a2030ac6.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/1807-7ed32ae0e73ee6ee.js",
@@ -2171,7 +2209,9 @@
           "bytes": 10699,
           "sha256": "a98af14267b9d4b78b3003028c5bc80758691de9710547561b73f4cf77b7c8c5",
           "file": "bodies/20260921T010511Z--1807-7ed32ae0e73ee6ee--a98af14267b9.js",
-          "release_asset": "20260921T010511Z--1807-7ed32ae0e73ee6ee--a98af14267b9.js"
+          "release_asset": "20260921T010656Z--1807-7ed32ae0e73ee6ee--a98af14267b9.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--1807-7ed32ae0e73ee6ee--a98af14267b9.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/2090-4d080f2aaf46c25b.js",
@@ -2200,7 +2240,9 @@
           "bytes": 8825,
           "sha256": "6680a654250dc422adbb1376d75bab7bde0e2bc9b87a5df054b2b9a5d8f02d72",
           "file": "bodies/20260921T010511Z--2090-4d080f2aaf46c25b--6680a654250d.js",
-          "release_asset": "20260921T010511Z--2090-4d080f2aaf46c25b--6680a654250d.js"
+          "release_asset": "20260921T010656Z--2090-4d080f2aaf46c25b--6680a654250d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--2090-4d080f2aaf46c25b--6680a654250d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/3240-ca7699a9cac6a68e.js",
@@ -2229,7 +2271,9 @@
           "bytes": 11255,
           "sha256": "061864a629fa3609e6138519df49e31df51541cffb69a2e4f6cb7d0e7da2016f",
           "file": "bodies/20260921T010511Z--3240-ca7699a9cac6a68e--061864a629fa.js",
-          "release_asset": "20260921T010511Z--3240-ca7699a9cac6a68e--061864a629fa.js"
+          "release_asset": "20260921T010656Z--3240-ca7699a9cac6a68e--061864a629fa.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--3240-ca7699a9cac6a68e--061864a629fa.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/3324-68fd5e56a216e881.js",
@@ -2258,7 +2302,9 @@
           "bytes": 57968,
           "sha256": "83c58b0bc6bacd7ce5ab263819bf0c5a123927d78a7fea0867310046c2698951",
           "file": "bodies/20260921T010511Z--3324-68fd5e56a216e881--83c58b0bc6ba.js",
-          "release_asset": "20260921T010511Z--3324-68fd5e56a216e881--83c58b0bc6ba.js"
+          "release_asset": "20260921T010656Z--3324-68fd5e56a216e881--83c58b0bc6ba.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--3324-68fd5e56a216e881--83c58b0bc6ba.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/3521-7c8f704f46e5ca57.js",
@@ -2287,7 +2333,9 @@
           "bytes": 30711,
           "sha256": "e9f4c6d5fa440aa12cd65ee4a1920c692caff319f032064eff5c056327a18b0b",
           "file": "bodies/20260921T010511Z--3521-7c8f704f46e5ca57--e9f4c6d5fa44.js",
-          "release_asset": "20260921T010511Z--3521-7c8f704f46e5ca57--e9f4c6d5fa44.js"
+          "release_asset": "20260921T010656Z--3521-7c8f704f46e5ca57--e9f4c6d5fa44.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--3521-7c8f704f46e5ca57--e9f4c6d5fa44.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/4093-fceff1f1bb57e3b6.js",
@@ -2316,7 +2364,9 @@
           "bytes": 201328,
           "sha256": "a41407e577af5c43fad4a810523f6172e6846704ef7b80e6588b49fc5c9889a9",
           "file": "bodies/20260921T010511Z--4093-fceff1f1bb57e3b6--a41407e577af.js",
-          "release_asset": "20260921T010511Z--4093-fceff1f1bb57e3b6--a41407e577af.js"
+          "release_asset": "20260921T010656Z--4093-fceff1f1bb57e3b6--a41407e577af.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--4093-fceff1f1bb57e3b6--a41407e577af.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/4289-8770d15e1a619181.js",
@@ -2345,7 +2395,9 @@
           "bytes": 15087,
           "sha256": "ae1cbf42b2585c1f30399702eca811f3b5b2e32a83d718056b732c581db46343",
           "file": "bodies/20260921T010511Z--4289-8770d15e1a619181--ae1cbf42b258.js",
-          "release_asset": "20260921T010511Z--4289-8770d15e1a619181--ae1cbf42b258.js"
+          "release_asset": "20260921T010656Z--4289-8770d15e1a619181--ae1cbf42b258.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--4289-8770d15e1a619181--ae1cbf42b258.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/4488-cf1c4270eeaffd42.js",
@@ -2374,7 +2426,9 @@
           "bytes": 8249,
           "sha256": "5090a3b2c8c0bdb6a0fa346d7ddcdebd79bf7e998d1c8d51ee57f8fd38dfeede",
           "file": "bodies/20260921T010511Z--4488-cf1c4270eeaffd42--5090a3b2c8c0.js",
-          "release_asset": "20260921T010511Z--4488-cf1c4270eeaffd42--5090a3b2c8c0.js"
+          "release_asset": "20260921T010656Z--4488-cf1c4270eeaffd42--5090a3b2c8c0.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--4488-cf1c4270eeaffd42--5090a3b2c8c0.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/4592-755d9df1a6d98ac5.js",
@@ -2403,7 +2457,9 @@
           "bytes": 23149,
           "sha256": "302a4ae093f53e17af8dc65496ae5fec71f1ce021f41e02c57feb10c03ff0e62",
           "file": "bodies/20260921T010511Z--4592-755d9df1a6d98ac5--302a4ae093f5.js",
-          "release_asset": "20260921T010511Z--4592-755d9df1a6d98ac5--302a4ae093f5.js"
+          "release_asset": "20260921T010656Z--4592-755d9df1a6d98ac5--302a4ae093f5.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--4592-755d9df1a6d98ac5--302a4ae093f5.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/5315-1e85b80b942fffa0.js",
@@ -2432,7 +2488,9 @@
           "bytes": 10566,
           "sha256": "9c81ad1e068df72fef07f2cffe95cf59fae42514efdc16a89742c50f97edbdcf",
           "file": "bodies/20260921T010511Z--5315-1e85b80b942fffa0--9c81ad1e068d.js",
-          "release_asset": "20260921T010511Z--5315-1e85b80b942fffa0--9c81ad1e068d.js"
+          "release_asset": "20260921T010656Z--5315-1e85b80b942fffa0--9c81ad1e068d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--5315-1e85b80b942fffa0--9c81ad1e068d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/561-c8759b3ba843dbeb.js",
@@ -2461,7 +2519,9 @@
           "bytes": 7639,
           "sha256": "10d32458b13ab73ea53d7d08a8f81d45bec9014c464e4bf46a3a6a27e6fe1e8e",
           "file": "bodies/20260921T010511Z--561-c8759b3ba843dbeb--10d32458b13a.js",
-          "release_asset": "20260921T010511Z--561-c8759b3ba843dbeb--10d32458b13a.js"
+          "release_asset": "20260921T010656Z--561-c8759b3ba843dbeb--10d32458b13a.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--561-c8759b3ba843dbeb--10d32458b13a.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/6216-6a3eb18d4bcc3126.js",
@@ -2490,7 +2550,9 @@
           "bytes": 77590,
           "sha256": "44f16fdde6102e6715cc56989ea89b3ea357efd2f3ee2f81906bc635e44be017",
           "file": "bodies/20260921T010511Z--6216-6a3eb18d4bcc3126--44f16fdde610.js",
-          "release_asset": "20260921T010511Z--6216-6a3eb18d4bcc3126--44f16fdde610.js"
+          "release_asset": "20260921T010656Z--6216-6a3eb18d4bcc3126--44f16fdde610.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--6216-6a3eb18d4bcc3126--44f16fdde610.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/6975-59d7a746a92e6335.js",
@@ -2519,7 +2581,9 @@
           "bytes": 20141,
           "sha256": "d4f42c82c76d6894f71e5487b1867dc0c57f051c4df48550def45b525aba88cf",
           "file": "bodies/20260921T010511Z--6975-59d7a746a92e6335--d4f42c82c76d.js",
-          "release_asset": "20260921T010511Z--6975-59d7a746a92e6335--d4f42c82c76d.js"
+          "release_asset": "20260921T010656Z--6975-59d7a746a92e6335--d4f42c82c76d.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--6975-59d7a746a92e6335--d4f42c82c76d.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/7783-90f7e1620b801c76.js",
@@ -2548,7 +2612,9 @@
           "bytes": 29935,
           "sha256": "1c0a38679ea700b1e4ba25a9f949ce0b0d1788692871d980cfecf65f383bd5b5",
           "file": "bodies/20260921T010511Z--7783-90f7e1620b801c76--1c0a38679ea7.js",
-          "release_asset": "20260921T010511Z--7783-90f7e1620b801c76--1c0a38679ea7.js"
+          "release_asset": "20260921T010656Z--7783-90f7e1620b801c76--1c0a38679ea7.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--7783-90f7e1620b801c76--1c0a38679ea7.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/7799-acab60f7b6f360ea.js",
@@ -2577,7 +2643,9 @@
           "bytes": 38339,
           "sha256": "6fd5abf4318f2877d7779f91295c3a095bee06a7e85f32b34ed9a2285ef4b15d",
           "file": "bodies/20260921T010511Z--7799-acab60f7b6f360ea--6fd5abf4318f.js",
-          "release_asset": "20260921T010511Z--7799-acab60f7b6f360ea--6fd5abf4318f.js"
+          "release_asset": "20260921T010656Z--7799-acab60f7b6f360ea--6fd5abf4318f.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--7799-acab60f7b6f360ea--6fd5abf4318f.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/8102-c45dcc7593c793ad.js",
@@ -2606,7 +2674,9 @@
           "bytes": 10045,
           "sha256": "69c89183e7bf31ccb698e46e165b7adf51888600a4ba3fae16c58b3e2b98327b",
           "file": "bodies/20260921T010511Z--8102-c45dcc7593c793ad--69c89183e7bf.js",
-          "release_asset": "20260921T010511Z--8102-c45dcc7593c793ad--69c89183e7bf.js"
+          "release_asset": "20260921T010656Z--8102-c45dcc7593c793ad--69c89183e7bf.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--8102-c45dcc7593c793ad--69c89183e7bf.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/8362-601d7f8c412d877c.js",
@@ -2635,7 +2705,9 @@
           "bytes": 41860,
           "sha256": "2f750c7f0a0c6b24f179e841dc415d1aae06b53f69ddbcd194fff14e50724484",
           "file": "bodies/20260921T010511Z--8362-601d7f8c412d877c--2f750c7f0a0c.js",
-          "release_asset": "20260921T010511Z--8362-601d7f8c412d877c--2f750c7f0a0c.js"
+          "release_asset": "20260921T010656Z--8362-601d7f8c412d877c--2f750c7f0a0c.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--8362-601d7f8c412d877c--2f750c7f0a0c.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/9229-3d08979121183a1c.js",
@@ -2664,7 +2736,9 @@
           "bytes": 78378,
           "sha256": "fb4b0076f3e6b09d41321f6fa7074e06d71e8f9cc7bc57f5135ff6516cc3e3a2",
           "file": "bodies/20260921T010511Z--9229-3d08979121183a1c--fb4b0076f3e6.js",
-          "release_asset": "20260921T010511Z--9229-3d08979121183a1c--fb4b0076f3e6.js"
+          "release_asset": "20260921T010656Z--9229-3d08979121183a1c--fb4b0076f3e6.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--9229-3d08979121183a1c--fb4b0076f3e6.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/9258-09ae161489117e06.js",
@@ -2693,7 +2767,9 @@
           "bytes": 38903,
           "sha256": "8dfe2d7ec68c3e0d05f0ca8a3f7b0ed5c924bca87273e69e5d141174435ac24c",
           "file": "bodies/20260921T010511Z--9258-09ae161489117e06--8dfe2d7ec68c.js",
-          "release_asset": "20260921T010511Z--9258-09ae161489117e06--8dfe2d7ec68c.js"
+          "release_asset": "20260921T010656Z--9258-09ae161489117e06--8dfe2d7ec68c.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--9258-09ae161489117e06--8dfe2d7ec68c.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/9417-243f6cc45a59517b.js",
@@ -2722,7 +2798,9 @@
           "bytes": 11100,
           "sha256": "971149305740c2580ce177f7f251a761b556028863e9afe8beb6ce4c1171806e",
           "file": "bodies/20260921T010511Z--9417-243f6cc45a59517b--971149305740.js",
-          "release_asset": "20260921T010511Z--9417-243f6cc45a59517b--971149305740.js"
+          "release_asset": "20260921T010656Z--9417-243f6cc45a59517b--971149305740.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--9417-243f6cc45a59517b--971149305740.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/404-f3293aece63311f9.js",
@@ -2751,7 +2829,9 @@
           "bytes": 671,
           "sha256": "87a57dca5e6b83707f563df3c10bf5db562f697b088e830ab5375d9f398fdb6c",
           "file": "bodies/20260921T010511Z--404-f3293aece63311f9--87a57dca5e6b.js",
-          "release_asset": "20260921T010511Z--404-f3293aece63311f9--87a57dca5e6b.js"
+          "release_asset": "20260921T010656Z--404-f3293aece63311f9--87a57dca5e6b.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--404-f3293aece63311f9--87a57dca5e6b.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/500-8aacc117e7d9dd69.js",
@@ -2780,7 +2860,9 @@
           "bytes": 699,
           "sha256": "7411c7800f69576537f68080f36534b76289d7c2088a31843886562ffbe84151",
           "file": "bodies/20260921T010511Z--500-8aacc117e7d9dd69--7411c7800f69.js",
-          "release_asset": "20260921T010511Z--500-8aacc117e7d9dd69--7411c7800f69.js"
+          "release_asset": "20260921T010656Z--500-8aacc117e7d9dd69--7411c7800f69.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--500-8aacc117e7d9dd69--7411c7800f69.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/_error-f1829051cb04309a.js",
@@ -2809,7 +2891,9 @@
           "bytes": 222,
           "sha256": "91fd75eeeb5b729f4c30538f6d88fb6a3e4175ba2a597f891184b8f14777fcfb",
           "file": "bodies/20260921T010511Z--_error-f1829051cb04309a--91fd75eeeb5b.js",
-          "release_asset": "20260921T010511Z--_error-f1829051cb04309a--91fd75eeeb5b.js"
+          "release_asset": "20260921T010656Z--_error-f1829051cb04309a--91fd75eeeb5b.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_error-f1829051cb04309a--91fd75eeeb5b.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/debug-ca045e29e3301abf.js",
@@ -2838,7 +2922,9 @@
           "bytes": 381,
           "sha256": "d79990a76707ca5486f53e24dabc08bf3f5a067a4b0ce8b268a474f2de9b75c1",
           "file": "bodies/20260921T010511Z--debug-ca045e29e3301abf--d79990a76707.js",
-          "release_asset": "20260921T010511Z--debug-ca045e29e3301abf--d79990a76707.js"
+          "release_asset": "20260921T010656Z--debug-ca045e29e3301abf--d79990a76707.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--debug-ca045e29e3301abf--d79990a76707.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/music-a639b94047b8d6b8.js",
@@ -2867,7 +2953,9 @@
           "bytes": 371,
           "sha256": "4d502b34f035889094af91dbd5824999b0a20c4b6242c57881773c7ec696ae70",
           "file": "bodies/20260921T010511Z--music-a639b94047b8d6b8--4d502b34f035.js",
-          "release_asset": "20260921T010511Z--music-a639b94047b8d6b8--4d502b34f035.js"
+          "release_asset": "20260921T010656Z--music-a639b94047b8d6b8--4d502b34f035.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--music-a639b94047b8d6b8--4d502b34f035.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/overview-bc5bc3da5627f1e9.js",
@@ -2896,7 +2984,9 @@
           "bytes": 359,
           "sha256": "e89056ea2d93ddad17353cee3f59ed2ad28a7dc12b1f23d63da6c173959d813b",
           "file": "bodies/20260921T010511Z--overview-bc5bc3da5627f1e9--e89056ea2d93.js",
-          "release_asset": "20260921T010511Z--overview-bc5bc3da5627f1e9--e89056ea2d93.js"
+          "release_asset": "20260921T010656Z--overview-bc5bc3da5627f1e9--e89056ea2d93.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--overview-bc5bc3da5627f1e9--e89056ea2d93.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/schedules-66800c4827873ac9.js",
@@ -2925,7 +3015,9 @@
           "bytes": 7600,
           "sha256": "1ae6b6af7acf0d314c1b704713e238e32f51f39c016e3624b7a259175adf3953",
           "file": "bodies/20260921T010511Z--schedules-66800c4827873ac9--1ae6b6af7acf.js",
-          "release_asset": "20260921T010511Z--schedules-66800c4827873ac9--1ae6b6af7acf.js"
+          "release_asset": "20260921T010656Z--schedules-66800c4827873ac9--1ae6b6af7acf.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--schedules-66800c4827873ac9--1ae6b6af7acf.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/schedules/create-712193095d7478f2.js",
@@ -2954,7 +3046,9 @@
           "bytes": 973,
           "sha256": "995d01bd72237eac21ababc2b7ae53eab53bd3e15b8e473e658fc8a2e3af9e50",
           "file": "bodies/20260921T010511Z--create-712193095d7478f2--995d01bd7223.js",
-          "release_asset": "20260921T010511Z--create-712193095d7478f2--995d01bd7223.js"
+          "release_asset": "20260921T010656Z--create-712193095d7478f2--995d01bd7223.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--create-712193095d7478f2--995d01bd7223.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/schedules/edit-3360543e730b8140.js",
@@ -2983,7 +3077,9 @@
           "bytes": 1002,
           "sha256": "a4a0a5433567443fdd1859b2203cba3f6602c8cb2ba544a36bbfc5270ee0f56e",
           "file": "bodies/20260921T010511Z--edit-3360543e730b8140--a4a0a5433567.js",
-          "release_asset": "20260921T010511Z--edit-3360543e730b8140--a4a0a5433567.js"
+          "release_asset": "20260921T010656Z--edit-3360543e730b8140--a4a0a5433567.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--edit-3360543e730b8140--a4a0a5433567.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/settings-5c270e992b7fa688.js",
@@ -3012,7 +3108,9 @@
           "bytes": 336,
           "sha256": "611cb2146b341c4554623ad2f5471d606384756cb1ed4e262a29c97c4bdbf034",
           "file": "bodies/20260921T010511Z--settings-5c270e992b7fa688--611cb2146b34.js",
-          "release_asset": "20260921T010511Z--settings-5c270e992b7fa688--611cb2146b34.js"
+          "release_asset": "20260921T010656Z--settings-5c270e992b7fa688--611cb2146b34.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--settings-5c270e992b7fa688--611cb2146b34.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/subscription-15748cb828a610ee.js",
@@ -3041,7 +3139,9 @@
           "bytes": 3468,
           "sha256": "a0c63c43f23445a215c304753c95c58e0bfebafce4e2fd9701750e8035adc87b",
           "file": "bodies/20260921T010511Z--subscription-15748cb828a610ee--a0c63c43f234.js",
-          "release_asset": "20260921T010511Z--subscription-15748cb828a610ee--a0c63c43f234.js"
+          "release_asset": "20260921T010656Z--subscription-15748cb828a610ee--a0c63c43f234.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--subscription-15748cb828a610ee--a0c63c43f234.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]-3963b47b93621618.js",
@@ -3070,7 +3170,9 @@
           "bytes": 1915,
           "sha256": "33ab16d99a979cbfd54a40e6831671c98beb6605e4d82d4306dd575c5401b66f",
           "file": "bodies/20260921T010511Z--_hhid_-3963b47b93621618--33ab16d99a97.js",
-          "release_asset": "20260921T010511Z--_hhid_-3963b47b93621618--33ab16d99a97.js"
+          "release_asset": "20260921T010656Z--_hhid_-3963b47b93621618--33ab16d99a97.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_hhid_-3963b47b93621618--33ab16d99a97.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/[tabs]-d80cf70a3edd8a24.js",
@@ -3099,7 +3201,9 @@
           "bytes": 1839,
           "sha256": "f5caea6be0eadb6b48bea911be1bf99de3298004967f54666e99c6b14a54d61f",
           "file": "bodies/20260921T010511Z--_tabs_-d80cf70a3edd8a24--f5caea6be0ea.js",
-          "release_asset": "20260921T010511Z--_tabs_-d80cf70a3edd8a24--f5caea6be0ea.js"
+          "release_asset": "20260921T010656Z--_tabs_-d80cf70a3edd8a24--f5caea6be0ea.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_tabs_-d80cf70a3edd8a24--f5caea6be0ea.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/browse-ce6d338762b1504c.js",
@@ -3128,7 +3232,9 @@
           "bytes": 362,
           "sha256": "8499027c9d5ae6678d357d74997188cab0e4d195a8e786b8a15f3d38b8aaba06",
           "file": "bodies/20260921T010511Z--browse-ce6d338762b1504c--8499027c9d5a.js",
-          "release_asset": "20260921T010511Z--browse-ce6d338762b1504c--8499027c9d5a.js"
+          "release_asset": "20260921T010656Z--browse-ce6d338762b1504c--8499027c9d5a.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--browse-ce6d338762b1504c--8499027c9d5a.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/music-bfc066d031a3b251.js",
@@ -3157,7 +3263,9 @@
           "bytes": 5008,
           "sha256": "a42d46e3618cc20039057c64f2bffec03b3345a68064c5e0f5adba18e98fa981",
           "file": "bodies/20260921T010511Z--music-bfc066d031a3b251--a42d46e3618c.js",
-          "release_asset": "20260921T010511Z--music-bfc066d031a3b251--a42d46e3618c.js"
+          "release_asset": "20260921T010656Z--music-bfc066d031a3b251--a42d46e3618c.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--music-bfc066d031a3b251--a42d46e3618c.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/schedules-fc8ba54c73a1d2ad.js",
@@ -3186,7 +3294,9 @@
           "bytes": 2183,
           "sha256": "1856c9d9f0e87d480d782ac908f2e025aed1b814f189602cd543530c6927ee38",
           "file": "bodies/20260921T010511Z--schedules-fc8ba54c73a1d2ad--1856c9d9f0e8.js",
-          "release_asset": "20260921T010511Z--schedules-fc8ba54c73a1d2ad--1856c9d9f0e8.js"
+          "release_asset": "20260921T010656Z--schedules-fc8ba54c73a1d2ad--1856c9d9f0e8.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--schedules-fc8ba54c73a1d2ad--1856c9d9f0e8.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/schedules/create-1a06c1407316195c.js",
@@ -3215,7 +3325,9 @@
           "bytes": 983,
           "sha256": "650b21eb1d2f2b647e7ac058605f6bcdc4f2f55859b0673d6fae04efea5865dd",
           "file": "bodies/20260921T010511Z--create-1a06c1407316195c--650b21eb1d2f.js",
-          "release_asset": "20260921T010511Z--create-1a06c1407316195c--650b21eb1d2f.js"
+          "release_asset": "20260921T010656Z--create-1a06c1407316195c--650b21eb1d2f.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--create-1a06c1407316195c--650b21eb1d2f.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/schedules/edit-92ef9d60ed0081c1.js",
@@ -3244,7 +3356,9 @@
           "bytes": 1019,
           "sha256": "5a855ac07593c2469843dabaa25e4fc73bcd21864b10df9b2c936b7bf9a93d76",
           "file": "bodies/20260921T010511Z--edit-92ef9d60ed0081c1--5a855ac07593.js",
-          "release_asset": "20260921T010511Z--edit-92ef9d60ed0081c1--5a855ac07593.js"
+          "release_asset": "20260921T010656Z--edit-92ef9d60ed0081c1--5a855ac07593.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--edit-92ef9d60ed0081c1--5a855ac07593.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/system/[hhid]/status-a36bfdfae8306c3f.js",
@@ -3273,7 +3387,9 @@
           "bytes": 379,
           "sha256": "227bcdb19060118c8b96c5c88cd63ccd955be87f8defe0e8c3fa6aed9839d94b",
           "file": "bodies/20260921T010511Z--status-a36bfdfae8306c3f--227bcdb19060.js",
-          "release_asset": "20260921T010511Z--status-a36bfdfae8306c3f--227bcdb19060.js"
+          "release_asset": "20260921T010656Z--status-a36bfdfae8306c3f--227bcdb19060.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--status-a36bfdfae8306c3f--227bcdb19060.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/business/[businessId]/users-47ebfa3b37706275.js",
@@ -3302,7 +3418,9 @@
           "bytes": 343,
           "sha256": "57a0256f6552c3333de047f5f0ed3203677687c2e49276e7f866f3901ba58c9b",
           "file": "bodies/20260921T010511Z--users-47ebfa3b37706275--57a0256f6552.js",
-          "release_asset": "20260921T010511Z--users-47ebfa3b37706275--57a0256f6552.js"
+          "release_asset": "20260921T010656Z--users-47ebfa3b37706275--57a0256f6552.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--users-47ebfa3b37706275--57a0256f6552.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/debug-9b9e19d91adf5bd5.js",
@@ -3331,7 +3449,9 @@
           "bytes": 274,
           "sha256": "3d7bbd1ce8fc566b3b13b261dab524bf29394cee95b8e42b60e3522982ffcc09",
           "file": "bodies/20260921T010511Z--debug-9b9e19d91adf5bd5--3d7bbd1ce8fc.js",
-          "release_asset": "20260921T010511Z--debug-9b9e19d91adf5bd5--3d7bbd1ce8fc.js"
+          "release_asset": "20260921T010656Z--debug-9b9e19d91adf5bd5--3d7bbd1ce8fc.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--debug-9b9e19d91adf5bd5--3d7bbd1ce8fc.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/invite-83b5933c213ee9bb.js",
@@ -3360,7 +3480,9 @@
           "bytes": 1861,
           "sha256": "9d018d2f945ebd5b70a4ed56e77cf949c4405c21e173813e16e560568a4ea9d9",
           "file": "bodies/20260921T010511Z--invite-83b5933c213ee9bb--9d018d2f945e.js",
-          "release_asset": "20260921T010511Z--invite-83b5933c213ee9bb--9d018d2f945e.js"
+          "release_asset": "20260921T010656Z--invite-83b5933c213ee9bb--9d018d2f945e.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--invite-83b5933c213ee9bb--9d018d2f945e.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/login-e0cb2ac59a60996b.js",
@@ -3389,7 +3511,9 @@
           "bytes": 1046,
           "sha256": "1913289b6969f923e56893266029cb1827dce81dacc81b3bd8cc18868ed7ddf9",
           "file": "bodies/20260921T010511Z--login-e0cb2ac59a60996b--1913289b6969.js",
-          "release_asset": "20260921T010511Z--login-e0cb2ac59a60996b--1913289b6969.js"
+          "release_asset": "20260921T010656Z--login-e0cb2ac59a60996b--1913289b6969.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--login-e0cb2ac59a60996b--1913289b6969.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/logout-b56d8c58cf0f59a9.js",
@@ -3418,7 +3542,9 @@
           "bytes": 706,
           "sha256": "eed26ab7b4d2a28019278bcb780fa21b8f3f793d1339d4cc7b66ea43c4aa590a",
           "file": "bodies/20260921T010511Z--logout-b56d8c58cf0f59a9--eed26ab7b4d2.js",
-          "release_asset": "20260921T010511Z--logout-b56d8c58cf0f59a9--eed26ab7b4d2.js"
+          "release_asset": "20260921T010656Z--logout-b56d8c58cf0f59a9--eed26ab7b4d2.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--logout-b56d8c58cf0f59a9--eed26ab7b4d2.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/music-085beb2b1e62d220.js",
@@ -3447,7 +3573,9 @@
           "bytes": 266,
           "sha256": "9b3493b52c5926e9c37c7d4e80a9fb8476741283f37cb29dbda0791c4bc8406c",
           "file": "bodies/20260921T010511Z--music-085beb2b1e62d220--9b3493b52c59.js",
-          "release_asset": "20260921T010511Z--music-085beb2b1e62d220--9b3493b52c59.js"
+          "release_asset": "20260921T010656Z--music-085beb2b1e62d220--9b3493b52c59.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--music-085beb2b1e62d220--9b3493b52c59.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/schedules-4db8ce4ee04a4bb0.js",
@@ -3476,7 +3604,9 @@
           "bytes": 7497,
           "sha256": "46812fb4277b92dcca3a8fecbc110ec02cba4f4af13e48adb740c113c5999712",
           "file": "bodies/20260921T010511Z--schedules-4db8ce4ee04a4bb0--46812fb4277b.js",
-          "release_asset": "20260921T010511Z--schedules-4db8ce4ee04a4bb0--46812fb4277b.js"
+          "release_asset": "20260921T010656Z--schedules-4db8ce4ee04a4bb0--46812fb4277b.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--schedules-4db8ce4ee04a4bb0--46812fb4277b.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/schedules/create-af69bcd155431b15.js",
@@ -3505,7 +3635,9 @@
           "bytes": 868,
           "sha256": "3b4b0b26b4f94df4b1576258cc78688b33b6858c5b0117539434e1fbcec87b47",
           "file": "bodies/20260921T010511Z--create-af69bcd155431b15--3b4b0b26b4f9.js",
-          "release_asset": "20260921T010511Z--create-af69bcd155431b15--3b4b0b26b4f9.js"
+          "release_asset": "20260921T010656Z--create-af69bcd155431b15--3b4b0b26b4f9.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--create-af69bcd155431b15--3b4b0b26b4f9.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/schedules/edit-e5a7ac9181a043a1.js",
@@ -3534,7 +3666,9 @@
           "bytes": 900,
           "sha256": "bdd6592f406f7d4896b19eae4a853bbaf56abd0d33810a1fc2410fca9922f8ab",
           "file": "bodies/20260921T010511Z--edit-e5a7ac9181a043a1--bdd6592f406f.js",
-          "release_asset": "20260921T010511Z--edit-e5a7ac9181a043a1--bdd6592f406f.js"
+          "release_asset": "20260921T010656Z--edit-e5a7ac9181a043a1--bdd6592f406f.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--edit-e5a7ac9181a043a1--bdd6592f406f.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/settings-a0aa011ef55d21c9.js",
@@ -3563,7 +3697,9 @@
           "bytes": 230,
           "sha256": "e3dfd43f1650abd1d10e3a43345edad1994bb190cc0344d82eb0956b760ec532",
           "file": "bodies/20260921T010511Z--settings-a0aa011ef55d21c9--e3dfd43f1650.js",
-          "release_asset": "20260921T010511Z--settings-a0aa011ef55d21c9--e3dfd43f1650.js"
+          "release_asset": "20260921T010656Z--settings-a0aa011ef55d21c9--e3dfd43f1650.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--settings-a0aa011ef55d21c9--e3dfd43f1650.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/support-7468b1bcf0241560.js",
@@ -3592,7 +3728,9 @@
           "bytes": 12887,
           "sha256": "9bf61f3dae85bb8755636dfce02aed1299fd9c89ec0f9ffad7676f626beb5526",
           "file": "bodies/20260921T010511Z--support-7468b1bcf0241560--9bf61f3dae85.js",
-          "release_asset": "20260921T010511Z--support-7468b1bcf0241560--9bf61f3dae85.js"
+          "release_asset": "20260921T010656Z--support-7468b1bcf0241560--9bf61f3dae85.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--support-7468b1bcf0241560--9bf61f3dae85.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/system/[hhid]/browse-ad1ff6d25bf757b5.js",
@@ -3621,7 +3759,9 @@
           "bytes": 257,
           "sha256": "01c19e910545bea05dd7ee10fe90bb966b1f6e6b3b2bd0393af007a1244337f6",
           "file": "bodies/20260921T010511Z--browse-ad1ff6d25bf757b5--01c19e910545.js",
-          "release_asset": "20260921T010511Z--browse-ad1ff6d25bf757b5--01c19e910545.js"
+          "release_asset": "20260921T010656Z--browse-ad1ff6d25bf757b5--01c19e910545.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--browse-ad1ff6d25bf757b5--01c19e910545.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/system/[hhid]/music-adcb021913d2c423.js",
@@ -3650,7 +3790,9 @@
           "bytes": 4903,
           "sha256": "2e67393d81c4ec6707625fcb3574e0f3c87bf2ef0830146f556f9e83c501ec91",
           "file": "bodies/20260921T010511Z--music-adcb021913d2c423--2e67393d81c4.js",
-          "release_asset": "20260921T010511Z--music-adcb021913d2c423--2e67393d81c4.js"
+          "release_asset": "20260921T010656Z--music-adcb021913d2c423--2e67393d81c4.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--music-adcb021913d2c423--2e67393d81c4.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/system/[hhid]/schedules-826fa0bd0aecc83b.js",
@@ -3679,7 +3821,9 @@
           "bytes": 2078,
           "sha256": "170d279387185ea97b218183de3b1140620f3acf89cdda2fe98703b8ceba4869",
           "file": "bodies/20260921T010511Z--schedules-826fa0bd0aecc83b--170d27938718.js",
-          "release_asset": "20260921T010511Z--schedules-826fa0bd0aecc83b--170d27938718.js"
+          "release_asset": "20260921T010656Z--schedules-826fa0bd0aecc83b--170d27938718.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--schedules-826fa0bd0aecc83b--170d27938718.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/system/[hhid]/schedules/create-d3acd540ff16ee8b.js",
@@ -3708,7 +3852,9 @@
           "bytes": 965,
           "sha256": "fc20549332ba9ac6d1f86be359f8d608502ebe3eec4020d6fbac318ac43c3427",
           "file": "bodies/20260921T010511Z--create-d3acd540ff16ee8b--fc20549332ba.js",
-          "release_asset": "20260921T010511Z--create-d3acd540ff16ee8b--fc20549332ba.js"
+          "release_asset": "20260921T010656Z--create-d3acd540ff16ee8b--fc20549332ba.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--create-d3acd540ff16ee8b--fc20549332ba.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/system/[hhid]/status-4c5f9d7c0416b10d.js",
@@ -3737,7 +3883,9 @@
           "bytes": 274,
           "sha256": "3690290ebfe97e5189a89f74f08e5680b22398369a9841672e6cdb6a68155c78",
           "file": "bodies/20260921T010511Z--status-4c5f9d7c0416b10d--3690290ebfe9.js",
-          "release_asset": "20260921T010511Z--status-4c5f9d7c0416b10d--3690290ebfe9.js"
+          "release_asset": "20260921T010656Z--status-4c5f9d7c0416b10d--3690290ebfe9.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--status-4c5f9d7c0416b10d--3690290ebfe9.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/users-67e24aef00ec1eb5.js",
@@ -3766,7 +3914,9 @@
           "bytes": 238,
           "sha256": "b2bea4fb857861ec8a50b634d4fbc3d6eac5f37a486473a0a080384758798ca2",
           "file": "bodies/20260921T010511Z--users-67e24aef00ec1eb5--b2bea4fb8578.js",
-          "release_asset": "20260921T010511Z--users-67e24aef00ec1eb5--b2bea4fb8578.js"
+          "release_asset": "20260921T010656Z--users-67e24aef00ec1eb5--b2bea4fb8578.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--users-67e24aef00ec1eb5--b2bea4fb8578.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/verify-0a7a04f005399eac.js",
@@ -3795,7 +3945,9 @@
           "bytes": 5487,
           "sha256": "963e9adfe5f4f43c0fa453e042552c7e5d059c9d7f80c990762d56013d03effe",
           "file": "bodies/20260921T010511Z--verify-0a7a04f005399eac--963e9adfe5f4.js",
-          "release_asset": "20260921T010511Z--verify-0a7a04f005399eac--963e9adfe5f4.js"
+          "release_asset": "20260921T010656Z--verify-0a7a04f005399eac--963e9adfe5f4.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--verify-0a7a04f005399eac--963e9adfe5f4.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/_app-16a95677f44ab56e.js#",
@@ -3824,7 +3976,9 @@
           "bytes": 1320596,
           "sha256": "52ea31910694bafc4148e38fe80f1e4d265cc641451ddea7c147af4882f173b7",
           "file": "bodies/20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js",
-          "release_asset": "20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js"
+          "release_asset": "20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/_app-16a95677f44ab56e.js#clip0_57_156",
@@ -3853,7 +4007,9 @@
           "bytes": 1320596,
           "sha256": "52ea31910694bafc4148e38fe80f1e4d265cc641451ddea7c147af4882f173b7",
           "file": "bodies/20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js",
-          "release_asset": "20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js"
+          "release_asset": "20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/pages/_app-16a95677f44ab56e.js#clip0_57_80",
@@ -3882,7 +4038,9 @@
           "bytes": 1320596,
           "sha256": "52ea31910694bafc4148e38fe80f1e4d265cc641451ddea7c147af4882f173b7",
           "file": "bodies/20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js",
-          "release_asset": "20260921T010511Z--_app-16a95677f44ab56e--52ea31910694.js"
+          "release_asset": "20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--_app-16a95677f44ab56e--52ea31910694.js"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/1542-430570b679f692b5.js#",
@@ -3911,7 +4069,9 @@
           "bytes": 46299,
           "sha256": "9fd5ada60ba786b7607ef4a3682d0e0f81429987860c725f8b84da0049401c5d",
           "file": "bodies/20260921T010511Z--1542-430570b679f692b5--9fd5ada60ba7.js",
-          "release_asset": "20260921T010511Z--1542-430570b679f692b5--9fd5ada60ba7.js"
+          "release_asset": "20260921T010656Z--1542-430570b679f692b5--9fd5ada60ba7.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--1542-430570b679f692b5--9fd5ada60ba7.js"
         },
         {
           "requested_url": "https://pro.sonos.com/assets/product-placeholder.png",
@@ -3940,7 +4100,9 @@
           "bytes": 20064,
           "sha256": "47ab52af740eb62a7df3cd5dfe2c92cbbd11c333b2167d205261115d323bfb93",
           "file": "bodies/20260921T010511Z--product-placeholder--47ab52af740e.png",
-          "release_asset": "20260921T010511Z--product-placeholder--47ab52af740e.png"
+          "release_asset": "20260921T010656Z--product-placeholder--47ab52af740e.png",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--product-placeholder--47ab52af740e.png"
         },
         {
           "requested_url": "https://pro.sonos.com/_next/static/chunks/8362-601d7f8c412d877c.js#",
@@ -3969,18 +4131,22 @@
           "bytes": 41860,
           "sha256": "2f750c7f0a0c6b24f179e841dc415d1aae06b53f69ddbcd194fff14e50724484",
           "file": "bodies/20260921T010511Z--8362-601d7f8c412d877c--2f750c7f0a0c.js",
-          "release_asset": "20260921T010511Z--8362-601d7f8c412d877c--2f750c7f0a0c.js"
+          "release_asset": "20260921T010656Z--8362-601d7f8c412d877c--2f750c7f0a0c.js",
+          "release_tag": "apps-web-pro",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/20260921T010656Z--8362-601d7f8c412d877c--2f750c7f0a0c.js"
         }
       ],
       "boundary": "Public deployment bytes only; no login session or cloud API data.",
       "bundle": {
-        "file": "/Users/simon/MyDocuments/gpt/sonos-firmware-archive/artifacts/web-captures/pro/20260921T010511Z.tar.gz",
+        "file": "/Users/simon/MyDocuments/gpt/sonos-firmware-archive/artifacts/web-captures/pro/sonos-pro-20260921T010656Z--232a9dbd4d43--complete.tar.gz",
         "bytes": 1022112,
         "sha256": "232a9dbd4d43591eff3f9b1b3f6f38f6752c983ad7f91ba0a5f188867d042b24",
-        "release_asset": "sonos-pro-20260921T010511Z--complete.tar.gz"
+        "release_asset": "sonos-pro-20260921T010656Z--232a9dbd4d43--complete.tar.gz",
+        "release_tag": "apps-web-pro",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20260921T010656Z--232a9dbd4d43--complete.tar.gz"
       }
     }
   ],
-  "updated": "2026-09-21T02:24:57.121325+00:00",
+  "updated": "2026-09-21T02:28:53.843691+00:00",
   "deployment_total": 2
 }
