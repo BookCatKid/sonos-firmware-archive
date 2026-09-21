@@ -35,6 +35,14 @@ match the official Sonos signer anchors. See
 [`data/apps/`](data/apps/) and the
 [application preservation report](docs/sonos-app-preservation-2026-09-20.md).
 
+The archive also fingerprints and snapshots the two official browser surfaces:
+the consumer controller at `play.sonos.com` and the public Sonos Pro dashboard
+at `pro.sonos.com`. Each account-free response body is retained separately and
+in a reconstruction bundle. Authentication, household data, and live cloud API
+responses are intentionally excluded; these are deployment snapshots, not
+offline replacement controllers. See the
+[web/platform preservation report](docs/sonos-web-and-platform-preservation-2026-09-20.md).
+
 On 2026-09-10, a rate-limited sweep of 1,200 synthetic metadata profiles found
 three byte-distinct UPS responses. Most profiles returned the already archived
 S1 manifest. Low/invalid controller profiles additionally exposed two
@@ -155,8 +163,9 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
 - `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
 - `data/apps/` — discovery inventories and verified GitHub Release receipts for
-  historical desktop installers, official Sonos-hosted APKs, and separately
-  labeled Android store recovery/direct-delivery sets.
+  historical desktop installers, official Sonos-hosted APKs, separately
+  labeled Android store recovery/direct-delivery sets, and public Web
+  deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
@@ -212,6 +221,11 @@ python scripts/discover_mobile_installers.py \
 python scripts/archive_desktop_installers.py
 python scripts/archive_mobile_installers.py
 python scripts/archive_android_store_apps.py --source apkpure-recovery
+
+# Capture public Web controller/Pro deployment bodies locally. Add --upload to
+# publish every body plus the complete reconstruction bundles to Releases.
+python scripts/archive_web_apps.py
+python scripts/check_new_web_apps.py --output web-app-monitor-report.json
 
 # Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \
@@ -298,7 +312,8 @@ URL. Monitoring errors fail the workflow instead of being interpreted as
 absence.
 
 The same deterministic workflow also checks Sonos's canonical desktop and
-Fire OS redirects and both official Google Play listing update dates. A listing
+Fire OS redirects, both official Google Play listing update dates, and public
+deployment fingerprints for the consumer Web controller and Sonos Pro. A listing
 date change opens a discovery issue; it does not claim the binary was acquired.
 Authenticated direct-Google acquisition is intentionally a separate manual
 workflow using a dedicated account, explicit terms acceptance, and repository

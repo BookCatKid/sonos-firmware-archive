@@ -1,0 +1,39 @@
+name: archive public Sonos web deployments
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archive-web-apps
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Capture, upload, and verify public deployment bodies
+        run: |
+          python scripts/archive_web_apps.py \
+            --capture-dir "$RUNNER_TEMP/web-captures" \
+            --upload
+      - name: Commit immutable deployment receipt
+        shell: bash
+        run: |
+          if git diff --quiet -- data/apps/web-app-archive.json; then
+            echo "The current public deployments were already recorded."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apps/web-app-archive.json
+          git commit -m "Archive current Sonos web deployments"
+          git push

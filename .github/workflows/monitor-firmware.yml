@@ -70,6 +70,15 @@ jobs:
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Check public Sonos web deployments
+        id: web_app_check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_web_apps.py --output web-app-monitor-report.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -83,6 +92,7 @@ jobs:
             mobile-app-discovery.json
             google-play-monitor-report.json
             google-play-discovery.json
+            web-app-monitor-report.json
           retention-days: 30
       - name: Open or update discovery issue
         if: steps.check.outputs.exit_code == '2'
@@ -128,7 +138,7 @@ jobs:
               });
             }
       - name: Fail on monitoring errors
-        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1' || steps.google_play_check.outputs.exit_code == '1'
+        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1' || steps.google_play_check.outputs.exit_code == '1' || steps.web_app_check.outputs.exit_code == '1'
         run: exit 1
       - name: Open or update desktop-app discovery issue
         if: steps.app_check.outputs.exit_code == '2'
@@ -214,6 +224,35 @@ jobs:
               `Automated, credential-free monitoring detected a change to an official Google Play listing.`,
               `This is a discovery signal, not a claim that a new binary was downloaded.`, ``,
               ...rows, ``,
+              `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body: details});
+            } else {
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo,
+                title, body: details});
+            }
+      - name: Open or update web-deployment discovery issue
+        if: steps.web_app_check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('web-app-monitor-report.json', 'utf8'));
+            const title = '[monitor] Sonos web deployment changed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const rows = (report.changed_deployments ?? []).map(x =>
+              `- ${x.app}: fingerprint \`${x.fingerprint}\``);
+            const details = [
+              `Automated, credential-free monitoring detected a new public Sonos web deployment.`,
+              `The signal covers public HTML/manifests only; it does not capture accounts or cloud API data.`, ``,
+              ...rows, ``,
+              `Run \`python scripts/archive_web_apps.py --upload\` to preserve every public body and reconstruction bundle.`,
               `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {

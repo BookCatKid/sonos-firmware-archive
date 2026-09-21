@@ -11,6 +11,8 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
+import urllib.parse
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -115,56 +117,119 @@ def unpack_delivery(source: Path, scratch: Path) -> tuple[dict, list[Path]]:
     return apk_metadata(source, scratch), [source]
 
 
-def ensure_release(repository: str, tag: str, source_kind: str) -> None:
-    if subprocess.run(["gh", "release", "view", tag, "--repo", repository],
-                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0:
-        return
+def release_id(repository: str, tag: str) -> int | None:
+    endpoint = f"repos/{repository}/releases/tags/{urllib.parse.quote(tag, safe='')}"
+    for attempt in range(130):
+        result = subprocess.run(
+            ["gh", "api", endpoint, "--jq", ".id"], text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        )
+        if result.returncode == 0:
+            return int(result.stdout.strip())
+        if "HTTP 404" in result.stdout:
+            return None
+        if "rate limit" in result.stdout.lower() and attempt < 129:
+            print(f"GitHub rate-limited release lookup; retrying in 30s ({attempt + 1}/130)",
+                  flush=True)
+            time.sleep(30)
+            continue
+        raise RuntimeError(f"GitHub release lookup failed for {tag}: {result.stdout}")
+    raise AssertionError("unreachable")
+
+
+def ensure_release(repository: str, tag: str, source_kind: str) -> int:
+    existing = release_id(repository, tag)
+    if existing is not None:
+        return existing
     provenance = (
         "Packages acquired directly from Google Play using an authenticated dedicated account."
         if source_kind == "google-play-direct" else
         "Third-party APKPure recovery copies of Google Play delivery sets; not direct-Play provenance."
     )
-    subprocess.run([
+    created = subprocess.run([
         "gh", "release", "create", tag, "--repo", repository,
         "--title", tag.replace("-", " ").title(),
         "--notes", provenance + " Every APK signature and SHA-256 is recorded in "
         "data/apps/android-store-archive.json.",
-    ], check=True)
+    ], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if created.returncode == 0:
+        found = release_id(repository, tag)
+        if found is None:
+            raise RuntimeError(f"created release {tag} but could not resolve its ID")
+        return found
+    # `gh release view` can transiently fail even though the tag already exists.
+    # Treat GitHub's explicit already-exists response as successful idempotency,
+    # but preserve all other creation failures.
+    if "Release.tag_name already exists" in created.stdout:
+        found = release_id(repository, tag)
+        if found is not None:
+            return found
+    raise RuntimeError(f"could not create or find release {tag}: {created.stdout}")
 
 
-def remote_assets(repository: str, tag: str) -> dict[str, dict]:
-    output = subprocess.check_output([
-        "gh", "release", "view", tag, "--repo", repository, "--json", "assets",
-    ], text=True)
-    return {x["name"]: x for x in json.loads(output)["assets"]}
+def remote_assets(repository: str, numeric_release_id: int) -> dict[str, dict]:
+    endpoint = f"repos/{repository}/releases/{numeric_release_id}/assets?per_page=100"
+    for attempt in range(130):
+        result = subprocess.run(
+            ["gh", "api", "--paginate", "--slurp", endpoint], text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        )
+        if result.returncode == 0:
+            pages = json.loads(result.stdout)
+            return {item["name"]: item for page in pages for item in page}
+        if "rate limit" in result.stdout.lower() and attempt < 129:
+            print(f"GitHub rate-limited asset lookup; retrying in 30s ({attempt + 1}/130)",
+                  flush=True)
+            time.sleep(30)
+            continue
+        raise RuntimeError(f"GitHub asset lookup failed: {result.stdout}")
+    raise AssertionError("unreachable")
 
 
-def upload(repository: str, tag: str, path: Path, asset_name: str) -> dict:
-    assets = remote_assets(repository, tag)
-    if asset_name not in assets:
-        with tempfile.TemporaryDirectory(prefix="sonos-release-asset-") as temporary:
-            upload_path = Path(temporary) / asset_name
-            try:
-                os.link(path, upload_path)
-            except OSError:
-                shutil.copy2(path, upload_path)
-            subprocess.run([
-                "gh", "release", "upload", tag, str(upload_path), "--repo", repository,
-            ], check=True)
-        assets = remote_assets(repository, tag)
-    remote = assets[asset_name]
-    size, sha256 = digest(path)
-    remote_sha = (remote.get("digest") or "").removeprefix("sha256:")
-    if remote["size"] != size or (remote_sha and remote_sha != sha256):
-        raise RuntimeError(f"GitHub asset mismatch: {tag}/{asset_name}")
-    return {"release_asset": asset_name, "release_url": remote["url"]}
+def upload_batch(repository: str, tag: str, numeric_release_id: int,
+                 files: list[tuple[Path, str]]) -> dict[str, dict]:
+    assets = remote_assets(repository, numeric_release_id)
+    missing = [(path, name) for path, name in files if name not in assets]
+    if missing:
+        with tempfile.TemporaryDirectory(prefix="sonos-release-assets-") as temporary:
+            upload_paths = []
+            for path, name in missing:
+                upload_path = Path(temporary) / name
+                try:
+                    os.link(path, upload_path)
+                except OSError:
+                    shutil.copy2(path, upload_path)
+                upload_paths.append(str(upload_path))
+            subprocess.run(
+                ["gh", "release", "upload", tag, *upload_paths, "--repo", repository],
+                check=True,
+            )
+        assets = remote_assets(repository, numeric_release_id)
+    records = {}
+    for path, name in files:
+        remote = assets.get(name)
+        if remote is None:
+            raise RuntimeError(f"GitHub asset missing after upload: {tag}/{name}")
+        size, sha256 = digest(path)
+        remote_sha = (remote.get("digest") or "").removeprefix("sha256:")
+        if remote["size"] != size or (remote_sha and remote_sha != sha256):
+            raise RuntimeError(f"GitHub asset mismatch: {tag}/{name}")
+        records[name] = {
+            "release_asset": name,
+            "release_url": remote["browser_download_url"],
+        }
+    return records
 
 
 def acquire(package: str, source_kind: str, output: Path, apkeep: str,
-            accept_google_play_tos: bool = False) -> Path:
+            accept_google_play_tos: bool = False,
+            version_selector: str | None = None) -> Path:
     if source_kind == "apkpure-recovery":
-        command = [apkeep, "-a", package, "-d", "apk-pure", str(output)]
+        app = f"{package}@{version_selector}" if version_selector else package
+        command = [apkeep, "-a", app, "-d", "apk-pure", str(output)]
     else:
+        if version_selector:
+            raise RuntimeError("version selectors are not supported by apkeep's direct Play CLI")
         email = os.environ.get("GOOGLE_PLAY_EMAIL")
         aas = os.environ.get("GOOGLE_PLAY_AAS_TOKEN")
         auth = os.environ.get("GOOGLE_PLAY_AUTH_TOKEN")
@@ -195,6 +260,8 @@ def main() -> int:
     parser.add_argument("--source", choices=("google-play-direct", "apkpure-recovery"),
                         required=True)
     parser.add_argument("--package", choices=tuple(APPS), action="append")
+    parser.add_argument("--version-selector",
+                        help="APKPure history selector; requires exactly one --package")
     parser.add_argument("--input", type=Path, action="append",
                         help="pre-fetched APK/XAPK; order must match --package")
     parser.add_argument("--receipt", type=Path,
@@ -207,6 +274,8 @@ def main() -> int:
     )
     args = parser.parse_args()
     packages = args.package or list(APPS)
+    if args.version_selector and (args.source != "apkpure-recovery" or len(packages) != 1):
+        parser.error("--version-selector requires APKPure recovery and exactly one --package")
     if args.input and len(args.input) != len(packages):
         parser.error("the number of --input paths must match --package")
     existing = json.loads(args.receipt.read_text()) if args.receipt.exists() else {
@@ -222,7 +291,7 @@ def main() -> int:
             delivery_dir.mkdir()
             source = args.input[index] if args.input else acquire(
                 package, args.source, delivery_dir, args.apkeep,
-                args.accept_google_play_tos,
+                args.accept_google_play_tos, args.version_selector,
             )
             metadata, components = unpack_delivery(source, scratch)
             if metadata["package"] != package:
@@ -239,21 +308,30 @@ def main() -> int:
                     record.update(verify_apk(component, info["signer_sha256"]))
                 component_records.append(record)
             tag = RELEASES[(args.source, info["family"])]
-            ensure_release(args.repo, tag, args.source)
+            numeric_release_id = ensure_release(args.repo, tag, args.source)
             safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
+            uploads: list[tuple[Path, str]] = []
             for component, record in zip(components, component_records):
                 component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", component.stem)
                 asset_name = (f"{package}--{safe_version}--{component_name}--"
                               f"{record['sha256'][:12]}{component.suffix.lower()}")
-                record.update({"release_tag": tag, **upload(args.repo, tag, component, asset_name)})
+                record.update({"release_tag": tag, "release_asset": asset_name})
+                uploads.append((component, asset_name))
             wrapper = None
             if source.is_file() and source.suffix.lower() == ".xapk":
                 size, sha256 = digest(source)
                 name = f"{package}--{safe_version}--complete--{sha256[:12]}.xapk"
                 wrapper = {"bytes": size, "sha256": sha256, "release_tag": tag,
-                           **upload(args.repo, tag, source, name)}
+                           "release_asset": name}
+                uploads.append((source, name))
+            uploaded = upload_batch(args.repo, tag, numeric_release_id, uploads)
+            for record in component_records:
+                record.update(uploaded[record["release_asset"]])
+            if wrapper:
+                wrapper.update(uploaded[wrapper["release_asset"]])
             records.append({
                 "source_kind": args.source,
+                "source_version_selector": args.version_selector,
                 "source_url": (f"https://play.google.com/store/apps/details?id={package}"
                                if args.source == "google-play-direct" else info["apkpure_url"]),
                 "acquired_at": datetime.now(timezone.utc).isoformat(),
