@@ -11,15 +11,15 @@ substitute for an exact missing version.
 
 ## Archive snapshot
 
-As of 2026-09-10, the private archive contains:
+As of 2026-09-21, the archive catalog contains:
 
-- **454 preserved artifacts** across **50 exact version labels**;
-- **413 Sonos UPD packages** with section-level manifests;
-- **19 preserved update manifests** and **286 recovered/raw image components**;
-- **16.22 GiB** of unique cataloged package/installer/DFU bytes; and
-- **169 explicit gaps**: 88 signed-manifest candidates and 80 bounded
-  base-URI model expansions no longer on the CDN, plus the device-observed but
-  still-unrecovered Move `96.0-79160` package.
+- **601 preserved package artifacts** across **56 exact version labels**;
+- **559 Sonos UPD packages** with section-level manifests;
+- **20 preserved update manifests** and **376 recovered/raw image components**;
+- **21.85 GiB** of cataloged package/installer/DFU bytes; and
+- **550 explicit unavailable-candidate records**, including bounded model-ID
+  expansion misses and the device-observed but still-unrecovered Move
+  `96.0-79160` package.
 
 Every cataloged Release asset is reconciled against GitHub's server-reported
 byte size and SHA-256 digest.
@@ -146,6 +146,14 @@ components** beside their sources; the other 21 packages remain explicitly
 blocked on their model-specific recipients. See the complete
 [`76.2-47270 discovery report`](docs/firmware-discovery-76.2-47270-2026-09-21.md).
 
+A follow-up search the same day recovered **90 more live UPDs** across
+`47.2-59120`, `57.9-23010`, `57.22-67080`, `80.1-55014`, and `82.3-60160`.
+Two opaque paths came from public device-update reports; three were hidden in
+official firmware directories already known only for their desktop installers.
+The five sets total 3,130,268,347 bytes. Existing keys extracted **64 raw
+components** from 20 packages; the surviving model-5 package remains encrypted.
+See the [public/catalog path discovery report](docs/firmware-discovery-public-paths-2026-09-21.md).
+
 The next preserved plaintext gaps are tracked in
 [`data/decryption-runs/2026-09-08-next-model13-model25-targets.json`](data/decryption-runs/2026-09-08-next-model13-model25-targets.json).
 They require model-specific key recovery; no large source UPD is downloaded
@@ -178,6 +186,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
+- `scripts/check_catalog_firmware_directories.py` — daily non-AI expansion of opaque official directories learned from desktop installers.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
 - `tests/` — parser and catalog tests.

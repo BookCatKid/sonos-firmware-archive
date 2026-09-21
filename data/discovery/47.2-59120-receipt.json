@@ -1,0 +1,21 @@
+{
+  "source": "47.2-59120-catalog-directory-probe-2026-09-21.json",
+  "artifacts": [
+    {
+      "version": "47.2-59120",
+      "package_model": 5,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-5.upd",
+      "source": "metadata-sweep",
+      "filename": "47.2-59120-1-5.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 2089414,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-5.upd",
+      "etag": null,
+      "last_modified": null,
+      "local_file": "47.2-59120-1-5.upd",
+      "sha256": "436aa9802871a23e2afce8b8d41328db55a05aeb524e36a2b3c6dc7cb7ce90c6",
+      "downloaded": true
+    }
+  ]
+}

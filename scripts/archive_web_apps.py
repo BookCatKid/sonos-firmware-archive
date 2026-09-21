@@ -280,8 +280,71 @@ def public_release(repository: str, tag: str) -> dict:
         f"https://api.github.com/repos/{repository}/releases/tags/{tag}",
         headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
     )
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.load(response)
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            return json.load(response)
+    except urllib.error.HTTPError as error:
+        if error.code != 403:
+            raise
+        owner, name = repository.split("/", 1)
+        query = """
+          query($owner:String!, $name:String!, $tag:String!) {
+            repository(owner:$owner, name:$name) {
+              release(tagName:$tag) { databaseId url tagName }
+            }
+          }
+        """
+        payload = json.loads(subprocess.check_output(
+            [
+                "gh", "api", "graphql", "-f", f"query={query}",
+                "-f", f"owner={owner}", "-f", f"name={name}", "-f", f"tag={tag}",
+            ],
+            text=True,
+        ))
+        release = payload["data"]["repository"]["release"]
+        if release is None:
+            raise urllib.error.HTTPError(request.full_url, 404, "release not found", {}, None)
+        return {"id": release["databaseId"], "html_url": release["url"], "tag_name": tag}
+
+
+def graphql_assets(repository: str, tag: str) -> list[dict]:
+    owner, name = repository.split("/", 1)
+    query = """
+      query($owner:String!, $name:String!, $tag:String!, $after:String) {
+        repository(owner:$owner, name:$name) {
+          release(tagName:$tag) {
+            releaseAssets(first:100, after:$after) {
+              nodes { id name size downloadUrl digest }
+              pageInfo { hasNextPage endCursor }
+            }
+          }
+        }
+      }
+    """
+    result = []
+    cursor = None
+    while True:
+        command = [
+            "gh", "api", "graphql", "-f", f"query={query}",
+            "-f", f"owner={owner}", "-f", f"name={name}", "-f", f"tag={tag}",
+        ]
+        if cursor is not None:
+            command.extend(["-f", f"after={cursor}"])
+        payload = json.loads(subprocess.check_output(command, text=True))
+        connection = payload["data"]["repository"]["release"]["releaseAssets"]
+        result.extend(
+            {
+                "id": item["id"],
+                "name": item["name"],
+                "size": item["size"],
+                "browser_download_url": item["downloadUrl"],
+                "digest": item["digest"],
+            }
+            for item in connection["nodes"]
+        )
+        if not connection["pageInfo"]["hasNextPage"]:
+            return result
+        cursor = connection["pageInfo"]["endCursor"]
 
 
 def remote_assets(repository: str, tag: str) -> dict[str, dict]:
@@ -293,8 +356,15 @@ def remote_assets(repository: str, tag: str) -> dict[str, dict]:
             f"/assets?per_page=100&page={page}&_archive_ts={int(time.time())}",
             headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
         )
-        with urllib.request.urlopen(request, timeout=60) as response:
-            items = json.load(response)
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                items = json.load(response)
+        except urllib.error.HTTPError as error:
+            if error.code != 403:
+                raise
+            if page > 1:
+                break
+            items = graphql_assets(repository, tag)
         assets.update((item["name"], item) for item in items)
         if len(items) < 100:
             break

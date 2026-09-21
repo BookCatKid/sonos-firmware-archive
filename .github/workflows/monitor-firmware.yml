@@ -31,6 +31,16 @@ jobs:
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Expand cataloged firmware directories
+        id: directory_check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_catalog_firmware_directories.py \
+            --output catalog-directory-monitor-report.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Reconcile GitHub Release assets
         env:
           GH_TOKEN: ${{ github.token }}
@@ -85,6 +95,7 @@ jobs:
           name: firmware-monitor-report
           path: |
             monitor-report.json
+            catalog-directory-monitor-report.json
             release-asset-audit.json
             desktop-app-monitor-report.json
             desktop-app-discovery.json
@@ -138,8 +149,38 @@ jobs:
               });
             }
       - name: Fail on monitoring errors
-        if: steps.check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1' || steps.google_play_check.outputs.exit_code == '1' || steps.web_app_check.outputs.exit_code == '1'
+        if: steps.check.outputs.exit_code == '1' || steps.directory_check.outputs.exit_code == '1' || steps.app_check.outputs.exit_code == '1' || steps.mobile_app_check.outputs.exit_code == '1' || steps.google_play_check.outputs.exit_code == '1' || steps.web_app_check.outputs.exit_code == '1'
         run: exit 1
+      - name: Open or update catalog-directory discovery issue
+        if: steps.directory_check.outputs.exit_code == '2'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('catalog-directory-monitor-report.json', 'utf8'));
+            const title = '[monitor] Cataloged Sonos directory exposes new speaker firmware';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const rows = (report.uncatalogued_available ?? []).map(x => `- ${x.filename}: ${x.url}`);
+            const details = [
+              `Automated, non-AI expansion of official directories found downloadable uncatalogued UPDs.`,
+              ``, `- Directories checked: ${report.directory_total}`,
+              `- Package URLs checked: ${report.candidate_total}`,
+              `- New live packages: ${report.uncatalogued_available_total}`, ``,
+              ...rows.slice(0, 100),
+              rows.length > 100 ? `- …and ${rows.length - 100} more in the report artifact` : ``,
+              ``, `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body: details});
+            } else {
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo,
+                title, body: details});
+            }
       - name: Open or update desktop-app discovery issue
         if: steps.app_check.outputs.exit_code == '2'
         uses: actions/github-script@v8

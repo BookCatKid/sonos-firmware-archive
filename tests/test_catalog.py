@@ -50,10 +50,13 @@ class CatalogTests(unittest.TestCase):
             for record in catalog.get("evidence", [])
             if record["source_type"] == "public-device-repair-report"
         ]
-        self.assertEqual(len(reports), 1)
-        self.assertEqual(reports[0]["version"], "76.2-47270")
-        self.assertTrue(reports[0]["update_url"].endswith("76.2-47270-1-17.upd"))
-        self.assertTrue(reports[0]["redacted"] is True)
+        self.assertEqual(len(reports), 3)
+        self.assertEqual(
+            {record["version"] for record in reports},
+            {"57.9-23010", "76.2-47270", "82.3-60160"},
+        )
+        self.assertTrue(all(record["update_url"].endswith(".upd") for record in reports))
+        self.assertTrue(all(record["redacted"] is True for record in reports))
 
     def test_product_specific_release_note_requires_products(self):
         root = Path(__file__).resolve().parents[1]
