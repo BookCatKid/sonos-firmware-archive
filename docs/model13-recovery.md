@@ -213,6 +213,37 @@ cannot be established.
    Retain only the public recipient fingerprint and non-secret component hashes
    in version control. Reboot the device to clear recovery-kernel state.
 
+## Gaining the required on-device access
+
+The workflow above assumes kernel-level control of the target unit. Two
+published, independently documented mechanisms establish that on Encore:
+
+1. **CVE-2023-50810** — the NCC Group / BlackHat USA 2024 U-Boot finding.
+   Sonos's own advisory (security-advisory-2024-0001) lists the Play:5 Gen 2
+   among the affected products (with Playbase, Play:1, One, One SL, and
+   Amp), fixed in S2 15.9 / S1 11.12. On the Era 100 research unit NCC found
+   U-Boot loads a stored environment from flash offset `0x500000` despite an
+   intended `CONFIG_ENV_IS_NOWHERE`, and the `sonosboot` handler calls
+   `setenv("bootargs", ...)` without checking the return value — writing a
+   crafted environment plus failing that call leaves the stored `bootargs`
+   in force, bypassing the secure-boot check and yielding kernel-privileged
+   code execution. A unit on firmware below 15.9 is therefore enough to run
+   the read-only CAAM unwrap helper above, without hardware modification.
+2. **Signed unlock token** — Sonos's GPL `sonos_unlock` code (7.3
+   `includes2`) defines the supported unlock path: `mdp3_auth_sig` is a
+   signature over `prefix | 6-byte serial | authorized_flags |
+   unlock_counter`, and `mdp3_cpuid_sig` binds serial to the SoC CPUID. An
+   issued token sets `mdp_authorized_flags`, whose bits include
+   `TELNET_ENABLE 0x8`, `EXEC_ENABLE 0x10`, `INSMOD_CTRL 0x80`,
+   `UBOOT_UNLOCK_ENABLE 0x20`, and `MFG_KEY_ENABLE 0x4`. The unlock counter
+   is a fuse bitmap — on SoloX the `HDCP_KEY33` fuse (bank 10, word 1; on
+   i.MX6 Quad `MAC0`, bank 4 word 2) — and `sonosUnlockGetNextFuseVal` burns
+   the next clear bit per unlock, so tokens cannot be replayed after
+   re-lock. A unit unlocked through this channel already has the
+   administrative access this procedure assumes. Note `DIAG_BUILD` images
+   deliberately enable every flag *except* `MFG_KEY_ENABLE`, so diagnostic
+   firmware alone does not expose the manufacturing key.
+
 ## What remains to prove on hardware
 
 The static evidence establishes the storage location, wrapper type, key

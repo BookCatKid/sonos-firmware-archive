@@ -215,7 +215,18 @@ public access techniques are useful leads, not interchangeable key-recovery
 recipes: Fenway/MPC8314 UART plus diagnostic firmware and `mdputil`; Amlogic-
 era EL3 OTP dumping plus `sonostool` (HITB Amsterdam 2023); Sonos One Gen 2
 PCIe DMA root shell (Synacktiv, 2021); and Sonos One / Era 100 OTA and secure-
-boot research (NCC Group, BlackHat USA 2024). Every hardware generation still
+boot research (NCC Group, BlackHat USA 2024). The NCC secure-boot finding was
+published as CVE-2023-50810 (Sonos advisory 2024-0001): an unchecked U-Boot
+`setenv("bootargs")` plus an unexpectedly loaded stored environment grants
+kernel-privileged code execution on pre-15.9 (S2) / 11.12 (S1) firmware. The
+advisory's product list covers confirmed package models 13 (ENCORE / Play:5
+Gen 2) and 26 (TUPELO / One), plus Playbase, Play:1, One SL, and Amp — so an
+owned Encore unit below 15.9 can run the read-only CAAM unwrap described in
+`model13-recovery.md` without hardware modification. The GPL 7.3
+`sonos_unlock` sources additionally document Sonos's own signed-unlock-token
+channel (`mdp3_auth_sig` over serial + authorized flags + a fuse anti-
+rollback counter), which legitimately grants the same access. Every hardware
+generation still
 needs model-specific validation.
 
 Update 2026-09-21: the plaintext `10.20-75300` model-27 updater was examined
