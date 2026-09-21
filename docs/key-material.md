@@ -207,6 +207,22 @@ Amsterdam 2023); Sonos One Gen 2 PCIe DMA root shell (Synacktiv, 2021); and
 Sonos One / Era 100 OTA and secure-boot research (NCC Group, BlackHat USA
 2024). Every hardware generation still needs model-specific validation.
 
+Update 2026-09-21: the plaintext `10.20-75300` model-27 updater was examined
+and ruled out as a key source. It predates the envelope scheme entirely — its
+imports contain no AES/RSA/MDP routines and it has no embedded 1,264-byte
+wrapper. Instead it references an on-device `upgradekey.priv` file and the
+RSA-1024 signature key `/etc/upgradekey.pub` (whose fingerprint does not
+match the model-27 envelope recipient `c9d56d385d3e0449fcc91dd57c315b387dbfa873`).
+Recovering model 27 therefore needs the private-key file or MDP field from an
+authorized device, after which the standard envelope path applies to its 16
+preserved packages. A companion sweep also scanned every locally held ELF
+binary (463 files, including every retained updater, `mdputil`, `keyval`,
+`anacapad`, and all extracted-rootfs libraries) for a legacy wrapper
+decrypting under any missing model with either known system word, plus every
+local artifact for stray RSA private keys or public keys matching the 28
+missing recipients — all negative. See the model-27 and cross-binary sections
+of `recovery-work/candidates/README.md`.
+
 Priority order by blocked-package count: model 13 (Play:5 Gen 2, 17
 packages, `completeness.json` target), then models 23, 24, 21, 29, 28, 26
 (12–19 packages each). Model 25 (Move, 17 packages) is moot until the
