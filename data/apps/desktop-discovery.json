@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-09-20T16:20:09.875456+00:00",
+  "checked": "2026-10-06T01:21:51.688331+00:00",
   "sources": [
     "microsoft/winget-pkgs",
     "Homebrew/homebrew-cask",
@@ -38,11 +38,11 @@
   ],
   "wayback": {
     "status": "ok",
-    "row_total": 75,
+    "row_total": 76,
     "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.%28exe%7Cdmg%29%24&collapse=urlkey&limit=5000"
   },
-  "candidate_total": 138,
-  "available_total": 98,
+  "candidate_total": 140,
+  "available_total": 99,
   "candidates": [
     {
       "family": "legacy",
@@ -983,6 +983,7 @@
       "expected_sha256": "cac8a5f9e13c2959bd2dff239a8576c40c2fb84afa7f412ac393dabf7b120461",
       "sources": [
         "homebrew-history:9f94e0973d52",
+        "wayback-cdx:20240914211822:Z4S4JTTHV2W66LIAIVIZDMWWUUJ2GV3A:1035455",
         "derived-cross-platform"
       ],
       "http_status": 200,
@@ -1123,6 +1124,20 @@
       "http_status": 200,
       "content_length": 71832943,
       "etag": "\"4d12c97ffc9868305225f8516eaec8fc-9\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
+      "version": "90.0-81181",
+      "url": "https://update-software.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.dmg",
+      "expected_sha256": "f4c49635cb06cf615c2b3bebd35fbf3e3abeb7a38dbc4c5519784070c0dcdc3b",
+      "sources": [
+        "homebrew-history:0009fd084f13",
+        "homebrew-history:5c5c43f02c81"
+      ],
+      "http_status": 200,
+      "content_length": 71830690,
+      "etag": "\"a78fdb04b70e0dddf818b1779ae40397-9\""
     },
     {
       "family": "s2",
@@ -1787,6 +1802,19 @@
       "platform": "windows",
       "version": "90.0-79210",
       "url": "https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0-81181",
+      "url": "https://update-software.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.exe",
       "expected_sha256": null,
       "sources": [
         "derived-cross-platform"
