@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "snapshots": [
+    {
+      "schema_version": 1,
+      "checked": "2026-10-06T03:48:30.321896+00:00",
+      "scope": "public-apple-itunes-lookup-metadata",
+      "lookup_url": "https://itunes.apple.com/lookup?id=1488977981%2C293523031&country=us",
+      "listings": [
+        {
+          "family": "s2",
+          "track_id": 1488977981,
+          "name": "Sonos",
+          "bundle_id": "com.sonos.SonosController2",
+          "version": "89.01",
+          "current_version_release_date": "2026-09-29T15:58:24Z",
+          "minimum_os_version": "18.0",
+          "file_size_bytes": 218286080,
+          "release_notes": "Sonos 27.0\n--------------\nSupport for the all new Sonos Ace Ultra headphones\nSupport for the all new Beam Ultra soundbar",
+          "track_view_url": "https://apps.apple.com/us/app/sonos/id1488977981?uo=4"
+        },
+        {
+          "family": "s1",
+          "track_id": 293523031,
+          "name": "Sonos S1 Controller",
+          "bundle_id": "com.sonos.SonosController",
+          "version": "11.16.1",
+          "current_version_release_date": "2026-02-25T14:37:57Z",
+          "minimum_os_version": "12.0",
+          "file_size_bytes": 108355584,
+          "release_notes": "Renamed the Sonos S1 Controller, this app supports systems that include the oldest Sonos products. Systems supported by this app will continue to receive bug fixes and security patches but will not receive new software features found in the new Sonos S2 app and will not be compatible with Sonos products released after May 2020. For more information, please visit https://support.sonos.com/topic/sonos-apps",
+          "track_view_url": "https://apps.apple.com/us/app/sonos-s1-controller/id293523031?uo=4"
+        }
+      ]
+    }
+  ]
+}

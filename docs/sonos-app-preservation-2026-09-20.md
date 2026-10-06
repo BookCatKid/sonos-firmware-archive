@@ -152,19 +152,23 @@ than treating an exported IPA as universally installable.
 
 ## Automated monitoring
 
-The existing daily GitHub Actions workflow now runs four independent checks:
+The daily deep-monitor workflow checks signed firmware/manifests and known
+public firmware sources, the four desktop redirects plus WinGet/Homebrew/Wayback
+evidence, the official APK redirect plus the Sonos-CDN Wayback inventory, and
+official Google Play listing update dates. Public Web deployments are checked
+hourly because they can be replaced quickly, and public Apple App Store metadata
+for the modern and S1 iOS controllers is checked every six hours.
 
-- signed firmware/manifests and known public firmware sources;
-- the four desktop redirects plus WinGet, Homebrew, and Wayback evidence;
-- the official APK redirect plus the Sonos-CDN Wayback prefix inventory; and
-- the official public Google Play listing update dates for both package IDs.
-
-Each checker is deterministic and does not use AI. A newly observed unarchived
-URL or redirect target opens or updates a dedicated GitHub issue, and the full
-JSON report is attached to the workflow run. A source error fails the workflow
-instead of silently reporting that nothing changed. The same run reconciles
-every receipt-listed GitHub Release asset against GitHub's server-reported size
-and SHA-256 digest.
+Each checker is deterministic and does not use AI. Every newly observed signal
+still opens or updates a GitHub issue for human review. Deterministic acquisition
+no longer waits for that review: a follow-up workflow preserves live desktop
+installers, Sonos-hosted APKs, signer-verified APKPure recovery sets, exact signed
+update manifests, and downloadable artifacts from already-trusted official
+firmware sources. Web bodies and reconstruction bundles are captured in the same
+hourly workflow that detects their change. A weekly APKPure history sweep retries
+every anonymously exposed version selector. Source or preservation errors raise
+issues instead of being interpreted as absence or success, and Release assets are
+size/hash verified before their receipts are committed.
 
 The preservation scripts stream one binary at a time and checkpoint after each
 verified upload, making them safe to resume on machines with limited disk

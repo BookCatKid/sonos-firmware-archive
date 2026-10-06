@@ -333,11 +333,27 @@ absence.
 
 The same deterministic workflow also checks Sonos's canonical desktop and
 Fire OS redirects, both official Google Play listing update dates, and public
-deployment fingerprints for the consumer Web controller and Sonos Pro. A listing
-date change opens a discovery issue; it does not claim the binary was acquired.
-Authenticated direct-Google acquisition is intentionally a separate manual
+deployment fingerprints for the consumer Web controller and Sonos Pro. Every
+new signal still opens or updates a review issue, but deterministic preservation
+no longer waits for a person: a follow-up workflow automatically archives live
+desktop installers, official Sonos-hosted APKs, signer-verified APKPure recovery
+deliveries, exact signed update manifests, and downloadable firmware exposed by
+already-trusted official Sonos sources. Public Web deployments have an additional
+hourly watcher because they can disappear quickly; a changed deployment is
+captured, uploaded, verified, and committed in the same run that raises the
+review issue. A weekly APKPure history sweep also retries the anonymously exposed
+Sonos version history and checkpoints anything newly recoverable. Public Apple
+App Store metadata for both the modern Sonos app and S1 Controller is checked
+every six hours; version/size/minimum-OS/release-note changes are retained as an
+append-only metadata history and raise a review issue for possible authorized IPA
+recovery.
+
+Authenticated direct-Google acquisition intentionally remains a separate manual
 workflow using a dedicated account, explicit terms acceptance, and repository
-secrets. No Codex heartbeat or AI service participates in either path.
+secrets. Ambiguous/new source types, release-note-only versions without a public
+artifact URL, private/device-specific update profiles, decryption/key recovery,
+and any automatic preservation failure remain human-review items. No Codex
+heartbeat or AI service participates in these paths.
 
 This proves a useful but bounded statement about current availability: all
 artifacts currently downloadable through that public profile and the catalog's

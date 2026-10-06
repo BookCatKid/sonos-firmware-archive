@@ -293,7 +293,7 @@ jobs:
               `Automated, credential-free monitoring detected a new public Sonos web deployment.`,
               `The signal covers public HTML/manifests only; it does not capture accounts or cloud API data.`, ``,
               ...rows, ``,
-              `Run \`python scripts/archive_web_apps.py --upload\` to preserve every public body and reconstruction bundle.`,
+              `Automatic preservation will run immediately after this monitor completes; this issue remains open for review.`,
               `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {

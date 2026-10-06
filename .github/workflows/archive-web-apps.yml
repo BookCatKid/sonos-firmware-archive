@@ -1,6 +1,8 @@
 name: archive public Sonos web deployments
 
 on:
+  schedule:
+    - cron: "13 * * * *"
   workflow_dispatch:
     inputs:
       app:
@@ -15,9 +17,10 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
-  group: archive-web-apps
+  group: sonos-preservation
   cancel-in-progress: false
 
 jobs:
@@ -27,22 +30,83 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+
+      - name: Detect current deployment changes
+        id: check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_web_apps.py --output web-app-monitor-report.json
+          code=$?
+          set -e
+          if [[ "$code" == "1" ]]; then
+            cat web-app-monitor-report.json
+            exit 1
+          fi
+          echo "changed=$(jq -r '.status == "change-detected"' web-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update review issue immediately
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('web-app-monitor-report.json', 'utf8'));
+            const title = '[monitor] Sonos web deployment changed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const rows = (report.changed_deployments ?? []).map(x =>
+              `- ${x.app}: fingerprint \`${x.fingerprint}\``);
+            const body = [
+              'Automated hourly monitoring detected a new public Sonos web deployment.',
+              'Automatic preservation is running in this same workflow, but this issue remains open for review.',
+              '',
+              ...rows,
+              '',
+              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
+
       - name: Capture, upload, and verify public deployment bodies
+        id: preserve
+        if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         env:
           WEB_APP: ${{ inputs.app }}
           WEB_CAPTURE_ID: ${{ inputs.capture_id }}
+        shell: bash
         run: |
-          args=(--capture-dir "$RUNNER_TEMP/web-captures" --upload --app "${WEB_APP:-all}")
-          if [[ -n "$WEB_CAPTURE_ID" ]]; then
+          set -euo pipefail
+          app="${WEB_APP:-all}"
+          args=(--capture-dir "$RUNNER_TEMP/web-captures" --upload --app "$app")
+          if [[ -n "${WEB_CAPTURE_ID:-}" ]]; then
             args+=(--capture-id "$WEB_CAPTURE_ID")
           fi
           python scripts/archive_web_apps.py "${args[@]}"
+
       - name: Commit immutable deployment receipt
+        id: commit
+        if: steps.preserve.outcome == 'success'
         shell: bash
         run: |
+          set -euo pipefail
           if git diff --quiet -- data/apps/web-app-archive.json; then
             echo "The current public deployments were already recorded."
             exit 0
@@ -51,4 +115,31 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/apps/web-app-archive.json
           git commit -m "Archive current Sonos web deployments"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Record automatic preservation result
+        if: always() && steps.check.outputs.changed == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[monitor] Sonos web deployment changed';
+            const success = '${{ steps.preserve.outcome }}' === 'success' && '${{ steps.commit.outcome }}' === 'success';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = success
+              ? `Automatic preservation completed and verified in [workflow run ${context.runNumber}](${runUrl}). The issue is intentionally left open for human review.`
+              : `Automatic preservation FAILED in [workflow run ${context.runNumber}](${runUrl}). The detected deployment may be ephemeral; investigate immediately.`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            }
+
+      - name: Fail if preservation failed
+        if: always() && (steps.preserve.outcome == 'failure' || steps.commit.outcome == 'failure')
+        run: exit 1

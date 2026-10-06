@@ -1,0 +1,126 @@
+name: monitor Apple App Store Sonos apps
+
+on:
+  schedule:
+    - cron: "29 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: sonos-preservation
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Check public Apple listing metadata
+        id: check
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_new_apple_apps.py             --output apple-app-store-monitor-report.json             --discovery-output apple-app-store-current.json
+          code=$?
+          set -e
+          if [[ "$code" == "1" ]]; then
+            cat apple-app-store-monitor-report.json
+            exit 1
+          fi
+          echo "changed=$(jq -r '.status == "change-detected"' apple-app-store-monitor-report.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update review issue
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('apple-app-store-monitor-report.json', 'utf8'));
+            const title = '[monitor] Sonos Apple App Store listing changed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const rows = (report.changed_listings ?? []).map(item =>
+              `- ${item.family} / ${item.name}: ${item.previous_version ?? 'untracked'} → ${item.version} (changed: ${item.changed_fields.join(', ')})`
+            );
+            const body = [
+              'Public Apple App Store metadata changed for a Sonos controller.',
+              'The metadata snapshot is preserved automatically. IPA acquisition remains a separate authorized-device workflow because Apple does not expose the binary anonymously.',
+              '',
+              ...rows,
+              '',
+              'This issue is intentionally left open for review and possible IPA recovery.',
+              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
+
+      - name: Preserve changed public metadata
+        if: steps.check.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          current = json.loads(Path("apple-app-store-current.json").read_text())
+          history_path = Path("data/apps/apple-app-store-history.json")
+          history = json.loads(history_path.read_text()) if history_path.exists() else {
+              "schema_version": 1,
+              "snapshots": [],
+          }
+          identity = tuple(
+              (item["track_id"], item["version"], item["current_version_release_date"], item["file_size_bytes"])
+              for item in current["listings"]
+          )
+          known = {
+              tuple(
+                  (item["track_id"], item["version"], item["current_version_release_date"], item["file_size_bytes"])
+                  for item in snapshot["listings"]
+              )
+              for snapshot in history["snapshots"]
+          }
+          if identity not in known:
+              history["snapshots"].append(current)
+          history_path.write_text(json.dumps(history, indent=2) + "\n")
+          Path("data/apps/apple-app-store.json").write_text(
+              json.dumps(current, indent=2) + "\n"
+          )
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apps/apple-app-store.json data/apps/apple-app-store-history.json
+          git commit -m "Archive current Sonos Apple App Store metadata"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: apple-app-store-monitor-report
+          path: |
+            apple-app-store-monitor-report.json
+            apple-app-store-current.json
+          if-no-files-found: ignore
+          retention-days: 30

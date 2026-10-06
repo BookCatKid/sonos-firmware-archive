@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: archive-google-play
+  group: sonos-preservation
   cancel-in-progress: false
 
 jobs:

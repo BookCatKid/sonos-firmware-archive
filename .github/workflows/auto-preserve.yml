@@ -1,0 +1,203 @@
+name: automatically preserve detected Sonos software
+
+on:
+  workflow_run:
+    workflows: ["monitor firmware sources"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+
+concurrency:
+  group: sonos-preservation
+  cancel-in-progress: false
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+
+      - name: Load or generate monitor receipts
+        id: changes
+        shell: bash
+        env:
+          TRIGGER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
+            mkdir -p monitor-input
+            gh run download "$TRIGGER_RUN_ID"               --repo "$GITHUB_REPOSITORY"               --name firmware-monitor-report               --dir monitor-input
+            cp monitor-input/*.json .
+          else
+            set +e
+            python scripts/check_new_versions.py --output monitor-report.json
+            python scripts/check_catalog_firmware_directories.py               --output catalog-directory-monitor-report.json
+            python scripts/check_new_desktop_apps.py               --output desktop-app-monitor-report.json               --discovery-output desktop-app-discovery.json
+            python scripts/check_new_mobile_apps.py               --output mobile-app-monitor-report.json               --discovery-output mobile-app-discovery.json
+            python scripts/check_new_google_play_apps.py               --output google-play-monitor-report.json               --discovery-output google-play-discovery.json
+            python scripts/check_new_web_apps.py --output web-app-monitor-report.json
+            set -e
+          fi
+
+          jq -e '(.status != "error") and ((.probe_errors | length) == 0)' monitor-report.json >/dev/null
+          jq -e '.error_total == 0' catalog-directory-monitor-report.json >/dev/null
+          jq -e '.status != "error"' desktop-app-monitor-report.json >/dev/null
+          jq -e '.status != "error"' mobile-app-monitor-report.json >/dev/null
+          jq -e '.status != "error"' google-play-monitor-report.json >/dev/null
+          jq -e '.status != "error"' web-app-monitor-report.json >/dev/null
+
+          echo "firmware=$(jq -r '.status == "change-detected"' monitor-report.json)" >> "$GITHUB_OUTPUT"
+          echo "directory=$(jq -r '.uncatalogued_available_total > 0' catalog-directory-monitor-report.json)" >> "$GITHUB_OUTPUT"
+          echo "desktop=$(jq -r '.status == "change-detected"' desktop-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
+          echo "mobile=$(jq -r '.status == "change-detected"' mobile-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
+          echo "play=$(jq -r '.status == "change-detected"' google-play-monitor-report.json)" >> "$GITHUB_OUTPUT"
+          echo "web=$(jq -r '.status == "change-detected"' web-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Preserve desktop installers
+        id: desktop_archive
+        if: steps.changes.outputs.desktop == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/archive_desktop_installers.py             --discovery desktop-app-discovery.json
+
+      - name: Preserve official Sonos-hosted APKs
+        id: mobile_archive
+        if: steps.changes.outputs.mobile == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/archive_mobile_installers.py             --discovery mobile-app-discovery.json
+
+      - uses: actions/setup-java@v5
+        if: steps.changes.outputs.play == 'true'
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Build pinned APKPure acquisition tool
+        id: apkeep
+        if: steps.changes.outputs.play == 'true'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$RUNNER_TEMP/apkeep-bin"
+          tar -xzf tools/vendor/apkeep-1.0.0.tar.gz             --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$RUNNER_TEMP/apkeep-bin"
+
+      - name: Preserve signer-verified APKPure recovery delivery
+        id: play_archive
+        if: steps.changes.outputs.play == 'true' && steps.apkeep.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          before=$(sha256sum data/apps/android-store-archive.json | awk '{print $1}')
+          while IFS= read -r package; do
+            python scripts/archive_android_store_apps.py               --source apkpure-recovery               --package "$package"               --apkeep "$RUNNER_TEMP/apkeep-bin/bin/apkeep"
+          done < <(jq -r '.changed_listings[].package' google-play-monitor-report.json)
+          after=$(sha256sum data/apps/android-store-archive.json | awk '{print $1}')
+          if [[ "$before" != "$after" ]]; then
+            cp google-play-discovery.json data/apps/google-play-listings.json
+          else
+            echo "APKPure has not exposed a new signed delivery yet; keeping the old listing baseline so the monitor retries."
+          fi
+
+      - name: Preserve public Web deployments
+        id: web_archive
+        if: steps.changes.outputs.web == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/archive_web_apps.py             --capture-dir "$RUNNER_TEMP/web-captures"             --upload
+
+      - name: Preserve official firmware and exact manifests
+        id: firmware_archive
+        if: steps.changes.outputs.firmware == 'true' || steps.changes.outputs.directory == 'true'
+        continue-on-error: true
+        run: |
+          python scripts/archive_monitor_firmware.py             --monitor-report monitor-report.json             --directory-report catalog-directory-monitor-report.json             --work-dir "$RUNNER_TEMP/firmware-auto"             --output auto-firmware-archive-report.json
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: automatic-preservation-report
+          path: |
+            monitor-report.json
+            catalog-directory-monitor-report.json
+            desktop-app-monitor-report.json
+            mobile-app-monitor-report.json
+            google-play-monitor-report.json
+            web-app-monitor-report.json
+            auto-firmware-archive-report.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Commit preservation receipts
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apps data/catalog.json data/discovery data/manifests data/upd data/key-recovery-ledger.json
+          if git diff --cached --quiet; then
+            echo "No repository metadata changed."
+            exit 0
+          fi
+          git commit -m "Automatically preserve newly detected Sonos software"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Open preservation failure issue
+        if: >-
+          always() &&
+          (steps.desktop_archive.outcome == 'failure' ||
+           steps.mobile_archive.outcome == 'failure' ||
+           steps.apkeep.outcome == 'failure' ||
+           steps.play_archive.outcome == 'failure' ||
+           steps.web_archive.outcome == 'failure' ||
+           steps.firmware_archive.outcome == 'failure' ||
+           steps.commit.outcome == 'failure')
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[monitor] Automatic Sonos preservation failed';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              'At least one deterministic preservation step failed after new software was detected.',
+              '',
+              `- desktop: ${{ steps.desktop_archive.outcome }}`,
+              `- Sonos-hosted APK: ${{ steps.mobile_archive.outcome }}`,
+              `- APKPure tool: ${{ steps.apkeep.outcome }}`,
+              `- APKPure recovery: ${{ steps.play_archive.outcome }}`,
+              `- Web deployment: ${{ steps.web_archive.outcome }}`,
+              `- firmware/manifests: ${{ steps.firmware_archive.outcome }}`,
+              `- metadata commit/push: ${{ steps.commit.outcome }}`,
+              '',
+              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
