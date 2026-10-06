@@ -27,10 +27,18 @@ class InvalidApkError(RuntimeError):
     pass
 
 
+def receipt_path(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def save(path: Path, records: list[dict], gaps: list[dict], discovery: Path) -> None:
     document = {
         "schema_version": 1, "updated": datetime.now(timezone.utc).isoformat(),
-        "discovery": str(discovery.relative_to(ROOT)), "artifact_total": len(records),
+        "discovery": receipt_path(discovery), "artifact_total": len(records),
         "gap_total": len(gaps), "gaps": sorted(gaps, key=lambda x: x["url"]),
         "artifacts": sorted(records, key=lambda x: (x["family"], x["version"], x["sha256"])),
     }

@@ -29,11 +29,19 @@ RELEASES = {
 }
 
 
+def receipt_path(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def write_receipt(path: Path, records: list[dict], discovery: Path) -> None:
     document = {
         "schema_version": 1,
         "updated": datetime.now(timezone.utc).isoformat(),
-        "discovery": str(discovery.relative_to(ROOT)),
+        "discovery": receipt_path(discovery),
         "artifact_total": len(records),
         "artifacts": sorted(records, key=lambda x: (x["family"], x["platform"], x["version"], x["sha256"])),
     }
