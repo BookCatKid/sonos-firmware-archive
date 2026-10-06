@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import tempfile
 import unittest
@@ -36,6 +37,13 @@ class ArchiveReceiptPathTests(unittest.TestCase):
             path = Path(directory) / "discovery.json"
             self.assertEqual(MOBILE.receipt_path(path), str(path))
             self.assertEqual(DESKTOP.receipt_path(path), str(path))
+
+    def test_committed_archive_receipts_reference_committed_discovery(self):
+        for name in ("mobile-archive.json", "desktop-archive.json"):
+            receipt = json.loads((ROOT / "data/apps" / name).read_text())
+            discovery = Path(receipt["discovery"])
+            self.assertFalse(discovery.is_absolute())
+            self.assertTrue((ROOT / discovery).is_file(), f"missing discovery for {name}: {discovery}")
 
 
 if __name__ == "__main__":

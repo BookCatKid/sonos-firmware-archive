@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "checked": "2026-10-06T01:21:04.107107+00:00",
+  "checked": "2026-10-06T21:25:58.511370+00:00",
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
     "live_http_status": 302,
-    "location": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
+    "location": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
     "location_source": "live"
   },
   "wayback": {
@@ -512,14 +512,14 @@
     {
       "family": "s2",
       "platform": "fireos-android-apk",
-      "version": "89.01.11",
-      "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
+      "version": "90.00.43",
+      "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
       "sources": [
         "official-current-fireos-redirect"
       ],
       "http_status": 200,
-      "content_length": 327801142,
-      "etag": "\"7b2a6d63dc95dfd1b8e9eaaf04ae8874-40\""
+      "content_length": 248921485,
+      "etag": "\"15942ff8fc97266f457f50e5c53b769a-30\""
     }
   ]
 }

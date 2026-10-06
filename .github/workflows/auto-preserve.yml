@@ -70,14 +70,16 @@ jobs:
         if: steps.changes.outputs.desktop == 'true'
         continue-on-error: true
         run: |
-          python scripts/archive_desktop_installers.py             --discovery desktop-app-discovery.json
+          cp desktop-app-discovery.json data/apps/desktop-discovery.json
+          python scripts/archive_desktop_installers.py             --discovery data/apps/desktop-discovery.json
 
       - name: Preserve official Sonos-hosted APKs
         id: mobile_archive
         if: steps.changes.outputs.mobile == 'true'
         continue-on-error: true
         run: |
-          python scripts/archive_mobile_installers.py             --discovery mobile-app-discovery.json
+          cp mobile-app-discovery.json data/apps/mobile-discovery.json
+          python scripts/archive_mobile_installers.py             --discovery data/apps/mobile-discovery.json
 
       - uses: actions/setup-java@v5
         if: steps.changes.outputs.play == 'true'
