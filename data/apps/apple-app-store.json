@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-10-06T03:48:30.321896+00:00",
+  "checked": "2026-10-07T13:40:24.014019+00:00",
   "scope": "public-apple-itunes-lookup-metadata",
   "lookup_url": "https://itunes.apple.com/lookup?id=1488977981%2C293523031&country=us",
   "listings": [
@@ -9,11 +9,11 @@
       "track_id": 1488977981,
       "name": "Sonos",
       "bundle_id": "com.sonos.SonosController2",
-      "version": "89.01",
-      "current_version_release_date": "2026-09-29T15:58:24Z",
+      "version": "90.00",
+      "current_version_release_date": "2026-10-06T13:34:41Z",
       "minimum_os_version": "18.0",
-      "file_size_bytes": 218286080,
-      "release_notes": "Sonos 27.0\n--------------\nSupport for the all new Sonos Ace Ultra headphones\nSupport for the all new Beam Ultra soundbar",
+      "file_size_bytes": 198326272,
+      "release_notes": "Sonos 27.1\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\u2022 Improved searching with autocomplete suggestions\n\u2022 Queued content now persists during radio or TV playback\n\u2022 Improved system update visibility in settings",
       "track_view_url": "https://apps.apple.com/us/app/sonos/id1488977981?uo=4"
     },
     {
