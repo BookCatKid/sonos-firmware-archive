@@ -77,6 +77,26 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
     web = load(data / "apps/web-app-archive.json", {})
     gpl = load(data / "gpl/wayback-catalog.json", {})
 
+    # Structural firmware metadata is loaded before package normalization so every
+    # firmware row can expose preservation, crypto, extraction, and filesystem state.
+    firmware_sections = {}
+    for path in sorted((data / "upd").glob("*.json")):
+        entry = load(path, {})
+        firmware_sections[entry.get("package_id") or path.stem] = entry
+    filesystem_manifests = {
+        path.stem: load(path, {})
+        for path in sorted((data / "filesystems").glob("*.json"))
+    }
+    raw_receipts = {
+        path.stem: load(path, {})
+        for path in sorted((data / "raw").glob("*.json"))
+    }
+    precomputed_diffs = {
+        path.stem: load(path, {})
+        for path in sorted((data / "diffs").glob("*.json"))
+    }
+    recovered_recipients = set(key_ledger.get("recovered_keys", {}))
+
     records: list[dict[str, Any]] = []
     record_ids: set[str] = set()
     version_dates: dict[str, str] = {}
@@ -134,9 +154,68 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
             details[candidate] = json_safe(detail)
         return candidate
 
+    def firmware_analysis(pkg: dict[str, Any]) -> dict[str, Any]:
+        """Return explicit preservation/decryption state for one firmware candidate."""
+        pid = pkg.get("id") or pkg.get("filename")
+        artifact_status = pkg.get("artifact_status")
+        raw_status = pkg.get("raw_status")
+        manifest = firmware_sections.get(pid, {})
+        sections = manifest.get("sections", [])
+        encrypted_sections = [section for section in sections if section.get("encrypted")]
+        recipients = {
+            section.get("recipient_id")
+            for section in encrypted_sections
+            if section.get("recipient_id")
+        }
+
+        if artifact_status == "preserved":
+            availability = "preserved"
+            status = "preserved"
+        elif artifact_status == "missing-exact-package":
+            availability = "exact-missing"
+            status = "missing"
+        elif artifact_status == "missing-cdn":
+            # These are negative directory/model probes, not proven archive holes.
+            availability = "negative-probe"
+            status = "unavailable-probe"
+        else:
+            availability = artifact_status or "unknown"
+            status = artifact_status or "unknown"
+
+        if pkg.get("artifact_type") != "upd":
+            decryption_state = "not-applicable"
+        elif availability != "preserved":
+            decryption_state = "not-preserved"
+        elif encrypted_sections and raw_status == "complete":
+            decryption_state = "decrypted"
+        elif not encrypted_sections and raw_status == "complete":
+            decryption_state = "plaintext-extracted"
+        elif raw_status == "blocked-model-key":
+            decryption_state = "blocked-model-key"
+        elif encrypted_sections and recipients and recipients.issubset(recovered_recipients):
+            decryption_state = "decryptable"
+        elif encrypted_sections:
+            decryption_state = "encrypted"
+        elif sections:
+            decryption_state = "plaintext-unextracted"
+        else:
+            decryption_state = "unknown"
+
+        return {
+            "availability": availability,
+            "decryption_state": decryption_state,
+            "decrypted": decryption_state == "decrypted",
+            "source_encrypted": bool(encrypted_sections),
+            "recipient_ids": sorted(recipients),
+            "components_extracted": raw_status == "complete" or pid in raw_receipts,
+            "filesystem_indexed": pid in filesystem_manifests,
+            "status": status,
+        }
+
     # Firmware package artifacts.
     for pkg in catalog.get("packages", []):
         pid = pkg.get("id") or pkg.get("filename")
+        analysis = firmware_analysis(pkg)
         tag = pkg.get("release_tag")
         asset = pkg.get("release_asset") or (pkg.get("filename") if tag else None)
         add({
@@ -148,7 +227,7 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
             "version": pkg.get("version", ""),
             "model": str(pkg.get("package_model", "")),
             "product": pkg.get("product") or "",
-            "status": pkg.get("artifact_status"),
+            "status": analysis["status"],
             "title": pkg.get("filename") or str(pid),
             "subtitle": pkg.get("product") or f"package model {pkg.get('package_model')}",
             "date": version_dates.get(pkg.get("version")),
@@ -157,11 +236,24 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
             "release_url": release_url(tag, asset),
             "source_urls": [pkg.get("source_url")],
             "sources": [pkg.get("provenance"), pkg.get("source_manifest")],
-            "tags": [pkg.get("raw_status"), pkg.get("model_number")],
+            "tags": [
+                pkg.get("raw_status"),
+                pkg.get("model_number"),
+                analysis["availability"],
+                analysis["decryption_state"],
+                "filesystem-indexed" if analysis["filesystem_indexed"] else "",
+            ],
             "note": pkg.get("note") or "",
             "artifact_status": pkg.get("artifact_status"),
             "raw_status": pkg.get("raw_status"),
-        }, pkg)
+            "availability": analysis["availability"],
+            "decryption_state": analysis["decryption_state"],
+            "decrypted": analysis["decrypted"],
+            "source_encrypted": analysis["source_encrypted"],
+            "recipient_ids": analysis["recipient_ids"],
+            "components_extracted": analysis["components_extracted"],
+            "filesystem_indexed": analysis["filesystem_indexed"],
+        }, {**pkg, **analysis})
 
     # Signed/update manifests.
     for manifest in catalog.get("source_manifests", []):
@@ -571,29 +663,35 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
     for path in sorted((root / "docs").glob("*.md")):
         committed_file_record(path, "research-report", "Research report")
 
-    # Detailed manifests used by the compare UI.
-    firmware_sections = {}
-    for path in sorted((data / "upd").glob("*.json")):
-        entry = load(path, {})
-        firmware_sections[entry.get("package_id") or path.stem] = entry
-    filesystem_manifests = {}
-    for path in sorted((data / "filesystems").glob("*.json")):
-        filesystem_manifests[path.stem] = load(path, {})
-    raw_receipts = {}
-    for path in sorted((data / "raw").glob("*.json")):
-        raw_receipts[path.stem] = load(path, {})
-    precomputed_diffs = {}
-    for path in sorted((data / "diffs").glob("*.json")):
-        precomputed_diffs[path.stem] = load(path, {})
+    # Structural manifests loaded above are also exposed to the compare UI.
 
     # Attach child IDs only after all records have been created.
     for record in records:
         record["children"] = children.get(record["id"], [])
 
-    # Firmware matrix.
+    # Firmware matrix. Negative CDN/model probes remain queryable but are not
+    # treated as coverage holes or shown by default.
     package_records = [r for r in records if r["kind"] == "firmware-package"]
-    matrix_versions = sorted({r["version"] for r in package_records if r["version"]}, key=version_key, reverse=True)
-    matrix_models = sorted({int(r["model"]) for r in package_records if str(r["model"]).isdigit()})
+    matrix_relevant = [
+        r for r in package_records
+        if r.get("availability") != "negative-probe"
+    ]
+    matrix_versions = sorted(
+        {r["version"] for r in matrix_relevant if r["version"]},
+        key=version_key,
+        reverse=True,
+    )
+    matrix_models = sorted(
+        {int(r["model"]) for r in matrix_relevant if str(r["model"]).isdigit()}
+    )
+    matrix_all_versions = sorted(
+        {r["version"] for r in package_records if r["version"]},
+        key=version_key,
+        reverse=True,
+    )
+    matrix_all_models = sorted(
+        {int(r["model"]) for r in package_records if str(r["model"]).isdigit()}
+    )
     matrix_cells: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     for r in package_records:
         if not str(r["model"]).isdigit():
@@ -601,9 +699,23 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
         matrix_cells[r["version"]][r["model"]] = {
             "id": r["id"],
             "status": r["status"],
+            "artifact_status": r.get("artifact_status"),
+            "availability": r.get("availability"),
             "raw_status": r.get("raw_status"),
+            "decryption_state": r.get("decryption_state"),
+            "decrypted": r.get("decrypted"),
+            "source_encrypted": r.get("source_encrypted"),
+            "components_extracted": r.get("components_extracted"),
+            "filesystem_indexed": r.get("filesystem_indexed"),
             "bytes": r.get("bytes"),
         }
+    firmware_availability = Counter(
+        r.get("availability") or "unknown" for r in package_records
+    )
+    firmware_crypto = Counter(
+        r.get("decryption_state") or "unknown" for r in package_records
+        if r.get("availability") == "preserved"
+    )
 
     # Source/provenance rollup.
     source_counts: dict[str, dict[str, Any]] = {}
@@ -672,6 +784,19 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
             "unique_preserved_bytes": sum(unique_blobs.values()),
             "firmware_versions": len(matrix_versions),
             "firmware_models": len(matrix_models),
+            "firmware_preserved_packages": firmware_availability.get("preserved", 0),
+            "firmware_exact_gaps": firmware_availability.get("exact-missing", 0),
+            "firmware_negative_probes": firmware_availability.get("negative-probe", 0),
+            "firmware_decrypted_packages": firmware_crypto.get("decrypted", 0),
+            "firmware_plaintext_extracted_packages": firmware_crypto.get("plaintext-extracted", 0),
+            "firmware_decryptable_packages": firmware_crypto.get("decryptable", 0),
+            "firmware_encrypted_packages": (
+                firmware_crypto.get("encrypted", 0)
+                + firmware_crypto.get("blocked-model-key", 0)
+            ),
+            "firmware_filesystem_indexed_packages": sum(
+                1 for r in package_records if r.get("filesystem_indexed")
+            ),
             "filesystem_manifests": len(filesystem_manifests),
             "firmware_section_manifests": len(firmware_sections),
         },
@@ -683,6 +808,10 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
         "firmware_matrix": {
             "versions": matrix_versions,
             "models": matrix_models,
+            "all_versions": matrix_all_versions,
+            "all_models": matrix_all_models,
+            "availability_counts": dict(firmware_availability),
+            "crypto_counts": dict(firmware_crypto),
             "cells": matrix_cells,
         },
         "compare": {

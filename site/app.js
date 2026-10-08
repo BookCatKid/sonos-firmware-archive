@@ -37,9 +37,42 @@
     return parsed.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
   }
 
+  function monthKey(value) {
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return String(value || "undated").slice(0, 7);
+    return `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, "0")}`;
+  }
+
+  function fmtMonth(key) {
+    const match = /^(\d{4})-(\d{2})$/.exec(key || "");
+    if (!match) return key || "undated";
+    const parsed = new Date(Number(match[1]), Number(match[2]) - 1, 1);
+    return parsed.toLocaleDateString(undefined, { year: "numeric", month: "long" });
+  }
+
   function statusBadge(status) {
     const safe = String(status || "unknown").replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     return `<span class="status status-${safe}">${esc(status || "unknown")}</span>`;
+  }
+
+  const firmwareStateLabels = {
+    "decrypted": "decrypted",
+    "plaintext-extracted": "plaintext extracted",
+    "decryptable": "decryptable",
+    "encrypted": "encrypted",
+    "blocked-model-key": "blocked key",
+    "plaintext-unextracted": "plaintext",
+    "not-applicable": "n/a",
+    "not-preserved": "not preserved",
+    "unknown": "unknown",
+  };
+
+  function firmwareStateBadge(record) {
+    if (record.kind !== "firmware-package") return "—";
+    const state = record.decryption_state || "unknown";
+    const safe = state.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+    const fs = record.filesystem_indexed ? '<span class="fs-flag" title="filesystem manifest indexed">FS</span>' : "";
+    return `<span class="crypto crypto-${safe}">${esc(firmwareStateLabels[state] || state)}</span>${fs}`;
   }
 
   function toast(message) {
@@ -117,7 +150,7 @@
     const q = (params.get("q") || "").trim().toLowerCase();
     const tokens = q.split(/\s+/).filter(Boolean);
     return input.filter(record => {
-      for (const key of ["category", "platform", "status", "kind", "family"]) if (params.get(key) && record[key] !== params.get(key)) return false;
+      for (const key of ["category", "platform", "status", "kind", "family", "decryption_state"]) if (params.get(key) && record[key] !== params.get(key)) return false;
       return tokens.every(token => record.search.includes(token));
     });
   }
@@ -127,6 +160,13 @@
     const direction = params.get("order") === "asc" ? 1 : -1;
     return [...input].sort((a, b) => {
       if (sort === "bytes") return (Number(a.bytes || -1) - Number(b.bytes || -1)) * direction;
+      if (sort === "date") {
+        const av = a.date ? new Date(a.date).getTime() : Number.NaN;
+        const bv = b.date ? new Date(b.date).getTime() : Number.NaN;
+        if (Number.isFinite(av) && Number.isFinite(bv)) return (av - bv) * direction;
+        if (Number.isFinite(av)) return -1 * direction;
+        if (Number.isFinite(bv)) return 1 * direction;
+      }
       return String(a[sort] || "").localeCompare(String(b[sort] || ""), undefined, { numeric: true, sensitivity: "base" }) * direction;
     });
   }
@@ -138,6 +178,7 @@
       <select data-filter="platform">${selectOptions(uniqueValues(base, "platform"), params.get("platform"), "All platforms")}</select>
       <select data-filter="status">${selectOptions(uniqueValues(base, "status"), params.get("status"), "All statuses")}</select>
       <select data-filter="kind">${selectOptions(uniqueValues(base, "kind"), params.get("kind"), "All types")}</select>
+      <select data-filter="decryption_state">${selectOptions(uniqueValues(base, "decryption_state"), params.get("decryption_state"), "All firmware crypto")}</select>
     </div><div class="filter-row"><label>Rows <select data-filter="limit">${[25, 50, 100, 250, 500].map(n => `<option value="${n}" ${String(n) === (params.get("limit") || "100") ? "selected" : ""}>${n}</option>`).join("")}</select></label><button type="button" data-clear-filters>Clear filters</button></div>`;
   }
 
@@ -169,11 +210,11 @@
       <td class="nowrap">${statusBadge(record.status)}</td>
       <td>${recordLink(record)}${record.subtitle ? `<div class="muted small break">${esc(record.subtitle)}</div>` : ""}</td>
       <td>${esc(record.category)}</td><td>${esc(record.platform)}</td><td class="mono nowrap">${esc(record.version || "—")}</td><td class="mono nowrap">${esc(record.model || "—")}</td>
-      <td class="right nowrap">${fmtBytes(record.bytes)}</td><td class="nowrap">${fmtDate(record.date)}</td>
+      <td class="nowrap">${firmwareStateBadge(record)}</td><td class="right nowrap">${fmtBytes(record.bytes)}</td><td class="nowrap">${fmtDate(record.date)}</td>
       <td>${options.compare === false ? "" : `<button type="button" data-pin="${attr(record.id)}">${comparePins.includes(record.id) ? "Unpin" : "Compare"}</button>`}</td></tr>`).join("");
     const pagination = options.pagination === false ? "" : (pages > 1 ? `<div class="pagination"><span>Page ${page} of ${pages}</span><div class="pages"><button type="button" data-page="${page - 1}" ${page <= 1 ? "disabled" : ""}>Previous</button><button type="button" data-page="${page + 1}" ${page >= pages ? "disabled" : ""}>Next</button></div></div>` : "");
     const header = (label, key) => options.sortable === false ? `<th>${esc(label)}</th>` : sortHeader(label, key, params);
-    return { html: `<div class="table-wrap"><table><thead><tr>${header("Status", "status")}${header("Artifact", "title")}${header("Category", "category")}${header("Platform", "platform")}${header("Version", "version")}${header("Model", "model")}${header("Size", "bytes")}${header("Date", "date")}<th>Diff</th></tr></thead><tbody>${body || '<tr><td colspan="9" class="center muted">No matching records.</td></tr>'}</tbody></table></div>${pagination}`, total: sorted.length };
+    return { html: `<div class="table-wrap"><table><thead><tr>${header("Status", "status")}${header("Artifact", "title")}${header("Category", "category")}${header("Platform", "platform")}${header("Version", "version")}${header("Model", "model")}<th>Firmware state</th>${header("Size", "bytes")}${header("Date", "date")}<th>Diff</th></tr></thead><tbody>${body || '<tr><td colspan="10" class="center muted">No matching records.</td></tr>'}</tbody></table></div>${pagination}`, total: sorted.length };
   }
 
   function bindTableActions(params) {
@@ -198,8 +239,9 @@
     const gaps = DATA.gaps.map(id => recordMap.get(id)).filter(Boolean);
     const gapKinds = Object.entries(gaps.reduce((acc, r) => ((acc[r.kind] = (acc[r.kind] || 0) + 1), acc), {})).sort((a,b)=>b[1]-a[1]).slice(0,12);
     app.innerHTML = `${pageHeader("Overview", "One index for preserved binaries, metadata-only observations, explicit gaps, source provenance, and structural diffs.")}
-      <div class="stats-grid"><div class="stat"><strong>${fmtNumber(s.record_total)}</strong><span>indexed records</span></div><div class="stat"><strong>${fmtNumber(s.unique_preserved_blobs)}</strong><span>unique preserved blobs</span></div><div class="stat"><strong>${fmtBytes(s.unique_preserved_bytes)}</strong><span>deduplicated preserved bytes</span></div><div class="stat"><strong>${fmtNumber(s.gap_total)}</strong><span>known gaps / incomplete</span></div><div class="stat"><strong>${fmtNumber(s.firmware_versions)}</strong><span>firmware versions</span></div><div class="stat"><strong>${fmtNumber(s.firmware_section_manifests)}</strong><span>UPD section manifests</span></div></div>
-      <div class="grid-2"><section class="panel"><div class="panel-header"><h2>Coverage status</h2><a href="#/gaps">open gaps</a></div><div class="panel-body">${barList(statusEntries)}</div></section><section class="panel"><div class="panel-header"><h2>Archive categories</h2><a href="#/artifacts">browse all</a></div><div class="panel-body">${barList(categoryEntries)}</div></section></div>
+      <div class="stats-grid"><div class="stat"><strong>${fmtNumber(s.record_total)}</strong><span>indexed records</span></div><div class="stat"><strong>${fmtNumber(s.unique_preserved_blobs)}</strong><span>unique preserved blobs</span></div><div class="stat"><strong>${fmtBytes(s.unique_preserved_bytes)}</strong><span>deduplicated preserved bytes</span></div><div class="stat"><strong>${fmtNumber(s.gap_total)}</strong><span>known gaps / incomplete</span></div><div class="stat"><strong>${fmtNumber(s.firmware_preserved_packages)}/${fmtNumber(s.firmware_preserved_packages + s.firmware_exact_gaps)}</strong><span>known exact firmware packages preserved</span></div><div class="stat"><strong>${fmtNumber(s.firmware_decrypted_packages)}</strong><span>encrypted firmware packages decrypted</span></div></div>
+      <div class="grid-2"><section class="panel"><div class="panel-header"><h2>Coverage status</h2><a href="#/gaps">open gaps</a></div><div class="panel-body">${barList(statusEntries)}</div></section><section class="panel"><div class="panel-header"><h2>Firmware analysis</h2><a href="#/firmware">open matrix</a></div><div class="panel-body">${barList(Object.entries(DATA.firmware_matrix.crypto_counts).sort((a,b)=>b[1]-a[1]))}<div class="small muted" style="margin-top:8px">${fmtNumber(s.firmware_negative_probes)} failed CDN/model probes are tracked separately and are not counted as archive gaps.</div></div></section></div>
+      <section class="panel"><div class="panel-header"><h2>Archive categories</h2><a href="#/artifacts">browse all</a></div><div class="panel-body">${barList(categoryEntries)}</div></section>
       <section class="panel"><div class="panel-header"><h2>Recent dated records</h2><a href="#/timeline">full timeline</a></div><div class="panel-body flush">${recordTable(recent, new URLSearchParams("limit=25&sort=date&order=desc"), {limit:25, sortable:false, compare:false, pagination:false}).html}</div></section>
       <div class="grid-2"><section class="panel"><div class="panel-header"><h2>Largest gap groups</h2></div><div class="panel-body">${barList(gapKinds)}</div></section><section class="panel"><div class="panel-header"><h2>Dataset freshness</h2></div><div class="panel-body">${Object.entries(DATA.generated_from).map(([k,v])=>`<dl class="kv"><dt>${esc(k.replaceAll("_"," "))}</dt><dd class="mono">${esc(v || "not recorded")}</dd></dl>`).join("")}</div></section></div>`;
   }
@@ -214,17 +256,90 @@
 
   function timelineView() {
     const { params } = parseRoute(), base = DATA.timeline.map(item => recordMap.get(item.id)).filter(Boolean), filtered = filterRecords(base, params), grouped = new Map();
-    sortRecords(filtered, new URLSearchParams("sort=date&order=desc")).forEach(record => { const key = (record.date || "undated").slice(0,7); if (!grouped.has(key)) grouped.set(key, []); grouped.get(key).push(record); });
-    app.innerHTML = `${pageHeader("Timeline", "Dated observations and captures across firmware evidence, apps, web deployments, Wayback recovery, and store metadata.")}${filterControls(base, params)}<div class="filter-summary"><span>${fmtNumber(filtered.length)} dated records</span><span>Dates are evidence/capture dates when known, not inferred release dates.</span></div><div class="timeline">${[...grouped.entries()].map(([month,items])=>`<section class="timeline-group"><div class="timeline-date">${esc(month)}</div>${items.map(record=>`<div class="timeline-item"><span class="mono">${fmtDate(record.date)}</span><span>${recordLink(record)} <span class="muted">· ${esc(record.kind)} · ${esc(record.version || "")}</span></span><span>${statusBadge(record.status)}</span></div>`).join("")}</section>`).join("") || '<div class="empty">No matching timeline entries.</div>'}</div>`;
+    sortRecords(filtered, new URLSearchParams("sort=date&order=desc")).forEach(record => { const key = monthKey(record.date); if (!grouped.has(key)) grouped.set(key, []); grouped.get(key).push(record); });
+    app.innerHTML = `${pageHeader("Timeline", "Dated observations and captures across firmware evidence, apps, web deployments, Wayback recovery, and store metadata.")}${filterControls(base, params)}<div class="filter-summary"><span>${fmtNumber(filtered.length)} dated records</span><span>Dates are evidence/capture dates when known, not inferred release dates.</span></div><div class="timeline">${[...grouped.entries()].map(([month,items])=>`<section class="timeline-group"><div class="timeline-date">${esc(fmtMonth(month))}</div>${items.map(record=>`<div class="timeline-item"><span class="mono">${fmtDate(record.date)}</span><span>${recordLink(record)} <span class="muted">· ${esc(record.kind)} · ${esc(record.version || "")}</span></span><span>${statusBadge(record.status)}</span></div>`).join("")}</section>`).join("") || '<div class="empty">No matching timeline entries.</div>'}</div>`;
     bindFilters();
   }
 
   function firmwareView() {
-    const { params } = parseRoute(), query = (params.get("q") || "").toLowerCase(), status = params.get("status") || "", matrix = DATA.firmware_matrix;
-    const versions = matrix.versions.filter(v => !query || v.toLowerCase().includes(query)), models = matrix.models;
-    const rows = versions.map(version => { const cells = matrix.cells[version] || {}; return `<tr><td class="mono"><strong>${esc(version)}</strong></td>${models.map(model => { const cell = cells[String(model)]; if (!cell || (status && cell.status !== status)) return '<td class="cell-empty">·</td>'; const label = cell.status === "preserved" ? "P" : cell.status === "missing" ? "M" : cell.status.slice(0,1).toUpperCase(); return `<td class="cell-${cell.status}"><a class="matrix-cell" href="${recordHref(cell.id)}" title="${attr(cell.status + (cell.raw_status ? " / raw: " + cell.raw_status : ""))}">${label}</a></td>`; }).join("")}</tr>`; }).join("");
-    app.innerHTML = `${pageHeader("Firmware matrix", "Exact version × package-model coverage. A missing exact package stays missing even when a nearby version exists.", '<a class="button" href="#/compare">Compare firmware</a>')}<div class="filter-row"><input type="search" data-fw-q value="${attr(params.get("q") || "")}" placeholder="Filter version…"><select data-fw-status>${selectOptions(["preserved","missing","partial"], status, "All states")}</select><span class="muted">P = preserved, M = missing. Click any occupied cell for evidence and hashes.</span></div><div class="matrix-wrap"><table class="matrix"><thead><tr><th>Version</th>${models.map(m=>`<th title="package model ${m}">${m}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div><div class="grid-3"><div class="stat"><strong>${fmtNumber(matrix.versions.length)}</strong><span>exact firmware versions</span></div><div class="stat"><strong>${fmtNumber(matrix.models.length)}</strong><span>package model IDs</span></div><div class="stat"><strong>${fmtNumber(DATA.summary.filesystem_manifests)}</strong><span>filesystem manifests for path-level diff</span></div></div>`;
-    let timer; app.querySelector("[data-fw-q]").addEventListener("input", e => { clearTimeout(timer); timer=setTimeout(()=>updateParam("q",e.target.value),180); }); app.querySelector("[data-fw-status]").addEventListener("change", e=>updateParam("status",e.target.value));
+    const { params } = parseRoute();
+    const query = (params.get("q") || "").toLowerCase();
+    const crypto = params.get("crypto") || "";
+    const showProbes = params.get("probes") === "1";
+    const matrix = DATA.firmware_matrix;
+    const versions = (showProbes ? matrix.all_versions : matrix.versions).filter(v => !query || v.toLowerCase().includes(query));
+    const models = showProbes ? matrix.all_models : matrix.models;
+
+    const cellInfo = cell => {
+      if (!cell) return { label: "", cls: "empty", title: "no known exact package" };
+      if (cell.availability === "negative-probe") return { label: "×", cls: "probe", title: "negative CDN/model probe; not a known archive gap" };
+      if (cell.availability === "exact-missing") return { label: "!", cls: "missing", title: "known exact package missing" };
+      const map = {
+        "decrypted": ["D", "decrypted", "encrypted source successfully decrypted and raw components archived"],
+        "plaintext-extracted": ["X", "extracted", "plaintext package components extracted"],
+        "decryptable": ["K", "decryptable", "required recipient key is available; package can be decrypted"],
+        "blocked-model-key": ["B", "blocked", "decryption explicitly blocked on a model-specific key"],
+        "encrypted": ["E", "encrypted", "encrypted package preserved; matching key not recovered"],
+        "plaintext-unextracted": ["P", "preserved", "plaintext package preserved but components not extracted"],
+        "not-applicable": ["P", "preserved", "preserved non-UPD firmware artifact"],
+        "unknown": ["P", "preserved", "preserved package; extraction state unknown"],
+      };
+      const [label, cls, title] = map[cell.decryption_state] || ["P", "preserved", cell.decryption_state || "preserved"];
+      return { label, cls, title };
+    };
+
+    const rows = versions.map(version => {
+      const cells = matrix.cells[version] || {};
+      return `<tr><td class="mono"><strong>${esc(version)}</strong></td>${models.map(model => {
+        const cell = cells[String(model)];
+        if (!cell) return '<td class="cell-empty"></td>';
+        if (!showProbes && cell.availability === "negative-probe") return '<td class="cell-empty"></td>';
+        if (crypto && cell.decryption_state !== crypto) return '<td class="cell-empty"></td>';
+        const info = cellInfo(cell);
+        const fs = cell.filesystem_indexed ? '<span class="matrix-fs" title="filesystem manifest indexed">F</span>' : "";
+        const title = `${info.title}${cell.raw_status ? " / raw: " + cell.raw_status : ""}${cell.filesystem_indexed ? " / filesystem indexed" : ""}`;
+        return `<td class="cell-${info.cls}"><a class="matrix-cell" href="${recordHref(cell.id)}" title="${attr(title)}">${info.label}${fs}</a></td>`;
+      }).join("")}</tr>`;
+    }).join("");
+
+    const exactTotal = DATA.summary.firmware_preserved_packages + DATA.summary.firmware_exact_gaps;
+    const preservationPct = exactTotal ? (DATA.summary.firmware_preserved_packages / exactTotal * 100).toFixed(1) : "—";
+
+    app.innerHTML = `${pageHeader("Firmware matrix", "Preservation and decryption state for exact firmware packages. Failed speculative CDN/model probes are hidden by default because they are not archive holes.", '<a class="button" href="#/compare">Compare firmware</a>')}
+      <div class="stats-grid">
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_preserved_packages)}/${fmtNumber(exactTotal)}</strong><span>known exact packages preserved (${preservationPct}%)</span></div>
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_decrypted_packages)}</strong><span>encrypted packages decrypted</span></div>
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_plaintext_extracted_packages)}</strong><span>plaintext packages extracted</span></div>
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_encrypted_packages)}</strong><span>encrypted packages awaiting keys</span></div>
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_filesystem_indexed_packages)}</strong><span>root filesystems indexed</span></div>
+        <div class="stat"><strong>${fmtNumber(DATA.summary.firmware_negative_probes)}</strong><span>negative probes, not gaps</span></div>
+      </div>
+      <div class="notice"><strong>Coverage semantics:</strong> ${fmtNumber(DATA.summary.firmware_negative_probes)} failed model/CDN probes are tracked as negative evidence, not missing packages. The default matrix shows preserved exact artifacts plus proven exact gaps only.</div>
+      <div class="filter-row">
+        <input type="search" data-fw-q value="${attr(params.get("q") || "")}" placeholder="Filter version…">
+        <select data-fw-crypto>${selectOptions(["decrypted","plaintext-extracted","decryptable","encrypted","blocked-model-key","plaintext-unextracted","not-applicable","unknown"], crypto, "All firmware crypto states")}</select>
+        <label><input type="checkbox" data-fw-probes ${showProbes ? "checked" : ""}> show negative CDN/model probes</label>
+      </div>
+      <div class="matrix-legend">
+        <span><b>D</b> decrypted</span>
+        <span><b>X</b> plaintext extracted</span>
+        <span><b>K</b> key available</span>
+        <span><b>E</b> encrypted / key unavailable</span>
+        <span><b>B</b> explicitly blocked key</span>
+        <span><b>P</b> preserved</span>
+        <span><b>!</b> exact known gap</span>
+        ${showProbes ? '<span><b>×</b> negative probe</span>' : ""}
+        <span><b>F</b> corner = filesystem indexed</span>
+      </div>
+      <div class="matrix-wrap"><table class="matrix"><thead><tr><th>Version</th>${models.map(model => `<th title="package model ${model}">${model}</th>`).join("")}</tr></thead><tbody>${rows || '<tr><td>No versions match.</td></tr>'}</tbody></table></div>`;
+
+    let timer;
+    app.querySelector("[data-fw-q]").addEventListener("input", event => {
+      clearTimeout(timer);
+      timer = setTimeout(() => updateParam("q", event.target.value), 180);
+    });
+    app.querySelector("[data-fw-crypto]").addEventListener("change", event => updateParam("crypto", event.target.value));
+    app.querySelector("[data-fw-probes]").addEventListener("change", event => updateParam("probes", event.target.checked ? "1" : ""));
   }
 
   function flatten(value, prefix = "", result = {}) { if (value === null || value === undefined || typeof value !== "object") { result[prefix || "(value)"] = value; return result; } if (Array.isArray(value)) { value.forEach((item,i)=>flatten(item,`${prefix}[${i}]`,result)); if(!value.length) result[prefix]=[]; return result; } const keys=Object.keys(value); if(!keys.length) result[prefix]={}; keys.forEach(key=>flatten(value[key],prefix?`${prefix}.${key}`:key,result)); return result; }
@@ -285,7 +400,7 @@
 
   function bindFilesystem(entries){const input=app.querySelector("[data-fs-search]"),body=app.querySelector("[data-fs-rows]");if(!input||!body)return;const draw=()=>{const q=input.value.toLowerCase(),rows=entries.filter(e=>!q||String(e.path).toLowerCase().includes(q));body.innerHTML=rows.map(e=>`<tr><td class="mono break">${esc(e.path)}</td><td>${esc(e.type||e.kind||"—")}</td><td class="mono">${e.mode??"—"}</td><td class="right">${fmtBytes(e.size??e.bytes)}</td><td class="mono break">${esc(e.sha256||e.target||"—")}</td></tr>`).join("");};input.addEventListener("input",draw);draw();}
 
-  function recordView(encodedId){const id=decodeURIComponent(encodedId||""),record=recordMap.get(id);if(!record){app.innerHTML=pageHeader("Record not found",`No normalized record named <code>${esc(id)}</code>.`)+'<a href="#/artifacts">Back to artifacts</a>';return;}const detail=DATA.details[id]||{},duplicates=record.sha256?DATA.records.filter(r=>r.id!==id&&r.sha256===record.sha256):[],childRecords=(record.children||[]).map(c=>recordMap.get(c)).filter(Boolean),sourceLinks=record.source_urls.map(url=>`<li>${externalLink(url,url)}</li>`).join("");app.innerHTML=`${pageHeader(record.title,`${statusBadge(record.status)} &nbsp; ${esc(record.kind)} · ${esc(record.platform)}`,`<button type="button" data-pin="${attr(record.id)}">${comparePins.includes(record.id)?"Remove from compare":"Add to compare"}</button><button type="button" data-copy-id>Copy ID</button><button type="button" data-copy-json>Copy JSON</button>${record.release_url?externalLink(record.release_url,"Download / release"):""}`)}<div class="detail-grid"><section class="panel"><div class="panel-header"><h2>Record</h2></div><div class="panel-body">${kv("ID",`<code>${esc(record.id)}</code>`,true)}${kv("Category",record.category)}${kv("Type",record.kind)}${kv("Platform",record.platform)}${kv("Family",record.family)}${kv("Version",record.version)}${kv("Package model",record.model)}${kv("Product",record.product)}${kv("Status",statusBadge(record.status),true)}${kv("Date",record.date)}${kv("Size",record.bytes!=null?`${fmtBytes(record.bytes)} (${fmtNumber(record.bytes)} bytes)`:"")}${kv("SHA-256",record.sha256?`<code>${esc(record.sha256)}</code>`:"",true)}${kv("Artifact status",record.artifact_status)}${kv("Raw status",record.raw_status)}${kv("Note",record.note)}</div></section><aside><section class="panel"><div class="panel-header"><h2>Provenance</h2></div><div class="panel-body"><div class="tags">${record.sources.map(s=>`<span class="tag">${esc(s)}</span>`).join("")||'<span class="muted">No source label</span>'}</div>${sourceLinks?`<h3>Source URLs</h3><ul class="break">${sourceLinks}</ul>`:""}${record.tags.length?`<h3>Tags</h3><div class="tags">${record.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></section>${duplicates.length?`<section class="panel"><div class="panel-header"><h2>Same SHA-256</h2></div><div class="panel-body">${duplicates.map(r=>`<div>${recordLink(r)} <span class="muted">${esc(r.kind)}</span></div>`).join("")}</div></section>`:""}</aside></div>${childRecords.length?`<section class="panel"><div class="panel-header"><h2>Contained / child records</h2><span>${childRecords.length}</span></div><div class="panel-body flush">${recordTable(childRecords,new URLSearchParams("limit=250&sort=title&order=asc"),{limit:250,sortable:false,pagination:false}).html}</div></section>`:""}${detailSpecial(record)}<details><summary>Raw normalized source object</summary><pre class="json">${esc(JSON.stringify(detail,null,2))}</pre></details>`;app.querySelectorAll("[data-pin]").forEach(button=>button.addEventListener("click",()=>{togglePin(button.dataset.pin);recordView(encodedId);}));app.querySelector("[data-copy-id]").addEventListener("click",()=>copyText(record.id,"Record ID copied"));app.querySelector("[data-copy-json]").addEventListener("click",()=>copyText(JSON.stringify({record,detail},null,2),"Record JSON copied"));}
+  function recordView(encodedId){const id=decodeURIComponent(encodedId||""),record=recordMap.get(id);if(!record){app.innerHTML=pageHeader("Record not found",`No normalized record named <code>${esc(id)}</code>.`)+'<a href="#/artifacts">Back to artifacts</a>';return;}const detail=DATA.details[id]||{},duplicates=record.sha256?DATA.records.filter(r=>r.id!==id&&r.sha256===record.sha256):[],childRecords=(record.children||[]).map(c=>recordMap.get(c)).filter(Boolean),sourceLinks=record.source_urls.map(url=>`<li>${externalLink(url,url)}</li>`).join("");app.innerHTML=`${pageHeader(record.title,`${statusBadge(record.status)} &nbsp; ${esc(record.kind)} · ${esc(record.platform)}`,`<button type="button" data-pin="${attr(record.id)}">${comparePins.includes(record.id)?"Remove from compare":"Add to compare"}</button><button type="button" data-copy-id>Copy ID</button><button type="button" data-copy-json>Copy JSON</button>${record.release_url?externalLink(record.release_url,"Download / release"):""}`)}<div class="detail-grid"><section class="panel"><div class="panel-header"><h2>Record</h2></div><div class="panel-body">${kv("ID",`<code>${esc(record.id)}</code>`,true)}${kv("Category",record.category)}${kv("Type",record.kind)}${kv("Platform",record.platform)}${kv("Family",record.family)}${kv("Version",record.version)}${kv("Package model",record.model)}${kv("Product",record.product)}${kv("Status",statusBadge(record.status),true)}${kv("Date",record.date)}${kv("Size",record.bytes!=null?`${fmtBytes(record.bytes)} (${fmtNumber(record.bytes)} bytes)`:"")}${kv("SHA-256",record.sha256?`<code>${esc(record.sha256)}</code>`:"",true)}${kv("Artifact status",record.artifact_status)}${kv("Availability",record.availability)}${kv("Raw status",record.raw_status)}${record.kind==="firmware-package"?kv("Decryption state",firmwareStateBadge(record),true):""}${record.kind==="firmware-package"?kv("Source encrypted",record.source_encrypted?"yes":"no"):""}${record.kind==="firmware-package"?kv("Raw components extracted",record.components_extracted?"yes":"no"):""}${record.kind==="firmware-package"?kv("Filesystem indexed",record.filesystem_indexed?"yes":"no"):""}${record.kind==="firmware-package"&&record.recipient_ids?.length?kv("Recipient IDs",record.recipient_ids.map(id=>`<code>${esc(id)}</code>`).join("<br>"),true):""}${kv("Note",record.note)}</div></section><aside><section class="panel"><div class="panel-header"><h2>Provenance</h2></div><div class="panel-body"><div class="tags">${record.sources.map(s=>`<span class="tag">${esc(s)}</span>`).join("")||'<span class="muted">No source label</span>'}</div>${sourceLinks?`<h3>Source URLs</h3><ul class="break">${sourceLinks}</ul>`:""}${record.tags.length?`<h3>Tags</h3><div class="tags">${record.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></section>${duplicates.length?`<section class="panel"><div class="panel-header"><h2>Same SHA-256</h2></div><div class="panel-body">${duplicates.map(r=>`<div>${recordLink(r)} <span class="muted">${esc(r.kind)}</span></div>`).join("")}</div></section>`:""}</aside></div>${childRecords.length?`<section class="panel"><div class="panel-header"><h2>Contained / child records</h2><span>${childRecords.length}</span></div><div class="panel-body flush">${recordTable(childRecords,new URLSearchParams("limit=250&sort=title&order=asc"),{limit:250,sortable:false,pagination:false}).html}</div></section>`:""}${detailSpecial(record)}<details><summary>Raw normalized source object</summary><pre class="json">${esc(JSON.stringify(detail,null,2))}</pre></details>`;app.querySelectorAll("[data-pin]").forEach(button=>button.addEventListener("click",()=>{togglePin(button.dataset.pin);recordView(encodedId);}));app.querySelector("[data-copy-id]").addEventListener("click",()=>copyText(record.id,"Record ID copied"));app.querySelector("[data-copy-json]").addEventListener("click",()=>copyText(JSON.stringify({record,detail},null,2),"Record JSON copied"));}
 
   function aboutView(){app.innerHTML=`${pageHeader("Data / help","How the viewer interprets the repository. The viewer does not make completeness claims beyond the archive metadata.")}<div class="grid-2"><section class="panel"><div class="panel-header"><h2>Status meanings</h2></div><div class="panel-body">${kv("preserved","Exact binary/body is archived and referenced.")}${kv("complete","A declared coverage target is complete.")}${kv("recovered","Recovery coverage is recorded; private key material is not published.")}${kv("missing","An exact known artifact is unavailable/unpreserved.")}${kv("partial","Some parts are archived, but the record is explicitly incomplete.")}${kv("metadata-only","Public metadata is preserved, but the corresponding binary is not.")}${kv("blocked","Extraction/recovery is blocked on a specific prerequisite.")}${kv("observed","Evidence/source metadata exists; this is not itself a preserved binary.")}</div></section><section class="panel"><div class="panel-header"><h2>Keyboard / links</h2></div><div class="panel-body">${kv("/","Focus global search")}${kv("Escape","Clear/focus out of global search")}${kv("Deep links","Every view, filter, comparison, and record has a hash URL that can be copied.")}${kv("Compare tray","Add two records from any artifact table or detail view, then open Compare.")}${kv("Exports","Artifact and gap views export the current filtered result set as JSON or CSV.")}</div></section></div><section class="panel"><div class="panel-header"><h2>Build inputs</h2></div><div class="panel-body">${Object.entries(DATA.generated_from).map(([k,v])=>kv(k.replaceAll("_"," "),v||"not recorded")).join("")}${kv("Normalized records",fmtNumber(DATA.summary.record_total))}${kv("Schema",DATA.schema_version)}${kv("Repository",externalLink(`https://github.com/${DATA.repository}`,DATA.repository),true)}</div></section><div class="notice">The UI is generated entirely from committed archive metadata. It does not use AI classification, infer missing versions, or silently substitute nearby releases for exact missing artifacts.</div>`;}
 

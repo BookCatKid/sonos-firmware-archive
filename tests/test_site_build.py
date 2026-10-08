@@ -71,6 +71,55 @@ class SiteBuildTests(unittest.TestCase):
         self.assertIn("preserved", statuses)
         self.assertIn("missing", statuses)
 
+    def test_negative_firmware_probes_are_not_archive_gaps(self):
+        gap_ids = set(self.payload["gaps"])
+        probes = [
+            r for r in self.records
+            if r["kind"] == "firmware-package"
+            and r.get("availability") == "negative-probe"
+        ]
+        self.assertGreater(len(probes), 100)
+        for record in probes:
+            self.assertEqual("unavailable-probe", record["status"])
+            self.assertNotIn(record["id"], gap_ids)
+
+        exact_missing = [
+            r for r in self.records
+            if r["kind"] == "firmware-package"
+            and r.get("availability") == "exact-missing"
+        ]
+        self.assertGreaterEqual(len(exact_missing), 1)
+        for record in exact_missing:
+            self.assertEqual("missing", record["status"])
+            self.assertIn(record["id"], gap_ids)
+
+    def test_firmware_decryption_state_is_exposed(self):
+        firmware = [r for r in self.records if r["kind"] == "firmware-package"]
+        preserved = [r for r in firmware if r.get("availability") == "preserved"]
+        self.assertGreater(len(preserved), 500)
+        for record in preserved:
+            self.assertIn("decryption_state", record)
+            self.assertIn("components_extracted", record)
+            self.assertIn("filesystem_indexed", record)
+
+        decrypted = [r for r in preserved if r.get("decryption_state") == "decrypted"]
+        self.assertGreater(len(decrypted), 50)
+        for record in decrypted:
+            self.assertTrue(record["decrypted"])
+            self.assertTrue(record["source_encrypted"])
+            self.assertTrue(record["components_extracted"])
+
+        matrix = self.payload["firmware_matrix"]
+        matrix_states = {
+            cell.get("decryption_state")
+            for version_cells in matrix["cells"].values()
+            for cell in version_cells.values()
+        }
+        self.assertIn("decrypted", matrix_states)
+        self.assertIn("encrypted", matrix_states)
+        self.assertGreater(self.payload["summary"]["firmware_preserved_packages"],
+                           self.payload["summary"]["firmware_exact_gaps"])
+
     def test_compare_payload_contains_structural_manifests(self):
         compare = self.payload["compare"]
         self.assertGreater(len(compare["firmware_sections"]), 500)
