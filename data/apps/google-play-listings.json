@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-10-06T01:21:54.819098+00:00",
+  "checked": "2026-10-08T21:23:06.451295+00:00",
   "scope": "official-public-google-play-listing-metadata",
   "listings": [
     {
@@ -8,8 +8,8 @@
       "family": "s2",
       "url": "https://play.google.com/store/apps/details?id=com.sonos.acr2&hl=en_US&gl=US",
       "http_status": 200,
-      "updated_on": "Sep 28, 2026",
-      "page_sha256": "663ba64195d1073d3712cc099ab60639c6357a1c07c5c4e1426f7af859fc3df1"
+      "updated_on": "Oct 6, 2026",
+      "page_sha256": "b21bc1770867940af7bfbdeed3362c2418e962f0bf04fcbe07bb3c0e65f013a9"
     },
     {
       "package": "com.sonos.acr",
@@ -17,7 +17,7 @@
       "url": "https://play.google.com/store/apps/details?id=com.sonos.acr&hl=en_US&gl=US",
       "http_status": 200,
       "updated_on": "Feb 23, 2026",
-      "page_sha256": "d62eeb810a8ca8e84b6b0173a022cf8ca0ccd1dcfb7f2f77eae1371c8af2aae6"
+      "page_sha256": "320804be0f90934e1508da6f1da0a9dac596a41aee3a85aae3f9c436a3510b7e"
     }
   ]
 }

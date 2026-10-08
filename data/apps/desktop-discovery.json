@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-10-06T01:21:51.688331+00:00",
+  "checked": "2026-10-08T21:22:49.270155+00:00",
   "sources": [
     "microsoft/winget-pkgs",
     "Homebrew/homebrew-cask",
@@ -41,8 +41,8 @@
     "row_total": 76,
     "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.%28exe%7Cdmg%29%24&collapse=urlkey&limit=5000"
   },
-  "candidate_total": 140,
-  "available_total": 99,
+  "candidate_total": 142,
+  "available_total": 100,
   "candidates": [
     {
       "family": "legacy",
@@ -1155,6 +1155,19 @@
     {
       "family": "s2",
       "platform": "macos",
+      "version": "90.0-82050",
+      "url": "https://update-software.sonos.com/software/vHbjDs9q4X/Sonos_90.0-82050.dmg",
+      "expected_sha256": "5da3db3feec9f2b46dbe9c06d9c36dbca5e14aa79081247fb1ddd3d94f921189",
+      "sources": [
+        "homebrew-history:53552ac6d685"
+      ],
+      "http_status": 200,
+      "content_length": 71829492,
+      "etag": "\"d1bb2835ae26035dafbabb4665a7bab4-5\""
+    },
+    {
+      "family": "s2",
+      "platform": "macos",
       "version": "90.0.67300",
       "url": "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.dmg",
       "expected_sha256": null,
@@ -1828,6 +1841,19 @@
       "platform": "windows",
       "version": "90.0-81181",
       "url": "https://update.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "s2",
+      "platform": "windows",
+      "version": "90.0-82050",
+      "url": "https://update-software.sonos.com/software/vHbjDs9q4X/Sonos_90.0-82050.exe",
       "expected_sha256": null,
       "sources": [
         "derived-cross-platform"
