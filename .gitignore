@@ -26,3 +26,6 @@ captures/
 # Local research scratch (downloaded release assets, extractions, diffs).
 sonos-research/
 
+# Generated static viewer payload. CI/Pages rebuilds this from committed metadata.
+site/archive-data.js
+
