@@ -347,6 +347,10 @@
 
   function smartAppDiffHtml(diff) {
     const changed=diff.files?.changed||[], summary=diff.summary||{};
+    const compaction=diff.report_compaction||null;
+    const listingTrim=compaction?.file_listing_truncated||{};
+    const listingParts=Object.entries(listingTrim).map(([kind,total])=>`${kind}: ${fmtNumber(total)} total`);
+    const compactionHtml=compaction?`<div class="notice warn"><strong>Large release delta compacted for browser performance.</strong> Exact file totals and semantic change counts are complete; repeated detail examples are bounded.${listingParts.length?` Added/removed file tables are sampled (${esc(listingParts.join(" · "))}).`:""}</div>`:"";
     const resource=changed.find(row=>row.semantic?.type==="sonos-sclib-resource-db");
     const machos=changed.filter(row=>row.semantic?.type==="mach-o");
     const structured=changed.filter(row=>["plist","json"].includes(row.semantic?.type));
@@ -378,7 +382,7 @@
 
     const fileRows=[...(diff.files?.added||[]).map(row=>({...row,state:"added"})),...(diff.files?.removed||[]).map(row=>({...row,state:"removed"})),...changed.map(row=>({...row.new,path:row.path,state:"changed",semantic:row.semantic}))];
     const filesHtml=`<section class="panel smart-section"><div class="panel-header"><h2>Bundle files</h2><span>+${fmtNumber(summary.added)} −${fmtNumber(summary.removed)} ~${fmtNumber(summary.changed)}</span></div><div class="panel-body flush"><div class="table-wrap"><table><thead><tr><th>Path</th><th>State</th><th>Role</th><th>Detected content</th><th>Handling</th></tr></thead><tbody>${fileRows.map(row=>`<tr><td class="mono break">${esc(row.path)}</td><td class="diff-${row.state}">${row.state}</td><td>${esc(row.role||"—")}</td><td>${esc(row.type?.description||row.kind||"—")}</td><td>${row.semantic?`<span class="smart-mark">${esc(row.semantic.type)}</span>`:'<span class="muted">hash / metadata only</span>'}</td></tr>`).join("")}</tbody></table></div></div></section>`;
-    return `<div class="smart-diff"><div class="stats-grid"><div class="stat"><strong>+${fmtNumber(summary.added)}</strong><span>files added</span></div><div class="stat"><strong>−${fmtNumber(summary.removed)}</strong><span>files removed</span></div><div class="stat"><strong>~${fmtNumber(summary.changed)}</strong><span>files changed</span></div><div class="stat"><strong>${fmtNumber(summary.semantically_analyzed_changed_files)}</strong><span>changed files decoded</span></div><div class="stat"><strong>${fmtNumber(summary.unchanged)}</strong><span>files unchanged</span></div></div>${resourceHtml}${machoHtml}${structuredHtml}${nibHtml}${databaseHtml}${archiveHtml}${localizedHtml}${textHtml}${filesHtml}</div>`;
+    return `<div class="smart-diff"><div class="stats-grid"><div class="stat"><strong>+${fmtNumber(summary.added)}</strong><span>files added</span></div><div class="stat"><strong>−${fmtNumber(summary.removed)}</strong><span>files removed</span></div><div class="stat"><strong>~${fmtNumber(summary.changed)}</strong><span>files changed</span></div><div class="stat"><strong>${fmtNumber(summary.semantically_analyzed_changed_files)}</strong><span>changed files decoded</span></div><div class="stat"><strong>${fmtNumber(summary.unchanged)}</strong><span>files unchanged</span></div></div>${compactionHtml}${resourceHtml}${machoHtml}${structuredHtml}${nibHtml}${databaseHtml}${archiveHtml}${localizedHtml}${textHtml}${filesHtml}</div>`;
   }
 
   async function loadSmartDiff(index) {

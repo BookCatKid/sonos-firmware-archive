@@ -16,6 +16,12 @@ SMART = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(SMART)
 
+GEN_SCRIPT = ROOT / "scripts" / "generate_macos_smart_diffs.py"
+GEN_SPEC = importlib.util.spec_from_file_location("generate_macos_smart_diffs", GEN_SCRIPT)
+GEN = importlib.util.module_from_spec(GEN_SPEC)
+assert GEN_SPEC.loader is not None
+GEN_SPEC.loader.exec_module(GEN)
+
 
 def make_resource_db(path: Path, *, hello: str, extra_json: bool = False) -> None:
     conn = sqlite3.connect(path)
@@ -312,6 +318,102 @@ class SmartApplicationDiffTests(unittest.TestCase):
             self.assertEqual(total, diff["counts"]["changed"])
             self.assertEqual(SMART.MAX_COMPILED_UI_FIELD_DIFFS, len(diff["changes"]))
             self.assertTrue(diff["truncated"])
+
+    def test_one_sided_inventory_rows_omit_bulk_hash_and_type_metadata(self):
+        row = SMART.compact_inventory_row({
+            "path": "Contents/Resources/example.bin",
+            "role": "resource",
+            "kind": "binary",
+            "bytes": 1234,
+            "sha256": "a" * 64,
+            "type": {"description": "very verbose file description"},
+        })
+        self.assertEqual("Contents/Resources/example.bin", row["path"])
+        self.assertEqual("resource", row["role"])
+        self.assertEqual("binary", row["kind"])
+        self.assertEqual(1234, row["bytes"])
+        self.assertNotIn("sha256", row)
+        self.assertNotIn("type", row)
+
+    def test_adaptive_report_compaction_enforces_size_without_losing_totals(self):
+        long_path = "Contents/Resources/" + ("nested-" * 18)
+        added = [
+            {
+                "path": f"{long_path}added-{i}.bin",
+                "role": "resource",
+                "kind": "binary",
+                "bytes": i + 1,
+            }
+            for i in range(1800)
+        ]
+        removed = [
+            {
+                "path": f"{long_path}removed-{i}.bin",
+                "role": "resource",
+                "kind": "binary",
+                "bytes": i + 1,
+            }
+            for i in range(1800)
+        ]
+        semantic_changes = [
+            {
+                "path": f"field-{i}",
+                "status": "changed",
+                "old": "old-" + ("x" * 200),
+                "new": "new-" + ("y" * 200),
+            }
+            for i in range(200)
+        ]
+        payload = {
+            "schema_version": 1,
+            "summary": {
+                "added": len(added),
+                "removed": len(removed),
+                "changed": 1,
+                "semantically_analyzed_changed_files": 1,
+            },
+            "files": {
+                "added": added,
+                "removed": removed,
+                "changed": [{
+                    "path": "Contents/Info.plist",
+                    "role": "bundle-metadata",
+                    "old": {
+                        "bytes": 1000,
+                        "kind": "plist",
+                        "sha256": "b" * 64,
+                        "type": {"description": "plist"},
+                    },
+                    "new": {
+                        "bytes": 1100,
+                        "kind": "plist",
+                        "sha256": "c" * 64,
+                        "type": {"description": "plist"},
+                    },
+                    "semantic": {
+                        "type": "plist",
+                        "counts": {"changed": len(semantic_changes)},
+                        "changes": semantic_changes,
+                    },
+                }],
+            },
+        }
+
+        max_bytes = 75_000
+        compacted = GEN.compact_report_payload(payload, max_bytes=max_bytes)
+        encoded = GEN.encode_report(compacted)
+        self.assertLessEqual(len(encoded), max_bytes)
+        self.assertEqual(1800, compacted["summary"]["added"])
+        self.assertEqual(1800, compacted["summary"]["removed"])
+        self.assertEqual(200, compacted["files"]["changed"][0]["semantic"]["counts"]["changed"])
+        self.assertIn("report_compaction", compacted)
+        info = compacted["report_compaction"]
+        self.assertEqual(len(encoded), info["final_bytes"])
+        self.assertGreater(info["original_bytes"], info["final_bytes"])
+        self.assertTrue(info["semantic_examples_trimmed"])
+        self.assertTrue(info["file_listing_truncated"])
+        self.assertLess(len(compacted["files"]["added"]), 1800)
+        self.assertLess(len(compacted["files"]["removed"]), 1800)
 
     def test_nibarchive_magic_is_recognized_and_semantically_diffed(self):
         with tempfile.TemporaryDirectory() as tmp_raw:

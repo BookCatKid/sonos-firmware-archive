@@ -27,6 +27,135 @@ ROOT = Path(__file__).resolve().parents[1]
 ARCHIVE_PATH = ROOT / "data/apps/desktop-archive.json"
 DIFF_DIR = ROOT / "data/app-diffs"
 SMART_DIFF_SCRIPT = ROOT / "scripts/smart_diff_app_bundles.py"
+MAX_REPORT_BYTES = 1_350_000
+
+
+def encode_report(payload: dict[str, Any]) -> bytes:
+    return (
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def _trim_semantic_examples(value: Any, *, aggressive: bool) -> None:
+    """Bound examples recursively while retaining exact count metadata."""
+    if isinstance(value, list):
+        for item in value:
+            _trim_semantic_examples(item, aggressive=aggressive)
+        return
+    if not isinstance(value, dict):
+        return
+
+    for key, item in list(value.items()):
+        if key == "changes" and isinstance(item, list):
+            limit = 0 if aggressive else 1
+            if len(item) > limit:
+                value[key] = item[:limit]
+                value["truncated"] = True
+            for child in value[key]:
+                _trim_semantic_examples(child, aggressive=aggressive)
+            continue
+        if key == "diff" and isinstance(item, list):
+            limit = 0 if aggressive else 40
+            if len(item) > limit:
+                value["diff_total_lines"] = len(item)
+                value[key] = item[:limit]
+                value["truncated"] = True
+            continue
+        if key in {"symbols_added", "symbols_removed"} and isinstance(item, list):
+            limit = 0 if aggressive else 20
+            value.setdefault(f"{key}_total", len(item))
+            if len(item) > limit:
+                value[key] = item[:limit]
+                value[f"{key}_truncated"] = True
+            continue
+        _trim_semantic_examples(item, aggressive=aggressive)
+
+
+def _minimal_changed_metadata(row: dict[str, Any]) -> None:
+    for side in ("old", "new"):
+        meta = row.get(side)
+        if not isinstance(meta, dict):
+            continue
+        row[side] = {
+            key: meta[key]
+            for key in ("bytes", "kind", "target")
+            if key in meta and meta[key] is not None
+        }
+
+
+def compact_report_payload(
+    payload: dict[str, Any],
+    *,
+    max_bytes: int = MAX_REPORT_BYTES,
+) -> dict[str, Any]:
+    """Keep reports bounded without changing exact summary/semantic counts."""
+    original_bytes = len(encode_report(payload))
+    if original_bytes <= max_bytes:
+        return payload
+
+    info = {
+        "original_bytes": original_bytes,
+        "max_bytes": max_bytes,
+        "semantic_examples_trimmed": False,
+        "semantic_examples_omitted": False,
+        "changed_blob_metadata_minimized": False,
+        "file_listing_truncated": {},
+    }
+    payload["report_compaction"] = info
+    changed = payload.get("files", {}).get("changed", [])
+
+    for row in changed:
+        semantic = row.get("semantic")
+        if isinstance(semantic, dict):
+            _trim_semantic_examples(semantic, aggressive=False)
+    info["semantic_examples_trimmed"] = True
+
+    if len(encode_report(payload)) > max_bytes:
+        for row in changed:
+            semantic = row.get("semantic")
+            if isinstance(semantic, dict):
+                _trim_semantic_examples(semantic, aggressive=True)
+        info["semantic_examples_omitted"] = True
+
+    if len(encode_report(payload)) > max_bytes:
+        for row in changed:
+            _minimal_changed_metadata(row)
+        info["changed_blob_metadata_minimized"] = True
+
+    files = payload.get("files", {})
+    if len(encode_report(payload)) > max_bytes:
+        for limit in (1500, 1000, 750, 500, 250, 100):
+            for key in ("added", "removed"):
+                rows = files.get(key)
+                if not isinstance(rows, list) or len(rows) <= limit:
+                    continue
+                info["file_listing_truncated"].setdefault(key, len(rows))
+                files[key] = rows[:limit]
+            if len(encode_report(payload)) <= max_bytes:
+                break
+
+    # final_bytes is itself part of the serialized payload; converge until the
+    # recorded value exactly matches the final encoded size.
+    while True:
+        encoded = encode_report(payload)
+        size = len(encoded)
+        if info.get("final_bytes") == size:
+            break
+        info["final_bytes"] = size
+    encoded = encode_report(payload)
+
+    if len(encoded) > max_bytes:
+        raise RuntimeError(
+            f"semantic report remains too large after compaction: "
+            f"{len(encoded)} > {max_bytes}"
+        )
+    return payload
 
 
 def load_smart_diff_module():
@@ -315,22 +444,18 @@ def analyze_pair(
                 },
                 "method": "content-first extracted application bundle semantic diff",
             }
+            payload = compact_report_payload(payload)
+            encoded = encode_report(payload)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_text(
-                json.dumps(
-                    payload,
-                    ensure_ascii=False,
-                    separators=(",", ":"),
-                    sort_keys=True,
-                ) + "\n",
-                encoding="utf-8",
-            )
+            destination.write_bytes(encoded)
             print(
                 f"wrote {destination.relative_to(ROOT)}: "
                 f"+{payload['summary']['added']} "
                 f"-{payload['summary']['removed']} "
                 f"~{payload['summary']['changed']} "
-                f"semantic={payload['summary']['semantically_analyzed_changed_files']}",
+                f"semantic={payload['summary']['semantically_analyzed_changed_files']} "
+                f"bytes={len(encoded)}"
+                + (" compacted" if payload.get("report_compaction") else ""),
                 flush=True,
             )
         finally:

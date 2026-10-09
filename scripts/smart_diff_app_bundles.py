@@ -881,12 +881,17 @@ def compact_inventory_meta(meta: dict[str, Any]) -> dict[str, Any]:
 
 
 def compact_inventory_row(meta: dict[str, Any]) -> dict[str, Any]:
-    """Compact a one-sided file inventory row without losing blob identity."""
-    return {
+    """Compact a one-sided file row to the fields useful in a release diff."""
+    out = {
         "path": meta["path"],
         "role": meta.get("role") or "other",
-        **compact_inventory_meta(meta),
+        "kind": meta.get("kind") or "unknown",
     }
+    if isinstance(meta.get("bytes"), int):
+        out["bytes"] = meta["bytes"]
+    if meta.get("target") is not None:
+        out["target"] = meta["target"]
+    return out
 
 
 def summarize_roles(rows: Iterable[dict[str, Any]]) -> dict[str, int]:
