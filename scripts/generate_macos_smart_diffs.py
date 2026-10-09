@@ -317,7 +317,12 @@ def analyze_pair(
             }
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(
-                json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                json.dumps(
+                    payload,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ) + "\n",
                 encoding="utf-8",
             )
             print(

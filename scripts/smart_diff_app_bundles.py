@@ -31,10 +31,10 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 SCLIB_KEY = bytes.fromhex("0fee0c5fe8a7c905b727dd383d20e61d")
 SCLIB_PAGE_SIZE = 4096
 SQLITE_MAGIC = b"SQLite format 3\x00"
-MAX_FIELD_DIFFS = 250
-MAX_COMPILED_UI_FIELD_DIFFS = 48
-MAX_TEXT_DIFF_LINES = 600
-MAX_RESOURCE_CHANGES = 1000
+MAX_FIELD_DIFFS = 80
+MAX_COMPILED_UI_FIELD_DIFFS = 3
+MAX_TEXT_DIFF_LINES = 160
+MAX_RESOURCE_CHANGES = 30
 MACHO_MAGICS = {
     b"\xfe\xed\xfa\xce", b"\xce\xfa\xed\xfe",
     b"\xfe\xed\xfa\xcf", b"\xcf\xfa\xed\xfe",
@@ -862,6 +862,24 @@ def semantic_diff(old: Path, new: Path, old_meta: dict[str, Any], new_meta: dict
     return None
 
 
+def compact_inventory_meta(meta: dict[str, Any]) -> dict[str, Any]:
+    """Keep blob identity and useful type info without duplicating row context."""
+    out = {
+        key: meta[key]
+        for key in ("bytes", "sha256", "kind", "target")
+        if key in meta and meta[key] is not None
+    }
+    type_meta = meta.get("type")
+    if isinstance(type_meta, dict):
+        description = type_meta.get("description")
+        if description:
+            out["type"] = {"description": str(description)[:320]}
+        for key in ("format", "width", "height"):
+            if key in type_meta:
+                out.setdefault("type", {})[key] = type_meta[key]
+    return out
+
+
 def summarize_roles(rows: Iterable[dict[str, Any]]) -> dict[str, int]:
     counts = collections.Counter(row.get("role") or "other" for row in rows)
     return dict(sorted(counts.items()))
@@ -903,7 +921,12 @@ def build_diff(old_root: Path, new_root: Path, *, old_version: str, new_version:
     for path in changed_paths:
         old_meta, new_meta = old_inv[path], new_inv[path]
         semantic = semantic_diff(old_root / path, new_root / path, old_meta, new_meta)
-        row = {"path": path, "old": old_meta, "new": new_meta}
+        row = {
+            "path": path,
+            "role": new_meta.get("role") or old_meta.get("role") or "other",
+            "old": compact_inventory_meta(old_meta),
+            "new": compact_inventory_meta(new_meta),
+        }
         if semantic:
             semantic_count += 1
             row["semantic"] = semantic
@@ -958,9 +981,7 @@ def build_diff(old_root: Path, new_root: Path, *, old_version: str, new_version:
             "semantically_analyzed_changed_files": semantic_count,
             "added_roles": summarize_roles(added),
             "removed_roles": summarize_roles(removed),
-            "changed_roles": summarize_roles(
-                [{"role": row["new"].get("role")} for row in changed]
-            ),
+            "changed_roles": summarize_roles(changed),
         },
         "highlights": highlights,
         "files": {"added": added, "removed": removed, "changed": changed},
