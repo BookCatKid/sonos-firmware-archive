@@ -343,6 +343,63 @@ def text_diff(old: Path, new: Path) -> dict[str, Any]:
     }
 
 
+def nibarchive_tokens(path: Path) -> dict[str, list[str]]:
+    """Extract stable human-readable identifiers from Apple's compiled NIBArchive.
+
+    This is intentionally not a byte-level parser. NIBArchive is a compiled object
+    graph; the useful stable surface for release comparison is the set of embedded
+    class names, selectors/keys, and string values rather than offsets or record IDs.
+    """
+    data = path.read_bytes()
+    ascii_tokens = {
+        match.decode("utf-8", errors="ignore").strip()
+        for match in re.findall(rb"[\x20-\x7e]{4,}", data)
+    }
+    utf16_tokens = set()
+    for match in re.findall(rb"(?:[\x20-\x7e]\x00){4,}", data):
+        try:
+            utf16_tokens.add(match.decode("utf-16le").strip())
+        except UnicodeDecodeError:
+            pass
+    tokens = {
+        token for token in ascii_tokens | utf16_tokens
+        if token and len(token) <= 512
+    }
+    classes = {
+        token for token in tokens
+        if re.fullmatch(r"(?:NS|SM|SC|Sonos|SCLib)[A-Za-z0-9_$]+", token)
+    }
+    return {
+        "tokens": sorted(tokens),
+        "classes": sorted(classes),
+    }
+
+
+def nibarchive_diff(old: Path, new: Path) -> dict[str, Any]:
+    left = nibarchive_tokens(old)
+    right = nibarchive_tokens(new)
+    token_changes = _mapping_changes(
+        {token: True for token in left["tokens"]},
+        {token: True for token in right["tokens"]},
+        render_key=lambda key: key,
+        limit=1000,
+    )
+    class_changes = _mapping_changes(
+        {token: True for token in left["classes"]},
+        {token: True for token in right["classes"]},
+        render_key=lambda key: key,
+        limit=500,
+    )
+    return {
+        "type": "nibarchive",
+        "description": "Apple compiled Interface Builder object archive",
+        "old_tokens": len(left["tokens"]),
+        "new_tokens": len(right["tokens"]),
+        "tokens": token_changes,
+        "classes": class_changes,
+    }
+
+
 def macho_metadata(path: Path) -> dict[str, Any]:
     archs = run_text(["lipo", "-archs", str(path)]).split()
     deps_raw = run_text(["otool", "-L", str(path)]).splitlines()
@@ -726,6 +783,8 @@ def semantic_diff(old: Path, new: Path, old_meta: dict[str, Any], new_meta: dict
             return strings_table_diff(old, new)
         if kind == "text":
             return {"type": "text", **text_diff(old, new)}
+        if kind == "nibarchive":
+            return nibarchive_diff(old, new)
         if kind == "mach-o":
             return {"type": "mach-o", **macho_diff(old, new)}
         if kind == "sqlite":
@@ -772,6 +831,7 @@ def build_diff(old_root: Path, new_root: Path, *, old_version: str, new_version:
         "plist": {"files": 0, "fields_changed": 0},
         "localized_strings": {"files": 0, "keys_changed": 0},
         "text": {"files": 0},
+        "compiled_ui": {"files": 0, "tokens_changed": 0, "classes_changed": 0},
     }
 
     for path in changed_paths:
@@ -806,6 +866,13 @@ def build_diff(old_root: Path, new_root: Path, *, old_version: str, new_version:
                 )
             elif stype == "text":
                 highlights["text"]["files"] += 1
+            elif stype == "nibarchive":
+                highlights["compiled_ui"]["files"] += 1
+                for bucket, field in (("tokens", "tokens_changed"), ("classes", "classes_changed")):
+                    counts = semantic.get(bucket, {}).get("counts", {})
+                    highlights["compiled_ui"][field] += (
+                        counts.get("added", 0) + counts.get("removed", 0) + counts.get("changed", 0)
+                    )
         changed.append(row)
 
     return {

@@ -12,7 +12,7 @@
     "removed": 0,
     "changed": 32,
     "unchanged": 2671,
-    "semantically_analyzed_changed_files": 23,
+    "semantically_analyzed_changed_files": 30,
     "added_roles": {},
     "removed_roles": {},
     "changed_roles": {
@@ -52,6 +52,11 @@
     },
     "text": {
       "files": 3
+    },
+    "compiled_ui": {
+      "files": 7,
+      "tokens_changed": 6,
+      "classes_changed": 2
     }
   },
   "files": {
@@ -938,6 +943,53 @@
           "type": {
             "description": "Apple NIBArchive compiled UI"
           }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 423,
+          "new_tokens": 423,
+          "tokens": {
+            "counts": {
+              "same": 421,
+              "added": 2,
+              "removed": 2
+            },
+            "changes": [
+              {
+                "key": "{393, 235}",
+                "status": "added",
+                "old": null,
+                "new": true
+              },
+              {
+                "key": "{408, 235}",
+                "status": "removed",
+                "old": true,
+                "new": null
+              },
+              {
+                "key": "{{1, 1}, {393, 235}}",
+                "status": "added",
+                "old": null,
+                "new": true
+              },
+              {
+                "key": "{{1, 1}, {408, 235}}",
+                "status": "removed",
+                "old": true,
+                "new": null
+              }
+            ],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 160
+            },
+            "changes": [],
+            "truncated": false
+          }
         }
       },
       {
@@ -1011,6 +1063,26 @@
           "role": "compiled-ui",
           "type": {
             "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 385,
+          "new_tokens": 385,
+          "tokens": {
+            "counts": {
+              "same": 385
+            },
+            "changes": [],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 140
+            },
+            "changes": [],
+            "truncated": false
           }
         }
       },
@@ -10070,6 +10142,42 @@
           "type": {
             "description": "Apple NIBArchive compiled UI"
           }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 332,
+          "new_tokens": 333,
+          "tokens": {
+            "counts": {
+              "same": 332,
+              "added": 1
+            },
+            "changes": [
+              {
+                "key": "NSViewIsLayerTreeHost",
+                "status": "added",
+                "old": null,
+                "new": true
+              }
+            ],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 154,
+              "added": 1
+            },
+            "changes": [
+              {
+                "key": "NSViewIsLayerTreeHost",
+                "status": "added",
+                "old": null,
+                "new": true
+              }
+            ],
+            "truncated": false
+          }
         }
       },
       {
@@ -10137,6 +10245,26 @@
           "role": "compiled-ui",
           "type": {
             "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 426,
+          "new_tokens": 426,
+          "tokens": {
+            "counts": {
+              "same": 426
+            },
+            "changes": [],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 194
+            },
+            "changes": [],
+            "truncated": false
           }
         }
       },
@@ -15134,6 +15262,26 @@
           "type": {
             "description": "Apple NIBArchive compiled UI"
           }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 314,
+          "new_tokens": 314,
+          "tokens": {
+            "counts": {
+              "same": 314
+            },
+            "changes": [],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 127
+            },
+            "changes": [],
+            "truncated": false
+          }
         }
       },
       {
@@ -18546,6 +18694,42 @@
           "type": {
             "description": "Apple NIBArchive compiled UI"
           }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 390,
+          "new_tokens": 389,
+          "tokens": {
+            "counts": {
+              "same": 389,
+              "removed": 1
+            },
+            "changes": [
+              {
+                "key": "NSViewIsLayerTreeHost",
+                "status": "removed",
+                "old": true,
+                "new": null
+              }
+            ],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 168,
+              "removed": 1
+            },
+            "changes": [
+              {
+                "key": "NSViewIsLayerTreeHost",
+                "status": "removed",
+                "old": true,
+                "new": null
+              }
+            ],
+            "truncated": false
+          }
         }
       },
       {
@@ -18620,6 +18804,26 @@
           "role": "compiled-ui",
           "type": {
             "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "semantic": {
+          "type": "nibarchive",
+          "description": "Apple compiled Interface Builder object archive",
+          "old_tokens": 148,
+          "new_tokens": 148,
+          "tokens": {
+            "counts": {
+              "same": 148
+            },
+            "changes": [],
+            "truncated": false
+          },
+          "classes": {
+            "counts": {
+              "same": 105
+            },
+            "changes": [],
+            "truncated": false
           }
         }
       },

@@ -250,13 +250,29 @@ class SmartApplicationDiffTests(unittest.TestCase):
             ),
         )
 
-    def test_nibarchive_magic_is_recognized_as_compiled_ui_format(self):
+    def test_nibarchive_magic_is_recognized_and_semantically_diffed(self):
         with tempfile.TemporaryDirectory() as tmp_raw:
-            path = Path(tmp_raw) / "keyedobjects-101300.nib"
-            path.write_bytes(b"NIBArchive" + b"\x00" * 256)
-            kind, metadata = SMART.detect_type(path)
+            tmp = Path(tmp_raw)
+            old = tmp / "old.nib"
+            new = tmp / "new.nib"
+            old.write_bytes(
+                b"NIBArchive" + b"\x00" * 16
+                + b"SMOldController\x00NSButton\x00titleKey\x00Old label\x00"
+            )
+            new.write_bytes(
+                b"NIBArchive" + b"\x00" * 16
+                + b"SMNewController\x00NSButton\x00titleKey\x00New label\x00"
+            )
+            kind, metadata = SMART.detect_type(old)
             self.assertEqual("nibarchive", kind)
             self.assertEqual("Apple NIBArchive compiled UI", metadata["description"])
+
+            diff = SMART.nibarchive_diff(old, new)
+            self.assertEqual("nibarchive", diff["type"])
+            self.assertGreaterEqual(diff["tokens"]["counts"]["added"], 1)
+            self.assertGreaterEqual(diff["tokens"]["counts"]["removed"], 1)
+            self.assertEqual(1, diff["classes"]["counts"]["added"])
+            self.assertEqual(1, diff["classes"]["counts"]["removed"])
 
 
 if __name__ == "__main__":

@@ -299,6 +299,7 @@
     if (h.mach_o?.files) parts.push(`${fmtNumber(h.mach_o.files)} native binaries analyzed`);
     if (h.mach_o && ((h.mach_o.symbols_added||0)+(h.mach_o.symbols_removed||0))) parts.push(`${fmtNumber((h.mach_o.symbols_added||0)+(h.mach_o.symbols_removed||0))} exported symbol changes`);
     if (h.plist?.files) parts.push(`${fmtNumber(h.plist.fields_changed||0)} plist fields`);
+    if (h.compiled_ui?.files) parts.push(`${fmtNumber(h.compiled_ui.files)} compiled UI archives analyzed`);
     return parts.join(" · ");
   }
 
@@ -353,6 +354,7 @@
     const texts=changed.filter(row=>row.semantic?.type==="text");
     const databases=changed.filter(row=>row.semantic?.type==="sqlite");
     const archives=changed.filter(row=>row.semantic?.type==="zip");
+    const nibs=changed.filter(row=>row.semantic?.type==="nibarchive");
 
     let resourceHtml="";
     if(resource){
@@ -368,13 +370,15 @@
 
     const archiveHtml=archives.length?`<section class="panel smart-section"><div class="panel-header"><h2>Archives / packages</h2><span>${fmtNumber(archives.length)} files</span></div><div class="panel-body">${archives.map(row=>`<details><summary><code>${esc(row.path)}</code> · ${semanticCountsLine(row.semantic.counts)}</summary>${resourceChangesTable(row.semantic,"member")}</details>`).join("")}</div></section>`:"";
 
+    const nibHtml=nibs.length?`<section class="panel smart-section"><div class="panel-header"><h2>Compiled Interface Builder archives</h2><span>${fmtNumber(nibs.length)} files</span></div><div class="panel-body"><div class="notice"><strong>NIBArchive decoded semantically.</strong> Offset/record churn is ignored; the diff compares embedded UI class names, keys, selectors, and human-readable values.</div>${nibs.map(row=>`<details><summary><code>${esc(row.path)}</code> · ${semanticCountsLine(row.semantic.tokens?.counts)} tokens · ${semanticCountsLine(row.semantic.classes?.counts)} classes</summary><div class="grid-2"><div><h3>UI tokens / values</h3>${resourceChangesTable(row.semantic.tokens,"value")}</div><div><h3>Classes</h3>${resourceChangesTable(row.semantic.classes,"class")}</div></div></details>`).join("")}</div></section>`:"";
+
     const localizedHtml=localized.length?`<section class="panel smart-section"><div class="panel-header"><h2>Localized .strings tables</h2><span>${fmtNumber(localized.length)} files</span></div><div class="panel-body">${localized.map(row=>`<details><summary><code>${esc(row.path)}</code> · ${fmtNumber(changedCount(row.semantic.counts))} keys</summary><div class="table-wrap"><table><thead><tr><th>Key</th><th>State</th><th>Old translation</th><th>New translation</th></tr></thead><tbody>${(row.semantic.changes||[]).slice(0,250).map(c=>`<tr><td class="mono break">${esc(c.path)}</td><td class="diff-${c.status}">${c.status}</td><td class="break smart-value">${esc(valuePreview(c.old))}</td><td class="break smart-value">${esc(valuePreview(c.new))}</td></tr>`).join("")}</tbody></table></div></details>`).join("")}</div></section>`:"";
 
     const textHtml=texts.length?`<section class="panel smart-section"><div class="panel-header"><h2>Text resources</h2><span>${fmtNumber(texts.length)} files</span></div><div class="panel-body">${texts.map(row=>`<details><summary><code>${esc(row.path)}</code></summary><pre class="json smart-text-diff">${esc((row.semantic.diff||[]).join("\n"))}</pre></details>`).join("")}</div></section>`:"";
 
     const fileRows=[...(diff.files?.added||[]).map(row=>({...row,state:"added"})),...(diff.files?.removed||[]).map(row=>({...row,state:"removed"})),...changed.map(row=>({...row.new,path:row.path,state:"changed",semantic:row.semantic}))];
     const filesHtml=`<section class="panel smart-section"><div class="panel-header"><h2>Bundle files</h2><span>+${fmtNumber(summary.added)} −${fmtNumber(summary.removed)} ~${fmtNumber(summary.changed)}</span></div><div class="panel-body flush"><div class="table-wrap"><table><thead><tr><th>Path</th><th>State</th><th>Role</th><th>Detected content</th><th>Handling</th></tr></thead><tbody>${fileRows.map(row=>`<tr><td class="mono break">${esc(row.path)}</td><td class="diff-${row.state}">${row.state}</td><td>${esc(row.role||"—")}</td><td>${esc(row.type?.description||row.kind||"—")}</td><td>${row.semantic?`<span class="smart-mark">${esc(row.semantic.type)}</span>`:'<span class="muted">hash / metadata only</span>'}</td></tr>`).join("")}</tbody></table></div></div></section>`;
-    return `<div class="smart-diff"><div class="stats-grid"><div class="stat"><strong>+${fmtNumber(summary.added)}</strong><span>files added</span></div><div class="stat"><strong>−${fmtNumber(summary.removed)}</strong><span>files removed</span></div><div class="stat"><strong>~${fmtNumber(summary.changed)}</strong><span>files changed</span></div><div class="stat"><strong>${fmtNumber(summary.semantically_analyzed_changed_files)}</strong><span>changed files decoded</span></div><div class="stat"><strong>${fmtNumber(summary.unchanged)}</strong><span>files unchanged</span></div></div>${resourceHtml}${machoHtml}${structuredHtml}${databaseHtml}${archiveHtml}${localizedHtml}${textHtml}${filesHtml}</div>`;
+    return `<div class="smart-diff"><div class="stats-grid"><div class="stat"><strong>+${fmtNumber(summary.added)}</strong><span>files added</span></div><div class="stat"><strong>−${fmtNumber(summary.removed)}</strong><span>files removed</span></div><div class="stat"><strong>~${fmtNumber(summary.changed)}</strong><span>files changed</span></div><div class="stat"><strong>${fmtNumber(summary.semantically_analyzed_changed_files)}</strong><span>changed files decoded</span></div><div class="stat"><strong>${fmtNumber(summary.unchanged)}</strong><span>files unchanged</span></div></div>${resourceHtml}${machoHtml}${structuredHtml}${nibHtml}${databaseHtml}${archiveHtml}${localizedHtml}${textHtml}${filesHtml}</div>`;
   }
 
   async function loadSmartDiff(index) {
