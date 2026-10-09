@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-09T04:30:24.629738+00:00",
+  "updated": "2026-10-09T14:39:00.470716+00:00",
   "scope": "ios-ipa-device-export",
   "family": "s2",
   "platform": "ios-ipa-decrypted",
   "bundle_id": "com.sonos.SonosController2",
   "track_id": 1488977981,
-  "artifact_total": 17,
+  "artifact_total": 33,
   "gap_total": 6,
   "gaps": [
     {
@@ -305,6 +305,230 @@
       ],
       "release_tag": "apps-ios-s2",
       "release_asset": "Sonos-s2-12.2.1-838880347.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.2",
+      "external_version_id": 839435781,
+      "bytes": 86014106,
+      "sha256": "bba61e1e301149a19b126393fb236e4981d7c5f910172521b4f63988c984f9ca",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.2-839435781.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.3",
+      "external_version_id": 839897773,
+      "bytes": 86015890,
+      "sha256": "898998f1807f2f39d2ed103c77eff30594c73f6f3ac4460b80592fc5d752230d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.3-839897773.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.4",
+      "external_version_id": 840106007,
+      "bytes": 86022193,
+      "sha256": "e6a458ded67d546bbd460b2d6de4e175feced1d84bf04ec089bf1a9225abaaaf",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.4-840106007.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.5",
+      "external_version_id": 840226322,
+      "bytes": 86022218,
+      "sha256": "6f91e807caeacebb016a44369b03b212cfebc6e71a88202a8879391d4edc91cb",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.5-840226322.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.6",
+      "external_version_id": 840321909,
+      "bytes": 86024172,
+      "sha256": "49dccd7aaa9617670526b1d2dfcf2b5949f289f1f785094d13ad6950a932bb4b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.6-840321909.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.7",
+      "external_version_id": 840504619,
+      "bytes": 86035603,
+      "sha256": "53685f39988f4d1323cff9341c5412e80c4e33a51e1ef1191b3aa69c0a74028f",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.7-840504619.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0",
+      "external_version_id": 840695381,
+      "bytes": 87289196,
+      "sha256": "a20fe13931972ee9e40b08a1fed536b8e5b4185d71572177820dc19455567d0b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0-840695381.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.2",
+      "external_version_id": 840939534,
+      "bytes": 87289774,
+      "sha256": "aa283ddd090174c6658d469c12a44df9128f0b5165b1c194abd437acc224bf53",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.2-840939534.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.4",
+      "external_version_id": 841216732,
+      "bytes": 87659342,
+      "sha256": "d8965496356e79e9ae7852ecf5515454fa3dcf30192794d521a6002f2af7300b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.4-841216732.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.5",
+      "external_version_id": 841342475,
+      "bytes": 87762861,
+      "sha256": "a32f746448708c6ed39746388b3a90d7cfc8b083e01a145f4b3b868e9737c896",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.5-841342475.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1",
+      "external_version_id": 842085939,
+      "bytes": 88662946,
+      "sha256": "d81c4002fc2582e430d529fb0410db9793f0ac43e2ab635eb6a033732ac32cd2",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1-842085939.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.1",
+      "external_version_id": 842268878,
+      "bytes": 88731651,
+      "sha256": "05442f497ca64f0e47302fbe6a5685ff2fe49b0e8af6b990e07c96185e2a02c4",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.1-842268878.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.2",
+      "external_version_id": 842488703,
+      "bytes": 88758418,
+      "sha256": "0a8963744519e1f8f12d367b6d583b0c5aa72124ba853b0366e547a1b1436381",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.2-842488703.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.3",
+      "external_version_id": 842669880,
+      "bytes": 88759185,
+      "sha256": "1ff7e7f0aa90c3d2287e591841835cd169eb77aa4b169081c0439968301c534d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.3-842669880.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.4",
+      "external_version_id": 842870785,
+      "bytes": 88758004,
+      "sha256": "3d65097d1c6f3c696e41a94cd5e67bdade8b52801f06d1f93029ce68321dc838",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.4-842870785.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.2",
+      "external_version_id": 843093122,
+      "bytes": 88913660,
+      "sha256": "98fadb7afe654874ad61c3c39cf4767c80fff609a9ad17030e53ad00b1240748",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.2-843093122.ipa"
     }
   ]
 }
