@@ -155,11 +155,36 @@
     });
   }
 
+  function compareVersions(left, right) {
+    const tokenize = value => String(value || "").match(/\d+|[A-Za-z]+/g) || [];
+    const a = tokenize(left), b = tokenize(right);
+    const count = Math.max(a.length, b.length);
+    for (let i = 0; i < count; i += 1) {
+      if (i >= a.length) return -1;
+      if (i >= b.length) return 1;
+      const an = /^\d+$/.test(a[i]), bn = /^\d+$/.test(b[i]);
+      if (an && bn) {
+        const av = Number(a[i]), bv = Number(b[i]);
+        if (av !== bv) return av < bv ? -1 : 1;
+        continue;
+      }
+      if (an !== bn) return an ? -1 : 1;
+      const text = a[i].localeCompare(b[i], undefined, { sensitivity: "base" });
+      if (text) return text;
+    }
+    return String(left || "").localeCompare(String(right || ""), undefined, { numeric: true, sensitivity: "base" });
+  }
+
   function sortRecords(input, params) {
     const sort = params.get("sort") || "date";
     const direction = params.get("order") === "asc" ? 1 : -1;
     return [...input].sort((a, b) => {
       if (sort === "bytes") return (Number(a.bytes || -1) - Number(b.bytes || -1)) * direction;
+      if (sort === "version") {
+        const versionOrder = compareVersions(a.version, b.version);
+        if (versionOrder) return versionOrder * direction;
+        return String(a.title || "").localeCompare(String(b.title || ""), undefined, { numeric: true, sensitivity: "base" }) * direction;
+      }
       if (sort === "date") {
         const av = a.date ? new Date(a.date).getTime() : Number.NaN;
         const bv = b.date ? new Date(b.date).getTime() : Number.NaN;
@@ -248,6 +273,10 @@
 
   function explorerView(gapsOnly = false) {
     const { params } = parseRoute();
+    if (gapsOnly && !params.has("sort")) {
+      params.set("sort", "version");
+      params.set("order", "desc");
+    }
     const base = gapsOnly ? DATA.gaps.map(id => recordMap.get(id)).filter(Boolean) : DATA.records;
     const filtered = filterRecords(base, params), table = recordTable(filtered, params);
     app.innerHTML = `${pageHeader(gapsOnly ? "Missing / gaps" : "Artifacts", gapsOnly ? "Every explicitly missing, blocked, partial, or metadata-only record. Nothing is silently treated as complete." : "Every normalized record in the archive. Search and filter across firmware, apps, web captures, source archives, evidence, and recovery state.", '<button type="button" data-export="json">Export JSON</button><button type="button" data-export="csv">Export CSV</button>')}${filterControls(base, params)}<div class="filter-summary"><span>${fmtNumber(filtered.length)} matching / ${fmtNumber(base.length)} total</span><span>Sort by clicking a column heading.</span></div>${table.html}`;

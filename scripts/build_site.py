@@ -52,7 +52,7 @@ def simple_status(value: str | None) -> str:
 def version_key(value: str | None) -> tuple:
     if not value:
         return ()
-    parts = re.findall(r"d+|[A-Za-z]+", value)
+    parts = re.findall(r"\d+|[A-Za-z]+", value)
     result = []
     for part in parts:
         result.append((0, int(part)) if part.isdigit() else (1, part.lower()))

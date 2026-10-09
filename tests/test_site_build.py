@@ -17,6 +17,14 @@ class SiteBuildTests(unittest.TestCase):
         cls.records = cls.payload["records"]
         cls.by_id = {record["id"]: record for record in cls.records}
 
+    def test_version_key_orders_numeric_firmware_versions(self):
+        versions = ["9.5-100", "10.0-2", "90.00", "89.01", "96.0-79160", "97.2-81220"]
+        ordered = sorted(versions, key=BUILD_SITE.version_key)
+        self.assertEqual(
+            ["9.5-100", "10.0-2", "89.01", "90.00", "96.0-79160", "97.2-81220"],
+            ordered,
+        )
+
     def test_payload_is_large_and_ids_are_unique(self):
         ids = [record["id"] for record in self.records]
         self.assertGreater(len(ids), 2000)
