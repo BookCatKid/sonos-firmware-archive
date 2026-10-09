@@ -1,0 +1,5531 @@
+{
+  "schema_version": 1,
+  "kind": "smart-app-diff",
+  "platform": "macos",
+  "family": "s2",
+  "old_version": "90.0-81181",
+  "new_version": "90.0-82050",
+  "summary": {
+    "old_files": 2703,
+    "new_files": 2703,
+    "added": 0,
+    "removed": 0,
+    "changed": 28,
+    "unchanged": 2675,
+    "semantically_analyzed_changed_files": 21,
+    "added_roles": {},
+    "removed_roles": {},
+    "changed_roles": {
+      "bundle-metadata": 2,
+      "compiled-ui": 10,
+      "framework": 4,
+      "native-code": 6,
+      "other": 1,
+      "packed-resources": 1,
+      "resource": 4
+    }
+  },
+  "highlights": {
+    "translations": {
+      "same": 186923
+    },
+    "images": {
+      "same": 116
+    },
+    "json_resources": {
+      "same": 271
+    },
+    "mach_o": {
+      "files": 10,
+      "dependencies_added": 0,
+      "dependencies_removed": 0,
+      "symbols_added": 0,
+      "symbols_removed": 0
+    },
+    "plist": {
+      "files": 7,
+      "fields_changed": 473
+    },
+    "localized_strings": {
+      "files": 0,
+      "keys_changed": 0
+    },
+    "text": {
+      "files": 3
+    }
+  },
+  "files": {
+    "added": [],
+    "removed": [],
+    "changed": [
+      {
+        "path": "Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+        "old": {
+          "path": "Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+          "bytes": 4220032,
+          "sha256": "dbfb5e486b594c238d03cc645cc480e304a1a35a671bc907997972bd0e345ba5",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+          "bytes": 4220032,
+          "sha256": "b1ead13b594f1101a59caae07c201e3b6936c34453fd4457ee0cfa0ab983c49b",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "/usr/lib/swift/libswiftCore.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [
+              "/usr/lib/swift"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.13",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1244.6.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2780.0.27",
+              "300.0.0",
+              "45.0.0",
+              "5.7.1",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.scdependencykitmdcr",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "/usr/lib/swift/libswiftCore.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [
+              "/usr/lib/swift"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.13",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1244.6.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2780.0.27",
+              "300.0.0",
+              "45.0.0",
+              "5.7.1",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.scdependencykitmdcr",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 831,
+          "new_exported_symbol_count": 831
+        }
+      },
+      {
+        "path": "Contents/Frameworks/libswiftCore.dylib",
+        "old": {
+          "path": "Contents/Frameworks/libswiftCore.dylib",
+          "bytes": 6456176,
+          "sha256": "ea5e6c36cead59b16184ad5a1a111232c57a43bcc08af71441b7f753bef9c062",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Frameworks/libswiftCore.dylib",
+          "bytes": 6456176,
+          "sha256": "4082f8b61a7501ab30d9bdcb73ef58941cb454d1d05afe29d7b28edc7dcdc4dc",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libicucore.A.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "1.0.0",
+              "10.9",
+              "1001.0.82",
+              "1001.0.82.4",
+              "1252.250.1",
+              "150.0.0",
+              "1570.15.0",
+              "228.0.0",
+              "300.0.0",
+              "400.9.4",
+              "62.1.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.libswiftCore",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "10.14.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libicucore.A.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "1.0.0",
+              "10.9",
+              "1001.0.82",
+              "1001.0.82.4",
+              "1252.250.1",
+              "150.0.0",
+              "1570.15.0",
+              "228.0.0",
+              "300.0.0",
+              "400.9.4",
+              "62.1.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.libswiftCore",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "10.14.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 13010,
+          "new_exported_symbol_count": 13010
+        }
+      },
+      {
+        "path": "Contents/Info.plist",
+        "old": {
+          "path": "Contents/Info.plist",
+          "bytes": 2756,
+          "sha256": "0bb51ae34b576d587a83ec8e44c651eb1f917cbdf8ae2e8e1c2ff4d2250ebc33",
+          "kind": "plist",
+          "role": "bundle-metadata",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Info.plist",
+          "bytes": 2756,
+          "sha256": "200fd7da51b7f22775d8615d9b3de1367dd75b10f04f349e02119f732257b27e",
+          "kind": "plist",
+          "role": "bundle-metadata",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 38,
+            "changed": 2
+          },
+          "changes": [
+            {
+              "path": "CFBundleShortVersionString",
+              "old": "17.2.4",
+              "new": "17.2.5",
+              "status": "changed"
+            },
+            {
+              "path": "CFBundleVersion",
+              "old": "90.0.81181",
+              "new": "90.0.82050",
+              "status": "changed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/MacOS/Sonos",
+        "old": {
+          "path": "Contents/MacOS/Sonos",
+          "bytes": 48266288,
+          "sha256": "76ad7b55900e61a8654d332f14754d055d8239fce248a5aa04e12dfee705d62a",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/MacOS/Sonos",
+          "bytes": 48283168,
+          "sha256": "493f212737301a7cc89cd0077017d90e2e10e5b615c0caa1e3dfe513c5da9b1b",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/Library/Frameworks/iTunesLibrary.framework/iTunesLibrary",
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
+              "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics",
+              "/System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@executable_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.0.1",
+              "1.11.0",
+              "1.2.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "1402.0.8",
+              "150.0.0",
+              "1690.3.3",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "5.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "61.0.0",
+              "64.0.0",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macController2",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/Library/Frameworks/iTunesLibrary.framework/iTunesLibrary",
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
+              "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics",
+              "/System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@executable_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.0.1",
+              "1.11.0",
+              "1.2.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "1402.0.8",
+              "150.0.0",
+              "1690.3.3",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "5.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "61.0.0",
+              "64.0.0",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macController2",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 59,
+          "new_exported_symbol_count": 59
+        }
+      },
+      {
+        "path": "Contents/MacOS/SonosLibraryServer",
+        "old": {
+          "path": "Contents/MacOS/SonosLibraryServer",
+          "bytes": 1754352,
+          "sha256": "1ba5a9586336e379607a2141838d5c0950848d34b16dc1a2add2444dc3d1415b",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/MacOS/SonosLibraryServer",
+          "bytes": 1754352,
+          "sha256": "b61b58a2e83bd73a590591f692d09731e33ab5d10fff21f060cd39b787615980",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "0.0",
+              "1.0.0",
+              "10.11",
+              "11.0",
+              "1300.36.0",
+              "1319.0.0",
+              "1402.0.8",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "300.0.0",
+              "45.0.0",
+              "60420.60.24",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "SonosLibraryServer",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "0.0",
+              "1.0.0",
+              "10.11",
+              "11.0",
+              "1300.36.0",
+              "1319.0.0",
+              "1402.0.8",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "300.0.0",
+              "45.0.0",
+              "60420.60.24",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "SonosLibraryServer",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 672,
+          "new_exported_symbol_count": 672
+        }
+      },
+      {
+        "path": "Contents/MacOS/assistantTool",
+        "old": {
+          "path": "Contents/MacOS/assistantTool",
+          "bytes": 596688,
+          "sha256": "919ca0be8c89f13db576320977edf9f3d04cbd062671e03ae432c443314086d7",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/MacOS/assistantTool",
+          "bytes": 596688,
+          "sha256": "cb6e52d1b82add5a301327abdecaea95599a19b33a2bc0b2d583667e223366ea",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/DirectoryService.framework/Versions/A/DirectoryService",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@loader_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macAssistant",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/DirectoryService.framework/Versions/A/DirectoryService",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@loader_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macAssistant",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 1,
+          "new_exported_symbol_count": 1
+        }
+      },
+      {
+        "path": "Contents/MacOS/relaunch",
+        "old": {
+          "path": "Contents/MacOS/relaunch",
+          "bytes": 151888,
+          "sha256": "3e1918684ec6306cff6c6c88155a173a1eaf0204788ab194fe50fa9170481aab",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/MacOS/relaunch",
+          "bytes": 151888,
+          "sha256": "5a2678ca5548e7017bf71c7e6fc9d5755f3132299d119c21301c1a5d768fbafd",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libobjc.A.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "0.0",
+              "1.0.0",
+              "10.11",
+              "11.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "300.0.0",
+              "45.0.0",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macRelaunch",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libobjc.A.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "0.0",
+              "1.0.0",
+              "10.11",
+              "11.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "300.0.0",
+              "45.0.0",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macRelaunch",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 1,
+          "new_exported_symbol_count": 1
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects-101300.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects-101300.nib",
+          "bytes": 22805,
+          "sha256": "f433323771d31293e5d03220ce5da44eddd4ea5c71bf01d803a0c69d3addaab2",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects-101300.nib",
+          "bytes": 22814,
+          "sha256": "4626cef314e25c0d8e51cb9641943c6f2851daf5ae54d8b2036dc61c6933c8f3",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects.nib",
+          "bytes": 29465,
+          "sha256": "a808489cac1f471c9b30d5058656111f2adbe4ec7e95f90ecb90711a70046c69",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects.nib",
+          "bytes": 29437,
+          "sha256": "a43e65faa38f2fe48ff6cd4294bd82212551cea1639fac3a5c10041c5c11169d",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 2127,
+            "changed": 2,
+            "removed": 4
+          },
+          "changes": [
+            {
+              "path": "$objects[147]",
+              "old": "{556, 438}",
+              "new": "{541, 438}",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[148]",
+              "old": "{{0, -4}, {556, 438}}",
+              "new": "{{0, -4}, {541, 438}}",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[150].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[155].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[344].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[347].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects-101300.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects-101300.nib",
+          "bytes": 11095,
+          "sha256": "9cae682d77790d46528bec6005a94e9efc452f9b4f0a2246577b7a1c1da6545c",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects-101300.nib",
+          "bytes": 11068,
+          "sha256": "b9c32a07b8a8d4e936a5bd96aa77cfea07cb63363932ceead6db8b9f3136bec4",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects.nib",
+          "bytes": 13849,
+          "sha256": "9cdf3c5d888167222a961df4ba1a665d1643bc23939a95d879f3cdd32cd36c58",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects.nib",
+          "bytes": 13809,
+          "sha256": "b30e9f23089f26176b323be0a840c6c0876b4db2736abb2eb36c0feb98fa4b92",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 689,
+            "removed": 2
+          },
+          "changes": [
+            {
+              "path": "$objects[95].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[97].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects-101300.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects-101300.nib",
+          "bytes": 10908,
+          "sha256": "60dcf96587e485f8189cc306a69d95e5d3537d127095980e3c1e63fdb840641f",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects-101300.nib",
+          "bytes": 10934,
+          "sha256": "9ec2d2241c2768d8bb3824b792cf9a96233b921155528d5ee5cf30e1258fd322",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects.nib",
+          "bytes": 13667,
+          "sha256": "9b0bf0dbc8012aad3a45462b7f0e2151ad1e7a37e88b0ae63ca078e2cefc0a64",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects.nib",
+          "bytes": 13707,
+          "sha256": "a22dc609e73c583a01cdf780d8353f3e6b2bf55a6d6242c093eca531707fb0f7",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 750,
+            "added": 2
+          },
+          "changes": [
+            {
+              "path": "$objects[37].NSViewIsLayerTreeHost",
+              "old": null,
+              "new": true,
+              "status": "added"
+            },
+            {
+              "path": "$objects[92].NSViewIsLayerTreeHost",
+              "old": null,
+              "new": true,
+              "status": "added"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects-101300.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects-101300.nib",
+          "bytes": 8626,
+          "sha256": "2ea7b79ea4bc010025ace80a46efae7ad06240e2ba8a7ac0ee2efed396cd2692",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects-101300.nib",
+          "bytes": 8602,
+          "sha256": "b70b12cfbdecd8777f6994814c007d00618892b17164ef7cd143e418c860e9a8",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects.nib",
+          "bytes": 10498,
+          "sha256": "13b579b9e6aedb40595ef1ebbe164bd298d47bb2cd2862d6f2b8aafb53e014e6",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects.nib",
+          "bytes": 10464,
+          "sha256": "d8ce5723a3a302708e5f404aac41d257a5512472e4a40f4a750f407c497c32b0",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 162,
+            "changed": 89,
+            "removed": 186,
+            "added": 182
+          },
+          "changes": [
+            {
+              "path": "$objects[100]",
+              "old": 13,
+              "new": 14,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[101]",
+              "old": 14,
+              "new": 15,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[102]",
+              "old": 15,
+              "new": 16,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[103]",
+              "old": 16,
+              "new": 17,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[104]",
+              "old": 17,
+              "new": 18,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[105]",
+              "old": 18,
+              "new": 19,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[106]",
+              "old": 19,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[106].$class",
+              "old": null,
+              "new": "UID(26)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[106].NS.objects",
+              "old": null,
+              "new": [],
+              "status": "added"
+            },
+            {
+              "path": "$objects[107].$class",
+              "old": "UID(26)",
+              "new": "UID(83)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[108].$class",
+              "old": "UID(84)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[108].$classes[0]",
+              "old": null,
+              "new": "NSIBObjectData",
+              "status": "added"
+            },
+            {
+              "path": "$objects[108].$classes[1]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[108].$classname",
+              "old": null,
+              "new": "NSIBObjectData",
+              "status": "added"
+            },
+            {
+              "path": "$objects[108].NS.objects",
+              "old": [],
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[109].$classes[0]",
+              "old": "NSIBObjectData",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[109].$classes[1]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[109].$classname",
+              "old": "NSIBObjectData",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[14].$class",
+              "old": "UID(62)",
+              "new": "UID(61)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[14].IBClassReference",
+              "old": "UID(60)",
+              "new": "UID(59)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[14].NSClassName",
+              "old": "UID(61)",
+              "new": "UID(60)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[14].NSFrameSize",
+              "old": "UID(59)",
+              "new": "UID(58)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].$class",
+              "old": "UID(109)",
+              "new": "UID(108)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSAccessibilityConnectors",
+              "old": "UID(107)",
+              "new": "UID(106)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSAccessibilityOidsKeys",
+              "old": "UID(108)",
+              "new": "UID(107)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSAccessibilityOidsValues",
+              "old": "UID(108)",
+              "new": "UID(107)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSObjectsKeys",
+              "old": "UID(79)",
+              "new": "UID(78)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSObjectsValues",
+              "old": "UID(85)",
+              "new": "UID(84)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSOidsKeys",
+              "old": "UID(86)",
+              "new": "UID(85)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[1].NSOidsValues",
+              "old": "UID(87)",
+              "new": "UID(86)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[20].NSfFlags",
+              "old": 1301,
+              "new": 1044,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[31].NSLabel",
+              "old": "UID(63)",
+              "new": "UID(62)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[32].NS.objects[1]",
+              "old": "UID(39)",
+              "new": "UID(38)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[33].$class",
+              "old": "UID(38)",
+              "new": "UID(37)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[33].NSFont",
+              "old": "UID(37)",
+              "new": "UID(20)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[37].$class",
+              "old": "UID(22)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[37].$classes[0]",
+              "old": null,
+              "new": "NSTabView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[37].$classes[1]",
+              "old": null,
+              "new": "NSView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[37].$classes[2]",
+              "old": null,
+              "new": "NSResponder",
+              "status": "added"
+            },
+            {
+              "path": "$objects[37].$classes[3]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[37].$classname",
+              "old": null,
+              "new": "NSTabView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[37].NSName",
+              "old": "UID(21)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[37].NSSize",
+              "old": 13.0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[37].NSfFlags",
+              "old": 1044,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].$class",
+              "old": null,
+              "new": "UID(57)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].$classes[0]",
+              "old": "NSTabView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].$classes[1]",
+              "old": "NSView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].$classes[2]",
+              "old": "NSResponder",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].$classes[3]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].$classname",
+              "old": "NSTabView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[38].IBNSClipsToBounds",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].IBNSLayoutMarginsGuide",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].IBNSSafeAreaLayoutGuide",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSAllowsLogicalLayoutDirection",
+              "old": null,
+              "new": true,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSCell",
+              "old": null,
+              "new": "UID(40)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlContinuous",
+              "old": null,
+              "new": false,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlLineBreakMode",
+              "old": null,
+              "new": 4,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlRefusesFirstResponder",
+              "old": null,
+              "new": false,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlSendActionMask",
+              "old": null,
+              "new": 4,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlSize",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlSize2",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlTextAlignment",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlUsesSingleLineMode",
+              "old": null,
+              "new": false,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSControlWritingDirection",
+              "old": null,
+              "new": -1,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSEnabled",
+              "old": null,
+              "new": true,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSFrame",
+              "old": null,
+              "new": "UID(39)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSNextResponder",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSNibTouchBar",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSSuperview",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSTextFieldAlignmentRectInsetsVersion",
+              "old": null,
+              "new": 2,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSViewWantsBestResolutionOpenGLSurface",
+              "old": null,
+              "new": true,
+              "status": "added"
+            },
+            {
+              "path": "$objects[38].NSvFlags",
+              "old": null,
+              "new": 268,
+              "status": "added"
+            },
+            {
+              "path": "$objects[39]",
+              "old": null,
+              "new": "{{20, 460}, {148, 18}}",
+              "status": "added"
+            },
+            {
+              "path": "$objects[39].$class",
+              "old": "UID(58)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].IBNSClipsToBounds",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].IBNSLayoutMarginsGuide",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].IBNSSafeAreaLayoutGuide",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSAllowsLogicalLayoutDirection",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSCell",
+              "old": "UID(41)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlContinuous",
+              "old": false,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlLineBreakMode",
+              "old": 4,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlRefusesFirstResponder",
+              "old": false,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlSendActionMask",
+              "old": 4,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlSize",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlSize2",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlTextAlignment",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlUsesSingleLineMode",
+              "old": false,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSControlWritingDirection",
+              "old": -1,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSEnabled",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSFrame",
+              "old": "UID(40)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSNextResponder",
+              "old": "UID(14)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSNibTouchBar",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSSuperview",
+              "old": "UID(14)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSTextFieldAlignmentRectInsetsVersion",
+              "old": 2,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSViewWantsBestResolutionOpenGLSurface",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[39].NSvFlags",
+              "old": 268,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[40]",
+              "old": "{{20, 460}, {148, 18}}",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[40].$class",
+              "old": null,
+              "new": "UID(56)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSBackgroundColor",
+              "old": null,
+              "new": "UID(47)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSCellFlags",
+              "old": null,
+              "new": 67108928,
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSCellFlags2",
+              "old": null,
+              "new": 4196352,
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSContents",
+              "old": null,
+              "new": "UID(41)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSControlSize2",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSControlView",
+              "old": null,
+              "new": "UID(38)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSSupport",
+              "old": null,
+              "new": "UID(45)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[40].NSTextColor",
+              "old": null,
+              "new": "UID(55)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[41].$class",
+              "old": "UID(57)",
+              "new": "UID(44)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[41].NS.string",
+              "old": null,
+              "new": "!!Title",
+              "status": "added"
+            },
+            {
+              "path": "$objects[41].NSBackgroundColor",
+              "old": "UID(48)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSCellFlags",
+              "old": 67108928,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSCellFlags2",
+              "old": 4196352,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSContents",
+              "old": "UID(42)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSControlSize2",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSControlView",
+              "old": "UID(39)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSDev",
+              "old": null,
+              "new": "UID(43)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[41].NSKey",
+              "old": null,
+              "new": "UID(42)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[41].NSSupport",
+              "old": "UID(46)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[41].NSTextColor",
+              "old": "UID(56)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[42]",
+              "old": null,
+              "new": "9.title",
+              "status": "added"
+            },
+            {
+              "path": "$objects[42].$class",
+              "old": "UID(45)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[42].NS.string",
+              "old": "!!Title",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[42].NSDev",
+              "old": "UID(44)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[42].NSKey",
+              "old": "UID(43)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[43]",
+              "old": "9.title",
+              "new": "!!Title",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[44]",
+              "old": "!!Title",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[44].$classes[0]",
+              "old": null,
+              "new": "NSLocalizableString",
+              "status": "added"
+            },
+            {
+              "path": "$objects[44].$classes[1]",
+              "old": null,
+              "new": "NSString",
+              "status": "added"
+            },
+            {
+              "path": "$objects[44].$classes[2]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[44].$classname",
+              "old": null,
+              "new": "NSLocalizableString",
+              "status": "added"
+            },
+            {
+              "path": "$objects[45].$class",
+              "old": null,
+              "new": "UID(22)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[45].$classes[0]",
+              "old": "NSLocalizableString",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[45].$classes[1]",
+              "old": "NSString",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[45].$classes[2]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[45].$classname",
+              "old": "NSLocalizableString",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[45].NSName",
+              "old": null,
+              "new": "UID(46)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[45].NSSize",
+              "old": null,
+              "new": 14.0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[45].NSfFlags",
+              "old": null,
+              "new": 2072,
+              "status": "added"
+            },
+            {
+              "path": "$objects[46]",
+              "old": null,
+              "new": ".AppleSystemUIFontBold",
+              "status": "added"
+            },
+            {
+              "path": "$objects[46].$class",
+              "old": "UID(22)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[46].NSName",
+              "old": "UID(47)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[46].NSSize",
+              "old": 14.0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[46].NSfFlags",
+              "old": 2072,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[47]",
+              "old": ".AppleSystemUIFontBold",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[47].$class",
+              "old": null,
+              "new": "UID(54)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[47].NSCatalogName",
+              "old": null,
+              "new": "UID(48)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[47].NSColor",
+              "old": null,
+              "new": "UID(50)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[47].NSColorName",
+              "old": null,
+              "new": "UID(49)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[47].NSColorSpace",
+              "old": null,
+              "new": 6,
+              "status": "added"
+            },
+            {
+              "path": "$objects[48]",
+              "old": null,
+              "new": "System",
+              "status": "added"
+            },
+            {
+              "path": "$objects[48].$class",
+              "old": "UID(55)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[48].NSCatalogName",
+              "old": "UID(49)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[48].NSColor",
+              "old": "UID(51)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[48].NSColorName",
+              "old": "UID(50)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[48].NSColorSpace",
+              "old": 6,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[49]",
+              "old": "System",
+              "new": "controlColor",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[50]",
+              "old": "controlColor",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[50].$class",
+              "old": null,
+              "new": "UID(54)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSColorSpace",
+              "old": null,
+              "new": 3,
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSComponents.bytes",
+              "old": null,
+              "new": 14,
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSComponents.sha256",
+              "old": null,
+              "new": "1cea7e92e82d185193513bbbd1ac87dd9b8edb2fc8acfee9a22470ae19c91df8",
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSComponents.type",
+              "old": null,
+              "new": "bytes",
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSCustomColorSpace",
+              "old": null,
+              "new": "UID(51)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSWhite.bytes",
+              "old": null,
+              "new": 12,
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSWhite.sha256",
+              "old": null,
+              "new": "f50bfbe796884cf1c7998f5965d4e0946a3f1149b9e4d168a338f56bb65195e7",
+              "status": "added"
+            },
+            {
+              "path": "$objects[50].NSWhite.type",
+              "old": null,
+              "new": "bytes",
+              "status": "added"
+            },
+            {
+              "path": "$objects[51].$class",
+              "old": "UID(55)",
+              "new": "UID(53)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[51].NSColorSpace",
+              "old": 3,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSComponents.bytes",
+              "old": 14,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSComponents.sha256",
+              "old": "1cea7e92e82d185193513bbbd1ac87dd9b8edb2fc8acfee9a22470ae19c91df8",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSComponents.type",
+              "old": "bytes",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSCustomColorSpace",
+              "old": "UID(52)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSICC",
+              "old": null,
+              "new": "UID(52)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[51].NSID",
+              "old": null,
+              "new": 9,
+              "status": "added"
+            },
+            {
+              "path": "$objects[51].NSModel",
+              "old": null,
+              "new": 0,
+              "status": "added"
+            },
+            {
+              "path": "$objects[51].NSWhite.bytes",
+              "old": 12,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSWhite.sha256",
+              "old": "f50bfbe796884cf1c7998f5965d4e0946a3f1149b9e4d168a338f56bb65195e7",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[51].NSWhite.type",
+              "old": "bytes",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[52].$class",
+              "old": "UID(54)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[52].NSICC",
+              "old": "UID(53)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[52].NSID",
+              "old": 9,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[52].NSModel",
+              "old": 0,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[52].bytes",
+              "old": null,
+              "new": 4508,
+              "status": "added"
+            },
+            {
+              "path": "$objects[52].sha256",
+              "old": null,
+              "new": "73d504558e7d03ef4ff2676ba62c7553ee5bd856b45da2d330e33e012ad61fb3",
+              "status": "added"
+            },
+            {
+              "path": "$objects[52].type",
+              "old": null,
+              "new": "bytes",
+              "status": "added"
+            },
+            {
+              "path": "$objects[53].$classes[0]",
+              "old": null,
+              "new": "NSColorSpace",
+              "status": "added"
+            },
+            {
+              "path": "$objects[53].$classes[1]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[53].$classname",
+              "old": null,
+              "new": "NSColorSpace",
+              "status": "added"
+            },
+            {
+              "path": "$objects[53].bytes",
+              "old": 4508,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[53].sha256",
+              "old": "73d504558e7d03ef4ff2676ba62c7553ee5bd856b45da2d330e33e012ad61fb3",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[53].type",
+              "old": "bytes",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[54].$classes[0]",
+              "old": "NSColorSpace",
+              "new": "NSColor",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[54].$classname",
+              "old": "NSColorSpace",
+              "new": "NSColor",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[55].$class",
+              "old": null,
+              "new": "UID(54)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[55].$classes[0]",
+              "old": "NSColor",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[55].$classes[1]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[55].$classname",
+              "old": "NSColor",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[55].NSColorSpace",
+              "old": null,
+              "new": 1,
+              "status": "added"
+            },
+            {
+              "path": "$objects[55].NSRGB.bytes",
+              "old": null,
+              "new": 39,
+              "status": "added"
+            },
+            {
+              "path": "$objects[55].NSRGB.sha256",
+              "old": null,
+              "new": "b113dee6e54c504aede264307f1967db047c811942452534b5dabdbd857e5a89",
+              "status": "added"
+            },
+            {
+              "path": "$objects[55].NSRGB.type",
+              "old": null,
+              "new": "bytes",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].$class",
+              "old": "UID(55)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[56].$classes[0]",
+              "old": null,
+              "new": "NSTextFieldCell",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].$classes[1]",
+              "old": null,
+              "new": "NSActionCell",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].$classes[2]",
+              "old": null,
+              "new": "NSCell",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].$classes[3]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].$classname",
+              "old": null,
+              "new": "NSTextFieldCell",
+              "status": "added"
+            },
+            {
+              "path": "$objects[56].NSColorSpace",
+              "old": 1,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[56].NSRGB.bytes",
+              "old": 39,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[56].NSRGB.sha256",
+              "old": "b113dee6e54c504aede264307f1967db047c811942452534b5dabdbd857e5a89",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[56].NSRGB.type",
+              "old": "bytes",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[57].$classes[0]",
+              "old": "NSTextFieldCell",
+              "new": "NSTextField",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[57].$classes[1]",
+              "old": "NSActionCell",
+              "new": "NSControl",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[57].$classes[2]",
+              "old": "NSCell",
+              "new": "NSView",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[57].$classes[3]",
+              "old": "NSObject",
+              "new": "NSResponder",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[57].$classes[4]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[57].$classname",
+              "old": "NSTextFieldCell",
+              "new": "NSTextField",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[58]",
+              "old": null,
+              "new": "{620, 500}",
+              "status": "added"
+            },
+            {
+              "path": "$objects[58].$classes[0]",
+              "old": "NSTextField",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[58].$classes[1]",
+              "old": "NSControl",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[58].$classes[2]",
+              "old": "NSView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[58].$classes[3]",
+              "old": "NSResponder",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[58].$classes[4]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[58].$classname",
+              "old": "NSTextField",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[59]",
+              "old": "{620, 500}",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[59].$class",
+              "old": null,
+              "new": "UID(5)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[59].IBClassName",
+              "old": null,
+              "new": "UID(60)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[59].IBModuleName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[59].IBModuleProvider",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[60]",
+              "old": null,
+              "new": "SAView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[60].$class",
+              "old": "UID(5)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[60].IBClassName",
+              "old": "UID(61)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[60].IBModuleName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[60].IBModuleProvider",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[61]",
+              "old": "SAView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[61].$classes[0]",
+              "old": null,
+              "new": "NSCustomView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[61].$classes[1]",
+              "old": null,
+              "new": "NSView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[61].$classes[2]",
+              "old": null,
+              "new": "NSResponder",
+              "status": "added"
+            },
+            {
+              "path": "$objects[61].$classes[3]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[61].$classname",
+              "old": null,
+              "new": "NSCustomView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[62]",
+              "old": null,
+              "new": "view",
+              "status": "added"
+            },
+            {
+              "path": "$objects[62].$classes[0]",
+              "old": "NSCustomView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[62].$classes[1]",
+              "old": "NSView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[62].$classes[2]",
+              "old": "NSResponder",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[62].$classes[3]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[62].$classname",
+              "old": "NSCustomView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[63]",
+              "old": "view",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[63].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[63].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[63].NSDestination",
+              "old": null,
+              "new": "UID(38)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[63].NSLabel",
+              "old": null,
+              "new": "UID(64)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[63].NSSource",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[64]",
+              "old": null,
+              "new": "zoneSelectorLabel",
+              "status": "added"
+            },
+            {
+              "path": "$objects[64].$class",
+              "old": "UID(30)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[64].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[64].NSDestination",
+              "old": "UID(39)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[64].NSLabel",
+              "old": "UID(65)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[64].NSSource",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[65]",
+              "old": "zoneSelectorLabel",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[65].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[65].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[65].NSDestination",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[65].NSLabel",
+              "old": null,
+              "new": "UID(66)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[65].NSSource",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[66]",
+              "old": null,
+              "new": "zoneSelectorPopUp",
+              "status": "added"
+            },
+            {
+              "path": "$objects[66].$class",
+              "old": "UID(30)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[66].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[66].NSDestination",
+              "old": "UID(11)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[66].NSLabel",
+              "old": "UID(67)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[66].NSSource",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[67]",
+              "old": "zoneSelectorPopUp",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[67].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[67].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[67].NSDestination",
+              "old": null,
+              "new": "UID(33)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[67].NSLabel",
+              "old": null,
+              "new": "UID(68)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[67].NSSource",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[68]",
+              "old": null,
+              "new": "zoneSettingsTabView",
+              "status": "added"
+            },
+            {
+              "path": "$objects[68].$class",
+              "old": "UID(30)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[68].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[68].NSDestination",
+              "old": "UID(33)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[68].NSLabel",
+              "old": "UID(69)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[68].NSSource",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[69]",
+              "old": "zoneSettingsTabView",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[69].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[69].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[69].NSDestination",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[69].NSLabel",
+              "old": null,
+              "new": "UID(70)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[69].NSSource",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[70]",
+              "old": null,
+              "new": "datasource",
+              "status": "added"
+            },
+            {
+              "path": "$objects[70].$class",
+              "old": "UID(30)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[70].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[70].NSDestination",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[70].NSLabel",
+              "old": "UID(71)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[70].NSSource",
+              "old": "UID(11)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[71]",
+              "old": "datasource",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[71].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[71].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[71].NSDestination",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[71].NSLabel",
+              "old": null,
+              "new": "UID(72)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[71].NSSource",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[72]",
+              "old": null,
+              "new": "delegate",
+              "status": "added"
+            },
+            {
+              "path": "$objects[72].$class",
+              "old": "UID(30)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[72].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[72].NSDestination",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[72].NSLabel",
+              "old": "UID(73)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[72].NSSource",
+              "old": "UID(11)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[73]",
+              "old": "delegate",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[73].$class",
+              "old": null,
+              "new": "UID(30)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[73].NSChildControllerCreationSelectorName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[73].NSDestination",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[73].NSLabel",
+              "old": null,
+              "new": "UID(72)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[73].NSSource",
+              "old": null,
+              "new": "UID(24)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[74].NSDestination",
+              "old": "UID(11)",
+              "new": "UID(2)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[74].NSLabel",
+              "old": "UID(73)",
+              "new": "UID(72)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[74].NSSource",
+              "old": "UID(24)",
+              "new": "UID(33)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[75].$class",
+              "old": "UID(30)",
+              "new": "UID(77)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[75].NSChildControllerCreationSelectorName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[75].NSLabel",
+              "old": "UID(73)",
+              "new": "UID(76)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[75].NSSource",
+              "old": "UID(33)",
+              "new": "UID(11)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[76]",
+              "old": null,
+              "new": "didChangeZone:",
+              "status": "added"
+            },
+            {
+              "path": "$objects[76].$class",
+              "old": "UID(78)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[76].NSDestination",
+              "old": "UID(2)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[76].NSLabel",
+              "old": "UID(77)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[76].NSSource",
+              "old": "UID(11)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[77]",
+              "old": "didChangeZone:",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[77].$classes[0]",
+              "old": null,
+              "new": "NSNibControlConnector",
+              "status": "added"
+            },
+            {
+              "path": "$objects[77].$classes[1]",
+              "old": null,
+              "new": "NSNibConnector",
+              "status": "added"
+            },
+            {
+              "path": "$objects[77].$classes[2]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[77].$classname",
+              "old": null,
+              "new": "NSNibControlConnector",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].$class",
+              "old": null,
+              "new": "UID(83)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].$classes[0]",
+              "old": "NSNibControlConnector",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[78].$classes[1]",
+              "old": "NSNibConnector",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[78].$classes[2]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[78].$classname",
+              "old": "NSNibControlConnector",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[78].NS.objects[0]",
+              "old": null,
+              "new": "UID(79)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[1]",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[2]",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[3]",
+              "old": null,
+              "new": "UID(16)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[4]",
+              "old": null,
+              "new": "UID(24)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[5]",
+              "old": null,
+              "new": "UID(38)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[6]",
+              "old": null,
+              "new": "UID(40)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[78].NS.objects[7]",
+              "old": null,
+              "new": "UID(33)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[79].$class",
+              "old": "UID(84)",
+              "new": "UID(6)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[79].IBClassReference",
+              "old": null,
+              "new": "UID(80)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[79].NS.objects[0]",
+              "old": "UID(80)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[1]",
+              "old": "UID(14)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[2]",
+              "old": "UID(11)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[3]",
+              "old": "UID(16)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[4]",
+              "old": "UID(24)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[5]",
+              "old": "UID(39)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[6]",
+              "old": "UID(41)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NS.objects[7]",
+              "old": "UID(33)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[79].NSClassName",
+              "old": null,
+              "new": "UID(82)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[80].$class",
+              "old": "UID(6)",
+              "new": "UID(5)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[80].IBClassName",
+              "old": null,
+              "new": "UID(81)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[80].IBClassReference",
+              "old": "UID(81)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[80].IBModuleName",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[80].IBModuleProvider",
+              "old": null,
+              "new": "UID(0)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[80].NSClassName",
+              "old": "UID(83)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[81]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[81].$class",
+              "old": "UID(5)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[81].IBClassName",
+              "old": "UID(82)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[81].IBModuleName",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[81].IBModuleProvider",
+              "old": "UID(0)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[82]",
+              "old": "NSObject",
+              "new": "NSApplication",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[83]",
+              "old": "NSApplication",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[83].$classes[0]",
+              "old": null,
+              "new": "NSArray",
+              "status": "added"
+            },
+            {
+              "path": "$objects[83].$classes[1]",
+              "old": null,
+              "new": "NSObject",
+              "status": "added"
+            },
+            {
+              "path": "$objects[83].$classname",
+              "old": null,
+              "new": "NSArray",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].$class",
+              "old": null,
+              "new": "UID(83)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].$classes[0]",
+              "old": "NSArray",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[84].$classes[1]",
+              "old": "NSObject",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[84].$classname",
+              "old": "NSArray",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[84].NS.objects[0]",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[1]",
+              "old": null,
+              "new": "UID(2)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[2]",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[3]",
+              "old": null,
+              "new": "UID(11)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[4]",
+              "old": null,
+              "new": "UID(16)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[5]",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[6]",
+              "old": null,
+              "new": "UID(38)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[84].NS.objects[7]",
+              "old": null,
+              "new": "UID(14)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].$class",
+              "old": "UID(84)",
+              "new": "UID(83)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[85].NS.objects[10]",
+              "old": null,
+              "new": "UID(31)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[11]",
+              "old": null,
+              "new": "UID(63)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[12]",
+              "old": null,
+              "new": "UID(65)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[13]",
+              "old": null,
+              "new": "UID(67)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[14]",
+              "old": null,
+              "new": "UID(69)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[15]",
+              "old": null,
+              "new": "UID(71)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[16]",
+              "old": null,
+              "new": "UID(73)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[17]",
+              "old": null,
+              "new": "UID(74)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[18]",
+              "old": null,
+              "new": "UID(75)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[1]",
+              "old": "UID(2)",
+              "new": "UID(79)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[85].NS.objects[5]",
+              "old": "UID(14)",
+              "new": "UID(24)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[85].NS.objects[6]",
+              "old": "UID(39)",
+              "new": "UID(38)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[85].NS.objects[7]",
+              "old": "UID(14)",
+              "new": "UID(40)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[85].NS.objects[8]",
+              "old": null,
+              "new": "UID(33)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[85].NS.objects[9]",
+              "old": null,
+              "new": "UID(10)",
+              "status": "added"
+            },
+            {
+              "path": "$objects[86].$class",
+              "old": "UID(84)",
+              "new": "UID(83)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[0]",
+              "old": "UID(2)",
+              "new": "UID(87)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[10]",
+              "old": "UID(31)",
+              "new": "UID(97)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[11]",
+              "old": "UID(64)",
+              "new": "UID(98)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[12]",
+              "old": "UID(66)",
+              "new": "UID(99)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[13]",
+              "old": "UID(68)",
+              "new": "UID(100)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[14]",
+              "old": "UID(70)",
+              "new": "UID(101)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[15]",
+              "old": "UID(72)",
+              "new": "UID(102)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[16]",
+              "old": "UID(74)",
+              "new": "UID(103)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[17]",
+              "old": "UID(75)",
+              "new": "UID(104)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[18]",
+              "old": "UID(76)",
+              "new": "UID(105)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[1]",
+              "old": "UID(80)",
+              "new": "UID(88)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[2]",
+              "old": "UID(14)",
+              "new": "UID(89)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[3]",
+              "old": "UID(11)",
+              "new": "UID(90)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[4]",
+              "old": "UID(16)",
+              "new": "UID(91)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[5]",
+              "old": "UID(24)",
+              "new": "UID(92)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[6]",
+              "old": "UID(39)",
+              "new": "UID(93)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[7]",
+              "old": "UID(41)",
+              "new": "UID(94)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[8]",
+              "old": "UID(33)",
+              "new": "UID(95)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[86].NS.objects[9]",
+              "old": "UID(10)",
+              "new": "UID(96)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[87]",
+              "old": null,
+              "new": 1,
+              "status": "added"
+            },
+            {
+              "path": "$objects[87].$class",
+              "old": "UID(84)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[0]",
+              "old": "UID(88)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[10]",
+              "old": "UID(98)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[11]",
+              "old": "UID(99)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[12]",
+              "old": "UID(100)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[13]",
+              "old": "UID(101)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[14]",
+              "old": "UID(102)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[15]",
+              "old": "UID(103)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[16]",
+              "old": "UID(104)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[17]",
+              "old": "UID(105)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[18]",
+              "old": "UID(106)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[1]",
+              "old": "UID(89)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[2]",
+              "old": "UID(90)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[3]",
+              "old": "UID(91)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[4]",
+              "old": "UID(92)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[5]",
+              "old": "UID(93)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[6]",
+              "old": "UID(94)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[7]",
+              "old": "UID(95)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[8]",
+              "old": "UID(96)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[87].NS.objects[9]",
+              "old": "UID(97)",
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[88]",
+              "old": 1,
+              "new": 2,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[89]",
+              "old": 2,
+              "new": 3,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[90]",
+              "old": 3,
+              "new": 4,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[91]",
+              "old": 4,
+              "new": 5,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[92]",
+              "old": 5,
+              "new": 6,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[93]",
+              "old": 6,
+              "new": 7,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[94]",
+              "old": 7,
+              "new": 8,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[95]",
+              "old": 8,
+              "new": 9,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[96]",
+              "old": 9,
+              "new": 10,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[97]",
+              "old": 10,
+              "new": 11,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[98]",
+              "old": 11,
+              "new": 12,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[99]",
+              "old": 12,
+              "new": 13,
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[2]",
+              "old": "UID(64)",
+              "new": "UID(63)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[3]",
+              "old": "UID(66)",
+              "new": "UID(65)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[4]",
+              "old": "UID(68)",
+              "new": "UID(67)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[5]",
+              "old": "UID(70)",
+              "new": "UID(69)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[6]",
+              "old": "UID(72)",
+              "new": "UID(71)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[7]",
+              "old": "UID(74)",
+              "new": "UID(73)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[8]",
+              "old": "UID(75)",
+              "new": "UID(74)",
+              "status": "changed"
+            },
+            {
+              "path": "$objects[9].NS.objects[9]",
+              "old": "UID(76)",
+              "new": "UID(75)",
+              "status": "changed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects-101300.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects-101300.nib",
+          "bytes": 4727,
+          "sha256": "00da165ab3becd0977cb2174cb4fcc1cc016843bccf35ad4ea2a1851a6c84987",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects-101300.nib",
+          "bytes": 4723,
+          "sha256": "430d4eb2e05a803983c1ef907df1b83e783f1ccda2aac5be89b8fc075fe6d209",
+          "kind": "nibarchive",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple NIBArchive compiled UI"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects.nib",
+        "old": {
+          "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects.nib",
+          "bytes": 6869,
+          "sha256": "201cd2e47bc54651dfe875af088a9fa8eaf3c086d838c75c59ddf78efeab4afe",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects.nib",
+          "bytes": 6855,
+          "sha256": "0f8f977fd2c9f29724072220982b4181168ba0a3281b745d3d1744b471d70216",
+          "kind": "plist",
+          "role": "compiled-ui",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 507,
+            "removed": 2
+          },
+          "changes": [
+            {
+              "path": "$objects[36].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            },
+            {
+              "path": "$objects[42].NSViewIsLayerTreeHost",
+              "old": true,
+              "new": null,
+              "status": "removed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Resources-osx.bundle/Contents/Resources/libutils.so",
+        "old": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/Resources/libutils.so",
+          "bytes": 42684416,
+          "sha256": "4ada0f6d9358b4ee29022ad3f94e74e52886d1ab03e6ab6ce69abef5faa0609f",
+          "kind": "sonos-resource-db",
+          "role": "packed-resources",
+          "type": {
+            "description": "Sonos SCLib encrypted SQLite resource database",
+            "encrypted": true,
+            "content": [
+              "translations",
+              "images",
+              "json-resources"
+            ]
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/Resources/libutils.so",
+          "bytes": 42684416,
+          "sha256": "faa19c4c6e3ecc62331810952358cb55559c5b1b84452e3f51d3e20b141f2b9c",
+          "kind": "sonos-resource-db",
+          "role": "packed-resources",
+          "type": {
+            "description": "Sonos SCLib encrypted SQLite resource database",
+            "encrypted": true,
+            "content": [
+              "translations",
+              "images",
+              "json-resources"
+            ]
+          }
+        },
+        "semantic": {
+          "type": "sonos-sclib-resource-db",
+          "description": "Decrypted Sonos packed resource database",
+          "schema": {
+            "tables": [
+              "strings",
+              "images",
+              "jsons"
+            ],
+            "old_bytes": 42684416,
+            "new_bytes": 42684416
+          },
+          "strings": {
+            "counts": {
+              "same": 186923
+            },
+            "changes": [],
+            "truncated": false,
+            "by_language": {
+              "cs-CZ": {
+                "same": 8648
+              },
+              "da-DK": {
+                "same": 8648
+              },
+              "de-DE": {
+                "same": 8648
+              },
+              "en-US": {
+                "same": 5315
+              },
+              "es-ES": {
+                "same": 8648
+              },
+              "fi-FI": {
+                "same": 8648
+              },
+              "fr-FR": {
+                "same": 8648
+              },
+              "hu-HU": {
+                "same": 8648
+              },
+              "it-IT": {
+                "same": 8648
+              },
+              "ja-JP": {
+                "same": 8648
+              },
+              "ko-KR": {
+                "same": 8648
+              },
+              "nb-NO": {
+                "same": 8648
+              },
+              "nl-NL": {
+                "same": 8648
+              },
+              "pl-PL": {
+                "same": 8648
+              },
+              "pt-BR": {
+                "same": 8648
+              },
+              "pt-PT": {
+                "same": 8648
+              },
+              "ru-RU": {
+                "same": 8648
+              },
+              "sv-SE": {
+                "same": 8648
+              },
+              "tr-TR": {
+                "same": 8648
+              },
+              "zh-CN": {
+                "same": 8648
+              },
+              "zh-HK": {
+                "same": 8648
+              },
+              "zh-TW": {
+                "same": 8648
+              }
+            }
+          },
+          "images": {
+            "counts": {
+              "same": 116
+            },
+            "changes": [],
+            "truncated": false,
+            "by_language": {}
+          },
+          "jsons": {
+            "counts": {
+              "same": 271
+            },
+            "changes": [],
+            "truncated": false,
+            "by_language": {
+              "cs-CZ": {
+                "same": 11
+              },
+              "da-DK": {
+                "same": 12
+              },
+              "de-AT": {
+                "same": 1
+              },
+              "de-CH": {
+                "same": 1
+              },
+              "de-DE": {
+                "same": 12
+              },
+              "en-AU": {
+                "same": 1
+              },
+              "en-CA": {
+                "same": 1
+              },
+              "en-FI": {
+                "same": 1
+              },
+              "en-GB": {
+                "same": 1
+              },
+              "en-IE": {
+                "same": 1
+              },
+              "en-NZ": {
+                "same": 1
+              },
+              "en-US": {
+                "same": 12
+              },
+              "en-emea": {
+                "same": 1
+              },
+              "en-other": {
+                "same": 1
+              },
+              "es-ES": {
+                "same": 12
+              },
+              "es-MX": {
+                "same": 1
+              },
+              "es-US": {
+                "same": 1
+              },
+              "fi-FI": {
+                "same": 11
+              },
+              "fr-BE": {
+                "same": 1
+              },
+              "fr-CA": {
+                "same": 1
+              },
+              "fr-CH": {
+                "same": 1
+              },
+              "fr-FR": {
+                "same": 12
+              },
+              "hu-HU": {
+                "same": 11
+              },
+              "it-CH": {
+                "same": 1
+              },
+              "it-IT": {
+                "same": 12
+              },
+              "ja-JP": {
+                "same": 12
+              },
+              "ko-KR": {
+                "same": 11
+              },
+              "nb-NO": {
+                "same": 12
+              },
+              "nl-BE": {
+                "same": 1
+              },
+              "nl-NL": {
+                "same": 12
+              },
+              "pl-PL": {
+                "same": 12
+              },
+              "pt-BR": {
+                "same": 11
+              },
+              "pt-PT": {
+                "same": 11
+              },
+              "ru-RU": {
+                "same": 11
+              },
+              "sv-SE": {
+                "same": 12
+              },
+              "tr-TR": {
+                "same": 11
+              },
+              "zh-CN": {
+                "same": 12
+              },
+              "zh-HK": {
+                "same": 11
+              },
+              "zh-TW": {
+                "same": 11
+              }
+            }
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeDirectory",
+        "old": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeDirectory",
+          "bytes": 158,
+          "sha256": "9dad56faaa0065e3117ff2c8cbe76a0767bfa1de0211cc9e04b76afd76595f18",
+          "kind": "binary",
+          "role": "resource",
+          "type": {
+            "description": "Mac OS X Code Directory version 20100 flags 0x2 - 158 bytes"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeDirectory",
+          "bytes": 158,
+          "sha256": "09cf109d4277307a206de26c41437a674d73dcab9030025b08de875aed83be43",
+          "kind": "binary",
+          "role": "resource",
+          "type": {
+            "description": "Mac OS X Code Directory version 20100 flags 0x2 - 158 bytes"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements-1",
+        "old": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements-1",
+          "bytes": 206,
+          "sha256": "85a9de1f6012b0b10fcb37551305b506f8d6d0c561f93c7deb8c1aebd5fc55f6",
+          "kind": "binary",
+          "role": "resource",
+          "type": {
+            "description": "Mac OS X Code Directory version 20100 flags 0x2 - 206 bytes"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements-1",
+          "bytes": 206,
+          "sha256": "a175730754a08315736efd1b27d09c5c0982486ba90d178b6551b020fe602c1d",
+          "kind": "binary",
+          "role": "resource",
+          "type": {
+            "description": "Mac OS X Code Directory version 20100 flags 0x2 - 206 bytes"
+          }
+        }
+      },
+      {
+        "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeResources",
+        "old": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeResources",
+          "bytes": 3488,
+          "sha256": "bc1180bab0a3b2476058196de868f8bf05599dd6918edef1d566208bb467b98c",
+          "kind": "text",
+          "role": "resource",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeResources",
+          "bytes": 3488,
+          "sha256": "adff118515037ec9294ed9f14fabe6e1330897d1aa398b3374471da55374fd38",
+          "kind": "text",
+          "role": "resource",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "semantic": {
+          "type": "text",
+          "old_lines": 177,
+          "new_lines": 177,
+          "diff": [
+            "--- CodeResources",
+            "+++ CodeResources",
+            "@@ -14,7 +14,7 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/libutils.so</key>",
+            " \t\t<data>",
+            "-\t\tRa4wJJqqZVvaVx8P2nLRn1FHuIk=",
+            "+\t\trveFrBZO5dG6UbsEXs+Lfr56PlU=",
+            " \t\t</data>",
+            " \t\t<key>Resources/reportmgr/ctrlMetricsConfig.xml</key>",
+            " \t\t<data>",
+            "@@ -49,11 +49,11 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tRa4wJJqqZVvaVx8P2nLRn1FHuIk=",
+            "+\t\t\trveFrBZO5dG6UbsEXs+Lfr56PlU=",
+            " \t\t\t</data>",
+            " \t\t\t<key>hash2</key>",
+            " \t\t\t<data>",
+            "-\t\t\tStoPbZNYtO4pAirT+U505SiG0asD5qts5pq+9fqgYJ8=",
+            "+\t\t\t+qGcTG4+zGIzGBCVI1jLVVWcWxuERS4/UdPiCxQfK5w=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/reportmgr/ctrlMetricsConfig.xml</key>"
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+          "bytes": 4220032,
+          "sha256": "7c0ca294210934003178c4eeef6010853043902e072571ac8cba5b783db2166b",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+          "bytes": 4220032,
+          "sha256": "ae74c70c42fe9be85295967b52b8f4bba9adc157bc8d6c84b8a5f181c7f9ee60",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "/usr/lib/swift/libswiftCore.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [
+              "/usr/lib/swift"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.13",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1244.6.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2780.0.27",
+              "300.0.0",
+              "45.0.0",
+              "5.7.1",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.scdependencykitmdcr",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "/usr/lib/swift/libswiftCore.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [
+              "/usr/lib/swift"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.13",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1244.6.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2780.0.27",
+              "300.0.0",
+              "45.0.0",
+              "5.7.1",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.scdependencykitmdcr",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 831,
+          "new_exported_symbol_count": 831
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/libswiftCore.dylib",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/libswiftCore.dylib",
+          "bytes": 6456176,
+          "sha256": "275d408a70f73dded94b1e9df5e11b0796b10948bc20b0bb1233e8f1fd1d6fac",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Frameworks/libswiftCore.dylib",
+          "bytes": 6456176,
+          "sha256": "595c64ba1e69e567582ebae8266b21f62a1155748c2d5c9474b39548e63b1e45",
+          "kind": "mach-o",
+          "role": "framework",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libicucore.A.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "1.0.0",
+              "10.9",
+              "1001.0.82",
+              "1001.0.82.4",
+              "1252.250.1",
+              "150.0.0",
+              "1570.15.0",
+              "228.0.0",
+              "300.0.0",
+              "400.9.4",
+              "62.1.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.libswiftCore",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "10.14.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libicucore.A.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "@rpath/libswiftCore.dylib"
+            ],
+            "rpaths": [],
+            "minimum_versions": [
+              "1.0.0",
+              "10.9",
+              "1001.0.82",
+              "1001.0.82.4",
+              "1252.250.1",
+              "150.0.0",
+              "1570.15.0",
+              "228.0.0",
+              "300.0.0",
+              "400.9.4",
+              "62.1.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.libswiftCore",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "10.14.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 13010,
+          "new_exported_symbol_count": 13010
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/Info.plist",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Info.plist",
+          "bytes": 2661,
+          "sha256": "18f88850af4e7df775efb96bbab1005e320fb7342ca939c455978d55c1aa1604",
+          "kind": "plist",
+          "role": "bundle-metadata",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/Info.plist",
+          "bytes": 2661,
+          "sha256": "a57099ac46b66145320e2a54618fdc8128ed65fb1d0ce379ed32746757b208ef",
+          "kind": "plist",
+          "role": "bundle-metadata",
+          "type": {
+            "description": "Apple property list / keyed archive"
+          }
+        },
+        "semantic": {
+          "type": "plist",
+          "counts": {
+            "same": 36,
+            "changed": 2
+          },
+          "changes": [
+            {
+              "path": "CFBundleShortVersionString",
+              "old": "17.2.4",
+              "new": "17.2.5",
+              "status": "changed"
+            },
+            {
+              "path": "CFBundleVersion",
+              "old": "90.0.81181",
+              "new": "90.0.82050",
+              "status": "changed"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/Sonos Installer",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/Sonos Installer",
+          "bytes": 341792,
+          "sha256": "81bdc4a05a011d5dc78bcdc33c82f51e839cde72bf59a949e421e84821318b28",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/Sonos Installer",
+          "bytes": 341792,
+          "sha256": "b101d222ddafe63eb95c0677751fbdbb7b372c9b625a6868c1496db9594f5b71",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@executable_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.11",
+              "11.0",
+              "1228.0.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "300.0.0",
+              "45.0.0",
+              "60420.60.24",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.installer",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@executable_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.11",
+              "11.0",
+              "1228.0.0",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "300.0.0",
+              "45.0.0",
+              "60420.60.24",
+              "820.1"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.installer",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 1,
+          "new_exported_symbol_count": 1
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/assistantTool",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/assistantTool",
+          "bytes": 596688,
+          "sha256": "9a51b7442972c2bf11f814ea52274e37e5473492e636858ca4cd3ff50f1a4366",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/MacOS/assistantTool",
+          "bytes": 596688,
+          "sha256": "07cd8947df270c68348bfb56209e855f4201a092676ae651c2a352c2997610ce",
+          "kind": "mach-o",
+          "role": "native-code",
+          "type": {
+            "description": "Mach-O executable/library"
+          }
+        },
+        "semantic": {
+          "type": "mach-o",
+          "old": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/DirectoryService.framework/Versions/A/DirectoryService",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@loader_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macAssistant",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "new": {
+            "architectures": [
+              "x86_64",
+              "arm64"
+            ],
+            "dependencies": [
+              "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+              "/System/Library/Frameworks/Collaboration.framework/Versions/A/Collaboration",
+              "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+              "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+              "/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
+              "/System/Library/Frameworks/DirectoryService.framework/Versions/A/DirectoryService",
+              "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+              "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+              "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+              "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+              "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+              "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+              "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+              "/usr/lib/libSystem.B.dylib",
+              "/usr/lib/libc++.1.dylib",
+              "/usr/lib/libobjc.A.dylib",
+              "/usr/lib/libresolv.9.dylib",
+              "/usr/lib/libxml2.2.dylib",
+              "/usr/lib/libz.1.dylib",
+              "@rpath/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR"
+            ],
+            "rpaths": [
+              "@loader_path/../Frameworks"
+            ],
+            "minimum_versions": [
+              "0.0",
+              "0.0.0",
+              "1.0.0",
+              "1.2.11",
+              "10.0.0",
+              "10.11",
+              "10.9.0",
+              "11.0",
+              "1228.0.0",
+              "1241.60.3",
+              "1300.36.0",
+              "1319.0.0",
+              "150.0.0",
+              "1953.255.0",
+              "228.0.0",
+              "2299.30.112",
+              "2462.60.15",
+              "275.0.0",
+              "300.0.0",
+              "45.0.0",
+              "55259.40.2",
+              "60420.60.24",
+              "820.1",
+              "84.0.0"
+            ],
+            "signing": {
+              "Identifier": "com.sonos.macAssistant",
+              "TeamIdentifier": "2G4LW83Q3E",
+              "Authority": "Developer ID Application: Sonos, Inc. (2G4LW83Q3E)",
+              "Runtime Version": "13.1.0"
+            }
+          },
+          "architectures_added": [],
+          "architectures_removed": [],
+          "dependencies_added": [],
+          "dependencies_removed": [],
+          "rpaths_added": [],
+          "rpaths_removed": [],
+          "symbols_added": [],
+          "symbols_removed": [],
+          "old_exported_symbol_count": 1,
+          "new_exported_symbol_count": 1
+        }
+      },
+      {
+        "path": "Contents/Resources/Sonos Installer.app/Contents/_CodeSignature/CodeResources",
+        "old": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/_CodeSignature/CodeResources",
+          "bytes": 24610,
+          "sha256": "31a992b074714104203e4b8db430779d246f1c0a5c7142eb8eaa02d976e1b2e0",
+          "kind": "text",
+          "role": "resource",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "new": {
+          "path": "Contents/Resources/Sonos Installer.app/Contents/_CodeSignature/CodeResources",
+          "bytes": 24610,
+          "sha256": "df99df2b7341c2dafbea2f55582f8122605b5a0f5b418f0be3f9e9a4ee1c029f",
+          "kind": "text",
+          "role": "resource",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "semantic": {
+          "type": "text",
+          "old_lines": 1194,
+          "new_lines": 1194,
+          "diff": [
+            "--- CodeResources",
+            "+++ CodeResources",
+            "@@ -432,7 +432,7 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>cdhash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tjQAvNfcyjQStuZt2ZX+tlsPNFUI=",
+            "+\t\t\tykj3TFNx+kiK0NsPIMLqBIOI4nY=",
+            " \t\t\t</data>",
+            " \t\t\t<key>requirement</key>",
+            " \t\t\t<string>identifier \"com.sonos.scdependencykitmdcr\" and anchor apple generic</string>"
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "path": "Contents/_CodeSignature/CodeResources",
+        "old": {
+          "path": "Contents/_CodeSignature/CodeResources",
+          "bytes": 1181146,
+          "sha256": "0f082e74d13560087585e9bd6c0aa147b837a8dcec2e6e8c58240d7e2ae89c5a",
+          "kind": "text",
+          "role": "other",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "new": {
+          "path": "Contents/_CodeSignature/CodeResources",
+          "bytes": 1181146,
+          "sha256": "b64a816e5dbd057c51da878f9701545508eb8069957350234d773018c8790b74",
+          "kind": "text",
+          "role": "other",
+          "type": {
+            "description": "UTF-8 text"
+          }
+        },
+        "semantic": {
+          "type": "text",
+          "old_lines": 53424,
+          "new_lines": 53424,
+          "diff": [
+            "--- CodeResources",
+            "+++ CodeResources",
+            "@@ -142,11 +142,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "-\t\tswJICMAhic2E9atO5yp8yNvw9z0=",
+            "+\t\tmHYSDGcYnWkqdT+gh0Dyb1v51Ak=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects.nib</key>",
+            " \t\t<data>",
+            "-\t\tc5hG3qq0aLt10zgHSQq0IYEi5zQ=",
+            "+\t\tPpfWPvrVBJo86IoMJ7DU3ucTfWE=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMBrowseViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "@@ -238,11 +238,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "-\t\taXqeCs9yXQqqhYklpnJt/PGbgU4=",
+            "+\t\tXEdv19xMxy6QQk4UHhs4jwjQmSA=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects.nib</key>",
+            " \t\t<data>",
+            "-\t\t4JHAOfmwPTsWlr/eHBbCwEhp56Y=",
+            "+\t\tO5TRo7TrAqHZy9SEBitxWR57+CU=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMLimitedConnectivityContentViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "@@ -302,11 +302,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "-\t\tH4d8XF7jMNk6UL1LcEQuEeR0YVU=",
+            "+\t\t2Wyx+nmxPIS3mltwbzxnFBG2L6M=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects.nib</key>",
+            " \t\t<data>",
+            "-\t\tE6ZPcZfUgjE80xQ6KQipdzwom5M=",
+            "+\t\t+88GT//7Q2s+g6mvZPIKY/Np5EQ=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMQueueViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "@@ -446,11 +446,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "-\t\tOWAhe/IyTMKdAG0C4Fba3+X+Ti8=",
+            "+\t\tXmtccBrB8A2uqz0lxMRxipmmU1s=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects.nib</key>",
+            " \t\t<data>",
+            "-\t\tk8M7hJf8yWDym19QH/pxU6S4eEM=",
+            "+\t\tkSIj+NmzMzbiNJ4jfuTy9zdf5eM=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMSettingsMainWindow.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "@@ -606,11 +606,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "-\t\tSlFFAc/swxBCQSyjSYqh8OFyuz8=",
+            "+\t\toesklgxBVg7TG6Xbo13+t2t3gQs=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects.nib</key>",
+            " \t\t<data>",
+            "-\t\txlvUqZ3a9S02teJEPeBg5A4HdwA=",
+            "+\t\tE/NEFU5PK6XYf0PHmHQEgELCI+g=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Base.lproj/WizardComboBoxView.nib/keyedobjects-101300.nib</key>",
+            " \t\t<data>",
+            "@@ -682,7 +682,7 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/Resources/libutils.so</key>",
+            " \t\t<data>",
+            "-\t\tRa4wJJqqZVvaVx8P2nLRn1FHuIk=",
+            "+\t\trveFrBZO5dG6UbsEXs+Lfr56PlU=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/Resources/reportmgr/ctrlMetricsConfig.xml</key>",
+            " \t\t<data>",
+            "@@ -690,7 +690,7 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeDirectory</key>",
+            " \t\t<data>",
+            "-\t\tIXy2uEZMon0jh9IU0CRELx8URRE=",
+            "+\t\tohxBj4z5pgOLZOombdXv09doAOg=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements</key>",
+            " \t\t<data>",
+            "@@ -698,11 +698,11 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements-1</key>",
+            " \t\t<data>",
+            "-\t\tq6NHeSzA51H6dhdoEJfFvfkpmDA=",
+            "+\t\tSU/97cmdY9edtrdwLIKFYH/t+/I=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeResources</key>",
+            " \t\t<data>",
+            "-\t\tf8sDUWIJcF7KMqIVG6RTA1GGFro=",
+            "+\t\t2ZZXYVVbMGeAxQ1DOmEkzVR087s=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeSignature</key>",
+            " \t\t<data>",
+            "@@ -714,7 +714,7 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/SCDependencyKitMDCR</key>",
+            " \t\t<data>",
+            "-\t\t955SBvMo4w3kkDivaoS8nJj7ae4=",
+            "+\t\t17yFuKBIje6tcONVq3Z8kthVU4w=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/_CodeSignature/CodeResources</key>",
+            " \t\t<data>",
+            "@@ -722,19 +722,19 @@",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Frameworks/libswiftCore.dylib</key>",
+            " \t\t<data>",
+            "-\t\ttP/pehODoZF3VBhBpcr6hJLoKPo=",
+            "+\t\tbmVR/feqjyNkNcUQMzVzRoJsP1g=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Info.plist</key>",
+            " \t\t<data>",
+            "-\t\tOASKAWXV/l1BS8Mvlxi31eIHGZM=",
+            "+\t\t60dE+V38D5gxZGTOzZiDWkrbHkk=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/MacOS/Sonos Installer</key>",
+            " \t\t<data>",
+            "-\t\th4rnjLZST30VsQbCj+s0IkNvI44=",
+            "+\t\tdVkn3rlqLIUBkLs0Rhbees/qkfQ=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/MacOS/assistantTool</key>",
+            " \t\t<data>",
+            "-\t\t1sGmX0l/ScOhgzTm7PiM2DBk09Q=",
+            "+\t\tboM4rw9ywTh6lGODd07rjgCimuY=",
+            " \t\t</data>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/PkgInfo</key>",
+            " \t\t<data>",
+            "@@ -1173,7 +1173,7 @@",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/_CodeSignature/CodeResources</key>",
+            " \t\t<data>",
+            "-\t\tM2myNsB2K7yl8BS7QPbFQho9j9Q=",
+            "+\t\t4FMgU+3Sk0nR52VGB3H4q3Dv+94=",
+            " \t\t</data>",
+            " \t\t<key>Resources/albumArtNoneLarge.tiff</key>",
+            " \t\t<data>",
+            "@@ -20010,7 +20010,7 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>cdhash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tjQAvNfcyjQStuZt2ZX+tlsPNFUI=",
+            "+\t\t\tykj3TFNx+kiK0NsPIMLqBIOI4nY=",
+            " \t\t\t</data>",
+            " \t\t\t<key>requirement</key>",
+            " \t\t\t<string>identifier \"com.sonos.scdependencykitmdcr\" and anchor apple generic</string>",
+            "@@ -20028,7 +20028,7 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>cdhash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tkwjwdYDqoN35Pv/5wMlAhDBYhXI=",
+            "+\t\t\tbJ2AXOlVy5jM+GosMZ4NVOnrnDE=",
+            " \t\t\t</data>",
+            " \t\t\t<key>requirement</key>",
+            " \t\t\t<string>identifier SonosLibraryServer and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = \"2G4LW83Q3E\"</string>",
+            "@@ -20429,22 +20429,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tswJICMAhic2E9atO5yp8yNvw9z0=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\t9DMyN3HTEpPl0DIgzl2kTt3U6lxxvwHYA6DGnTrdqrI=",
+            "+\t\t\tmHYSDGcYnWkqdT+gh0Dyb1v51Ak=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tRibO8xTiXA2OUcuWQZQ8byhR2vWuVNiyA23GHGkzyPM=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMBrowseDataController.nib/keyedobjects.nib</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tc5hG3qq0aLt10zgHSQq0IYEi5zQ=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tqAhInKwfRxybMNUFhlYRHyrb5Ox+lfkOy5BxGnAEbGk=",
+            "+\t\t\tPpfWPvrVBJo86IoMJ7DU3ucTfWE=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tpD5l+qOPL+SP9s1ClL2CISVRzqFjn6w6XBAEHFwRFp0=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMBrowseViewController.nib/keyedobjects-101300.nib</key>",
+            "@@ -20693,22 +20693,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\taXqeCs9yXQqqhYklpnJt/PGbgU4=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tnK5oLXd5DUZSi+xgBalOnvxFL5tPCiJGV3t6HB2mVFw=",
+            "+\t\t\tXEdv19xMxy6QQk4UHhs4jwjQmSA=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tucMqB7io1Ok2pb2WqnfP6gfLYzY5Ms7q1tuLnzE2vsQ=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMKeyboardWindowController.nib/keyedobjects.nib</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\t4JHAOfmwPTsWlr/eHBbCwEhp56Y=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tnN88XYiBZyIqlh30uhpmXRZDvCOTmpXYefPN0yzTbFg=",
+            "+\t\t\tO5TRo7TrAqHZy9SEBitxWR57+CU=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tsw6fIwifJhdrMjvgqEDGwIdrTbJzarsus2wP65j6S5I=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMLimitedConnectivityContentViewController.nib/keyedobjects-101300.nib</key>",
+            "@@ -20869,22 +20869,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tH4d8XF7jMNk6UL1LcEQuEeR0YVU=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tYNz5ZYfkhfgYnMMGpp2V5dNTfRJwlZgOPB5j/bhAZB8=",
+            "+\t\t\t2Wyx+nmxPIS3mltwbzxnFBG2L6M=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tnsLSJBwnaNi7OCS3ks+aliM7khFVUo1e5c8w4SWP0yI=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMQueueSaveViewController.nib/keyedobjects.nib</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tE6ZPcZfUgjE80xQ6KQipdzwom5M=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tmwvw28gBKq06RUYrfw4hUa0eejfoiwrmPKB44s78CmQ=",
+            "+\t\t\t+88GT//7Q2s+g6mvZPIKY/Np5EQ=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\toi3GCec8WDoBzfeA2DU/Pmsr9VptYkLAk+ylMXB/sPc=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMQueueViewController.nib/keyedobjects-101300.nib</key>",
+            "@@ -21265,22 +21265,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tOWAhe/IyTMKdAG0C4Fba3+X+Ti8=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tLqe3nqS8AQAlrOgKRu+uetBiQOK6inrA7i7+05bNJpI=",
+            "+\t\t\tXmtccBrB8A2uqz0lxMRxipmmU1s=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\ttwsSz73s2Hd/aZSBTAB9AGGIkrFxZO980UPkGMhg6ag=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMSettingsDeviceViewController.nib/keyedobjects.nib</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tk8M7hJf8yWDym19QH/pxU6S4eEM=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tE7V5ueau20BZXvHrvhZL0pjUe7LNKGLW8riq+1PgFOY=",
+            "+\t\t\tkSIj+NmzMzbiNJ4jfuTy9zdf5eM=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\t2M5XI6OjAnCOX0BKrEHSV6VRJHLkpA9KdQ9AfEl8MrA=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMSettingsMainWindow.nib/keyedobjects-101300.nib</key>",
+            "@@ -21705,22 +21705,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tSlFFAc/swxBCQSyjSYqh8OFyuz8=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tANoWWrO+zQl3yyF0y0/MHMAWhDvM81rU6ioYUabISYc=",
+            "+\t\t\toesklgxBVg7TG6Xbo13+t2t3gQs=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tQw1OsuBagDmDwe+QffG4Png/HM2iqsW+ibj8B1/m0gk=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/SMZoneMenuViewController.nib/keyedobjects.nib</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\txlvUqZ3a9S02teJEPeBg5A4HdwA=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tIBzS5HvFRlHf6HWvCIqfqOrzwIbYOMdcWd33jv6rSv4=",
+            "+\t\t\tE/NEFU5PK6XYf0PHmHQEgELCI+g=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tD4+Xf9LJ8pckByIgmCtBgRaLoKMoG3RdPRdEtHHXAhY=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Base.lproj/WizardComboBoxView.nib/keyedobjects-101300.nib</key>",
+            "@@ -21914,11 +21914,11 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tRa4wJJqqZVvaVx8P2nLRn1FHuIk=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tStoPbZNYtO4pAirT+U505SiG0asD5qts5pq+9fqgYJ8=",
+            "+\t\t\trveFrBZO5dG6UbsEXs+Lfr56PlU=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\t+qGcTG4+zGIzGBCVI1jLVVWcWxuERS4/UdPiCxQfK5w=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/Resources/reportmgr/ctrlMetricsConfig.xml</key>",
+            "@@ -21936,11 +21936,11 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tIXy2uEZMon0jh9IU0CRELx8URRE=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tna1W+qoAZeMRf/LIy+dqB2e/od4CEcyeBLdq/XZZXxg=",
+            "+\t\t\tohxBj4z5pgOLZOombdXv09doAOg=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tCc8QnUJ3MHogbeJsQUN6Z01z3KuQMAJbCN6HWu2DvkM=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeRequirements</key>",
+            "@@ -21958,22 +21958,22 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tq6NHeSzA51H6dhdoEJfFvfkpmDA=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\thaneH2ASsLEPyzdVEwW1BvjW0MVh+Tx964wa69X8VfY=",
+            "+\t\t\tSU/97cmdY9edtrdwLIKFYH/t+/I=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\toXVzB1SggxVzbv0bJ9CcXAmCSGupDReLZVGwIP5gLB0=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeResources</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tf8sDUWIJcF7KMqIVG6RTA1GGFro=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tvBGAurCjskdgWBlt6Gj4vwVZndaRjt7x1WYgi7RnuYw=",
+            "+\t\t\t2ZZXYVVbMGeAxQ1DOmEkzVR087s=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\trf8RhRUDfskpTtnxT6vm4TMIl9GqOYszdEcdpVN0/Tg=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Resources-osx.bundle/Contents/_CodeSignature/CodeSignature</key>",
+            "@@ -22012,11 +22012,11 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\t955SBvMo4w3kkDivaoS8nJj7ae4=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tfAyilCEJNAAxeMTu72AQhTBDkC4HJXGsjLpbeD2yFms=",
+            "+\t\t\t17yFuKBIje6tcONVq3Z8kthVU4w=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\trnTHDEL+m+hSlZZ7Urj0u6mtwVe8jWyEuKXxgcf57mA=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Frameworks/SCDependencyKitMDCR.framework/Versions/A/_CodeSignature/CodeResources</key>",
+            "@@ -22039,44 +22039,44 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\ttP/pehODoZF3VBhBpcr6hJLoKPo=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tJ11AinD3Pd7ZSx6d9eEbB5axCUi8ILC7EjPo8f0db6w=",
+            "+\t\t\tbmVR/feqjyNkNcUQMzVzRoJsP1g=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tWVxkuh5p5WdYLrroJmsh9ioRVXSMLVyUdLOVSOY7HkU=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/Info.plist</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tOASKAWXV/l1BS8Mvlxi31eIHGZM=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tGPiIUK9Offd177lrurEAXjIPtzQsqTnEVZeNVcGqFgQ=",
+            "+\t\t\t60dE+V38D5gxZGTOzZiDWkrbHkk=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tpXCZrEa2YUUyDipUYY/cgSjtZfsdDON57TJ0Z1eyCO8=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/MacOS/Sonos Installer</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\th4rnjLZST30VsQbCj+s0IkNvI44=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tgb3EoFoBHV3Hi83DPIL1HoOc3nK/WalJ5CHoSCExiyg=",
+            "+\t\t\tdVkn3rlqLIUBkLs0Rhbees/qkfQ=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tsQHSIt2v5j65XAZ3dR+9u3s3LJtiWmhowUltuVlPW3E=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/MacOS/assistantTool</key>",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\t1sGmX0l/ScOhgzTm7PiM2DBk09Q=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tmlG3RClywr8R+BTqUidON+VHNJLmNoWMpM0/9Q8aQ2Y=",
+            "+\t\t\tboM4rw9ywTh6lGODd07rjgCimuY=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\tB82JR98nDGg0i/tWIJ6FX0IBoJJnauZRwqNSwpl2EM4=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/Sonos Installer.app/Contents/PkgInfo</key>",
+            "@@ -22727,11 +22727,11 @@",
+            " \t\t<dict>",
+            " \t\t\t<key>hash</key>",
+            " \t\t\t<data>",
+            "-\t\t\tM2myNsB2K7yl8BS7QPbFQho9j9Q=",
+            "-\t\t\t</data>",
+            "-\t\t\t<key>hash2</key>",
+            "-\t\t\t<data>",
+            "-\t\t\tMamSsHRxQQQgPkuNtDB3nSRvHApccULrjqoC2XbhsuA=",
+            "+\t\t\t4FMgU+3Sk0nR52VGB3H4q3Dv+94=",
+            "+\t\t\t</data>",
+            "+\t\t\t<key>hash2</key>",
+            "+\t\t\t<data>",
+            "+\t\t\t35nfK3NBwtr76i9VWC+BImBbWg9bQY8L4/nppO4cAp8=",
+            " \t\t\t</data>",
+            " \t\t</dict>",
+            " \t\t<key>Resources/albumArtNoneLarge.tiff</key>"
+          ],
+          "truncated": false
+        }
+      }
+    ]
+  }
+}

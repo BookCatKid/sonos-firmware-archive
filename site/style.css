@@ -531,6 +531,42 @@ pre.json {
 .notice.warn { border-color: var(--warn); }
 .notice.bad { border-color: var(--bad); }
 
+.update-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 8px 0 14px;
+}
+.update-platform {
+  border: 1px solid var(--line-strong);
+  padding: 5px 8px;
+  color: var(--text);
+}
+.update-platform:hover { background: var(--panel-2); text-decoration: none; }
+.update-platform.active { background: var(--selected); font-weight: 600; }
+.update-platform span { color: var(--muted); font: 11px var(--mono); margin-left: 4px; }
+.update-track { margin-bottom: 16px; }
+.updates-table td:first-child { min-width: 145px; }
+.updates-table td:last-child { min-width: 170px; }
+.smart-mark {
+  display: inline-block;
+  border: 1px solid var(--info);
+  color: var(--info);
+  padding: 1px 4px;
+  font: 10px/1.35 var(--mono);
+  white-space: nowrap;
+}
+.smart-section .panel-header { align-items: flex-start; }
+.notice.smart-success { border-color: var(--ok); }
+.smart-stats { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+.smart-stats .stat strong { font-size: 13px; line-height: 1.35; }
+.smart-value {
+  max-width: 520px;
+  white-space: pre-wrap;
+  font: 11px/1.4 var(--mono);
+}
+.smart-text-diff { max-height: 420px; }
+
 .toast {
   position: fixed;
   right: 12px;

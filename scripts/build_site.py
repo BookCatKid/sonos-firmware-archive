@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -57,6 +58,33 @@ def version_key(value: str | None) -> tuple:
     for part in parts:
         result.append((0, int(part)) if part.isdigit() else (1, part.lower()))
     return tuple(result)
+
+
+def update_version_key(value: str | None) -> tuple[int, ...]:
+    """Human release ordering, including old SonosDesktopController tokens."""
+    if not value:
+        return ()
+    classic = re.fullmatch(r"classic-(\d+)([A-Za-z]*)", value)
+    if classic:
+        token = classic.group(1)
+        if len(token) == 2:
+            # 31 -> 3.1, 92 -> 9.2
+            return (int(token[0]), int(token[1]), 0)
+        if len(token) >= 3:
+            first_two = int(token[:2])
+            if first_two <= 19:
+                # 111 -> 11.1, 11213 -> 11.2.13, 1341 -> 13.4.1
+                major = first_two
+                minor = int(token[2])
+                patch = int(token[3:]) if len(token) > 3 else 0
+            else:
+                # Very old compact form: 361b -> 3.6.1b, not version 361.
+                major = int(token[0])
+                minor = int(token[1])
+                patch = int(token[2:]) if len(token) > 2 else 0
+            return (major, minor, patch)
+    numbers = [int(part) for part in re.findall(r"\d+", value)]
+    return tuple(numbers)
 
 
 def json_safe(value: Any) -> Any:
@@ -760,8 +788,182 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
     ]
     timeline.sort(key=lambda x: (x["date"] or "", x["title"]), reverse=True)
 
+    # Smart application reports can be several MiB each. Keep only a compact
+    # index in archive-data.js and copy the detailed JSON alongside the site so
+    # the browser fetches it only when a user opens an update diff.
+    smart_app_diffs: dict[str, Any] = {}
+    for path in sorted((data / "app-diffs").glob("*.json")):
+        diff = load(path, {})
+        if not isinstance(diff, dict):
+            continue
+        key = ":".join([
+            str(diff.get("platform") or ""),
+            str(diff.get("family") or ""),
+            str(diff.get("old_version") or ""),
+            str(diff.get("new_version") or ""),
+        ])
+        smart_app_diffs[key] = {
+            "kind": diff.get("kind"),
+            "platform": diff.get("platform"),
+            "family": diff.get("family"),
+            "old_version": diff.get("old_version"),
+            "new_version": diff.get("new_version"),
+            "summary": diff.get("summary") or {},
+            "highlights": diff.get("highlights") or {},
+            "asset": f"app-diffs/{path.name}",
+        }
+
+    def smart_key(platform: str, family: str, old_version: str, new_version: str) -> str:
+        return f"{platform}:{family}:{old_version}:{new_version}"
+
+    # Friendly release/update tracks. These intentionally collapse duplicate source
+    # receipts for the same app version into one release row.
+    track_records: dict[tuple[str, str, str], dict[str, list[dict[str, Any]]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    track_labels = {
+        ("macos", "s2", "desktop"): "macOS · Sonos",
+        ("macos", "s1", "desktop"): "macOS · Sonos S1",
+        ("macos", "legacy", "desktop"): "macOS · Legacy controller",
+        ("windows", "s2", "desktop"): "Windows · Sonos",
+        ("windows", "s1", "desktop"): "Windows · Sonos S1",
+        ("windows", "legacy", "desktop"): "Windows · Legacy controller",
+        ("fireos", "s2", "app"): "Fire OS · Sonos",
+        ("fireos", "s1", "app"): "Fire OS · Sonos S1",
+        ("fireos", "legacy", "app"): "Fire OS · Legacy controller",
+        ("android", "s2", "app"): "Android · Sonos",
+        ("android", "s1", "app"): "Android · Sonos S1",
+        ("ios", "s2", "app"): "iOS / iPadOS · Sonos",
+        ("ios", "s1", "app"): "iOS / iPadOS · Sonos S1",
+        ("web", "controller", "web"): "Web · Controller",
+        ("web", "pro", "web"): "Web · Pro",
+    }
+
+    for record in records:
+        key: tuple[str, str, str] | None = None
+        if record["kind"] == "desktop-installer":
+            key = (record["platform"], record["family"], "desktop")
+        elif record["kind"] == "official-apk":
+            key = ("fireos", record["family"], "app")
+        elif record["kind"] == "android-store-delivery":
+            key = ("android", record["family"], "app")
+        elif record["kind"] == "ios-app-metadata":
+            key = ("ios", record["family"], "app")
+        elif record["kind"] == "web-deployment":
+            key = ("web", record["family"], "web")
+        if key in track_labels and record.get("version"):
+            track_records[key][record["version"]].append(record)
+
+    update_tracks: list[dict[str, Any]] = []
+    for key, versions in track_records.items():
+        platform, family, track_kind = key
+        items = []
+        for version, candidates in versions.items():
+            # Prefer an actually preserved record, then the newest dated observation.
+            candidates = sorted(
+                candidates,
+                key=lambda r: (
+                    r["status"] in {"preserved", "complete"},
+                    r.get("is_current", False),
+                    r.get("date") or "",
+                    r.get("bytes") or 0,
+                ),
+                reverse=True,
+            )
+            primary = candidates[0]
+            items.append({
+                "version": version,
+                "record_id": primary["id"],
+                "record_ids": [r["id"] for r in candidates],
+                "date": primary.get("date"),
+                "status": primary["status"],
+                "bytes": primary.get("bytes"),
+                "title": primary["title"],
+            })
+        items.sort(key=lambda item: update_version_key(item["version"]), reverse=True)
+        for index, item in enumerate(items):
+            if index + 1 >= len(items):
+                continue
+            previous = items[index + 1]
+            item["previous_version"] = previous["version"]
+            item["compare_left"] = previous["record_id"]
+            item["compare_right"] = item["record_id"]
+            diff_key = smart_key(platform, family, previous["version"], item["version"])
+            if diff_key in smart_app_diffs:
+                item["smart_diff_key"] = diff_key
+        update_tracks.append({
+            "id": "-".join(key),
+            "label": track_labels[key],
+            "platform": platform,
+            "family": family,
+            "kind": track_kind,
+            "items": items,
+        })
+
+    # Firmware is an aggregate release track. Pick the strongest common package
+    # model for an adjacent-release diff, favoring indexed rootfs pairs.
+    firmware_by_version: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for record in package_records:
+        if record.get("availability") == "negative-probe":
+            continue
+        firmware_by_version[record["version"]].append(record)
+
+    firmware_versions_for_updates = sorted(
+        firmware_by_version, key=update_version_key, reverse=True
+    )
+    firmware_items = []
+    for version in firmware_versions_for_updates:
+        package_set = firmware_by_version[version]
+        preserved = [r for r in package_set if r.get("availability") == "preserved"]
+        firmware_items.append({
+            "version": version,
+            "status": "missing" if not preserved else "preserved",
+            "package_count": len(package_set),
+            "preserved_count": len(preserved),
+            "decrypted_count": sum(r.get("decrypted") is True for r in preserved),
+            "extracted_count": sum(r.get("components_extracted") is True for r in preserved),
+            "filesystem_count": sum(r.get("filesystem_indexed") is True for r in preserved),
+            "record_id": (preserved or package_set)[0]["id"],
+        })
+
+    for index, item in enumerate(firmware_items[:-1]):
+        previous = firmware_items[index + 1]
+        current_records = firmware_by_version[item["version"]]
+        previous_records = firmware_by_version[previous["version"]]
+        old_by_model = {r["model"]: r for r in previous_records if r.get("availability") == "preserved"}
+        new_by_model = {r["model"]: r for r in current_records if r.get("availability") == "preserved"}
+        choices = []
+        for model in set(old_by_model) & set(new_by_model):
+            old_r, new_r = old_by_model[model], new_by_model[model]
+            score = (
+                100 * int(old_r.get("filesystem_indexed") and new_r.get("filesystem_indexed"))
+                + 25 * int(
+                    old_r["id"].replace("firmware:", "") in firmware_sections
+                    and new_r["id"].replace("firmware:", "") in firmware_sections
+                )
+                + 5 * int(old_r.get("components_extracted") and new_r.get("components_extracted"))
+                + int(model.isdigit())
+            )
+            choices.append((score, model, old_r, new_r))
+        if choices:
+            _, model, old_r, new_r = max(choices, key=lambda row: (row[0], row[1]))
+            item["previous_version"] = previous["version"]
+            item["compare_model"] = model
+            item["compare_left"] = old_r["id"]
+            item["compare_right"] = new_r["id"]
+
+    update_tracks.append({
+        "id": "firmware-speaker",
+        "label": "Speaker firmware",
+        "platform": "firmware",
+        "family": "speaker",
+        "kind": "firmware",
+        "items": firmware_items,
+    })
+    update_tracks.sort(key=lambda track: track["label"].lower())
+
     payload = {
-        "schema_version": 2,
+        "schema_version": 3,
         "repository": REPOSITORY,
         "generated_from": {
             "catalog_generated": catalog.get("generated"),
@@ -804,6 +1006,10 @@ def build_payload(root: Path = ROOT) -> dict[str, Any]:
         "details": details,
         "gaps": gaps,
         "timeline": timeline,
+        "updates": {
+            "tracks": update_tracks,
+            "smart_diffs": smart_app_diffs,
+        },
         "sources": sources,
         "firmware_matrix": {
             "versions": matrix_versions,
@@ -834,6 +1040,20 @@ def write_payload(payload: dict[str, Any], output: Path, as_javascript: bool) ->
     output.write_text(text, encoding="utf-8")
 
 
+def sync_app_diff_assets(root: Path, destination: Path) -> int:
+    """Copy committed semantic reports into the generated static site tree."""
+    source = root / "data" / "app-diffs"
+    if destination.exists():
+        shutil.rmtree(destination)
+    destination.mkdir(parents=True, exist_ok=True)
+    count = 0
+    if source.exists():
+        for path in sorted(source.glob("*.json")):
+            shutil.copyfile(path, destination / path.name)
+            count += 1
+    return count
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "site/archive-data.js")
@@ -858,7 +1078,11 @@ def main() -> None:
         )
         return
     write_payload(payload, args.output, not args.json)
-    print(f"wrote {args.output} ({len(ids)} records)")
+    asset_count = 0
+    if args.output.resolve().parent == (ROOT / "site").resolve():
+        asset_count = sync_app_diff_assets(ROOT, args.output.parent / "app-diffs")
+    suffix = f", smart_diff_assets={asset_count}" if asset_count else ""
+    print(f"wrote {args.output} ({len(ids)} records{suffix})")
 
 
 if __name__ == "__main__":

@@ -25,6 +25,20 @@ class SiteBuildTests(unittest.TestCase):
             ordered,
         )
 
+    def test_update_version_key_orders_legacy_controller_tokens(self):
+        versions = [
+            "classic-111", "classic-361b", "classic-92", "classic-33",
+            "classic-31", "classic-1341",
+        ]
+        ordered = sorted(versions, key=BUILD_SITE.update_version_key)
+        self.assertEqual(
+            [
+                "classic-31", "classic-33", "classic-361b",
+                "classic-92", "classic-111", "classic-1341",
+            ],
+            ordered,
+        )
+
     def test_payload_is_large_and_ids_are_unique(self):
         ids = [record["id"] for record in self.records]
         self.assertGreater(len(ids), 2000)
@@ -127,6 +141,67 @@ class SiteBuildTests(unittest.TestCase):
         self.assertIn("encrypted", matrix_states)
         self.assertGreater(self.payload["summary"]["firmware_preserved_packages"],
                            self.payload["summary"]["firmware_exact_gaps"])
+
+    def test_updates_tracks_choose_adjacent_releases(self):
+        tracks = {track["id"]: track for track in self.payload["updates"]["tracks"]}
+        self.assertIn("macos-s2-desktop", tracks)
+        macos = tracks["macos-s2-desktop"]
+        self.assertGreater(len(macos["items"]), 4)
+        self.assertEqual("90.0-82050", macos["items"][0]["version"])
+        self.assertEqual("90.0-81181", macos["items"][0]["previous_version"])
+        self.assertTrue(macos["items"][0]["compare_left"])
+        self.assertTrue(macos["items"][0]["compare_right"])
+
+        firmware = tracks["firmware-speaker"]
+        self.assertGreater(len(firmware["items"]), 20)
+        comparable = [
+            item for item in firmware["items"]
+            if item.get("compare_left") and item.get("compare_right")
+        ]
+        self.assertGreater(len(comparable), 10)
+        self.assertTrue(comparable[0].get("compare_model"))
+
+    def test_latest_macos_smart_diff_decodes_packed_resources(self):
+        key = "macos:s2:90.0-81181:90.0-82050"
+        index = self.payload["updates"]["smart_diffs"][key]
+        self.assertEqual("smart-app-diff", index["kind"])
+        self.assertGreater(index["summary"]["semantically_analyzed_changed_files"], 10)
+        self.assertNotIn("files", index)
+        self.assertEqual(
+            "app-diffs/macos-s2-90.0-81181_to_90.0-82050.json",
+            index["asset"],
+        )
+
+        diff_path = ROOT / "data" / index["asset"]
+        diff = BUILD_SITE.load(diff_path, {})
+        packed = [
+            row for row in diff["files"]["changed"]
+            if row.get("semantic", {}).get("type") == "sonos-sclib-resource-db"
+        ]
+        self.assertEqual(1, len(packed))
+        semantic = packed[0]["semantic"]
+        self.assertEqual(186923, semantic["strings"]["counts"]["same"])
+        self.assertEqual(116, semantic["images"]["counts"]["same"])
+        self.assertEqual(271, semantic["jsons"]["counts"]["same"])
+        self.assertEqual(0, sum(
+            semantic["strings"]["counts"].get(name, 0)
+            for name in ("added", "removed", "changed")
+        ))
+
+    def test_smart_diff_reports_stay_compact_and_do_not_duplicate_symbol_inventories(self):
+        reports = sorted((ROOT / "data" / "app-diffs").glob("*.json"))
+        self.assertGreaterEqual(len(reports), 2)
+        for path in reports:
+            self.assertLess(path.stat().st_size, 1_500_000, path.name)
+            report = BUILD_SITE.load(path, {})
+            for row in report.get("files", {}).get("changed", []):
+                semantic = row.get("semantic") or {}
+                if semantic.get("type") != "mach-o":
+                    continue
+                self.assertNotIn("exported_symbols", semantic.get("old", {}))
+                self.assertNotIn("exported_symbols", semantic.get("new", {}))
+                self.assertIn("old_exported_symbol_count", semantic)
+                self.assertIn("new_exported_symbol_count", semantic)
 
     def test_compare_payload_contains_structural_manifests(self):
         compare = self.payload["compare"]

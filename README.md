@@ -188,7 +188,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
 - `scripts/check_catalog_firmware_directories.py` — daily non-AI expansion of opaque official directories learned from desktop installers.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
-- `site/` — static archive explorer with global search, filters, exact gap tracking, live monitor-review queue, timeline, firmware preservation/decryption matrix, provenance/key views, artifact detail pages, exports, and metadata/structural diff tooling. Run `python scripts/build_site.py` before serving `site/` locally; GitHub Pages rebuilds the payload from committed metadata on `main`.
+- `site/` — static archive explorer with a platform-first Updates view, one-click adjacent release diffs, content-aware semantic application diffs, global search, exact gap tracking, timeline, firmware preservation/decryption matrix, provenance/key views, exports, and low-level comparison tooling. Run `python scripts/build_site.py` before serving `site/` locally; GitHub Pages rebuilds the payload from committed metadata on `main`.
 - `tests/` — parser and catalog tests.
 
 Recovered private keys, device captures, serial numbers, household identifiers,
