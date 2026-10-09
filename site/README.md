@@ -30,7 +30,7 @@ Then open `http://127.0.0.1:8000`.
   records.
 - **Review queue** — live read-only view of open `[monitor]` GitHub issues, kept
   separate from preservation status so successful automation still receives human review.
-- **Updates** — user-facing release history grouped by platform/family. Each release links directly to its details and, when a predecessor exists, a one-click adjacent-version diff. macOS releases use precomputed format-aware semantic bundle diffs when available; large reports load on demand rather than with the main archive index.
+- **Updates** — user-facing release history grouped by platform/family. Each release links directly to its details and, when a predecessor exists, a one-click adjacent-version diff. macOS releases use precomputed format-aware semantic bundle diffs; large reports load on demand rather than with the main archive index. New preserved releases get their newest adjacent diff automatically, and the scheduled repair job backfills every missing historical adjacent pair.
 - **Timeline** — dated observations and captures. Evidence dates remain
   evidence dates; the viewer does not invent release dates.
 - **Firmware matrix** — exact firmware version × package-model coverage plus decryption/extraction state. `D` means an encrypted source package was decrypted, `X` means a plaintext package was extracted, `E`/`B` mean encrypted/key-blocked, and an `F` corner marker means a root filesystem manifest is indexed. Failed CDN/model probes are hidden by default because they are negative evidence, not archive gaps.

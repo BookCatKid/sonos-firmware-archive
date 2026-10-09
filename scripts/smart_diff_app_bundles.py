@@ -31,9 +31,10 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 SCLIB_KEY = bytes.fromhex("0fee0c5fe8a7c905b727dd383d20e61d")
 SCLIB_PAGE_SIZE = 4096
 SQLITE_MAGIC = b"SQLite format 3\x00"
-MAX_FIELD_DIFFS = 1500
-MAX_TEXT_DIFF_LINES = 1800
-MAX_RESOURCE_CHANGES = 2500
+MAX_FIELD_DIFFS = 250
+MAX_COMPILED_UI_FIELD_DIFFS = 48
+MAX_TEXT_DIFF_LINES = 600
+MAX_RESOURCE_CHANGES = 1000
 MACHO_MAGICS = {
     b"\xfe\xed\xfa\xce", b"\xce\xfa\xed\xfe",
     b"\xfe\xed\xfa\xcf", b"\xcf\xfa\xed\xfe",
@@ -666,6 +667,59 @@ def sonos_resource_db_diff(old: Path, new: Path) -> dict[str, Any]:
         old_conn = sqlite3.connect(f"file:{old_tmp}?mode=ro", uri=True)
         new_conn = sqlite3.connect(f"file:{new_tmp}?mode=ro", uri=True)
         try:
+            required_columns = {
+                "strings": {
+                    "string_index", "string_name", "string_language",
+                    "string_gender", "string_plurality", "string_value",
+                },
+                "images": {
+                    "image_index", "image_scale_factor", "image_name",
+                    "image_type", "image_blob",
+                },
+                "jsons": {"json_name", "json_language", "json_content"},
+            }
+
+            def table_columns(conn: sqlite3.Connection) -> dict[str, set[str]]:
+                tables = {
+                    row[0]
+                    for row in conn.execute(
+                        "select name from sqlite_master where type='table'"
+                    )
+                }
+                return {
+                    table: {
+                        row[1]
+                        for row in conn.execute(
+                            f"pragma table_info({_quote_identifier(table)})"
+                        )
+                    }
+                    for table in tables
+                }
+
+            old_columns = table_columns(old_conn)
+            new_columns = table_columns(new_conn)
+            modern_schema = all(
+                required_columns[table].issubset(old_columns.get(table, set()))
+                and required_columns[table].issubset(new_columns.get(table, set()))
+                for table in required_columns
+            )
+            if not modern_schema:
+                generic = sqlite_diff(old_tmp, new_tmp)
+                return {
+                    "type": "sqlite",
+                    "wrapper": "sonos-sclib-resource-db",
+                    "description": (
+                        "Decrypted Sonos packed resource database with a "
+                        "legacy/nonstandard SQLite schema"
+                    ),
+                    "encrypted_wrapper": True,
+                    "schema": {
+                        "old_tables": sorted(old_columns),
+                        "new_tables": sorted(new_columns),
+                    },
+                    **generic,
+                }
+
             string_query = """select string_index, coalesce(string_name,''), coalesce(string_language,''),
                                      coalesce(string_gender,''), coalesce(string_plurality,''),
                                      coalesce(string_value,'')
@@ -776,9 +830,21 @@ def semantic_diff(old: Path, new: Path, old_meta: dict[str, Any], new_meta: dict
         if kind == "sonos-resource-db":
             return sonos_resource_db_diff(old, new)
         if kind == "plist":
-            return {"type": "plist", **structured_diff(plist_value(old), plist_value(new))}
+            limit = (
+                MAX_COMPILED_UI_FIELD_DIFFS
+                if old_meta.get("role") in {"compiled-ui", "localization"}
+                or new_meta.get("role") in {"compiled-ui", "localization"}
+                else MAX_FIELD_DIFFS
+            )
+            return {
+                "type": "plist",
+                **structured_diff(plist_value(old), plist_value(new), limit=limit),
+            }
         if kind == "json":
-            return {"type": "json", **structured_diff(json_value(old), json_value(new))}
+            return {
+                "type": "json",
+                **structured_diff(json_value(old), json_value(new), limit=MAX_FIELD_DIFFS),
+            }
         if kind == "strings-table":
             return strings_table_diff(old, new)
         if kind == "text":

@@ -1,4 +1,5 @@
 import importlib.util
+import plistlib
 import sqlite3
 import tempfile
 import unittest
@@ -161,6 +162,53 @@ class SmartApplicationDiffTests(unittest.TestCase):
             random_kind, _ = SMART.detect_type(random_page)
             self.assertNotEqual("sonos-resource-db", random_kind)
 
+    def test_encrypted_legacy_resource_schema_falls_back_to_generic_sqlite(self):
+        with tempfile.TemporaryDirectory() as tmp_raw:
+            tmp = Path(tmp_raw)
+            old_sqlite = tmp / "old-legacy.sqlite"
+            new_sqlite = tmp / "new-legacy.sqlite"
+            old_blob = tmp / "old-resource.bin"
+            new_blob = tmp / "new-resource.bin"
+
+            for path, value in ((old_sqlite, "old"), (new_sqlite, "new")):
+                conn = sqlite3.connect(path)
+                try:
+                    conn.execute("pragma page_size=4096")
+                    conn.execute(
+                        "create table legacy_strings("
+                        "key text primary key, value text)"
+                    )
+                    conn.execute(
+                        "insert into legacy_strings values (?, ?)",
+                        ("HELLO", value),
+                    )
+                    conn.commit()
+                    conn.execute("vacuum")
+                finally:
+                    conn.close()
+
+            encrypt_resource_db(
+                old_sqlite,
+                old_blob,
+                iv=bytes.fromhex("11111111111111111111111111111111"),
+            )
+            encrypt_resource_db(
+                new_sqlite,
+                new_blob,
+                iv=bytes.fromhex("22222222222222222222222222222222"),
+            )
+
+            result = SMART.sonos_resource_db_diff(old_blob, new_blob)
+            self.assertEqual("sqlite", result["type"])
+            self.assertEqual("sonos-sclib-resource-db", result["wrapper"])
+            self.assertTrue(result["encrypted_wrapper"])
+            table = next(
+                row for row in result["tables"]
+                if row["table"] == "legacy_strings"
+            )
+            self.assertEqual("changed", table["status"])
+            self.assertEqual(1, table["rows"]["counts"]["changed"])
+
     def test_generic_sqlite_diff_uses_primary_key_rows(self):
         with tempfile.TemporaryDirectory() as tmp_raw:
             tmp = Path(tmp_raw)
@@ -249,6 +297,21 @@ class SmartApplicationDiffTests(unittest.TestCase):
                 "Contents/Resources/Base.lproj/Controller.nib/keyedobjects-101300.nib"
             ),
         )
+
+    def test_compiled_ui_plist_detail_is_bounded_but_counts_are_complete(self):
+        with tempfile.TemporaryDirectory() as tmp_raw:
+            tmp = Path(tmp_raw)
+            old = tmp / "old.nib"
+            new = tmp / "new.nib"
+            total = SMART.MAX_COMPILED_UI_FIELD_DIFFS + 75
+            old.write_bytes(plistlib.dumps({f"field-{i}": f"old-{i}" for i in range(total)}))
+            new.write_bytes(plistlib.dumps({f"field-{i}": f"new-{i}" for i in range(total)}))
+            metadata = {"kind": "plist", "role": "compiled-ui"}
+            diff = SMART.semantic_diff(old, new, metadata, metadata)
+            self.assertEqual("plist", diff["type"])
+            self.assertEqual(total, diff["counts"]["changed"])
+            self.assertEqual(SMART.MAX_COMPILED_UI_FIELD_DIFFS, len(diff["changes"]))
+            self.assertTrue(diff["truncated"])
 
     def test_nibarchive_magic_is_recognized_and_semantically_diffed(self):
         with tempfile.TemporaryDirectory() as tmp_raw:

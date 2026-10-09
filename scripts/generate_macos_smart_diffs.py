@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 """Generate missing adjacent macOS application smart diffs.
 
-This intentionally runs on macOS because it mounts preserved DMGs and uses the
-platform's native Mach-O tooling. By default it generates the newest missing
-adjacent pair for each Sonos app family, which makes it suitable for a post-
-preservation workflow and slowly backfills history on a weekly schedule.
+This intentionally runs on macOS because it mounts or safely extracts preserved
+DMGs and uses the platform's native Mach-O tooling. Post-preservation runs can
+generate only the newest adjacent pair, while scheduled/manual backfills fill
+every missing historical adjacent pair. DMGs with embedded software-license
+prompts are extracted without accepting the agreement.
 """
 
 from __future__ import annotations
 
 import argparse
+import collections
+import hashlib
 import importlib.util
 import json
+import plistlib
 import re
 import shutil
 import subprocess
@@ -77,18 +81,118 @@ def download(url: str, destination: Path) -> None:
     ])
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def artifact_cache_key(artifact: dict[str, Any]) -> str:
+    return artifact.get("sha256") or artifact["release_url"]
+
+
+def cached_installer_path(artifact: dict[str, Any], cache_dir: Path) -> Path:
+    version = re.sub(r"[^A-Za-z0-9._-]+", "_", artifact["version"])
+    identity = hashlib.sha256(
+        artifact_cache_key(artifact).encode("utf-8")
+    ).hexdigest()[:16]
+    return cache_dir / f"{version}--{identity}.dmg"
+
+
+def cached_installer(artifact: dict[str, Any], cache_dir: Path) -> Path:
+    """Download one preserved installer once and verify it before reuse."""
+    expected = artifact.get("sha256")
+    destination = cached_installer_path(artifact, cache_dir)
+
+    if destination.exists():
+        if expected and sha256_file(destination) != expected:
+            destination.unlink()
+        else:
+            print(f"cache hit {artifact['version']}: {destination.name}", flush=True)
+            return destination
+
+    partial = destination.with_suffix(".dmg.part")
+    partial.unlink(missing_ok=True)
+    print(f"download {artifact['version']}: {artifact['release_url']}", flush=True)
+    download(artifact["release_url"], partial)
+    if expected:
+        actual = sha256_file(partial)
+        if actual != expected:
+            partial.unlink(missing_ok=True)
+            raise RuntimeError(
+                f"SHA-256 mismatch for {artifact['version']}: "
+                f"expected {expected}, got {actual}"
+            )
+    partial.replace(destination)
+    return destination
+
+
+def _find_app(root: Path) -> Path:
+    app_candidates = sorted(root.glob("*.app"))
+    if not app_candidates:
+        app_candidates = sorted(root.rglob("Sonos.app"))
+    if not app_candidates:
+        app_candidates = sorted(root.rglob("*.app"))
+    if not app_candidates:
+        raise RuntimeError(f"no app bundle found under {root}")
+    return app_candidates[0]
+
+
+def image_has_sla(dmg: Path) -> bool:
+    """Detect an embedded disk-image SLA without accepting or mounting it."""
+    proc = subprocess.run(
+        ["hdiutil", "imageinfo", "-plist", str(dmg)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if proc.returncode != 0:
+        return False
+    try:
+        payload = plistlib.loads(proc.stdout)
+    except Exception:
+        return False
+
+    def scan(value: Any) -> bool:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key == "Software License Agreement" and item is True:
+                    return True
+                if scan(item):
+                    return True
+        elif isinstance(value, list):
+            return any(scan(item) for item in value)
+        return False
+
+    return scan(payload)
+
+
+def extracted_app(dmg: Path, destination: Path) -> Path:
+    """Extract an SLA-bearing DMG without accepting its license agreement."""
+    seven_zip = shutil.which("7z") or shutil.which("7zz")
+    if seven_zip is None:
+        raise RuntimeError(
+            "7z is required to inspect DMGs with embedded license agreements "
+            "without accepting the agreement"
+        )
+    destination.mkdir(parents=True, exist_ok=True)
+    run([seven_zip, "x", "-y", f"-o{destination}", str(dmg)])
+    return _find_app(destination)
+
+
 def mounted_app(dmg: Path, mountpoint: Path) -> tuple[Path, str]:
     mountpoint.mkdir(parents=True, exist_ok=True)
     output = run([
         "hdiutil", "attach", "-readonly", "-nobrowse",
         "-mountpoint", str(mountpoint), str(dmg),
     ], capture=True)
-    app_candidates = sorted(mountpoint.glob("*.app"))
-    if not app_candidates:
-        app_candidates = sorted(mountpoint.rglob("Sonos.app"))
-    if not app_candidates:
-        raise RuntimeError(f"no app bundle found after mounting {dmg}\n{output}")
-    return app_candidates[0], str(mountpoint)
+    try:
+        app = _find_app(mountpoint)
+    except RuntimeError as exc:
+        raise RuntimeError(f"no app bundle found after mounting {dmg}\n{output}") from exc
+    return app, str(mountpoint)
 
 
 def detach(mountpoint: str) -> None:
@@ -157,22 +261,35 @@ def missing_pairs(*, all_missing: bool, per_family: int, latest_only: bool) -> l
     return selected
 
 
-def analyze_pair(module, family: str, old: dict, new: dict, destination: Path) -> None:
-    with tempfile.TemporaryDirectory(prefix="sonos-smart-diff-") as temp_raw:
+def analyze_pair(
+    module,
+    family: str,
+    old: dict,
+    new: dict,
+    destination: Path,
+    cache_dir: Path,
+) -> None:
+    old_dmg = cached_installer(old, cache_dir)
+    new_dmg = cached_installer(new, cache_dir)
+    with tempfile.TemporaryDirectory(prefix="sonos-smart-diff-mounts-") as temp_raw:
         temp = Path(temp_raw)
-        old_dmg = temp / "old.dmg"
-        new_dmg = temp / "new.dmg"
         old_mount = temp / "old-mount"
         new_mount = temp / "new-mount"
-        print(f"download {family} {old['version']}: {old['release_url']}", flush=True)
-        download(old["release_url"], old_dmg)
-        print(f"download {family} {new['version']}: {new['release_url']}", flush=True)
-        download(new["release_url"], new_dmg)
 
         old_mount_name = new_mount_name = None
         try:
-            old_app, old_mount_name = mounted_app(old_dmg, old_mount)
-            new_app, new_mount_name = mounted_app(new_dmg, new_mount)
+            requires_extract = image_has_sla(old_dmg) or image_has_sla(new_dmg)
+            if requires_extract:
+                print(
+                    f"extract SLA-bearing pair without accepting license: "
+                    f"{old['version']} -> {new['version']}",
+                    flush=True,
+                )
+                old_app = extracted_app(old_dmg, temp / "old-extracted")
+                new_app = extracted_app(new_dmg, temp / "new-extracted")
+            else:
+                old_app, old_mount_name = mounted_app(old_dmg, old_mount)
+                new_app, new_mount_name = mounted_app(new_dmg, new_mount)
             print(
                 f"analyze macos/{family} {old['version']} -> {new['version']}",
                 flush=True,
@@ -264,8 +381,39 @@ def main() -> None:
         return
 
     module = load_smart_diff_module()
-    for family, old, new, destination in pairs:
-        analyze_pair(module, family, old, new, destination)
+    remaining_uses = collections.Counter(
+        artifact_cache_key(artifact)
+        for _, old, new, _ in pairs
+        for artifact in (old, new)
+    )
+    with tempfile.TemporaryDirectory(prefix="sonos-smart-diff-cache-") as cache_raw:
+        cache_dir = Path(cache_raw)
+        failures = []
+        for family, old, new, destination in pairs:
+            try:
+                analyze_pair(module, family, old, new, destination, cache_dir)
+            except Exception as exc:
+                failures.append((family, old["version"], new["version"], exc))
+                print(
+                    f"FAILED {family} {old['version']} -> {new['version']}: "
+                    f"{type(exc).__name__}: {exc}",
+                    flush=True,
+                )
+            finally:
+                for artifact in (old, new):
+                    key = artifact_cache_key(artifact)
+                    remaining_uses[key] -= 1
+                    if remaining_uses[key] <= 0:
+                        cached_installer_path(artifact, cache_dir).unlink(missing_ok=True)
+        if failures:
+            print(f"{len(failures)} smart diff pair(s) failed:", flush=True)
+            for family, old_version, new_version, exc in failures:
+                print(
+                    f"  {family}: {old_version} -> {new_version}: "
+                    f"{type(exc).__name__}: {exc}",
+                    flush=True,
+                )
+            raise SystemExit(1)
 
 
 if __name__ == "__main__":
