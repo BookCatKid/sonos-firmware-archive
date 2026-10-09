@@ -31,10 +31,10 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 SCLIB_KEY = bytes.fromhex("0fee0c5fe8a7c905b727dd383d20e61d")
 SCLIB_PAGE_SIZE = 4096
 SQLITE_MAGIC = b"SQLite format 3\x00"
-MAX_FIELD_DIFFS = 80
-MAX_COMPILED_UI_FIELD_DIFFS = 3
-MAX_TEXT_DIFF_LINES = 160
-MAX_RESOURCE_CHANGES = 30
+MAX_FIELD_DIFFS = 50
+MAX_COMPILED_UI_FIELD_DIFFS = 2
+MAX_TEXT_DIFF_LINES = 100
+MAX_RESOURCE_CHANGES = 20
 MACHO_MAGICS = {
     b"\xfe\xed\xfa\xce", b"\xce\xfa\xed\xfe",
     b"\xfe\xed\xfa\xcf", b"\xcf\xfa\xed\xfe",
@@ -873,11 +873,28 @@ def compact_inventory_meta(meta: dict[str, Any]) -> dict[str, Any]:
     if isinstance(type_meta, dict):
         description = type_meta.get("description")
         if description:
-            out["type"] = {"description": str(description)[:320]}
+            out["type"] = {"description": str(description)[:180]}
         for key in ("format", "width", "height"):
             if key in type_meta:
                 out.setdefault("type", {})[key] = type_meta[key]
     return out
+
+
+def compact_inventory_row(meta: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "path": meta.get("path"),
+        "role": meta.get("role") or "other",
+        **compact_inventory_meta(meta),
+    }
+
+
+def compact_inventory_row(meta: dict[str, Any]) -> dict[str, Any]:
+    """Compact a one-sided file inventory row without losing blob identity."""
+    return {
+        "path": meta["path"],
+        "role": meta.get("role") or "other",
+        **compact_inventory_meta(meta),
+    }
 
 
 def summarize_roles(rows: Iterable[dict[str, Any]]) -> dict[str, int]:
@@ -897,8 +914,8 @@ def build_diff(old_root: Path, new_root: Path, *, old_version: str, new_version:
     )
     unchanged = len(set(old_inv) & set(new_inv)) - len(changed_paths)
 
-    added = [new_inv[path] for path in added_paths]
-    removed = [old_inv[path] for path in removed_paths]
+    added = [compact_inventory_row(new_inv[path]) for path in added_paths]
+    removed = [compact_inventory_row(old_inv[path]) for path in removed_paths]
     changed = []
     semantic_count = 0
     highlights = {
