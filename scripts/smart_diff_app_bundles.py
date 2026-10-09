@@ -31,9 +31,9 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 SCLIB_KEY = bytes.fromhex("0fee0c5fe8a7c905b727dd383d20e61d")
 SCLIB_PAGE_SIZE = 4096
 SQLITE_MAGIC = b"SQLite format 3\x00"
-MAX_FIELD_DIFFS = 50
-MAX_COMPILED_UI_FIELD_DIFFS = 2
-MAX_TEXT_DIFF_LINES = 100
+MAX_FIELD_DIFFS = 32
+MAX_COMPILED_UI_FIELD_DIFFS = 1
+MAX_TEXT_DIFF_LINES = 80
 MAX_RESOURCE_CHANGES = 20
 MACHO_MAGICS = {
     b"\xfe\xed\xfa\xce", b"\xce\xfa\xed\xfe",
@@ -878,14 +878,6 @@ def compact_inventory_meta(meta: dict[str, Any]) -> dict[str, Any]:
             if key in type_meta:
                 out.setdefault("type", {})[key] = type_meta[key]
     return out
-
-
-def compact_inventory_row(meta: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "path": meta.get("path"),
-        "role": meta.get("role") or "other",
-        **compact_inventory_meta(meta),
-    }
 
 
 def compact_inventory_row(meta: dict[str, Any]) -> dict[str, Any]:
