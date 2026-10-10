@@ -3,32 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sonos Firmware Archive</title>
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Browse, audit, and compare preserved Sonos software artifacts and known gaps.">
+  <link rel="icon" href="data:,">
+  <title>Sonos Archive Explorer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div>
-        <p class="eyebrow">PRIVATE RESEARCH CATALOG</p>
-        <h1>Sonos firmware archive</h1>
-        <p class="lede">Exact artifacts, hashes, container metadata, and honest gaps.</p>
-      </div>
-      <div id="stats" class="stats"></div>
-    </header>
-    <section class="controls">
-      <input id="search" type="search" placeholder="Filter product, version, model, or status…" autofocus>
-      <select id="status"><option value="">All artifact states</option></select>
-    </section>
-    <section class="table-wrap">
-      <table>
-        <thead><tr><th>Product</th><th>Version</th><th>Image</th><th>Package</th><th>Raw</th><th>SHA-256</th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
-      <p id="empty" hidden>No matching packages.</p>
-    </section>
-  </main>
-  <script src="catalog.js"></script>
+  <header class="topbar">
+    <div class="brand">
+      <a href="#/overview" class="brand-title">Sonos Archive Explorer</a>
+      <span id="freshness" class="muted"></span>
+    </div>
+    <div class="top-actions">
+      <input id="global-search" type="search" autocomplete="off" placeholder="Search everything…  /">
+      <button id="copy-link" type="button">Copy link</button>
+      <a class="button" href="https://github.com/BookCatKid/sonos-firmware-archive">GitHub</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar" aria-label="Archive views">
+      <a href="#/overview" data-route="overview">Overview</a>
+      <a href="#/updates" data-route="updates">Updates</a>
+      <a href="#/artifacts" data-route="artifacts">Artifacts</a>
+      <a href="#/gaps" data-route="gaps">Missing / gaps</a>
+      <a href="#/reviews" data-route="reviews">Review queue</a>
+      <a href="#/timeline" data-route="timeline">Timeline</a>
+      <a href="#/firmware" data-route="firmware">Firmware matrix</a>
+      <a href="#/compare" data-route="compare">Compare</a>
+      <a href="#/sources" data-route="sources">Sources</a>
+      <a href="#/keys" data-route="keys">Key coverage</a>
+      <a href="#/about" data-route="about">Data / help</a>
+      <div class="sidebar-divider"></div>
+      <div id="compare-tray" class="compare-tray"></div>
+    </nav>
+
+    <main id="app" tabindex="-1">
+      <noscript>This viewer requires JavaScript. The archive data itself remains available in the repository.</noscript>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="archive-data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
