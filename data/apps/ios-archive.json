@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-09T14:39:00.470716+00:00",
+  "updated": "2026-10-10T02:01:46.657298+00:00",
   "scope": "ios-ipa-device-export",
   "family": "s2",
   "platform": "ios-ipa-decrypted",
   "bundle_id": "com.sonos.SonosController2",
   "track_id": 1488977981,
   "artifact_total": 33,
-  "gap_total": 6,
+  "gap_total": 72,
   "gaps": [
     {
       "family": "s1",
@@ -44,6 +44,402 @@
       "version": "11.16",
       "external_version_id": 880082847,
       "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s2",
+      "version": "90.00.01",
+      "external_version_id": 892701971,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "90.00",
+      "external_version_id": 892287631,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.01",
+      "external_version_id": 891815632,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0.2",
+      "external_version_id": 891349075,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0.1",
+      "external_version_id": 891026161,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0",
+      "external_version_id": 890403608,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "88.1.9",
+      "external_version_id": 889960214,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "88.0.51",
+      "external_version_id": 889356066,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.1.7",
+      "external_version_id": 888591755,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.0.37",
+      "external_version_id": 888361127,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.0.36",
+      "external_version_id": 888016453,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "86.1.5",
+      "external_version_id": 887049956,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "86.0.41",
+      "external_version_id": 886435461,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "85.01.2",
+      "external_version_id": 885879336,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "85.0.31",
+      "external_version_id": 885338042,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "84.01.6",
+      "external_version_id": 884815111,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "84.0.34",
+      "external_version_id": 884201731,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "83.01.11",
+      "external_version_id": 883980093,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "83.00.36",
+      "external_version_id": 883234601,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "82.01.12",
+      "external_version_id": 882990875,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "82.00.39",
+      "external_version_id": 881978888,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "81.00.52",
+      "external_version_id": 881432294,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.35.8",
+      "external_version_id": 880606100,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.34.37",
+      "external_version_id": 880084666,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.32.36",
+      "external_version_id": 879493861,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.32.35",
+      "external_version_id": 879366165,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.31.8",
+      "external_version_id": 878966460,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.30.35",
+      "external_version_id": 878635884,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.29.4",
+      "external_version_id": 878197372,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.28.32",
+      "external_version_id": 878037855,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.27.8",
+      "external_version_id": 877783840,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.27.6",
+      "external_version_id": 877417945,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.37",
+      "external_version_id": 877235439,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.36",
+      "external_version_id": 876771505,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.35",
+      "external_version_id": 876517998,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.23.9",
+      "external_version_id": 875758477,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.22.33",
+      "external_version_id": 875300278,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.21.6",
+      "external_version_id": 874969075,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.20.35",
+      "external_version_id": 874748410,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.20.34",
+      "external_version_id": 874478202,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.19.21",
+      "external_version_id": 874001109,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.18.27",
+      "external_version_id": 873761483,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.18.25",
+      "external_version_id": 873565751,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.17.14",
+      "external_version_id": 872973849,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.16.32",
+      "external_version_id": 872004912,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.15.04",
+      "external_version_id": 871613876,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.14.09",
+      "external_version_id": 871039775,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.14.07",
+      "external_version_id": 870926980,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.12.03",
+      "external_version_id": 870426271,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.12.02",
+      "external_version_id": 870293710,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.51",
+      "external_version_id": 870107486,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.39",
+      "external_version_id": 870027199,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.38",
+      "external_version_id": 869903721,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.09",
+      "external_version_id": 869736531,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.08",
+      "external_version_id": 869278563,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.07",
+      "external_version_id": 869211526,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.07.03",
+      "external_version_id": 868359223,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.05.04",
+      "external_version_id": 867586064,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.04.04",
+      "external_version_id": 867037357,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.03.07",
+      "external_version_id": 866861243,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.03.06",
+      "external_version_id": 866682488,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.02.04",
+      "external_version_id": 866415526,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.01.11",
+      "external_version_id": 866106428,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.08",
+      "external_version_id": 865891849,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.04",
+      "external_version_id": 865748880,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.02",
+      "external_version_id": 865741770,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
     }
   ],
   "acquisition": {
