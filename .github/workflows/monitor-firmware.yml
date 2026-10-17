@@ -134,12 +134,26 @@ jobs:
             });
             const existing = issues.find(issue => issue.title === title);
             if (existing) {
-              await github.rest.issues.createComment({
+              // A release-note-only version stays unknown until its binary is
+              // archived. Repeated observations are not new discoveries.
+              const comments = await github.paginate(github.rest.issues.listComments, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: existing.number,
-                body: details,
+                per_page: 100,
               });
+              const lastMonitorComment = comments
+                .filter(comment => comment.user?.login === 'github-actions[bot]')
+                .at(-1);
+              const evidence = body => (body ?? '').split('Review the full JSON report artifact in ')[0].trim();
+              if (evidence(lastMonitorComment?.body ?? existing.body) !== evidence(details)) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  body: details,
+                });
+              }
             } else {
               await github.rest.issues.create({
                 owner: context.repo.owner,
