@@ -1,0 +1,74 @@
+name: build smart application diffs
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/smart-app-diffs.yml
+      - scripts/generate_macos_smart_diffs.py
+      - scripts/smart_diff_app_bundles.py
+      - tests/test_smart_app_diff.py
+  workflow_run:
+    workflows:
+      - automatically preserve detected Sonos software
+    types:
+      - completed
+  schedule:
+    - cron: "41 8 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: smart-application-diffs
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: macos-15
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install DMG extraction fallback
+        run: command -v 7z >/dev/null || brew install p7zip
+
+      - name: Install archive tooling
+        run: python -m pip install -e .
+
+      - name: Analyze newest preserved macOS release pairs
+        if: github.event_name == 'workflow_run'
+        run: python scripts/generate_macos_smart_diffs.py --latest-only
+
+      - name: Backfill every missing macOS semantic diff
+        if: github.event_name != 'workflow_run'
+        run: python scripts/generate_macos_smart_diffs.py --all-missing
+
+      - name: Validate generated viewer data
+        run: |
+          python scripts/build_site.py --check
+          python -m unittest tests.test_site_build -v
+
+      - name: Commit semantic diff metadata
+        run: |
+          git add data/app-diffs
+          if git diff --cached --quiet; then
+            echo "No new application semantic diffs."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Add smart application diffs"
+          git push
