@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-18T09:56:58.033254+00:00",
+  "updated": "2026-10-25T10:13:21.802938+00:00",
   "scope": "anonymous-apkpure-history-sweep",
-  "attempt_total": 59,
-  "archived_total": 59,
+  "attempt_total": 60,
+  "archived_total": 60,
   "failed_total": 0,
   "attempts": [
     {
@@ -351,13 +351,19 @@
     {
       "package": "com.sonos.acr2",
       "version_selector": "20260917.7f4c363",
-      "checked": "2026-10-18T09:56:55.819239+00:00",
+      "checked": "2026-10-25T10:13:14.839589+00:00",
       "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261006.65c4a1e",
-      "checked": "2026-10-18T09:56:58.033124+00:00",
+      "checked": "2026-10-25T10:13:18.429684+00:00",
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr2",
+      "version_selector": "20261015.ec5ada6",
+      "checked": "2026-10-25T10:13:21.802884+00:00",
       "status": "archived"
     }
   ]
