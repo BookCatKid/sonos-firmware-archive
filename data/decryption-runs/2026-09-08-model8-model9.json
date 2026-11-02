@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-08",
+  "purpose": "Re-run RSA-OAEP/AES extraction against modern preserved model-8 and model-9 UPDs",
+  "key_sources": {
+    "model_8": {
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+      "key_supplied_out_of_band": true
+    },
+    "model_9": {
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
+      "key_supplied_out_of_band": true
+    }
+  },
+  "packages": [
+    {
+      "package_id": "82.2-59204-1-8",
+      "package_sha256": "34d4d7eb902c58faa33e85f02b8a51a900d2e36324a6d769716d7c50f49342eb",
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+      "receipt": "../raw/82.2-59204-1-8.json",
+      "output_directory": "../../artifacts/raw/82.2-59204-1-8"
+    },
+    {
+      "package_id": "82.2-59204-1-9",
+      "package_sha256": "256f1af6b013d4c2d27644a15619e22c35465c10b4dad7aea6926eb5792342d4",
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
+      "receipt": "../raw/82.2-59204-1-9.json",
+      "output_directory": "../../artifacts/raw/82.2-59204-1-9"
+    },
+    {
+      "package_id": "86.1-68260-1-8",
+      "package_sha256": "cc11b8cdcc410c0bae46f1b3383a05872166b6692d9779ddc96ea0206805443e",
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+      "receipt": "../raw/86.1-68260-1-8.json",
+      "output_directory": "../../artifacts/raw/86.1-68260-1-8"
+    },
+    {
+      "package_id": "86.1-68260-1-9",
+      "package_sha256": "d3c5b68f10de9e943be8133b93cd7db1b92e54d8647c50d898f91fa1d6f3f715",
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
+      "receipt": "../raw/86.1-68260-1-9.json",
+      "output_directory": "../../artifacts/raw/86.1-68260-1-9"
+    },
+    {
+      "package_id": "86.8-78270-1-8",
+      "package_sha256": "1cb3e84b30a06117489bd21b141d892d90c01329cdc811c85a21afb0960f932c",
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+      "receipt": "../raw/86.8-78270-1-8.json",
+      "output_directory": "../../artifacts/raw/86.8-78270-1-8"
+    },
+    {
+      "package_id": "86.8-78270-1-9",
+      "package_sha256": "a60be7389187de7f5b54a38a34e66d2376acb7f73693e2988923f4d5a17db3dd",
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
+      "receipt": "../raw/86.8-78270-1-9.json",
+      "output_directory": "../../artifacts/raw/86.8-78270-1-9"
+    }
+  ],
+  "verification": {
+    "encrypted_recipient_checked": true,
+    "component_sha256_checked": true,
+    "format_checked": true,
+    "private_keys_committed": false
+  }
+}

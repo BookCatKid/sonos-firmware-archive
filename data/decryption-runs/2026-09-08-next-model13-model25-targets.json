@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-08",
+  "purpose": "Record the next preserved encrypted targets after uploading and removing the model-8/model-9 extraction inputs",
+  "release_asset_audit": {
+    "repository": "BookCatKid/sonos-firmware-archive",
+    "audited_at": "2026-09-08",
+    "method": "GitHub Releases asset listings plus checked-in UPD manifests",
+    "rule": "The source UPD is present, but no matching package-prefixed plaintext kernel, preinstall, rootfs, or auxiliary payload asset is present"
+  },
+  "targets": [
+    {
+      "package_id": "86.8-78270-1-13",
+      "package_model": 13,
+      "release_tag": "firmware-86.8-78270",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-86.8-78270",
+      "package_sha256": "02779618415c881599e415b4cd1964d695619381242aaec2293ac9820271bac7",
+      "package_bytes": 24279475,
+      "recipient_id": "87da92d5173e329c366300810f9d94f525bf2d65",
+      "encrypted_sections": [3, 6, 4, 15],
+      "raw_status": "blocked-model-key",
+      "missing_plaintext_assets": [
+        "86.8-78270-1-13-preinstall.sh",
+        "86.8-78270-1-13-kernel.uImage",
+        "86.8-78270-1-13-rootfs.bin",
+        "86.8-78270-1-13-section15.bin"
+      ],
+      "blocker": "The model-13 private key is not present. The documented recovery path requires an authorized matching Encore device and its CAAM-backed model-key unwrap; see docs/model13-recovery.md.",
+      "downloaded_for_this_run": false,
+      "preexisting_verified_copy_outside_repository": true
+    },
+    {
+      "package_id": "96.0-78270-1-25",
+      "package_model": 25,
+      "release_tag": "firmware-96.0-78270",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-96.0-78270",
+      "package_sha256": "0674913f8239bad8b197197eb15a6005e1de971fd2b59c16646036cf56e56e95",
+      "package_bytes": 100380990,
+      "recipient_id": "83fb98ffd324255b26fdab99105a1a02a82bae93",
+      "encrypted_sections": [3, 6, 4, 15],
+      "raw_status": "encrypted",
+      "missing_plaintext_assets": [
+        "96.0-78270-1-25-preinstall.sh",
+        "96.0-78270-1-25-kernel.uImage",
+        "96.0-78270-1-25-rootfs.bin",
+        "96.0-78270-1-25-section15.bin"
+      ],
+      "blocker": "No private key or authorized device capture matching recipient 83fb98ffd324255b26fdab99105a1a02a82bae93 is available in this checkout.",
+      "downloaded_for_this_run": false,
+      "preexisting_verified_copy_outside_repository": false
+    },
+    {
+      "package_id": "96.1-79270-1-25",
+      "package_model": 25,
+      "release_tag": "seed-2026-08-31",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/seed-2026-08-31",
+      "package_sha256": "b6e1b93674098569c0e901fb74ac27eb28c61edfbaee6fab14de5175d7052b67",
+      "package_bytes": 100409662,
+      "recipient_id": "83fb98ffd324255b26fdab99105a1a02a82bae93",
+      "encrypted_sections": [3, 6, 4, 15],
+      "raw_status": "encrypted",
+      "missing_plaintext_assets": [
+        "96.1-79270-1-25-preinstall.sh",
+        "96.1-79270-1-25-kernel.uImage",
+        "96.1-79270-1-25-rootfs.bin",
+        "96.1-79270-1-25-section15.bin"
+      ],
+      "blocker": "Same model-25 recipient and missing key material as 96.0-78270-1-25; no redundant 100 MB download was made for this run.",
+      "downloaded_for_this_run": false,
+      "preexisting_verified_copy_outside_repository": true
+    },
+    {
+      "package_id": "96.0-78270-1-26",
+      "package_model": 26,
+      "release_tag": "firmware-96.0-78270",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-96.0-78270",
+      "package_sha256": "9561f2c4439679f2ac09a7fa9af4559485a323eaef7dc8ccc3419edb59c670fe",
+      "package_bytes": 92519436,
+      "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71",
+      "encrypted_sections": [3, 6, 4, 15],
+      "raw_status": "blocked-model-key",
+      "missing_plaintext_assets": [
+        "96.0-78270-1-26-preinstall.sh",
+        "96.0-78270-1-26-kernel.uImage",
+        "96.0-78270-1-26-rootfs.bin",
+        "96.0-78270-1-26-section15.bin"
+      ],
+      "blocker": "The public model-26 recovery construction is implemented, but no authorized matching Tupelo MDP3 and OTP capture is available; see docs/model26-recovery.md.",
+      "downloaded_for_this_run": false,
+      "preexisting_verified_copy_outside_repository": false
+    }
+  ],
+  "selection_result": {
+    "known_key_model8_or_model9_candidates_remaining": 0,
+    "next_action": "Recover an authorized model-13, model-25, or model-26 private key, then use one exact UPD, extract, upload verified plaintext assets, and remove any temporary source/output files."
+  }
+}

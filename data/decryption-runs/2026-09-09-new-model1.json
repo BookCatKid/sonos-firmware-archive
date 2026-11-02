@@ -1,0 +1,79 @@
+{
+  "date": "2026-09-09",
+  "purpose": "Recover the model-1 legacy private key, decrypt every preserved encrypted package for its recipient, and publish verified plaintext components",
+  "key_source": {
+    "model": 1,
+    "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
+    "new_private_key_recovered": true,
+    "source_package": "34.16-37101-1-1",
+    "source_package_sha256": "8a1673b29ce23ac28038b0ed1916d21daa562aef19faacb93629404c48886ceb",
+    "updater_sha256": "496a66c6a496417c71ad1ac110fbbee5d13f8a40db41eab7e021643222854397",
+    "wrapper_offset": "0xe528",
+    "byte_order": "little",
+    "system_word": "0x0000",
+    "derivation": "Ghidra analysis of the Renesas SH updater established that the MDP1 model and magic fields and the MDP2 magic are copied into the 32-byte CTR-DRBG seed in native little-endian order. The embedded fallback MDP supplied the remaining fixed copyright bytes. All 65,536 system-word values were tested; exactly 0x0000 produced the RSA key matching the OTA recipient.",
+    "private_key_committed": false,
+    "private_recovery_record": "../../recovery-work/README.md (local and gitignored)"
+  },
+  "release_asset_preflight": {
+    "receipt": "2026-09-09-model1-preflight.json",
+    "all_intended_plaintext_filenames_absent_before_upload": true
+  },
+  "publication": {
+    "repository": "BookCatKid/sonos-firmware-archive",
+    "uploaded_to_matching_releases": true,
+    "package_count": 4,
+    "component_count": 12,
+    "component_bytes": 22079290,
+    "server_size_and_sha256_verified": true,
+    "local_source_upds_removed_after_each_decryption": true,
+    "local_plaintext_components_removed_after_publication_verification": true
+  },
+  "packages": [
+    {
+      "package_id": "57.14-37030-1-1",
+      "release_tag": "firmware-57.14-37030",
+      "package_sha256": "ae407e3c63c2b51d794dec4820652d2474b9151e25d08b638b7d50fe8763b37f",
+      "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
+      "receipt": "../raw/57.14-37030-1-1.json",
+      "component_count": 3,
+      "component_bytes": 5511587
+    },
+    {
+      "package_id": "57.22-59130-1-1",
+      "release_tag": "firmware-57.22-59130",
+      "package_sha256": "f9a9a0705e939ebcbac3693b9acc4269ba392597ef7582c48f6e2b34602ea7d4",
+      "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
+      "receipt": "../raw/57.22-59130-1-1.json",
+      "component_count": 3,
+      "component_bytes": 5523919
+    },
+    {
+      "package_id": "57.22-63071-1-1",
+      "release_tag": "firmware-57.22-63071",
+      "package_sha256": "e058475034797d859e6ab71f783feb885aa9fa929748ebe1dc292b59416e2035",
+      "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
+      "receipt": "../raw/57.22-63071-1-1.json",
+      "component_count": 3,
+      "component_bytes": 5519821
+    },
+    {
+      "package_id": "57.23-74170-1-1",
+      "release_tag": "firmware-57.23-74170",
+      "package_sha256": "54d8b171e06001e4332bcdafc7c2f71dc7945352bc37ca54d2d6794f52002f6b",
+      "recipient_id": "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c",
+      "receipt": "../raw/57.23-74170-1-1.json",
+      "component_count": 3,
+      "component_bytes": 5523963
+    }
+  ],
+  "verification": {
+    "source_sha256_checked_against_catalog": true,
+    "recipient_fingerprint_matched_all_envelopes": true,
+    "all_preserved_packages_for_recipient_decrypted": true,
+    "component_sha256_checked": true,
+    "preflight_absence_checked": true,
+    "github_release_upload_verified": true,
+    "private_key_committed": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "audited_at": "2026-09-21T03:20:14.013075+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "releases": [
+    {
+      "release_tag": "firmware-76.2-47270",
+      "intended_assets": [
+        "76.2-47270-1-12-kernel.uImage",
+        "76.2-47270-1-12-preinstall.sh",
+        "76.2-47270-1-12-rootfs.squashfs",
+        "76.2-47270-1-17-kernel.uImage",
+        "76.2-47270-1-17-preinstall.sh",
+        "76.2-47270-1-17-rootfs.squashfs",
+        "76.2-47270-1-8-kernel.uImage",
+        "76.2-47270-1-8-preinstall.sh",
+        "76.2-47270-1-8-rootfs.squashfs",
+        "76.2-47270-1-9-device-payload.bin",
+        "76.2-47270-1-9-kernel.uImage",
+        "76.2-47270-1-9-preinstall.sh",
+        "76.2-47270-1-9-rootfs.squashfs"
+      ],
+      "intended_assets_already_present": []
+    }
+  ]
+}

@@ -1,0 +1,930 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-10T02:01:46.657298+00:00",
+  "scope": "ios-ipa-device-export",
+  "family": "s2",
+  "platform": "ios-ipa-decrypted",
+  "bundle_id": "com.sonos.SonosController2",
+  "track_id": 1488977981,
+  "artifact_total": 33,
+  "gap_total": 72,
+  "gaps": [
+    {
+      "family": "s1",
+      "version": "11.14",
+      "external_version_id": 863010429,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s1",
+      "version": "11.15",
+      "external_version_id": 870404823,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s1",
+      "version": "11.15.2",
+      "external_version_id": 871984155,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s1",
+      "version": "11.15.4",
+      "external_version_id": 876265101,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s1",
+      "version": "11.15.5",
+      "external_version_id": 876770459,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s1",
+      "version": "11.16",
+      "external_version_id": 880082847,
+      "reason": "appExtVrsId not honored; store serves latest compatible build (11.16.1)"
+    },
+    {
+      "family": "s2",
+      "version": "90.00.01",
+      "external_version_id": 892701971,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "90.00",
+      "external_version_id": 892287631,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.01",
+      "external_version_id": 891815632,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0.2",
+      "external_version_id": 891349075,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0.1",
+      "external_version_id": 891026161,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "89.0",
+      "external_version_id": 890403608,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "88.1.9",
+      "external_version_id": 889960214,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "88.0.51",
+      "external_version_id": 889356066,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.1.7",
+      "external_version_id": 888591755,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.0.37",
+      "external_version_id": 888361127,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "87.0.36",
+      "external_version_id": 888016453,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "86.1.5",
+      "external_version_id": 887049956,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "86.0.41",
+      "external_version_id": 886435461,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "85.01.2",
+      "external_version_id": 885879336,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "85.0.31",
+      "external_version_id": 885338042,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "84.01.6",
+      "external_version_id": 884815111,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "84.0.34",
+      "external_version_id": 884201731,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "83.01.11",
+      "external_version_id": 883980093,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "83.00.36",
+      "external_version_id": 883234601,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "82.01.12",
+      "external_version_id": 882990875,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "82.00.39",
+      "external_version_id": 881978888,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "81.00.52",
+      "external_version_id": 881432294,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.35.8",
+      "external_version_id": 880606100,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.34.37",
+      "external_version_id": 880084666,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.32.36",
+      "external_version_id": 879493861,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.32.35",
+      "external_version_id": 879366165,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.31.8",
+      "external_version_id": 878966460,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.30.35",
+      "external_version_id": 878635884,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.29.4",
+      "external_version_id": 878197372,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.28.32",
+      "external_version_id": 878037855,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.27.8",
+      "external_version_id": 877783840,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.27.6",
+      "external_version_id": 877417945,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.37",
+      "external_version_id": 877235439,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.36",
+      "external_version_id": 876771505,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.24.35",
+      "external_version_id": 876517998,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.23.9",
+      "external_version_id": 875758477,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.22.33",
+      "external_version_id": 875300278,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.21.6",
+      "external_version_id": 874969075,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.20.35",
+      "external_version_id": 874748410,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.20.34",
+      "external_version_id": 874478202,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.19.21",
+      "external_version_id": 874001109,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.18.27",
+      "external_version_id": 873761483,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.18.25",
+      "external_version_id": 873565751,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.17.14",
+      "external_version_id": 872973849,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.16.32",
+      "external_version_id": 872004912,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.15.04",
+      "external_version_id": 871613876,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.14.09",
+      "external_version_id": 871039775,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.14.07",
+      "external_version_id": 870926980,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.12.03",
+      "external_version_id": 870426271,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.12.02",
+      "external_version_id": 870293710,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.51",
+      "external_version_id": 870107486,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.39",
+      "external_version_id": 870027199,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.11.38",
+      "external_version_id": 869903721,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.09",
+      "external_version_id": 869736531,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.08",
+      "external_version_id": 869278563,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.09.07",
+      "external_version_id": 869211526,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.07.03",
+      "external_version_id": 868359223,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.05.04",
+      "external_version_id": 867586064,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.04.04",
+      "external_version_id": 867037357,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.03.07",
+      "external_version_id": 866861243,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.03.06",
+      "external_version_id": 866682488,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.02.04",
+      "external_version_id": 866415526,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.01.11",
+      "external_version_id": 866106428,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.08",
+      "external_version_id": 865891849,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.04",
+      "external_version_id": 865748880,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    },
+    {
+      "family": "s2",
+      "version": "80.00.02",
+      "external_version_id": 865741770,
+      "reason": "MinimumOSVersion 18.0 > device iOS 17.1.1; App Store serves the payload but installd rejects (Bundle not applicable to current OS)"
+    }
+  ],
+  "acquisition": {
+    "method": "StoreKit exact-version install (appExtVrsId) on jailbroken iPad (iPad11,1, iOS 17.1.1, Dopamine rootless) using the device's authenticated App Store session, followed by in-process FairPlay dump via bfdecrypt",
+    "decryption": "bfdecrypt 1.3.5 (in-process dump; cryptid 0 binaries)",
+    "note": "Encrypted bundles and iTunesMetadata.plist are intentionally not preserved: SC_Info sinf contains account-identifying material for the purchasing Apple ID. Provenance fields are recorded here instead."
+  },
+  "artifacts": [
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "15.2",
+      "build": "72.2.39150",
+      "external_version_id": 855571968,
+      "minimum_os_version": "15.0",
+      "original_filename": "decrypted-app.ipa",
+      "bytes": 90077889,
+      "sha256": "d61f848df3f232ce1f42df177af45fc8474f68088d5e999399db3a7594db82cb",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-15.2-855571968--d61f848df3f2.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "15.3",
+      "build": "72.2.40060",
+      "external_version_id": 856283692,
+      "minimum_os_version": "15.0",
+      "original_filename": "decrypted-app.ipa",
+      "bytes": 90132572,
+      "sha256": "fd17e0ce50167bf9cbcdc8f72955b6e6e2926458fd29da1bc7509e047155470d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-15.3-856283692--fd17e0ce5016.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "15.6",
+      "build": "74.0.43110",
+      "external_version_id": 858436850,
+      "minimum_os_version": "15.0",
+      "original_filename": "decrypted-app.ipa",
+      "bytes": 90408440,
+      "sha256": "904ca945896dd46d24e6d535d3e018af6f265e97996fecb7f203b4606f335cb6",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-15.6-858436850--904ca945896d.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "16.0",
+      "build": "77.4.49290",
+      "external_version_id": 863267647,
+      "minimum_os_version": "15.0",
+      "original_filename": "decrypted-app.ipa",
+      "bytes": 90724295,
+      "sha256": "28d652e08bc80830da655085e1fe9e0e3edb00d15ef0167d60af1ebe23f169f9",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-16.0-863267647--28d652e08bc8.ipa"
+    },
+    {
+      "family": "s1",
+      "platform": "ios-ipa-decrypted",
+      "version": "11.16.1",
+      "build": "57.23.74170",
+      "external_version_id": 882583794,
+      "minimum_os_version": "13.0",
+      "original_filename": "decrypted IPA repacked from .app + decrypted binaries",
+      "bytes": 61096151,
+      "sha256": "0747d83bf4d535390a5ae1d2d88a4113f4c04191a818581665619ea4e9f4dc51",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s1",
+      "release_asset": "Sonos-s1-11.16.1-882583794--0747d83bf4d5.ipa",
+      "note": "Only S1 build recoverable: Apple ignores appExtVrsId for this track_id, always serving the latest compatible build. S1 11.14-11.16 evids (863010429, 870404823, 871984155, 876265101, 876770459, 880082847) all install 11.16.1."
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0",
+      "external_version_id": 833727569,
+      "bytes": 71277142,
+      "sha256": "0362c3c2d7453e120fbbdd2c820f983095a162de7e850488a1989604f5479515",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0-833727569.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.1",
+      "external_version_id": 836376883,
+      "bytes": 71241357,
+      "sha256": "27ed1f4f9851845552457413ce0cd3e156bb288986699062f3c000a9c656e681",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.1-836376883.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.2",
+      "external_version_id": 836631666,
+      "bytes": 70121927,
+      "sha256": "49ec47eb9de1df0ac7b6360980fcdd86a140ac1efb500c8c729df0bae27e0eda",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.2-836631666.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.3",
+      "external_version_id": 836778792,
+      "bytes": 69969147,
+      "sha256": "fa9a145a0405b7b95573f9fd31bbe33e157bd6ee14d98258dff07dd87c8ae6c3",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.3-836778792.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.4",
+      "external_version_id": 837208428,
+      "bytes": 69971868,
+      "sha256": "0d23d2edd0d9528fd54546e7100f31d4c4d7037456a92c55c08abe4cffdb579d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.4-837208428.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.5",
+      "external_version_id": 837337735,
+      "bytes": 69970891,
+      "sha256": "6508c38682ee8a2f3b68fd7429fe17ca9014e070de5116b145a06e309d94ae20",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.5-837337735.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.0.6",
+      "external_version_id": 837544906,
+      "bytes": 70002108,
+      "sha256": "c344a560ad70f4719b9961db82b18accd764682450383895c5b18ae39691902d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.0.6-837544906.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.1",
+      "external_version_id": 837780263,
+      "bytes": 83640138,
+      "sha256": "84f0ea50fc2b0499074c33996d40392f1bf5ec72a779c35668466aefcbb89691",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.1-837780263.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.1.1",
+      "external_version_id": 838082383,
+      "bytes": 83693903,
+      "sha256": "42c0134ebea438d6b2969e036d6134b9878cff18eb70f5ed4b341d13ef4cb71f",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.1.1-838082383.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.1.2",
+      "external_version_id": 838232026,
+      "bytes": 83697498,
+      "sha256": "474390f4945db6c4cceae2143fab59f2e6d8fc8164580c3a5ae1725a68238b44",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.1.2-838232026.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2",
+      "external_version_id": 838467595,
+      "bytes": 85594532,
+      "sha256": "9f5927bff0dcbc0175fcf10ef52e27b621b2b4a20e7905305276c149a3143dbf",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2-838467595.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.1",
+      "external_version_id": 838880347,
+      "bytes": 85594814,
+      "sha256": "9589b6ec597f102f7799647967e2a620ab64a7e6a4f56d577424923ff34f0471",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.1-838880347.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.2",
+      "external_version_id": 839435781,
+      "bytes": 86014106,
+      "sha256": "bba61e1e301149a19b126393fb236e4981d7c5f910172521b4f63988c984f9ca",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.2-839435781.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.3",
+      "external_version_id": 839897773,
+      "bytes": 86015890,
+      "sha256": "898998f1807f2f39d2ed103c77eff30594c73f6f3ac4460b80592fc5d752230d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.3-839897773.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.4",
+      "external_version_id": 840106007,
+      "bytes": 86022193,
+      "sha256": "e6a458ded67d546bbd460b2d6de4e175feced1d84bf04ec089bf1a9225abaaaf",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.4-840106007.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.5",
+      "external_version_id": 840226322,
+      "bytes": 86022218,
+      "sha256": "6f91e807caeacebb016a44369b03b212cfebc6e71a88202a8879391d4edc91cb",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.5-840226322.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.6",
+      "external_version_id": 840321909,
+      "bytes": 86024172,
+      "sha256": "49dccd7aaa9617670526b1d2dfcf2b5949f289f1f785094d13ad6950a932bb4b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.6-840321909.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "12.2.7",
+      "external_version_id": 840504619,
+      "bytes": 86035603,
+      "sha256": "53685f39988f4d1323cff9341c5412e80c4e33a51e1ef1191b3aa69c0a74028f",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-12.2.7-840504619.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0",
+      "external_version_id": 840695381,
+      "bytes": 87289196,
+      "sha256": "a20fe13931972ee9e40b08a1fed536b8e5b4185d71572177820dc19455567d0b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0-840695381.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.2",
+      "external_version_id": 840939534,
+      "bytes": 87289774,
+      "sha256": "aa283ddd090174c6658d469c12a44df9128f0b5165b1c194abd437acc224bf53",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.2-840939534.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.4",
+      "external_version_id": 841216732,
+      "bytes": 87659342,
+      "sha256": "d8965496356e79e9ae7852ecf5515454fa3dcf30192794d521a6002f2af7300b",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.4-841216732.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.0.5",
+      "external_version_id": 841342475,
+      "bytes": 87762861,
+      "sha256": "a32f746448708c6ed39746388b3a90d7cfc8b083e01a145f4b3b868e9737c896",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.0.5-841342475.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1",
+      "external_version_id": 842085939,
+      "bytes": 88662946,
+      "sha256": "d81c4002fc2582e430d529fb0410db9793f0ac43e2ab635eb6a033732ac32cd2",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1-842085939.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.1",
+      "external_version_id": 842268878,
+      "bytes": 88731651,
+      "sha256": "05442f497ca64f0e47302fbe6a5685ff2fe49b0e8af6b990e07c96185e2a02c4",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.1-842268878.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.2",
+      "external_version_id": 842488703,
+      "bytes": 88758418,
+      "sha256": "0a8963744519e1f8f12d367b6d583b0c5aa72124ba853b0366e547a1b1436381",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.2-842488703.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.3",
+      "external_version_id": 842669880,
+      "bytes": 88759185,
+      "sha256": "1ff7e7f0aa90c3d2287e591841835cd169eb77aa4b169081c0439968301c534d",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.3-842669880.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.1.4",
+      "external_version_id": 842870785,
+      "bytes": 88758004,
+      "sha256": "3d65097d1c6f3c696e41a94cd5e67bdade8b52801f06d1f93029ce68321dc838",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.1.4-842870785.ipa"
+    },
+    {
+      "family": "s2",
+      "platform": "ios-ipa-decrypted",
+      "version": "13.2",
+      "external_version_id": 843093122,
+      "bytes": 88913660,
+      "sha256": "98fadb7afe654874ad61c3c39cf4767c80fff609a9ad17030e53ad00b1240748",
+      "source_urls": [],
+      "sources": [
+        "device-export"
+      ],
+      "release_tag": "apps-ios-s2",
+      "release_asset": "Sonos-s2-13.2-843093122.ipa"
+    }
+  ]
+}

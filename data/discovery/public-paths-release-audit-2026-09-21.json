@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "checked": "2026-09-21T03:57:00Z",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "method": "catalog expectations reconciled against GitHub GraphQL release-asset size and SHA-256 digest",
+  "releases": [
+    {
+      "release_tag": "firmware-82.3-60160",
+      "expected_assets": 41,
+      "remote_assets": 41,
+      "missing": [],
+      "mismatched": [],
+      "unrecorded_extras": []
+    },
+    {
+      "release_tag": "firmware-57.9-23010",
+      "expected_assets": 37,
+      "remote_assets": 37,
+      "missing": [],
+      "mismatched": [],
+      "unrecorded_extras": []
+    },
+    {
+      "release_tag": "firmware-80.1-55014",
+      "expected_assets": 40,
+      "remote_assets": 40,
+      "missing": [],
+      "mismatched": [],
+      "unrecorded_extras": []
+    },
+    {
+      "release_tag": "firmware-57.22-67080",
+      "expected_assets": 38,
+      "remote_assets": 38,
+      "missing": [],
+      "mismatched": [],
+      "unrecorded_extras": []
+    },
+    {
+      "release_tag": "firmware-47.2-59120",
+      "expected_assets": 2,
+      "remote_assets": 2,
+      "missing": [],
+      "mismatched": [],
+      "unrecorded_extras": []
+    }
+  ],
+  "missing_total": 0,
+  "mismatched_total": 0,
+  "unrecorded_extra_total": 0
+}

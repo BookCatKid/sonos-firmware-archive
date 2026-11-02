@@ -1,0 +1,133 @@
+name: expand APKPure Sonos history
+
+on:
+  schedule:
+    - cron: "43 5 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: sonos-preservation
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: python -m pip install -e .
+
+      - name: Build pinned APKPure acquisition tool
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$RUNNER_TEMP/apkeep-bin"
+          tar -xzf tools/vendor/apkeep-1.0.0.tar.gz             --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$RUNNER_TEMP/apkeep-bin"
+
+      - name: Sweep every anonymously exposed Sonos version
+        id: sweep
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          before=$(jq '.artifact_total' data/apps/android-store-archive.json)
+          echo "before=$before" >> "$GITHUB_OUTPUT"
+          set +e
+          python scripts/sweep_android_store_history.py             --apkeep "$RUNNER_TEMP/apkeep-bin/bin/apkeep"
+          code=$?
+          set -e
+          after=$(jq '.artifact_total' data/apps/android-store-archive.json)
+          echo "after=$after" >> "$GITHUB_OUTPUT"
+          echo "added=$((after - before))" >> "$GITHUB_OUTPUT"
+          exit "$code"
+
+      - name: Open review issue for newly recovered history
+        if: steps.sweep.outputs.added != '0'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[monitor] APKPure Sonos history expanded';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              'The automatic historical Android sweep found and preserved additional signer-verified Sonos delivery sets.',
+              '',
+              `- Previously archived: ${{ steps.sweep.outputs.before }}`,
+              `- Now archived: ${{ steps.sweep.outputs.after }}`,
+              `- Newly preserved: ${{ steps.sweep.outputs.added }}`,
+              '',
+              'This issue is intentionally left open for review.',
+              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+            ].join('\n');
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
+
+      - name: Commit archive and sweep ledger
+        id: commit
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             data/apps/android-store-archive.json             data/apps/android-store-history-sweep.json
+          if git diff --cached --quiet; then
+            echo "No historical archive metadata changed."
+            exit 0
+          fi
+          git commit -m "Expand preserved Sonos Android history"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Open failure issue
+        if: always() && (steps.sweep.outcome == 'failure' || steps.commit.outcome == 'failure')
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[monitor] APKPure Sonos history sweep incomplete';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `The historical APKPure sweep or its metadata commit was incomplete. Progress was checkpointed where possible; review [workflow run ${context.runNumber}](${runUrl}).`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
+            });
+            const existing = issues.find(issue => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
+
+      - name: Fail if sweep was incomplete
+        if: always() && (steps.sweep.outcome == 'failure' || steps.commit.outcome == 'failure')
+        run: exit 1

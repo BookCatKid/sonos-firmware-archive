@@ -1,0 +1,5139 @@
+{
+  "root": "rootfs-extracted",
+  "entries": [
+    {
+      "path": "LEGACYCOMPATVER",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "8d4dc2b73ae050733a497012a8beb6205292716f9d8f18fa8579eff6d42d89e6"
+    },
+    {
+      "path": "MINCOMPATVER",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "d117215e7a0130d18fc79b59b59b848b21c9ceadc1aa6c4a08521ee957bf9a8a"
+    },
+    {
+      "path": "VERSION",
+      "mode": 420,
+      "type": "file",
+      "size": 12,
+      "sha256": "3afd5117a2fabdbdf63b5b5abb363e3ad3f3427bd5f5f96648b8b0e4c9e1964d"
+    },
+    {
+      "path": "bin",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "bin/ash",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/busybox",
+      "mode": 420,
+      "type": "file",
+      "size": 1207844,
+      "sha256": "336f40f4ad66a1589840d41306378687cab46cb9f4d28cb486aeede24de338d3"
+    },
+    {
+      "path": "bin/cat",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/chgrp",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/chmod",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/chown",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/cp",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/date",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/dd",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/df",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/dmesg",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/echo",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/egrep",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/false",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/fgrep",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/getopt",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/grep",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/gunzip",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/gzip",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/hostname",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/kill",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/ln",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/login",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/ls",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/mdputil",
+      "mode": 420,
+      "type": "file",
+      "size": 18780,
+      "sha256": "dd33fe29ca3105ea8e05587490869b6000b3b6bd8e8cf423c91f683071f2032b"
+    },
+    {
+      "path": "bin/mkdir",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/mknod",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/more",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/mount",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/mv",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/netstat",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/pcap",
+      "mode": 420,
+      "type": "file",
+      "size": 276872,
+      "sha256": "a4c37901a542921c2bef06ac74064760d41062dd859a9892be7753f1119784f9"
+    },
+    {
+      "path": "bin/pidof",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/ping",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/ps",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/pwd",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/rm",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/rmdir",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/sh",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/sleep",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/stty",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/sync",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/tar",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/touch",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/true",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/umount",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/uname",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/upgrade",
+      "mode": 420,
+      "type": "file",
+      "size": 123912,
+      "sha256": "900dff09dcc7b85225538cfb2ba32b57fe990295a186f798453b8f23ee3eaa57"
+    },
+    {
+      "path": "bin/usleep",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/vi",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "bin/zcat",
+      "mode": 420,
+      "type": "file",
+      "size": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+    },
+    {
+      "path": "build.properties",
+      "mode": 420,
+      "type": "file",
+      "size": 238,
+      "sha256": "a4d297c2c1ad14f231a9f0ce9462cdf2bf07e991c72a600abd1266d1ceea3d18"
+    },
+    {
+      "path": "dev",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/audio",
+      "mode": 420,
+      "type": "file",
+      "size": 6,
+      "sha256": "12f141c4e454e598538dce3e189c9e4e4c18a1c6b08f5350a4b38e15072c47dc"
+    },
+    {
+      "path": "dev/audio0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/audio1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/audio2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/audio3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/audioctl",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/bmm",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/chk",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/console",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/cusa0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/cusa1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/cusa2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/cytouch_raw",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/da9034_misc",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dk0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dk1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dmfm",
+      "mode": 420,
+      "type": "file",
+      "size": 5,
+      "sha256": "ce467e07b99c50d05edcd57c9632dabe27c4ceb51d7996b6f6eabe1b52f241dc"
+    },
+    {
+      "path": "dev/dmfm0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dpmc",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dsp",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dsp0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dsp1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dsp2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dsp3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dspW",
+      "mode": 420,
+      "type": "file",
+      "size": 5,
+      "sha256": "b5bd2cf56bd49306aa1fa52cf21505f5f82bde110e1b8cf21c3e3a3bb629017a"
+    },
+    {
+      "path": "dev/dspW0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dspW1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dspW2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dspW3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/dspdefault",
+      "mode": 420,
+      "type": "file",
+      "size": 4,
+      "sha256": "c363a37958370ffc2bc641e3f3b30efe3c551075058c9de37003c3795beea497"
+    },
+    {
+      "path": "dev/fb",
+      "mode": 420,
+      "type": "file",
+      "size": 3,
+      "sha256": "e1eb5690069d7d10a2fce8a51d6f845ce5d569f5a7c7bce0c3bf496a17cd1aff"
+    },
+    {
+      "path": "dev/fb0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/fb7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/flh0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/flh1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/flh2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/flh3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hda8",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/hdb8",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/i2c-0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/i2c-1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/input",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/ipmc",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ixs_oscr",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/kmem",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/kmsg",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/loop0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/loop1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/m2d",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mem",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/midi",
+      "mode": 420,
+      "type": "file",
+      "size": 6,
+      "sha256": "b571f773aad0cfe2f687c30e4a1b794eadebe87751d6638291be25ba82d6eec3"
+    },
+    {
+      "path": "dev/midi00",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/midi01",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/midi02",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/midi03",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mixer",
+      "mode": 420,
+      "type": "file",
+      "size": 6,
+      "sha256": "10444e158b05ae70241c176ff719ae0a0dc5bf0fd784123b5d13d6cc95f4519b"
+    },
+    {
+      "path": "dev/mixer0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mixer1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mixer2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mixer3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mmca",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mmca1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mmca2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mmca3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/motion",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/mtd/0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd1ro",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd8",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtd9",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock8",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mtdblock9",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/mved",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/nandjffs",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/null",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/pm",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/psaux",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ptmx",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/pts",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/ram0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ram1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ram2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ram3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/random",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/root",
+      "mode": 420,
+      "type": "file",
+      "size": 4,
+      "sha256": "5bbd4292b37dd73d9d982c91dd174cb2a2db635b10dccc370ef6914634ad14cd"
+    },
+    {
+      "path": "dev/sda",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/sda1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/sequencer",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/snd/controlC0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/controlC7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC0D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC0D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC0D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC0D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC1D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC1D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC1D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC1D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC2D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC2D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC2D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC2D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC3D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC3D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC3D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC3D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC4D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC4D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC4D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC4D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC5D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC5D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC5D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC5D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC6D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC6D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC6D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC6D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC7D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC7D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC7D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/hwC7D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC0D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC1D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC2D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC3D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC4D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC5D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC6D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/midiC7D7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC0D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC1D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC2D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC3D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC4D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC5D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC6D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D0c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D0p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D1c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D1p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D2c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D2p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D3c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D3p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D4c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D4p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D5c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D5p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D6c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D6p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D7c",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/pcmC7D7p",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/seq",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/snd/timer",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/sndstat",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/spidev",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/touchscreen",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "dev/touchscreen/ucb1x00",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty4",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty5",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty6",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty7",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/tty8",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyACM0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyP0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyP1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyP2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyP3",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyS0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyS1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttyS2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttySA0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttySA1",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/ttySA2",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/urandom",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/video",
+      "mode": 420,
+      "type": "file",
+      "size": 6,
+      "sha256": "094734c0484cc798d3b0e3934ec800110be2e84c0aadf8bc708e644b150d393c"
+    },
+    {
+      "path": "dev/video0",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev/zero",
+      "mode": 420,
+      "type": "file",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "etc",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/Configure",
+      "mode": 420,
+      "type": "file",
+      "size": 1543,
+      "sha256": "7e44a1d7e87f4849d91722453cf1686afee7f4b546353bad58874b5a8d3c9775"
+    },
+    {
+      "path": "etc/default",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/dhcp.script",
+      "mode": 420,
+      "type": "file",
+      "size": 1209,
+      "sha256": "c6d93d4e94d97c357b68c7a10be4377a21525c1f2ec2ee52b5885f54681463b8"
+    },
+    {
+      "path": "etc/dhcpc",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/fstab",
+      "mode": 420,
+      "type": "file",
+      "size": 418,
+      "sha256": "46893db063701e58a3c8f67b4bf2a89c0365d3c68a45bf348bd016ccf377a122"
+    },
+    {
+      "path": "etc/group",
+      "mode": 420,
+      "type": "file",
+      "size": 295,
+      "sha256": "4e7c67d59b94de7318d3feeda0149065580d3980682462ab771e82117a244350"
+    },
+    {
+      "path": "etc/host.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 26,
+      "sha256": "83b331f98a128e1721c54be5c07bd38ad0d146e89cdecbe0eb53cbc23ff6b86a"
+    },
+    {
+      "path": "etc/hosts",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "674be255e6f6d01448e9cd0a74103ef4b29d6cf110bfb192b73c262bfbe17b7e"
+    },
+    {
+      "path": "etc/hosts.orig",
+      "mode": 420,
+      "type": "file",
+      "size": 100,
+      "sha256": "cc9e641227208bec49d4f7b234aeb564656daa63b4ab542e4a70cba6c12bb828"
+    },
+    {
+      "path": "etc/inetd.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 3395,
+      "sha256": "46c2c5e7d747391fdff8ce4300aeb16be20a4fa17a3634b1eb5cfb51b3d6d4b8"
+    },
+    {
+      "path": "etc/init.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/init.d/Krandom",
+      "mode": 420,
+      "type": "file",
+      "size": 274,
+      "sha256": "1569696ba888f96e5b5ca9ec2da19c0030a44d36f1643fa773e9eb4fbe2f5896"
+    },
+    {
+      "path": "etc/init.d/Srandom",
+      "mode": 420,
+      "type": "file",
+      "size": 460,
+      "sha256": "f3fb4b1a61539e3b593dadfdcb854588f95b58accbee61a1b3ba8bc49dab85e6"
+    },
+    {
+      "path": "etc/init.d/checkroot.sh",
+      "mode": 420,
+      "type": "file",
+      "size": 3187,
+      "sha256": "b42cb61c5947a4c84e14d99347f075a97d2301d896de7cb4709c2d44f32910d0"
+    },
+    {
+      "path": "etc/init.d/inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 954,
+      "sha256": "8db68dbd34ef00cab251559e8611cd5ad24a32eadf74e94c0cc1ec90a8f277f1"
+    },
+    {
+      "path": "etc/init.d/netconf",
+      "mode": 420,
+      "type": "file",
+      "size": 162,
+      "sha256": "b3e2661da107c99adf795b8d071adcf0561b5473c96ebf627f03d00cbb5a6752"
+    },
+    {
+      "path": "etc/init.d/nscd",
+      "mode": 420,
+      "type": "file",
+      "size": 1412,
+      "sha256": "7f85456708683d7a6291e76226cf84aeed2cc53e73b0cb376c1784378825b947"
+    },
+    {
+      "path": "etc/init.d/rcK",
+      "mode": 420,
+      "type": "file",
+      "size": 64,
+      "sha256": "f9e1f26843f32e06f7a833c5e3537a8f7473db03e5ac84028d4f761c94ae4c04"
+    },
+    {
+      "path": "etc/init.d/rcS",
+      "mode": 420,
+      "type": "file",
+      "size": 228,
+      "sha256": "62b9c3b7b545e1499ee53552fd3fb55555ccebf0fe6d2300c504b19f752e80ab"
+    },
+    {
+      "path": "etc/init.d/syslog",
+      "mode": 420,
+      "type": "file",
+      "size": 835,
+      "sha256": "0262eff73590178bf89b98728fe4af5959f2ebef9321f3bcc8148e562afa270f"
+    },
+    {
+      "path": "etc/inittab",
+      "mode": 420,
+      "type": "file",
+      "size": 188,
+      "sha256": "ec85dbb3ee887dd744572478186c0811df385db63164233483796d9f67a406a2"
+    },
+    {
+      "path": "etc/inputrc",
+      "mode": 420,
+      "type": "file",
+      "size": 421,
+      "sha256": "01946fd5134804a8f5ba087fb4fe9dbf17f450213e8a47b9973eec167a588fd2"
+    },
+    {
+      "path": "etc/issue",
+      "mode": 420,
+      "type": "file",
+      "size": 29,
+      "sha256": "c99e814fd5e8a7a6753ab2a693bc2451f225d64723f8e513b11dddc158ebe19a"
+    },
+    {
+      "path": "etc/issue.net",
+      "mode": 420,
+      "type": "file",
+      "size": 38,
+      "sha256": "b2efa8dd090865fb16c2a2246992cdc1514fb6afa1589627f80cf72fef62e7c5"
+    },
+    {
+      "path": "etc/motd",
+      "mode": 420,
+      "type": "file",
+      "size": 29,
+      "sha256": "c99e814fd5e8a7a6753ab2a693bc2451f225d64723f8e513b11dddc158ebe19a"
+    },
+    {
+      "path": "etc/mtab",
+      "mode": 420,
+      "type": "file",
+      "size": 193,
+      "sha256": "2b4f42d7e66f82fe677f6b514512f877cee048147a8ccdd87a33848d882c2206"
+    },
+    {
+      "path": "etc/nsswitch.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 452,
+      "sha256": "5c24de7911e2eab827332ff98c40aa79f951b951c3106940ac049bdee7d083cc"
+    },
+    {
+      "path": "etc/passwd",
+      "mode": 420,
+      "type": "file",
+      "size": 373,
+      "sha256": "6ae2551e3caf848bf4825ced024610ef185cfacc1e5d6f7c6c5677f3820334dc"
+    },
+    {
+      "path": "etc/pointercal",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "2e7213cec5f47e7e9aade9d17b6d565d64395a39a1117f6dac56ce079478a84b"
+    },
+    {
+      "path": "etc/profile",
+      "mode": 420,
+      "type": "file",
+      "size": 375,
+      "sha256": "3b4fd21ee8a7ad3a7de4894e7515759cfaf54cf0448810e900a1bc11a7fe5275"
+    },
+    {
+      "path": "etc/protocols",
+      "mode": 420,
+      "type": "file",
+      "size": 5834,
+      "sha256": "aa00b2cb0b6f77291c6e244774438f367e1407cb96e6c76189451243c26d9ca1"
+    },
+    {
+      "path": "etc/rc.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc2.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc2.d/S15inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 1534,
+      "sha256": "0eb89c18ff848a2ce71d314c73e59c1ef8e272ce923b663000d0278eb57b48ca"
+    },
+    {
+      "path": "etc/rc.d/rc3.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc3.d/S15inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 1534,
+      "sha256": "0eb89c18ff848a2ce71d314c73e59c1ef8e272ce923b663000d0278eb57b48ca"
+    },
+    {
+      "path": "etc/rc.d/rc4.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc4.d/S15inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 1534,
+      "sha256": "0eb89c18ff848a2ce71d314c73e59c1ef8e272ce923b663000d0278eb57b48ca"
+    },
+    {
+      "path": "etc/rc.d/rc5.d",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/rc.d/rc5.d/S15inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 1534,
+      "sha256": "0eb89c18ff848a2ce71d314c73e59c1ef8e272ce923b663000d0278eb57b48ca"
+    },
+    {
+      "path": "etc/resolv.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 20,
+      "sha256": "69eab38432127f1af30876ce6deec466230b4b2284140f0d07f7de761ec9637e"
+    },
+    {
+      "path": "etc/rpc",
+      "mode": 420,
+      "type": "file",
+      "size": 1595,
+      "sha256": "ebc43541c32b314942f92b105755b192ac8451e0e50e9a5c196e3b02c4a789a7"
+    },
+    {
+      "path": "etc/runanacapa",
+      "mode": 420,
+      "type": "file",
+      "size": 563,
+      "sha256": "66bf159d4c3c4779b1b93406ea9bce48402b0aa3c7b8b7df90067168b13741cf"
+    },
+    {
+      "path": "etc/runmdns",
+      "mode": 420,
+      "type": "file",
+      "size": 83,
+      "sha256": "aa70dc00e913ea041170c9e550da282f9b0f37de5b7547008b74ac0805b15383"
+    },
+    {
+      "path": "etc/scripts",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "etc/scripts/domnt.sh",
+      "mode": 420,
+      "type": "file",
+      "size": 1284,
+      "sha256": "7f10618a4d8e04bca44fbc7ac0880b37e9442a93f341bfbca5ed80dba67fec0d"
+    },
+    {
+      "path": "etc/services",
+      "mode": 420,
+      "type": "file",
+      "size": 15319,
+      "sha256": "9bc2ae7e79ef825a57eecb90681b0d9e2415fe8fc1be0cc5a2ecefebfb3ac611"
+    },
+    {
+      "path": "etc/shells",
+      "mode": 420,
+      "type": "file",
+      "size": 53,
+      "sha256": "82f4ce9af632497f688c4e48917e6f8aa00ad959677a4980731ef1dfd983b58d"
+    },
+    {
+      "path": "etc/syslog.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 1670,
+      "sha256": "0141a530669a95b7c8eb63b29e74b136660fa8d989d8b394acaa78e71483fcda"
+    },
+    {
+      "path": "home",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "jffs",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "lib",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "lib/ld-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 128484,
+      "sha256": "0bbc13a673ea729b05ee0fed998cef5bae417e3f79db560af9db0299c8855caa"
+    },
+    {
+      "path": "lib/ld-linux.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 9,
+      "sha256": "c57a33d9ac933a856cc5ffa68980f41e34aa3f93e80e37b5b997026321677be6"
+    },
+    {
+      "path": "lib/ld.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 9,
+      "sha256": "c57a33d9ac933a856cc5ffa68980f41e34aa3f93e80e37b5b997026321677be6"
+    },
+    {
+      "path": "lib/libBrokenLocale-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 5648,
+      "sha256": "162a3f96589af50120e3444d5ff9cfbbdce755afb89e0fd6877652d9ebd669bf"
+    },
+    {
+      "path": "lib/libBrokenLocale.so",
+      "mode": 420,
+      "type": "file",
+      "size": 5648,
+      "sha256": "162a3f96589af50120e3444d5ff9cfbbdce755afb89e0fd6877652d9ebd669bf"
+    },
+    {
+      "path": "lib/libBrokenLocale.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 22,
+      "sha256": "fbb2127a097fadb10c3b464abe04af0beb0032b5e4f7ab909e4f8b936447a96f"
+    },
+    {
+      "path": "lib/libSegFault.so",
+      "mode": 420,
+      "type": "file",
+      "size": 9848,
+      "sha256": "feded3beab24e14485b713010029b3e37ed73dc204aa823f917a722dcd252207"
+    },
+    {
+      "path": "lib/libanl-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 14212,
+      "sha256": "b2af5e3209b6543b3ecb45d5de77bcaf68de4b7870b35fe538da6dd7220bb9d8"
+    },
+    {
+      "path": "lib/libanl.so",
+      "mode": 420,
+      "type": "file",
+      "size": 14212,
+      "sha256": "b2af5e3209b6543b3ecb45d5de77bcaf68de4b7870b35fe538da6dd7220bb9d8"
+    },
+    {
+      "path": "lib/libanl.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 13,
+      "sha256": "9f71cfb9367847fe1e43ed673d34ea906fb6bd7c09f75062e5530f128c74c89d"
+    },
+    {
+      "path": "lib/libc-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 1432128,
+      "sha256": "6f95a03f0c492ce743e4b33f8fea912364c6a95c03ab384f942f6f034431d2b6"
+    },
+    {
+      "path": "lib/libc.so",
+      "mode": 420,
+      "type": "file",
+      "size": 235,
+      "sha256": "bcfe5e3473e8847544a8de648cacee6d6c900e68744a6ae54b34eadda2d59540"
+    },
+    {
+      "path": "lib/libc.so.6",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "df365b638b856dac92adcc4f872b11c6a00fcff3973cd0b0c00301a375244e7d"
+    },
+    {
+      "path": "lib/libcidn-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 186204,
+      "sha256": "74256231dac64a8537afd1daf2e5bb2f4ab9206e164d5d603de60ca9f49392f6"
+    },
+    {
+      "path": "lib/libcidn.so",
+      "mode": 420,
+      "type": "file",
+      "size": 186204,
+      "sha256": "74256231dac64a8537afd1daf2e5bb2f4ab9206e164d5d603de60ca9f49392f6"
+    },
+    {
+      "path": "lib/libcidn.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "f254b42cbe038b8ca3307aa084a05485713e33d9b4feb2e396873de19d19004f"
+    },
+    {
+      "path": "lib/libcrypt-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 38800,
+      "sha256": "fa86d2e2b8ed9d31e358d15d5266561861831fac1a46bdd568ed976ce54c42cc"
+    },
+    {
+      "path": "lib/libcrypt.so",
+      "mode": 420,
+      "type": "file",
+      "size": 13,
+      "sha256": "d2a334ca81bc97b5c4f1e9a20039ebe180d4556a72a888973b4bc29e7f9df627"
+    },
+    {
+      "path": "lib/libcrypt.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 15,
+      "sha256": "6cdfcabe2133e0e4f183899c21643be7420424ac0004840b01a31e798c775311"
+    },
+    {
+      "path": "lib/libdl-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 10236,
+      "sha256": "2dc60d17fd7d5f4f9955c1216cca46d1c05b9398a1c054eed4c27f320511aaa4"
+    },
+    {
+      "path": "lib/libdl.so",
+      "mode": 420,
+      "type": "file",
+      "size": 10,
+      "sha256": "bc5138db0fda6d40eafefa110d5823da6cfa06309cf60f4292c65e1a7fe1fd76"
+    },
+    {
+      "path": "lib/libdl.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 12,
+      "sha256": "a90ea432155a0c0bd0d348acfd2c1dcd16cc62e9cb916c10542947dd82c3c594"
+    },
+    {
+      "path": "lib/libeventreporter.so",
+      "mode": 420,
+      "type": "file",
+      "size": 21,
+      "sha256": "ae345709a02cb54fd81dacaa9b6333cb06ebd86627ba4c7ad30e275058ec2198"
+    },
+    {
+      "path": "lib/libeventreporter.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 23,
+      "sha256": "b568b50d4e4f29b8180e8383f83a87a17236f1741c4688c3e8add56543e9f39b"
+    },
+    {
+      "path": "lib/libeventreporter.so.1.0",
+      "mode": 420,
+      "type": "file",
+      "size": 5784,
+      "sha256": "dae60bf37f00376325633e38b445cd2744dea513951701fedcfc3c5c503318c3"
+    },
+    {
+      "path": "lib/libgcc_s.so",
+      "mode": 420,
+      "type": "file",
+      "size": 13,
+      "sha256": "07d6e1e661856bc400f1445f6e67b1cb26bebf76aa153267cf43b3b7d76354bf"
+    },
+    {
+      "path": "lib/libgcc_s.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 108236,
+      "sha256": "846ba58a30e3b484cd7c16223819a8f061e49e4bb410d3f085a34affa3b3858b"
+    },
+    {
+      "path": "lib/libgomp.so",
+      "mode": 420,
+      "type": "file",
+      "size": 16,
+      "sha256": "83b4bd70546567c74bca5c44f4dbebf046e08053f98c26079f1a4b8f5ef07bc1"
+    },
+    {
+      "path": "lib/libgomp.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 16,
+      "sha256": "83b4bd70546567c74bca5c44f4dbebf046e08053f98c26079f1a4b8f5ef07bc1"
+    },
+    {
+      "path": "lib/libgomp.so.1.0.0",
+      "mode": 420,
+      "type": "file",
+      "size": 31176,
+      "sha256": "c509a1127919d5970caa2f5f86c6a4b9ec9140b2f1e14d0622ae23b03d9c6379"
+    },
+    {
+      "path": "lib/libm-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 1064072,
+      "sha256": "5d797a861437dbd78f3d87fac84aa76a5dd75597b6371b73265ab35459db8b37"
+    },
+    {
+      "path": "lib/libm.so",
+      "mode": 420,
+      "type": "file",
+      "size": 9,
+      "sha256": "f81fa453a8a1d5bf5b1f1ed42acb623a8ad090b6d41eb34f1ad5bf1bbc8feee4"
+    },
+    {
+      "path": "lib/libm.so.6",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "a5e5eb97c53dcdc991f980854154514d1def9fc87a8a7cec4f8b6fa717e19a1f"
+    },
+    {
+      "path": "lib/libmbedcrypto.so.0",
+      "mode": 420,
+      "type": "file",
+      "size": 133144,
+      "sha256": "3889ccf4c5f27f6bb715bbeaf33373484a9c4930262afe9bd5580c3b4fe0c691"
+    },
+    {
+      "path": "lib/libmbedtls.so.10",
+      "mode": 420,
+      "type": "file",
+      "size": 47484,
+      "sha256": "478be10ddf46750ab3ac9deef71aa5824375237909a325f40741aa47c6231f75"
+    },
+    {
+      "path": "lib/libmbedx509.so.0",
+      "mode": 420,
+      "type": "file",
+      "size": 27308,
+      "sha256": "254d8449b16c4a7f266cbba4b6dcddaeb410fb80fdcf766fbc617b37ca87bf91"
+    },
+    {
+      "path": "lib/libmemusage.so",
+      "mode": 420,
+      "type": "file",
+      "size": 18132,
+      "sha256": "53384c0a70022e5c9d00f383aae2d5518ac5eb844ef37b45a95b3beffb6fd59c"
+    },
+    {
+      "path": "lib/libmpg123.so.0",
+      "mode": 420,
+      "type": "file",
+      "size": 89220,
+      "sha256": "6e65b6c7ea7fc05cd1827a9620c23f452f1ba39240269fc7b014e1bb39361066"
+    },
+    {
+      "path": "lib/libnsl-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 85308,
+      "sha256": "bde0dc0b81068886df3cc4e80a51c4bc24e0183ffd36774e4aa33ad42c3d4af4"
+    },
+    {
+      "path": "lib/libnsl.so",
+      "mode": 420,
+      "type": "file",
+      "size": 11,
+      "sha256": "8b669d68e2bca81bc2335cfe9962ec88bc42a3b091ac0d3f0c9d64f71c95a150"
+    },
+    {
+      "path": "lib/libnsl.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 13,
+      "sha256": "553415d97c148cf5a57340c03d8b5a73886d38f149e875e37917a793ba1eb63c"
+    },
+    {
+      "path": "lib/libnss_compat-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 30816,
+      "sha256": "7dbec8b47151b746ee2cc8c3de1d128d01b47aa0592dcbd33a4b77b1cb25a5e4"
+    },
+    {
+      "path": "lib/libnss_compat.so",
+      "mode": 420,
+      "type": "file",
+      "size": 30816,
+      "sha256": "7dbec8b47151b746ee2cc8c3de1d128d01b47aa0592dcbd33a4b77b1cb25a5e4"
+    },
+    {
+      "path": "lib/libnss_compat.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 20,
+      "sha256": "235b291e31f0a64958cc77c058d45646e16691e3808c22f33865a11d7b63de33"
+    },
+    {
+      "path": "lib/libnss_dns-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 18164,
+      "sha256": "b3a8787c80395d2294c72eeb377493558c35fe03cbb6bbc04b82c1e7c6337e59"
+    },
+    {
+      "path": "lib/libnss_dns.so",
+      "mode": 420,
+      "type": "file",
+      "size": 15,
+      "sha256": "a8e092f4b92cfb96abf2be1fdeb5a7bae790f31dda65775063b13eef3bab9bb5"
+    },
+    {
+      "path": "lib/libnss_dns.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "04b5b5455158ac4a6479c51a1bb0d27a7a645455ba1ed405ca58dd6771416472"
+    },
+    {
+      "path": "lib/libnss_files-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 43036,
+      "sha256": "10a35bd9a0425287b7759f5a79eade4db78a17af91cfdaad4b11daaeb463b42c"
+    },
+    {
+      "path": "lib/libnss_files.so",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "e2373ee88c678dd917f352454c3c75c70b15dedfb0ade85e7deae8eaa029ca8f"
+    },
+    {
+      "path": "lib/libnss_files.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 19,
+      "sha256": "2c0bd493b012f372313c8c6a777bc576b6707ed51d704e9ad6687377d0323c15"
+    },
+    {
+      "path": "lib/libnss_hesiod-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 18196,
+      "sha256": "dcb598ad706ced3bc13a1042adc19d547b0c1d6a4e9df0dd955e6fffd58c9160"
+    },
+    {
+      "path": "lib/libnss_hesiod.so",
+      "mode": 420,
+      "type": "file",
+      "size": 18196,
+      "sha256": "dcb598ad706ced3bc13a1042adc19d547b0c1d6a4e9df0dd955e6fffd58c9160"
+    },
+    {
+      "path": "lib/libnss_hesiod.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 20,
+      "sha256": "42bf39f6e19b918412fe43c2f35e11841038dbb4985aefa7d7e8a5db2b7df244"
+    },
+    {
+      "path": "lib/libnss_nis-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 39068,
+      "sha256": "e7be778fbcb1426e8670f478794e4e0da78cd3323c764cfa231ea8241fdccccb"
+    },
+    {
+      "path": "lib/libnss_nis.so",
+      "mode": 420,
+      "type": "file",
+      "size": 39068,
+      "sha256": "e7be778fbcb1426e8670f478794e4e0da78cd3323c764cfa231ea8241fdccccb"
+    },
+    {
+      "path": "lib/libnss_nis.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "83f105b4d5e8e1d7db5b346c069856ff4d4fc6678a1207ed85c3419523d3c089"
+    },
+    {
+      "path": "lib/libnss_nisplus-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 51428,
+      "sha256": "3e4b7dd5afd2715f9560b0a00c88c43ed07777b6fde4b7a84164e67e74af571f"
+    },
+    {
+      "path": "lib/libnss_nisplus.so",
+      "mode": 420,
+      "type": "file",
+      "size": 51428,
+      "sha256": "3e4b7dd5afd2715f9560b0a00c88c43ed07777b6fde4b7a84164e67e74af571f"
+    },
+    {
+      "path": "lib/libnss_nisplus.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 21,
+      "sha256": "a8799a2039dec544e2cde86693f45d9231da018246c3fc9066e3678f0b332062"
+    },
+    {
+      "path": "lib/libpcprofile.so",
+      "mode": 420,
+      "type": "file",
+      "size": 5596,
+      "sha256": "cd9a5b38af2be5c818c93a215848418c35659e7296946427a1ee2bd9c4d87fa0"
+    },
+    {
+      "path": "lib/libpthread-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 91944,
+      "sha256": "c191e5c003c3a36fe8ac3af8db7d83070062f20d492b85e006ada09164181b3f"
+    },
+    {
+      "path": "lib/libpthread.so",
+      "mode": 420,
+      "type": "file",
+      "size": 15,
+      "sha256": "dacd7473ff21845f5bd1dcae383656e1d3f50fe9a2a1762d61f71864b59d1f9c"
+    },
+    {
+      "path": "lib/libpthread.so.0",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "d3cfbf2a4f1e54eb7801daea1009a8f1e3613fab212c49b6e3f061f47334ad46"
+    },
+    {
+      "path": "lib/libresolv-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 68224,
+      "sha256": "565b99047f71fd779644cd6544f3fe7f43de684f973620c6713ca874adfdd318"
+    },
+    {
+      "path": "lib/libresolv.so",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "f0c2f4183c61e38ec02f07f19153e7b3f0f26b550481e5456282fc300b6984b4"
+    },
+    {
+      "path": "lib/libresolv.so.2",
+      "mode": 420,
+      "type": "file",
+      "size": 16,
+      "sha256": "951c56a2963cd667d45fbd2d89fa74c7a3006eef33248db7156ad250d04b353b"
+    },
+    {
+      "path": "lib/librt-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 31632,
+      "sha256": "5eabf0778ebcbaca69690f1b5617fcef14f8931d315b521018625f485900f908"
+    },
+    {
+      "path": "lib/librt.so",
+      "mode": 420,
+      "type": "file",
+      "size": 31632,
+      "sha256": "5eabf0778ebcbaca69690f1b5617fcef14f8931d315b521018625f485900f908"
+    },
+    {
+      "path": "lib/librt.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 12,
+      "sha256": "7d403bb61f543a2d94323650de99add1350a39b3efec2ae3396fd7a82a77eadb"
+    },
+    {
+      "path": "lib/libsbc.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 36544,
+      "sha256": "e61c42233119e5f145f3d8917ba1c55559fdb45d2abf07556afb617da5c118de"
+    },
+    {
+      "path": "lib/libsonoscrypto.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 47588,
+      "sha256": "a3d89d50c88dc77c054bb1682ada89410f7675bc12d1de6d0e9d0aebbe8f5083"
+    },
+    {
+      "path": "lib/libsonosutils.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 5820,
+      "sha256": "feddefecba68ad4a0b19f1e348651998db3c867e2cb2d348e2ca7b89a0ba36c4"
+    },
+    {
+      "path": "lib/libthread_db-1.0.so",
+      "mode": 420,
+      "type": "file",
+      "size": 31600,
+      "sha256": "c9c6a946adee7ef9a3c1bbbf00760b0eaf9001183b416f7da274fa2d9c593657"
+    },
+    {
+      "path": "lib/libthread_db.so",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "ece245d9c80f700c29c28ef54e4b576460dfb9b9c37fd2c73db0f0a8dcc3be0b"
+    },
+    {
+      "path": "lib/libthread_db.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 19,
+      "sha256": "8f052bdd6086159bca15058eec68684837cf671019cc8dcb76c9381b43d6ba51"
+    },
+    {
+      "path": "lib/libutil-2.8.so",
+      "mode": 420,
+      "type": "file",
+      "size": 9932,
+      "sha256": "c01d8996a353549393cc3494eea77907f85a219efaef49393ef47813734b14f9"
+    },
+    {
+      "path": "lib/libutil.so",
+      "mode": 420,
+      "type": "file",
+      "size": 9932,
+      "sha256": "c01d8996a353549393cc3494eea77907f85a219efaef49393ef47813734b14f9"
+    },
+    {
+      "path": "lib/libutil.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "7d25efe15d0e89aede65c6062875b92dd876dc008e976ed0c1556b5e1d88fe17"
+    },
+    {
+      "path": "lib/libwifi.so.1",
+      "mode": 420,
+      "type": "file",
+      "size": 27520,
+      "sha256": "8a9f49ef382b2ab67e5ea8a8e09514e8d4be4d6c54b73a3509bd44edda4853a2"
+    },
+    {
+      "path": "mnt",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "modules",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "modules/audiodev.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 1047540,
+      "sha256": "94178961127372fa130204fc9bf15033235fd753d58154c05435e34d13f14a31"
+    },
+    {
+      "path": "modules/chk.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 113263,
+      "sha256": "af88f6b216a9cf37a9753cfac6487e6fa20fa39cd995ec6e835187c43e16429a"
+    },
+    {
+      "path": "opt",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/bin",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/bin/anacapactl",
+      "mode": 420,
+      "type": "file",
+      "size": 1988,
+      "sha256": "027c3335c56b41079e117d0ed30eced7e11ac054c395ab558dee0c5996a8a390"
+    },
+    {
+      "path": "opt/bin/anacapad",
+      "mode": 420,
+      "type": "file",
+      "size": 4977304,
+      "sha256": "4d97f68ba7f1b061a2734dc18ccdaaa7ba35ef3dfba01385aad69ee92d099f13"
+    },
+    {
+      "path": "opt/buzzers",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/buzzers/0.mp3",
+      "mode": 420,
+      "type": "file",
+      "size": 87989,
+      "sha256": "9448835023747a67c6a060bc168b32fa11c9bb4018727a27d10e9961da3dc250"
+    },
+    {
+      "path": "opt/buzzers/100.mp3",
+      "mode": 420,
+      "type": "file",
+      "size": 42061,
+      "sha256": "35669519666e9a07838c621dfaf809fe2086d53790d02ddcfa5ed19622e41733"
+    },
+    {
+      "path": "opt/conf",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/conf/anacapa.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 1948,
+      "sha256": "5f2ee959224ce9f1f3b24ad49c7f0ee62ffe446ba9df33d0a107377c7148c362"
+    },
+    {
+      "path": "opt/conf/hostapd.conf",
+      "mode": 420,
+      "type": "file",
+      "size": 16,
+      "sha256": "7be584d1f9f16ee909b208fdb12cda02bb264c54fa62b5da889ae87552097c49"
+    },
+    {
+      "path": "opt/conf/mime.types",
+      "mode": 420,
+      "type": "file",
+      "size": 104,
+      "sha256": "c1aecb636edbab3a9d75a4ac979e8f9c03a634eade9c8ad39f898328680a4896"
+    },
+    {
+      "path": "opt/dsp",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/dsp/dsp_array_playbar.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 14030,
+      "sha256": "690d61fd1e251c9e8d19024a5da75f0ebc3efc8565e21e2b952b95d08652e0f9"
+    },
+    {
+      "path": "opt/htdocs",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/advconfig.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 439,
+      "sha256": "5f026d66e6d10faf1bf152a70039217acab9c5ccb924bb12b752379dba66948f"
+    },
+    {
+      "path": "opt/htdocs/configDSP.css",
+      "mode": 420,
+      "type": "file",
+      "size": 32,
+      "sha256": "2c311e32f9f9304681d46e932eab7675f35551f0f39bffa403dad71658537688"
+    },
+    {
+      "path": "opt/htdocs/configDSP.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 32,
+      "sha256": "69e5ac347a7a7a2895d2789206cee02ed44568f9182abe8b4ee7d479336eb916"
+    },
+    {
+      "path": "opt/htdocs/configDSP.js",
+      "mode": 420,
+      "type": "file",
+      "size": 31,
+      "sha256": "93046231bed0a5f30dd95c8fef74b6637d181416969a34ebb3535789de20ad51"
+    },
+    {
+      "path": "opt/htdocs/customsd.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 3640,
+      "sha256": "15f289078f2a7341ee4ef00ea4451e0446d8f35b74052c4c0a1cd75d9221d1f0"
+    },
+    {
+      "path": "opt/htdocs/eqdata.txt",
+      "mode": 420,
+      "type": "file",
+      "size": 29,
+      "sha256": "c9f64e8df1047c289498ae6c9ee3e75d2f2b36718c0f71d21c116fe9e1d3014a"
+    },
+    {
+      "path": "opt/htdocs/img",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/img/icon-S9.png",
+      "mode": 420,
+      "type": "file",
+      "size": 1263,
+      "sha256": "c3a409a2ae628cab55fb09e4f83fc0e11e28bd4978d43ae399e9dbaba7aa7d15"
+    },
+    {
+      "path": "opt/htdocs/meters.css",
+      "mode": 420,
+      "type": "file",
+      "size": 29,
+      "sha256": "f7a7993b0fd73c75229eccf4bd90187c9362de3248b71726209b6009b4f5df14"
+    },
+    {
+      "path": "opt/htdocs/meters.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 29,
+      "sha256": "2fad68e88916e268cafdda79abe2b99233d6664280fd06d5997ffaf1369b419b"
+    },
+    {
+      "path": "opt/htdocs/meters.js",
+      "mode": 420,
+      "type": "file",
+      "size": 28,
+      "sha256": "6f7ab8ffb7aa00a32aa943bc74ddfe43a580822e76ba3b0b3d4b8e26cd4da4af"
+    },
+    {
+      "path": "opt/htdocs/pub",
+      "mode": 420,
+      "type": "file",
+      "size": 8,
+      "sha256": "9f95c8a6faeccfd491ebfe431b8eb4ef10192651bc424d723dbe9dbbded26100"
+    },
+    {
+      "path": "opt/htdocs/region.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 429,
+      "sha256": "77b63e13bcdca26ddd33652f8a01136dc4a5dbcc671d0ee586fc05f6c6265b46"
+    },
+    {
+      "path": "opt/htdocs/review.js",
+      "mode": 420,
+      "type": "file",
+      "size": 15822,
+      "sha256": "58300bba90ff52b053921a08e494df9d839bb747a08fbe701ecfbbf99ce6b710"
+    },
+    {
+      "path": "opt/htdocs/tools.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 693,
+      "sha256": "1b09fa204a1976c86f55df566d58ec41ff083d0cfe9ef04502cd8a26e2d1de11"
+    },
+    {
+      "path": "opt/htdocs/xml",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs/xml/AVTransport1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 50890,
+      "sha256": "fc3c6b5193929bd9f6a898c79e54ef8aee8111532e60a91323e8d72062d95be0"
+    },
+    {
+      "path": "opt/htdocs/xml/AlarmClock1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 14873,
+      "sha256": "3193589b8952d58895f2b7a4466fab447759fae72b167ebfe02f9a332efe4e82"
+    },
+    {
+      "path": "opt/htdocs/xml/AudioIn1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 4385,
+      "sha256": "b87b7325f0452d352f5fd03b09a6264ecb87a5a33788e537dd597bc7273cb057"
+    },
+    {
+      "path": "opt/htdocs/xml/ConnectionManager1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 4544,
+      "sha256": "708987c89f82d19aa4016ebd6d8f05744aa325dec816c568f4f303933a869a43"
+    },
+    {
+      "path": "opt/htdocs/xml/ContentDirectory1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 12940,
+      "sha256": "40763b4d03fd314349eac60d6652b7c40e3af07be01ec2f4521434918ea5b8c6"
+    },
+    {
+      "path": "opt/htdocs/xml/DeviceProperties1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 15974,
+      "sha256": "8a97afee6f0576df0751106a37ee6a3e4df436b09935a996d34a95097bba5e04"
+    },
+    {
+      "path": "opt/htdocs/xml/GroupManagement1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 3197,
+      "sha256": "be0583c9b5417c4c1797398ca573ab63caa1efd85dc345b51852d826e615abf8"
+    },
+    {
+      "path": "opt/htdocs/xml/GroupRenderingControl1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 3850,
+      "sha256": "b561ad0bda380f7e8713eaf7ce58e056b9c9f283b6897363f9f5bf7dc6c133bd"
+    },
+    {
+      "path": "opt/htdocs/xml/HTControl1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 4098,
+      "sha256": "cc126969cacad20e742f541f15db3b876c1884d165d5d6966e0c7771606fcde7"
+    },
+    {
+      "path": "opt/htdocs/xml/MusicServices1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 2479,
+      "sha256": "c0b3e9d9e36dec5bc1968034b95f69773e58cc1fb89c5e32e20216e31a82e6d0"
+    },
+    {
+      "path": "opt/htdocs/xml/QPlay1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 1697,
+      "sha256": "b2d3bb00c041e1ea1c91c89c90c002404e634f1d3f0bbbdfe86991ebb6d33d93"
+    },
+    {
+      "path": "opt/htdocs/xml/Queue1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 16220,
+      "sha256": "fc037fe706726b0cb3c0ac2f3eee487d51bd90e00532f1f26c0e2c88cfaf193a"
+    },
+    {
+      "path": "opt/htdocs/xml/RenderingControl1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 24833,
+      "sha256": "b403fcffca6843a6670500c364a6128011c4b9319ed03fa00f46ce478ef4c538"
+    },
+    {
+      "path": "opt/htdocs/xml/SystemProperties1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 15479,
+      "sha256": "382e4cc414f7532efcba82acb73d63501fa802e1b29e1b3a149953c49006506d"
+    },
+    {
+      "path": "opt/htdocs/xml/ZoneGroupTopology1.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 7956,
+      "sha256": "f64190c2b8f5779767224d66df129c7007cbd15354dce2d18948daa558d10760"
+    },
+    {
+      "path": "opt/htdocs/xml/device_description.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 8971,
+      "sha256": "a6a127ffe8461f6cbb226fc42038d409336ab76a8ebac0f2a646ac2dc293e668"
+    },
+    {
+      "path": "opt/htdocs/xml/factory_reset.xsl",
+      "mode": 420,
+      "type": "file",
+      "size": 647,
+      "sha256": "27510614835b3191e769680c2a3bcd4fa618dcf9980cf966146bf54a67ba44d2"
+    },
+    {
+      "path": "opt/htdocs/xml/group_description.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 729,
+      "sha256": "2ee2187849dda9ab4a97d3b308e9393b25fee778a0c71b0263569ba8f49afd1f"
+    },
+    {
+      "path": "opt/htdocs/xml/review.xsl",
+      "mode": 420,
+      "type": "file",
+      "size": 37782,
+      "sha256": "038fc1987fb5d7866f5d51119b2bb2ee851cfcc27dccedff32a6b5c750bea3a8"
+    },
+    {
+      "path": "opt/htdocs_locked",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/htdocs_locked/configDSP.css",
+      "mode": 420,
+      "type": "file",
+      "size": 4893,
+      "sha256": "135188938faa4f7a3c6842676e1bd69ee1f5cc84e1d615687feaa4103fafede0"
+    },
+    {
+      "path": "opt/htdocs_locked/configDSP.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 1244,
+      "sha256": "c16f621fe893dea474a3fa69e817be1ae51e1c8844d8fa00d68d3b61615a99cd"
+    },
+    {
+      "path": "opt/htdocs_locked/configDSP.js",
+      "mode": 420,
+      "type": "file",
+      "size": 60429,
+      "sha256": "eb98dbc6667521f30ab9d5d5f67a8194db6b23a12f4b8b10733784c6796fc6e3"
+    },
+    {
+      "path": "opt/htdocs_locked/eqdata.txt",
+      "mode": 420,
+      "type": "file",
+      "size": 16,
+      "sha256": "81705f55ffcb26a69a5ec9c98e3e65998292844bf9a28e4f40684a6d21c12487"
+    },
+    {
+      "path": "opt/htdocs_locked/meters.css",
+      "mode": 420,
+      "type": "file",
+      "size": 240,
+      "sha256": "160125d1a65cb0d7242daef7195264d29e6b32d7929952ce4e9d937c44bd4c20"
+    },
+    {
+      "path": "opt/htdocs_locked/meters.htm",
+      "mode": 420,
+      "type": "file",
+      "size": 587,
+      "sha256": "aad190d5fd301239fe1cd4f014e177f8c5fb13b0d56b7c44a6c56fe0bc2797e0"
+    },
+    {
+      "path": "opt/htdocs_locked/meters.js",
+      "mode": 420,
+      "type": "file",
+      "size": 10254,
+      "sha256": "09f39ccf61222cb3e8c862f1a13401939bd3690f0a4a4eec1e27b5d9d2ff6f4b"
+    },
+    {
+      "path": "opt/ir",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/ir/irconfig.txt",
+      "mode": 420,
+      "type": "file",
+      "size": 98,
+      "sha256": "bd06bfd84d8332241b98afc27c38dbc2f375f1e850f291c38541323348811af6"
+    },
+    {
+      "path": "opt/lib",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/log",
+      "mode": 420,
+      "type": "file",
+      "size": 15,
+      "sha256": "49bc5916fd3c341c9b9cb98571ac3fa7689ea3c2260a061458302b242419661f"
+    },
+    {
+      "path": "opt/musicservices",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/musicservices/musicservices.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 292,
+      "sha256": "121573baf3397264196ce6ebea0e19ced06f8caf16fe818922c316ed9def3263"
+    },
+    {
+      "path": "opt/timezones",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "opt/timezones/timezones.xml",
+      "mode": 420,
+      "type": "file",
+      "size": 9094,
+      "sha256": "4fe265d57e9fd792a6a4596acf3ce8dc4d428cc593b57ce4e710492caa7be1e0"
+    },
+    {
+      "path": "proc",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "ramdisk",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "sbin",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "sbin/halt",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/ifconfig",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/ifdown",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/ifup",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/init",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/insmod",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/lsmod",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/makedevs",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/poweroff",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/reboot",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/rmmod",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/route",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/start-stop-daemon",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/sysctl",
+      "mode": 420,
+      "type": "file",
+      "size": 14,
+      "sha256": "85d4dd4ef86ceeb5656dbcb05c167fdbae84349ede4025f920e4aea8750c1757"
+    },
+    {
+      "path": "sbin/udhcpc",
+      "mode": 420,
+      "type": "file",
+      "size": 35184,
+      "sha256": "6f62d74b735fe7d1f38712f4b5e1fd3e483cb21b3eecd6d5df00f93598e99a8c"
+    },
+    {
+      "path": "tmp",
+      "mode": 420,
+      "type": "file",
+      "size": 12,
+      "sha256": "5153772843c9fe3ea58240c252c9dbae9f4d331afaa28095750cde4e90b8032c"
+    },
+    {
+      "path": "usr",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "usr/bin",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "usr/bin/[",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/[[",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/arping",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/basename",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/chvt",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/clear",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/cmp",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/cut",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/dc",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/dirname",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/du",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/env",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/expr",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/find",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/fold",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/free",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/ftpget",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/ftpput",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/head",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/hexdump",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/killall",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/length",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/md5sum",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/mkfifo",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/nc",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/nslookup",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/od",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/patch",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/printf",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/reset",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/rx",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/seq",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/sha1sum",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/sort",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/strings",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/tail",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/tee",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/telnet",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/test",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/time",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/top",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/tr",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/traceroute",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/tty",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/uniq",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/uptime",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/uudecode",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/uuencode",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/wc",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/wget",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/which",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/xargs",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/bin/yes",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/sbin",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "usr/sbin/brctl",
+      "mode": 420,
+      "type": "file",
+      "size": 27760,
+      "sha256": "9fdd1482cdce500ec1ef192c17c55ac614b276e7832e8da9c6f7a9e0afea3672"
+    },
+    {
+      "path": "usr/sbin/fbset",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/sbin/inetd",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "usr/sbin/keyval",
+      "mode": 420,
+      "type": "file",
+      "size": 5976,
+      "sha256": "97e53963de5f8cc0fdade57521fd6925f4c07c8905fd9d2c0510bc7343c35018"
+    },
+    {
+      "path": "usr/sbin/netconfig.sh",
+      "mode": 420,
+      "type": "file",
+      "size": 8246,
+      "sha256": "09e2655eef258c9ac944e6a6bad9c4952d2e938da3bc97605627ab5b463e0066"
+    },
+    {
+      "path": "usr/sbin/setmac",
+      "mode": 420,
+      "type": "file",
+      "size": 7576,
+      "sha256": "bbc0e3cc6b2856c169f4b121d7e35938ad52c82d68a1fe204884f60abbdd5eb8"
+    },
+    {
+      "path": "usr/sbin/telnetd",
+      "mode": 420,
+      "type": "file",
+      "size": 17,
+      "sha256": "a45f328e8f8527741de5e5eb29abb79256c4d8580829e68d00b62bffc5a44390"
+    },
+    {
+      "path": "var",
+      "mode": 420,
+      "type": "file",
+      "size": 12,
+      "sha256": "879f326b56698316b258d589d6df2f15efc6d494cd9d80237f7a5ff4075871b5"
+    },
+    {
+      "path": "wifi",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/G",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/N",
+      "mode": 448,
+      "type": "directory"
+    },
+    {
+      "path": "wifi/N/adf.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 26676,
+      "sha256": "471fed1264175e23ec8a5bf67ac576e28ae58c474b32ca31d9d9d398f9f25b84"
+    },
+    {
+      "path": "wifi/N/asf.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 13132,
+      "sha256": "a6ae3c0da5bd1f0d60d56e9b39a38652ae3e43f6aebb952e591a9c35d0346018"
+    },
+    {
+      "path": "wifi/N/ath_driver.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 270532,
+      "sha256": "38058ce0a3151cb017e0c52afdc1f4fb7f9c29e4fcd9a106376a1043c226d5ba"
+    },
+    {
+      "path": "wifi/N/ath_hal.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 350276,
+      "sha256": "d674ee7b9d4f8f5c9ac3e0faac7bfa262cb04becb590db01f5b49e0acb6386a0"
+    },
+    {
+      "path": "wifi/N/athconfig",
+      "mode": 420,
+      "type": "file",
+      "size": 15,
+      "sha256": "08b83e8fff7f17c5d19de4e318427bf6c908145a757e69f2c42ad5683ff87314"
+    },
+    {
+      "path": "wifi/N/dfs.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 59448,
+      "sha256": "0e3188f130fbde1a2fe81b98a71e89471522f624055fa9855315a5184d8ce458"
+    },
+    {
+      "path": "wifi/N/radartool",
+      "mode": 420,
+      "type": "file",
+      "size": 9012,
+      "sha256": "c8d2b5fb19ea56eef34e15341359afda1a2ffa2a68415d89b010f076099887db"
+    },
+    {
+      "path": "wifi/athconfig",
+      "mode": 420,
+      "type": "file",
+      "size": 27732,
+      "sha256": "09ba03989266e835f961edc093768a4e8d4bdd3a7645cfe0b72f4f45aa93a841"
+    },
+    {
+      "path": "wifi/bridge.ko",
+      "mode": 420,
+      "type": "file",
+      "size": 75728,
+      "sha256": "e31618c739ef36335c782844a5bf2ebd5ed1ff866318a7f25d13516c41efd47b"
+    },
+    {
+      "path": "wifi/hostapd",
+      "mode": 420,
+      "type": "file",
+      "size": 43048,
+      "sha256": "4d22b8e1b18c50d73c3e947ac119110aa319778abd65b9edf2e5b24b5f7d9e6f"
+    },
+    {
+      "path": "wifi/mdnsd",
+      "mode": 420,
+      "type": "file",
+      "size": 443332,
+      "sha256": "f655f1a82843170f37b3852415ee92696ead94d40e75298a3ae31293131ec9bd"
+    },
+    {
+      "path": "wifi/netstartd",
+      "mode": 420,
+      "type": "file",
+      "size": 125012,
+      "sha256": "07a610df00ca947f62b54caadd6d7fa952a302e54ea95c62b0592ab131063ca9"
+    },
+    {
+      "path": "wifi/sta-assoc",
+      "mode": 420,
+      "type": "file",
+      "size": 1478,
+      "sha256": "063466de7d36b373946f4cc615e864d071778c72adc5e381dce23cb5f09209dc"
+    },
+    {
+      "path": "wifi/wacd",
+      "mode": 420,
+      "type": "file",
+      "size": 158152,
+      "sha256": "ec91d6bef9dc4b357579916c514306d70c810c0af7cd9bdeeea0b1492177db65"
+    },
+    {
+      "path": "wifi/wpa_supplicant",
+      "mode": 420,
+      "type": "file",
+      "size": 137808,
+      "sha256": "d9ac22a90c7cfbcb06c502de792472116741314f5d85f379debb74536b0f091a"
+    },
+    {
+      "path": "wifi/wpaconfig",
+      "mode": 420,
+      "type": "file",
+      "size": 1924,
+      "sha256": "d318c9036e7328f58b71403613c2989b5f4649f40a48b896addd44f3cd55f70d"
+    }
+  ]
+}

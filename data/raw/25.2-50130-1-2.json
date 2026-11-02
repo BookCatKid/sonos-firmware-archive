@@ -1,0 +1,38 @@
+{
+  "source": "25.2-50130-1-2.upd",
+  "components": [
+    {
+      "package_id": "25.2-50130-1-2",
+      "section_index": 3,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "25.2-50130-1-2-preinstall.sh",
+      "bytes": 3393,
+      "sha256": "712ee3483cca623f913217b1da1e10731d9cfb65d64fe87009ab84d7746126f1",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "25.2-50130-1-2",
+      "section_index": 4,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "25.2-50130-1-2-kernel.uImage",
+      "bytes": 635214,
+      "sha256": "f39c4c6c7b8ca14e8d8d467d5ccc6293bccb87183fbe3d361da8a7ab9069e4b5",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "25.2-50130-1-2",
+      "section_index": 5,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "25.2-50130-1-2-rootfs.bin",
+      "bytes": 4169728,
+      "sha256": "59f8f4db0fe1174f6f8947876240015c95b611738250e46dca680bf0b5634a8e",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}

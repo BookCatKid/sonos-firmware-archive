@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "retrieved": "2026-09-04T02:15:39.766301+00:00",
+  "source_url": "https://update.sonos.com/firmware/latest/default-1-1.ups",
+  "request_profile": {
+    "controller_major": 4,
+    "controller_minor": 1,
+    "controller_build": 1,
+    "submodel": 100,
+    "revision": 1,
+    "region": 2,
+    "identifiers": "synthetic public sonostool placeholders; values omitted"
+  },
+  "response": {
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "content_length": 790,
+    "sha256": "a50d2c447bcfac4628a94a59eff2450ec150f0cadea338604124cb7146aedd1e",
+    "raw_file": "default-1-1-2026-09-03.ups"
+  },
+  "records": [
+    {
+      "type": 1,
+      "size": 28,
+      "unknown": 0,
+      "body_sha256": "9abf92d0f1820ad9acc874bc70961325470ba4181f1df9c2365294a3e4c6d7e9"
+    },
+    {
+      "type": 2,
+      "size": 44,
+      "unknown": 0,
+      "body_sha256": "698f4472ef11d907b23a9d032604bf9fb8a0a3732913619f8d3e50a2f81e4d45"
+    },
+    {
+      "type": 2,
+      "size": 44,
+      "unknown": 0,
+      "body_sha256": "540a25f8ed42fa68316687827c043d8bc00d4f7d93001db1260a62faed3491aa"
+    },
+    {
+      "type": 2,
+      "size": 44,
+      "unknown": 0,
+      "body_sha256": "d692c7a3e74d103102c832340ea075b3ed73103da75da348585fafe38ba4dba2"
+    },
+    {
+      "type": 2,
+      "size": 44,
+      "unknown": 0,
+      "body_sha256": "1d639540e204fe5a8c464b22293229127d159eb689fb50b7b456bd00b1584e66"
+    },
+    {
+      "type": 2,
+      "size": 44,
+      "unknown": 0,
+      "body_sha256": "0b1173838272724d9dcd23465a8ae748d1194ed442d0088dc677eebb474977ea"
+    },
+    {
+      "type": 7,
+      "size": 113,
+      "unknown": 0,
+      "body_sha256": "49728abbe5bc2d1d42bd1a25c18d7d7254073e973e301519844112c195a7cd3d",
+      "uri": "http://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/^57.23-74170"
+    },
+    {
+      "type": 8,
+      "size": 20,
+      "unknown": 0,
+      "body_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "type": 4294967295,
+      "size": 144,
+      "unknown": 1,
+      "body_sha256": "2e914a385b78f03afaeedc14d2aa9939090af1d9a10c8e7a701235fe49192d56"
+    },
+    {
+      "type": 14,
+      "size": 121,
+      "unknown": 0,
+      "body_sha256": "b7b5642d1b0c3e8dacb99f4947c8db7e09ad1b92fd10e5c7c0032131f4270b25",
+      "uri": "http://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm"
+    },
+    {
+      "type": 4294967295,
+      "size": 144,
+      "unknown": 1,
+      "body_sha256": "036490f53b1c814bf6f81f4a5679eec5f4e8010d55cce812e7baf26480cb63a5"
+    }
+  ]
+}

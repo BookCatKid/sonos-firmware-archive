@@ -1,0 +1,26 @@
+[
+  {
+    "id": "public-device-report-2025-01-21-82.3-60160",
+    "kind": "exact-firmware-url",
+    "version": "82.3-60160",
+    "package_model": 21,
+    "update_url": "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-21.upd",
+    "source_type": "public-device-repair-report",
+    "source_url": "https://en.community.sonos.com/speakers-229128/anyone-else-having-problems-updating-firmware-6926210",
+    "observed": "2025-01-21",
+    "verified_live": "2026-09-21",
+    "redacted": true
+  },
+  {
+    "id": "public-device-report-2021-12-01-57.9-23010",
+    "kind": "exact-firmware-url",
+    "version": "57.9-23010",
+    "package_model": 16,
+    "update_url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-16.upd",
+    "source_type": "public-device-repair-report",
+    "source_url": "https://en.community.sonos.com/speakers-229128/play-5-gen1-not-work-lost-smbscand-file-anyone-can-help-6862966",
+    "observed": "2021-12-01",
+    "verified_live": "2026-09-21",
+    "redacted": true
+  }
+]

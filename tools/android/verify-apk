@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")/../.." && pwd)"
+jar="$root/tools/vendor/apksig-9.4.1.jar"
+source="$root/tools/android/PrintApkSigners.java"
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: tools/android/verify-apk APK" >&2
+  exit 2
+fi
+if [[ ! -f "$jar" ]]; then
+  echo "missing vendored dependency: $jar" >&2
+  exit 1
+fi
+
+classes="$(mktemp -d)"
+trap 'rm -rf "$classes"' EXIT
+javac -cp "$jar" -d "$classes" "$source"
+java -cp "$classes:$jar" PrintApkSigners "$1"

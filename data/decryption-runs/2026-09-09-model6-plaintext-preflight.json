@@ -1,0 +1,15 @@
+{
+  "audited_at": "2026-09-09T20:29:37.917099+00:00",
+  "repository": "BookCatKid/sonos-firmware-archive",
+  "releases": [
+    {
+      "release_tag": "firmware-36.4-77130",
+      "intended_assets": [
+        "36.4-77130-1-6-kernel.uImage",
+        "36.4-77130-1-6-preinstall.sh",
+        "36.4-77130-1-6-rootfs.bin"
+      ],
+      "intended_assets_already_present": []
+    }
+  ]
+}

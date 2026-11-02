@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-10",
+  "purpose": "Backfill every extractable component as a separately cataloged GitHub Release asset",
+  "method": "Exact cataloged UPD input; plaintext component extraction; local SHA-256 verification; GitHub server size and digest reconciliation",
+  "packages": [
+    {
+      "package_id": "10.20-75300-1-27",
+      "input_bytes": 4745434,
+      "input_sha256": "296b1c892fe92ee1fbf73cba2b6566d3c0d7a58d08e32004d44d3b14c82fd07b",
+      "release_tag": "firmware-10.20-75300",
+      "assets": [
+        {
+          "section_index": 3,
+          "kind": "preinstall",
+          "filename": "10.20-75300-1-27-preinstall.sh",
+          "bytes": 4108,
+          "sha256": "a2058bfc7a7dd6108b37c8661fa92840d301e84cdb2d525182cb7f43a01619cf"
+        },
+        {
+          "section_index": 4,
+          "kind": "kernel",
+          "filename": "10.20-75300-1-27-kernel.uImage",
+          "bytes": 619369,
+          "sha256": "c99c3d7ee78e51d9ffd40cf743f261e4fe21986fc5f5815588d3969b23cc2f39"
+        },
+        {
+          "section_index": 5,
+          "kind": "rootfs",
+          "filename": "10.20-75300-1-27-rootfs.bin",
+          "bytes": 4120576,
+          "sha256": "1b1dc32b4a25fd02b11a51ac1a6fabda494a3f378de718770ef756087d07c625"
+        }
+      ]
+    },
+    {
+      "package_id": "34.16-37101-1-13",
+      "input_bytes": 9904177,
+      "input_sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+      "release_tag": "firmware-34.16-37101",
+      "note": "Kernel is plaintext even though preinstall and rootfs remain blocked by the model-13 key",
+      "assets": [
+        {
+          "section_index": 5,
+          "kind": "kernel",
+          "filename": "34.16-37101-1-13-kernel.uImage",
+          "bytes": 3313049,
+          "sha256": "e0dac684ca91b182c64a309a9da4960716788a1e56acea547b4929f6af6302e5"
+        }
+      ]
+    },
+    {
+      "package_id": "34.16-37101-1-20",
+      "input_bytes": 9695052,
+      "input_sha256": "a43eafc4bf71ce13d8219f272226e9dc097ce7360d79003c23c483d954acde57",
+      "release_tag": "firmware-34.16-37101",
+      "note": "Kernel is plaintext while the other named components remain encrypted",
+      "assets": [
+        {
+          "section_index": 5,
+          "kind": "kernel",
+          "filename": "34.16-37101-1-20-kernel.uImage",
+          "bytes": 3308680,
+          "sha256": "95bf425966da1124bd3d2aa8f0c94b21390e1ac794fbbe009bcb2397a14dec42"
+        }
+      ]
+    }
+  ],
+  "github_reconciliation": {
+    "release_total": 62,
+    "github_asset_total": 943,
+    "canonical_recorded_asset_total": 926,
+    "missing_total": 0,
+    "mismatched_total": 0,
+    "unrecorded_legacy_duplicate_total": 17,
+    "receipt": "data/discovery/release-asset-audit-2026-09-10.json"
+  }
+}

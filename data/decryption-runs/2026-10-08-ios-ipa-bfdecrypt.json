@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "run": "2026-10-08-ios-ipa-bfdecrypt",
+  "scope": "com.sonos.SonosController2 decrypted IPA capture",
+  "device": {
+    "model": "iPad11,1",
+    "ios": "17.1.1 (21B91)",
+    "jailbreak": "Dopamine rootless",
+    "method": "ASDPurchase startPurchase with appExtVrsId pinned buy params via itunesstored-entitled CLI, then in-process FairPlay dump with bfdecrypt 1.3.5 (UIKit injection). Output cryptid 0 verified per binary with otool."
+  },
+  "artifacts_produced": [
+    {"version": "15.2", "external_version_id": 855571968,
+     "asset": "Sonos-s2-15.2-855571968--d61f848df3f2.ipa",
+     "sha256": "d61f848df3f232ce1f42df177af45fc8474f68088d5e999399db3a7594db82cb",
+     "bytes": 90077889},
+    {"version": "15.3", "external_version_id": 856283692,
+     "asset": "Sonos-s2-15.3-856283692--fd17e0ce5016.ipa",
+     "sha256": "fd17e0ce50167bf9cbcdc8f72955b6e6e2926458fd29da1bc7509e047155470d",
+     "bytes": 90132572},
+    {"version": "15.6", "external_version_id": 858436850,
+     "asset": "Sonos-s2-15.6-858436850--904ca945896d.ipa",
+     "sha256": "904ca945896dd46d24e6d535d3e018af6f265e97996fecb7f203b4606f335cb6",
+     "bytes": 90408440},
+    {"version": "16.0", "external_version_id": 863267647,
+     "asset": "Sonos-s2-16.0-863267647--28d652e08bc8.ipa",
+     "sha256": "28d652e08bc80830da655085e1fe9e0e3edb00d15ef0167d60af1ebe23f169f9",
+     "bytes": 90724295}
+  ],
+  "release_tag": "apps-ios-s2",
+  "server_verified": true,
+  "notes": "First iOS IPA preservation run. The four artifacts were uploaded to the apps-ios-s2 Release and reconciled against GitHub server-reported SHA-256 digests. Encrypted counterparts intentionally discarded; SC_Info sinf contains account-identifying material. iTunesMetadata.plist retained on-device only; provenance fields (external_version_id, build, minimum_os_version) copied into data/apps/ios-archive.json. Remaining ~93 S2 versions and 7 S1 versions pending subsequent runs."
+}

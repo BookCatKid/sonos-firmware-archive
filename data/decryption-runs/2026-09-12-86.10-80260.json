@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-12",
+  "purpose": "Extract every decryptable component from the 86.10-80260 compatibility packages discovered in the signed 97.1-80312 manifest",
+  "manifest_revision": "5055ac6c-22cf-439e-8cac-18e3b5f7c742",
+  "key_sources": {
+    "model_8": {
+      "recipient_id": "346ce6e38225ca8177024fbebfaad7043344b3bd",
+      "local_recovery_vault": true,
+      "legacy_model8_mode": true
+    },
+    "model_9": {
+      "recipient_id": "12e82a182af27801eba0ff3c94e8e649ed962dbb",
+      "local_recovery_vault": true
+    },
+    "model_12": {
+      "recipient_id": "e35f7c21c0ec00a768bfbd364a9a105cf300f023",
+      "local_recovery_vault": true
+    },
+    "model_17": {
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+      "local_recovery_vault": true
+    }
+  },
+  "packages": [
+    {
+      "package_id": "86.10-80260-1-8",
+      "package_sha256": "c66bfcf4160563685c18305b96347140e490bf12c6c37df4a8070f5f4f147474",
+      "receipt": "../raw/86.10-80260-1-8.json",
+      "component_count": 3
+    },
+    {
+      "package_id": "86.10-80260-1-9",
+      "package_sha256": "6c82af3a66596cac485e30b8b8f2f89f7039f211a379686d011786173db447de",
+      "receipt": "../raw/86.10-80260-1-9.json",
+      "component_count": 4
+    },
+    {
+      "package_id": "86.10-80260-1-12",
+      "package_sha256": "789ed826a3527ec45300ca84defb05c5602df9b3691ff3934b91f32783cc5d5c",
+      "receipt": "../raw/86.10-80260-1-12.json",
+      "component_count": 3
+    },
+    {
+      "package_id": "86.10-80260-1-17",
+      "package_sha256": "f89815256d311abb6d4f87a1663309fb857342772a63ac62192cb1f4734b29b5",
+      "receipt": "../raw/86.10-80260-1-17.json",
+      "component_count": 3
+    }
+  ],
+  "verification": {
+    "encrypted_recipient_checked": true,
+    "component_sha256_checked": true,
+    "private_keys_committed": false
+  },
+  "github_reconciliation": {
+    "release_total": 66,
+    "github_asset_total": 989,
+    "canonical_recorded_asset_total": 972,
+    "missing_total": 0,
+    "mismatched_total": 0,
+    "unrecorded_legacy_duplicate_total": 17,
+    "receipt": "data/discovery/release-asset-audit-2026-09-12.json"
+  }
+}
