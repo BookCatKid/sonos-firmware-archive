@@ -12,7 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .discovery import Candidate, USER_AGENT, parse_manifest, probe_all
-from .metadata import MANIFEST_URI_TYPE, UpdateProfile, fetch_update_metadata, parse_update_metadata
+from .metadata import (
+    MANIFEST_URI_TYPE, UpdateProfile, fetch_modern_manifest,
+    fetch_update_metadata, parse_update_metadata,
+)
 
 RELEASE_NOTES_URL = "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates"
 VERSION_PATTERN = re.compile(r"\b\d{2,3}\.\d+-\d{5}\b")
@@ -177,10 +180,20 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
     manifest_urls = sorted(
         {secure_url(item["uri"]) for item in records if item["type"] == MANIFEST_URI_TYPE}
     )
+    ups_manifest_urls = manifest_urls.copy()
+    for attempt in range(3):
+        try:
+            modern_body, modern_response = fetch_modern_manifest()
+            break
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(2**attempt)
+    manifest_urls = sorted(set(manifest_urls) | {modern_response["url"]})
     manifests = []
     current_candidates: dict[str, Candidate] = {}
     for url in manifest_urls:
-        body = fetch_bytes(url)
+        body = modern_body if url == modern_response["url"] else fetch_bytes(url)
         with tempfile.NamedTemporaryFile(suffix=".upm") as handle:
             handle.write(body)
             handle.flush()
@@ -230,7 +243,8 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
         "scope": (
-            "current public synthetic update profile plus every exact catalog URL marked "
+            "public anonymous modern S2 manifest and synthetic S1 update profile plus "
+            "every exact catalog URL marked "
             "missing-cdn; metadata and HEAD requests only"
         ),
         "request_profile": UpdateProfile().redacted(),
@@ -238,8 +252,9 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
             **response,
             "bytes": len(ups),
             "sha256": hashlib.sha256(ups).hexdigest(),
-            "manifest_urls": manifest_urls,
+            "manifest_urls": ups_manifest_urls,
         },
+        "modern_manifest": modern_response,
         "manifests": manifests,
         "current_candidate_total": len(current_probes),
         "current_available_total": sum(bool(item.get("available")) for item in current_probes),

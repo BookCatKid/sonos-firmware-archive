@@ -25,34 +25,42 @@ GA dir (`57.23-74170`, 18 model packages) is fully preserved. No other
 `.ups` path variant (`default-N-M`, `beta-`, `rc-`, `s1-`, `s2-`,
 `player-`, `zp-`, `system-`) exists — all 404.
 
-## S2 channel is certificate-gated
+## S2 channel: corrected 2026-11-04
 
-The desktop app (Sonos 90.0-79210, `update-software.sonos.com/software/
-HBVQeC4A1l/Sonos_90.0-79210.dmg`) embeds the modern request templates:
+The earlier conclusion that this channel required device certificates was
+wrong. A 404 from an incomplete request does not establish authentication
+requirements. No client certificate, real device ID or account is needed for
+the public request tested on November 4:
 
-- `/firmware/swgen/%u/latest/` — per-generation manifest base
-- `%supdate.upm?cmaj=%u&cmin=%u&cbld=%u&subm=%u&rev=%u&reg=%u&serial=%s`
-- `%s%s-%u-%u.upd?cmaj=%u&cmin=%u&cbld=%u&subm=%u&rev=%u&reg=%u&serial=%s`
-- `http://%s:%s/updatefw/%s-%d-%d.upd` — speaker-served UPD relay during
-  household updates (transient; nothing cached on idle devices)
-- headers `X-Sonos-SWGen` / `X-Sonos-LatestSWGen`
+```
+https://update.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52
+```
 
-Public probes of `/firmware/swgen/{1,2}/latest/update.upm` (with query) on
-`update.sonos.com`, `update-firmware.sonos.com`, `update-origin.sonos.com`,
-and `update-software.sonos.com` all return 404 — the swgen path is not
-served anonymously. App strings reference `ca.ws.sonos.com/certs/device/
-crl0` and `sve.sslauth.sonos.com` (403 without a device client cert), so the
-S2 manifest channel is almost certainly mTLS-gated. This explains why the
-catalog's recent releases come only from RC dirs: GA dirs for 90.0+/96.x/
-97.x exist behind device authentication, carrying the legacy-model packages
-(8, 9, 12, 13, 14, 17, 20, 22, 44, 53) that RC dirs omit.
+Both HTTP and HTTPS returned the same 13,853-byte XML manifest. Omitting the
+whole query returned 404. These tests establish the working query as a group,
+not which individual parameter is necessary. The response's Content-Location
+identified the canonical manifest:
 
-Implication for `96.0-79160-1-25` (the Move build observed on real
-hardware): the GA dir token is only disclosed inside the authenticated
-channel. A device that legitimately holds that build can reveal the dir —
-either via the speaker's `/updatefw/` relay during a real update or via a
-manifest fetched with valid device credentials. No unauthenticated path
-remains.
+```
+http://update.sonos.com/firmware/Prod/2026-Sonos-22-vd4jBpORK9-GA-1/update.upm
+```
+
+It names 98.0-82170 and legacy 86.11-82170 packages under RC-1 directories.
+Four files downloaded from those exact official URLs match the contributor's
+issue14 samples byte-for-byte. The contributor's RC-STABLE URLs returning404
+does not establish campaign rotation or unavailability of the same files.
+
+The working anonymous request was documented publicly in
+[Homebrew issue285208](https://github.com/Homebrew/homebrew-cask/issues/285208).
+The binary path template `/firmware/swgen/%u/latest/` is also present in
+archived Sonos firmware. Authentication-related strings elsewhere in the
+binaries do not prove that this update route requires authentication.
+
+The automated monitor now reads this modern manifest alongside the old S1
+UPS response. The canonical Content-Location is restricted to the two official
+firmware hosts, recorded separately from the anonymous request URL, and used
+by the existing manifest/package preservation flow. A missing or unexpected
+canonical location fails the check instead of silently reporting full coverage.
 
 ## Re-probe of `missing-cdn` URLs on `update.sonos.com`
 

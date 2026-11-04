@@ -41,5 +41,49 @@ class MetadataTests(unittest.TestCase):
             self.assertNotIn(private_field, serialized_profile)
 
 
+class ModernManifestTests(unittest.TestCase):
+    def response(self, location='http://update.sonos.com/firmware/Prod/current/update.upm'):
+        from unittest.mock import MagicMock
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b'<update_manifest></update_manifest>'
+        response.status = 200
+        response.headers = {'Content-Location': location} if location else {}
+        return response
+
+    def test_anonymous_query_and_canonical_location(self):
+        from unittest.mock import patch
+        from urllib.parse import parse_qs, urlsplit
+        from sonos_firmware.metadata import fetch_modern_manifest
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=self.response()) as call:
+            body, receipt = fetch_modern_manifest()
+        query = parse_qs(urlsplit(call.call_args.args[0].full_url).query)
+        self.assertEqual(query, {'sonosid': ['Anonymous'], 'householdid': ['nohhid'], 'cmaj': ['81'], 'cmin': ['0'], 'cbld': ['52']})
+        self.assertEqual(receipt['url'], 'https://update.sonos.com/firmware/Prod/current/update.upm')
+        self.assertEqual(receipt['sha256'], hashlib.sha256(body).hexdigest())
+
+    def test_rejects_foreign_content_location(self):
+        from unittest.mock import patch
+        from sonos_firmware.metadata import fetch_modern_manifest
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=self.response('https://untrusted.invalid/firmware/a.upm')):
+            with self.assertRaisesRegex(ValueError, 'unexpected modern manifest'):
+                fetch_modern_manifest()
+
+    def test_http_failure_is_not_silently_ignored(self):
+        from unittest.mock import patch
+        from urllib.error import HTTPError
+        from sonos_firmware.metadata import fetch_modern_manifest
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', side_effect=HTTPError('u', 404, 'Not Found', {}, None)):
+            with self.assertRaises(HTTPError):
+                fetch_modern_manifest()
+
+    def test_missing_canonical_location_fails_closed(self):
+        from unittest.mock import patch
+        from sonos_firmware.metadata import fetch_modern_manifest
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=self.response(None)):
+            with self.assertRaisesRegex(ValueError, 'missing Content-Location'):
+                fetch_modern_manifest()
+
+
 if __name__ == "__main__":
     unittest.main()

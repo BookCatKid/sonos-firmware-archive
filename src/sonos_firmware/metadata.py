@@ -8,7 +8,7 @@ import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 
 
 UPS_MAGIC = 0x35167F49
@@ -121,3 +121,38 @@ def snapshot_update_metadata(raw_path: str | Path, receipt_path: str | Path) -> 
     }
     write_json(receipt_path, receipt)
     return receipt
+
+
+MODERN_MANIFEST_BASE = "https://update.sonos.com/firmware/swgen/2/latest/update.upm"
+# Public anonymous desktop request. Omitting the query returns 404, not an
+# authentication challenge. No device/account identifiers are used.
+MODERN_MANIFEST_QUERY = {
+    "sonosid": "Anonymous", "householdid": "nohhid",
+    "cmaj": 81, "cmin": 0, "cbld": 52,
+}
+
+
+def fetch_modern_manifest(timeout: float = 30) -> tuple[bytes, dict]:
+    url = f"{MODERN_MANIFEST_BASE}?{urlencode(MODERN_MANIFEST_QUERY)}"
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        body = response.read()
+        location = response.headers.get("Content-Location")
+        if not location:
+            raise ValueError("modern manifest response missing Content-Location")
+        canonical = location
+        parsed = urlsplit(canonical)
+        if (parsed.scheme not in {"http", "https"}
+                or parsed.hostname not in {"update.sonos.com", "update-firmware.sonos.com"}
+                or parsed.username or parsed.password or parsed.port
+                or parsed.query or parsed.fragment
+                or not parsed.path.startswith("/firmware/")):
+            raise ValueError("unexpected modern manifest Content-Location")
+        canonical = canonical.replace("http://", "https://", 1)
+        return body, {
+            "url": canonical,
+            "request_url": url,
+            "status": response.status,
+            "bytes": len(body),
+            "sha256": hashlib.sha256(body).hexdigest(),
+        }
