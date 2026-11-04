@@ -64,13 +64,10 @@ jobs:
             const title = '[monitor] APKPure Sonos history expanded';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const body = [
-              'The automatic historical Android sweep found and preserved additional signer-verified Sonos delivery sets.',
-              '',
               `- Previously archived: ${{ steps.sweep.outputs.before }}`,
               `- Now archived: ${{ steps.sweep.outputs.after }}`,
               `- Newly preserved: ${{ steps.sweep.outputs.added }}`,
               '',
-              'This issue is intentionally left open for review.',
               `Review [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {

@@ -177,7 +177,7 @@ jobs:
             const title = '[monitor] Automatic Sonos preservation failed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const body = [
-              'At least one deterministic preservation step failed after new software was detected.',
+              'At least one preservation step failed after new software was detected.',
               '',
               `- desktop: ${{ steps.desktop_archive.outcome }}`,
               `- Sonos-hosted APK: ${{ steps.mobile_archive.outcome }}`,

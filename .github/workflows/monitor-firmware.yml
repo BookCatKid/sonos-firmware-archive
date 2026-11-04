@@ -115,8 +115,6 @@ jobs:
             const title = '[monitor] New Sonos firmware evidence detected';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const details = [
-              `Automated, non-AI source monitoring detected a change.`,
-              ``,
               `- Unknown manifest URLs: ${report.unknown_manifest_urls?.length ?? 0}`,
               `- Unknown manifest hashes: ${report.unknown_manifest_hashes?.length ?? 0}`,
               `- Unknown versions: ${(report.unknown_versions ?? []).join(', ') || 'none'}`,
@@ -176,8 +174,7 @@ jobs:
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const rows = (report.uncatalogued_available ?? []).map(x => `- ${x.filename}: ${x.url}`);
             const details = [
-              `Automated, non-AI expansion of official directories found downloadable uncatalogued UPDs.`,
-              ``, `- Directories checked: ${report.directory_total}`,
+              `- Directories checked: ${report.directory_total}`,
               `- Package URLs checked: ${report.candidate_total}`,
               `- New live packages: ${report.uncatalogued_available_total}`, ``,
               ...rows.slice(0, 100),
@@ -209,8 +206,6 @@ jobs:
               ...(report.unknown_direct_redirects ?? []).map(x => `- direct ${x.name}: ${x.location}`),
             ];
             const details = [
-              `Automated, non-AI desktop-app monitoring detected an unarchived Sonos installer.`,
-              ``,
               `- Live candidates checked: ${report.live_candidate_total}`,
               `- Unknown indexed installers: ${report.unknown_installer_total}`,
               `- Unknown direct redirect targets: ${report.unknown_direct_redirect_total}`,
@@ -245,8 +240,7 @@ jobs:
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const candidates = (report.unknown_installers ?? []).map(x => `- ${x.family} ${x.version}: ${x.url}`);
             const details = [
-              `Automated, non-AI mobile-app monitoring detected an unarchived official Sonos APK.`,
-              ``, `- Candidates checked: ${report.candidate_total}`,
+              `- Candidates checked: ${report.candidate_total}`,
               `- Live originals: ${report.live_total}`, `- Unknown: ${report.unknown_total}`,
               `- Known invalid/unrecoverable captures: ${report.known_gap_total ?? 0}`, ``,
               ...candidates.slice(0, 50),
@@ -276,8 +270,6 @@ jobs:
             const rows = (report.changed_listings ?? []).map(x =>
               `- ${x.package}: updated ${x.updated_on ?? 'unknown'} (${x.url})`);
             const details = [
-              `Automated, credential-free monitoring detected a change to an official Google Play listing.`,
-              `This is a discovery signal, not a claim that a new binary was downloaded.`, ``,
               ...rows, ``,
               `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
@@ -304,10 +296,7 @@ jobs:
             const rows = (report.changed_deployments ?? []).map(x =>
               `- ${x.app}: fingerprint \`${x.fingerprint}\``);
             const details = [
-              `Automated, credential-free monitoring detected a new public Sonos web deployment.`,
-              `The signal covers public HTML/manifests only; it does not capture accounts or cloud API data.`, ``,
               ...rows, ``,
-              `Automatic preservation will run immediately after this monitor completes; this issue remains open for review.`,
               `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {

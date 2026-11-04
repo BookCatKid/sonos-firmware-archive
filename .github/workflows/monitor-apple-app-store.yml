@@ -51,12 +51,8 @@ jobs:
               `- ${item.family} / ${item.name}: ${item.previous_version ?? 'untracked'} → ${item.version} (changed: ${item.changed_fields.join(', ')})`
             );
             const body = [
-              'Public Apple App Store metadata changed for a Sonos controller.',
-              'The metadata snapshot is preserved automatically. IPA acquisition remains a separate authorized-device workflow because Apple does not expose the binary anonymously.',
-              '',
               ...rows,
               '',
-              'This issue is intentionally left open for review and possible IPA recovery.',
               `Review [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {

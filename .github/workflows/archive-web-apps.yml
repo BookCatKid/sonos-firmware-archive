@@ -62,9 +62,6 @@ jobs:
             const rows = (report.changed_deployments ?? []).map(x =>
               `- ${x.app}: fingerprint \`${x.fingerprint}\``);
             const body = [
-              'Automated hourly monitoring detected a new public Sonos web deployment.',
-              'Automatic preservation is running in this same workflow, but this issue remains open for review.',
-              '',
               ...rows,
               '',
               `Review [workflow run ${context.runNumber}](${runUrl}).`,
@@ -127,8 +124,8 @@ jobs:
             const success = '${{ steps.preserve.outcome }}' === 'success' && '${{ steps.commit.outcome }}' === 'success';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const body = success
-              ? `Automatic preservation completed and verified in [workflow run ${context.runNumber}](${runUrl}). The issue is intentionally left open for human review.`
-              : `Automatic preservation FAILED in [workflow run ${context.runNumber}](${runUrl}). The detected deployment may be ephemeral; investigate immediately.`;
+              ? `Preservation completed and verified in [workflow run ${context.runNumber}](${runUrl}).`
+              : `Preservation failed in [workflow run ${context.runNumber}](${runUrl}).`;
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
             });
