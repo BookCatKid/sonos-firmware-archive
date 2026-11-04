@@ -64,9 +64,7 @@ jobs:
             const title = '[monitor] APKPure Sonos history expanded';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const body = [
-              `- Previously archived: ${{ steps.sweep.outputs.before }}`,
-              `- Now archived: ${{ steps.sweep.outputs.after }}`,
-              `- Newly preserved: ${{ steps.sweep.outputs.added }}`,
+              `Preserved ${{ steps.sweep.outputs.added }} additional historical Sonos Android versions. Total archived: ${{ steps.sweep.outputs.after }}.`,
               '',
               `Review [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');

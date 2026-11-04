@@ -114,13 +114,21 @@ jobs:
             const report = JSON.parse(fs.readFileSync('monitor-report.json', 'utf8'));
             const title = '[monitor] New Sonos firmware evidence detected';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const fmt = list => list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : `${list[0]}`;
+            const unknownVersions = report.unknown_versions ?? [];
+            const releaseNoteVersions = report.unknown_release_note_versions ?? [];
+            const newManifests = (report.unknown_manifest_urls?.length ?? 0) + (report.unknown_manifest_hashes?.length ?? 0);
+            const newDownloads = report.available_uncatalogued_candidates?.length ?? 0;
+            const recovered = report.known_missing_now_available?.length ?? 0;
+            const findings = [];
+            if (unknownVersions.length) findings.push(`New firmware versions: ${fmt(unknownVersions)}.`);
+            if (releaseNoteVersions.length) findings.push(`Sonos release notes now list ${fmt(releaseNoteVersions)}.`);
+            if (newManifests) findings.push(`New update manifests found: ${newManifests}.`);
+            if (newDownloads) findings.push(`New downloadable packages: ${newDownloads}.`);
+            if (recovered) findings.push(`Previously missing downloads now work: ${recovered}.`);
+            if (!newDownloads && !recovered) findings.push('No new downloads found.');
             const details = [
-              `- Unknown manifest URLs: ${report.unknown_manifest_urls?.length ?? 0}`,
-              `- Unknown manifest hashes: ${report.unknown_manifest_hashes?.length ?? 0}`,
-              `- Unknown versions: ${(report.unknown_versions ?? []).join(', ') || 'none'}`,
-              `- New release-note versions: ${(report.unknown_release_note_versions ?? []).join(', ') || 'none'}`,
-              `- Downloadable uncatalogued candidates: ${report.available_uncatalogued_candidates?.length ?? 0}`,
-              `- Known missing URLs now available: ${report.known_missing_now_available?.length ?? 0}`,
+              ...findings,
               ``,
               `Review the full JSON report artifact in [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
@@ -174,9 +182,8 @@ jobs:
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const rows = (report.uncatalogued_available ?? []).map(x => `- ${x.filename}: ${x.url}`);
             const details = [
-              `- Directories checked: ${report.directory_total}`,
-              `- Package URLs checked: ${report.candidate_total}`,
-              `- New live packages: ${report.uncatalogued_available_total}`, ``,
+              `New downloadable speaker firmware packages: ${report.uncatalogued_available_total}.`,
+              ``,
               ...rows.slice(0, 100),
               rows.length > 100 ? `- …and ${rows.length - 100} more in the report artifact` : ``,
               ``, `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
@@ -206,10 +213,6 @@ jobs:
               ...(report.unknown_direct_redirects ?? []).map(x => `- direct ${x.name}: ${x.location}`),
             ];
             const details = [
-              `- Live candidates checked: ${report.live_candidate_total}`,
-              `- Unknown indexed installers: ${report.unknown_installer_total}`,
-              `- Unknown direct redirect targets: ${report.unknown_direct_redirect_total}`,
-              ``,
               ...candidates.slice(0, 50),
               candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
               ``,
@@ -240,9 +243,6 @@ jobs:
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const candidates = (report.unknown_installers ?? []).map(x => `- ${x.family} ${x.version}: ${x.url}`);
             const details = [
-              `- Candidates checked: ${report.candidate_total}`,
-              `- Live originals: ${report.live_total}`, `- Unknown: ${report.unknown_total}`,
-              `- Known invalid/unrecoverable captures: ${report.known_gap_total ?? 0}`, ``,
               ...candidates.slice(0, 50),
               candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
               ``, `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
