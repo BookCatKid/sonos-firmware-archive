@@ -66,7 +66,7 @@ jobs:
             const body = [
               `Preserved ${{ steps.sweep.outputs.added }} additional historical Sonos Android versions. Total archived: ${{ steps.sweep.outputs.after }}.`,
               '',
-              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
@@ -107,7 +107,7 @@ jobs:
           script: |
             const title = '[monitor] APKPure Sonos history sweep incomplete';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const body = `The historical APKPure sweep or its metadata commit was incomplete. Progress was checkpointed where possible; review [workflow run ${context.runNumber}](${runUrl}).`;
+            const body = `The historical APKPure sweep did not finish. Details: [workflow run ${context.runNumber}](${runUrl}).`;
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
             });

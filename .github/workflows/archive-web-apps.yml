@@ -64,7 +64,7 @@ jobs:
             const body = [
               `The public Sonos web app changed: ${apps.length ? fmt(apps) : 'unknown app'}.`,
               '',
-              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
