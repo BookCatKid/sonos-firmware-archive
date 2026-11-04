@@ -59,10 +59,10 @@ jobs:
             const report = JSON.parse(fs.readFileSync('web-app-monitor-report.json', 'utf8'));
             const title = '[monitor] Sonos web deployment changed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const rows = (report.changed_deployments ?? []).map(x =>
-              `- ${x.app}: fingerprint \`${x.fingerprint}\``);
+            const fmt = list => list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : `${list[0]}`;
+            const apps = (report.changed_deployments ?? []).map(x => x.app);
             const body = [
-              ...rows,
+              `The public Sonos web app changed: ${apps.length ? fmt(apps) : 'unknown app'}.`,
               '',
               `Review [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
