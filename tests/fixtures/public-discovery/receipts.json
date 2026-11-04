@@ -1,0 +1,56 @@
+[
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/update.upm",
+    "bytes": 5284,
+    "sha256": "0feef455c52bbadc467108b1dc4ea834d533b67c733624a7dcd3914d8e8da899",
+    "file": "manifest-2.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.15-39070-v11.8-vghahcgk-GA-1/update.upm",
+    "bytes": 6110,
+    "sha256": "086ae9c0607080abc744d632bba9e125b19676660fa5f42833c6238e6282b025",
+    "file": "manifest-3.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/update.upm",
+    "bytes": 6113,
+    "sha256": "92737e3104ff4f4b76c904e38b50ef91660685327847a735d58fe71489800785",
+    "file": "manifest-4.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/update.upm",
+    "bytes": 7697,
+    "sha256": "0d807127fcd6c281ce64c93ff85db5879d540bb725670dfb2eec01ef0645560e",
+    "file": "manifest-5.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/update.upm",
+    "bytes": 6096,
+    "sha256": "1cd8a02e505cda7eecef2eca2c7a92280fdbd4d0c7977bd7f1fa5f95dd44a502",
+    "file": "manifest-6.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/update.upm",
+    "bytes": 8505,
+    "sha256": "b8e35a49f4e463bc819b00840f91edbbdbd41e0949e32dd10adc7346d9c2fc0f",
+    "file": "manifest-7.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/update.upm",
+    "bytes": 13853,
+    "sha256": "8b6a0ea9391968adc04435fa6e0081a49c75948b6fb0b04373c4fd80a3c8b215",
+    "file": "manifest-8.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/91.0-69300-v17.4-cCClQUh55Z-RC-2/update.upm",
+    "bytes": 12998,
+    "sha256": "cec2145643423f4bb10dfe9b6e098cb15ecac48ed35cbd53e38c07d2e601fedf",
+    "file": "manifest-9.upm"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/update.upm",
+    "bytes": 13274,
+    "sha256": "ec442a9dbba291e70baaa60bbba8cb78813ba3cce936e5fa4ca32853ea554dc0",
+    "file": "manifest-10.upm"
+  }
+]

@@ -43,7 +43,7 @@ jobs:
           else
             set +e
             python scripts/check_new_versions.py --output monitor-report.json
-            python scripts/check_catalog_firmware_directories.py               --output catalog-directory-monitor-report.json
+            python scripts/check_catalog_firmware_directories.py               --output catalog-directory-monitor-report.json --monitor-report monitor-report.json
             python scripts/check_new_desktop_apps.py               --output desktop-app-monitor-report.json               --discovery-output desktop-app-discovery.json
             python scripts/check_new_mobile_apps.py               --output mobile-app-monitor-report.json               --discovery-output mobile-app-discovery.json
             python scripts/check_new_google_play_apps.py               --output google-play-monitor-report.json               --discovery-output google-play-discovery.json
@@ -51,8 +51,8 @@ jobs:
             set -e
           fi
 
-          jq -e '(.status != "error") and ((.probe_errors | length) == 0)' monitor-report.json >/dev/null
-          jq -e '.error_total == 0' catalog-directory-monitor-report.json >/dev/null
+          jq -e '(.status != "error") and (.status != "incomplete") and (.discovery_incomplete != true) and ((.probe_errors | length) == 0)' monitor-report.json >/dev/null
+          jq -e '(.error_total == 0) and (.incomplete != true)' catalog-directory-monitor-report.json >/dev/null
           jq -e '.status != "error"' desktop-app-monitor-report.json >/dev/null
           jq -e '.status != "error"' mobile-app-monitor-report.json >/dev/null
           jq -e '.status != "error"' google-play-monitor-report.json >/dev/null
