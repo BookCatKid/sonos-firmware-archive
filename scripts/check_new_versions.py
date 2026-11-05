@@ -32,7 +32,8 @@ def main() -> int:
         f"{report['known_missing_checked_total']} known missing URLs; "
         f"status={report['status']}"
     )
-    return 2 if report["change_detected"] else (1 if report["probe_errors"] else 0)
+    has_errors = bool(report["probe_errors"] or report.get("modern_error"))
+    return 2 if report["change_detected"] else (1 if has_errors else 0)
 
 
 if __name__ == "__main__":
