@@ -11,9 +11,10 @@ into valid Linux components and SquashFS root filesystems.
 
 The exact binary inputs and their provenance are described in
 [`data/key-material/model26/README.md`](../data/key-material/model26/README.md).
-The PR does **not yet contain** the two input binaries, because their transfer
-into the tracked source tree was blocked during preparation. To make a fresh
-clone independently reproducible, the binaries must be added separately.
+Both original input binaries are now included in the tracked repository, so
+recovery can be reproduced directly from a fresh clone. The binaries were
+reconstructed from the published hexadecimal dump and OTP slide, with exact
+sizes and SHA-256 hashes verified before committing them.
 
 | Input | Bytes | SHA-256 |
 | --- | ---: | --- |

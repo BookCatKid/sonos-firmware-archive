@@ -265,7 +265,7 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
   --output /secure/model5-private.pem --expect-recipient RECIPIENT_SHA1
 
 # Model 26/Tupelo uses the public MDP3 field + OTP inputs described in
-# data/key-material/model26/README.md (binary copies pending in this PR).
+# data/key-material/model26/README.md (both public binary inputs included).
 python scripts/recover_model26_key.py --output /secure/model26-private.pem
 sonos-fw key-id /secure/model26-private.pem
 ```

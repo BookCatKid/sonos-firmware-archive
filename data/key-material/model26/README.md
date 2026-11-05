@@ -2,9 +2,8 @@
 
 This folder describes the two original binary inputs for the independently
 verified model-26 RSA-2048 firmware key recovery. The code and metadata can be
-reviewed without the binaries. The binary copies are **not yet included** in
-this pull request; they must be supplied before the documented one-command
-recovery works in a fresh clone.
+reviewed together with the original public input binaries, which are now
+included in the repository. The recovery works in a fresh clone.
 
 | Filename | Length | SHA-256 |
 | --- | ---: | --- |
@@ -33,7 +32,7 @@ key unless its SPKI SHA-1 recipient fingerprint is:
 b271039ff7ab0f3d395039f1f079ff71af9dea71
 ```
 
-With the binary files in this folder, from the repository root:
+From the repository root:
 
 ```bash
 python scripts/recover_model26_key.py --output /path/to/model26-private.pem

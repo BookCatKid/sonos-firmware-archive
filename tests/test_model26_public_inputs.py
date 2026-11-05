@@ -21,8 +21,8 @@ RECIPIENT = "b271039ff7ab0f3d395039f1f079ff71af9dea71"
 
 class PublishedModel26InputTests(unittest.TestCase):
     def test_published_inputs_recover_matching_recipient(self):
-        if not FIELD.is_file() or not OTP.is_file():
-            self.skipTest("original field and OTP binary copies not yet tracked in the PR")
+        self.assertTrue(FIELD.is_file(), "published MDP3 field must be tracked")
+        self.assertTrue(OTP.is_file(), "published OTP must be tracked")
         field = FIELD.read_bytes()
         otp = OTP.read_bytes()
         self.assertEqual(len(field), 0x800)

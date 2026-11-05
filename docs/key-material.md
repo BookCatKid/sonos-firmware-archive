@@ -217,8 +217,8 @@ firmware packages are documented in
 [`docs/model26-recovery.md`](model26-recovery.md). Both recovered SquashFS
 filesystems validated; the remaining 27 preserved encrypted packages have not
 yet been decrypted, and no new plaintext assets have been uploaded to Releases.
-The two public input-file copies must still be added to the PR before the
-command works in a clean checkout.
+Both published input-file copies are tracked with verified SHA-256 values,
+so the command works in a clean checkout.
 
 ## Archive evidence
 
@@ -310,7 +310,7 @@ packages are an extraction/publication backlog, not a missing-key problem.
 The exact Move `96.0-79160` package remains unavailable. Private-key PEMs
 remain outside Git; the six legacy keys require their corresponding updater
 inputs, whereas model 26 can be reproduced from the published MDP field and
-OTP when the documented binary copies are available.
+OTP; both exact binary inputs are included in the repository.
 
 For the next concrete target, model 13 / Encore (Play:5 Gen 2), the exact
 kernel and Sonos GPL source establish a different path: its MDP3 model key is
