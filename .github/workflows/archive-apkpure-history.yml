@@ -31,13 +31,23 @@ jobs:
           java-version: "21"
       - run: python -m pip install -e .
 
+      - name: Restore pinned APKPure acquisition tool
+        id: apkeep_cache
+        continue-on-error: true
+        uses: actions/cache@v4
+        with:
+          path: ~/apkeep-tool
+          # Exact pin only: no restore-keys fallback, a stale apkeep build is worse than a rebuild.
+          key: apkeep-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('tools/vendor/apkeep-1.0.0.tar.gz') }}
+
       - name: Build pinned APKPure acquisition tool
+        if: steps.apkeep_cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/apkeep-src" "$RUNNER_TEMP/apkeep-bin"
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$HOME/apkeep-tool"
           tar -xzf tools/vendor/apkeep-1.0.0.tar.gz             --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
-          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$RUNNER_TEMP/apkeep-bin"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$HOME/apkeep-tool"
 
       - name: Sweep every anonymously exposed Sonos version
         id: sweep
@@ -48,7 +58,7 @@ jobs:
           before=$(jq '.artifact_total' data/apps/android-store-archive.json)
           echo "before=$before" >> "$GITHUB_OUTPUT"
           set +e
-          python scripts/sweep_android_store_history.py             --apkeep "$RUNNER_TEMP/apkeep-bin/bin/apkeep"
+          python scripts/sweep_android_store_history.py             --apkeep "$HOME/apkeep-tool/bin/apkeep"
           code=$?
           set -e
           after=$(jq '.artifact_total' data/apps/android-store-archive.json)

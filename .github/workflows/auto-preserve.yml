@@ -86,27 +86,37 @@ jobs:
           distribution: temurin
           java-version: "21"
 
+      - name: Restore pinned APKPure acquisition tool
+        id: apkeep_cache
+        if: steps.changes.outputs.play == 'true'
+        continue-on-error: true
+        uses: actions/cache@v4
+        with:
+          path: ~/apkeep-tool
+          # Exact pin only: no restore-keys fallback, a stale apkeep build is worse than a rebuild.
+          key: apkeep-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('tools/vendor/apkeep-1.0.0.tar.gz') }}
+
       - name: Build pinned APKPure acquisition tool
         id: apkeep
-        if: steps.changes.outputs.play == 'true'
+        if: steps.changes.outputs.play == 'true' && steps.apkeep_cache.outputs.cache-hit != 'true'
         continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/apkeep-src" "$RUNNER_TEMP/apkeep-bin"
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$HOME/apkeep-tool"
           tar -xzf tools/vendor/apkeep-1.0.0.tar.gz             --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
-          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$RUNNER_TEMP/apkeep-bin"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src"             --root "$HOME/apkeep-tool"
 
       - name: Preserve signer-verified APKPure recovery delivery
         id: play_archive
-        if: steps.changes.outputs.play == 'true' && steps.apkeep.outcome == 'success'
+        if: steps.changes.outputs.play == 'true' && (steps.apkeep_cache.outputs.cache-hit == 'true' || steps.apkeep.outcome == 'success')
         continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
           before=$(sha256sum data/apps/android-store-archive.json | awk '{print $1}')
           while IFS= read -r package; do
-            python scripts/archive_android_store_apps.py               --source apkpure-recovery               --package "$package"               --apkeep "$RUNNER_TEMP/apkeep-bin/bin/apkeep"
+            python scripts/archive_android_store_apps.py               --source apkpure-recovery               --package "$package"               --apkeep "$HOME/apkeep-tool/bin/apkeep"
           done < <(jq -r '.changed_listings[].package' google-play-monitor-report.json)
           after=$(sha256sum data/apps/android-store-archive.json | awk '{print $1}')
           if [[ "$before" != "$after" ]]; then
