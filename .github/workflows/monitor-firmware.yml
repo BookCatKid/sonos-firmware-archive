@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python scripts/check_new_versions.py --output monitor-report.json
+          python scripts/check_new_versions.py --output monitor-report.json --probe-budget-seconds 1500
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
@@ -37,7 +37,7 @@ jobs:
         run: |
           set +e
           python scripts/check_catalog_firmware_directories.py \
-            --output catalog-directory-monitor-report.json
+            --output catalog-directory-monitor-report.json --monitor-report monitor-report.json
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
@@ -95,6 +95,7 @@ jobs:
           name: firmware-monitor-report
           path: |
             monitor-report.json
+            manifest-evidence/
             catalog-directory-monitor-report.json
             release-asset-audit.json
             desktop-app-monitor-report.json

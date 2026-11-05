@@ -1,0 +1,106 @@
+[
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.10-896b9db8f-RC-1/round_dfu_3.0.10-896b9db8f-prod.bin",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "3.0.10",
+    "package_model": 53,
+    "filename": "round_dfu_3.0.10-896b9db8f-prod.bin"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-8.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "86.11-82170",
+    "package_model": 8,
+    "filename": "86.11-82170-1-8.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/98.0-82170-1-21.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "98.0-82170",
+    "package_model": 21,
+    "filename": "98.0-82170-1-21.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/91.0-69300-v17.4-cCClQUh55Z-RC-2/91.0-69300-1-21.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "91.0-69300",
+    "package_model": 21,
+    "filename": "91.0-69300-1-21.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-9.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "73.0-42060",
+    "package_model": 9,
+    "filename": "73.0-42060-1-9.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "57.22-65130",
+    "package_model": 1,
+    "filename": "57.22-65130-1-1.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "57.19-46310",
+    "package_model": 1,
+    "filename": "57.19-46310-1-1.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.15-39070-v11.8-vghahcgk-GA-1/57.15-39070-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "57.15-39070",
+    "package_model": 1,
+    "filename": "57.15-39070-1-1.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "57.5-87010",
+    "package_model": 1,
+    "filename": "57.5-87010-1-1.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "55.1-74250",
+    "package_model": 1,
+    "filename": "55.1-74250-1-1.upd"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Duke/Prod/3.1.4-e16e1c539-RC-3/QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "3.1.4",
+    "package_model": 44,
+    "filename": "QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/2.8.34-dffaf4d05-RC-3/round_dfu_2.8.34-dffaf4d05-prod.bin",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "2.8.34",
+    "package_model": 53,
+    "filename": "round_dfu_2.8.34-dffaf4d05-prod.bin"
+  },
+  {
+    "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83040-1-1.upd",
+    "evidence": "official URL returned HTTP200 during public discovery on2026-11-04",
+    "kind": "verified-package-folder",
+    "version": "28.1-83040",
+    "package_model": 1,
+    "filename": "28.1-83040-1-1.upd"
+  }
+]

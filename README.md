@@ -325,7 +325,13 @@ started manually. It fetches the public synthetic update-metadata profile and th
 modern swgen-2 manifest (failing closed when its canonical location is missing
 or outside the official firmware hosts), parses every referenced signed
 manifest, probes its candidates, and rechecks every exact catalog URL marked
-`missing-cdn`. It also extracts build numbers
+`missing-cdn`. Public evidence seeds live in `config/discovery-seeds.json`;
+each is an exact official URL that previously returned a file, recorded with
+its source evidence. The traversal visits only seeded or discovered official
+list URLs and literal sibling `update.upm` files (never guessed folder codes),
+bounded to 256 lists of up to 2 MB with paced requests, and stops on access
+challenges; exhausted limits or fetch errors mark the run incomplete rather
+than clean. It also extracts build numbers
 from Sonos's first-party system release-notes page, which provides early
 warning when the opaque manifest URL is not publicly discoverable. It uploads
 a JSON audit and opens or updates one GitHub issue only when it sees an unknown

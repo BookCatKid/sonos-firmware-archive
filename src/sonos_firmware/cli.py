@@ -60,6 +60,10 @@ def main() -> int:
     discover.add_argument("manifest", type=Path)
     discover.add_argument("--output", type=Path, required=True)
     discover.add_argument("--workers", type=int, default=6)
+    discover.add_argument(
+        "--source-url",
+        help="manifest URL, used to resolve relative artifact paths",
+    )
     fetch = sub.add_parser("fetch", help="download available artifacts from discovery JSON")
     fetch.add_argument("discovery", type=Path)
     fetch.add_argument("--directory", type=Path, required=True)
@@ -121,7 +125,7 @@ def main() -> int:
     if args.command == "verify":
         return _verify(args.root)
     if args.command == "discover":
-        metadata, candidates = parse_manifest(args.manifest)
+        metadata, candidates = parse_manifest(args.manifest, source_url=args.source_url)
         results = probe_all(candidates, args.workers)
         write_json(args.output, {**metadata, "candidates": results})
         available = sum(item["available"] for item in results)

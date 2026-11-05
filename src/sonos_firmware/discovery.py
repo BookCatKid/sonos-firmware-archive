@@ -11,7 +11,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
@@ -46,7 +46,7 @@ def _secure(url: str) -> str:
     return "https://" + url.removeprefix("http://") if url.startswith("http://") else url
 
 
-def parse_manifest(path: str | Path) -> tuple[dict, list[Candidate]]:
+def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dict, list[Candidate]]:
     # Some historical mirrors preserved a complete XML document but truncated
     # the trailing signature comment. Parse only through the signed document's
     # closing element while retaining the original bytes untouched on disk.
@@ -57,20 +57,35 @@ def parse_manifest(path: str | Path) -> tuple[dict, list[Candidate]]:
         raise ValueError("manifest has no closing update_manifest element")
     root = ET.fromstring(text[: end + len(closing)])
     candidates: dict[str, Candidate] = {}
+    warnings: list[str] = []
+    if root.get("version") not in {"1", "1.1"}:
+        warnings.append(f"unrecognized manifest version: {root.get('version')}")
+
+    def resolve(url: str) -> str:
+        if not urlsplit(url).scheme:
+            if source_url:
+                return urljoin(source_url, url)
+            warnings.append(f"relative URL needs manifest source: {url}")
+        return url
+
+    def expand(url: str, version: str, model: int) -> str:
+        return resolve(url.replace(f"^{version}", f"{version}-1-{model}.upd"))
 
     def add(version: str, model: int, url: str, source: str) -> None:
-        url = _secure(url)
+        url = _secure(resolve(url))
         filename = url.rsplit("/", 1)[-1]
         candidates[url] = Candidate(version, model, url, source, filename)
 
     for image in root.findall(".//image"):
         url = (image.text or "").strip()
-        if not url or image.get("is_store") == "1":
+        if image.get("is_store") == "1" or url.split("?", 1)[0].endswith(".upm"):
             continue
         version = image.get("version", "unknown")
         model = int(image.get("model", "0").split(".", 1)[0])
-        url = url.replace(f"/^{version}", f"/{version}-1-{model}.upd")
-        add(version, model, url, "image")
+        if url:
+            add(version, model, expand(url, version, model), "image")
+        elif root.get("base_url") and version == root.get("default_version"):
+            add(version, model, expand(root.get("base_url"), version, model), "default-image")
 
     base_url = root.get("base_url")
     default_version = root.get("default_version")
@@ -82,8 +97,11 @@ def parse_manifest(path: str | Path) -> tuple[dict, list[Candidate]]:
             for value in (model_list.text or "").split(","):
                 if value.strip():
                     models.add(int(value.strip().split(".", 1)[0]))
+        if not models:
+            models = {int(i.get("model", "0").split(".", 1)[0]) for i in root.findall(".//image")}
+            warnings.append("no supported-model enumeration; inferred default candidates need availability checks")
         for model in models:
-            url = base_url.replace(f"/^{default_version}", f"/{default_version}-1-{model}.upd")
+            url = expand(base_url, default_version, model)
             add(default_version, model, url, "default-base")
 
     metadata = {
@@ -91,14 +109,17 @@ def parse_manifest(path: str | Path) -> tuple[dict, list[Candidate]]:
         "revision": root.get("revision"),
         "system_version": root.get("system_version"),
         "default_version": default_version,
+        "warnings": sorted(set(warnings)),
+        "manifest_links": sorted({resolve((e.text or "").strip())
+            for e in root.iter() if (e.text or "").strip().split("?", 1)[0].endswith(".upm")}),
     }
     return metadata, sorted(candidates.values(), key=lambda item: (item.version, item.package_model, item.url))
 
 
 def probe(candidate: Candidate, timeout: float = 20) -> dict:
-    request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
     result = asdict(candidate)
     try:
+        request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
         with _OPENER.open(request, timeout=timeout) as response:
             result.update(
                 available=response.status == 200,
@@ -110,14 +131,34 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
             )
     except urllib.error.HTTPError as error:
         result.update(available=False, http_status=error.code, bytes=None)
-    except (urllib.error.URLError, TimeoutError) as error:
+    except (urllib.error.URLError, TimeoutError, ValueError) as error:
         result.update(available=False, http_status=None, bytes=None, error=str(error))
     return result
 
 
-def probe_all(candidates: list[Candidate], workers: int = 6) -> list[dict]:
-    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
-        return list(pool.map(probe, candidates))
+def probe_all(candidates: list[Candidate], workers: int = 6, deadline: float | None = None) -> list[dict]:
+    # All source checks stop after throttling/access challenges, not just the
+    # directory sweep. A shared monotonic deadline keeps slow scans inside the
+    # workflow runtime so the report is always written.
+    # Keep the workers argument for caller compatibility.
+    import time
+    results = []
+    blocked = False
+    for candidate in candidates:
+        if blocked:
+            results.append({**asdict(candidate), "available": False, "error": "not checked after source challenge"})
+            continue
+        if deadline is not None and time.monotonic() > deadline:
+            results.append({**asdict(candidate), "available": False, "error": "not checked within probe budget"})
+            continue
+        row = probe(candidate)
+        results.append(row)
+        blocked = row.get("http_status") in {403, 429}
+        if blocked:
+            row["error"] = "source challenge; remaining probes skipped"
+        else:
+            time.sleep(.25)
+    return results
 
 
 def _sha256(path: Path) -> str:
