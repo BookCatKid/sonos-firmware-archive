@@ -12,7 +12,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .discovery import Candidate, USER_AGENT, parse_manifest, probe_all
-from .metadata import MANIFEST_URI_TYPE, UpdateProfile, fetch_update_metadata, parse_update_metadata
+from .crawl import crawl_manifests
+from .metadata import (
+    MANIFEST_URI_TYPE, UpdateProfile, fetch_modern_manifest,
+    fetch_update_metadata, parse_update_metadata,
+)
 
 RELEASE_NOTES_URL = "https://support.sonos.com/en-us/article/release-notes-sonos-system-updates"
 VERSION_PATTERN = re.compile(r"\b\d{2,3}\.\d+-\d{5}\b")
@@ -171,40 +175,55 @@ def fetch_metadata_with_retries() -> tuple[bytes, dict]:
     raise AssertionError("unreachable")
 
 
-def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True) -> dict:
+def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir=None, max_manifests=256, probe_budget_seconds: float | None = None, include_history: bool = True) -> dict:
     ups, response = fetch_metadata_with_retries()
     records = parse_update_metadata(ups)
     manifest_urls = sorted(
         {secure_url(item["uri"]) for item in records if item["type"] == MANIFEST_URI_TYPE}
     )
-    manifests = []
-    current_candidates: dict[str, Candidate] = {}
-    for url in manifest_urls:
-        body = fetch_bytes(url)
-        with tempfile.NamedTemporaryFile(suffix=".upm") as handle:
-            handle.write(body)
-            handle.flush()
-            metadata, candidates = parse_manifest(handle.name)
-        manifests.append(
-            {
-                "url": url,
-                "bytes": len(body),
-                "sha256": hashlib.sha256(body).hexdigest(),
-                "metadata": metadata,
-                "candidate_total": len(candidates),
-            }
-        )
-        current_candidates.update((candidate.url, candidate) for candidate in candidates)
+    ups_manifest_urls = manifest_urls.copy()
+    # An S2 outage must not block S1 discovery or preservation: report the
+    # modern failure and continue with the S1 manifests already fetched.
+    modern_body, modern_response, modern_error = None, None, None
+    for attempt in range(3):
+        try:
+            modern_body, modern_response = fetch_modern_manifest()
+            break
+        except Exception as error:
+            modern_error = error
+            if attempt < 2:
+                time.sleep(2**attempt)
+    if modern_response is not None:
+        manifest_urls = sorted(set(manifest_urls) | {modern_response["url"]})
+    # Only the already-fetched modern body is seeded. Every other feed
+    # manifest is retrieved through the crawler's guarded, size-limited and
+    # budgeted path so feed data cannot trigger unguarded downloads.
+    initial = [
+        {"url": url, "body": modern_body}
+        if modern_response is not None and url == modern_response["url"]
+        else {"url": url}
+        for url in manifest_urls
+    ]
+    probe_deadline = (
+        time.monotonic() + probe_budget_seconds if probe_budget_seconds else None
+    )
+    graph = crawl_manifests(catalog, initial, seed_urls or [],
+                            Path(evidence_dir or "manifest-evidence"), max_manifests=max_manifests, include_history=include_history)
+    manifests = graph["manifests"]
+    current_candidates = {c.url: c for c in graph.pop("candidates")}
 
-    current_probes = probe_all(list(current_candidates.values()), workers)
+    current_probes = [] if graph["blocked"] else probe_all(list(current_candidates.values()), workers, deadline=probe_deadline)
     missing_packages = [
         item for item in catalog["packages"] if include_history and item["artifact_status"] == "missing-cdn"
     ]
     missing_candidates = [package_candidate(item) for item in missing_packages]
-    missing_probes = probe_all(missing_candidates, workers)
-    alternate_missing_probes = probe_all(
-        [alternate_host(item) for item in missing_candidates], workers
+    challenged = graph["blocked"] or any(x.get("http_status") in {403,429} for x in current_probes)
+    missing_probes = [] if challenged else probe_all(missing_candidates, workers, deadline=probe_deadline)
+    challenged = challenged or any(x.get("http_status") in {403,429} for x in missing_probes)
+    alternate_missing_probes = [] if challenged else probe_all(
+        [alternate_host(item) for item in missing_candidates], workers, deadline=probe_deadline
     )
+    challenged = challenged or any(x.get("http_status") in {403,429} for x in alternate_missing_probes)
     missing_prefixes = {item.url.rsplit("/", 1)[0] for item in missing_candidates}
     controls_by_prefix: dict[str, Candidate] = {}
     for package in catalog["packages"]:
@@ -214,7 +233,7 @@ def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True
         prefix = candidate.url.rsplit("/", 1)[0]
         if prefix in missing_prefixes and prefix not in controls_by_prefix:
             controls_by_prefix[prefix] = candidate
-    control_probes = probe_all(list(controls_by_prefix.values()), workers)
+    control_probes = [] if challenged else probe_all(list(controls_by_prefix.values()), workers, deadline=probe_deadline)
     release_notes = fetch_bytes(RELEASE_NOTES_URL)
     release_note_versions = set(VERSION_PATTERN.findall(release_notes.decode("utf-8", errors="replace")))
     summary = summarize_changes(
@@ -229,9 +248,10 @@ def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True
     return {
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
-        "scope": (
-            "current public synthetic update profile plus every exact catalog URL marked "
-            "missing-cdn; metadata and HEAD requests only"
+        "scope": "current public feeds with historical discovery enabled" if include_history else "current public feeds and their package siblings only",
+        "discovery_graph": graph,
+        "modern_error": (
+            str(modern_error) if modern_response is None and modern_error else None
         ),
         "include_history": include_history,
         "request_profile": UpdateProfile().redacted(),
@@ -239,8 +259,9 @@ def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True
             **response,
             "bytes": len(ups),
             "sha256": hashlib.sha256(ups).hexdigest(),
-            "manifest_urls": manifest_urls,
+            "manifest_urls": ups_manifest_urls,
         },
+        "modern_manifest": modern_response,
         "manifests": manifests,
         "current_candidate_total": len(current_probes),
         "current_available_total": sum(bool(item.get("available")) for item in current_probes),
@@ -258,6 +279,7 @@ def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True
         "alternate_host_candidates": alternate_missing_probes,
         "controls": control_probes,
         **summary,
+        "discovery_incomplete": challenged or graph["blocked"] or graph["limits_reached"] or any(f["kind"] != "not-found" for f in graph["failures"]) or any(any("unrecognized" in w or "needs manifest source" in w for w in m["metadata"].get("warnings", [])) for m in manifests),
     }
 
 

@@ -16,7 +16,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: monitor-firmware-sources
+  group: monitor-firmware-sources-${{ (github.event.schedule == '43 7 * * 0' || inputs.include_history) && 'history' || 'current' }}
   cancel-in-progress: false
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python scripts/check_new_versions.py --output monitor-report.json ${{ steps.scope.outputs.args }}
+          python scripts/check_new_versions.py --output monitor-report.json --probe-budget-seconds 1500 ${{ steps.scope.outputs.args }}
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
@@ -57,7 +57,7 @@ jobs:
         run: |
           set +e
           if [[ "${{ steps.scope.outputs.history }}" == "true" ]]; then
-            python scripts/check_catalog_firmware_directories.py --output catalog-directory-monitor-report.json
+            python scripts/check_catalog_firmware_directories.py --output catalog-directory-monitor-report.json --monitor-report monitor-report.json
           else
             printf '%s\n' '{"schema_version":1,"scope":"deferred-to-weekly","error_total":0,"uncatalogued_available_total":0,"uncatalogued_available":[]}' > catalog-directory-monitor-report.json
           fi
@@ -110,6 +110,7 @@ jobs:
           name: firmware-monitor-report
           path: |
             monitor-report.json
+            manifest-evidence/
             catalog-directory-monitor-report.json
             release-asset-audit.json
             desktop-app-monitor-report.json
@@ -128,17 +129,23 @@ jobs:
             const report = JSON.parse(fs.readFileSync('monitor-report.json', 'utf8'));
             const title = '[monitor] New Sonos firmware evidence detected';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const fmt = list => list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : `${list[0]}`;
+            const unknownVersions = report.unknown_versions ?? [];
+            const releaseNoteVersions = report.unknown_release_note_versions ?? [];
+            const newManifests = (report.unknown_manifest_urls?.length ?? 0) + (report.unknown_manifest_hashes?.length ?? 0);
+            const newDownloads = report.available_uncatalogued_candidates?.length ?? 0;
+            const recovered = report.known_missing_now_available?.length ?? 0;
+            const findings = [];
+            if (unknownVersions.length) findings.push(`New Sonos firmware: ${fmt(unknownVersions)}.`);
+            if (releaseNoteVersions.length) findings.push(`Sonos release notes now list ${fmt(releaseNoteVersions)}.`);
+            if (newManifests) findings.push(`Sonos published ${newManifests} new update ${newManifests === 1 ? 'list' : 'lists'}.`);
+            if (newDownloads) findings.push(`Found ${newDownloads} new firmware ${newDownloads === 1 ? 'file' : 'files'} ready to download.`);
+            if (recovered) findings.push(`${recovered} previously missing ${recovered === 1 ? 'download works' : 'downloads work'} again.`);
+            if (!newDownloads && !recovered) findings.push('No new downloads found.');
             const details = [
-              `Automated, non-AI source monitoring detected a change.`,
+              ...findings,
               ``,
-              `- Unknown manifest URLs: ${report.unknown_manifest_urls?.length ?? 0}`,
-              `- Unknown manifest hashes: ${report.unknown_manifest_hashes?.length ?? 0}`,
-              `- Unknown versions: ${(report.unknown_versions ?? []).join(', ') || 'none'}`,
-              `- New release-note versions: ${(report.unknown_release_note_versions ?? []).join(', ') || 'none'}`,
-              `- Downloadable uncatalogued candidates: ${report.available_uncatalogued_candidates?.length ?? 0}`,
-              `- Known missing URLs now available: ${report.known_missing_now_available?.length ?? 0}`,
-              ``,
-              `Review the full JSON report artifact in [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
@@ -159,7 +166,7 @@ jobs:
               const lastMonitorComment = comments
                 .filter(comment => comment.user?.login === 'github-actions[bot]')
                 .at(-1);
-              const evidence = body => (body ?? '').split('Review the full JSON report artifact in ')[0].trim();
+              const evidence = body => (body ?? '').trim().split('\n').slice(0, -1).join('\n').trim();
               if (evidence(lastMonitorComment?.body ?? existing.body) !== evidence(details)) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
@@ -188,15 +195,15 @@ jobs:
             const report = JSON.parse(fs.readFileSync('catalog-directory-monitor-report.json', 'utf8'));
             const title = '[monitor] Cataloged Sonos directory exposes new speaker firmware';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const rows = (report.uncatalogued_available ?? []).map(x => `- ${x.filename}: ${x.url}`);
+            const fmt = list => list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : `${list[0]}`;
+            const versions = [...new Set((report.uncatalogued_available ?? [])
+              .map(x => (x.filename ?? '').split('-').slice(0, 2).join('-'))
+              .filter(v => v))];
+            const total = report.uncatalogued_available_total ?? versions.length;
             const details = [
-              `Automated, non-AI expansion of official directories found downloadable uncatalogued UPDs.`,
-              ``, `- Directories checked: ${report.directory_total}`,
-              `- Package URLs checked: ${report.candidate_total}`,
-              `- New live packages: ${report.uncatalogued_available_total}`, ``,
-              ...rows.slice(0, 100),
-              rows.length > 100 ? `- …and ${rows.length - 100} more in the report artifact` : ``,
-              ``, `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
+              `Found ${total} new downloadable speaker firmware ${total === 1 ? 'file' : 'files'} for ${versions.length ? fmt(versions) : 'known download folders'}.`,
+              ``,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
@@ -218,21 +225,15 @@ jobs:
             const report = JSON.parse(fs.readFileSync('desktop-app-monitor-report.json', 'utf8'));
             const title = '[monitor] New Sonos desktop installer detected';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const candidates = [
-              ...(report.unknown_installers ?? []).map(x => `- ${x.family}/${x.platform} ${x.version}: ${x.url}`),
-              ...(report.unknown_direct_redirects ?? []).map(x => `- direct ${x.name}: ${x.location}`),
+            const found = [
+              ...(report.unknown_installers ?? []).map(x => `New Sonos desktop installer: ${x.family}/${x.platform} ${x.version} (${x.url}).`),
+              ...(report.unknown_direct_redirects ?? []).map(x => `New Sonos desktop download: ${x.name} (${x.location}).`),
             ];
             const details = [
-              `Automated, non-AI desktop-app monitoring detected an unarchived Sonos installer.`,
+              ...found.slice(0, 10),
+              ...(found.length > 10 ? [`And ${found.length - 10} more in the workflow run.`] : []),
               ``,
-              `- Live candidates checked: ${report.live_candidate_total}`,
-              `- Unknown indexed installers: ${report.unknown_installer_total}`,
-              `- Unknown direct redirect targets: ${report.unknown_direct_redirect_total}`,
-              ``,
-              ...candidates.slice(0, 50),
-              candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
-              ``,
-              `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
@@ -257,15 +258,12 @@ jobs:
             const report = JSON.parse(fs.readFileSync('mobile-app-monitor-report.json', 'utf8'));
             const title = '[monitor] New official Sonos mobile APK detected';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const candidates = (report.unknown_installers ?? []).map(x => `- ${x.family} ${x.version}: ${x.url}`);
+            const found = (report.unknown_installers ?? []).map(x => `New Sonos Android app build: ${x.family} ${x.version} (${x.url}).`);
             const details = [
-              `Automated, non-AI mobile-app monitoring detected an unarchived official Sonos APK.`,
-              ``, `- Candidates checked: ${report.candidate_total}`,
-              `- Live originals: ${report.live_total}`, `- Unknown: ${report.unknown_total}`,
-              `- Known invalid/unrecoverable captures: ${report.known_gap_total ?? 0}`, ``,
-              ...candidates.slice(0, 50),
-              candidates.length > 50 ? `- …and ${candidates.length - 50} more in the report artifact` : ``,
-              ``, `Review the full JSON receipts in [workflow run ${context.runNumber}](${runUrl}).`,
+              ...found.slice(0, 10),
+              ...(found.length > 10 ? [`And ${found.length - 10} more in the workflow run.`] : []),
+              ``,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
@@ -287,13 +285,11 @@ jobs:
             const report = JSON.parse(fs.readFileSync('google-play-monitor-report.json', 'utf8'));
             const title = '[monitor] Sonos Google Play listing changed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const rows = (report.changed_listings ?? []).map(x =>
-              `- ${x.package}: updated ${x.updated_on ?? 'unknown'} (${x.url})`);
+            const found = (report.changed_listings ?? []).map(x =>
+              `The ${x.package} Google Play listing was updated on ${x.updated_on ?? 'an unknown date'}: ${x.url}`);
             const details = [
-              `Automated, credential-free monitoring detected a change to an official Google Play listing.`,
-              `This is a discovery signal, not a claim that a new binary was downloaded.`, ``,
-              ...rows, ``,
-              `Review the JSON evidence in [workflow run ${context.runNumber}](${runUrl}).`,
+              ...found, ``,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,

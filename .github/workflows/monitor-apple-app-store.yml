@@ -47,17 +47,13 @@ jobs:
             const report = JSON.parse(fs.readFileSync('apple-app-store-monitor-report.json', 'utf8'));
             const title = '[monitor] Sonos Apple App Store listing changed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const rows = (report.changed_listings ?? []).map(item =>
-              `- ${item.family} / ${item.name}: ${item.previous_version ?? 'untracked'} → ${item.version} (changed: ${item.changed_fields.join(', ')})`
+            const found = (report.changed_listings ?? []).map(item =>
+              `${item.family} / ${item.name} went from ${item.previous_version ?? 'untracked'} to ${item.version} (changed: ${item.changed_fields.join(', ')}).`
             );
             const body = [
-              'Public Apple App Store metadata changed for a Sonos controller.',
-              'The metadata snapshot is preserved automatically. IPA acquisition remains a separate authorized-device workflow because Apple does not expose the binary anonymously.',
+              ...found,
               '',
-              ...rows,
-              '',
-              'This issue is intentionally left open for review and possible IPA recovery.',
-              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,

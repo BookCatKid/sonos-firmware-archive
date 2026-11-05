@@ -123,7 +123,7 @@ def preserve_manifests(report: dict, repository: str, work: Path, plan_only: boo
     }
     pending = [
         item for item in report.get("manifests", [])
-        if (item.get("url"), item.get("sha256")) not in known
+        if official_firmware_url(item.get("url", "")) and (item.get("url"), item.get("sha256")) not in known
     ]
     if not pending:
         return 0
