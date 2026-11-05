@@ -441,6 +441,18 @@
     {
       "version": "98.0-82170",
       "default_version": "98.0-82170",
+      "revision": "94576865-b09e-479f-9d01-c74b727cfd48",
+      "filename": "98.0-82170--9e3774631bad--25c58a04.upm",
+      "bytes": 13853,
+      "sha256": "9e3774631bad2450d2edf569796342f1371fcb6cb40e9d8e8bec7ef21404d2ea",
+      "source_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-vd4jBpORK9-GA-1/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-05",
+      "release_asset": "98.0-82170--9e3774631bad--25c58a04.upm"
+    },
+    {
+      "version": "98.0-82170",
+      "default_version": "98.0-82170",
       "revision": "946efec1-e884-4c00-bcb9-6c18318ad57e",
       "filename": "98.0-82170--ec442a9dbba2--ef411f54.upm",
       "bytes": 13274,
