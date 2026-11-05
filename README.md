@@ -263,6 +263,11 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
   --model 5 --byte-order big --wrapper-offset 0x16880 \
   --mtd-prefix /secure/model5-mtd0-first-16k.bin \
   --output /secure/model5-private.pem --expect-recipient RECIPIENT_SHA1
+
+# Model 26/Tupelo uses the public MDP3 field + OTP inputs described in
+# data/key-material/model26/README.md (both public binary inputs included).
+python scripts/recover_model26_key.py --output /secure/model26-private.pem
+sonos-fw key-id /secure/model26-private.pem
 ```
 
 Raw component assets use package-prefixed names and live in the same private
@@ -276,10 +281,13 @@ ignored recovery storage; the checked-in tooling and receipts are sufficient to
 verify, reproduce extraction when that key is supplied, and audit every raw
 asset without exposing the key.
 
-See [model-key handling](docs/key-material.md) for the verified key-family
-fingerprints, provenance summary, and the archive's withheld-material policy.
-For the blocked Encore/model-13, Royale/model-20, Dhuez/model-25, and
-Tupelo/model-26 families, see the
+See [model-key handling](docs/key-material.md) for all seven recovered
+key families, their provenance, and their verified recovery methods.
+On 2026-11-05, the Tupelo/model-26 key was recovered from blasty's published
+MDP3 field and OTP, and two of its 29 encrypted UPDs were locally decrypted
+and validated. The raw files are not yet published to GitHub Releases.
+For the still-blocked Encore/model-13, Royale/model-20, and Dhuez/model-25
+families, alongside the now-recovered Tupelo/model-26 family, see the
 [model-13 recovery note](docs/model13-recovery.md),
 [model-20 recovery note](docs/model20-recovery.md),
 [model-25 recovery note](docs/model25-recovery.md), and

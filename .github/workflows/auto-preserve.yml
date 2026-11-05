@@ -160,6 +160,9 @@ jobs:
               echo "secret SONOS_MODEL_${model}_PRIVATE_KEY not set; model $model packages stay encrypted"
             fi
           done
+          # Model 26 is reproducible from the two hash-verified public input
+          # binaries tracked in Git; no Actions secret is required.
+          python scripts/recover_model26_key.py --output "$keydir/model26.pem"
           new_receipts="$RUNNER_TEMP/new-receipts"
           python scripts/decrypt_pending_firmware.py \
             --key-directory "$keydir" \

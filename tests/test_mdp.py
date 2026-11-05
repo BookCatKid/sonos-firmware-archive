@@ -21,6 +21,7 @@ from sonos_firmware.mdp import (
     inspect_mdp,
     recipient_id_for_key_file,
     recover_amlogic_model_key,
+    recover_amlogic_model_key_field,
     write_private_key_exclusive,
 )
 
@@ -70,6 +71,24 @@ class MDPTests(unittest.TestCase):
     def test_recovers_key_from_standalone_mdp3(self):
         recovered = recover_amlogic_model_key(self.mdp3, self.otp)
         self.assertEqual(key_recipient_id(recovered), key_recipient_id(self.key))
+
+    def test_recovers_key_from_only_model_private_field(self):
+        field = self.mdp3[MODEL_KEY_OFFSET : MODEL_KEY_OFFSET + 0x800]
+        recovered = recover_amlogic_model_key_field(field, self.otp)
+        self.assertEqual(key_recipient_id(recovered), key_recipient_id(self.key))
+
+    def test_rejects_invalid_model_private_field(self):
+        field = self.mdp3[MODEL_KEY_OFFSET : MODEL_KEY_OFFSET + 0x800]
+        with self.assertRaisesRegex(ValueError, "must be 2048 bytes"):
+            recover_amlogic_model_key_field(field[:-1], self.otp)
+        with self.assertRaisesRegex(ValueError, "unexpected magic"):
+            recover_amlogic_model_key_field(b"NOPE" + field[4:], self.otp)
+        with self.assertRaisesRegex(ValueError, "exceeds its storage"):
+            invalid = bytearray(field)
+            struct.pack_into("<I", invalid, 4, 0x801)
+            recover_amlogic_model_key_field(bytes(invalid), self.otp)
+        with self.assertRaises(ValueError):
+            recover_amlogic_model_key_field(field, bytes(256))
 
     def test_locates_mdp3_and_identity_in_complete_smdp(self):
         smdp = bytearray(SMDP_BYTES)
