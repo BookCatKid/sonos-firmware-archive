@@ -1,112 +1,102 @@
-# Model 26 / Tupelo key-recovery evidence
+# Model 26 / Tupelo (Sonos One): verified key recovery
 
-This note records the strongest public evidence found for the blocked model-26
-packages. It is a recovery plan, not a recovered private key. No device dump,
-OTP value, or private key belongs in this repository.
+**Recovered 2026-11-05.** Peter Geissler (`blasty`) supplied the missing
+MDP3 model-key field in [blasty/sonos issue #1](https://github.com/blasty/sonos/issues/1#issuecomment-6653881846).
+Combined with the OTP published in his HITB AMS 2023 slides, it yielded an
+RSA-2048 private key whose public fingerprint exactly matches the encrypted
+Sonos model-26 firmware recipient. Two preserved firmware updates were decrypted
+into valid Linux components and SquashFS root filesystems.
 
-## What the archive needs
+## Reproduce the recovery
 
-The preserved model-26 packages use one RSA recipient fingerprint:
+The exact binary inputs and their provenance are described in
+[`data/key-material/model26/README.md`](../data/key-material/model26/README.md).
+The PR does **not yet contain** the two input binaries, because their transfer
+into the tracked source tree was blocked during preparation. To make a fresh
+clone independently reproducible, the binaries must be added separately.
 
-```text
-b271039ff7ab0f3d395039f1f079ff71af9dea71
+| Input | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `data/key-material/model26/mdp3-model-key.bin` | 2,048 | `140843cf0a950ab3891498fecb7c658dd996ded54bafeefdfc886b8b39956b5c` |
+| `data/key-material/model26/otp.bin` | 256 | `5c218954d7ee17fb84d75c937e6fae1f4c7b0ae434f2185992786c8c08208e5b` |
+
+With those exact files, and the archive installed (`pip install -e .`):
+
+```bash
+python scripts/recover_model26_key.py --output /secure/model26-private.pem
+sonos-fw key-id /secure/model26-private.pem
 ```
 
-For example, `65.1-21040-1-26` and `96.0-78270-1-26` have all four payload
-sections (preinstall, kernel, rootfs, and section 15) encrypted for that
-recipient. Their section-level facts are retained in
-[`data/upd/65.1-21040-1-26.json`](../data/upd/65.1-21040-1-26.json) and
-[`data/upd/96.0-78270-1-26.json`](../data/upd/96.0-78270-1-26.json); no
-plaintext release asset or matching private key is present in this archive
-checkout.
+The result must be `b271039ff7ab0f3d395039f1f079ff71af9dea71`.
+The script verifies input sizes and hashes, checks RSA DER and the public
+recipient fingerprint *before* writing the private key, and writes the PEM
+exclusively with owner-only permissions. Alternative input paths are supported
+through `--field` and `--otp`.
 
-## Public model-26 layout
+Existing `sonos-fw recover-amlogic-mdp-key` accepts a complete 16-KiB MDP3
+page or a larger manufacturing-data capture, optionally validating a model
+identity in MDP1. Blasty provided only the 2,048-byte model-key **field** at
+MDP3 offset `0x780`; the dedicated script accepts this field directly and
+identifies the model through the independently observed UPD recipient. No
+synthetic manufacturing page or fabricated model identity is required.
 
-The public [`darkarnium/sonor` S18-One MDP notes](https://github.com/darkarnium/sonor/blob/a7b16b36c37c636ac37b383325858903affa1d31/devices/S18-One/MDP.md)
-identify the unit as Sonos Tupelo and report `MDP model 26`, `mdp3_version 2`,
-and `mdp_pages_present 7` from an observed retail unit. The notes reproduce
-Sonos's `smdp` layout: 0x200 bytes MDP1, 0x1000 bytes MDP2, and a 0x4000-byte
-MDP3 page. Within MDP3, the model-private-key field begins at offset `0x780`
-and is 2048 bytes long. The source layout is:
+## Primary sources and layout
 
-```c
-struct smdp {
-    struct manufacturing_data_page      mdp;   /* 0x0200 */
-    struct manufacturing_data_page2     mdp2;  /* 0x1000 */
-    struct manufacturing_data_page3     mdp3;  /* 0x4000 */
-};
+- [Blasty's original reply](https://github.com/blasty/sonos/issues/1#issuecomment-6653881846)
+  provides the hexadecimal dump beginning at MDP3 offset `0x780`.
+- [HITB Amsterdam 2023 slides](https://conference.hitb.org/hitbsecconf2023ams/materials/D2T1%20-%20Smart%20Speaker%20Shenanigans%20-%20Making%20the%20SONOS%20One%20Sing%20Its%20Secrets%20-%20Peter%20Geissler.pdf),
+  slide 52, contain the matching 0x100-byte OTP/eFUSE capture.
+- [blasty/sonos/sonostool.py](https://github.com/blasty/sonos/blob/main/sonostool/sonostool.py)
+  implements `sonos_blob_encdec` and the firmware RSA-OAEP unwrap.
+- [S18-One manufacturing-page layout](https://github.com/darkarnium/sonor/blob/a7b16b36c37c636ac37b383325858903affa1d31/devices/S18-One/MDP.md)
+  identifies `mdp3_model_private_key` as a 0x800-byte field at MDP3 `0x780`.
 
-/* within MDP3 */
-uint8_t mdp3_fskey1[256];
-uint8_t mdp3_fskey2[256];
-uint8_t mdp3_model_private_key[2048];
-```
+The binary field starts with raw magic `8d c6 cc f4` (little-endian
+`0xf4ccc68d`), a little-endian length `0x4cc` (1,228 bytes), and
+four reserved bytes. The next 1,228 bytes contain the wrapped RSA material;
+the remainder of the 2,048-byte field is zero padding.
 
-The same repository publishes a read-only-oriented [`dump-mdp.py`](https://github.com/darkarnium/sonor/blob/master/devices/S18-One/scripts/dump-mdp.py)
-parser and says that the MDP can be located in a full flash image by its
-`0xce10e47d` magic. Its public dump directory contains console logs and a
-device-tree dump, not the raw MDP bytes; the raw dump is therefore still a
-required out-of-band artifact.
+The algorithm, reproduced in [`src/sonos_firmware/mdp.py`](../src/sonos_firmware/mdp.py),
+matches the original binary-oriented implementation:
 
-## OTP-derived unwrap
+1. Derive AES-128 key `SHA256(OTP[0xd0:0xe0])[:16]`.
+2. Split the wrapped field payload into ciphertext, a 12-byte IV, and a
+   16-byte trailer. XOR the IV with the zero-padded ASCII `model` modifier.
+3. Encrypt `modified_IV || uint32_be(counter)` with AES-ECB for counters
+   starting at 2 to construct a keystream, then XOR it with ciphertext.
+4. Remove PKCS#7 padding and parse the result as an RSA-2048 DER private key.
+5. SHA-1-hash its public SubjectPublicKeyInfo DER; the result matches
+   `b271039ff7ab0f3d395039f1f079ff71af9dea71`, shared by all
+   **29 preserved model-26 packages**.
 
-The primary [`blasty/sonos` sonostool implementation](https://github.com/blasty/sonos/blob/27be43832f6106d068541534ed0f151b841d1fa4/sonostool/sonostool.py)
-hard-codes `SONOS_MODEL = 26` and `SONOS_SUBMODEL = 1` (the Tupelo target),
-expects a 0x4000-byte MDP3 input and a 0x100-byte OTP input, and reads the
-model-key field at `0x780`. Its blob routine derives the AES-128 keystream key
-as `SHA256(OTP[0xd0:0xe0])[:16]`; the `model` modifier is used to unwrap the
-RSA model key. The recovered RSA key then unwraps the AES key in each encrypted
-update record. The archive's offline implementation mirrors this layout in
-[`src/sonos_firmware/mdp.py`](../src/sonos_firmware/mdp.py). It can require the
-complete manufacturing pages to identify model 26, validate that the result is
-an RSA-2048 private key, and require its public fingerprint to match the
-expected package recipient:
+The original routine does not validate the final 16-byte trailer as a GCM
+authentication tag; we preserve that behavior instead of claiming authenticated
+GCM decryption. The DER parse and exact public fingerprint independently
+validate the recovered key. The firmware updater's RSA-OAEP envelope then
+unwraps individual AES keys for the encrypted firmware sections.
 
-```sh
-sonos-fw recover-amlogic-mdp-key /secure/model26-smdp.bin \
-  --otp /secure/model26-otp.bin \
-  --output /secure/model26-private.pem \
-  --expect-model 26 \
-  --expect-recipient b271039ff7ab0f3d395039f1f079ff71af9dea71
-```
+## Verified firmware extraction
 
-Use a complete SMDP or larger device dump when `--expect-model` is set. A
-standalone MDP3 page contains no MDP1 model identity and is deliberately
-rejected by that validation.
+The original `.upd` files were retrieved from the archive's matching GitHub
+Releases and their hashes were checked against `data/catalog.json` before
+decryption.
 
-The public repository's [README](https://github.com/blasty/sonos/blob/27be43832f6106d068541534ed0f151b841d1fa4/README.md)
-states that this path is intended to work from OTP/MDP material without using
-the speaker as a decryption oracle. That does **not** make the OTP or MDP
-public: the repository provides code, not a model-26 private key or a
-reusable OTP dump.
+| UPD package | Source SHA-256 | Preinstall | Kernel | Rootfs |
+| --- | --- | ---: | ---: | ---: |
+| `57.14-37030-1-26` | `a2944eefdb47c008b1fa7c3518bdfd5a432b5e592d38f478918bfd513e6f303d` | 5,097 B | 7,764,464 B | 31,051,776 B |
+| `97.1-80312-1-26` | `2d3ce8b00b7085c4d97b28c83befbc9d261888aae3490b62c7e369bf59bb78b8` | 2,489 B | 9,007,716 B | 82,362,368 B |
 
-## Independent corroboration and limits
+The extracted preinstall scripts are readable shell scripts; both rootfs
+files were validated with `unsquashfs -s` and `unsquashfs -ll`, reporting
+SquashFS 4.0 (gzip in 57.14; LZ4 in 97.1). Component sizes and SHA-256
+values are preserved in
+[`data/decryption-runs/2026-11-05-model26-local-validation.json`](../data/decryption-runs/2026-11-05-model26-local-validation.json).
 
-The [HITB Amsterdam 2023 talk page](https://conference.hitb.org/hitbsecconf2023ams/session/smart-speaker-shenanigans-making-the-sonos-one-sing-its-secrets/)
-and its [slides](https://conference.hitb.org/hitbsecconf2023ams/materials/D2T1%20-%20Smart%20Speaker%20Shenanigans%20-%20Making%20the%20SONOS%20One%20Sing%20Its%20Secrets%20-%20Peter%20Geissler.pdf)
-independently describe the Sonos One's Amlogic secure monitor, protected OTP,
-and extraction of hardware-backed material. Those observations are useful for
-validating a supplied capture, but do not recover the 16-byte slice needed by
-the host-side formula.
+**Status:** Two packages have been locally decrypted and verified; 27 have
+not yet been processed. No decrypted model-26 assets have been uploaded to
+GitHub Releases, so the catalog correctly continues to mark their raw
+artifacts as unpublished. Recovering one recipient key does not imply all
+24 plaintext packages have already been archived.
 
-The public [S18 eFuse inventory](https://github.com/darkarnium/sonor/blob/master/devices/S18-One/EFUSES.md)
-records secure-boot/encryption fuse state and reports the raw `SBOOT_AES256`
-value as write-only (only a hash is shown). The S18 notes expose enough
-structure to make a supplied capture testable, but they do not contain the
-capture itself. A matching, authorized model-26 unit
-must therefore supply both:
-
-1. an exact 0x5200-byte `smdp` image (or a 0x4000-byte MDP3 page) containing a
-   valid model-key field; and
-2. the exact 0x100-byte OTP dump for that unit.
-
-Until both are available, trying the formula against the archived `.upd`
-files cannot produce a new key. The current state is consequently
-`blocked-model-key`, not a newly discovered decryption key.
-
-## Additional public access lead
-
-For historical context only, [Synacktiv's Sonos One Gen 2 research](https://www.synacktiv.com/en/publications/dumping-the-sonos-one-smart-speaker)
-documents obtaining cleartext firmware through a physical PCIe/DMA research
-setup. This is not needed for the offline unwrap once MDP+OTP are supplied and
-is outside this archive's static, non-device workflow.
+See [model-key handling](key-material.md) for the comparable recovery notes
+for models 1, 8, 9, 12, 16, and 17.

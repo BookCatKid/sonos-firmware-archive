@@ -14,6 +14,9 @@ artifacts/
 *.uImage
 *.squashfs
 *.bin
+# Allow the two published model-26 recovery inputs when their copies are added.
+!data/key-material/model26/mdp3-model-key.bin
+!data/key-material/model26/otp.bin
 rootfs-extracted/
 
 # Never commit recovered private keys or device/household captures.

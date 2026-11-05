@@ -75,13 +75,25 @@ def main() -> int:
     for field in [name for name in ledger["key_origin"] if name.startswith("local_status_")]:
         del ledger["key_origin"][field]
     recovered_models = sorted(metadata["package_model"] for metadata in recovered.values())
+    legacy_models = sorted(set(recovered_models) & {1, 8, 9, 12, 16, 17})
+    mechanisms = []
+    if legacy_models:
+        mechanisms.append(
+            "Models " + ", ".join(map(str, legacy_models))
+            + " are reproducible from encrypted wrappers in plaintext 34.16-37101 updaters"
+        )
+    if 26 in recovered_models:
+        mechanisms.append(
+            "Model 26 is reproducible from the publicly documented MDP3 model-key "
+            "field and matching HITB 2023 OTP using scripts/recover_model26_key.py"
+        )
     ledger["key_origin"]["local_status_current"] = (
-        f"{len(recovered)} recipient keys are retained for package models "
-        f"{', '.join(map(str, recovered_models))}. All are reproducible from encrypted "
-        "wrappers in their plaintext 34.16-37101 updater binaries. Private keys and "
-        "exact recovery intermediates remain in the local gitignored recovery-work "
-        "vault and never enter Git; scripts/audit_recovery_vault.py verifies its "
-        f"integrity. {len(ledger['missing_keys'])} recipient groups remain missing."
+        f"{len(recovered)} recovered recipient keys cover package models "
+        f"{', '.join(map(str, recovered_models))}. "
+        + ". ".join(mechanisms)
+        + ". Private-key PEM outputs remain in the local gitignored recovery-work "
+        "vault rather than in Git. "
+        + f"{len(ledger['missing_keys'])} recipient groups remain missing."
     )
     ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(ledger["summary"], indent=2))

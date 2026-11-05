@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-05",
+  "purpose": "Local model-26 key recovery and verification against two preserved Sonos firmware packages",
+  "model": 26,
+  "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71",
+  "key_source": "https://github.com/blasty/sonos/issues/1#issuecomment-6653881846",
+  "key_derivation": "https://github.com/blasty/sonos/blob/main/sonostool/sonostool.py",
+  "key_recovered": true,
+  "key_publication": "key not committed; input binary copies pending manual addition",
+  "package_count_verified": 2,
+  "package_count_remaining": 27,
+  "plaintext_release_uploads_completed": false,
+  "packages": [
+    {
+      "package_id": "57.14-37030-1-26",
+      "release_tag": "firmware-57.14-37030",
+      "source_sha256": "a2944eefdb47c008b1fa7c3518bdfd5a432b5e592d38f478918bfd513e6f303d",
+      "source_bytes": 39909779,
+      "components": [
+        {
+          "package_id": "57.14-37030-1-26",
+          "section_index": 6,
+          "section_type": 3,
+          "kind": "preinstall",
+          "filename": "57.14-37030-1-26-preinstall.sh",
+          "bytes": 5097,
+          "sha256": "c8dd3746b454862a80fe86b62c236f3b19249924054e059d78c63a77e3dda60a",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        },
+        {
+          "package_id": "57.14-37030-1-26",
+          "section_index": 7,
+          "section_type": 6,
+          "kind": "kernel",
+          "filename": "57.14-37030-1-26-kernel.uImage",
+          "bytes": 7764464,
+          "sha256": "19b79dd2919021e55082e5e7f367e5382ed79f4442516cf4fccb75bff28ba712",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        },
+        {
+          "package_id": "57.14-37030-1-26",
+          "section_index": 8,
+          "section_type": 4,
+          "kind": "rootfs",
+          "filename": "57.14-37030-1-26-rootfs.squashfs",
+          "bytes": 31051776,
+          "sha256": "bcf4074385fb4e50200b0ce5182e6e629f42dfe8ce08f8a9a2282d1d03e1dc1a",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        }
+      ],
+      "local_decryption_verified": true,
+      "uploaded_to_release": false
+    },
+    {
+      "package_id": "97.1-80312-1-26",
+      "release_tag": "firmware-97.1-80312",
+      "source_sha256": "2d3ce8b00b7085c4d97b28c83befbc9d261888aae3490b62c7e369bf59bb78b8",
+      "source_bytes": 92518396,
+      "components": [
+        {
+          "package_id": "97.1-80312-1-26",
+          "section_index": 6,
+          "section_type": 3,
+          "kind": "preinstall",
+          "filename": "97.1-80312-1-26-preinstall.sh",
+          "bytes": 2489,
+          "sha256": "5cc5ec382264f6b118715e96d5187cdcad8f9d3ee33fbcb58780710ff3cb1d58",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        },
+        {
+          "package_id": "97.1-80312-1-26",
+          "section_index": 7,
+          "section_type": 6,
+          "kind": "kernel",
+          "filename": "97.1-80312-1-26-kernel.uImage",
+          "bytes": 9007716,
+          "sha256": "7d4c07ba15ee9482eaad359da8c18920ef71b91b33b7e360a609b32b731a1e23",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        },
+        {
+          "package_id": "97.1-80312-1-26",
+          "section_index": 8,
+          "section_type": 4,
+          "kind": "rootfs",
+          "filename": "97.1-80312-1-26-rootfs.squashfs",
+          "bytes": 82362368,
+          "sha256": "61e67478f429976ed1436c27900d8192652cb97a2239cc64ca31a0b69ede2d9f",
+          "source_encrypted": true,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        }
+      ],
+      "local_decryption_verified": true,
+      "uploaded_to_release": false
+    }
+  ]
+}

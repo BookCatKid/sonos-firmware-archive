@@ -1,7 +1,7 @@
 # Model-key handling
 
-This archive records six locally verified Sonos model-key identities used to
-decrypt historical firmware containers:
+This archive records seven independently verified Sonos model-key identities used
+to decrypt historical firmware containers:
 
 | Package family | Recipient fingerprint | Coverage in this archive |
 |---|---|---|
@@ -11,16 +11,19 @@ decrypt historical firmware containers:
 | Model 12 legacy family | `e35f7c21c0ec00a768bfbd364a9a105cf300f023` | All 16 preserved encrypted model-12 packages |
 | Model 16 legacy family | `fd88f2642a9c89a44747c7b4342cdb483fe1d437` | All four preserved encrypted model-16 packages |
 | Model 17 legacy family | `f2acc70d8db3ee388c534d99d4bff64d9dab8154` | All 17 preserved encrypted model-17 packages |
+| Model 26 / Tupelo (Sonos One) | `b271039ff7ab0f3d395039f1f079ff71af9dea71` | Key recovered for 29 preserved encrypted packages; two locally decrypted and verified so far |
 
 The fingerprints are SHA-1 values of the public-key representation carried in
 the package envelope. They allow an independent reviewer to identify which
 key family was used.
 
-As of 2026-09-09, the full archived UPD catalog contains 399 encrypted
-packages using 33 distinct RSA recipients. The six locally recovered keys cover
-73 of those packages exactly. The remaining 27 recipient identities and their
-affected package IDs are tracked in `data/key-recovery-ledger.json`. No claim is
-made that a single firmware-specific key can decrypt other Sonos models.
+At the 2026-09-09 snapshot, the archive held 399 encrypted packages across
+33 recipients, with six recovered keys covering 73 packages. The current
+ledger contains **seven recovered recipients** (including model 26), covering
+29 additional encrypted Tupelo packages by key identity, with **27 recipient
+groups still missing**. Model-26 firmware has been locally verified for two
+packages; coverage by key must not be confused with published raw images.
+See `data/key-recovery-ledger.json` for the current exact package list.
 
 An older model-2 package (`25.2-50130`) establishes the lower boundary of the
 legacy updater-wrapper technique. Its Renesas SH updater contains the same
@@ -189,6 +192,34 @@ sonos-fw recover-legacy-updater-key /path/to/upgrade \
   --output /secure/model16-private.pem
 ```
 
+### Model 26 / Tupelo (Sonos One)
+
+On 2026-11-05, Peter Geissler (`blasty`) responded to the archive's
+[request](https://github.com/blasty/sonos/issues/1#issuecomment-6653881846)
+with the 2,048-byte `mdp3_model_private_key` field from his Tupelo demo unit.
+The 256-byte OTP from the same unit had already appeared in slide 52 of his
+HITB Amsterdam 2023 talk. Reproducing the `sonostool` AES keystream construction
+from those exact inputs yielded an RSA-2048 private key with recipient
+`b271039ff7ab0f3d395039f1f079ff71af9dea71`.
+
+Unlike the legacy models, this key is **not** recovered from the plaintext
+`34.16-37101` updater. Instead, the Amlogic-specific script validates two
+published input files and uses the same shared `mdp.py` decryptor as the
+existing CLI. It requires no manufactured MDP3 header or fake model identity:
+
+```bash
+python scripts/recover_model26_key.py --output /secure/model26-private.pem
+```
+
+The original input sources, binary SHA-256 values, complete derivation, and
+validation against the real `57.14-37030-1-26` and `97.1-80312-1-26`
+firmware packages are documented in
+[`docs/model26-recovery.md`](model26-recovery.md). Both recovered SquashFS
+filesystems validated; the remaining 27 preserved encrypted packages have not
+yet been decrypted, and no new plaintext assets have been uploaded to Releases.
+The two public input-file copies must still be added to the PR before the
+command works in a clean checkout.
+
 ## Archive evidence
 
 For every extracted component, the repository stores its source package,
@@ -204,13 +235,16 @@ decryption requires the matching private key. The public `sonostool` source
 `SONOS_MODEL = 26` target: a 16 KiB `MDP3` region with an RSA blob at offset
 `0x0780`, encrypted under an OTP/eFUSE-derived AES key
 (`SHA256(OTP[0xD0:0xE0])[:16]`). That layout is not evidence that every Sonos
-package model stores its key the same way. No published private keys were
-found for any missing recipient (Fenway repo is model-8 only;
+package model stores its key the same way. At that 2026-09-03 snapshot, no
+published private keys were found for missing recipients (Fenway repo is
+model-8 only;
 `trulyspinach/sonor` includes public Sub Gen1 MTD dumps, but the published
 sample contains only MDP1 and no MDP3/model-private-key field;
 `darkarnium/sonor` documents the S18-One MDP/OTP layout but publishes console
-logs and scripts, not raw MDP or OTP bytes; `blasty/sonos` ships tooling, not
-keys; `systemcrash/sonos-firmware` ships packages/manifests only). Known
+logs and scripts, not raw MDP or OTP bytes; `blasty/sonos` then shipped tooling
+without the matching MDP field; `systemcrash/sonos-firmware` ships packages and
+manifests). This is a historical search result: model 26 was recovered on
+2026-11-05 after blasty supplied the missing field. Known
 public access techniques are useful leads, not interchangeable key-recovery
 recipes: Fenway/MPC8314 UART plus diagnostic firmware and `mdputil`; Amlogic-
 era EL3 OTP dumping plus `sonostool` (HITB Amsterdam 2023); Sonos One Gen 2
@@ -270,15 +304,13 @@ release after the live Sonos URLs returned 403) were also audited: the
 `fscrypt` is the same LUKS/dm update-staging plumbing already seen in
 14.18 — nothing adds a new key-storage or unwrap path.
 
-Priority order by blocked-package count: model 13 (Play:5 Gen 2, 17
-packages, `completeness.json` target), then models 23, 24, 21, 29, 28, 26
-(12–19 packages each). Model 25 (Move, 17 packages) is moot until the
-`96.0-79160` package itself is recovered. Dumps contain device secrets and
-must be supplied out-of-band; only recipient fingerprints and component
-hashes enter the archive. Note the six recovered private keys are absent from
-fresh checkouts by design (the local `recovery-work/` vault never entered
-git), so re-extraction still needs the appropriate key re-supplied or locally
-recovered from an authorized plaintext updater.
+Historical priority order by blocked-package count included models 13, 23,
+24, 21, 29, 28, and 26. With model 26's key now recovered, its 27 unprocessed
+packages are an extraction/publication backlog, not a missing-key problem.
+The exact Move `96.0-79160` package remains unavailable. Private-key PEMs
+remain outside Git; the six legacy keys require their corresponding updater
+inputs, whereas model 26 can be reproduced from the published MDP field and
+OTP when the documented binary copies are available.
 
 For the next concrete target, model 13 / Encore (Play:5 Gen 2), the exact
 kernel and Sonos GPL source establish a different path: its MDP3 model key is
@@ -295,8 +327,8 @@ are established in [`docs/model20-recovery.md`](model20-recovery.md). One
 verified recovery would cover 17 preserved model-20 packages.
 
 For the two Amlogic A113 families now backed by model-specific evidence,
-[`docs/model26-recovery.md`](model26-recovery.md) records the publicly proven
-Tupelo/model-26 path, while
+[`docs/model26-recovery.md`](model26-recovery.md) documents the **completed,
+firmware-validated** Tupelo/model-26 key recovery, while
 [`docs/model25-recovery.md`](model25-recovery.md) records Dhuez/model-25 as a
 hardware-validation candidate. The model-25 route is deliberately not labeled
 proven until a matching authorized MDP/OTP capture yields the exact package

@@ -181,6 +181,34 @@ def decrypt_amlogic_blob(blob: bytes, otp: bytes, key_modifier: bytes) -> bytes:
     return padded[:-padding_length]
 
 
+def recover_amlogic_model_key_field(field_data: bytes, otp: bytes) -> rsa.RSAPrivateKey:
+    """Recover a model key from one 0x800-byte MDP3 model-key field.
+
+    This does not need the other MDP pages or invent a model identity. A
+    matching UPD recipient fingerprint is needed to establish which model
+    the recovered key belongs to.
+    """
+    if len(field_data) != MODEL_KEY_FIELD_BYTES:
+        raise ValueError(f"model-key field must be {MODEL_KEY_FIELD_BYTES} bytes")
+    magic, length, _reserved = struct.unpack_from("<III", field_data)
+    if magic != MODEL_KEY_MAGIC:
+        raise ValueError(f"model key field has unexpected magic {magic:08x}")
+    if length > MODEL_KEY_FIELD_BYTES - MDP_KEY_HEADER_BYTES:
+        raise ValueError("model-key field length exceeds its storage")
+    if length < AMLOGIC_BLOB_OVERHEAD:
+        raise ValueError("model-key blob is shorter than its wrapper overhead")
+    key_der = decrypt_amlogic_blob(
+        field_data[MDP_KEY_HEADER_BYTES : MDP_KEY_HEADER_BYTES + length], otp, b"model"
+    )
+    try:
+        key = serialization.load_der_private_key(key_der, password=None)
+    except (TypeError, ValueError) as error:
+        raise ValueError("unwrapped model key is not DER private-key material") from error
+    if not isinstance(key, rsa.RSAPrivateKey) or key.key_size != 2048:
+        raise ValueError("unwrapped model key is not RSA-2048")
+    return key
+
+
 def recover_amlogic_model_key(
     mdp_data: bytes,
     otp: bytes,
@@ -200,21 +228,9 @@ def recover_amlogic_model_key(
             raise ValueError(
                 f"manufacturing-page model mismatch: got {image.model}, expected {expected_model}"
             )
-    field = parse_field(image, "model-private", MODEL_KEY_OFFSET, MODEL_KEY_MAGIC, MODEL_KEY_FIELD_BYTES)
-    if field.magic != MODEL_KEY_MAGIC:
-        raise ValueError(f"model key field has unexpected magic {field.magic:08x}")
-    if not field.valid:
-        raise ValueError(f"model key field length {field.length} exceeds its storage")
-    if field.length < AMLOGIC_BLOB_OVERHEAD:
-        raise ValueError("model key blob is shorter than its wrapper overhead")
-    key_der = decrypt_amlogic_blob(field.blob, otp, b"model")
-    try:
-        key = serialization.load_der_private_key(key_der, password=None)
-    except (TypeError, ValueError) as error:
-        raise ValueError("unwrapped model key is not DER private-key material") from error
-    if not isinstance(key, rsa.RSAPrivateKey) or key.key_size != 2048:
-        raise ValueError("unwrapped model key is not RSA-2048")
-    return key
+    return recover_amlogic_model_key_field(
+        image.mdp3[MODEL_KEY_OFFSET : MODEL_KEY_OFFSET + MODEL_KEY_FIELD_BYTES], otp
+    )
 
 
 def private_key_pem(key: rsa.RSAPrivateKey) -> bytes:
