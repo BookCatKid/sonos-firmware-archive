@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-90.0-81181-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "90.0-81181",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-4.dmg",
+      "source": "image",
+      "filename": "90.0-81181-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 71830690,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-4.dmg",
+      "etag": "\"a78fdb04b70e0dddf818b1779ae40397-9\"",
+      "last_modified": null,
+      "local_file": "90.0-81181-1-4.dmg",
+      "sha256": "f4c49635cb06cf615c2b3bebd35fbf3e3abeb7a38dbc4c5519784070c0dcdc3b",
+      "downloaded": true
+    }
+  ]
+}

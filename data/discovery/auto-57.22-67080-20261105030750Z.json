@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:12:06.773220+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "57.22-67080",
+  "candidates": [
+    {
+      "version": "57.22-67080",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-3.exe",
+      "source": "image",
+      "filename": "57.22-67080-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 37952352,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-3.exe",
+      "etag": "\"8be68ba7b8b53822d35edd5d0e3081c3-5\"",
+      "last_modified": null
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-57.22-67080-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "57.22-67080",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-3.exe",
+      "source": "image",
+      "filename": "57.22-67080-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 37952352,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-3.exe",
+      "etag": "\"8be68ba7b8b53822d35edd5d0e3081c3-5\"",
+      "last_modified": null,
+      "local_file": "57.22-67080-1-3.exe",
+      "sha256": "1b6df7a87a8b299df042325fdeb66141bdb698970f769c8f5fee82c5a4ee2dab",
+      "downloaded": true
+    }
+  ]
+}

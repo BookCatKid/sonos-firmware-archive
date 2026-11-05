@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:10:36.196824+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "36.4-43070",
+  "candidates": [
+    {
+      "version": "36.4-43070",
+      "package_model": 6,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/36.4-43070-1-6.upd",
+      "source": "image",
+      "filename": "36.4-43070-1-6.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 22112146,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/36.4-43070-1-6.upd",
+      "etag": null,
+      "last_modified": null
+    }
+  ]
+}

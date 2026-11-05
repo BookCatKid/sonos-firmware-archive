@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-57.22-65130-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "57.22-65130",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-4.dmg",
+      "source": "image",
+      "filename": "57.22-65130-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 49054489,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-4.dmg",
+      "etag": "\"84ad9c376a432b340de44fb5b04f3404-6\"",
+      "last_modified": null,
+      "local_file": "57.22-65130-1-4.dmg",
+      "sha256": "37562052945763efafa8d9271c33705ef9f05942afcdbd574ef02d47dac7fac5",
+      "downloaded": true
+    }
+  ]
+}

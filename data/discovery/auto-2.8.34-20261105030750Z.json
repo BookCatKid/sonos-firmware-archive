@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:10:26.655089+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "2.8.34",
+  "candidates": [
+    {
+      "version": "2.8.34",
+      "package_model": 53,
+      "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/2.8.34-dffaf4d05-RC-3/round_dfu_2.8.34-dffaf4d05-prod.bin",
+      "source": "image",
+      "filename": "round_dfu_2.8.34-dffaf4d05-prod.bin",
+      "available": true,
+      "http_status": 200,
+      "bytes": 5346188,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/2.8.34-dffaf4d05-RC-3/round_dfu_2.8.34-dffaf4d05-prod.bin",
+      "etag": "\"b76e8b013fcd3c717f20a38325b5d471\"",
+      "last_modified": null
+    }
+  ]
+}

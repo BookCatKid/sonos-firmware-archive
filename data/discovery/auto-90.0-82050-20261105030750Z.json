@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:16:04.976223+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "90.0-82050",
+  "candidates": [
+    {
+      "version": "90.0-82050",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg",
+      "source": "image",
+      "filename": "90.0-82050-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 71829492,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg",
+      "etag": "\"1eb75c2596d1a520b2e96000749f8f0a-9\"",
+      "last_modified": null
+    }
+  ]
+}

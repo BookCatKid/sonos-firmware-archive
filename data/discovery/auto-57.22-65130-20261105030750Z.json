@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:12:01.444380+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "57.22-65130",
+  "candidates": [
+    {
+      "version": "57.22-65130",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-4.dmg",
+      "source": "image",
+      "filename": "57.22-65130-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 49054489,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-4.dmg",
+      "etag": "\"84ad9c376a432b340de44fb5b04f3404-6\"",
+      "last_modified": null
+    }
+  ]
+}

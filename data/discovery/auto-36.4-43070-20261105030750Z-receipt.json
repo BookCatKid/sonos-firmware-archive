@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-36.4-43070-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "36.4-43070",
+      "package_model": 6,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/36.4-43070-1-6.upd",
+      "source": "image",
+      "filename": "36.4-43070-1-6.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 22112146,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/36.4-43070-1-6.upd",
+      "etag": null,
+      "last_modified": null,
+      "local_file": "36.4-43070-1-6.upd",
+      "sha256": "be255937688de91d654aed06171ba4ad35b06df5020b9e26002e31e7c816992e",
+      "downloaded": true
+    }
+  ]
+}

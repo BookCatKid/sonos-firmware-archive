@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-90.0-82050-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "90.0-82050",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg",
+      "source": "image",
+      "filename": "90.0-82050-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 71829492,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg",
+      "etag": "\"1eb75c2596d1a520b2e96000749f8f0a-9\"",
+      "last_modified": null,
+      "local_file": "90.0-82050-1-4.dmg",
+      "sha256": "5da3db3feec9f2b46dbe9c06d9c36dbca5e14aa79081247fb1ddd3d94f921189",
+      "downloaded": true
+    }
+  ]
+}

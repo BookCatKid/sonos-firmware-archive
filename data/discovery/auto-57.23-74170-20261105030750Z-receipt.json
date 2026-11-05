@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-57.23-74170-20261105030750Z.json",
+  "artifacts": [
+    {
+      "version": "57.23-74170",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/57.23-74170-1-4.dmg",
+      "source": "image",
+      "filename": "57.23-74170-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 49054481,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/57.23-74170-1-4.dmg",
+      "etag": "\"96ec24880ad319ac1cc464ee15aca06d-6\"",
+      "last_modified": null,
+      "local_file": "57.23-74170-1-4.dmg",
+      "sha256": "3f3495441881b7767d1724aeabed595aa053cdf4780b156dbece56943f023377",
+      "downloaded": true
+    }
+  ]
+}

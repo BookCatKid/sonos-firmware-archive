@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-05T03:15:24.667800+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "86.11-82170",
+  "candidates": [
+    {
+      "version": "86.11-82170",
+      "package_model": 8,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-8.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-8.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 21423961,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-8.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 9,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-9.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-9.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 16689123,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-9.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 12,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-12.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-12.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 7493709,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-12.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 13,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-13.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-13.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 25479875,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-13.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 14,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-14.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-14.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 21502509,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-14.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 17,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-17.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-17.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 20897305,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-17.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 20,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-20.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-20.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 25003267,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-20.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "86.11-82170",
+      "package_model": 22,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-22.upd",
+      "source": "image",
+      "filename": "86.11-82170-1-22.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 23414483,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-22.upd",
+      "etag": null,
+      "last_modified": null
+    }
+  ]
+}
