@@ -40,6 +40,10 @@ def main() -> int:
     parser.add_argument("--ledger", type=Path, default=ROOT / "data/key-recovery-ledger.json")
     parser.add_argument("--raw-directory", type=Path, default=ROOT / "artifacts/raw")
     parser.add_argument("--receipt-directory", type=Path, default=ROOT / "data/raw")
+    parser.add_argument("--receipt-output", type=Path,
+                        help="where new receipts go (default: --receipt-directory); "
+                             "use a staging dir so receipts only reach data/raw after "
+                             "their components are published")
     parser.add_argument("--summary", type=Path)
     args = parser.parse_args()
 
@@ -49,6 +53,7 @@ def main() -> int:
 
     # recipient -> preserved package ids, from the ledger's own coverage rows
     pending: list[dict] = []
+    seen: set[str] = set()
     packages = {p["id"]: p for p in catalog["packages"]}
     for recipient, group in sorted(recovered.items()):
         coverage = group.get("packages", group.get("coverage_packages", []))
@@ -59,7 +64,8 @@ def main() -> int:
             if package is None:
                 continue
             receipt = args.receipt_directory / f"{package['id']}.json"
-            if not receipt.is_file():
+            if not receipt.is_file() and package["id"] not in seen:
+                seen.add(package["id"])
                 pending.append({"package": package, "model": group.get("package_model"),
                                 "recipient": recipient})
 
@@ -69,9 +75,10 @@ def main() -> int:
             args.summary.write_text(json.dumps({"pending": 0, "decrypted": [], "skipped": []}) + "\n", encoding="utf-8")
         return 0
 
+    receipt_output = args.receipt_output or args.receipt_directory
     args.staging.mkdir(mode=0o700, parents=True, exist_ok=True)
     args.raw_directory.mkdir(parents=True, exist_ok=True)
-    args.receipt_directory.mkdir(parents=True, exist_ok=True)
+    receipt_output.mkdir(parents=True, exist_ok=True)
 
     decrypted: list[str] = []
     skipped: list[dict] = []
@@ -95,9 +102,10 @@ def main() -> int:
         output = args.raw_directory / package["id"]
         output.mkdir(parents=True, exist_ok=True)
         components = extract_components(source, output, key_path)
-        if not components or {c.get("recipient_id") for c in components} != {recipient}:
+        encrypted_recipients = {c.get("recipient_id") for c in components} - {None}
+        if not components or encrypted_recipients != {recipient}:
             raise ValueError(f"decrypted recipient mismatch: {package['id']}")
-        (args.receipt_directory / f"{package['id']}.json").write_text(
+        (receipt_output / f"{package['id']}.json").write_text(
             json.dumps({"source": package["filename"], "components": components}, indent=2) + "\n",
             encoding="utf-8")
         source.unlink()

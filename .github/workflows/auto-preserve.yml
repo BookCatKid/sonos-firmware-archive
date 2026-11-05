@@ -150,13 +150,23 @@ jobs:
               echo "secret SONOS_MODEL_${model}_PRIVATE_KEY not set; model $model packages stay encrypted"
             fi
           done
+          new_receipts="$RUNNER_TEMP/new-receipts"
           python scripts/decrypt_pending_firmware.py \
             --key-directory "$keydir" \
             --staging "$RUNNER_TEMP/decrypt-staging" \
+            --receipt-output "$new_receipts" \
             --summary decrypt-report.json
-          if [[ -n "$(ls -A artifacts/raw 2>/dev/null)" ]]; then
-            python scripts/import_raw_receipts.py data/raw/*.json
-            python scripts/upload_raw_assets.py
+          if [[ -n "$(ls -A "$new_receipts" 2>/dev/null)" ]]; then
+            python scripts/import_raw_receipts.py "$new_receipts"/*.json
+            # Publish before landing receipts: if the upload fails, drop the
+            # catalog edit and leave receipts out of data/raw so the next run
+            # retries the whole package instead of skipping it unpublished.
+            if ! python scripts/upload_raw_assets.py; then
+              git checkout -- data/catalog.json
+              rm -rf "$keydir"
+              exit 1
+            fi
+            cp "$new_receipts"/*.json data/raw/
           fi
           rm -rf "$keydir"
       - uses: actions/upload-artifact@v7

@@ -19,6 +19,25 @@ class AutoPreserveWorkflowTests(unittest.TestCase):
     def test_decrypt_step_never_logs_key_material(self):
         self.assertIn("umask 077", TEXT)
         self.assertNotIn("set -x", TEXT)
+        for line in TEXT.splitlines():
+            stripped = line.strip()
+            # a print that expands a key variable without redirecting to a file
+            # leaks the key into workflow logs; the name-only notice and the
+            # redirected keyfile write are safe
+            leaks = (
+                ("${!var}" in stripped or "_PRIVATE_KEY}" in stripped.replace("${model}", "8"))
+                and (stripped.startswith("echo") or stripped.startswith("printf"))
+                and ">" not in stripped
+            )
+            if leaks:
+                self.fail(f"key material printed to logs: {stripped}")
+
+    def test_receipts_land_only_after_publish(self):
+        run_start = TEXT.index("id: firmware_decrypt")
+        run_end = TEXT.index("- uses:", run_start)
+        run = TEXT[run_start:run_end]
+        self.assertLess(run.index("upload_raw_assets.py"), run.index("data/raw/"))
+        self.assertIn("git checkout -- data/catalog.json", run)
 
     def test_receipts_are_committed(self):
         self.assertIn("git add data/apps data/catalog.json data/discovery data/manifests data/raw data/upd", TEXT)

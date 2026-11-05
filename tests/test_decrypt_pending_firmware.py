@@ -83,12 +83,25 @@ class DecryptPendingTests(unittest.TestCase):
         def fake_extract(source, output, key):
             (output / COMPONENT["filename"]).write_bytes(b"test")
             return [COMPONENT]
-        with mock.patch.object(MODULE, "extract_components", side_effect=fake_extract):
+        with mock.patch.object(MODULE, "extract_components", side_effect=fake_extract) as extract:
             self.assertEqual(self._run(), 0)
+        self.assertEqual(extract.call_args[0][2], self.keys / "model8.pem")
         receipt = json.loads((self.receipts / "99.0-1-8.json").read_text())
         self.assertEqual(receipt["source"], PACKAGE["filename"])
         self.assertEqual(receipt["components"], [COMPONENT])
         self.assertFalse((self.staging / PACKAGE["filename"]).exists())
+
+    def test_mixed_plaintext_components_are_accepted(self):
+        plaintext_component = dict(COMPONENT, filename="99.0-1-8-extra-section-09.bin",
+                                   source_encrypted=False, recipient_id=None)
+        def fake_extract(source, output, key):
+            for component in (COMPONENT, plaintext_component):
+                (output / component["filename"]).write_bytes(b"test")
+            return [COMPONENT, plaintext_component]
+        with mock.patch.object(MODULE, "extract_components", side_effect=fake_extract):
+            self.assertEqual(self._run(), 0)
+        receipt = json.loads((self.receipts / "99.0-1-8.json").read_text())
+        self.assertEqual(len(receipt["components"]), 2)
 
     def test_recipient_mismatch_aborts(self):
         bad = dict(COMPONENT, recipient_id="b" * 40)
