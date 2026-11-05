@@ -185,6 +185,12 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
         {secure_url(item["uri"]) for item in records if item["type"] == MANIFEST_URI_TYPE}
     )
     ups_manifest_urls = manifest_urls.copy()
+    # Update-metadata records are server-supplied data: fetch only official
+    # firmware hosts and record anything else instead of requesting it.
+    skipped_manifest_urls = [
+        url for url in manifest_urls if not official_firmware_url(url)
+    ]
+    manifest_urls = [url for url in manifest_urls if official_firmware_url(url)]
     # An S2 outage must not block S1 discovery or preservation: report the
     # modern failure and continue with the S1 manifests already fetched.
     modern_body, modern_response, modern_error = None, None, None
@@ -278,6 +284,7 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
         "modern_error": (
             str(modern_error) if modern_response is None and modern_error else None
         ),
+        "skipped_non_official_manifest_urls": skipped_manifest_urls,
         "skipped_non_official_candidates": skipped_candidates,
         "manifests": manifests,
         "current_candidate_total": len(current_probes),
