@@ -148,7 +148,7 @@ def fetch_modern_manifest(timeout: float = 30) -> tuple[bytes, dict]:
                 or parsed.query or parsed.fragment
                 or not parsed.path.startswith("/firmware/")):
             raise ValueError("unexpected modern manifest Content-Location")
-        canonical = canonical.replace("http://", "https://", 1)
+        canonical = f"https://{parsed.hostname}{parsed.path}"
         return body, {
             "url": canonical,
             "request_url": url,

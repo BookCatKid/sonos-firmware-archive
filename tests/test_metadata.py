@@ -60,7 +60,15 @@ class ModernManifestTests(unittest.TestCase):
         query = parse_qs(urlsplit(call.call_args.args[0].full_url).query)
         self.assertEqual(query, {'sonosid': ['Anonymous'], 'householdid': ['nohhid'], 'cmaj': ['81'], 'cmin': ['0'], 'cbld': ['52']})
         self.assertEqual(receipt['url'], 'https://update.sonos.com/firmware/Prod/current/update.upm')
+        self.assertEqual(body, b'<update_manifest></update_manifest>')
         self.assertEqual(receipt['sha256'], hashlib.sha256(body).hexdigest())
+
+    def test_normalizes_mixed_case_scheme(self):
+        from unittest.mock import patch
+        from sonos_firmware.metadata import fetch_modern_manifest
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=self.response('HTTP://update.sonos.com/firmware/Prod/current/update.upm')):
+            body, receipt = fetch_modern_manifest()
+        self.assertEqual(receipt['url'], 'https://update.sonos.com/firmware/Prod/current/update.upm')
 
     def test_rejects_foreign_content_location(self):
         from unittest.mock import patch
