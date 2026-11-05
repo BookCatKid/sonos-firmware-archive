@@ -117,5 +117,32 @@ class ModernMonitorTests(unittest.TestCase):
         self.assertFalse(result['change_detected'])
 
 
+class IntegratedHostGuardTests(unittest.TestCase):
+    def test_untrusted_feed_and_package_urls_never_requested(self):
+        import tempfile
+        from unittest.mock import patch
+        from sonos_firmware.monitor import run_monitor
+        from sonos_firmware.metadata import MANIFEST_URI_TYPE
+        xml = b'<update_manifest version="1.1"><image model="27" version="98.0-82170">https://untrusted.example/firmware/new.upd</image></update_manifest>'
+        canonical = 'https://update.sonos.com/firmware/Prod/new/update.upm'
+        records = [{'type': MANIFEST_URI_TYPE, 'uri': 'http://untrusted.example/firmware/x/update.upm'}]
+        def probes(candidates, workers, **kwargs):
+            self.assertFalse(any('untrusted.example' in c.url for c in candidates))
+            return [dict(vars(c), available=True) for c in candidates]
+        with tempfile.TemporaryDirectory() as d, \
+                patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), \
+                patch('sonos_firmware.monitor.parse_update_metadata', return_value=records), \
+                patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), \
+                patch('sonos_firmware.monitor.fetch_bytes', return_value=b'') as fetch, \
+                patch('sonos_firmware.monitor.probe_all', side_effect=probes), \
+                patch('urllib.request.build_opener') as opener:
+            result = run_monitor({'packages': [], 'source_manifests': []}, evidence_dir=d)
+        opener.return_value.open.assert_not_called()
+        self.assertEqual(fetch.call_count, 1)
+        failures = result['discovery_graph']['failures']
+        self.assertEqual(len(failures), 2)
+        self.assertTrue(all(x['kind'] == 'unsupported' for x in failures))
+
+
 if __name__ == "__main__":
     unittest.main()
