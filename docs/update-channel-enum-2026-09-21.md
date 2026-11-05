@@ -56,11 +56,6 @@ The binary path template `/firmware/swgen/%u/latest/` is also present in
 archived Sonos firmware. Authentication-related strings elsewhere in the
 binaries do not prove that this update route requires authentication.
 
-The automated monitor now reads this modern manifest alongside the old S1
-UPS response. The canonical Content-Location is restricted to the two official
-firmware hosts, recorded separately from the anonymous request URL, and used
-by the existing manifest/package preservation flow. A missing or unexpected
-canonical location fails the check instead of silently reporting full coverage.
 
 ## Re-probe of `missing-cdn` URLs on `update.sonos.com`
 

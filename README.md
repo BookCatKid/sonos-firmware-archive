@@ -321,9 +321,11 @@ history as complete.
 
 No Codex heartbeat or AI service is used. The repository-native
 `monitor firmware sources` GitHub Actions workflow runs daily and can also be
-started manually. It fetches the public synthetic update-metadata profile,
-parses every referenced signed manifest, probes its candidates, and rechecks
-every exact catalog URL marked `missing-cdn`. It also extracts build numbers
+started manually. It fetches the public synthetic update-metadata profile and the anonymous
+modern swgen-2 manifest (failing closed when its canonical location is missing
+or outside the official firmware hosts), parses every referenced signed
+manifest, probes its candidates, and rechecks every exact catalog URL marked
+`missing-cdn`. It also extracts build numbers
 from Sonos's first-party system release-notes page, which provides early
 warning when the opaque manifest URL is not publicly discoverable. It uploads
 a JSON audit and opens or updates one GitHub issue only when it sees an unknown
