@@ -186,7 +186,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
-- `scripts/check_catalog_firmware_directories.py` — daily non-AI expansion of opaque official directories learned from desktop installers.
+- `scripts/check_catalog_firmware_directories.py` - weekly non-AI expansion of opaque official directories learned from desktop installers.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
 - `tests/` — parser and catalog tests.
@@ -320,14 +320,14 @@ receipts make that boundary auditable rather than silently treating unknown
 history as complete.
 
 No Codex heartbeat or AI service is used. The repository-native
-`monitor firmware sources` GitHub Actions workflow runs daily and can also be
-started manually. It fetches the public synthetic update-metadata profile and the anonymous
+`monitor firmware sources` GitHub Actions workflow checks current releases daily. It fetches the public synthetic update-metadata profile and the anonymous
 modern swgen-2 manifest (failing closed when its canonical location is missing
 or outside the official firmware hosts), parses every referenced signed
-manifest, probes its candidates, and rechecks every exact catalog URL marked
-`missing-cdn`. Public evidence seeds live in `config/discovery-seeds.json`;
+manifest, and probes its candidates. Weekly runs also retry exact catalog URLs
+marked `missing-cdn`. Public evidence seeds live in `config/discovery-seeds.json`;
 each is an exact official URL that previously returned a file, recorded with
-its source evidence. The traversal visits only seeded or discovered official
+its source evidence. Daily traversal follows current-feed package siblings;
+weekly traversal also follows catalog lists, seeds and historical links. It visits only evidenced official
 list URLs and literal sibling `update.upm` files (never guessed folder codes),
 bounded to 256 lists of up to 2 MB with paced requests, and stops on access
 challenges; exhausted limits or fetch errors mark the run incomplete rather
@@ -339,15 +339,21 @@ manifest, hash, version, downloadable uncataloged candidate, or revived missing
 URL. Monitoring errors fail the workflow instead of being interpreted as
 absence.
 
-The same deterministic workflow also checks Sonos's canonical desktop and
-Fire OS redirects, both official Google Play listing update dates, and public
-deployment fingerprints for the consumer Web controller and Sonos Pro. Every
+Historical scans run Sunday at 07:43 UTC, including WinGet/Homebrew/Wayback
+history, the known-directory model sweep and release-asset integrity checks.
+Monitor runs are serialized with GitHub's multi-pending queue to prevent duplicate
+issue races; preservation uses its own serialized multi-pending queue. Each queue
+holds up to 100 pending runs, rather than replacing the previous pending run.
+Manual runs default to current-only; enable `include_history` for the full pass.
+Manual preservation also regenerates current-only reports.
+
+Daily checks include current desktop/Fire OS redirects and Google Play listings. Every
 new signal still opens or updates a review issue, but deterministic preservation
 no longer waits for a person: a follow-up workflow automatically archives live
 desktop installers, official Sonos-hosted APKs, signer-verified APKPure recovery
 deliveries, exact signed update manifests, and downloadable firmware exposed by
-already-trusted official Sonos sources. Public Web deployments have an additional
-hourly watcher because they can disappear quickly; a changed deployment is
+already-trusted official Sonos sources. Public Web deployments use a separate
+hourly watcher; a changed deployment is
 captured, uploaded, verified, and committed in the same run that raises the
 review issue. A weekly APKPure history sweep also retries the anonymously exposed
 Sonos version history and checkpoints anything newly recoverable. Public Apple

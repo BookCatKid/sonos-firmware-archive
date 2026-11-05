@@ -15,6 +15,9 @@ dependencies = [
   "jsonschema>=4.21",
 ]
 
+[project.optional-dependencies]
+test = ["PyYAML>=6.0"]
+
 [project.scripts]
 sonos-fw = "sonos_firmware.cli:main"
 

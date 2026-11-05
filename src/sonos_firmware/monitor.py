@@ -175,7 +175,7 @@ def fetch_metadata_with_retries() -> tuple[bytes, dict]:
     raise AssertionError("unreachable")
 
 
-def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir=None, max_manifests=256, probe_budget_seconds: float | None = None) -> dict:
+def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir=None, max_manifests=256, probe_budget_seconds: float | None = None, include_history: bool = True) -> dict:
     ups, response = fetch_metadata_with_retries()
     records = parse_update_metadata(ups)
     manifest_urls = sorted(
@@ -208,13 +208,13 @@ def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir
         time.monotonic() + probe_budget_seconds if probe_budget_seconds else None
     )
     graph = crawl_manifests(catalog, initial, seed_urls or [],
-                            Path(evidence_dir or "manifest-evidence"), max_manifests=max_manifests)
+                            Path(evidence_dir or "manifest-evidence"), max_manifests=max_manifests, include_history=include_history)
     manifests = graph["manifests"]
     current_candidates = {c.url: c for c in graph.pop("candidates")}
 
     current_probes = [] if graph["blocked"] else probe_all(list(current_candidates.values()), workers, deadline=probe_deadline)
     missing_packages = [
-        item for item in catalog["packages"] if item["artifact_status"] == "missing-cdn"
+        item for item in catalog["packages"] if include_history and item["artifact_status"] == "missing-cdn"
     ]
     missing_candidates = [package_candidate(item) for item in missing_packages]
     challenged = graph["blocked"] or any(x.get("http_status") in {403,429} for x in current_probes)
@@ -248,11 +248,12 @@ def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir
     return {
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
-        "scope": "current public feeds, evidence-seeded historical/sibling lists and known missing URLs; bounded discovery, not exhaustive server coverage",
+        "scope": "current public feeds with historical discovery enabled" if include_history else "current public feeds and their package siblings only",
         "discovery_graph": graph,
         "modern_error": (
             str(modern_error) if modern_response is None and modern_error else None
         ),
+        "include_history": include_history,
         "request_profile": UpdateProfile().redacted(),
         "ups": {
             **response,

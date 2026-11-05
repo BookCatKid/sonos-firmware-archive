@@ -25,7 +25,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def resolve_latest_redirect() -> dict:
+def resolve_latest_redirect(*, include_history: bool = True) -> dict:
     opener = urllib.request.build_opener(NoRedirect)
     live_status = None
     try:
@@ -49,6 +49,12 @@ def resolve_latest_redirect() -> dict:
         live_error = str(error)
     else:
         live_error = None
+
+    if not include_history:
+        result = {"live_http_status": live_status, "location": None, "location_source": None}
+        if live_error:
+            result["error"] = live_error
+        return result
 
     current = f"https://web.archive.org/web/2id_/{REDIRECT}"
     for _ in range(12):
@@ -105,6 +111,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
     query = urllib.parse.urlencode({
         "url": "update-software.sonos.com/software/", "matchType": "prefix",
@@ -113,17 +120,19 @@ def main() -> int:
         "collapse": "urlkey", "limit": "5000",
     }, doseq=True)
     cdx_url = f"{CDX}?{query}"
-    error = None
-    for attempt in range(4):
-        try:
-            rows = json.loads(urllib.request.urlopen(cdx_url, timeout=90).read())
-            break
-        except Exception as caught:
-            error = caught
-            if attempt < 3:
-                time.sleep(min(2 ** attempt, 30))
-    else:
-        raise RuntimeError(f"Wayback CDX query failed after 4 attempts: {error}")
+    rows = [["timestamp", "original", "statuscode", "mimetype", "digest", "length"]]
+    if not args.current_only:
+        error = None
+        for attempt in range(4):
+            try:
+                rows = json.loads(urllib.request.urlopen(cdx_url, timeout=90).read())
+                break
+            except Exception as caught:
+                error = caught
+                if attempt < 3:
+                    time.sleep(min(2 ** attempt, 30))
+        else:
+            raise RuntimeError(f"Wayback CDX query failed after 4 attempts: {error}")
     candidates = {}
     for timestamp, original, _status, _mime, digest, length in rows[1:]:
         url = original.replace("http://", "https://", 1)
@@ -133,7 +142,7 @@ def main() -> int:
             "wayback_timestamp": timestamp, "wayback_digest": digest,
             "wayback_length": int(length), "sources": ["wayback-cdx"],
         }
-    direct = resolve_latest_redirect()
+    direct = resolve_latest_redirect(include_history=not args.current_only)
     if direct.get("location"):
         url = direct["location"]
         item = candidates.setdefault(url, {
@@ -146,6 +155,7 @@ def main() -> int:
     results.sort(key=lambda x: (x["family"], x["version"], x["url"]))
     document = {
         "schema_version": 1, "checked": datetime.now(timezone.utc).isoformat(),
+        "current_only": args.current_only,
         "official_redirect": {"url": REDIRECT, **direct},
         "wayback": {"url": cdx_url, "row_total": max(0, len(rows) - 1)},
         "candidate_total": len(results),

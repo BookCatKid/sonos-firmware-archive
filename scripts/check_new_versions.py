@@ -23,12 +23,13 @@ def main() -> int:
     parser.add_argument("--evidence-dir", type=Path, default=Path("manifest-evidence"))
     parser.add_argument("--max-manifests", type=int, default=256)
     parser.add_argument("--probe-budget-seconds", type=float)
+    parser.add_argument("--current-only", action="store_true", help="defer historical discovery to the weekly scan")
     args = parser.parse_args()
     try:
         seeds = json.loads(args.seeds.read_text()) if args.seeds.exists() else []
         report = run_monitor(load_catalog(args.catalog), args.workers, seed_urls=seeds,
                              evidence_dir=args.evidence_dir, max_manifests=args.max_manifests,
-                             probe_budget_seconds=args.probe_budget_seconds)
+                             probe_budget_seconds=args.probe_budget_seconds, include_history=not args.current_only)
     except Exception as error:
         write_json(args.output, {"schema_version": 1, "status": "error", "error": str(error)})
         print(f"monitor failed: {error}", file=sys.stderr)

@@ -18,10 +18,12 @@ def main() -> int:
     parser.add_argument("--archive", type=Path, default=ROOT / "data/apps/mobile-archive.json")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--discovery-output", type=Path, required=True)
+    parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
     try:
         subprocess.run([sys.executable, str(ROOT / "scripts/discover_mobile_installers.py"),
-                        "--output", str(args.discovery_output)], cwd=ROOT, check=True)
+                        "--output", str(args.discovery_output),
+                        *(["--current-only"] if args.current_only else [])], cwd=ROOT, check=True)
         discovery = json.loads(args.discovery_output.read_text())
         archive = json.loads(args.archive.read_text())
     except Exception as error:

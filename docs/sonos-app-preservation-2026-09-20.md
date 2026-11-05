@@ -152,10 +152,9 @@ than treating an exported IPA as universally installable.
 
 ## Automated monitoring
 
-The daily deep-monitor workflow checks signed firmware/manifests and known
-public firmware sources, the four desktop redirects plus WinGet/Homebrew/Wayback
-evidence, the official APK redirect plus the Sonos-CDN Wayback inventory, and
-official Google Play listing update dates. Public Web deployments are checked
+The daily monitor checks current signed firmware/manifests, live desktop and
+official APK redirects, and Google Play listings. Historical firmware,
+WinGet/Homebrew and Wayback discovery run weekly. Public Web deployments are checked
 hourly because they can be replaced quickly, and public Apple App Store metadata
 for the modern and S1 iOS controllers is checked every six hours.
 

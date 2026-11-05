@@ -41,7 +41,7 @@ def catalog_manifest_url(url: str) -> str:
 
 
 def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
-                    evidence_dir: Path, max_manifests=256, delay=.25, fetch=None) -> dict:
+                    evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True) -> dict:
     """Return raw snapshot receipts, source edges and failures, including limits.
 
     Only explicit seed/history links or the literal sibling update.upm are visited.
@@ -87,11 +87,11 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
 
     for item in initial:
         add(item['url'], 'current-feed', 'current-manifest')
-    for item in catalog.get('source_manifests', []):
+    for item in (catalog.get('source_manifests', []) if include_history else []):
         add(catalog_manifest_url(item.get('source_url', '')), 'catalog', 'catalog-manifest')
-    for item in catalog.get('packages', []):
+    for item in (catalog.get('packages', []) if include_history else []):
         directory(item.get('source_url', ''), item.get('version'))
-    for seed in seed_urls:
+    for seed in (seed_urls if include_history else []):
         url = seed['url'] if isinstance(seed, dict) else seed
         if isinstance(seed, dict) and all(k in seed for k in ('version', 'package_model', 'filename')) and official(normalize(url)):
             c = Candidate(seed['version'], seed['package_model'], normalize(url), 'verified-public-seed', seed['filename'])
@@ -138,7 +138,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 candidates[c.url] = c
                 edges.append({'url': c.url, 'parent': url, 'reason': c.source})
                 directory(c.url, c.version)
-            for link in metadata.get('manifest_links', []):
+            for link in (metadata.get('manifest_links', []) if include_history else []):
                 add(link, url, 'manifest-link')
         except Exception as error:
             status = getattr(error, 'code', None)
