@@ -1,0 +1,16 @@
+{
+  "source": "34.16-37101-1-13.upd",
+  "components": [
+    {
+      "package_id": "34.16-37101-1-13",
+      "section_index": 5,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "34.16-37101-1-13-kernel.uImage",
+      "bytes": 3313049,
+      "sha256": "e0dac684ca91b182c64a309a9da4960716788a1e56acea547b4929f6af6302e5",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}

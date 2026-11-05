@@ -1,0 +1,38 @@
+{
+  "source": "10.20-75300-1-27.upd",
+  "components": [
+    {
+      "package_id": "10.20-75300-1-27",
+      "section_index": 3,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "10.20-75300-1-27-preinstall.sh",
+      "bytes": 4108,
+      "sha256": "a2058bfc7a7dd6108b37c8661fa92840d301e84cdb2d525182cb7f43a01619cf",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "10.20-75300-1-27",
+      "section_index": 4,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "10.20-75300-1-27-kernel.uImage",
+      "bytes": 619369,
+      "sha256": "c99c3d7ee78e51d9ffd40cf743f261e4fe21986fc5f5815588d3969b23cc2f39",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "10.20-75300-1-27",
+      "section_index": 5,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "10.20-75300-1-27-rootfs.bin",
+      "bytes": 4120576,
+      "sha256": "1b1dc32b4a25fd02b11a51ac1a6fabda494a3f378de718770ef756087d07c625",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}
