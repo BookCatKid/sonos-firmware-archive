@@ -94,6 +94,19 @@ class CapturedManifestRegressionTests(unittest.TestCase):
         self.assertEqual(len(r['manifests']),1)
 
 
+class InitialFetchTests(unittest.TestCase):
+    def test_feed_manifest_without_body_uses_guarded_retrieve(self):
+        url='https://update.sonos.com/firmware/Prod/a/update.upm'
+        body=b'<update_manifest version="1.1"></update_manifest>'
+        calls=[]
+        def fetch(u):
+            calls.append(u);return body
+        with tempfile.TemporaryDirectory() as d:
+            r=crawl_manifests({},[{'url':url}],[],Path(d),fetch=fetch,delay=0)
+        self.assertEqual(calls,[url])
+        self.assertEqual(len(r['manifests']),1)
+
+
 class ProbeSafetyTests(unittest.TestCase):
     def test_challenge_does_not_probe_remainder(self):
         from unittest.mock import patch
@@ -104,6 +117,15 @@ class ProbeSafetyTests(unittest.TestCase):
         self.assertEqual(probe.call_count,1)
         self.assertEqual(len(rows),3)
         self.assertTrue(all(x.get('error') for x in rows))
+
+    def test_probe_budget_marks_remainder_unchecked(self):
+        from unittest.mock import patch
+        from sonos_firmware.discovery import Candidate, probe_all
+        cs=[Candidate('1.0',n,BASE+str(n)+'.upd','test',str(n)+'.upd') for n in range(3)]
+        with patch('sonos_firmware.discovery.probe') as probe:
+            rows=probe_all(cs, deadline=0)
+        self.assertEqual(probe.call_count,0)
+        self.assertTrue(all('budget' in x.get('error','') for x in rows))
 
     def test_seeded_chip_file_is_checked_without_list(self):
         seed={'url':BASE+'chip.bin','filename':'chip.bin','version':'3.1.4','package_model':44}

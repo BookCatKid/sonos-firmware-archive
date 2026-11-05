@@ -11,9 +11,9 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
 
-from .discovery import Candidate, USER_AGENT, parse_manifest
+from .discovery import Candidate, OFFICIAL_FIRMWARE_HOSTS, USER_AGENT, parse_manifest
 
-HOSTS = {"update.sonos.com", "update-firmware.sonos.com"}
+HOSTS = OFFICIAL_FIRMWARE_HOSTS
 PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$")
 
 
@@ -50,7 +50,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     evidence_dir.mkdir(parents=True, exist_ok=True)
     queue = deque()
     seen = set()
-    bodies = {normalize(m['url']): m['body'] for m in initial}
+    bodies = {normalize(m['url']): m['body'] for m in initial if m.get('body') is not None}
     candidates = {}
     directories = set()
     edges = []

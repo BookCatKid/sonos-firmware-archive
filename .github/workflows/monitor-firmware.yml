@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python scripts/check_new_versions.py --output monitor-report.json
+          python scripts/check_new_versions.py --output monitor-report.json --probe-budget-seconds 1500
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0

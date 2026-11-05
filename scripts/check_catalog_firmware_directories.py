@@ -31,6 +31,7 @@ def main() -> int:
     parser.add_argument("--monitor-report", type=Path)
     parser.add_argument("--seeds", type=Path, default=ROOT / "config/discovery-seeds.json")
     parser.add_argument("--max-probes", type=int, default=8000)
+    parser.add_argument("--max-seconds", type=float, default=2400)
     parser.add_argument("--delay", type=float, default=.25)
     args = parser.parse_args()
     if not 0 <= args.model_min <= args.model_max <= 255 or args.max_probes < 1 or args.delay < 0:
@@ -56,8 +57,19 @@ def main() -> int:
         match = PACKAGE.match(name)
         if official(url) and match:
             directories.add((match.group(1), url.rsplit("/", 1)[0]))
+    incomplete_reasons: list[str] = []
     if args.monitor_report:
         monitor = json.loads(args.monitor_report.read_text())
+        if monitor.get("status") == "error":
+            write_json(args.output, {"schema_version":1, "incomplete":True, "error_total":1,
+                "error":"directory probes skipped after monitor error", "uncatalogued_available":[],
+                "uncatalogued_available_total":0})
+            return 1
+        graph = monitor.get("discovery_graph", {})
+        if graph.get("limits_reached"):
+            incomplete_reasons.append("monitor traversal reached its manifest limit")
+        if any(f.get("kind") == "error" for f in graph.get("failures", [])):
+            incomplete_reasons.append("monitor traversal recorded fetch errors")
         challenged = monitor.get("discovery_graph", {}).get("blocked") or any(
             x.get("http_status") in {403,429} for key in ("current_candidates", "known_missing_candidates", "alternate_host_candidates", "controls")
             for x in monitor.get(key, []))
@@ -79,14 +91,18 @@ def main() -> int:
             )
     candidates = sorted({c.url: c for c in candidates}.values(), key=lambda c: (c.version, c.package_model, c.url))
     results = []
+    deadline = time.monotonic() + args.max_seconds if args.max_seconds else None
     for c in candidates[:args.max_probes]:
+        if deadline is not None and time.monotonic() > deadline:
+            incomplete_reasons.append("probe time budget exhausted")
+            break
         row = probe(c)
         results.append(row)
         if row.get("http_status") in {403, 429}:
             break
         if args.delay:
             time.sleep(args.delay)
-    incomplete = len(results) < len(candidates)
+    incomplete = len(results) < len(candidates) or bool(incomplete_reasons)
     discoveries = [
         item
         for item in results
@@ -97,6 +113,7 @@ def main() -> int:
     report = {
         "schema_version": 1,
         "incomplete": incomplete,
+        "incomplete_reasons": incomplete_reasons,
         "pending_total": len(candidates) - len(results),
         "checked": datetime.now(timezone.utc).isoformat(),
         "method": "bounded sequential HEAD expansion of exact directories evidenced by catalog, public seeds or current traversal; no campaign-code guessing",

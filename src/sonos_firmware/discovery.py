@@ -15,6 +15,23 @@ from urllib.parse import urljoin, urlsplit
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
+OFFICIAL_FIRMWARE_HOSTS = {"update.sonos.com", "update-firmware.sonos.com"}
+
+
+def official_firmware_url(url: str) -> bool:
+    parsed = urlsplit(url)
+    return parsed.scheme == "https" and parsed.hostname in OFFICIAL_FIRMWARE_HOSTS
+
+
+class _OfficialRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not official_firmware_url(newurl):
+            raise urllib.error.URLError(f"redirect to unsupported host: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_OfficialRedirect())
+
 
 @dataclass(frozen=True)
 class Candidate:
@@ -100,10 +117,10 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
 
 
 def probe(candidate: Candidate, timeout: float = 20) -> dict:
-    request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
     result = asdict(candidate)
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
+        with _OPENER.open(request, timeout=timeout) as response:
             result.update(
                 available=response.status == 200,
                 http_status=response.status,
@@ -114,20 +131,25 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
             )
     except urllib.error.HTTPError as error:
         result.update(available=False, http_status=error.code, bytes=None)
-    except (urllib.error.URLError, TimeoutError) as error:
+    except (urllib.error.URLError, TimeoutError, ValueError) as error:
         result.update(available=False, http_status=None, bytes=None, error=str(error))
     return result
 
 
-def probe_all(candidates: list[Candidate], workers: int = 6) -> list[dict]:
+def probe_all(candidates: list[Candidate], workers: int = 6, deadline: float | None = None) -> list[dict]:
     # All source checks stop after throttling/access challenges, not just the
-    # directory sweep. Keep the workers argument for caller compatibility.
+    # directory sweep. A shared monotonic deadline keeps slow scans inside the
+    # workflow runtime so the report is always written.
+    # Keep the workers argument for caller compatibility.
     import time
     results = []
     blocked = False
     for candidate in candidates:
         if blocked:
             results.append({**asdict(candidate), "available": False, "error": "not checked after source challenge"})
+            continue
+        if deadline is not None and time.monotonic() > deadline:
+            results.append({**asdict(candidate), "available": False, "error": "not checked within probe budget"})
             continue
         row = probe(candidate)
         results.append(row)

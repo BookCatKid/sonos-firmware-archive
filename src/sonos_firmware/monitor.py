@@ -175,39 +175,53 @@ def fetch_metadata_with_retries() -> tuple[bytes, dict]:
     raise AssertionError("unreachable")
 
 
-def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir=None, max_manifests=256) -> dict:
+def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir=None, max_manifests=256, probe_budget_seconds: float | None = None) -> dict:
     ups, response = fetch_metadata_with_retries()
     records = parse_update_metadata(ups)
     manifest_urls = sorted(
         {secure_url(item["uri"]) for item in records if item["type"] == MANIFEST_URI_TYPE}
     )
     ups_manifest_urls = manifest_urls.copy()
+    # An S2 outage must not block S1 discovery or preservation: report the
+    # modern failure and continue with the S1 manifests already fetched.
+    modern_body, modern_response, modern_error = None, None, None
     for attempt in range(3):
         try:
             modern_body, modern_response = fetch_modern_manifest()
             break
-        except Exception:
-            if attempt == 2:
-                raise
-            time.sleep(2**attempt)
-    manifest_urls = sorted(set(manifest_urls) | {modern_response["url"]})
-    initial = [{"url": url, "body": modern_body if url == modern_response["url"] else fetch_bytes(url)}
-               for url in manifest_urls]
+        except Exception as error:
+            modern_error = error
+            if attempt < 2:
+                time.sleep(2**attempt)
+    if modern_response is not None:
+        manifest_urls = sorted(set(manifest_urls) | {modern_response["url"]})
+    # Only the already-fetched modern body is seeded. Every other feed
+    # manifest is retrieved through the crawler's guarded, size-limited and
+    # budgeted path so feed data cannot trigger unguarded downloads.
+    initial = [
+        {"url": url, "body": modern_body}
+        if modern_response is not None and url == modern_response["url"]
+        else {"url": url}
+        for url in manifest_urls
+    ]
+    probe_deadline = (
+        time.monotonic() + probe_budget_seconds if probe_budget_seconds else None
+    )
     graph = crawl_manifests(catalog, initial, seed_urls or [],
                             Path(evidence_dir or "manifest-evidence"), max_manifests=max_manifests)
     manifests = graph["manifests"]
     current_candidates = {c.url: c for c in graph.pop("candidates")}
 
-    current_probes = [] if graph["blocked"] else probe_all(list(current_candidates.values()), workers)
+    current_probes = [] if graph["blocked"] else probe_all(list(current_candidates.values()), workers, deadline=probe_deadline)
     missing_packages = [
         item for item in catalog["packages"] if item["artifact_status"] == "missing-cdn"
     ]
     missing_candidates = [package_candidate(item) for item in missing_packages]
     challenged = graph["blocked"] or any(x.get("http_status") in {403,429} for x in current_probes)
-    missing_probes = [] if challenged else probe_all(missing_candidates, workers)
+    missing_probes = [] if challenged else probe_all(missing_candidates, workers, deadline=probe_deadline)
     challenged = challenged or any(x.get("http_status") in {403,429} for x in missing_probes)
     alternate_missing_probes = [] if challenged else probe_all(
-        [alternate_host(item) for item in missing_candidates], workers
+        [alternate_host(item) for item in missing_candidates], workers, deadline=probe_deadline
     )
     challenged = challenged or any(x.get("http_status") in {403,429} for x in alternate_missing_probes)
     missing_prefixes = {item.url.rsplit("/", 1)[0] for item in missing_candidates}
@@ -219,7 +233,7 @@ def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir
         prefix = candidate.url.rsplit("/", 1)[0]
         if prefix in missing_prefixes and prefix not in controls_by_prefix:
             controls_by_prefix[prefix] = candidate
-    control_probes = [] if challenged else probe_all(list(controls_by_prefix.values()), workers)
+    control_probes = [] if challenged else probe_all(list(controls_by_prefix.values()), workers, deadline=probe_deadline)
     release_notes = fetch_bytes(RELEASE_NOTES_URL)
     release_note_versions = set(VERSION_PATTERN.findall(release_notes.decode("utf-8", errors="replace")))
     summary = summarize_changes(
@@ -236,6 +250,9 @@ def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir
         "checked": datetime.now(timezone.utc).isoformat(),
         "scope": "current public feeds, evidence-seeded historical/sibling lists and known missing URLs; bounded discovery, not exhaustive server coverage",
         "discovery_graph": graph,
+        "modern_error": (
+            str(modern_error) if modern_response is None and modern_error else None
+        ),
         "request_profile": UpdateProfile().redacted(),
         "ups": {
             **response,

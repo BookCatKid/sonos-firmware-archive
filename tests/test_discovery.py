@@ -36,3 +36,12 @@ class DiscoveryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class ProbeInputTests(unittest.TestCase):
+    def test_relative_candidate_returns_error_not_crash(self):
+        from sonos_firmware.discovery import Candidate, probe
+        row = probe(Candidate('1.0', 3, 'app.exe', 'test', 'app.exe'))
+        self.assertFalse(row['available'])
+        self.assertIsNone(row['http_status'])
+        self.assertTrue(row['error'])
+
