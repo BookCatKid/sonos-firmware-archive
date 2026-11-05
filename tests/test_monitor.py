@@ -84,13 +84,17 @@ class MonitorTests(unittest.TestCase):
 
 class ModernMonitorTests(unittest.TestCase):
     def test_modern_manifest_enters_existing_discovery_path(self):
+        import urllib.error
         from unittest.mock import patch
         from sonos_firmware.monitor import run_monitor
+        class OfflineOpener:
+            def open(self, req, timeout=None):
+                raise urllib.error.HTTPError(req.full_url, 404, 'offline test double', {}, None)
         xml = b'''<update_manifest version="1.1" system_version="98.0-82170" default_version="98.0-82170"><image model="27" version="98.0-82170">https://update-firmware.sonos.com/firmware/Prod/new/98.0-82170-1-27.upd</image></update_manifest>'''
         canonical = 'https://update.sonos.com/firmware/Prod/new/update.upm'
         def probes(candidates, workers, **kwargs):
             return [dict(vars(c), available=True) for c in candidates]
-        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), patch('sonos_firmware.monitor.fetch_bytes', return_value=b''), patch('sonos_firmware.monitor.probe_all', side_effect=probes):
+        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), patch('sonos_firmware.monitor.fetch_bytes', return_value=b''), patch('sonos_firmware.monitor.probe_all', side_effect=probes), patch('urllib.request.build_opener', lambda *args, **kwargs: OfflineOpener()):
             result = run_monitor({'packages': [], 'source_manifests': []})
         self.assertEqual(result['ups']['manifest_urls'], [])
         self.assertEqual(result['manifests'][0]['url'], canonical)
