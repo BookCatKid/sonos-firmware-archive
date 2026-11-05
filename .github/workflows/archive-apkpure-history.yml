@@ -41,6 +41,7 @@ jobs:
           key: apkeep-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('tools/vendor/apkeep-1.0.0.tar.gz') }}
 
       - name: Build pinned APKPure acquisition tool
+        id: apkeep
         if: steps.apkeep_cache.outputs.cache-hit != 'true'
         shell: bash
         run: |

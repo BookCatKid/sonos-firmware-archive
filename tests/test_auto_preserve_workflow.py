@@ -49,3 +49,56 @@ class AutoPreserveWorkflowTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+import yaml
+
+
+def _load(path):
+    return yaml.safe_load((ROOT / path).read_text())
+
+
+class ApkeepCacheWiringTests(unittest.TestCase):
+    """The pinned apkeep tool is built once and restored from cache after."""
+
+    def _steps(self, path):
+        workflow = _load(path)
+        jobs = workflow["jobs"]
+        steps = [step for job in jobs.values() for step in job["steps"]]
+        return {step.get("id"): step for step in steps if step.get("id")}, steps
+
+    def _check_workflow(self, path):
+        by_id, steps = self._steps(path)
+        cache = by_id.get("apkeep_cache")
+        self.assertIsNotNone(cache, f"{path}: missing cache step")
+        # hit: actions/cache restore, keyed on the vendored tarball so a pin
+        # change is a cache miss; no restore-keys fallback to a stale build
+        self.assertEqual(cache["uses"], "actions/cache@v4")
+        key = cache["with"]["key"]
+        self.assertIn("hashFiles('tools/vendor/apkeep-1.0.0.tar.gz')", key)
+        self.assertNotIn("restore-keys", cache["with"])
+        # cache failure: non-fatal, the build step still runs
+        self.assertTrue(cache.get("continue-on-error"))
+        build = by_id.get("apkeep")
+        self.assertIsNotNone(build, f"{path}: missing build step")
+        self.assertIn("cache-hit != 'true'", str(build.get("if", "")))
+        # build installs into the same directory the cache restores
+        self.assertIn(cache["with"]["path"].replace("~", "$HOME"), build["run"])
+        # every apkeep invocation uses the cached location, never RUNNER_TEMP
+        for step in steps:
+            run = step.get("run") or ""
+            self.assertNotIn("$RUNNER_TEMP/apkeep-bin", run)
+        return by_id
+
+    def test_auto_preserve_cache_wiring(self):
+        by_id = self._check_workflow(".github/workflows/auto-preserve.yml")
+        # hit path: the archive step must accept a restored binary, not only a fresh build
+        play = by_id["play_archive"]
+        condition = str(play["if"])
+        self.assertIn("cache-hit == 'true'", condition)
+        self.assertIn("steps.apkeep.outcome == 'success'", condition)
+        # cache and build stay scoped to Play changes
+        self.assertIn("steps.changes.outputs.play == 'true'", str(by_id["apkeep_cache"]["if"]))
+        self.assertIn("steps.changes.outputs.play == 'true'", str(by_id["apkeep"]["if"]))
+
+    def test_history_sweep_cache_wiring(self):
+        self._check_workflow(".github/workflows/archive-apkpure-history.yml")
