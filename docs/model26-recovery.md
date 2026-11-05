@@ -97,7 +97,7 @@ values are preserved in
 not yet been processed. No decrypted model-26 assets have been uploaded to
 GitHub Releases, so the catalog correctly continues to mark their raw
 artifacts as unpublished. Recovering one recipient key does not imply all
-24 plaintext packages have already been archived.
+29 plaintext packages have been archived.
 
 See [model-key handling](key-material.md) for the comparable recovery notes
 for models 1, 8, 9, 12, 16, and 17.

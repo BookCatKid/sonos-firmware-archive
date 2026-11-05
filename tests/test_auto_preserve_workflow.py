@@ -16,6 +16,14 @@ class AutoPreserveWorkflowTests(unittest.TestCase):
             name = f"SONOS_MODEL_{model}_PRIVATE_KEY"
             self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", TEXT)
 
+    def test_decrypt_step_derives_model26_from_committed_inputs(self):
+        self.assertIn('python scripts/recover_model26_key.py --output "$keydir/model26.pem"', TEXT)
+        self.assertNotIn('SONOS_MODEL_26_PRIVATE_KEY', TEXT)
+        self.assertLess(
+            TEXT.index('python scripts/recover_model26_key.py --output "$keydir/model26.pem"'),
+            TEXT.index('python scripts/decrypt_pending_firmware.py'),
+        )
+
     def test_decrypt_step_never_logs_key_material(self):
         self.assertIn("umask 077", TEXT)
         self.assertNotIn("set -x", TEXT)

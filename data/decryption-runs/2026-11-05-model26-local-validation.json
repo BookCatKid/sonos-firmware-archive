@@ -6,7 +6,7 @@
   "key_source": "https://github.com/blasty/sonos/issues/1#issuecomment-6653881846",
   "key_derivation": "https://github.com/blasty/sonos/blob/main/sonostool/sonostool.py",
   "key_recovered": true,
-  "key_publication": "key not committed; input binary copies pending manual addition",
+  "key_publication": "public MDP3 field and OTP inputs committed; recovered private-key PEM not committed",
   "package_count_verified": 2,
   "package_count_remaining": 27,
   "plaintext_release_uploads_completed": false,

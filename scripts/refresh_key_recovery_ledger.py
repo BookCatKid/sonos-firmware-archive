@@ -91,8 +91,8 @@ def main() -> int:
         f"{len(recovered)} recovered recipient keys cover package models "
         f"{', '.join(map(str, recovered_models))}. "
         + ". ".join(mechanisms)
-        + ". Private-key PEM outputs remain in the local gitignored recovery-work "
-        "vault rather than in Git. "
+        + ". The legacy recovery vault is gitignored; model-26 PEM output "
+        "is written to the caller-selected path and is not tracked by this ledger. "
         + f"{len(ledger['missing_keys'])} recipient groups remain missing."
     )
     ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
