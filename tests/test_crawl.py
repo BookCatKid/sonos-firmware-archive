@@ -156,7 +156,7 @@ class PublicCapturedReplayTests(unittest.TestCase):
         reached={c.url for c in graph['candidates']}
         for row in graph['directories']:
             reached.update(row['directory']+'/'+row['version']+'-1-'+str(n)+'.upd' for n in range(81))
-        targets={u for u in (root/'docs/recovered-firmware-urls-2026-11-04.txt').read_text().splitlines() if u.startswith('https://')}
+        targets={u for u in (fixture/'recovered-firmware-urls.txt').read_text().splitlines() if u.startswith('https://')}
         self.assertEqual(len(targets),150)
         self.assertEqual(targets-reached,set())
         self.assertFalse(graph['limits_reached'])
