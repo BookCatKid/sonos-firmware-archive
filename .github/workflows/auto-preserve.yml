@@ -42,12 +42,11 @@ jobs:
             cp monitor-input/*.json .
           else
             set +e
-            python scripts/check_new_versions.py --output monitor-report.json
-            python scripts/check_catalog_firmware_directories.py               --output catalog-directory-monitor-report.json
-            python scripts/check_new_desktop_apps.py               --output desktop-app-monitor-report.json               --discovery-output desktop-app-discovery.json
-            python scripts/check_new_mobile_apps.py               --output mobile-app-monitor-report.json               --discovery-output mobile-app-discovery.json
+            python scripts/check_new_versions.py --output monitor-report.json --current-only
+            printf '%s\n' '{"schema_version":1,"scope":"deferred-to-weekly","error_total":0,"uncatalogued_available_total":0,"uncatalogued_available":[]}' > catalog-directory-monitor-report.json
+            python scripts/check_new_desktop_apps.py               --current-only --output desktop-app-monitor-report.json               --discovery-output desktop-app-discovery.json
+            python scripts/check_new_mobile_apps.py               --current-only --output mobile-app-monitor-report.json               --discovery-output mobile-app-discovery.json
             python scripts/check_new_google_play_apps.py               --output google-play-monitor-report.json               --discovery-output google-play-discovery.json
-            python scripts/check_new_web_apps.py --output web-app-monitor-report.json
             set -e
           fi
 
@@ -56,14 +55,13 @@ jobs:
           jq -e '.status != "error"' desktop-app-monitor-report.json >/dev/null
           jq -e '.status != "error"' mobile-app-monitor-report.json >/dev/null
           jq -e '.status != "error"' google-play-monitor-report.json >/dev/null
-          jq -e '.status != "error"' web-app-monitor-report.json >/dev/null
 
           echo "firmware=$(jq -r '.status == "change-detected"' monitor-report.json)" >> "$GITHUB_OUTPUT"
           echo "directory=$(jq -r '.uncatalogued_available_total > 0' catalog-directory-monitor-report.json)" >> "$GITHUB_OUTPUT"
           echo "desktop=$(jq -r '.status == "change-detected"' desktop-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
           echo "mobile=$(jq -r '.status == "change-detected"' mobile-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
           echo "play=$(jq -r '.status == "change-detected"' google-play-monitor-report.json)" >> "$GITHUB_OUTPUT"
-          echo "web=$(jq -r '.status == "change-detected"' web-app-monitor-report.json)" >> "$GITHUB_OUTPUT"
+          # Hourly archive-web-apps owns web discovery and preservation.
 
       - name: Preserve desktop installers
         id: desktop_archive
@@ -116,13 +114,6 @@ jobs:
             echo "APKPure has not exposed a new signed delivery yet; keeping the old listing baseline so the monitor retries."
           fi
 
-      - name: Preserve public Web deployments
-        id: web_archive
-        if: steps.changes.outputs.web == 'true'
-        continue-on-error: true
-        run: |
-          python scripts/archive_web_apps.py             --capture-dir "$RUNNER_TEMP/web-captures"             --upload
-
       - name: Preserve official firmware and exact manifests
         id: firmware_archive
         if: steps.changes.outputs.firmware == 'true' || steps.changes.outputs.directory == 'true'
@@ -140,7 +131,6 @@ jobs:
             desktop-app-monitor-report.json
             mobile-app-monitor-report.json
             google-play-monitor-report.json
-            web-app-monitor-report.json
             auto-firmware-archive-report.json
           if-no-files-found: ignore
           retention-days: 30
@@ -168,7 +158,6 @@ jobs:
            steps.mobile_archive.outcome == 'failure' ||
            steps.apkeep.outcome == 'failure' ||
            steps.play_archive.outcome == 'failure' ||
-           steps.web_archive.outcome == 'failure' ||
            steps.firmware_archive.outcome == 'failure' ||
            steps.commit.outcome == 'failure')
         uses: actions/github-script@v8
@@ -183,7 +172,6 @@ jobs:
               `- Sonos-hosted APK: ${{ steps.mobile_archive.outcome }}`,
               `- APKPure tool: ${{ steps.apkeep.outcome }}`,
               `- APKPure recovery: ${{ steps.play_archive.outcome }}`,
-              `- Web deployment: ${{ steps.web_archive.outcome }}`,
               `- firmware/manifests: ${{ steps.firmware_archive.outcome }}`,
               `- metadata commit/push: ${{ steps.commit.outcome }}`,
               '',

@@ -171,7 +171,7 @@ def fetch_metadata_with_retries() -> tuple[bytes, dict]:
     raise AssertionError("unreachable")
 
 
-def run_monitor(catalog: dict, workers: int = 6) -> dict:
+def run_monitor(catalog: dict, workers: int = 6, *, include_history: bool = True) -> dict:
     ups, response = fetch_metadata_with_retries()
     records = parse_update_metadata(ups)
     manifest_urls = sorted(
@@ -198,7 +198,7 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
 
     current_probes = probe_all(list(current_candidates.values()), workers)
     missing_packages = [
-        item for item in catalog["packages"] if item["artifact_status"] == "missing-cdn"
+        item for item in catalog["packages"] if include_history and item["artifact_status"] == "missing-cdn"
     ]
     missing_candidates = [package_candidate(item) for item in missing_packages]
     missing_probes = probe_all(missing_candidates, workers)
@@ -233,6 +233,7 @@ def run_monitor(catalog: dict, workers: int = 6) -> dict:
             "current public synthetic update profile plus every exact catalog URL marked "
             "missing-cdn; metadata and HEAD requests only"
         ),
+        "include_history": include_history,
         "request_profile": UpdateProfile().redacted(),
         "ups": {
             **response,

@@ -279,11 +279,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
     candidates: dict = {}
-    winget_candidates(candidates)
-    homebrew_candidates(candidates)
-    wayback = wayback_candidates(candidates)
+    wayback = {"skipped": "historical indexes deferred to weekly scan"}
+    if not args.current_only:
+        winget_candidates(candidates)
+        homebrew_candidates(candidates)
+        wayback = wayback_candidates(candidates)
     direct_redirects = check_direct_redirects()
     for redirect in direct_redirects:
         url = redirect.get("location")
@@ -308,7 +311,8 @@ def main() -> int:
     document = {
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
-        "sources": ["microsoft/winget-pkgs", "Homebrew/homebrew-cask", "Sonos CDN HEAD"],
+        "sources": ["official-current-redirects"] if args.current_only else ["microsoft/winget-pkgs", "Homebrew/homebrew-cask", "Sonos CDN HEAD"],
+        "current_only": args.current_only,
         "direct_redirects": direct_redirects,
         "wayback": wayback,
         "candidate_total": len(results),

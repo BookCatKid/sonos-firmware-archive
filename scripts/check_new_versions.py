@@ -18,9 +18,10 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, default=Path("data/catalog.json"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=6)
+    parser.add_argument("--current-only", action="store_true", help="defer old missing URL retries to the weekly scan")
     args = parser.parse_args()
     try:
-        report = run_monitor(load_catalog(args.catalog), args.workers)
+        report = run_monitor(load_catalog(args.catalog), args.workers, include_history=not args.current_only)
     except Exception as error:
         write_json(args.output, {"schema_version": 1, "status": "error", "error": str(error)})
         print(f"monitor failed: {error}", file=sys.stderr)
