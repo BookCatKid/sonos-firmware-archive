@@ -16,7 +16,8 @@ permissions:
   issues: write
 
 concurrency:
-  group: monitor-firmware-sources-${{ (github.event.schedule == '43 7 * * 0' || inputs.include_history) && 'history' || 'current' }}
+  group: monitor-firmware-sources
+  queue: max
   cancel-in-progress: false
 
 jobs:

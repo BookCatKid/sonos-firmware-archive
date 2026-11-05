@@ -58,6 +58,7 @@ def main() -> int:
         if official(url) and match:
             directories.add((match.group(1), url.rsplit("/", 1)[0]))
     incomplete_reasons: list[str] = []
+    monitor_incomplete_evidence = {}
     if args.monitor_report:
         monitor = json.loads(args.monitor_report.read_text())
         if monitor.get("status") == "error":
@@ -65,6 +66,12 @@ def main() -> int:
                 "error":"directory probes skipped after monitor error", "uncatalogued_available":[],
                 "uncatalogued_available_total":0})
             return 1
+        if monitor.get("discovery_incomplete"):
+            incomplete_reasons.append("monitor reported incomplete discovery")
+            monitor_incomplete_evidence = {
+                "discovery_graph": monitor.get("discovery_graph", {}),
+                "manifests": monitor.get("manifests", []),
+            }
         graph = monitor.get("discovery_graph", {})
         if graph.get("limits_reached"):
             incomplete_reasons.append("monitor traversal reached its manifest limit")
@@ -114,6 +121,7 @@ def main() -> int:
         "schema_version": 1,
         "incomplete": incomplete,
         "incomplete_reasons": incomplete_reasons,
+        "monitor_incomplete_evidence": monitor_incomplete_evidence,
         "pending_total": len(candidates) - len(results),
         "checked": datetime.now(timezone.utc).isoformat(),
         "method": "bounded sequential HEAD expansion of exact directories evidenced by catalog, public seeds or current traversal; no campaign-code guessing",

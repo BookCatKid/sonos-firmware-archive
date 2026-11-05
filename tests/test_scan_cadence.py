@@ -36,7 +36,8 @@ class CadenceTests(unittest.TestCase):
   self.assertEqual(report['current_candidate_total'],1);self.assertEqual(report['known_missing_checked_total'],0)
  def test_workflow_owners_and_weekly_scope(self):
   s=(ROOT/'.github/workflows/monitor-firmware.yml').read_text();a=(ROOT/'.github/workflows/auto-preserve.yml').read_text()
-  self.assertIn("'history' || 'current'",s)
+  self.assertIn("group: monitor-firmware-sources\n  queue: max",s)
+  self.assertIn("group: sonos-preservation\n  queue: max",a)
   self.assertIn('--monitor-report monitor-report.json',s)
   self.assertNotIn("['web app'",a)
   self.assertIn('43 7 * * 0',s);self.assertIn('--current-only',s)

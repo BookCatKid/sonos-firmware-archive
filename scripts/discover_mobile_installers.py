@@ -25,7 +25,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def resolve_latest_redirect() -> dict:
+def resolve_latest_redirect(*, include_history: bool = True) -> dict:
     opener = urllib.request.build_opener(NoRedirect)
     live_status = None
     try:
@@ -49,6 +49,12 @@ def resolve_latest_redirect() -> dict:
         live_error = str(error)
     else:
         live_error = None
+
+    if not include_history:
+        result = {"live_http_status": live_status, "location": None, "location_source": None}
+        if live_error:
+            result["error"] = live_error
+        return result
 
     current = f"https://web.archive.org/web/2id_/{REDIRECT}"
     for _ in range(12):
@@ -136,7 +142,7 @@ def main() -> int:
             "wayback_timestamp": timestamp, "wayback_digest": digest,
             "wayback_length": int(length), "sources": ["wayback-cdx"],
         }
-    direct = resolve_latest_redirect()
+    direct = resolve_latest_redirect(include_history=not args.current_only)
     if direct.get("location"):
         url = direct["location"]
         item = candidates.setdefault(url, {

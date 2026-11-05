@@ -341,6 +341,9 @@ absence.
 
 Historical scans run Sunday at 07:43 UTC, including WinGet/Homebrew/Wayback
 history, the known-directory model sweep and release-asset integrity checks.
+Monitor runs are serialized with GitHub's multi-pending queue to prevent duplicate
+issue races; preservation uses its own serialized multi-pending queue. Each queue
+holds up to 100 pending runs, rather than replacing the previous pending run.
 Manual runs default to current-only; enable `include_history` for the full pass.
 Manual preservation also regenerates current-only reports.
 

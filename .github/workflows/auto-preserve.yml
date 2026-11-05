@@ -13,6 +13,7 @@ permissions:
 
 concurrency:
   group: sonos-preservation
+  queue: max
   cancel-in-progress: false
 
 jobs:

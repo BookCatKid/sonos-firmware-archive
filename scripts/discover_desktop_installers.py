@@ -193,7 +193,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def check_direct_redirects() -> list[dict]:
+def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
     opener = urllib.request.build_opener(NoRedirect)
     results = []
     for name, url in DIRECT_ENDPOINTS.items():
@@ -223,7 +223,7 @@ def check_direct_redirects() -> list[dict]:
             results.append({"name": name, "url": url, "http_status": None,
                             "location": None, "error": str(error)})
             continue
-        if not location:
+        if not location and include_history:
             current = f"https://web.archive.org/web/2id_/{url}"
             for _ in range(10):
                 try:
@@ -287,7 +287,7 @@ def main() -> int:
         winget_candidates(candidates)
         homebrew_candidates(candidates)
         wayback = wayback_candidates(candidates)
-    direct_redirects = check_direct_redirects()
+    direct_redirects = check_direct_redirects(include_history=not args.current_only)
     for redirect in direct_redirects:
         url = redirect.get("location")
         if not url:
