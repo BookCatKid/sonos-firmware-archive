@@ -122,6 +122,53 @@ jobs:
         run: |
           python scripts/archive_monitor_firmware.py             --monitor-report monitor-report.json             --directory-report catalog-directory-monitor-report.json             --work-dir "$RUNNER_TEMP/firmware-auto"             --output auto-firmware-archive-report.json
 
+
+      - name: Decrypt preserved firmware with recovered model keys
+        id: firmware_decrypt
+        if: >-
+          steps.firmware_archive.outcome == 'success' ||
+          steps.firmware_archive.outcome == 'skipped'
+        continue-on-error: true
+        env:
+          SONOS_MODEL_1_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_1_PRIVATE_KEY }}
+          SONOS_MODEL_8_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_8_PRIVATE_KEY }}
+          SONOS_MODEL_9_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_9_PRIVATE_KEY }}
+          SONOS_MODEL_12_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_12_PRIVATE_KEY }}
+          SONOS_MODEL_16_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_16_PRIVATE_KEY }}
+          SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          keydir="$RUNNER_TEMP/model-keys"
+          mkdir -p "$keydir"
+          for model in 1 8 9 12 16 17; do
+            var="SONOS_MODEL_${model}_PRIVATE_KEY"
+            if [[ -n "${!var:-}" ]]; then
+              printf '%s\n' "${!var}" > "$keydir/model${model}.pem"
+            else
+              echo "secret SONOS_MODEL_${model}_PRIVATE_KEY not set; model $model packages stay encrypted"
+            fi
+          done
+          new_receipts="$RUNNER_TEMP/new-receipts"
+          python scripts/decrypt_pending_firmware.py \
+            --key-directory "$keydir" \
+            --staging "$RUNNER_TEMP/decrypt-staging" \
+            --receipt-output "$new_receipts" \
+            --summary decrypt-report.json
+          if [[ -n "$(ls -A "$new_receipts" 2>/dev/null)" ]]; then
+            python scripts/import_raw_receipts.py "$new_receipts"/*.json
+            # Publish before landing receipts: if the upload fails, drop the
+            # catalog edit and leave receipts out of data/raw so the next run
+            # retries the whole package instead of skipping it unpublished.
+            if ! python scripts/upload_raw_assets.py; then
+              git checkout -- data/catalog.json
+              rm -rf "$keydir"
+              exit 1
+            fi
+            cp "$new_receipts"/*.json data/raw/
+          fi
+          rm -rf "$keydir"
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -143,7 +190,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/apps data/catalog.json data/discovery data/manifests data/upd data/key-recovery-ledger.json
+          git add data/apps data/catalog.json data/discovery data/manifests data/raw data/upd data/key-recovery-ledger.json
           if git diff --cached --quiet; then
             echo "No repository metadata changed."
             exit 0
@@ -160,6 +207,7 @@ jobs:
            steps.apkeep.outcome == 'failure' ||
            steps.play_archive.outcome == 'failure' ||
            steps.firmware_archive.outcome == 'failure' ||
+           steps.firmware_decrypt.outcome == 'failure' ||
            steps.commit.outcome == 'failure')
         uses: actions/github-script@v8
         with:
@@ -172,6 +220,7 @@ jobs:
               ['APKPure tool', '${{ steps.apkeep.outcome }}'],
               ['APKPure recovery', '${{ steps.play_archive.outcome }}'],
               ['firmware', '${{ steps.firmware_archive.outcome }}'],
+              ['decryption', '${{ steps.firmware_decrypt.outcome }}'],
               ['saving metadata', '${{ steps.commit.outcome }}'],
             ];
             const failed = outcomes.filter(([, outcome]) => outcome !== 'success');

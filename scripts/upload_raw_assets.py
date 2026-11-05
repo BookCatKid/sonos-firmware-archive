@@ -81,13 +81,26 @@ def main() -> int:
     def upload(entry: tuple[str, list[Path]]) -> tuple[str, int]:
         tag, paths = entry
         release = public_release("BookCatKid/sonos-firmware-archive", tag)
+        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
+        uploaded = 0
         for path in paths:
+            item = expected[path.name]
+            asset = assets.get(path.name)
+            if asset is not None:
+                # Resume path: never fail or clobber on rerun. An existing
+                # asset that already matches the catalog is left in place;
+                # a mismatch is an error, not an overwrite.
+                if asset["size"] == item["bytes"] and verified_remote_digest(asset) == item["sha256"]:
+                    print(f"verified existing remote asset; skipping upload: {tag}/{path.name}")
+                    continue
+                raise RuntimeError(f"remote asset exists with different content: {tag}/{path.name}")
             if path.stat().st_size >= 32 * 1024 * 1024:
                 upload_streaming("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
             else:
                 upload_asset("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
+            uploaded += 1
             time.sleep(1.1)
-        return tag, len(paths)
+        return tag, uploaded
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         for tag, count in pool.map(upload, sorted(groups.items())):
