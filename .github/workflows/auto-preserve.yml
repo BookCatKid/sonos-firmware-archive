@@ -176,18 +176,20 @@ jobs:
           script: |
             const title = '[monitor] Automatic Sonos preservation failed';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const outcomes = [
+              ['desktop', '${{ steps.desktop_archive.outcome }}'],
+              ['Sonos Android app', '${{ steps.mobile_archive.outcome }}'],
+              ['APKPure tool', '${{ steps.apkeep.outcome }}'],
+              ['APKPure recovery', '${{ steps.play_archive.outcome }}'],
+              ['web app', '${{ steps.web_archive.outcome }}'],
+              ['firmware', '${{ steps.firmware_archive.outcome }}'],
+              ['saving metadata', '${{ steps.commit.outcome }}'],
+            ];
+            const failed = outcomes.filter(([, outcome]) => outcome !== 'success');
             const body = [
-              'At least one deterministic preservation step failed after new software was detected.',
+              `Preservation failed after new software was detected: ${failed.map(([name]) => name).join(', ')}.`,
               '',
-              `- desktop: ${{ steps.desktop_archive.outcome }}`,
-              `- Sonos-hosted APK: ${{ steps.mobile_archive.outcome }}`,
-              `- APKPure tool: ${{ steps.apkeep.outcome }}`,
-              `- APKPure recovery: ${{ steps.play_archive.outcome }}`,
-              `- Web deployment: ${{ steps.web_archive.outcome }}`,
-              `- firmware/manifests: ${{ steps.firmware_archive.outcome }}`,
-              `- metadata commit/push: ${{ steps.commit.outcome }}`,
-              '',
-              `Review [workflow run ${context.runNumber}](${runUrl}).`,
+              `Details: [workflow run ${context.runNumber}](${runUrl}).`,
             ].join('\n');
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100,
