@@ -82,5 +82,75 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(result["unknown_release_note_versions"], ["99.1-12345"])
 
 
+class ModernMonitorTests(unittest.TestCase):
+    def test_modern_manifest_enters_existing_discovery_path(self):
+        from unittest.mock import patch
+        from sonos_firmware.monitor import run_monitor
+        xml = b'''<update_manifest version="1.1" system_version="98.0-82170" default_version="98.0-82170"><image model="27" version="98.0-82170">https://update-firmware.sonos.com/firmware/Prod/new/98.0-82170-1-27.upd</image></update_manifest>'''
+        canonical = 'https://update.sonos.com/firmware/Prod/new/update.upm'
+        def probes(candidates, workers):
+            return [dict(vars(c), available=True) for c in candidates]
+        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), patch('sonos_firmware.monitor.fetch_bytes', return_value=b''), patch('sonos_firmware.monitor.probe_all', side_effect=probes):
+            result = run_monitor({'packages': [], 'source_manifests': []})
+        self.assertEqual(result['ups']['manifest_urls'], [])
+        self.assertEqual(result['manifests'][0]['url'], canonical)
+        self.assertEqual(result['available_uncatalogued_candidates'][0]['version'], '98.0-82170')
+        self.assertTrue(result['change_detected'])
+
+
+    def test_modern_outage_still_reports_s1(self):
+        from unittest.mock import patch
+        from sonos_firmware.monitor import run_monitor
+        def probes(candidates, workers):
+            return [dict(vars(c), available=True) for c in candidates]
+        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), \
+                patch('sonos_firmware.monitor.fetch_modern_manifest', side_effect=Exception('s2 down')), \
+                patch('sonos_firmware.monitor.fetch_bytes', return_value=b''), \
+                patch('sonos_firmware.monitor.probe_all', side_effect=probes), \
+                patch('sonos_firmware.monitor.time.sleep'):
+            result = run_monitor({'packages': [], 'source_manifests': []})
+        self.assertEqual(result['modern_manifest'], None)
+        self.assertEqual(result['modern_error'], 's2 down')
+        self.assertEqual(result['manifests'], [])
+
+    def test_non_official_manifest_candidate_is_not_probed(self):
+        from unittest.mock import patch
+        from sonos_firmware.monitor import run_monitor
+        xml = b'''<update_manifest version="1.1" system_version="98.0-82170" default_version="98.0-82170"><image model="27" version="98.0-82170">https://untrusted.example/firmware/Prod/new/98.0-82170-1-27.upd</image></update_manifest>'''
+        canonical = 'https://update.sonos.com/firmware/Prod/new/update.upm'
+        probed = []
+        def probes(candidates, workers):
+            probed.extend(c.url for c in candidates)
+            return [dict(vars(c), available=True) for c in candidates]
+        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), \
+                patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), \
+                patch('sonos_firmware.monitor.fetch_bytes', return_value=b''), \
+                patch('sonos_firmware.monitor.probe_all', side_effect=probes):
+            result = run_monitor({'packages': [], 'source_manifests': []})
+        self.assertEqual(probed, [])
+        skipped = result['skipped_non_official_candidates']
+        self.assertEqual([item['url'] for item in skipped], ['https://untrusted.example/firmware/Prod/new/98.0-82170-1-27.upd'])
+
+
+    def test_non_official_feed_manifest_url_is_not_fetched(self):
+        from unittest.mock import patch
+        from sonos_firmware.metadata import MANIFEST_URI_TYPE
+        from sonos_firmware.monitor import run_monitor
+        xml = b'<update_manifest version="1.1"></update_manifest>'
+        canonical = 'https://update.sonos.com/firmware/Prod/new/update.upm'
+        records = [{'type': MANIFEST_URI_TYPE, 'uri': 'http://untrusted.example/firmware/x/update.upm'}]
+        def probes(candidates, workers):
+            return [dict(vars(c), available=True) for c in candidates]
+        with patch('sonos_firmware.monitor.fetch_metadata_with_retries', return_value=(b'', {})), \
+                patch('sonos_firmware.monitor.parse_update_metadata', return_value=records), \
+                patch('sonos_firmware.monitor.fetch_modern_manifest', return_value=(xml, {'url': canonical})), \
+                patch('sonos_firmware.monitor.fetch_bytes', return_value=b'') as fetch, \
+                patch('sonos_firmware.monitor.probe_all', side_effect=probes):
+            result = run_monitor({'packages': [], 'source_manifests': []})
+        self.assertEqual(fetch.call_count, 1)  # release notes only
+        self.assertEqual(result['skipped_non_official_manifest_urls'],
+                         ['https://untrusted.example/firmware/x/update.upm'])
+
+
 if __name__ == "__main__":
     unittest.main()

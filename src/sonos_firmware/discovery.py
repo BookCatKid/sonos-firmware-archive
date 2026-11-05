@@ -11,8 +11,26 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from urllib.parse import urlsplit
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
+
+OFFICIAL_FIRMWARE_HOSTS = {"update.sonos.com", "update-firmware.sonos.com"}
+
+
+def official_firmware_url(url: str) -> bool:
+    parsed = urlsplit(url)
+    return parsed.scheme == "https" and parsed.hostname in OFFICIAL_FIRMWARE_HOSTS
+
+
+class _OfficialRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not official_firmware_url(newurl):
+            raise urllib.error.URLError(f"redirect to unsupported host: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_OfficialRedirect())
 
 
 @dataclass(frozen=True)
@@ -81,7 +99,7 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
     request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
     result = asdict(candidate)
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        with _OPENER.open(request, timeout=timeout) as response:
             result.update(
                 available=response.status == 200,
                 http_status=response.status,
