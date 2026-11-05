@@ -160,3 +160,51 @@ class PublicCapturedReplayTests(unittest.TestCase):
         self.assertEqual(len(targets),150)
         self.assertEqual(targets-reached,set())
         self.assertFalse(graph['limits_reached'])
+
+class OutOfScopeClassificationTests(unittest.TestCase):
+    def test_non_archivable_link_is_out_of_scope_not_unsupported(self):
+        body = (b'<update_manifest version="1.1">'
+                b'<image model="16" version="28.1-83040">28.1-83040-1-16.upd</image>'
+                b'<image model="21" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/ios.html</image>'
+                b'<image model="22" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/android.html</image>'
+                b'</update_manifest>')
+        with tempfile.TemporaryDirectory() as d:
+            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
+        kinds = {f['kind'] for f in r['failures']}
+        self.assertEqual(kinds, {'out-of-scope'})
+
+    def test_artifact_shaped_unknown_host_stays_fail_closed(self):
+        body = (b'<update_manifest version="1.1">'
+                b'<link>https://firmware-cdn.example.com/Prod/99.0-1/update.upm</link>'
+                b'</update_manifest>')
+        with tempfile.TemporaryDirectory() as d:
+            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
+        kinds = {f['kind'] for f in r['failures']}
+        self.assertEqual(kinds, {'unsupported'})
+
+
+class DiscoveryIncompleteTests(unittest.TestCase):
+    def _call(self, failures, challenged=False, blocked=False, limits=False, warnings=()):
+        from sonos_firmware.monitor import discovery_incomplete
+        graph = {'failures': failures, 'blocked': blocked, 'limits_reached': limits}
+        manifests = [{'metadata': {'warnings': list(warnings)}}]
+        return discovery_incomplete(graph, manifests, challenged)
+
+    def test_out_of_scope_and_clean_404_do_not_block(self):
+        failures = [
+            {'kind': 'out-of-scope', 'url': 'https://update-beta.sonos.com/software/jnixwd/ios.html'},
+            {'kind': 'not-found', 'url': 'https://update.sonos.com/firmware/Prod/x/update.upm'},
+        ]
+        self.assertFalse(self._call(failures))
+
+    def test_in_scope_unsupported_still_blocks(self):
+        failures = [{'kind': 'unsupported', 'url': 'https://cdn.example.com/Prod/99.0-1/update.upm'}]
+        self.assertTrue(self._call(failures))
+
+    def test_fetch_and_parse_failures_still_block(self):
+        self.assertTrue(self._call([{'kind': 'error'}]))
+        self.assertTrue(self._call([{'kind': 'malformed'}]))
+        self.assertTrue(self._call([], blocked=True))
+        self.assertTrue(self._call([], limits=True))
+        self.assertTrue(self._call([], challenged=True))
+        self.assertTrue(self._call([], warnings=['unrecognized manifest version']))

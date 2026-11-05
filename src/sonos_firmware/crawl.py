@@ -40,6 +40,21 @@ def catalog_manifest_url(url: str) -> str:
                        'https://raw.githubusercontent.com/systemcrash/sonos-firmware/')
 
 
+
+def rejected_url_kind(url: str) -> str:
+    """Classify a rejected non-official URL.
+
+    A URL that is not manifest- or package-shaped (e.g. a beta-app HTML
+    page) can never be archivable firmware: rejecting it is out-of-scope
+    policy, not a discovery gap. An artifact- or manifest-shaped URL on an
+    unrecognized host stays fail-closed 'unsupported': it may be host
+    discovery the archive must not silently drop.
+    """
+    path = urlsplit(url).path.lower()
+    if path.endswith(('.upm', '.upd', '.exe', '.dmg', '.bin')):
+        return 'unsupported'
+    return 'out-of-scope'
+
 def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                     evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True) -> dict:
     """Return raw snapshot receipts, source edges and failures, including limits.
@@ -67,7 +82,8 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 seen.add(url)
                 queue.append(url)
         else:
-            failures.append({'url': url, 'parent': parent, 'error': 'unsupported URL or host', 'kind': 'unsupported'})
+            failures.append({'url': url, 'parent': parent, 'error': 'unsupported URL or host',
+                             'kind': rejected_url_kind(url)})
 
     def directory(url, version=None):
         url = normalize(url)
@@ -133,7 +149,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                               'metadata': metadata, 'candidate_total': len(items)})
             for c in items:
                 if not official(c.url):
-                    failures.append({'url': c.url, 'parent': url, 'kind': 'unsupported', 'error': 'non-official artifact URL'})
+                    failures.append({'url': c.url, 'parent': url, 'kind': rejected_url_kind(c.url), 'error': 'non-official artifact URL'})
                     continue
                 candidates[c.url] = c
                 edges.append({'url': c.url, 'parent': url, 'reason': c.source})

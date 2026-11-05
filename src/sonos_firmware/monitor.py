@@ -279,8 +279,30 @@ def run_monitor(catalog: dict, workers: int = 6, *, seed_urls=None, evidence_dir
         "alternate_host_candidates": alternate_missing_probes,
         "controls": control_probes,
         **summary,
-        "discovery_incomplete": challenged or graph["blocked"] or graph["limits_reached"] or any(f["kind"] != "not-found" for f in graph["failures"]) or any(any("unrecognized" in w or "needs manifest source" in w for w in m["metadata"].get("warnings", [])) for m in manifests),
+        "discovery_incomplete": discovery_incomplete(graph, manifests, challenged),
     }
+
+
+
+
+def discovery_incomplete(graph: dict, manifests: list, challenged: bool) -> bool:
+    """Fail closed on real discovery gaps; ignore out-of-scope policy rejections.
+
+    Incomplete when probing was challenged, the crawl was blocked or capped,
+    a fetch/parse failed (anything but a clean 404), an in-scope artifact or
+    manifest URL sat on an unrecognized host ('unsupported'), or a manifest
+    carried an unrecognized-structure warning. 'out-of-scope' entries are
+    deterministic rejections of links that are not manifests or packages at
+    all (e.g. beta-app HTML pages) and can never hide archivable firmware.
+    """
+    if challenged or graph["blocked"] or graph["limits_reached"]:
+        return True
+    if any(f["kind"] not in ("not-found", "out-of-scope") for f in graph["failures"]):
+        return True
+    return any(
+        any("unrecognized" in w or "needs manifest source" in w for w in m["metadata"].get("warnings", []))
+        for m in manifests
+    )
 
 
 def load_catalog(path: str | Path) -> dict:
