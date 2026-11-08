@@ -1,9 +1,191 @@
 {
   "schema_version": 1,
   "models": [
-    {"package_model": 8, "image_model": "8.3", "display_name": "Fenway family (includes Play:1)", "observed_product": "Play:1", "observed_model_number": "S1", "mapping_scope": "family-observation"},
-    {"package_model": 9, "image_model": "9.1", "display_name": "Model 9 family (includes Playbar)", "observed_product": "Playbar", "observed_model_number": "S9", "mapping_scope": "family-observation"},
-    {"package_model": 13, "image_model": "13.1", "display_name": "Model 13 family (includes Play:5 Gen 2)", "observed_product": "Play:5 (Gen 2)", "observed_model_number": "S6", "mapping_scope": "family-observation"},
-    {"package_model": 25, "image_model": "25.1", "display_name": "Model 25 family (includes Move)", "observed_product": "Move", "observed_model_number": "S17", "mapping_scope": "family-observation"}
+    {
+      "package_model": 1,
+      "display_name": "ZonePlayer ZP80 family",
+      "observed_product": "ZonePlayer ZP80",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "ZonePlayer ZP80"
+        },
+        {
+          "name": "ZonePlayer ZP100"
+        }
+      ]
+    },
+    {
+      "package_model": 2,
+      "display_name": "CR100",
+      "observed_product": "CR100",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "CR100"
+        }
+      ]
+    },
+    {
+      "package_model": 5,
+      "display_name": "ZoneBridge ZB100 family",
+      "observed_product": "ZoneBridge ZB100",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "ZoneBridge ZB100"
+        },
+        {
+          "name": "Bridge BR100"
+        }
+      ]
+    },
+    {
+      "package_model": 8,
+      "image_model": "8.3",
+      "display_name": "Fenway family (includes Play:1)",
+      "observed_product": "Play:1",
+      "observed_model_number": "S1",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Play:1",
+          "model_number": "S1"
+        },
+        {
+          "name": "Play:5 (Gen 1)"
+        },
+        {
+          "name": "Sub (Gen 1)"
+        }
+      ]
+    },
+    {
+      "package_model": 9,
+      "image_model": "9.1",
+      "display_name": "Model 9 family (includes Playbar)",
+      "observed_product": "Playbar",
+      "observed_model_number": "S9",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Playbar",
+          "model_number": "S9"
+        }
+      ]
+    },
+    {
+      "package_model": 12,
+      "display_name": "Play:3",
+      "observed_product": "Play:3",
+      "observed_model_number": "S3",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Play:3",
+          "model_number": "S3"
+        }
+      ]
+    },
+    {
+      "package_model": 13,
+      "image_model": "13.1",
+      "display_name": "Model 13 family (includes Play:5 Gen 2)",
+      "observed_product": "Play:5 (Gen 2)",
+      "observed_model_number": "S6",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Play:5 (Gen 2)",
+          "model_number": "S6"
+        }
+      ]
+    },
+    {
+      "package_model": 16,
+      "display_name": "Connect:Amp",
+      "observed_product": "Connect:Amp",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Connect:Amp"
+        }
+      ]
+    },
+    {
+      "package_model": 17,
+      "display_name": "Connect",
+      "observed_product": "Connect",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Connect"
+        }
+      ]
+    },
+    {
+      "package_model": 20,
+      "display_name": "SYMFONISK Bookshelf (Gen 1)",
+      "observed_product": "SYMFONISK Bookshelf (Gen 1)",
+      "observed_model_number": "S21",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/research-sources.md",
+      "products": [
+        {
+          "name": "SYMFONISK Bookshelf (Gen 1)",
+          "model_number": "S21"
+        }
+      ]
+    },
+    {
+      "package_model": 25,
+      "image_model": "25.1",
+      "display_name": "Model 25 family (includes Move)",
+      "observed_product": "Move",
+      "observed_model_number": "S17",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model-map.md",
+      "products": [
+        {
+          "name": "Move",
+          "model_number": "S17"
+        }
+      ]
+    },
+    {
+      "package_model": 26,
+      "display_name": "Sonos One (Gen 2)",
+      "observed_product": "Sonos One (Gen 2)",
+      "observed_model_number": "S18",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/model26-recovery.md",
+      "products": [
+        {
+          "name": "Sonos One (Gen 2)",
+          "model_number": "S18"
+        }
+      ]
+    },
+    {
+      "package_model": 32,
+      "display_name": "Sub (Gen 3)",
+      "observed_product": "Sub (Gen 3)",
+      "mapping_scope": "family-observation",
+      "evidence": "docs/research-sources.md",
+      "products": [
+        {
+          "name": "Sub (Gen 3)"
+        }
+      ]
+    }
   ]
 }
