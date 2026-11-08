@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-08T15:21:58.002235+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "57.22-65130",
+  "candidates": [
+    {
+      "version": "57.22-65130",
+      "package_model": 1,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-1.upd",
+      "source": "verified-public-seed",
+      "filename": "57.22-65130-1-1.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 5671149,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-1.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 5,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-5.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-5.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 2265601,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-5.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 8,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-8.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-8.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 9055037,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-8.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 9,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-9.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-9.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 10117287,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-9.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 12,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-12.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-12.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 4630881,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-12.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 16,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-16.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-16.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 5602653,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-16.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 17,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-17.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-17.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 5872989,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-17.upd",
+      "etag": null,
+      "last_modified": null
+    },
+    {
+      "version": "57.22-65130",
+      "package_model": 22,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-22.upd",
+      "source": "catalog-directory",
+      "filename": "57.22-65130-1-22.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 10335527,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-22.upd",
+      "etag": null,
+      "last_modified": null
+    }
+  ]
+}

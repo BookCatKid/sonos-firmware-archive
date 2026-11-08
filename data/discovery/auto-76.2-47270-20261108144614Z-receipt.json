@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-76.2-47270-20261108144614Z.json",
+  "artifacts": [
+    {
+      "version": "76.2-47270",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-3.exe",
+      "source": "image",
+      "filename": "76.2-47270-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 57490336,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-3.exe",
+      "etag": "\"14ea46dc9c9e30dba2444251a5f85b7b-7\"",
+      "last_modified": null,
+      "local_file": "76.2-47270-1-3.exe",
+      "sha256": "c0dd5f4f060edda03a79d2bbca69b8d11cfddc43662fbdeb1beaa5b3607181a0",
+      "downloaded": true
+    },
+    {
+      "version": "76.2-47270",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-4.dmg",
+      "source": "image",
+      "filename": "76.2-47270-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 62983308,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-4.dmg",
+      "etag": "\"c091d0d16b201895e970bd21330d29e4-8\"",
+      "last_modified": null,
+      "local_file": "76.2-47270-1-4.dmg",
+      "sha256": "62f6f978660c4a553ed82bcb2c27712ee53b09c51b9922671ed52484924690d0",
+      "downloaded": true
+    }
+  ]
+}

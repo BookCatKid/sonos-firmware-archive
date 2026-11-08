@@ -1,0 +1,38 @@
+{
+  "source": "28.1-83040-1-12.upd",
+  "components": [
+    {
+      "package_id": "28.1-83040-1-12",
+      "section_index": 2,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "28.1-83040-1-12-preinstall.sh",
+      "bytes": 3229,
+      "sha256": "11434d120ad1ddaf5a403e6dd1c0dff9581df4482795e690e9d37a8508af0c67",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "28.1-83040-1-12",
+      "section_index": 3,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "28.1-83040-1-12-kernel.uImage",
+      "bytes": 894872,
+      "sha256": "9c2a30263e16e644a89d4dcf536336dd25dd00ac153b766ea900d5b88d8aebb2",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "28.1-83040-1-12",
+      "section_index": 4,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "28.1-83040-1-12-rootfs.bin",
+      "bytes": 2981888,
+      "sha256": "4020bca25ed69315ed652b204ffe09b0da5de3cb3dd1cf84bd619aed6fcaf07b",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}

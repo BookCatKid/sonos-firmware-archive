@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-08T15:20:24.506060+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "3.1.4",
+  "candidates": [
+    {
+      "version": "3.1.4",
+      "package_model": 44,
+      "url": "https://update-firmware.sonos.com/firmware/Duke/Prod/3.1.4-e16e1c539-RC-3/QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin",
+      "source": "image",
+      "filename": "QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin",
+      "available": true,
+      "http_status": 200,
+      "bytes": 4906812,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Duke/Prod/3.1.4-e16e1c539-RC-3/QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin",
+      "etag": "\"2190e247b4d6184b8d6412388d50c7a6\"",
+      "last_modified": null
+    }
+  ]
+}

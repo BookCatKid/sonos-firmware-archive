@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-3.9.8-20261108144614Z.json",
+  "artifacts": [
+    {
+      "version": "3.9.8",
+      "package_model": 44,
+      "url": "https://update-firmware.sonos.com/firmware/Duke/Dev/3.9.8-8e285d7fc-SP-1/QCC518X_dfu_file_encrypted_3.9.8-8e285d7fc.bin",
+      "source": "image",
+      "filename": "QCC518X_dfu_file_encrypted_3.9.8-8e285d7fc.bin",
+      "available": true,
+      "http_status": 200,
+      "bytes": 4288204,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Duke/Dev/3.9.8-8e285d7fc-SP-1/QCC518X_dfu_file_encrypted_3.9.8-8e285d7fc.bin",
+      "etag": "\"8014e5f210324bfd1be9218e2765d018\"",
+      "last_modified": null,
+      "local_file": "QCC518X_dfu_file_encrypted_3.9.8-8e285d7fc.bin",
+      "sha256": "49910a1a6b4087d18b3f527f321038fc495e98ba38422309154d8cc6522db941",
+      "downloaded": true
+    }
+  ]
+}

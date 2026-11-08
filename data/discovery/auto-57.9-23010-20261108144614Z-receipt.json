@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-57.9-23010-20261108144614Z.json",
+  "artifacts": [
+    {
+      "version": "57.9-23010",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-3.exe",
+      "source": "image",
+      "filename": "57.9-23010-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 37763680,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-3.exe",
+      "etag": "\"6edda7938d103cd5340596b71fb8fde6-5\"",
+      "last_modified": null,
+      "local_file": "57.9-23010-1-3.exe",
+      "sha256": "1d59d04d044fe7052db2b4d5f5b51a100bbe433b908b9111384d46ece7c8681e",
+      "downloaded": true
+    },
+    {
+      "version": "57.9-23010",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-4.dmg",
+      "source": "image",
+      "filename": "57.9-23010-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 48445626,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-4.dmg",
+      "etag": "\"0fd4c8bb0a10f81e1b30e760c8e1f48e-6\"",
+      "last_modified": null,
+      "local_file": "57.9-23010-1-4.dmg",
+      "sha256": "9cdb5a758be05923d6f8ee500bb30284d1ce5223ffc3702420e9e89af4066e48",
+      "downloaded": true
+    }
+  ]
+}

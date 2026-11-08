@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-08T15:22:17.925960+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "57.9-23010",
+  "candidates": [
+    {
+      "version": "57.9-23010",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-3.exe",
+      "source": "image",
+      "filename": "57.9-23010-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 37763680,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-3.exe",
+      "etag": "\"6edda7938d103cd5340596b71fb8fde6-5\"",
+      "last_modified": null
+    },
+    {
+      "version": "57.9-23010",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-4.dmg",
+      "source": "image",
+      "filename": "57.9-23010-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 48445626,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-4.dmg",
+      "etag": "\"0fd4c8bb0a10f81e1b30e760c8e1f48e-6\"",
+      "last_modified": null
+    }
+  ]
+}

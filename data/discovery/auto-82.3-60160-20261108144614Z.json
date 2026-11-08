@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-08T15:22:37.352908+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "82.3-60160",
+  "candidates": [
+    {
+      "version": "82.3-60160",
+      "package_model": 3,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-3.exe",
+      "source": "image",
+      "filename": "82.3-60160-1-3.exe",
+      "available": true,
+      "http_status": 200,
+      "bytes": 57502960,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-3.exe",
+      "etag": "\"877f2de782acacf0c319299a041204fd-7\"",
+      "last_modified": null
+    },
+    {
+      "version": "82.3-60160",
+      "package_model": 4,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-4.dmg",
+      "source": "image",
+      "filename": "82.3-60160-1-4.dmg",
+      "available": true,
+      "http_status": 200,
+      "bytes": 62982507,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-4.dmg",
+      "etag": "\"844299b7fa00aae7da1d624dc7677180-8\"",
+      "last_modified": null
+    }
+  ]
+}

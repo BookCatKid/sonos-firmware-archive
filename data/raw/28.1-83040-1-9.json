@@ -1,0 +1,49 @@
+{
+  "source": "28.1-83040-1-9.upd",
+  "components": [
+    {
+      "package_id": "28.1-83040-1-9",
+      "section_index": 3,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "28.1-83040-1-9-preinstall.sh",
+      "bytes": 3259,
+      "sha256": "1c02ffdbb459218876d850328bf7a41ad0cd2a0185a1e311f72615260bc2bc46",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "28.1-83040-1-9",
+      "section_index": 4,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "28.1-83040-1-9-kernel.uImage",
+      "bytes": 1737158,
+      "sha256": "33dea099ab63ea0ef8656bfa8ef595519f29f1f0cc5220fb2c89e070ab9d99d6",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "28.1-83040-1-9",
+      "section_index": 5,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "28.1-83040-1-9-rootfs.bin",
+      "bytes": 7249920,
+      "sha256": "89255d91cac0046a8b130ff4f7dddf2b58b454bb0410c93df7e37e8ebf77040c",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "28.1-83040-1-9",
+      "section_index": 6,
+      "section_type": 13,
+      "kind": "device-payload",
+      "filename": "28.1-83040-1-9-device-payload.bin",
+      "bytes": 54757,
+      "sha256": "36b47a4c7ef9e974ccfa82efda203754f0316ddc38b836e66b050e71074ae7cc",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}
