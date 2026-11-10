@@ -717,6 +717,18 @@
     {
       "version": "98.0-82170",
       "default_version": "98.0-82170",
+      "revision": "c54be54d-31fb-4294-800e-6e8b31d8cf45",
+      "filename": "98.0-82170--d0b236c59107--ca547427.upm",
+      "bytes": 13853,
+      "sha256": "d0b236c591073dfd5ba71d13838c4837f8ad295f32412a04013d1f1505556b1b",
+      "source_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-DlQxSDS4vj-GA-2/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-10",
+      "release_asset": "98.0-82170--d0b236c59107--ca547427.upm"
+    },
+    {
+      "version": "98.0-82170",
+      "default_version": "98.0-82170",
       "revision": "946efec1-e884-4c00-bcb9-6c18318ad57e",
       "filename": "98.0-82170--ec442a9dbba2--ef411f54.upm",
       "bytes": 13274,
