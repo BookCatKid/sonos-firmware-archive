@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-3.0.11-20261110001924Z.json",
+  "artifacts": [
+    {
+      "version": "3.0.11",
+      "package_model": 53,
+      "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.11-bd8880683-RC-1/round_dfu_3.0.11-bd8880683-prod.bin",
+      "source": "image",
+      "filename": "round_dfu_3.0.11-bd8880683-prod.bin",
+      "available": true,
+      "http_status": 200,
+      "bytes": 5322972,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.11-bd8880683-RC-1/round_dfu_3.0.11-bd8880683-prod.bin",
+      "etag": "\"5bd87fc5bc2b814ded4103c29ef349f8\"",
+      "last_modified": null,
+      "local_file": "round_dfu_3.0.11-bd8880683-prod.bin",
+      "sha256": "fb5f91c01244f63e7a6b44be1370ed305895754e107e9fbd8a03064ed37a63ed",
+      "downloaded": true
+    }
+  ]
+}

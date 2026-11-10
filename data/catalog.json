@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-11-08",
+  "generated": "2026-11-10",
   "source_manifests": [
     {
       "version": "80.1-56190",
@@ -665,6 +665,18 @@
       "provenance": "official-live-device-response-redacted",
       "release_tag": "manifest-snapshots-2026-09-12",
       "release_asset": "97.1-80312.upm"
+    },
+    {
+      "version": "98.0-82170",
+      "default_version": "98.0-82170",
+      "revision": "b908e5b1-dd03-457f-8152-c32c01e32a89",
+      "filename": "98.0-82170--3775bff5121e--ca547427.upm",
+      "bytes": 13853,
+      "sha256": "3775bff5121ee3d297b8e8934aee89f22587c63d8dbbad17edcd13f5757164e9",
+      "source_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-DlQxSDS4vj-GA-2/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-10",
+      "release_asset": "98.0-82170--3775bff5121e--ca547427.upm"
     },
     {
       "version": "98.0-82170",
@@ -2360,6 +2372,23 @@
       "source_manifest": "3.0.10",
       "release_tag": "firmware-3.0.10",
       "release_asset": "round_dfu_3.0.10-896b9db8f-prod.bin"
+    },
+    {
+      "id": "round_dfu_3.0.11-bd8880683-prod.bin",
+      "version": "3.0.11",
+      "package_model": 53,
+      "product": null,
+      "model_number": null,
+      "filename": "round_dfu_3.0.11-bd8880683-prod.bin",
+      "artifact_type": "bin",
+      "bytes": 5322972,
+      "sha256": "fb5f91c01244f63e7a6b44be1370ed305895754e107e9fbd8a03064ed37a63ed",
+      "artifact_status": "preserved",
+      "raw_status": "not-applicable",
+      "source_url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.11-bd8880683-RC-1/round_dfu_3.0.11-bd8880683-prod.bin",
+      "source_manifest": "3.0.11",
+      "release_tag": "firmware-3.0.11",
+      "release_asset": "round_dfu_3.0.11-bd8880683-prod.bin"
     },
     {
       "id": "QCC518X_dfu_file_encrypted_3.1.4-e16e1c539.bin",
