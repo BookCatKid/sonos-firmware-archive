@@ -8283,8 +8283,216 @@
           "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.00.33-release%2B20261023.590619d--config.zh--bd58dcf03688.apk"
         }
       ]
+    },
+    {
+      "source_kind": "apkpure-recovery",
+      "source_version_selector": null,
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-11T22:46:19.418578+00:00",
+      "acquisition_tool": {
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
+      },
+      "delivery_profile": null,
+      "family": "s2",
+      "package": "com.sonos.acr2",
+      "version_code": "1270401007",
+      "version_name": "91.01.7-release+20261103.afb484e",
+      "release_tag": "apps-google-play-recovery-s2",
+      "complete_wrapper": {
+        "bytes": 142621925,
+        "sha256": "a2a8c8449e8518ead25d53adc831b19410f3a103078910f39a3cc428cb406b55",
+        "release_tag": "apps-google-play-recovery-s2",
+        "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--complete--a2a8c8449e85.xapk",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--complete--a2a8c8449e85.xapk"
+      },
+      "components": [
+        {
+          "name": "com.sonos.acr2.apk",
+          "bytes": 79927416,
+          "sha256": "d762009ad07e6bcb22d08b1da9b96fad50b4c67a21ca6c4693c90dd6d5f54c63",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--com.sonos.acr2--d762009ad07e.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--com.sonos.acr2--d762009ad07e.apk"
+        },
+        {
+          "name": "config.armeabi_v7a.apk",
+          "bytes": 54978853,
+          "sha256": "2e458d499a32a22f9aca7cfac3cfb2b7a51fe4295f03b37a314d7a8a309978c8",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.armeabi_v7a--2e458d499a32.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.armeabi_v7a--2e458d499a32.apk"
+        },
+        {
+          "name": "config.de.apk",
+          "bytes": 643282,
+          "sha256": "5b17d7e790e26e522c27e5071ac6efaf41138d1485143825c002b10a1e153198",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.de--5b17d7e790e2.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.de--5b17d7e790e2.apk"
+        },
+        {
+          "name": "config.es.apk",
+          "bytes": 630994,
+          "sha256": "2f94d6c2e4dc94fbeaf22e1bf2c0faf4ff956d9144716ba9c6817d08d9d4ad54",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.es--2f94d6c2e4dc.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.es--2f94d6c2e4dc.apk"
+        },
+        {
+          "name": "config.fr.apk",
+          "bytes": 659666,
+          "sha256": "cb2e352f19fcaf71824c396febad5ea13e5ee6d38c9177679a9d0cf22552caf7",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.fr--cb2e352f19fc.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.fr--cb2e352f19fc.apk"
+        },
+        {
+          "name": "config.it.apk",
+          "bytes": 635090,
+          "sha256": "05e6e20ed34981a53a11483cacf0627e2e8dc11046f89e83723a82bf2372bb43",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.it--05e6e20ed349.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.it--05e6e20ed349.apk"
+        },
+        {
+          "name": "config.ja.apk",
+          "bytes": 680146,
+          "sha256": "48ab2089e0b51831a8dbc7c5595b1ad5eb4c8158ce84d56311dc020d78546d32",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.ja--48ab2089e0b5.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.ja--48ab2089e0b5.apk"
+        },
+        {
+          "name": "config.ko.apk",
+          "bytes": 643282,
+          "sha256": "9191ecb118cd66fbd73ee31da548e9defc282c614fc00a7f7d4315676f17a10c",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.ko--9191ecb118cd.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.ko--9191ecb118cd.apk"
+        },
+        {
+          "name": "config.mdpi.apk",
+          "bytes": 292081,
+          "sha256": "7b3049b383b5c41dede05ad722a03316a84329bd822243eb4a9fcd914af77e01",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.mdpi--7b3049b383b5.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.mdpi--7b3049b383b5.apk"
+        },
+        {
+          "name": "config.pt.apk",
+          "bytes": 954578,
+          "sha256": "dabf8dad9d53b1f8485d2cb6430efa172aa8227065ae573ae31b4c1e2c3c02f6",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.pt--dabf8dad9d53.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.pt--dabf8dad9d53.apk"
+        },
+        {
+          "name": "config.ru.apk",
+          "bytes": 843986,
+          "sha256": "269a0e557a23abd32cf3393f4371b434c5f2a674d1c2263de852337cc7b95a1c",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.ru--269a0e557a23.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.ru--269a0e557a23.apk"
+        },
+        {
+          "name": "config.tr.apk",
+          "bytes": 626898,
+          "sha256": "5d2d54448f2dceae35c7b088cca13a470e56723f9a3a3917bf6cb2b14d901ea5",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.tr--5d2d54448f2d.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.tr--5d2d54448f2d.apk"
+        },
+        {
+          "name": "config.zh.apk",
+          "bytes": 1093842,
+          "sha256": "f7d23e26ca3f816a164981e05cdd86c8f10a6c64c1273df7ea9b7863cfb1106b",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "schemes": [
+            "v3"
+          ],
+          "release_tag": "apps-google-play-recovery-s2",
+          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--config.zh--f7d23e26ca3f.apk",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--91.01.7-release%2B20261103.afb484e--config.zh--f7d23e26ca3f.apk"
+        }
+      ]
     }
   ],
-  "updated": "2026-11-05T22:05:24.661736+00:00",
-  "artifact_total": 64
+  "updated": "2026-11-11T22:46:19.418611+00:00",
+  "artifact_total": 65
 }
