@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-10T00:20:07.537475+00:00",
+  "updated": "2026-11-12T22:18:16.192241+00:00",
   "discovery": "data/apps/mobile-discovery.json",
-  "artifact_total": 39,
+  "artifact_total": 40,
   "gap_total": 1,
   "gaps": [
     {
@@ -776,6 +776,26 @@
       "release_tag": "apps-fireos-s2",
       "release_asset": "Sonos_91.00.33--97ffc0efe2ff.apk",
       "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_91.00.33--97ffc0efe2ff.apk"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "91.01.11",
+      "original_filename": "Sonos_91.01.11.apk",
+      "bytes": 259903267,
+      "sha256": "1ff9546b2d8d5ec3887e31d8e34697ae9f580ecd654c243e551b7d8647352676",
+      "source_urls": [
+        "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
+      "sources": [
+        "official-current-fireos-redirect"
+      ],
+      "wayback_timestamp": null,
+      "wayback_digest": null,
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_91.01.11--1ff9546b2d8d.apk",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_91.01.11--1ff9546b2d8d.apk"
     },
     {
       "family": "s2",

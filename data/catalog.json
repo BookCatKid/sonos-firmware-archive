@@ -681,6 +681,18 @@
     {
       "version": "98.0-82170",
       "default_version": "98.0-82170",
+      "revision": "8e0df8e8-c7eb-4556-b0cd-7c396d3b4925",
+      "filename": "98.0-82170--6da0eec0c2ef--cc5dd4e7.upm",
+      "bytes": 13841,
+      "sha256": "6da0eec0c2efdcadf729e95281bae7053d7b0c21b1de060c60a2f9bb4c768220",
+      "source_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-RhFftbkg3y-SP-1/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-12",
+      "release_asset": "98.0-82170--6da0eec0c2ef--cc5dd4e7.upm"
+    },
+    {
+      "version": "98.0-82170",
+      "default_version": "98.0-82170",
       "revision": "2bd864a1-970e-4ccb-80df-5dd279672401",
       "filename": "98.0-82170--8b6a0ea93919--25c58a04.upm",
       "bytes": 13853,
