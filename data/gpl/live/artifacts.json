@@ -2166,6 +2166,15 @@
         "sha256": "61dd078e45669b37638069d440e64fde146a53251579b29a08ca57213e368a09",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/bridge-utils.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:30:58+00:00",
+          "expected_sha256": "61dd078e45669b37638069d440e64fde146a53251579b29a08ca57213e368a09",
+          "members": 42,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 62807,
+          "observed_sha256": "61dd078e45669b37638069d440e64fde146a53251579b29a08ca57213e368a09",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "busybox1.tgz": {
@@ -2183,6 +2192,15 @@
         "sha256": "118a2118e2c1d46497af14ab3ad9c57d4e5f5e275636ef9c772c32709e2c76db",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/busybox1.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:01+00:00",
+          "expected_sha256": "118a2118e2c1d46497af14ab3ad9c57d4e5f5e275636ef9c772c32709e2c76db",
+          "members": 928,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 1353955,
+          "observed_sha256": "118a2118e2c1d46497af14ab3ad9c57d4e5f5e275636ef9c772c32709e2c76db",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "busybox2.tgz": {
@@ -2200,6 +2218,15 @@
         "sha256": "a7741a9941d1691b306ea9118e02fd19e3838bc66ddf509109f4d0085d853ba9",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/busybox2.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:05+00:00",
+          "expected_sha256": "a7741a9941d1691b306ea9118e02fd19e3838bc66ddf509109f4d0085d853ba9",
+          "members": 781,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 1295909,
+          "observed_sha256": "a7741a9941d1691b306ea9118e02fd19e3838bc66ddf509109f4d0085d853ba9",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "busybox3.tgz": {
@@ -2217,6 +2244,15 @@
         "sha256": "2597d03fa5408a5cb4d1319c439a91e35de1046224e715734c02a58776a078ec",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/busybox3.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:08+00:00",
+          "expected_sha256": "2597d03fa5408a5cb4d1319c439a91e35de1046224e715734c02a58776a078ec",
+          "members": 1585,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 2579911,
+          "observed_sha256": "2597d03fa5408a5cb4d1319c439a91e35de1046224e715734c02a58776a078ec",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "event_reporter.tgz": {
@@ -2234,6 +2270,15 @@
         "sha256": "c79fa1d47b316d35c44c716dafc90a21537af1e404b1bcb4bdc51d8d0d94fc35",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/event_reporter.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:11+00:00",
+          "expected_sha256": "c79fa1d47b316d35c44c716dafc90a21537af1e404b1bcb4bdc51d8d0d94fc35",
+          "members": 4,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 1913,
+          "observed_sha256": "c79fa1d47b316d35c44c716dafc90a21537af1e404b1bcb4bdc51d8d0d94fc35",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "fscrypt.tgz": {
@@ -2251,6 +2296,15 @@
         "sha256": "a8aecb84692b2e7ba640c436426c4ba8f03f543dd3260452fb04c9f06d7a4183",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/fscrypt.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:14+00:00",
+          "expected_sha256": "a8aecb84692b2e7ba640c436426c4ba8f03f543dd3260452fb04c9f06d7a4183",
+          "members": 61,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 86978,
+          "observed_sha256": "a8aecb84692b2e7ba640c436426c4ba8f03f543dd3260452fb04c9f06d7a4183",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.17.tar.gz": {
@@ -2268,6 +2322,17 @@
         "sha256": "a3b2086d5414e602b4b3d5a8792213feb3be664ffc1efe783a829818d3fca37a",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:16+00:00",
+          "expected_sha256": "a3b2086d5414e602b4b3d5a8792213feb3be664ffc1efe783a829818d3fca37a",
+          "method": "sha256-equality-with-fully-verified-original-source",
+          "proof": {
+            "checked_at": "2026-11-13T06:20:57+00:00",
+            "filename": "glibc-2.17.tar.gz",
+            "version": "7.0"
+          },
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.19.tar.gz": {
@@ -2285,6 +2350,17 @@
         "sha256": "18ad6db70724699d264add80b1f813630d0141cf3a3558b4e1a7c15f6beac796",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.19.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:16+00:00",
+          "expected_sha256": "18ad6db70724699d264add80b1f813630d0141cf3a3558b4e1a7c15f6beac796",
+          "method": "sha256-equality-with-fully-verified-original-source",
+          "proof": {
+            "checked_at": "2026-11-13T06:21:08+00:00",
+            "filename": "glibc-2.19.tar.gz",
+            "version": "7.0"
+          },
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.2.5.tar.gz": {
@@ -2302,6 +2378,17 @@
         "sha256": "58dc8df59aed1e4d9d50eef9e4c4c0789fa283b50f7a093932d0f467424484ee",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.2.5.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:16+00:00",
+          "expected_sha256": "58dc8df59aed1e4d9d50eef9e4c4c0789fa283b50f7a093932d0f467424484ee",
+          "method": "sha256-equality-with-fully-verified-original-source",
+          "proof": {
+            "checked_at": "2026-11-13T06:21:20+00:00",
+            "filename": "glibc-2.2.5.tar.gz",
+            "version": "7.0"
+          },
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.3.5.tar.gz": {
@@ -2319,6 +2406,15 @@
         "sha256": "7ad3ac2e3568456cf03fcd214f0e47b12ad09bd6c07398eab3648d5d396f8669",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.3.5.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:21+00:00",
+          "expected_sha256": "7ad3ac2e3568456cf03fcd214f0e47b12ad09bd6c07398eab3648d5d396f8669",
+          "members": 10639,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 18170636,
+          "observed_sha256": "7ad3ac2e3568456cf03fcd214f0e47b12ad09bd6c07398eab3648d5d396f8669",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.5.tar.gz": {
@@ -2336,6 +2432,15 @@
         "sha256": "16d3ac4e86eed75d85d80f1f214a6bd58d27f13590966b5ad0cc181df85a3493",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.5.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:26+00:00",
+          "expected_sha256": "16d3ac4e86eed75d85d80f1f214a6bd58d27f13590966b5ad0cc181df85a3493",
+          "members": 10847,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 20544628,
+          "observed_sha256": "16d3ac4e86eed75d85d80f1f214a6bd58d27f13590966b5ad0cc181df85a3493",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "glibc-2.8.tar.gz": {
@@ -2353,6 +2458,15 @@
         "sha256": "a5b91339355a7bbafc5f44b524556f7f25de83dd56f2c00ef9240dabd6865663",
         "source_url": "https://ftp.gnu.org/gnu/glibc/glibc-2.8.tar.gz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:40+00:00",
+          "expected_sha256": "a5b91339355a7bbafc5f44b524556f7f25de83dd56f2c00ef9240dabd6865663",
+          "members": 11346,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 21396735,
+          "observed_sha256": "a5b91339355a7bbafc5f44b524556f7f25de83dd56f2c00ef9240dabd6865663",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "gpl.html": {
@@ -2382,6 +2496,15 @@
         "sha256": "ce15fccdfd0df0f92a995a938aa11346b632d7970a9f4658d4238df3aca1409b",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/includes1.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:42+00:00",
+          "expected_sha256": "ce15fccdfd0df0f92a995a938aa11346b632d7970a9f4658d4238df3aca1409b",
+          "members": 18,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 12956,
+          "observed_sha256": "ce15fccdfd0df0f92a995a938aa11346b632d7970a9f4658d4238df3aca1409b",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "includes2.tgz": {
@@ -2399,6 +2522,15 @@
         "sha256": "b742404bac665a4ecc986606830fc6229f8caef0cb426471a0d1c4cefd960bbf",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/includes2.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:45+00:00",
+          "expected_sha256": "b742404bac665a4ecc986606830fc6229f8caef0cb426471a0d1c4cefd960bbf",
+          "members": 10,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 6897,
+          "observed_sha256": "b742404bac665a4ecc986606830fc6229f8caef0cb426471a0d1c4cefd960bbf",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-2.4.22.tgz": {
@@ -2416,6 +2548,15 @@
         "sha256": "cdaff07a0851ae9d2e5e52e2a3352f640a52e1a1298f190107a10615ce8fd73f",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.4.22.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:50+00:00",
+          "expected_sha256": "cdaff07a0851ae9d2e5e52e2a3352f640a52e1a1298f190107a10615ce8fd73f",
+          "members": 4767,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 15056196,
+          "observed_sha256": "cdaff07a0851ae9d2e5e52e2a3352f640a52e1a1298f190107a10615ce8fd73f",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-2.4.25.tgz": {
@@ -2433,6 +2574,15 @@
         "sha256": "35fcf3db9b9619aa381fd549e2a8182c970aee676ce1b9d4772032c3a3594a9f",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.4.25.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:31:54+00:00",
+          "expected_sha256": "35fcf3db9b9619aa381fd549e2a8182c970aee676ce1b9d4772032c3a3594a9f",
+          "members": 5128,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 15608305,
+          "observed_sha256": "35fcf3db9b9619aa381fd549e2a8182c970aee676ce1b9d4772032c3a3594a9f",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-2.6.15.tgz": {
@@ -2450,6 +2600,15 @@
         "sha256": "39032b0329230fb1af4cae6c2a7b019cf185b4a14d774f4206774b4a65a179fc",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.6.15.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:00+00:00",
+          "expected_sha256": "39032b0329230fb1af4cae6c2a7b019cf185b4a14d774f4206774b4a65a179fc",
+          "members": 20128,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 51649391,
+          "observed_sha256": "39032b0329230fb1af4cae6c2a7b019cf185b4a14d774f4206774b4a65a179fc",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-2.6.21.tgz": {
@@ -2467,6 +2626,15 @@
         "sha256": "bb5296bc042102e54e4bd6efb211d0ccfb5f5a3eb7a4fbd65cd17d58c133fa45",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.6.21.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:06+00:00",
+          "expected_sha256": "bb5296bc042102e54e4bd6efb211d0ccfb5f5a3eb7a4fbd65cd17d58c133fa45",
+          "members": 12928,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 43387881,
+          "observed_sha256": "bb5296bc042102e54e4bd6efb211d0ccfb5f5a3eb7a4fbd65cd17d58c133fa45",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-2.6.35.tgz": {
@@ -2484,6 +2652,15 @@
         "sha256": "d6109d792a3289d0a715f37bd2d49a89e3caad6b46ec3180266bdfba264c91eb",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.6.35.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:14+00:00",
+          "expected_sha256": "d6109d792a3289d0a715f37bd2d49a89e3caad6b46ec3180266bdfba264c91eb",
+          "members": 35886,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 92685209,
+          "observed_sha256": "d6109d792a3289d0a715f37bd2d49a89e3caad6b46ec3180266bdfba264c91eb",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "linux-3.10.53.tgz": {
@@ -2501,6 +2678,15 @@
         "sha256": "fb82fb6f0527c5dd359f788e7e0fc3a01a4ea5d0705a4892b678ad4632c21f6d",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-3.10.53.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:23+00:00",
+          "expected_sha256": "fb82fb6f0527c5dd359f788e7e0fc3a01a4ea5d0705a4892b678ad4632c21f6d",
+          "members": 46167,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 116304539,
+          "observed_sha256": "fb82fb6f0527c5dd359f788e7e0fc3a01a4ea5d0705a4892b678ad4632c21f6d",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "mpg123.tgz": {
@@ -2518,6 +2704,15 @@
         "sha256": "80623f19a1d8bc7f003d387b0b06bc96a37cda59442efd990fabdc40be88e605",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/mpg123.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:27+00:00",
+          "expected_sha256": "80623f19a1d8bc7f003d387b0b06bc96a37cda59442efd990fabdc40be88e605",
+          "members": 15,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 876531,
+          "observed_sha256": "80623f19a1d8bc7f003d387b0b06bc96a37cda59442efd990fabdc40be88e605",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "mpglib.tgz": {
@@ -2535,6 +2730,15 @@
         "sha256": "e73b3e17ac34a3f8d702cdec30e5010f65d69d777c2349f1ed15880a5bb93cff",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/mpglib.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:30+00:00",
+          "expected_sha256": "e73b3e17ac34a3f8d702cdec30e5010f65d69d777c2349f1ed15880a5bb93cff",
+          "members": 12,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 24811,
+          "observed_sha256": "e73b3e17ac34a3f8d702cdec30e5010f65d69d777c2349f1ed15880a5bb93cff",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "salsa-lib-0.0.13.tgz": {
@@ -2552,6 +2756,15 @@
         "sha256": "77e6ebd9f8192b0534a67ae4729e8949605b974a48fda3b8493f1d86c9c56f8e",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/salsa-lib-0.0.13.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:33+00:00",
+          "expected_sha256": "77e6ebd9f8192b0534a67ae4729e8949605b974a48fda3b8493f1d86c9c56f8e",
+          "members": 74,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 402206,
+          "observed_sha256": "77e6ebd9f8192b0534a67ae4729e8949605b974a48fda3b8493f1d86c9c56f8e",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "sbclib.tgz": {
@@ -2569,6 +2782,15 @@
         "sha256": "79285d1dd578b7115521fddceeecd3bd85032938053c8f069529f4643b7943c7",
         "source_url": "https://www.sonos.com/documents/gpl/6.4/sbclib.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:35+00:00",
+          "expected_sha256": "79285d1dd578b7115521fddceeecd3bd85032938053c8f069529f4643b7943c7",
+          "members": 12,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 20853,
+          "observed_sha256": "79285d1dd578b7115521fddceeecd3bd85032938053c8f069529f4643b7943c7",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "uClibc-0.9.26.tar.bz2": {
@@ -2586,6 +2808,15 @@
         "sha256": "b307d7639b720cd12ffbff3391cbc5e23987fc21920d13914a6bf0ca0716417b",
         "source_url": "https://www.uclibc.org/downloads/old-releases/uClibc-0.9.26.tar.bz2",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T20:32:44+00:00",
+          "expected_sha256": "b307d7639b720cd12ffbff3391cbc5e23987fc21920d13914a6bf0ca0716417b",
+          "members": 2105,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 1604543,
+          "observed_sha256": "b307d7639b720cd12ffbff3391cbc5e23987fc21920d13914a6bf0ca0716417b",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "uClibc-0.9.28.tar.bz2": {
@@ -11039,5 +11270,5 @@
     }
   },
   "schema_version": 1,
-  "updated": "2026-11-13T17:33:30+00:00"
+  "updated": "2026-11-13T20:32:44+00:00"
 }
