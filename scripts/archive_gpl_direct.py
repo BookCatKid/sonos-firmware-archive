@@ -12,6 +12,7 @@ import tempfile
 import time
 from pathlib import Path
 
+from sonos_firmware.gpl_binary_evidence import scan_binary
 from sonos_firmware.gpl_archive import (
     HttpResult, atomic_json, candidates, capture_response, download_artifact,
     get_page, index_url, load_json, offline_candidates, pause, sha256_bytes,
@@ -58,12 +59,19 @@ def discover(args: argparse.Namespace) -> int:
     for version, sources in sitemap_evidence.get("version_evidence", {}).items():
         if valid_version(version) not in known:
             evidence.setdefault(version, set()).update(sources)
+    binary_manifest = load_json(output / "binary-evidence.json", {"version_evidence": {}})
+    for version, sources in binary_manifest.get("version_evidence", {}).items():
+        if valid_version(version) not in known:
+            evidence.setdefault(version, set()).update(sources)
     for binary in args.binary:
-        data = Path(binary).read_bytes()
-        import re
-        for match in re.finditer(rb"/documents/gpl/([1-9][0-9]{0,2}\.[0-9]{1,2})/", data):
-            version = match.group(1).decode("ascii")
-            evidence.setdefault(version, set()).add(str(binary))
+        report = scan_binary(binary)
+        print(f"binary {report['filename']}: {report['entries_scanned']} decoded entries; "
+              f"complete={report['complete']}; GPL versions={list(report['version_evidence'])}", flush=True)
+        for version, locations in report["version_evidence"].items():
+            for location in locations:
+                evidence.setdefault(version, set()).add(
+                    f"binary:{report['filename']}:{location.get('entry') or '<raw>'}:"
+                    f"{location['offset']}:{location['format']}")
     todo = candidates(known, major_max=args.major_max, minor_max=args.minor_max, evidence=evidence)
     state = load_json(output / "discovery.json", {"schema_version": 1, "candidates": {}})
     checked = state["candidates"]
@@ -300,6 +308,7 @@ def report(args: argparse.Namespace) -> int:
     receipts = load_json(args.output / "artifacts.json", {"artifacts": {}})["artifacts"]
     discovery = load_json(args.output / "discovery.json", {"candidates": {}})["candidates"]
     site = load_json(args.output / "site-evidence.json", {"sitemaps": {}, "version_evidence": {}, "related_pages": []})
+    binary = load_json(args.output / "binary-evidence.json", {"scans": {}, "version_evidence": {}})
     versions = {v: r for v, r in catalog["releases"].items() if r["state"] == "verified"}
     source = sum(sum(link["origin"] == "sonos" for link in r["links"]) for r in versions.values())
     upstream = sum(sum(link["origin"] == "upstream" for link in r["links"]) for r in versions.values())
@@ -344,6 +353,10 @@ def report(args: argparse.Namespace) -> int:
                "site_sitemaps_valid_xml": sum(item.get("state") == "verified-xml" for item in site["sitemaps"].values()),
                "site_linked_gpl_versions": sorted(site["version_evidence"], key=lambda s: tuple(map(int, s.split(".")))),
                "site_related_pages": len(site.get("related_pages", [])),
+               "binary_scanned_inputs": len(binary.get("scans", {})),
+               "binary_executable_text_bytes_scanned": sum(scan.get("bytes_scanned", 0) for scan in binary.get("scans", {}).values()),
+               "binary_incomplete_scans": sum(not scan.get("complete", False) for scan in binary.get("scans", {}).values()),
+               "binary_linked_gpl_versions": sorted(binary.get("version_evidence", {}), key=lambda s: tuple(map(int, s.split(".")))),
                "candidate_states": {s: sum(r["state"] == s for r in discovery.values()) for s in sorted({r["state"] for r in discovery.values()})},
                "completeness_proven": False,
                "limitations": ["The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
