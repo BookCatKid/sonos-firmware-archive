@@ -15,7 +15,7 @@ The objective is to identify and preserve **every publicly obtainable** original
 
 1. Inspect the archive's existing GPL source indexes and retained firmware metadata first. Collect exact GPL links from docs and JSON manifests, and optionally from supplied firmware/app binary files (`discover --binary FILE`).
 2. Sweep a version grammar with **string versions**: 1.0 through 120.99 by default, prioritizing evidence-derived, adjacent and already-observed major releases before speculative distant versions. `14.12` is *not* `14.2`. Run in capped, checkpointed batches, not concurrent requests. Increase grammar bounds if credible evidence warrants it.
-3. Enumerate Sonos's official sitemaps, support pages and legal references for additional direct links. At the November 12 inspection, `https://www.sonos.com/en/sitemap.xml` contained no GPL URL. Search-engine indexing is only a hint, not validation.
+3. Enumerate Sonos's actual published website and support sitemap indexes using `scripts/discover_gpl_sitemaps.py` (bounded, recursive, checkpointed, no Wayback). `data/gpl/live/site-evidence.json` contains HTTP/status/sha256 receipts, exact candidate URLs, and related pages. The seeds cover both public robots.txt sitemap indexes and the extra blog/Pro sitemap indexes advertised by Sonos. `discover` prioritizes versions independently linked from these sitemaps for index validation, but never automatically trusts a sitemap link as a verified GPL page. Search-engine indexing is only a hint, not validation.
 4. Verify every discovered page by HTTP response **and** expected Sonos GPL HTML and anchor links. Preserve the actual index bytes and SHA-256, not challenge pages or synthetic indexes. Never assume a 200 proves a valid GPL index.
 5. Compare the release-specific sources and notices against extracted firmware binaries and build IDs. A binary/source component-version match is a candidate; exact corresponding source must be established independently.
 
@@ -24,6 +24,8 @@ No Wayback requests are made by the new archiver. Only the legacy catalog loader
 ## Downloader
 
 `python scripts/archive_gpl_direct.py indexes --all-known` fetches every known page from Sonos, with at least 2 seconds between requests. To reproduce this archive's November 12 checked snapshot using saved direct-Sonos HTTP 200 bodies (no new network requests), use `--cache-dir /tmp` only if those captured bodies are still available. A fresh run should normally omit `--cache-dir`.
+
+`python scripts/discover_gpl_sitemaps.py --limit 20 --delay 2.5` independently traverses Sonos's public website, blog, Pro, and support XML sitemap indexes using strict host allowlists, SHA-256 receipts, and a resumable checkpoint. It never treats a sitemap link as a verified GPL index. The coverage report includes checked sitemap counts and any newly referenced version leads.
 
 `python scripts/archive_gpl_direct.py discover --major-max 120 --minor-max 99 --limit 48 --delay 2.5` continues unfinished version probes. Responses are saved after *each* request so interruptions do not discard prior evidence. Stop on rate limiting or access challenges. Do not parallelize probes or evade bot controls.
 
@@ -35,7 +37,7 @@ A GitHub Actions workflow performs twice-daily bounded discovery and daily stage
 
 ## Observed completeness and outstanding questions
 
-At the initial November 12, 2026 audit, all 39 identified index pages were live, containing 1,112 Sonos-hosted links and 297 upstream links, with 13 unique upstream URLs. An additional bounded sweep of 206 candidate paths returned 403 `AccessDenied` and did **not** establish new verified GPL pages. The sweep stopped when local disk space became unavailable; GitHub Actions can resume using the checkpoint. **No claim of absolute completeness is justified yet.**
+At the initial November 12, 2026 audit, all 39 identified index pages were live, containing 1,112 Sonos-hosted links and 297 upstream links, with 13 unique upstream URLs. The expanded audit directly fetched and parsed all 117 XML sitemap documents reachable from the official Sonos website, blog, Pro, and support sitemap roots (including locale-specific child sitemaps), recording SHA-256 and HTTP 200 receipts. None contained a GPL/LGPL index URL or an open-source-specific link, although this **does not** rule out unindexed Sonos-hosted GPL pages. An additional bounded sweep of 206 candidate paths returned 403 `AccessDenied` and did **not** establish new verified GPL pages. The sweep stopped when local disk space became unavailable; GitHub Actions can resume using the checkpoint. **No claim of absolute completeness is justified yet.**
 
 Inspect the 18.6 attribution PDF and compare exact distributed binaries with their released corresponding source, including build scripts and Sonos patches. The five broken published hyperlinks and the retired `/support/downloads/gpl.html` URL are confirmed documentation/accessibility defects. All five source archives were downloaded successfully after URL normalization and passed tar integrity checks; those link failures alone do not establish a GPL violation.
 

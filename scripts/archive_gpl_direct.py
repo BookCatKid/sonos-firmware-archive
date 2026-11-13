@@ -54,6 +54,10 @@ def discover(args: argparse.Namespace) -> int:
     catalog = live_catalog(output)
     known = seed_versions() | {k for k, v in catalog["releases"].items() if v["state"] == "verified"}
     evidence = offline_candidates(ROOT)
+    sitemap_evidence = load_json(output / "site-evidence.json", {"version_evidence": {}})
+    for version, sources in sitemap_evidence.get("version_evidence", {}).items():
+        if valid_version(version) not in known:
+            evidence.setdefault(version, set()).update(sources)
     for binary in args.binary:
         data = Path(binary).read_bytes()
         import re
@@ -295,6 +299,7 @@ def report(args: argparse.Namespace) -> int:
     catalog = live_catalog(args.output)
     receipts = load_json(args.output / "artifacts.json", {"artifacts": {}})["artifacts"]
     discovery = load_json(args.output / "discovery.json", {"candidates": {}})["candidates"]
+    site = load_json(args.output / "site-evidence.json", {"sitemaps": {}, "version_evidence": {}, "related_pages": []})
     versions = {v: r for v, r in catalog["releases"].items() if r["state"] == "verified"}
     source = sum(sum(link["origin"] == "sonos" for link in r["links"]) for r in versions.values())
     upstream = sum(sum(link["origin"] == "upstream" for link in r["links"]) for r in versions.values())
@@ -305,6 +310,10 @@ def report(args: argparse.Namespace) -> int:
                "verified_index_total": len(versions), "sonos_download_links": source,
                "external_upstream_links": upstream, "verified_downloads": archived,
                "published_downloads": published, "candidate_checks": len(discovery),
+               "site_sitemaps_checked": len(site["sitemaps"]),
+               "site_sitemaps_valid_xml": sum(item.get("state") == "verified-xml" for item in site["sitemaps"].values()),
+               "site_linked_gpl_versions": sorted(site["version_evidence"], key=lambda s: tuple(map(int, s.split(".")))),
+               "site_related_pages": len(site.get("related_pages", [])),
                "candidate_states": {s: sum(r["state"] == s for r in discovery.values()) for s in sorted({r["state"] for r in discovery.values()})},
                "completeness_proven": False,
                "limitations": ["The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",

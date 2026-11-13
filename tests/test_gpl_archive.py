@@ -364,3 +364,29 @@ class GPLMultiReleaseProgressTests(unittest.TestCase):
             args.limit = 0
             with self.assertRaisesRegex(ValueError, "requires --limit"):
                 module.archive(args)
+
+
+class GPLLegacyAssetCollisionTests(unittest.TestCase):
+    def test_recover_renamed_direct_index_without_mislabeling_wayback(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("reconcile_gpl_legacy_collision", ROOT / "scripts/reconcile_gpl_release_assets.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        direct_sha = "d7c3efcdda3cd4b4cbab7aa28e1bfa6707cf46ce634ac939d7d04b9d4a08e460"
+        catalog = {"releases": {"7.2": {"state": "verified", "bytes": 2925, "sha256": direct_sha,
+                "url": "https://www.sonos.com/documents/gpl/7.2/gpl.html", "links": []}}}
+        assets = [{"name": "gpl.html", "size": 3000, "digest": "sha256:" + "a" * 64,
+                   "browser_download_url": "https://github.com/legacy-index"},
+                  {"name": f"direct-{direct_sha[:12]}-gpl.html", "size": 2925,
+                   "digest": "sha256:" + direct_sha, "browser_download_url": "https://github.com/direct-index"},
+                  {"name": "direct-ffffffffffff-gpl.html", "size": 2925,
+                   "digest": "sha256:" + "f" * 63 + "0", "browser_download_url": "https://github.com/forged"}]
+        receipts = {"artifacts": {}}
+        imported, conflicts = module.reconcile(catalog, receipts, "7.2", assets, run_url="https://github.com/run")
+        self.assertEqual((imported, conflicts), (1, 0))
+        record = receipts["artifacts"]["7.2"]["gpl.html"]
+        self.assertEqual(record["release_asset"], f"direct-{direct_sha[:12]}-gpl.html")
+        self.assertTrue(record["original_name_conflict"])
+        self.assertEqual(record["sha256"], direct_sha)
+        self.assertFalse(record["source_tar_integrity_reevaluated"])
+        self.assertEqual(module.reconcile(catalog, receipts, "7.2", assets, run_url="https://github.com/run"), (0, 0))

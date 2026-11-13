@@ -62,6 +62,8 @@ jobs:
           limit="${GPL_LIMIT:-48}"
           if [[ "${GPL_SCHEDULE:-}" == '23 8,20 * * *' ]]; then limit=96; fi
           if [[ "$mode" == discover ]]; then
+            # Independent public-site inventory; indexed links are only leads.
+            python scripts/discover_gpl_sitemaps.py --limit 8 --delay 2.5
             python scripts/archive_gpl_direct.py discover --major-max 120 --minor-max 99 --limit "$limit" --delay 2.5
           elif [[ "$mode" == indexes ]]; then
             if [[ -n "${GPL_VERSION:-}" ]]; then
