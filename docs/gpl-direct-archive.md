@@ -4,12 +4,13 @@ The objective is to identify and preserve **every publicly obtainable** original
 
 ## Existing material and provenance
 
-- `data/gpl/wayback-catalog.json` and the nine historical `gpl-<version>` Releases are **legacy captures**. They are not silently rewritten or represented as direct Sonos downloads. Sixteen recorded 7.3 Wayback-vs-local SHA-1 mismatches remain separate audit evidence.
+- `data/gpl/wayback-catalog.json` and the nine historical `gpl-<version>` Releases are **legacy captures**. They are not silently rewritten or represented as direct Sonos downloads. Sixteen recorded 7.3 Wayback CDX-vs-local SHA-1 mismatches remain separate audit evidence, but **all 16 historical local files have since been proved SHA-256/size-identical to current direct-Sonos downloads**. Of the 22 historical 7.3 records, 21 files match direct Sonos bytes; only `gpl.html` differs (the older page is preserved alongside the direct copy). The mismatches are not evidence of source-file corruption, and their cause in CDX digest derivation remains undetermined.
 - `data/gpl/seed-versions.json` contains the union of the versions in issue #23 and the previous archive. This is a discovery seed, not a completeness certificate.
 - `data/gpl/live/catalog.json` and `data/gpl/live/indexes/` contain directly fetched, validated Sonos GPL index bodies and exact SHA-256 checksums. The 39 initial index bodies were fetched straight from Sonos on November 12, 2026; none came from Wayback.
 - `data/gpl/live/discovery.json` records probes, including denied and inconclusive responses. A 403 XML `AccessDenied` response is **not** treated as confirmation that a version never existed.
 - `data/gpl/live/artifacts.json` records verified sources with size, SHA-256, exact original URL, encoded fetch URL, release asset and publication state. `data/gpl/live/report.json` is a generated coverage summary.
 - `data/gpl/live/binary-analysis.json` records what can actually be inferred from disassembled/extracted firmware components versus available sources, without asserting that a matching upstream version proves complete corresponding source.
+- `data/gpl/live/legacy-crosscheck.json` is an offline, reproducible comparison of earlier preservation receipts with *independently acquired direct Sonos* source hashes. It never downloads from Wayback or changes the historical CDX metadata. Historical differences and pending comparisons remain explicit.
 
 ## Discovery: what gets checked
 

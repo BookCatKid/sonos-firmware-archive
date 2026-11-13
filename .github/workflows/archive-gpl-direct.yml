@@ -100,8 +100,8 @@ jobs:
           # on every run. Recompute it *after* rebasing rather than conflicting
           # with a report committed by a prior scheduled or manual run.
           git add data/gpl/live
-          git reset --quiet -- data/gpl/live/report.json
-          git restore --worktree -- data/gpl/live/report.json
+          git reset --quiet -- data/gpl/live/report.json data/gpl/live/legacy-crosscheck.json
+          git restore --worktree -- data/gpl/live/report.json data/gpl/live/legacy-crosscheck.json
           if git diff --cached --quiet; then
             echo "No new primary GPL evidence to publish."
             exit 0
@@ -111,7 +111,8 @@ jobs:
           git commit -m "Preserve direct Sonos GPL index and source evidence"
           git pull --rebase origin main
           python scripts/archive_gpl_direct.py report >/dev/null
-          git add data/gpl/live/report.json
+          python scripts/audit_gpl_legacy_provenance.py >/dev/null
+          git add data/gpl/live/report.json data/gpl/live/legacy-crosscheck.json
           if ! git diff --cached --quiet; then
             git commit --amend --no-edit
           fi
