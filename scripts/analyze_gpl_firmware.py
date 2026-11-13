@@ -58,6 +58,73 @@ def inspect_uimage(path: Path) -> dict:
     return result
 
 
+def elf_metadata(binary: bytes) -> dict:
+    """Read ELF note/architecture metadata from the target binary itself.
+
+    Supports 32-bit and 64-bit little/big-endian ELF without external tools.
+    Does not execute the target image or rely on a host-side `file` guess.
+    """
+    if len(binary) < 52 or binary[:4] != b"\x7fELF" or binary[4] not in (1, 2) or binary[5] not in (1, 2):
+        return {"state": "not-elf"}
+    endian = "<" if binary[5] == 1 else ">"
+    cls = binary[4]
+    machine = struct.unpack_from(endian + "H", binary, 18)[0]
+    if cls == 1:
+        if len(binary) < 52:
+            return {"state": "invalid-elf-header"}
+        phoff = struct.unpack_from(endian + "I", binary, 28)[0]
+        shoff = struct.unpack_from(endian + "I", binary, 32)[0]
+        phentsize, phnum, shentsize, shnum = struct.unpack_from(endian + "HHHH", binary, 42)
+        ph_format = endian + "IIIIIIII"
+        sh_format = endian + "IIIIIIIIII"
+    else:
+        if len(binary) < 64:
+            return {"state": "invalid-elf-header"}
+        phoff = struct.unpack_from(endian + "Q", binary, 32)[0]
+        shoff = struct.unpack_from(endian + "Q", binary, 40)[0]
+        phentsize, phnum, shentsize, shnum = struct.unpack_from(endian + "HHHH", binary, 54)
+        ph_format = endian + "IIQQQQQQ"
+        sh_format = endian + "IIQQQQIIQQ"
+    result = {"state": "elf", "class": 32 if cls == 1 else 64,
+              "endian": "little" if endian == "<" else "big", "machine": machine,
+              "sha256": __import__("hashlib").sha256(binary).hexdigest()}
+    notes = []
+    phsize = struct.calcsize(ph_format)
+    if 0 < phentsize and phentsize >= phsize and phnum < 4096 and phoff + phentsize * phnum <= len(binary):
+        for index in range(phnum):
+            values = struct.unpack_from(ph_format, binary, phoff + index * phentsize)
+            if values[0] == 4:  # PT_NOTE
+                offset, size = (values[1], values[4]) if cls == 1 else (values[2], values[5])
+                if offset + size <= len(binary):
+                    notes.append(binary[offset:offset + size])
+    shsize = struct.calcsize(sh_format)
+    if 0 < shentsize and shentsize >= shsize and shnum < 16384 and shoff + shentsize * shnum <= len(binary):
+        for index in range(shnum):
+            values = struct.unpack_from(sh_format, binary, shoff + index * shentsize)
+            if values[1] == 7:  # SHT_NOTE
+                offset, size = values[4], values[5]
+                if offset + size <= len(binary):
+                    notes.append(binary[offset:offset + size])
+    for note in notes:
+        cursor = 0
+        while cursor + 12 <= len(note):
+            namesz, descsz, kind = struct.unpack_from(endian + "III", note, cursor)
+            cursor += 12
+            if namesz > len(note) - cursor:
+                break
+            name = note[cursor:cursor + namesz]
+            cursor += (namesz + 3) & ~3
+            if descsz > len(note) - cursor:
+                break
+            desc = note[cursor:cursor + descsz]
+            cursor += (descsz + 3) & ~3
+            if name.rstrip(b"\x00") == b"GNU" and kind == 3:
+                result["gnu_build_id"] = desc.hex()
+                return result
+    result["gnu_build_id"] = None
+    return result
+
+
 def inspect_squashfs(path: Path, targets: list[str]) -> dict:
     listing = subprocess.run(["unsquashfs", "-ll", str(path)], check=True, capture_output=True, text=True).stdout
     matches = {}
@@ -73,7 +140,8 @@ def inspect_squashfs(path: Path, targets: list[str]) -> dict:
         strings = []
         for pattern in patterns:
             strings += [x.decode("ascii", errors="replace") for x in re.findall(pattern, binary)[:4]]
-        matches[suffix] = {"state": "inspected", "bytes": len(binary), "version_evidence": sorted(set(strings))}
+        matches[suffix] = {"state": "inspected", "bytes": len(binary), "version_evidence": sorted(set(strings)),
+                           "elf": elf_metadata(binary)}
     return {"file": path.name, "sha256": file_sha256(path), "targets": matches}
 
 

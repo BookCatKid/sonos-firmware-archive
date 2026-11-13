@@ -294,3 +294,31 @@ class GPLReleaseReceiptRecoveryTests(unittest.TestCase):
         assets[0]["digest"] = "sha256:" + "c"*64
         imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
         self.assertEqual((imported,conflicts),(0,1))
+
+
+class GPLBinaryELFTests(unittest.TestCase):
+    def test_parse_powerpc_big_endian_gnu_build_id_without_running_binary(self):
+        import importlib.util
+        import struct
+        spec = importlib.util.spec_from_file_location("analyze_gpl_firmware_elf", ROOT / "scripts/analyze_gpl_firmware.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        build_id = bytes(range(20))
+        note = struct.pack(">III", 4, len(build_id), 3) + b"GNU\0" + build_id
+        header = bytearray(52)
+        header[:6] = b"\x7fELF\x01\x02"
+        struct.pack_into(">H", header, 18, 20)
+        struct.pack_into(">I", header, 28, 52)
+        struct.pack_into(">HH", header, 42, 32, 1)
+        program_header = struct.pack(">IIIIIIII", 4, 84, 0, 0, len(note), len(note), 0, 4)
+        raw = bytes(header) + program_header + note
+        metadata = module.elf_metadata(raw)
+        self.assertEqual(metadata["state"], "elf")
+        self.assertEqual(metadata["class"], 32)
+        self.assertEqual(metadata["endian"], "big")
+        self.assertEqual(metadata["machine"], 20)
+        self.assertEqual(metadata["gnu_build_id"], build_id.hex())
+        self.assertEqual(module.elf_metadata(b"not an ELF")["state"], "not-elf")
+        truncated = bytearray(raw)
+        struct.pack_into(">I", truncated, 52 + 4, len(raw) + 1)
+        self.assertIsNone(module.elf_metadata(bytes(truncated))["gnu_build_id"])

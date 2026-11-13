@@ -1,6 +1,6 @@
 {
   "conclusion": "Binary version and build-path matches identify candidate GPL source packages but do not establish bit-for-bit or complete corresponding source.",
-  "generated": "2026-11-13T04:49:07+00:00",
+  "generated": "2026-11-13T05:26:04+00:00",
   "kernel": {
     "architecture_id": 7,
     "compression_id": 1,
@@ -23,6 +23,14 @@
     "targets": {
       "bin/busybox": {
         "bytes": 460480,
+        "elf": {
+          "class": 32,
+          "endian": "big",
+          "gnu_build_id": "e4653d2cc580ea828d902b88311ffa2388a3bbbe",
+          "machine": 20,
+          "sha256": "a2fac7926b0e06c744e948e2f07e3c1b8e95aa5b0916822bf90189e47288ea1f",
+          "state": "elf"
+        },
         "state": "inspected",
         "version_evidence": [
           "BusyBox v1.35.0"
@@ -30,6 +38,14 @@
       },
       "lib/libavcodec.so.59": {
         "bytes": 394976,
+        "elf": {
+          "class": 32,
+          "endian": "big",
+          "gnu_build_id": "8fd1e4bc2df0c363c963f3b9124955462bf59f27",
+          "machine": 20,
+          "sha256": "d3d6883977dca9b71cbe2395db41b29ccf41cd60e4a92ac85aa37c4c8f18ebe1",
+          "state": "elf"
+        },
         "state": "inspected",
         "version_evidence": [
           "/usr/src/debug/ffmpeg/5.0.3-r0",

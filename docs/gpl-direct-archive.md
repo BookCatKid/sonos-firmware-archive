@@ -39,4 +39,6 @@ Inspect the 18.6 attribution PDF and compare exact distributed binaries with the
 
 ## Firmware source evidence
 
+The [18.6 binary-to-source correspondence audit](gpl-source-correspondence-18.6.md) records actual PowerPC ELF build IDs, matching source versions, and potential missing build configuration without claiming a proven license violation.
+
 The extracted `86.10-80260-1-17` Connect root filesystem contains FFmpeg `5.0.3` and a compiled source debug path `/usr/src/debug/ffmpeg/5.0.3-r0`; the 18.6 GPL page supplies `ffmpeg-5.0.3-r0-patched.tar.xz`. Its BusyBox binary contains `BusyBox v1.35.0`, matching the component version of `busybox-1.35.0-r0-patched.tar.xz`. These are version matches, not proof of byte-for-byte correspondence. An independently preserved `86.8-78270-1-8` kernel has a CRC-valid U-Boot image name `Linux-2.6.35-yocto-standard`, while multiple historical GPL pages list related kernel source variants. The firmware binary checks must be repeated against exact matching product/release artifacts before any compliance conclusion.
