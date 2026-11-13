@@ -1,0 +1,90 @@
+name: archive complete ConnectX firmware
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sonos-preservation
+  queue: max
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e .
+      - run: sudo apt-get update && sudo apt-get install -y squashfs-tools
+      - name: Discover historical manifest collection updates
+        id: discovery
+        continue-on-error: true
+        run: >-
+          python scripts/discover_connectx_manifests.py
+          --work-dir "$RUNNER_TEMP/connectx-manifests"
+          --publish --repository "$GITHUB_REPOSITORY"
+      - name: Snapshot static URL and backfill evidenced historical versions
+        id: archive
+        env:
+          SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          work="$RUNNER_TEMP/connectx"
+          mkdir -p "$work"
+          trap 'rm -f "$work/model17.pem"' EXIT
+          key_args=()
+          if [[ -n "${SONOS_MODEL_17_PRIVATE_KEY:-}" ]]; then
+            printf '%s\n' "$SONOS_MODEL_17_PRIVATE_KEY" > "$work/model17.pem"
+            key_args=(--key "$work/model17.pem")
+          fi
+          # Without a secret, derive the key from the hash-verified public
+          # 34.16-37101 model-17 updater using the existing recovery code.
+          python scripts/archive_connectx.py --work-dir "$work" \
+            --repository "$GITHUB_REPOSITORY" --max-packages 4 --publish "${key_args[@]}"
+      - name: Save inventories and scan failures
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: connectx-inventories
+          path: |
+            data/discovery/connectx-*.json
+            data/upd/connectx-*.json
+            data/raw/connectx-*.json
+            data/filesystems/connectx-*.json
+          retention-days: 30
+      - name: Commit verified ConnectX metadata
+        if: always() && steps.archive.outcome != 'skipped'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f data/discovery/connectx-index.json ]]; then
+            exit 0
+          fi
+          python scripts/refresh_key_recovery_ledger.py
+          sonos-fw verify
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/discovery data/filesystems data/catalog.json data/upd data/raw data/key-recovery-ledger.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve complete ConnectX firmware snapshots'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Report incomplete historical discovery
+        if: always() && steps.discovery.outcome == 'failure'
+        run: exit 1

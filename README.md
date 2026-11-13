@@ -202,6 +202,9 @@ material.
 
 ## Use the tools
 
+For complete ConnectX history, automated preservation, key recovery, and
+section/filesystem inventories, see [ConnectX firmware](docs/connectx-anacapad.md).
+
 ```bash
 python -m venv .venv
 . .venv/bin/activate
@@ -214,6 +217,11 @@ sonos-fw inspect /path/to/package.upd
 sonos-fw extract /path/to/package.upd --directory /path/to/raw
 sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
   --directory /path/to/raw --receipt /path/to/raw-receipt.json
+# Read bin/anacapad from a plaintext type-23 tar, even if OS sections are encrypted.
+sonos-fw extract-anacapad /path/to/connectx.upd \
+  --directory /path/to/raw --receipt /path/to/anacapad-receipt.json
+# Discover and completely extract evidenced historical ConnectX packages.
+python scripts/archive_connectx.py --work-dir artifacts/connectx
 sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
 
 # Capture read-only, privacy-redacted playback/network telemetry. Press Enter

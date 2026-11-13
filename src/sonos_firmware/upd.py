@@ -22,6 +22,7 @@ SECTION_NAMES = {
     17: "application",
     21: "capabilities",
     22: "signature",
+    23: "application-archive",
 }
 
 

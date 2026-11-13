@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import hashlib
-from pathlib import Path
+import io
+import tarfile
+from pathlib import Path, PurePosixPath
 
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -140,3 +142,47 @@ def extract_components(
             }
         )
     return records
+
+
+def extract_anacapad(upd_path: str | Path, output_dir: str | Path) -> dict:
+    """Read bin/anacapad from a plaintext type-23 tar without unpacking paths."""
+    upd_path = Path(upd_path)
+    data = upd_path.read_bytes()
+    matches = []
+    for section in parse_bytes(data):
+        if section.section_type != 23 or section.encrypted:
+            continue
+        payload = data[section.offset + 16 : section.offset + section.length]
+        with tarfile.open(fileobj=io.BytesIO(payload), mode="r:") as archive:
+            for member in archive:
+                if PurePosixPath(member.name) != PurePosixPath("bin/anacapad"):
+                    continue
+                if not member.isfile():
+                    raise ValueError("bin/anacapad must be a regular tar member")
+                with archive.extractfile(member) as handle:
+                    binary = handle.read()
+                if len(binary) != member.size:
+                    raise ValueError("truncated bin/anacapad tar member")
+                matches.append((section, binary))
+    if len(matches) != 1:
+        raise ValueError(f"expected one plaintext bin/anacapad member, found {len(matches)}")
+
+    section, binary = matches[0]
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filename = f"{upd_path.stem}-anacapad"
+    (output_dir / filename).write_bytes(binary)
+    return {
+        "package_id": upd_path.stem,
+        "section_index": section.index,
+        "section_type": section.section_type,
+        "kind": "anacapad",
+        "filename": filename,
+        "bytes": len(binary),
+        "sha256": _sha256(binary),
+        "source_encrypted": False,
+        "recipient_id": None,
+        "archive_member": "bin/anacapad",
+        "archive_sha256": section.sha256,
+        "source_sha256": _sha256(data),
+    }
