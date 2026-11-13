@@ -29,6 +29,8 @@ No Wayback requests are made by the new archiver. Only the legacy catalog loader
 
 `python scripts/archive_gpl_direct.py archive --version 18.6 --store /path/with/disk-space --include-upstream --publish` downloads source and PDF links, streams data into resumable `.part` files, checks tar integrity or PDF headers, and content-addresses verified assets by SHA-256. A minimum-free-space reserve protects the host. The `+` in Sonos filenames is percent-encoded as `%2B`; on November 12 five 18.6 hyperlinks with literal plus signs returned 403 while percent-encoded URLs served complete source archives. The `--filename NAME` selector permits a bounded targeted analysis.
 
+The `archive --next --limit N` mode advances through **multiple** incomplete releases in version order until the bounded attempt limit is reached; it does not stop after the first partially archived version. A bounded limit is mandatory for `--next`. Failed sources remain explicitly recorded and may be retried with `--retry-errors`.
+
 A GitHub Actions workflow performs twice-daily bounded discovery and daily staged archival from a runner with adequate scratch disk space. It uses GitHub Releases tagged `gpl-<version>`, verifies server-side asset SHA-256 after upload, and commits receipts only after verification. If an older Wayback asset has the same name but different SHA-256, the direct-source copy is saved under a **distinct immutable asset name**, not overwritten; the original URL and filename remain in metadata. Sources linked to `ftp.gnu.org` and `www.uclibc.org` are handled separately from Sonos-hosted files.
 
 ## Observed completeness and outstanding questions

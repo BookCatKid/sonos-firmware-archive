@@ -322,3 +322,45 @@ class GPLBinaryELFTests(unittest.TestCase):
         truncated = bytearray(raw)
         struct.pack_into(">I", truncated, 52 + 4, len(raw) + 1)
         self.assertIsNone(module.elf_metadata(bytes(truncated))["gnu_build_id"])
+
+
+class GPLMultiReleaseProgressTests(unittest.TestCase):
+    def test_bounded_next_archives_more_than_one_incomplete_version(self):
+        import argparse
+        import importlib.util
+        from unittest.mock import patch
+
+        spec = importlib.util.spec_from_file_location("archive_gpl_next", ROOT / "scripts/archive_gpl_direct.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        releases = {}
+        for version, filename in (("6.4", "done.tar.xz"), ("7.0", "first.tar.xz"), ("7.1", "second.tar.xz")):
+            releases[version] = {"state": "verified", "links": [{
+                "filename": filename, "origin": "sonos", "kind": "source",
+                "url": f"https://www.sonos.com/documents/gpl/{version}/{filename}",
+                "fetch_url": f"https://www.sonos.com/documents/gpl/{version}/{filename}",
+            }]}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "catalog.json").write_text(json.dumps({"schema_version": 1, "releases": releases}))
+            (root / "artifacts.json").write_text(json.dumps({"schema_version": 1, "artifacts": {
+                "6.4": {"done.tar.xz": {"filename": "done.tar.xz", "state": "published", "published": True}}
+            }}))
+            args = argparse.Namespace(output=root, next=True, version=[], include_upstream=False,
+                                      retry_errors=False, continue_errors=True, filename=[], limit=2,
+                                      max_total_bytes=0, publish=False, store=root / "blobs",
+                                      reserve_bytes=0, delay=2.5, repo="owner/repo")
+            calls = []
+            def fake_download(link, store, *, min_free_bytes):
+                calls.append(link["filename"])
+                return {"state": "http-error", "filename": link["filename"], "http_status": 403}
+            with patch.object(module, "download_artifact", side_effect=fake_download), patch.object(module, "pause"):
+                self.assertEqual(module.archive(args), 0)
+                self.assertEqual(calls, ["first.tar.xz", "second.tar.xz"])
+                saved = json.loads((root / "artifacts.json").read_text())["artifacts"]
+                self.assertTrue(saved["6.4"]["done.tar.xz"]["published"])
+                self.assertEqual(saved["7.0"]["first.tar.xz"]["http_status"], 403)
+                self.assertEqual(saved["7.1"]["second.tar.xz"]["http_status"], 403)
+            args.limit = 0
+            with self.assertRaisesRegex(ValueError, "requires --limit"):
+                module.archive(args)

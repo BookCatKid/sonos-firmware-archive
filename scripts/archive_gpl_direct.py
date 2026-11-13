@@ -187,6 +187,8 @@ def archive(args: argparse.Namespace) -> int:
     if args.next:
         if versions:
             raise ValueError("--next cannot be combined with --version")
+        if not args.limit and not args.max_total_bytes:
+            raise ValueError("--next requires --limit or --max-total-bytes to bound archive work")
         for candidate, entry in sorted(catalog["releases"].items(), key=lambda pair: tuple(map(int, pair[0].split('.')))):
             if entry["state"] != "verified":
                 continue
@@ -196,11 +198,10 @@ def archive(args: argparse.Namespace) -> int:
                        (link["origin"] == "sonos" or args.include_upstream) and
                        incomplete(prior.get(link["filename"]))]
             if pending:
-                versions = [candidate]
-                print(f"next_incomplete_release={candidate} remaining={len(pending)}", flush=True)
-                break
+                versions.append(candidate)
+                print(f"queued_incomplete_release={candidate} remaining={len(pending)}", flush=True)
     if not versions:
-        print("All indexed releases have published receipts for the chosen source origins.")
+        print("No pending GPL downloads in the chosen scope; review recorded failures and use --retry-errors to revisit them.")
         return 0
     for version in versions:
         valid_version(version)
