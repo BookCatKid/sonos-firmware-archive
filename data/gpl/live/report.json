@@ -5,17 +5,17 @@
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
-  "generated": "2026-11-13T05:22:16+00:00",
+  "generated": "2026-11-13T05:25:38+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
     "Source archive validity does not prove exact correspondence with every distributed firmware binary."
   ],
-  "published_downloads": 60,
+  "published_downloads": 90,
   "schema_version": 1,
   "sonos_download_links": 1112,
   "source": "direct-sonos",
-  "verified_downloads": 60,
+  "verified_downloads": 90,
   "verified_index_total": 39,
   "verified_index_versions": [
     "6.4",
