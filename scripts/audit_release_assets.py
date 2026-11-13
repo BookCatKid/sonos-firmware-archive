@@ -67,6 +67,20 @@ def recorded_assets(root: Path) -> dict:
                     "sha256": index["sha256"],
                     "source": f"{gpl_path.relative_to(root)}:index",
                 }
+    live_path = root / "data/gpl/live/artifacts.json"
+    if live_path.exists():
+        live = json.loads(live_path.read_text(encoding="utf-8"))
+        for version, items in live.get("artifacts", {}).items():
+            for item in items.values():
+                if not item.get("published") or not item.get("sha256") or not isinstance(item.get("bytes"), int):
+                    continue
+                tag = item.get("release_tag") or f"gpl-{version}"
+                name = item.get("release_asset") or item["filename"]
+                key = (tag, name)
+                record = {"bytes": item["bytes"], "sha256": item["sha256"], "source": str(live_path.relative_to(root))}
+                if key in expected and (expected[key]["bytes"], expected[key]["sha256"]) != (record["bytes"], record["sha256"]):
+                    raise ValueError(f"conflicting old/new GPL asset identity: {tag}/{name}")
+                expected[key] = record
     return expected
 
 

@@ -1,0 +1,484 @@
+{
+  "conclusion": "Binary version and build-path matches identify candidate GPL source packages but do not establish bit-for-bit or complete corresponding source.",
+  "generated": "2026-11-13T04:49:07+00:00",
+  "kernel": {
+    "architecture_id": 7,
+    "compression_id": 1,
+    "created_unix": 1755285473,
+    "file": "86.8-78270-1-8-kernel.uImage",
+    "header_crc_valid": true,
+    "image_name": "Linux-2.6.35-yocto-standard",
+    "image_type_id": 2,
+    "linux_version_strings": [
+      "Linux version 2.6.35-yocto-standard (build@aws-jammy-190-c) (gcc version 5.2.0 (crosstool-NG crosstool-ng-1.22.0 - allen.antony@sonos.com) ) #1 Fri Aug 15 19:17:53 "
+    ],
+    "os_id": 5,
+    "payload_bytes": 1495372,
+    "payload_crc_valid": true,
+    "sha256": "e7e92b4d79f2a3bfef22c165b2bacdda226fb72a31039d77145d06e308fe9254"
+  },
+  "rootfs": {
+    "file": "86.10-80260-1-17-CONNECTX-rootfs.squashfs",
+    "sha256": "37356815a2853a88b11e0a6ceae46ce5441cd04ae038722bc4d40c09765c9471",
+    "targets": {
+      "bin/busybox": {
+        "bytes": 460480,
+        "state": "inspected",
+        "version_evidence": [
+          "BusyBox v1.35.0"
+        ]
+      },
+      "lib/libavcodec.so.59": {
+        "bytes": 394976,
+        "state": "inspected",
+        "version_evidence": [
+          "/usr/src/debug/ffmpeg/5.0.3-r0",
+          "FFmpeg version 5.0.3"
+        ]
+      }
+    }
+  },
+  "schema_version": 1,
+  "source_candidates": [
+    {
+      "binary_evidence": [
+        "BusyBox v1.35.0"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "bin/busybox",
+      "gpl_version": "18.6",
+      "source_file": "busybox-1.35.0-r0-patched.tar.xz",
+      "source_url": "https://www.sonos.com/documents/gpl/18.6/busybox-1.35.0-r0-patched.tar.xz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.0",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.0/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.1",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.1/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.2",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.2/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.3",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.3/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.4",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.4/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.5",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.5/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "10.6",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/10.6/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "11.0",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/11.0/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "11.1",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/11.1/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "12.0",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/12.0/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "12.1",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/12.1/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "12.2",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/12.2/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "13.0",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/13.0/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "13.1",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/13.1/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "13.2",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/13.2/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "13.3",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/13.3/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "13.4",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/13.4/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "14.12",
+      "source_file": "linux-sonos-2.6.35-r0-patched.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/14.12/linux-sonos-2.6.35-r0-patched.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "14.18",
+      "source_file": "linux-sonos-2.6.35-r0-patched.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/14.18/linux-sonos-2.6.35-r0-patched.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "14.4",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/14.4/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "14.6",
+      "source_file": "linux-sonos-2.6.35-r0-patched.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/14.6/linux-sonos-2.6.35-r0-patched.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "6.4",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/6.4/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "7.0",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/7.0/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "7.1",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/7.1/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "7.2",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/7.2/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "7.3",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/7.3/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "7.4",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/7.4/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.0",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.0/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.1",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.1/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.2",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.2/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.3",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.3/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.4",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.4/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.5",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.5/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "8.6",
+      "source_file": "linux-2.6.35.tgz",
+      "source_url": "https://www.sonos.com/documents/gpl/8.6/linux-2.6.35.tgz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "9.0",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/9.0/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "9.1",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/9.1/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "9.2",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/9.2/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "2.6.35"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "kernel",
+      "gpl_version": "9.3",
+      "source_file": "linux-2.6.35.txz",
+      "source_url": "https://www.sonos.com/documents/gpl/9.3/linux-2.6.35.txz"
+    },
+    {
+      "binary_evidence": [
+        "/usr/src/debug/ffmpeg/5.0.3-r0"
+      ],
+      "evidence_level": "component-version-candidate",
+      "exact_corresponding_source_proven": false,
+      "firmware_component": "lib/libavcodec.so.59",
+      "gpl_version": "18.6",
+      "source_file": "ffmpeg-5.0.3-r0-patched.tar.xz",
+      "source_url": "https://www.sonos.com/documents/gpl/18.6/ffmpeg-5.0.3-r0-patched.tar.xz"
+    }
+  ]
+}

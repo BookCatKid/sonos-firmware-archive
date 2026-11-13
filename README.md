@@ -179,7 +179,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
 - `data/raw/` — extracted-component receipts with recipient fingerprints and hashes.
 - `data/decryption-runs/` — tracked receipts for successful local decryption runs.
 - `data/filesystems/` — path, mode, size, symlink, and SHA-256 manifests for extracted root filesystems.
-- `data/gpl/` — separately licensed Sonos-published GPL/LGPL index metadata and source captures, published through `gpl-<version>` GitHub releases.
+- `data/gpl/` — Sonos GPL/LGPL indexes and source captures, published through `gpl-<version>` GitHub releases. The new [`direct-Sonos pipeline`](docs/gpl-direct-archive.md) preserves independently verified live index bodies and sources without Wayback, records bounded negative/inconclusive probes, and correlates component versions with recovered firmware binaries. Older Wayback captures are labeled separately.
 - `data/apps/` — discovery inventories and verified GitHub Release receipts for
   historical desktop installers, official Sonos-hosted APKs, separately
   labeled Android store recovery/direct-delivery sets, and public Web

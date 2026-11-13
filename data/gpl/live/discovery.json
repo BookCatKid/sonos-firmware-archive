@@ -1,0 +1,1860 @@
+{
+  "candidates": {
+    "1.0": {
+      "checked_at": "2026-11-13T04:37:59Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/1.0/gpl.html",
+      "version": "1.0"
+    },
+    "14.0": {
+      "checked_at": "2026-11-13T04:38:19Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.0/gpl.html",
+      "version": "14.0"
+    },
+    "14.1": {
+      "checked_at": "2026-11-13T04:38:22Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.1/gpl.html",
+      "version": "14.1"
+    },
+    "14.10": {
+      "checked_at": "2026-11-13T04:38:40Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.10/gpl.html",
+      "version": "14.10"
+    },
+    "14.11": {
+      "checked_at": "2026-11-13T04:38:43Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.11/gpl.html",
+      "version": "14.11"
+    },
+    "14.13": {
+      "checked_at": "2026-11-13T04:38:45Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.13/gpl.html",
+      "version": "14.13"
+    },
+    "14.14": {
+      "checked_at": "2026-11-13T04:38:48Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.14/gpl.html",
+      "version": "14.14"
+    },
+    "14.15": {
+      "checked_at": "2026-11-13T04:38:51Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.15/gpl.html",
+      "version": "14.15"
+    },
+    "14.16": {
+      "checked_at": "2026-11-13T04:38:53Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.16/gpl.html",
+      "version": "14.16"
+    },
+    "14.17": {
+      "checked_at": "2026-11-13T04:38:56Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.17/gpl.html",
+      "version": "14.17"
+    },
+    "14.19": {
+      "checked_at": "2026-11-13T04:38:58Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.19/gpl.html",
+      "version": "14.19"
+    },
+    "14.2": {
+      "checked_at": "2026-11-13T04:38:25Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.2/gpl.html",
+      "version": "14.2"
+    },
+    "14.20": {
+      "checked_at": "2026-11-13T04:39:01Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.20/gpl.html",
+      "version": "14.20"
+    },
+    "14.21": {
+      "checked_at": "2026-11-13T04:39:03Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.21/gpl.html",
+      "version": "14.21"
+    },
+    "14.22": {
+      "checked_at": "2026-11-13T04:39:06Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.22/gpl.html",
+      "version": "14.22"
+    },
+    "14.23": {
+      "checked_at": "2026-11-13T04:39:08Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.23/gpl.html",
+      "version": "14.23"
+    },
+    "14.24": {
+      "checked_at": "2026-11-13T04:39:11Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.24/gpl.html",
+      "version": "14.24"
+    },
+    "14.25": {
+      "checked_at": "2026-11-13T04:39:14Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.25/gpl.html",
+      "version": "14.25"
+    },
+    "14.26": {
+      "checked_at": "2026-11-13T04:39:16Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.26/gpl.html",
+      "version": "14.26"
+    },
+    "14.27": {
+      "checked_at": "2026-11-13T04:39:19Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.27/gpl.html",
+      "version": "14.27"
+    },
+    "14.28": {
+      "checked_at": "2026-11-13T04:39:21Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.28/gpl.html",
+      "version": "14.28"
+    },
+    "14.29": {
+      "checked_at": "2026-11-13T04:39:24Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.29/gpl.html",
+      "version": "14.29"
+    },
+    "14.3": {
+      "checked_at": "2026-11-13T04:38:27Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.3/gpl.html",
+      "version": "14.3"
+    },
+    "14.30": {
+      "checked_at": "2026-11-13T04:39:27Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.30/gpl.html",
+      "version": "14.30"
+    },
+    "14.31": {
+      "checked_at": "2026-11-13T04:39:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.31/gpl.html",
+      "version": "14.31"
+    },
+    "14.32": {
+      "checked_at": "2026-11-13T04:39:32Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.32/gpl.html",
+      "version": "14.32"
+    },
+    "14.33": {
+      "checked_at": "2026-11-13T04:39:34Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.33/gpl.html",
+      "version": "14.33"
+    },
+    "14.34": {
+      "checked_at": "2026-11-13T04:39:37Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.34/gpl.html",
+      "version": "14.34"
+    },
+    "14.35": {
+      "checked_at": "2026-11-13T04:39:39Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.35/gpl.html",
+      "version": "14.35"
+    },
+    "14.36": {
+      "checked_at": "2026-11-13T04:39:42Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.36/gpl.html",
+      "version": "14.36"
+    },
+    "14.37": {
+      "checked_at": "2026-11-13T04:39:45Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.37/gpl.html",
+      "version": "14.37"
+    },
+    "14.38": {
+      "checked_at": "2026-11-13T04:39:47Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.38/gpl.html",
+      "version": "14.38"
+    },
+    "14.39": {
+      "checked_at": "2026-11-13T04:39:50Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.39/gpl.html",
+      "version": "14.39"
+    },
+    "14.40": {
+      "checked_at": "2026-11-13T04:39:52Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.40/gpl.html",
+      "version": "14.40"
+    },
+    "14.5": {
+      "checked_at": "2026-11-13T04:38:30Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.5/gpl.html",
+      "version": "14.5"
+    },
+    "14.7": {
+      "checked_at": "2026-11-13T04:38:32Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.7/gpl.html",
+      "version": "14.7"
+    },
+    "14.8": {
+      "checked_at": "2026-11-13T04:38:35Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.8/gpl.html",
+      "version": "14.8"
+    },
+    "14.9": {
+      "checked_at": "2026-11-13T04:38:37Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/14.9/gpl.html",
+      "version": "14.9"
+    },
+    "15.0": {
+      "checked_at": "2026-11-13T04:39:55Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.0/gpl.html",
+      "version": "15.0"
+    },
+    "15.1": {
+      "checked_at": "2026-11-13T04:39:57Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.1/gpl.html",
+      "version": "15.1"
+    },
+    "15.10": {
+      "checked_at": "2026-11-13T04:40:20Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.10/gpl.html",
+      "version": "15.10"
+    },
+    "15.11": {
+      "checked_at": "2026-11-13T04:40:23Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.11/gpl.html",
+      "version": "15.11"
+    },
+    "15.12": {
+      "checked_at": "2026-11-13T04:40:25Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.12/gpl.html",
+      "version": "15.12"
+    },
+    "15.13": {
+      "checked_at": "2026-11-13T04:40:28Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.13/gpl.html",
+      "version": "15.13"
+    },
+    "15.14": {
+      "checked_at": "2026-11-13T04:40:31Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.14/gpl.html",
+      "version": "15.14"
+    },
+    "15.15": {
+      "checked_at": "2026-11-13T04:40:34Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.15/gpl.html",
+      "version": "15.15"
+    },
+    "15.16": {
+      "checked_at": "2026-11-13T04:40:36Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.16/gpl.html",
+      "version": "15.16"
+    },
+    "15.17": {
+      "checked_at": "2026-11-13T04:40:39Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.17/gpl.html",
+      "version": "15.17"
+    },
+    "15.18": {
+      "checked_at": "2026-11-13T04:40:41Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.18/gpl.html",
+      "version": "15.18"
+    },
+    "15.19": {
+      "checked_at": "2026-11-13T04:40:44Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.19/gpl.html",
+      "version": "15.19"
+    },
+    "15.2": {
+      "checked_at": "2026-11-13T04:40:00Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.2/gpl.html",
+      "version": "15.2"
+    },
+    "15.20": {
+      "checked_at": "2026-11-13T04:40:46Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.20/gpl.html",
+      "version": "15.20"
+    },
+    "15.21": {
+      "checked_at": "2026-11-13T04:40:49Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.21/gpl.html",
+      "version": "15.21"
+    },
+    "15.22": {
+      "checked_at": "2026-11-13T04:40:52Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.22/gpl.html",
+      "version": "15.22"
+    },
+    "15.23": {
+      "checked_at": "2026-11-13T04:40:54Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.23/gpl.html",
+      "version": "15.23"
+    },
+    "15.24": {
+      "checked_at": "2026-11-13T04:40:57Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.24/gpl.html",
+      "version": "15.24"
+    },
+    "15.25": {
+      "checked_at": "2026-11-13T04:40:59Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.25/gpl.html",
+      "version": "15.25"
+    },
+    "15.26": {
+      "checked_at": "2026-11-13T04:41:02Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.26/gpl.html",
+      "version": "15.26"
+    },
+    "15.27": {
+      "checked_at": "2026-11-13T04:41:05Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.27/gpl.html",
+      "version": "15.27"
+    },
+    "15.28": {
+      "checked_at": "2026-11-13T04:41:07Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.28/gpl.html",
+      "version": "15.28"
+    },
+    "15.29": {
+      "checked_at": "2026-11-13T04:41:10Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.29/gpl.html",
+      "version": "15.29"
+    },
+    "15.3": {
+      "checked_at": "2026-11-13T04:40:03Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.3/gpl.html",
+      "version": "15.3"
+    },
+    "15.30": {
+      "checked_at": "2026-11-13T04:41:12Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.30/gpl.html",
+      "version": "15.30"
+    },
+    "15.31": {
+      "checked_at": "2026-11-13T04:41:15Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.31/gpl.html",
+      "version": "15.31"
+    },
+    "15.32": {
+      "checked_at": "2026-11-13T04:41:18Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.32/gpl.html",
+      "version": "15.32"
+    },
+    "15.33": {
+      "checked_at": "2026-11-13T04:41:20Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.33/gpl.html",
+      "version": "15.33"
+    },
+    "15.34": {
+      "checked_at": "2026-11-13T04:41:23Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.34/gpl.html",
+      "version": "15.34"
+    },
+    "15.35": {
+      "checked_at": "2026-11-13T04:41:25Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.35/gpl.html",
+      "version": "15.35"
+    },
+    "15.36": {
+      "checked_at": "2026-11-13T04:41:28Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.36/gpl.html",
+      "version": "15.36"
+    },
+    "15.37": {
+      "checked_at": "2026-11-13T04:41:30Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.37/gpl.html",
+      "version": "15.37"
+    },
+    "15.38": {
+      "checked_at": "2026-11-13T04:41:33Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.38/gpl.html",
+      "version": "15.38"
+    },
+    "15.39": {
+      "checked_at": "2026-11-13T04:41:36Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.39/gpl.html",
+      "version": "15.39"
+    },
+    "15.4": {
+      "checked_at": "2026-11-13T04:40:05Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.4/gpl.html",
+      "version": "15.4"
+    },
+    "15.40": {
+      "checked_at": "2026-11-13T04:41:38Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.40/gpl.html",
+      "version": "15.40"
+    },
+    "15.5": {
+      "checked_at": "2026-11-13T04:40:08Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.5/gpl.html",
+      "version": "15.5"
+    },
+    "15.6": {
+      "checked_at": "2026-11-13T04:40:10Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.6/gpl.html",
+      "version": "15.6"
+    },
+    "15.7": {
+      "checked_at": "2026-11-13T04:40:13Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.7/gpl.html",
+      "version": "15.7"
+    },
+    "15.8": {
+      "checked_at": "2026-11-13T04:40:15Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.8/gpl.html",
+      "version": "15.8"
+    },
+    "15.9": {
+      "checked_at": "2026-11-13T04:40:18Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/15.9/gpl.html",
+      "version": "15.9"
+    },
+    "16.0": {
+      "checked_at": "2026-11-13T04:41:41Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.0/gpl.html",
+      "version": "16.0"
+    },
+    "16.1": {
+      "checked_at": "2026-11-13T04:41:43Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.1/gpl.html",
+      "version": "16.1"
+    },
+    "16.10": {
+      "checked_at": "2026-11-13T04:42:06Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.10/gpl.html",
+      "version": "16.10"
+    },
+    "16.11": {
+      "checked_at": "2026-11-13T04:42:09Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.11/gpl.html",
+      "version": "16.11"
+    },
+    "16.12": {
+      "checked_at": "2026-11-13T04:42:11Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.12/gpl.html",
+      "version": "16.12"
+    },
+    "16.13": {
+      "checked_at": "2026-11-13T04:42:14Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.13/gpl.html",
+      "version": "16.13"
+    },
+    "16.14": {
+      "checked_at": "2026-11-13T04:42:17Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.14/gpl.html",
+      "version": "16.14"
+    },
+    "16.15": {
+      "checked_at": "2026-11-13T04:42:19Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.15/gpl.html",
+      "version": "16.15"
+    },
+    "16.16": {
+      "checked_at": "2026-11-13T04:42:22Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.16/gpl.html",
+      "version": "16.16"
+    },
+    "16.17": {
+      "checked_at": "2026-11-13T04:42:24Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.17/gpl.html",
+      "version": "16.17"
+    },
+    "16.18": {
+      "checked_at": "2026-11-13T04:42:27Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.18/gpl.html",
+      "version": "16.18"
+    },
+    "16.19": {
+      "checked_at": "2026-11-13T04:42:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.19/gpl.html",
+      "version": "16.19"
+    },
+    "16.2": {
+      "checked_at": "2026-11-13T04:41:46Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.2/gpl.html",
+      "version": "16.2"
+    },
+    "16.20": {
+      "checked_at": "2026-11-13T04:42:32Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.20/gpl.html",
+      "version": "16.20"
+    },
+    "16.21": {
+      "checked_at": "2026-11-13T04:42:35Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.21/gpl.html",
+      "version": "16.21"
+    },
+    "16.22": {
+      "checked_at": "2026-11-13T04:42:37Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.22/gpl.html",
+      "version": "16.22"
+    },
+    "16.23": {
+      "checked_at": "2026-11-13T04:42:40Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.23/gpl.html",
+      "version": "16.23"
+    },
+    "16.24": {
+      "checked_at": "2026-11-13T04:42:42Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.24/gpl.html",
+      "version": "16.24"
+    },
+    "16.25": {
+      "checked_at": "2026-11-13T04:42:45Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.25/gpl.html",
+      "version": "16.25"
+    },
+    "16.26": {
+      "checked_at": "2026-11-13T04:42:48Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.26/gpl.html",
+      "version": "16.26"
+    },
+    "16.27": {
+      "checked_at": "2026-11-13T04:42:50Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.27/gpl.html",
+      "version": "16.27"
+    },
+    "16.28": {
+      "checked_at": "2026-11-13T04:42:53Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.28/gpl.html",
+      "version": "16.28"
+    },
+    "16.29": {
+      "checked_at": "2026-11-13T04:42:55Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.29/gpl.html",
+      "version": "16.29"
+    },
+    "16.3": {
+      "checked_at": "2026-11-13T04:41:48Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.3/gpl.html",
+      "version": "16.3"
+    },
+    "16.30": {
+      "checked_at": "2026-11-13T04:42:58Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.30/gpl.html",
+      "version": "16.30"
+    },
+    "16.31": {
+      "checked_at": "2026-11-13T04:43:00Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.31/gpl.html",
+      "version": "16.31"
+    },
+    "16.32": {
+      "checked_at": "2026-11-13T04:43:03Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.32/gpl.html",
+      "version": "16.32"
+    },
+    "16.33": {
+      "checked_at": "2026-11-13T04:43:06Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.33/gpl.html",
+      "version": "16.33"
+    },
+    "16.34": {
+      "checked_at": "2026-11-13T04:43:08Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.34/gpl.html",
+      "version": "16.34"
+    },
+    "16.35": {
+      "checked_at": "2026-11-13T04:43:11Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.35/gpl.html",
+      "version": "16.35"
+    },
+    "16.36": {
+      "checked_at": "2026-11-13T04:43:13Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.36/gpl.html",
+      "version": "16.36"
+    },
+    "16.37": {
+      "checked_at": "2026-11-13T04:43:16Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.37/gpl.html",
+      "version": "16.37"
+    },
+    "16.38": {
+      "checked_at": "2026-11-13T04:43:19Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.38/gpl.html",
+      "version": "16.38"
+    },
+    "16.39": {
+      "checked_at": "2026-11-13T04:43:21Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.39/gpl.html",
+      "version": "16.39"
+    },
+    "16.4": {
+      "checked_at": "2026-11-13T04:41:51Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.4/gpl.html",
+      "version": "16.4"
+    },
+    "16.40": {
+      "checked_at": "2026-11-13T04:43:24Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.40/gpl.html",
+      "version": "16.40"
+    },
+    "16.5": {
+      "checked_at": "2026-11-13T04:41:53Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.5/gpl.html",
+      "version": "16.5"
+    },
+    "16.6": {
+      "checked_at": "2026-11-13T04:41:56Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.6/gpl.html",
+      "version": "16.6"
+    },
+    "16.7": {
+      "checked_at": "2026-11-13T04:41:58Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.7/gpl.html",
+      "version": "16.7"
+    },
+    "16.8": {
+      "checked_at": "2026-11-13T04:42:01Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.8/gpl.html",
+      "version": "16.8"
+    },
+    "16.9": {
+      "checked_at": "2026-11-13T04:42:04Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/16.9/gpl.html",
+      "version": "16.9"
+    },
+    "17.0": {
+      "checked_at": "2026-11-13T04:43:26Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.0/gpl.html",
+      "version": "17.0"
+    },
+    "17.1": {
+      "checked_at": "2026-11-13T04:43:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.1/gpl.html",
+      "version": "17.1"
+    },
+    "17.10": {
+      "checked_at": "2026-11-13T04:43:52Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.10/gpl.html",
+      "version": "17.10"
+    },
+    "17.11": {
+      "checked_at": "2026-11-13T04:43:54Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.11/gpl.html",
+      "version": "17.11"
+    },
+    "17.12": {
+      "checked_at": "2026-11-13T04:43:57Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.12/gpl.html",
+      "version": "17.12"
+    },
+    "17.13": {
+      "checked_at": "2026-11-13T04:43:59Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.13/gpl.html",
+      "version": "17.13"
+    },
+    "17.14": {
+      "checked_at": "2026-11-13T04:44:02Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.14/gpl.html",
+      "version": "17.14"
+    },
+    "17.15": {
+      "checked_at": "2026-11-13T04:44:04Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.15/gpl.html",
+      "version": "17.15"
+    },
+    "17.16": {
+      "checked_at": "2026-11-13T04:44:07Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.16/gpl.html",
+      "version": "17.16"
+    },
+    "17.17": {
+      "checked_at": "2026-11-13T04:44:10Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.17/gpl.html",
+      "version": "17.17"
+    },
+    "17.18": {
+      "checked_at": "2026-11-13T04:44:12Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.18/gpl.html",
+      "version": "17.18"
+    },
+    "17.19": {
+      "checked_at": "2026-11-13T04:44:15Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.19/gpl.html",
+      "version": "17.19"
+    },
+    "17.2": {
+      "checked_at": "2026-11-13T04:43:31Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.2/gpl.html",
+      "version": "17.2"
+    },
+    "17.20": {
+      "checked_at": "2026-11-13T04:44:17Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.20/gpl.html",
+      "version": "17.20"
+    },
+    "17.21": {
+      "checked_at": "2026-11-13T04:44:20Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.21/gpl.html",
+      "version": "17.21"
+    },
+    "17.22": {
+      "checked_at": "2026-11-13T04:44:23Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.22/gpl.html",
+      "version": "17.22"
+    },
+    "17.23": {
+      "checked_at": "2026-11-13T04:44:26Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.23/gpl.html",
+      "version": "17.23"
+    },
+    "17.24": {
+      "checked_at": "2026-11-13T04:44:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.24/gpl.html",
+      "version": "17.24"
+    },
+    "17.25": {
+      "checked_at": "2026-11-13T04:44:33Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.25/gpl.html",
+      "version": "17.25"
+    },
+    "17.26": {
+      "checked_at": "2026-11-13T04:44:35Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.26/gpl.html",
+      "version": "17.26"
+    },
+    "17.27": {
+      "checked_at": "2026-11-13T04:44:38Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.27/gpl.html",
+      "version": "17.27"
+    },
+    "17.28": {
+      "checked_at": "2026-11-13T04:44:40Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.28/gpl.html",
+      "version": "17.28"
+    },
+    "17.29": {
+      "checked_at": "2026-11-13T04:44:43Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.29/gpl.html",
+      "version": "17.29"
+    },
+    "17.3": {
+      "checked_at": "2026-11-13T04:43:34Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.3/gpl.html",
+      "version": "17.3"
+    },
+    "17.30": {
+      "checked_at": "2026-11-13T04:44:46Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.30/gpl.html",
+      "version": "17.30"
+    },
+    "17.31": {
+      "checked_at": "2026-11-13T04:44:48Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.31/gpl.html",
+      "version": "17.31"
+    },
+    "17.32": {
+      "checked_at": "2026-11-13T04:44:51Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.32/gpl.html",
+      "version": "17.32"
+    },
+    "17.33": {
+      "checked_at": "2026-11-13T04:44:53Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.33/gpl.html",
+      "version": "17.33"
+    },
+    "17.34": {
+      "checked_at": "2026-11-13T04:44:56Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.34/gpl.html",
+      "version": "17.34"
+    },
+    "17.35": {
+      "checked_at": "2026-11-13T04:44:59Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.35/gpl.html",
+      "version": "17.35"
+    },
+    "17.36": {
+      "checked_at": "2026-11-13T04:45:01Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.36/gpl.html",
+      "version": "17.36"
+    },
+    "17.37": {
+      "checked_at": "2026-11-13T04:45:04Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.37/gpl.html",
+      "version": "17.37"
+    },
+    "17.38": {
+      "checked_at": "2026-11-13T04:45:06Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.38/gpl.html",
+      "version": "17.38"
+    },
+    "17.39": {
+      "checked_at": "2026-11-13T04:45:09Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.39/gpl.html",
+      "version": "17.39"
+    },
+    "17.4": {
+      "checked_at": "2026-11-13T04:43:36Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.4/gpl.html",
+      "version": "17.4"
+    },
+    "17.40": {
+      "checked_at": "2026-11-13T04:45:11Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.40/gpl.html",
+      "version": "17.40"
+    },
+    "17.5": {
+      "checked_at": "2026-11-13T04:43:39Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.5/gpl.html",
+      "version": "17.5"
+    },
+    "17.6": {
+      "checked_at": "2026-11-13T04:43:41Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.6/gpl.html",
+      "version": "17.6"
+    },
+    "17.7": {
+      "checked_at": "2026-11-13T04:43:44Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.7/gpl.html",
+      "version": "17.7"
+    },
+    "17.8": {
+      "checked_at": "2026-11-13T04:43:46Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.8/gpl.html",
+      "version": "17.8"
+    },
+    "17.9": {
+      "checked_at": "2026-11-13T04:43:49Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/17.9/gpl.html",
+      "version": "17.9"
+    },
+    "18.0": {
+      "checked_at": "2026-11-13T04:45:14Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.0/gpl.html",
+      "version": "18.0"
+    },
+    "18.1": {
+      "checked_at": "2026-11-13T04:45:17Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.1/gpl.html",
+      "version": "18.1"
+    },
+    "18.10": {
+      "checked_at": "2026-11-13T04:45:37Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.10/gpl.html",
+      "version": "18.10"
+    },
+    "18.11": {
+      "checked_at": "2026-11-13T04:45:39Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.11/gpl.html",
+      "version": "18.11"
+    },
+    "18.12": {
+      "checked_at": "2026-11-13T04:45:42Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.12/gpl.html",
+      "version": "18.12"
+    },
+    "18.13": {
+      "checked_at": "2026-11-13T04:45:45Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.13/gpl.html",
+      "version": "18.13"
+    },
+    "18.14": {
+      "checked_at": "2026-11-13T04:45:47Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.14/gpl.html",
+      "version": "18.14"
+    },
+    "18.15": {
+      "checked_at": "2026-11-13T04:45:50Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.15/gpl.html",
+      "version": "18.15"
+    },
+    "18.16": {
+      "checked_at": "2026-11-13T04:45:53Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.16/gpl.html",
+      "version": "18.16"
+    },
+    "18.17": {
+      "checked_at": "2026-11-13T04:45:55Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.17/gpl.html",
+      "version": "18.17"
+    },
+    "18.18": {
+      "checked_at": "2026-11-13T04:45:58Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.18/gpl.html",
+      "version": "18.18"
+    },
+    "18.19": {
+      "checked_at": "2026-11-13T04:46:00Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.19/gpl.html",
+      "version": "18.19"
+    },
+    "18.2": {
+      "checked_at": "2026-11-13T04:45:19Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.2/gpl.html",
+      "version": "18.2"
+    },
+    "18.20": {
+      "checked_at": "2026-11-13T04:46:03Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.20/gpl.html",
+      "version": "18.20"
+    },
+    "18.21": {
+      "checked_at": "2026-11-13T04:46:06Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.21/gpl.html",
+      "version": "18.21"
+    },
+    "18.22": {
+      "checked_at": "2026-11-13T04:46:08Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.22/gpl.html",
+      "version": "18.22"
+    },
+    "18.23": {
+      "checked_at": "2026-11-13T04:46:11Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.23/gpl.html",
+      "version": "18.23"
+    },
+    "18.24": {
+      "checked_at": "2026-11-13T04:46:13Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.24/gpl.html",
+      "version": "18.24"
+    },
+    "18.25": {
+      "checked_at": "2026-11-13T04:46:16Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.25/gpl.html",
+      "version": "18.25"
+    },
+    "18.26": {
+      "checked_at": "2026-11-13T04:46:18Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.26/gpl.html",
+      "version": "18.26"
+    },
+    "18.27": {
+      "checked_at": "2026-11-13T04:46:21Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.27/gpl.html",
+      "version": "18.27"
+    },
+    "18.28": {
+      "checked_at": "2026-11-13T04:46:24Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.28/gpl.html",
+      "version": "18.28"
+    },
+    "18.29": {
+      "checked_at": "2026-11-13T04:46:26Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.29/gpl.html",
+      "version": "18.29"
+    },
+    "18.3": {
+      "checked_at": "2026-11-13T04:45:22Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.3/gpl.html",
+      "version": "18.3"
+    },
+    "18.30": {
+      "checked_at": "2026-11-13T04:46:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.30/gpl.html",
+      "version": "18.30"
+    },
+    "18.31": {
+      "checked_at": "2026-11-13T04:46:31Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.31/gpl.html",
+      "version": "18.31"
+    },
+    "18.32": {
+      "checked_at": "2026-11-13T04:46:34Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.32/gpl.html",
+      "version": "18.32"
+    },
+    "18.33": {
+      "checked_at": "2026-11-13T04:46:36Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.33/gpl.html",
+      "version": "18.33"
+    },
+    "18.34": {
+      "checked_at": "2026-11-13T04:46:39Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.34/gpl.html",
+      "version": "18.34"
+    },
+    "18.35": {
+      "checked_at": "2026-11-13T04:46:42Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.35/gpl.html",
+      "version": "18.35"
+    },
+    "18.36": {
+      "checked_at": "2026-11-13T04:46:44Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.36/gpl.html",
+      "version": "18.36"
+    },
+    "18.37": {
+      "checked_at": "2026-11-13T04:46:47Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.37/gpl.html",
+      "version": "18.37"
+    },
+    "18.38": {
+      "checked_at": "2026-11-13T04:46:50Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.38/gpl.html",
+      "version": "18.38"
+    },
+    "18.39": {
+      "checked_at": "2026-11-13T04:46:52Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.39/gpl.html",
+      "version": "18.39"
+    },
+    "18.4": {
+      "checked_at": "2026-11-13T04:45:24Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.4/gpl.html",
+      "version": "18.4"
+    },
+    "18.40": {
+      "checked_at": "2026-11-13T04:46:55Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.40/gpl.html",
+      "version": "18.40"
+    },
+    "18.5": {
+      "checked_at": "2026-11-13T04:45:27Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.5/gpl.html",
+      "version": "18.5"
+    },
+    "18.7": {
+      "checked_at": "2026-11-13T04:45:29Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.7/gpl.html",
+      "version": "18.7"
+    },
+    "18.8": {
+      "checked_at": "2026-11-13T04:45:32Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.8/gpl.html",
+      "version": "18.8"
+    },
+    "18.9": {
+      "checked_at": "2026-11-13T04:45:34Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/18.9/gpl.html",
+      "version": "18.9"
+    },
+    "19.0": {
+      "checked_at": "2026-11-13T04:46:57Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/19.0/gpl.html",
+      "version": "19.0"
+    },
+    "19.1": {
+      "checked_at": "2026-11-13T04:47:00Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/19.1/gpl.html",
+      "version": "19.1"
+    },
+    "19.2": {
+      "checked_at": "2026-11-13T04:47:02Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/19.2/gpl.html",
+      "version": "19.2"
+    },
+    "19.3": {
+      "checked_at": "2026-11-13T04:47:05Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/19.3/gpl.html",
+      "version": "19.3"
+    },
+    "19.4": {
+      "checked_at": "2026-11-13T04:47:08Z",
+      "http_status": 403,
+      "reason": "AccessDenied XML (not proof of nonexistence)",
+      "source": "direct-sonos",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/19.4/gpl.html",
+      "version": "19.4"
+    }
+  },
+  "schema_version": 1,
+  "updated": "2026-11-13T04:00:00Z"
+}

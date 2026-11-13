@@ -1,0 +1,99 @@
+name: preserve direct Sonos GPL sources
+
+on:
+  schedule:
+    - cron: "23 8 * * *"
+    - cron: "47 11 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Discover indexes, preserve source archives, or refresh indexes"
+        type: choice
+        options: [discover, archive, indexes]
+        default: discover
+      version:
+        description: "Optional GPL version for archive/indexes; blank archives oldest incomplete"
+        type: string
+        required: false
+      limit:
+        description: "Maximum discovery requests or download attempts per run"
+        type: number
+        default: 48
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sonos-gpl-preservation
+  cancel-in-progress: false
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 270
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GPL_MODE: ${{ inputs.mode }}
+      GPL_VERSION: ${{ inputs.version }}
+      GPL_LIMIT: ${{ inputs.limit }}
+      GPL_SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e . PyYAML
+
+      - name: Discover and preserve only original-source assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mode="${GPL_MODE:-discover}"
+          if [[ -n "${GPL_SCHEDULE:-}" ]]; then
+            if [[ "$GPL_SCHEDULE" == '47 11 * * *' ]]; then mode=archive; else mode=discover; fi
+          fi
+          limit="${GPL_LIMIT:-48}"
+          if [[ "$mode" == discover ]]; then
+            python scripts/archive_gpl_direct.py discover --major-max 120 --minor-max 99 --limit "$limit" --delay 2.5
+          elif [[ "$mode" == indexes ]]; then
+            if [[ -n "${GPL_VERSION:-}" ]]; then
+              python scripts/archive_gpl_direct.py indexes --version "$GPL_VERSION" --delay 2.5
+            else
+              python scripts/archive_gpl_direct.py indexes --all-known --delay 2.5
+            fi
+          elif [[ "$mode" == archive ]]; then
+            args=(--store "$RUNNER_TEMP/gpl-direct" --include-upstream --continue-errors --publish --reserve-bytes 2000000000 --delay 2.5 --limit "$limit")
+            if [[ -n "${GPL_VERSION:-}" ]]; then
+              python scripts/archive_gpl_direct.py indexes --version "$GPL_VERSION"
+              args+=(--version "$GPL_VERSION")
+            else
+              args+=(--next)
+            fi
+            python scripts/archive_gpl_direct.py archive "${args[@]}"
+          else
+            echo "Unsupported mode: $mode" >&2
+            exit 2
+          fi
+          python scripts/archive_gpl_direct.py report
+
+      - name: Validate metadata and all offline regression tests
+        run: |
+          python -m unittest discover -s tests -q
+          sonos-fw verify
+
+      - name: Commit verified indexes and archival receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add data/gpl/live
+          if git diff --cached --quiet; then
+            echo "No new GPL evidence to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Preserve direct Sonos GPL index and source evidence"
+          git pull --rebase origin main
+          git push origin HEAD:main
