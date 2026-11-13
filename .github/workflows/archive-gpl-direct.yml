@@ -4,12 +4,13 @@ on:
   schedule:
     - cron: "23 8,20 * * *"
     - cron: "47 3,9,15,21 * * *"
+    - cron: "17 13 * * *"
   workflow_dispatch:
     inputs:
       mode:
-        description: "Discover indexes, preserve source archives, or refresh indexes"
+        description: "Discover, archive, audit old source compression, or refresh indexes"
         type: choice
-        options: [discover, archive, indexes]
+        options: [discover, archive, audit, indexes]
         default: discover
       version:
         description: "Optional GPL version for archive/indexes; blank archives oldest incomplete"
@@ -57,15 +58,26 @@ jobs:
           set -euo pipefail
           mode="${GPL_MODE:-discover}"
           if [[ -n "${GPL_SCHEDULE:-}" ]]; then
-            if [[ "$GPL_SCHEDULE" == '47 3,9,15,21 * * *' ]]; then mode=archive; else mode=discover; fi
+            if [[ "$GPL_SCHEDULE" == '47 3,9,15,21 * * *' ]]; then
+              mode=archive
+            elif [[ "$GPL_SCHEDULE" == '17 13 * * *' ]]; then
+              mode=audit
+            else
+              mode=discover
+            fi
           fi
           limit="${GPL_LIMIT:-48}"
           if [[ "${GPL_SCHEDULE:-}" == '23 8,20 * * *' ]]; then limit=96; fi
           if [[ "${GPL_SCHEDULE:-}" == '47 3,9,15,21 * * *' ]]; then limit=90; fi
+          if [[ "${GPL_SCHEDULE:-}" == '17 13 * * *' ]]; then limit=25; fi
           if [[ "$mode" == discover ]]; then
             # Independent public-site inventory; indexed links are only leads.
             python scripts/discover_gpl_sitemaps.py --limit 8 --delay 2.5
             python scripts/archive_gpl_direct.py discover --major-max 120 --minor-max 99 --limit "$limit" --delay 2.5
+          elif [[ "$mode" == audit ]]; then
+            args=(--store "$RUNNER_TEMP/gpl-stream-audit" --reserve-bytes 2000000000 --limit "$limit" --delay 2.5)
+            if [[ -n "${GPL_VERSION:-}" ]]; then args+=(--version "$GPL_VERSION"); fi
+            python scripts/audit_gpl_published_streams.py "${args[@]}"
           elif [[ "$mode" == indexes ]]; then
             if [[ -n "${GPL_VERSION:-}" ]]; then
               python scripts/archive_gpl_direct.py indexes --version "$GPL_VERSION" --delay 2.5

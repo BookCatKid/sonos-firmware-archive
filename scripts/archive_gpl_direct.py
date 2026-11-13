@@ -305,11 +305,41 @@ def report(args: argparse.Namespace) -> int:
     upstream = sum(sum(link["origin"] == "upstream" for link in r["links"]) for r in versions.values())
     archived = sum(sum(r.get("state") in {"verified", "published"} for r in ver.values()) for ver in receipts.values())
     published = sum(sum(r.get("published", False) for r in ver.values()) for ver in receipts.values())
+    release_coverage = {}
+    for version, record in sorted(versions.items(), key=lambda pair: tuple(map(int, pair[0].split('.')))):
+        expected = {link["filename"] for link in record["links"]}
+        expected.add("gpl.html")
+        data = receipts.get(version, {})
+        published_expected = {name for name in expected if data.get(name, {}).get("published")}
+        source_names = {link["filename"] for link in record["links"] if link["kind"] == "source"}
+        source_published = source_names & published_expected
+        fully_checked = {name for name in source_published if
+                         data[name].get("stream_integrity", {}).get("state") == "verified" and
+                         data[name].get("stream_integrity", {}).get("expected_sha256") == data[name].get("sha256")}
+        integrity_problems = {name for name in source_published if
+                              data[name].get("stream_integrity", {}).get("state") in
+                              {"content-mismatch", "invalid-source", "invalid-artifact", "http-error", "network-error"}}
+        release_coverage[version] = {
+            "expected_assets": len(expected), "published_assets": len(published_expected),
+            "remaining_assets": len(expected - published_expected),
+            "complete_publication": len(expected) == len(published_expected),
+            "published_source_archives": len(source_published),
+            "full_compressed_stream_verified": len(fully_checked),
+            "stream_integrity_problems": len(integrity_problems),
+        }
+    published_sources = sum(v["published_source_archives"] for v in release_coverage.values())
+    verified_sources = sum(v["full_compressed_stream_verified"] for v in release_coverage.values())
     summary = {"schema_version": 1, "generated": timestamp(), "source": "direct-sonos",
                "verified_index_versions": sorted(versions, key=lambda s: tuple(map(int, s.split('.')))),
                "verified_index_total": len(versions), "sonos_download_links": source,
                "external_upstream_links": upstream, "verified_downloads": archived,
-               "published_downloads": published, "candidate_checks": len(discovery),
+               "published_downloads": published,
+               "fully_published_releases": sum(entry["complete_publication"] for entry in release_coverage.values()),
+               "published_source_archives": published_sources,
+               "full_compressed_stream_verified_source_archives": verified_sources,
+               "published_source_archives_awaiting_full_stream_verification": published_sources - verified_sources,
+               "release_coverage": release_coverage,
+               "candidate_checks": len(discovery),
                "site_sitemaps_checked": len(site["sitemaps"]),
                "site_sitemaps_valid_xml": sum(item.get("state") == "verified-xml" for item in site["sitemaps"].values()),
                "site_linked_gpl_versions": sorted(site["version_evidence"], key=lambda s: tuple(map(int, s.split(".")))),

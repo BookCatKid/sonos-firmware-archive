@@ -1557,6 +1557,15 @@
         "sha256": "4dc35c8da98a5d5cfa3eb76fcdd7765c86dafc48d89e7e93c184218cefa7b90f",
         "source_url": "https://www.sonos.com/documents/gpl/7.0/bridge-utils.tgz",
         "state": "published",
+        "stream_integrity": {
+          "checked_at": "2026-11-13T06:15:22+00:00",
+          "expected_sha256": "4dc35c8da98a5d5cfa3eb76fcdd7765c86dafc48d89e7e93c184218cefa7b90f",
+          "members": 42,
+          "method": "tar-and-compression-integrity",
+          "observed_bytes": 63099,
+          "observed_sha256": "4dc35c8da98a5d5cfa3eb76fcdd7765c86dafc48d89e7e93c184218cefa7b90f",
+          "state": "verified"
+        },
         "verification": "tar-integrity"
       },
       "busybox1.tgz": {
