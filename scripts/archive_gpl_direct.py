@@ -41,10 +41,11 @@ def live_catalog(output: Path) -> dict:
 
 def save_index(version: str, response: HttpResult, output: Path) -> dict:
     record = capture_response(version, response, output)
-    catalog = live_catalog(output)
-    catalog["releases"][version] = record
-    catalog["updated"] = timestamp()
-    atomic_json(output / "catalog.json", catalog)
+    if record["state"] == "verified":
+        catalog = live_catalog(output)
+        catalog["releases"][version] = record
+        catalog["updated"] = timestamp()
+        atomic_json(output / "catalog.json", catalog)
     return record
 
 

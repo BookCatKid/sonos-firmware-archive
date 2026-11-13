@@ -213,7 +213,7 @@ def offline_candidates(root: Path) -> dict[str, set[str]]:
     """Find versions actually mentioned in archived metadata or documentation."""
     found: dict[str, set[str]] = {}
     for path in sorted((*root.glob("docs/**/*.md"), *root.glob("data/**/*.json"), *root.glob("data/**/*.html"))):
-        if path.stat().st_size > 20_000_000:
+        if "data/gpl/live/" in path.relative_to(root).as_posix() or path.stat().st_size > 20_000_000:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for match in VERSION_IN_URL.finditer(text):
