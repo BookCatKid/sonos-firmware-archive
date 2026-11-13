@@ -234,13 +234,27 @@ def candidates(known: set[str], *, major_max: int = 120, minor_max: int = 99, ev
         for n in (minor - 1, minor + 1):
             if 0 <= n <= minor_max:
                 adjacent.add(f"{major}.{n}")
+    known_majors = {version_key(version)[0] for version in known}
     records = []
     for major in range(1, major_max + 1):
         for minor in range(minor_max + 1):
             version = f"{major}.{minor}"
             if version in known:
                 continue
-            priority = 0 if version in evidence else 1 if version in adjacent else 2
+            if version in evidence:
+                priority = 0
+            elif version in adjacent:
+                priority = 1
+            elif major in known_majors and minor <= 40:
+                priority = 2
+            elif major <= 30 and minor <= 40:
+                priority = 3
+            elif major in known_majors:
+                priority = 4
+            elif major <= 30:
+                priority = 5
+            else:
+                priority = 6
             records.append({"version": version, "priority": priority, "evidence": sorted(evidence.get(version, ()))})
     return sorted(records, key=lambda item: (item["priority"], version_key(item["version"])))
 

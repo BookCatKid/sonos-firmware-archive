@@ -2,7 +2,7 @@ name: preserve direct Sonos GPL sources
 
 on:
   schedule:
-    - cron: "23 8 * * *"
+    - cron: "23 8,20 * * *"
     - cron: "47 11 * * *"
   workflow_dispatch:
     inputs:
@@ -44,6 +44,11 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      - name: Start from latest published GPL catalog
+        shell: bash
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
       - run: python -m pip install -e . PyYAML
 
       - name: Discover and preserve only original-source assets
@@ -55,6 +60,7 @@ jobs:
             if [[ "$GPL_SCHEDULE" == '47 11 * * *' ]]; then mode=archive; else mode=discover; fi
           fi
           limit="${GPL_LIMIT:-48}"
+          if [[ "${GPL_SCHEDULE:-}" == '23 8,20 * * *' ]]; then limit=96; fi
           if [[ "$mode" == discover ]]; then
             python scripts/archive_gpl_direct.py discover --major-max 120 --minor-max 99 --limit "$limit" --delay 2.5
           elif [[ "$mode" == indexes ]]; then

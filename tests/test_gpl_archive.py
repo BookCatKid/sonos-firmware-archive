@@ -263,3 +263,34 @@ class GPLDiscoveryStateTests(unittest.TestCase):
             folder.mkdir(parents=True)
             (folder / "discovery.json").write_text('{"url":"https://www.sonos.com/documents/gpl/15.5/gpl.html"}')
             self.assertNotIn("15.5", offline_candidates(Path(directory)))
+
+
+class GPLReleaseReceiptRecoveryTests(unittest.TestCase):
+    def test_recover_only_verified_index_links_and_preserve_prior_records(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("reconcile_gpl_release_assets", ROOT / "scripts/reconcile_gpl_release_assets.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        link = {"filename":"source.tar.xz", "url":"https://www.sonos.com/documents/gpl/18.6/source.tar.xz",
+                "fetch_url":"https://www.sonos.com/documents/gpl/18.6/source.tar.xz", "kind":"source", "origin":"sonos"}
+        catalog = {"releases":{"18.6":{"state":"verified","links":[link],
+                                               "url":"https://www.sonos.com/documents/gpl/18.6/gpl.html",
+                                               "bytes":100,"sha256":"0"*64}}}
+        original = {"state":"published", "sha256":"a"*64,"bytes":5,"filename":"source.tar.xz","published":True}
+        receipts = {"artifacts":{"18.6":{"source.tar.xz":original.copy()}}}
+        assets = [{"name":"source.tar.xz","size":5,"digest":"sha256:"+"a"*64,"browser_download_url":"https://github.com/asset"},
+                  {"name":"fake.tar.xz","size":5,"digest":"sha256:"+"b"*64,"browser_download_url":"https://github.com/fake"}]
+        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
+        self.assertEqual((imported,conflicts),(0,0))
+        self.assertEqual(receipts["artifacts"]["18.6"],{"source.tar.xz":original})
+        del receipts["artifacts"]["18.6"]["source.tar.xz"]
+        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
+        self.assertEqual((imported,conflicts),(1,0))
+        recovered = receipts["artifacts"]["18.6"]["source.tar.xz"]
+        self.assertTrue(recovered["published"])
+        self.assertEqual(recovered["verification"],"published-binary-digest-confirmed")
+        self.assertFalse(recovered["source_tar_integrity_reevaluated"])
+        self.assertNotIn("fake.tar.xz",receipts["artifacts"]["18.6"])
+        assets[0]["digest"] = "sha256:" + "c"*64
+        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
+        self.assertEqual((imported,conflicts),(0,1))
