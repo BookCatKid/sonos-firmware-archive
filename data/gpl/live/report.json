@@ -10,16 +10,16 @@
   "completeness_proven": false,
   "external_upstream_links": 297,
   "full_compressed_stream_verified_source_archives": 9,
-  "fully_published_releases": 14,
-  "generated": "2026-11-13T06:32:18+00:00",
+  "fully_published_releases": 17,
+  "generated": "2026-11-13T06:44:27+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
     "Source archive validity does not prove exact correspondence with every distributed firmware binary."
   ],
-  "published_downloads": 463,
-  "published_source_archives": 432,
-  "published_source_archives_awaiting_full_stream_verification": 423,
+  "published_downloads": 556,
+  "published_source_archives": 519,
+  "published_source_archives_awaiting_full_stream_verification": 510,
   "release_coverage": {
     "10.0": {
       "complete_publication": false,
@@ -337,39 +337,39 @@
       "stream_integrity_problems": 0
     },
     "9.0": {
-      "complete_publication": false,
+      "complete_publication": true,
       "expected_assets": 35,
       "full_compressed_stream_verified": 0,
-      "published_assets": 24,
-      "published_source_archives": 22,
-      "remaining_assets": 11,
+      "published_assets": 35,
+      "published_source_archives": 33,
+      "remaining_assets": 0,
       "stream_integrity_problems": 0
     },
     "9.1": {
-      "complete_publication": false,
+      "complete_publication": true,
       "expected_assets": 35,
       "full_compressed_stream_verified": 0,
-      "published_assets": 0,
-      "published_source_archives": 0,
-      "remaining_assets": 35,
+      "published_assets": 35,
+      "published_source_archives": 33,
+      "remaining_assets": 0,
       "stream_integrity_problems": 0
     },
     "9.2": {
-      "complete_publication": false,
+      "complete_publication": true,
       "expected_assets": 33,
       "full_compressed_stream_verified": 0,
-      "published_assets": 0,
-      "published_source_archives": 0,
-      "remaining_assets": 33,
+      "published_assets": 33,
+      "published_source_archives": 31,
+      "remaining_assets": 0,
       "stream_integrity_problems": 0
     },
     "9.3": {
       "complete_publication": false,
       "expected_assets": 40,
       "full_compressed_stream_verified": 0,
-      "published_assets": 0,
-      "published_source_archives": 0,
-      "remaining_assets": 40,
+      "published_assets": 14,
+      "published_source_archives": 12,
+      "remaining_assets": 26,
       "stream_integrity_problems": 0
     }
   },
@@ -380,7 +380,7 @@
   "site_sitemaps_valid_xml": 117,
   "sonos_download_links": 1112,
   "source": "direct-sonos",
-  "verified_downloads": 463,
+  "verified_downloads": 556,
   "verified_index_total": 39,
   "verified_index_versions": [
     "6.4",

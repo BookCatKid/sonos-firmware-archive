@@ -10,13 +10,13 @@
   "totals": {
     "cdx_sha1_mismatches_compared": 16,
     "cdx_sha1_mismatches_with_identical_direct_bytes": 16,
-    "compared": 24,
-    "different": 2,
+    "compared": 25,
+    "different": 3,
     "identical": 22,
     "legacy_records": 167,
-    "pending": 143
+    "pending": 142
   },
-  "updated": "2026-11-13T06:31:21+00:00",
+  "updated": "2026-11-13T06:44:27+00:00",
   "versions": {
     "10.2": {
       "counts": {
@@ -2118,24 +2118,24 @@
       "counts": {
         "cdx_sha1_mismatches_compared": 0,
         "cdx_sha1_mismatches_with_identical_direct_bytes": 0,
-        "compared": 0,
-        "different": 0,
+        "compared": 1,
+        "different": 1,
         "identical": 0,
         "legacy_records": 1,
-        "pending": 1
+        "pending": 0
       },
       "entries": {
         "gpl.html": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 3218,
+          "direct_release_asset": "direct-437f6af8b606-gpl.html",
+          "direct_sha256": "437f6af8b6066e59697c079a31062131c0116c2853e03c5560b61b5a58e0c7ce",
           "filename": "gpl.html",
           "legacy_bytes": 3187,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "E8E25376E2E71CBF90A42005FF7200EED7333598",
           "legacy_local_sha1": "E8E25376E2E71CBF90A42005FF7200EED7333598",
           "legacy_sha256": "0dd2d174f4072f9bfd7b8c95152eca95d4db343e4f22ce66931cd40868265e5d",
-          "state": "awaiting-direct-published-source"
+          "state": "historical-content-differs"
         }
       }
     }
