@@ -33,7 +33,7 @@ No Wayback requests are made by the new archiver. Only the legacy catalog loader
 
 The `archive --next --limit N` mode advances through **multiple** incomplete releases in version order until the bounded attempt limit is reached; it does not stop after the first partially archived version. A bounded limit is mandatory for `--next`. Failed sources remain explicitly recorded and may be retried with `--retry-errors`.
 
-A GitHub Actions workflow performs twice-daily bounded discovery and daily staged archival from a runner with adequate scratch disk space. It uses GitHub Releases tagged `gpl-<version>`, verifies server-side asset SHA-256 after upload, and commits receipts only after verification. If an older Wayback asset has the same name but different SHA-256, the direct-source copy is saved under a **distinct immutable asset name**, not overwritten; the original URL and filename remain in metadata. Sources linked to `ftp.gnu.org` and `www.uclibc.org` are handled separately from Sonos-hosted files.
+A GitHub Actions workflow performs twice-daily bounded discovery and four daily staged archival batches (up to 90 attempts each) from a runner with adequate scratch disk space. It uses GitHub Releases tagged `gpl-<version>`, verifies server-side asset SHA-256 after upload, and commits receipts only after verification. If an older Wayback asset has the same name but different SHA-256, the direct-source copy is saved under a **distinct immutable asset name**, not overwritten; the original URL and filename remain in metadata. Sources linked to `ftp.gnu.org` and `www.uclibc.org` are handled separately from Sonos-hosted files.
 
 ## Observed completeness and outstanding questions
 

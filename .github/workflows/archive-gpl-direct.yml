@@ -3,7 +3,7 @@ name: preserve direct Sonos GPL sources
 on:
   schedule:
     - cron: "23 8,20 * * *"
-    - cron: "47 11 * * *"
+    - cron: "47 3,9,15,21 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -57,10 +57,11 @@ jobs:
           set -euo pipefail
           mode="${GPL_MODE:-discover}"
           if [[ -n "${GPL_SCHEDULE:-}" ]]; then
-            if [[ "$GPL_SCHEDULE" == '47 11 * * *' ]]; then mode=archive; else mode=discover; fi
+            if [[ "$GPL_SCHEDULE" == '47 3,9,15,21 * * *' ]]; then mode=archive; else mode=discover; fi
           fi
           limit="${GPL_LIMIT:-48}"
           if [[ "${GPL_SCHEDULE:-}" == '23 8,20 * * *' ]]; then limit=96; fi
+          if [[ "${GPL_SCHEDULE:-}" == '47 3,9,15,21 * * *' ]]; then limit=90; fi
           if [[ "$mode" == discover ]]; then
             # Independent public-site inventory; indexed links are only leads.
             python scripts/discover_gpl_sitemaps.py --limit 8 --delay 2.5

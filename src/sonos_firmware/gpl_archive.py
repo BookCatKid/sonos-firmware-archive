@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import bz2
+import gzip
 import hashlib
+import lzma
 import html.parser
 import json
 import os
@@ -285,8 +288,27 @@ def verify_artifact(path: Path, kind: str) -> tuple[bool, str, int]:
                 if member.name.startswith("/") or ".." in Path(member.name).parts:
                     return False, "unsafe-member-path", count
                 count += 1
-        return count > 0, "tar-integrity" if count else "empty-tar", count
-    except (tarfile.TarError, OSError, EOFError) as error:
+        if not count:
+            return False, "empty-tar", 0
+
+        # Tar iteration stops at its end-of-archive marker. That can occur
+        # *before* the compressor's CRC/index/footer. Verify the entire
+        # compressed stream separately or a truncated .tgz/.txz can pass.
+        with path.open("rb") as file:
+            magic = file.read(6)
+        if magic.startswith(b"\xfd7zXZ\x00"):
+            opener = lzma.open
+        elif magic.startswith(b"\x1f\x8b"):
+            opener = gzip.open
+        elif magic.startswith(b"BZh"):
+            opener = bz2.open
+        else:
+            return False, "unknown-compression", 0
+        with opener(path, "rb") as stream:
+            for _ in iter(lambda: stream.read(1024 * 1024), b""):
+                pass
+        return True, "tar-and-compression-integrity", count
+    except (tarfile.TarError, OSError, EOFError, ValueError, lzma.LZMAError) as error:
         return False, f"invalid-archive:{type(error).__name__}", 0
 
 

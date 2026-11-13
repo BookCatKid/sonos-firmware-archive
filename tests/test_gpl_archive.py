@@ -108,6 +108,22 @@ class GPLArchiveTests(unittest.TestCase):
             tar.addfile(info, io.BytesIO(raw))
         return buf.getvalue()
 
+    def test_rejects_truncated_compressed_tar_footer_after_valid_members(self):
+        """A listed tar member does not prove the compressed stream's checksum."""
+        for compression, suffix in (("xz", "xz"), ("gz", "gz"), ("bz2", "bz2")):
+            with self.subTest(compression=compression), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / f"source.tar.{suffix}"
+                with tarfile.open(path, mode=f"w:{compression}") as archive:
+                    raw = b"source code" * 200
+                    member = tarfile.TarInfo("src/main.c")
+                    member.size = len(raw)
+                    archive.addfile(member, io.BytesIO(raw))
+                intact = path.read_bytes()
+                self.assertTrue(verify_artifact(path, "source")[0])
+                path.write_bytes(intact[:-4])
+                self.assertFalse(verify_artifact(path, "source")[0],
+                                 "truncated compressed stream must fail even when tar headers remain readable")
+
     def test_partial_resume_sha_dedup_and_integrity(self):
         data = self.tar_bytes()
         url = "https://www.sonos.com/documents/gpl/18.6/source+git-r0-patched.tar.xz"
