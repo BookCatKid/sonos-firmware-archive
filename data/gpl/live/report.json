@@ -1,11 +1,11 @@
 {
-  "candidate_checks": 254,
+  "candidate_checks": 350,
   "candidate_states": {
-    "access-denied": 254
+    "access-denied": 350
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
-  "generated": "2026-11-13T05:16:06+00:00",
+  "generated": "2026-11-13T05:22:16+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
