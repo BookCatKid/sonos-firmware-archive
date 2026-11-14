@@ -10,6 +10,7 @@ from pathlib import Path
 from ..discovery import write_json
 from ..inventory_archive import inventory_preserved
 from ..firmware_inventory import InventoryLimits
+from ..binary_discovery import discover_preserved
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -108,6 +109,13 @@ def main():
     extract.add_argument('--max-packages', type=int, default=24)
     extract.add_argument('--inventory-limit', type=int, default=4)
     extract.add_argument('--inventory-limits', type=json.loads, default={})
+    binaries = sub.add_parser('scan-preserved-binaries')
+    binaries.add_argument('--work-dir', type=Path, required=True)
+    binaries.add_argument('--repository', required=True)
+    binaries.add_argument('--limit', type=int, default=4)
+    binaries.add_argument('--max-bytes', type=int, default=768*1024*1024)
+    binaries.add_argument('--max-source-bytes', type=int, default=1024*1024*1024)
+    binaries.add_argument('--max-entry-bytes', type=int, default=300*1024*1024)
     args = parser.parse_args()
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         parser.error('acquisition tasks run in the CI worker; use the platform plan locally')
@@ -119,6 +127,12 @@ def main():
         if args.max_packages <= 0 or args.inventory_limit <= 0:
             parser.error('extraction and inventory limits must be positive')
         extract_firmware(args.root, args.work_dir, args.repository, args.max_packages, args.inventory_limit, args.inventory_limits)
+    elif args.task == 'scan-preserved-binaries':
+        report = discover_preserved(args.root, args.work_dir, args.repository, limit=args.limit,
+                                    max_bytes=args.max_bytes, max_source_bytes=args.max_source_bytes,
+                                    max_entry_bytes=args.max_entry_bytes)
+        if report['status'] == 'partial':
+            raise RuntimeError(f"binary discovery has {report['pending_total']} pending captures; verified evidence retained")
 
 
 if __name__ == '__main__':

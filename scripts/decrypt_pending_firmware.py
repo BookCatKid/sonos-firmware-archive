@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import sys
 from pathlib import Path
 
@@ -30,6 +29,7 @@ from sonos_firmware.extract import extract_components, extract_available_compone
 from sonos_firmware.storage import atomic_json, file_sha256 as _sha256  # noqa: E402
 from sonos_firmware.retry import checkpoint, select  # noqa: E402
 from sonos_firmware.keyring import recipient_key_path  # noqa: E402
+from sonos_firmware.releases import download_verified
 
 
 def section_keys(args, package, model, recipient):
@@ -224,10 +224,7 @@ def extract_one(entry, args, receipt_output):
     if source.exists() and not (source.stat().st_size == package["bytes"] and _sha256(source) == package["sha256"]):
         source.unlink()
     if not source.exists():
-        subprocess.run(
-            ["gh", "release", "download", package["release_tag"], "--pattern",
-             package.get("release_asset", package["filename"]), "--output", str(source), "--repo", args.repo],
-            cwd=ROOT, check=True)
+        download_verified({**package, 'release_asset': package.get('release_asset', package['filename'])}, source, args.repo)
     if source.stat().st_size != package["bytes"] or _sha256(source) != package["sha256"]:
         raise ValueError(f"source package hash mismatch: {package['id']}")
     output = args.raw_directory / package["id"]

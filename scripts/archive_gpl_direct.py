@@ -385,6 +385,11 @@ def report(args: argparse.Namespace) -> int:
     discovery = load_json(args.output / "discovery.json", {"candidates": {}})["candidates"]
     site = load_json(args.output / "site-evidence.json", {"sitemaps": {}, "version_evidence": {}, "related_pages": []})
     binary = load_json(args.output / "binary-evidence.json", {"scans": {}, "version_evidence": {}})
+    scanned_inputs = dict(binary.get('scans', {}))
+    for identity, observation in binary.get('repositories', {}).get(binary.get('repository'), {}).items():
+        if observation.get('status') in {'scanned', 'partial'}:
+            scanned_inputs[identity] = {'complete': observation['status'] == 'scanned',
+                                        'bytes_scanned': observation.get('bytes_scanned', 0)}
     versions = {v: r for v, r in catalog["releases"].items() if r["state"] == "verified"}
     source = sum(sum(link["origin"] == "sonos" for link in all_links(r)) for r in versions.values())
     upstream = sum(sum(link["origin"] == "upstream" for link in all_links(r)) for r in versions.values())
@@ -434,9 +439,11 @@ def report(args: argparse.Namespace) -> int:
                "site_sitemaps_valid_xml": sum(item.get("state") == "verified-xml" for item in site["sitemaps"].values()),
                "site_linked_gpl_versions": sorted(site["version_evidence"], key=lambda s: tuple(map(int, s.split(".")))),
                "site_related_pages": len(site.get("related_pages", [])),
-               "binary_scanned_inputs": len(binary.get("scans", {})),
-               "binary_executable_text_bytes_scanned": sum(scan.get("bytes_scanned", 0) for scan in binary.get("scans", {}).values()),
-               "binary_incomplete_scans": sum(not scan.get("complete", False) for scan in binary.get("scans", {}).values()),
+               "binary_scanned_inputs": len(scanned_inputs),
+               "binary_executable_text_bytes_scanned": sum(scan.get("bytes_scanned", 0) for scan in scanned_inputs.values()),
+               "binary_incomplete_scans": sum(not scan.get("complete", False) for scan in scanned_inputs.values()),
+               "binary_pending_inputs": binary.get('pending_total', 0),
+               "binary_scan_errors": len(binary.get('errors', [])),
                "binary_linked_gpl_versions": sorted(binary.get("version_evidence", {}), key=lambda s: tuple(map(int, s.split(".")))),
                "candidate_states": {s: sum(r["state"] == s for r in discovery.values()) for s in sorted({r["state"] for r in discovery.values()})},
                "completeness_proven": False,

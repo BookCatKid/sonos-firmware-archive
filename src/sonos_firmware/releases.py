@@ -6,11 +6,13 @@ import hashlib
 import json
 import mimetypes
 import subprocess
+import tempfile
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from .storage import file_sha256
 
 USER_AGENT = "sonos-firmware-archive/1"
 
@@ -182,6 +184,47 @@ def publication_receipt(repository, tag, name, capture, remote):
     return {'status': 'verified', 'repository': repository, 'release_tag': tag, 'release_asset': name,
             'release_url': remote.get('browser_download_url') or remote['url'],
             'sha256': capture['sha256'], 'bytes': capture['bytes']}
+
+
+def download_verified(source, destination, repository):
+    """Fetch one literal release asset and verify the recorded capture identity."""
+    name = source['release_asset']
+    if not isinstance(name, str) or not name or Path(name).name != name or name in {'.', '..'}:
+        raise ValueError('release asset name must be a basename')
+    size, digest = source['bytes'], source['sha256']
+    if (not isinstance(size, int) or isinstance(size, bool) or size <= 0 or not isinstance(digest, str) or
+        len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest)):
+        raise ValueError('release asset needs a positive size and SHA-256 receipt')
+    if destination.exists():
+        if destination.stat().st_size == size and file_sha256(destination) == digest:
+            return
+        raise FileExistsError('download destination already contains another capture')
+    # gh matches --pattern with Go filepath.Match; escape glob metacharacters.
+    # https://github.com/cli/cli/blob/trunk/pkg/cmd/release/download/download.go
+    pattern = ''.join('\\' + char if char in '\\*?[]' else char for char in name)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=destination.parent, prefix='release-download-') as temporary:
+        payload = Path(temporary)/'payload'
+        command = ['gh', 'release', 'download', '--repo', repository, '--pattern='+pattern,
+                   '--output', str(payload), '--', source['release_tag']]
+        deadline = time.monotonic() + 300
+        with subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as process:
+            try:
+                while process.poll() is None:
+                    if payload.exists() and payload.stat().st_size > size:
+                        raise ValueError('release asset exceeds its preservation receipt size')
+                    if time.monotonic() >= deadline:
+                        raise TimeoutError('release asset download timed out')
+                    time.sleep(.1)
+                if process.returncode:
+                    raise subprocess.CalledProcessError(process.returncode, command)
+            finally:
+                if process.poll() is None:
+                    process.kill()
+                    process.wait()
+        if payload.stat().st_size != size or file_sha256(payload) != digest:
+            raise ValueError('release asset does not match its preservation receipt')
+        destination.hardlink_to(payload)
 
 
 def verified_remote_digest(asset: dict) -> str:

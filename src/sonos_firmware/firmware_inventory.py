@@ -85,10 +85,10 @@ class _TarInput:
         return self.stream.tell()
 
 
-def unpack_tar(payload: bytes, directory: Path, *, budget=None) -> list[dict]:
+def unpack_tar(payload: bytes, directory: Path, *, budget=None, limits=None) -> list[dict]:
     """Write regular members only; retain links and special entries as metadata."""
     inventory = []
-    budget = budget or _Budget(InventoryLimits())
+    budget = budget or _Budget(limits or InventoryLimits())
     seen = set()
     # Bound the entire decompressed stream, including PAX/GNU metadata that
     # tarfile parses before yielding a member to our per-file budget checks.

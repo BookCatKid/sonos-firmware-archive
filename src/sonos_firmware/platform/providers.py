@@ -89,10 +89,16 @@ def gpl_indexes(c: Context):
 
 
 def gpl(c: Context):
-    return [c.script('discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5,
-                     report=str(c.root / 'data/gpl/live/site-evidence.json')),
+    return [c.task('scan-preserved-binaries', '--work-dir', c.work/'binary-scan', '--repository', c.repository,
+                   '--limit', c.options.get('binary_limit', 4), '--max-bytes', c.options.get('binary_scan_bytes', 768*1024*1024),
+                   '--max-source-bytes', c.options.get('binary_source_bytes', 1024*1024*1024),
+                   '--max-entry-bytes', c.options.get('binary_entry_bytes', 300*1024*1024),
+                   report=str(c.root/'data/gpl/live/binary-evidence.json')),
+            c.script('discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5,
+                     report=str(c.root / 'data/gpl/live/site-evidence.json'), after_failure=True),
             c.script('archive_gpl_direct.py', 'discover', '--limit', c.options.get('limit', 96), '--delay', 2.5,
-                     report=str(c.root / 'data/gpl/live/discovery.json')),
+                     '--major-max', c.options.get('major_max', 120), '--minor-max', c.options.get('minor_max', 99),
+                     report=str(c.root / 'data/gpl/live/discovery.json'), after_failure=True),
             c.script('archive_gpl_direct.py', 'report', after_failure=True)]
 
 

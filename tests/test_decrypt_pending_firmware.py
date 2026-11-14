@@ -117,7 +117,7 @@ class DecryptPendingTests(unittest.TestCase):
         (self.upd_manifests / (PACKAGE['id'] + '.json')).write_text(json.dumps({'sections': [
             {'index': 7, 'section_type': 4, 'encrypted': True, 'recipient_id': RECIPIENT}]}))
         with mock.patch.object(MODULE, "extract_components") as extract, \
-             mock.patch.object(MODULE.subprocess, 'run') as download:
+             mock.patch.object(MODULE, 'download_verified') as download:
             self.assertEqual(self._run(), 0)
         extract.assert_not_called()
         download.assert_not_called()
@@ -155,7 +155,7 @@ class DecryptPendingTests(unittest.TestCase):
             # corrupt staged file is discarded, then "re-downloaded" still bad
             (self.staging / PACKAGE["filename"]).write_bytes(b"bogus")
 
-        with mock.patch.object(MODULE.subprocess, "run", side_effect=fake_download) as run:
+        with mock.patch.object(MODULE, "download_verified", side_effect=fake_download) as run:
             self.assertEqual(self._run(), 1)
         run.assert_called()
 
@@ -299,12 +299,11 @@ class PlaintextExtractionTests(unittest.TestCase):
         self._catalog(package)
         self._manifest(package['id'], [{'index': 0, 'section_type': 99, 'encrypted': False},
                                        {'index': 1, 'section_type': 4, 'encrypted': True}])
-        def download(command, **kwargs):
-            self.assertEqual(command[command.index('--pattern') + 1], package['release_asset'])
-            output = Path(command[command.index('--output') + 1])
+        def download(source, output, repository):
+            self.assertEqual(source['release_asset'], package['release_asset'])
             self.assertEqual(output.name, package['id'] + '.upd')
             output.write_bytes(body)
-        with mock.patch.object(MODULE.subprocess, 'run', side_effect=download):
+        with mock.patch.object(MODULE, 'download_verified', side_effect=download):
             self.assertEqual(self._run(), 0)
         receipt = json.loads((self.receipts / (package['id'] + '.json')).read_text())
         self.assertEqual(len(receipt['components']), 1)

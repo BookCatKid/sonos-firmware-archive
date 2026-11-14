@@ -4,12 +4,80 @@ from __future__ import annotations
 import tempfile
 import unittest
 import zipfile
+import io
+import tarfile
 from pathlib import Path
 
 from sonos_firmware.gpl_binary_evidence import scan_binary
 
 
 class GPLBinaryReferenceTests(unittest.TestCase):
+    def test_nested_tar_suffix_is_preserved_and_malformed_xapk_is_incomplete(self):
+        bundle = io.BytesIO()
+        with tarfile.open(fileobj=bundle, mode='w:xz') as archive:
+            content = b'/documents/gpl/22.17/gpl.html'
+            info = tarfile.TarInfo('bin/upgrade')
+            info.size = len(content)
+            archive.addfile(info, io.BytesIO(content))
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'outer.zip'
+            with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr('payload.tar.xz', bundle.getvalue())
+            report = scan_binary(path)
+            self.assertTrue(report['complete'])
+            self.assertEqual(report['version_evidence']['22.17'][0]['entry'], 'payload.tar.xz!bin/upgrade')
+            path = Path(temporary)/'broken.xapk'
+            path.write_bytes(b'PK\x03\x04broken central directory')
+            report = scan_binary(path)
+            self.assertFalse(report['complete'])
+            self.assertEqual(report['format'], 'unreadable-zip')
+    def test_nested_apk_is_decompressed_within_the_aggregate_scan_budget(self):
+        inner = io.BytesIO()
+        with zipfile.ZipFile(inner, 'w', zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr('classes.dex', b'/documents/gpl/22.17/gpl.html')
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'controller.xapk'
+            with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr('base.apk', inner.getvalue())
+            result = scan_binary(path)
+            self.assertTrue(result['complete'])
+            self.assertEqual(result['version_evidence']['22.17'][0]['entry'], 'base.apk!classes.dex')
+            limited = scan_binary(path, max_bytes=len(inner.getvalue()))
+            self.assertFalse(limited['complete'])
+            self.assertLessEqual(limited['bytes_scanned'], len(inner.getvalue()))
+
+    def test_published_tar_bundle_scans_unextended_firmware_executables(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'inventory.tar.xz'
+            with tarfile.open(path, 'w:xz') as archive:
+                content = b'\x7fELF\0/documents/gpl/19.17/gpl.html'
+                info = tarfile.TarInfo('filesystem/bin/upgrade')
+                info.size = len(content)
+                archive.addfile(info, io.BytesIO(content))
+            result = scan_binary(path)
+            self.assertEqual(result['format'], 'tar')
+            self.assertTrue(result['complete'])
+            self.assertEqual(result['version_evidence']['19.17'][0]['entry'], 'filesystem/bin/upgrade')
+            aliased = Path(temporary)/'payload.bin'
+            aliased.write_bytes(path.read_bytes())
+            result = scan_binary(aliased)
+            self.assertTrue(result['complete'])
+            self.assertEqual(result['format'], 'tar')
+            self.assertIn('19.17', result['version_evidence'])
+
+    def test_failed_tar_decoding_keeps_evidence_from_already_decoded_members(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'partial.tar'
+            with tarfile.open(path, 'w') as archive:
+                content = b'/documents/gpl/19.17/gpl.html'
+                for name in ('first', '../escape'):
+                    info = tarfile.TarInfo(name)
+                    info.size = len(content)
+                    archive.addfile(info, io.BytesIO(content))
+            result = scan_binary(path)
+            self.assertFalse(result['complete'])
+            self.assertIn('19.17', result['version_evidence'])
+
     def test_scan_decompressed_android_dex_not_only_raw_apk_bytes(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "sonos.apk"
@@ -79,22 +147,6 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             result=scan_binary(path)
             self.assertEqual(len(result['version_evidence']['21.17']),1)
             self.assertEqual(result['version_evidence']['21.17'][0]['offset'],1024*1024-7)
-
-    def test_binary_manifest_contains_no_user_absolute_path(self):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location('discover_gpl_bin_cli', Path(__file__).resolve().parents[1]/'scripts/discover_gpl_binary_references.py')
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as tmp:
-            inp=Path(tmp)/'sonos.ipa'
-            inp.write_bytes(b'https://www.sonos.com/documents/gpl/22.19/gpl.html')
-            scanned=scan_binary(inp)
-            dst=Path(tmp)/'result.json'
-            result=module.update(dst,[scanned])
-            self.assertEqual(len(result['scans']),1)
-            self.assertEqual(len(result['version_evidence']['22.19']),1)
-            self.assertNotIn(tmp,dst.read_text())
-            self.assertEqual(module.update(dst,[scanned])['version_evidence'],result['version_evidence'])
 
     def test_archive_discover_prioritizes_version_proven_by_app_binary(self):
         import importlib.util

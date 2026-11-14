@@ -3,13 +3,12 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 import tempfile
 from dataclasses import asdict
 
 from . import firmware_inventory, extract, cramfs, upd, catalog
 from .keyring import recipient_key_path
-from .releases import publish_verified, verified_asset, publication_receipt
+from .releases import publish_verified, verified_asset, publication_receipt, download_verified
 from .retry import checkpoint, select
 from .storage import atomic_json, file_sha256
 
@@ -136,9 +135,7 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=4, acqui
                 if acquire:
                     acquire(package, source, repository)
                 else:
-                    subprocess.run(['gh', 'release', 'download', package['release_tag'], '--repo', repository,
-                        '--pattern', package['release_asset'], '--output', str(source)], check=True, timeout=300,
-                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    download_verified(package, source, repository)
                 if source.stat().st_size != package['bytes'] or file_sha256(source) != package['sha256']:
                     raise ValueError('inventory source does not match its preservation receipt')
                 directory = staging / 'files'

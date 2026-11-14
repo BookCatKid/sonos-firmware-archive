@@ -20,6 +20,8 @@ The workflow creates its matrix from these declarations. A new target does
 not require a workflow, release URL list, or local archive. Source-specific
 parsing and validation remain in their adapters; scheduling, temporary storage,
 reporting, and metadata commits use the shared runner.
+Publication receipts in declared metadata paths feed binary inspection
+automatically; a new adapter needs no separate inspection URL list or workflow.
 
 For installer sources, `sonos_firmware.app_archive.AppSource` supplies a shared
 acquisition loop. Its `acquire(candidate, destination)` callback streams one
@@ -75,6 +77,23 @@ Older unresolved capture receipts remain visible and are retried independently;
 they never become preserved solely because a newer capture succeeded. Metadata
 checkpoints use the same atomic JSON writer across discovery, app acquisition,
 GPL acquisition, and orchestration.
+
+GPL discovery also scans this archive's published app, web and firmware assets
+automatically. It verifies their recorded size and hash in temporary CI storage,
+then inspects decompressed program/text resources and extracted firmware bundles
+without executing code. `binary_limit`, `binary_scan_bytes` and
+`binary_source_bytes` bound each run, while `binary_entry_bytes` limits a single
+archive member. Source failures and incomplete decoding
+retry independently; changed decoder code or limits make prior captures eligible
+again. Previously found references survive later partial scans. Negative scans
+retain small hash/status checkpoints rather than full inventories.
+
+Binary evidence feeds the existing GPL index queue under the same metadata lock.
+Only a separately validated Sonos index establishes an available GPL release.
+Sitemap and index discovery continue when binary inspection is incomplete, so
+an unavailable archived asset cannot block independent discovery. The grammar
+bounds remain configurable as `major_max` and `minor_max`. No downloaded files or
+precomputed hashes are required to add or plan a target.
 
 `google-play` is manual and requires both configured credentials and explicit
 terms acceptance. Missing capabilities produce a blocked report. Apple metadata

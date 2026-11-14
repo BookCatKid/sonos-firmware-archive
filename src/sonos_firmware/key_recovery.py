@@ -16,6 +16,7 @@ from .mdp import write_private_key_exclusive
 from .storage import file_sha256, atomic_json
 from .retry import checkpoint, select
 from .upd import parse_file
+from .releases import download_verified
 
 MAX_SOURCE_BYTES = 128 * 1024 * 1024
 MAX_UPDATER_BYTES = 8 * 1024 * 1024
@@ -102,9 +103,7 @@ def read_updater_member(path):
 
 
 def fetch_release_source(source, destination, repository):
-    subprocess.run(['gh', 'release', 'download', source['release_tag'], '--repo', repository,
-                    '--pattern', source['release_asset'], '--output', str(destination)], check=True,
-                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=300)
+    download_verified(source, destination, repository)
 
 
 def recover_catalog_key(root, catalog, model, expected_recipient, output, repository, *,
