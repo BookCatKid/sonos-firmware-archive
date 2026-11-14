@@ -3,17 +3,74 @@ from __future__ import annotations
 
 import time
 import math
-import hashlib
+import urllib.error
 from dataclasses import asdict
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
-from .crawl import crawl_manifests, official
-from .discovery import Candidate, probe, expand_metadata_base
-from .monitor import candidate_is_preserved
-from .firmware_archive import capture_due
-from .metadata import fetch_update_metadata, parse_update_metadata, UPDATE_METADATA_URL
-from .metadata_sweep import discover_profiles
+from .crawl import crawl_manifests, official, discovery_incomplete
+from .discovery import Candidate, probe, expand_metadata_base, host_counterpart
+from .firmware_archive import capture_due, candidate_is_preserved
+from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
+from .metadata_sweep import discover_profiles, capture_response
+from .retry import checkpoint, select, due
+
+
+def _add_namespace(namespaces, base, source, model_max, **evidence):
+    if not expand_metadata_base(base, [0]):
+        return
+    row = namespaces.setdefault(base, {'next_model': 0})
+    if row.get('model_max', model_max) != model_max:
+        row.clear()
+        row['next_model'] = 0
+    row.update(source=source, model_max=model_max, **evidence)
+    row.pop('parent_namespace', None)
+    peer = host_counterpart(Candidate('', 0, base, source, ''))
+    if peer:
+        other = namespaces.setdefault(peer.url, {'next_model': 0})
+        if other.get('model_max', model_max) != model_max:
+            other.clear()
+            other['next_model'] = 0
+        other.update(model_max=model_max, **evidence)
+        other.setdefault('source', 'host-counterpart')
+        if other['source'] == 'host-counterpart':
+            other['parent_namespace'] = base
+
+
+def _namespace_candidates(namespaces, limit, blocked_hosts):
+    for row in namespaces.values():
+        if row['next_model'] > row['model_max'] and due(row):
+            row['next_model'] = 0
+    records = {key: row for key, row in namespaces.items() if row.get('status') == 'failed'}
+    active = sorted((base for base, row in namespaces.items() if due(row) and
+                     urlsplit(base).hostname not in blocked_hosts),
+                    key=lambda base: namespaces[base].get('checked_at', ''))
+    queue = select(active, records, key=lambda key: key, limit=limit)
+    batch = max(1, limit // len(queue)) if queue else 0
+    rows = []
+    for base in queue:
+        record = namespaces[base]
+        models = range(record['next_model'], min(record['next_model'] + batch, record['model_max'] + 1))
+        for candidate in expand_metadata_base(base, models):
+            rows.append({**asdict(candidate), 'source': record['source'], 'inferred_namespace': base,
+                         'advance_inference': True,
+                         **({'metadata_sha256': record['metadata_sha256']} if record.get('metadata_sha256') else {})})
+    return rows
+
+
+def _advance_namespace(namespaces, row, result):
+    record = namespaces.get(row.get('inferred_namespace'))
+    if record is None or record['next_model'] != row['package_model']:
+        return
+    if result.get('available') or result.get('http_status') in {404, 410}:
+        record['next_model'] += 1
+        complete = record['next_model'] > record['model_max']
+        record.update(checkpoint(record, success=True, success_hours=168 if complete else 0),
+                      status='complete' if complete else 'scanning')
+        record.pop('error', None)
+    else:
+        record.update(checkpoint(record), status='failed',
+                      error=result.get('error') or f"HTTP {result.get('http_status')}")
 
 
 def protocol_roots():
@@ -27,10 +84,13 @@ def protocol_roots():
 
 def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fetch=None, probe_fn=None,
              metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=(),
-             profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255):
+             profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128):
     start = time.monotonic()
     if not isinstance(model_max, int) or isinstance(model_max, bool) or not 0 <= model_max <= 4095:
         raise ValueError('metadata model maximum must be between 0 and 4095')
+    if not isinstance(inference_limit, int) or isinstance(inference_limit, bool) or not 1 <= inference_limit <= 4096:
+        raise ValueError('inferred candidate limit must be between 1 and 4096')
+    namespaces = {key: dict(row) for key, row in state.get('inferred_namespaces', {}).items()}
     if (not isinstance(profile_limit, int) or isinstance(profile_limit, bool) or
         not isinstance(profile_count, int) or isinstance(profile_count, bool) or
         not 0 <= profile_limit <= profile_count <= 10000):
@@ -58,35 +118,34 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         roots.extend(archive['entries'])
     bootstrap_errors = []
     metadata = discover_profiles(state.get('metadata_profiles', {}), evidence,
-        {'packages': known_artifacts}, limit=profile_limit, count=profile_count,
+        {'packages': known_artifacts, 'evidence': [{'version': version} for version in version_hints]},
+        limit=profile_limit, count=profile_count,
         deadline=start + seconds * .2, **({'fetch': profile_fetch} if profile_fetch else {}))
     bootstrap_errors.extend(metadata['errors'])
     try:
         if any(row.get('http_status') in {403, 429} for row in metadata['errors']):
             raise ValueError('baseline UPS request deferred after a profile access challenge')
         ups, _ = metadata_fetch()
-        if len(ups) > 2_000_000:
-            raise ValueError('UPS metadata exceeds 2 MB')
-        evidence.mkdir(parents=True, exist_ok=True)
-        digest = hashlib.sha256(ups).hexdigest()
-        snapshot = evidence / (digest + '.ups')
-        snapshot.write_bytes(ups)
-        records = parse_update_metadata(ups)
-        metadata['responses'][digest] = {'sha256': digest, 'bytes': len(ups), 'snapshot': snapshot.name,
-                                         'source_url': UPDATE_METADATA_URL, 'records': records}
+        captured = capture_response(ups, evidence, metadata['responses'])
+        if captured.get('parse_error'):
+            raise ValueError(captured['parse_error'])
     except Exception as error:
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
         bootstrap_errors.append({'source': 'legacy-ups', 'error': str(error), 'http_status': getattr(error, 'code', None)})
-    metadata_candidates = {}
     for response in metadata['responses'].values():
         for record in response['records']:
             url = record.get('uri', '').replace('http://', 'https://', 1)
+            if record['type'] in {7, 14} and not official(url):
+                bootstrap_errors.append({'source': 'legacy-ups-uri', 'url': url,
+                                         'error': 'UPS URI uses an unsupported host or path'})
+                continue
             if record['type'] == 14 and official(url):
                 roots.append(url)
             elif record['type'] == 7 and official(url):
                 folder = url.split('^', 1)[0].rstrip('/') if '^' in url else url.rsplit('/', 1)[0]
                 roots.append(folder + '/update.upm')
-                for candidate in expand_metadata_base(url, range(model_max + 1)):
-                    metadata_candidates[candidate.url] = {**asdict(candidate), 'metadata_sha256': response['sha256']}
+                _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'])
     # Resume our own observed frontier; never read a third-party URL inventory.
     pending = state.get('pending_manifest_urls', [])
     known_urls = [m['url'] for m in state.get('manifests', [])]
@@ -99,22 +158,33 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     initial = [{'url': url} for url in dict.fromkeys(priority + pending + roots + known_urls) if official(url)]
     paused_hosts = {urlsplit(UPDATE_METADATA_URL).hostname} if any(
         error.get('http_status') in {403, 429} for error in bootstrap_errors) else set()
-    paused = [row['url'] for row in initial if urlsplit(row['url']).hostname in paused_hosts]
-    initial = [row for row in initial if urlsplit(row['url']).hostname not in paused_hosts]
-    graph = crawl_manifests({}, initial, [], evidence, max_manifests=max_manifests,
-                            deadline=start + seconds * .7, explore_channels=True, fetch=fetch)
-    graph['pending_manifest_urls'].extend(paused)
-    graph['blocked_hosts'] = sorted(set(graph.get('blocked_hosts', [])) | paused_hosts)
-    graph['blocked'] = bool(graph['blocked_hosts'])
+    observed = {'packages': [{'source_url': row['url'], 'version': row['version']} for row in known_artifacts]}
+    graph = crawl_manifests(observed, initial, [], evidence, max_manifests=max_manifests,
+                            deadline=start + seconds * .7, explore_channels=True, fetch=fetch, paused_hosts=paused_hosts)
     manifests = {(m['url'], m['sha256']): m for m in state.get('manifests', [])}
     for manifest in graph['manifests']:
         key = manifest['url'], manifest['sha256']
         manifests[key] = {**manifests.get(key, {}), **manifest}
     candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url'])}
     candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
-    candidates.update(metadata_candidates)
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
+    for directory in graph.get('directories', []):
+        base = directory['directory'].rstrip('/') + '/^' + directory['version']
+        _add_namespace(namespaces, base, 'observed-directory', model_max)
     candidates.update(static)
+    for row in list(candidates.values()):
+        if row.get('inferred_only'):
+            continue
+        fields = {key: row[key] for key in Candidate.__dataclass_fields__}
+        counterpart = host_counterpart(Candidate(**fields))
+        if counterpart:
+            candidates.setdefault(counterpart.url, {**row, **asdict(counterpart), 'parent_url': row['url']})
+    for row in _namespace_candidates(namespaces, inference_limit, graph.get('blocked_hosts', [])):
+        prior = candidates.get(row['url'])
+        if not prior or prior.get('inferred_only'):
+            candidates[row['url']] = {**(prior or {}), **row, 'inferred_only': True}
+        else:
+            prior.update(inferred_namespace=row['inferred_namespace'], advance_inference=True)
     prior_probes = state.get('probes', {})
     checks = {}
     blocked = set(graph.get('blocked_hosts', []))
@@ -126,6 +196,9 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         host = urlsplit(row['url']).hostname
         if host in blocked:
             continue
+        namespace = namespaces.get(row.get('inferred_namespace'))
+        if row.get('advance_inference') and (namespace['next_model'] != row['package_model'] or not due(namespace)):
+            continue
         if time.monotonic() >= start + seconds:
             break
         fields = {key: row[key] for key in Candidate.__dataclass_fields__}
@@ -133,14 +206,21 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         sequence += 1
         result['attempt_sequence'] = sequence
         checks[row['url']] = result
+        _advance_namespace(namespaces, row, result)
+        if result.get('available'):
+            row['discovered_available'] = True
         if result.get('http_status') in {403, 429}:
             blocked.add(host)
         time.sleep(.1)
-    probes = {**prior_probes, **checks}
+    retained = {url: {key: value for key, value in row.items() if key != 'advance_inference'}
+                for url, row in candidates.items() if not row.get('inferred_only') or row.get('discovered_available')}
+    probes = {url: row for url, row in {**prior_probes, **checks}.items() if url in retained}
+    inference_pending = sum(max(0, row['model_max'] + 1 - row['next_model']) for row in namespaces.values())
     deferred = list(dict.fromkeys(graph['pending_manifest_urls'] + [f['url'] for f in graph['failures']
                         if f.get('attempted') and official(f['url'])]))
     result = {'schema_version': 1, 'roots': roots, 'manifests': list(manifests.values()),
-              'candidates': list(candidates.values()), 'probes': probes,
+              'candidates': list(retained.values()), 'probes': probes,
+              'inferred_namespaces': namespaces, 'inference_pending': inference_pending,
               'pending_manifest_urls': deferred, 'graph': graph,
               'checked_this_run': len(checks), 'unchecked_this_run': len(candidates) - len(checks),
               'checked_urls': list(checks),
@@ -151,8 +231,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     result['archive_index'] = archive
     result['metadata_profiles'] = metadata
     result['status'] = 'partial' if (
-        bootstrap_errors or metadata['status'] == 'partial' or archive.get('errors') or blocked or deferred or result['unchecked_this_run']
-        or any(f['kind'] not in {'not-found', 'out-of-scope'} for f in graph['failures'])
+        bootstrap_errors or metadata['status'] == 'partial' or inference_pending or archive.get('errors') or blocked or deferred or result['unchecked_this_run']
+        or discovery_incomplete(graph, graph['manifests'], bool(blocked))
     ) else 'ok'
     return result
 

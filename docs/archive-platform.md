@@ -131,6 +131,22 @@ FIFO priority across runs so a small crawl budget progresses through the queue.
 A rotating reservation of at most one quarter of the crawl budget refreshes
 current protocol feeds; a one-request budget goes entirely to the FIFO.
 
+The same worker expands directories evidenced by manifests and this archive's
+own UPD or installer observations, and checks their public production-host
+counterparts. `inference_limit` defaults to 128 generated candidates per run.
+Each namespace retains a model cursor and retry timing instead of storing a
+URL row for every negative probe. Available discoveries remain ordinary source
+observations. Incomplete namespaces resume automatically; completed ranges
+refresh weekly. Transient failures retry the same model without blocking other
+namespaces, and changing `model_max` makes the affected range eligible again.
+
+Public release-note versions are additional profile-query hints. Their source
+hash and observed versions are retained, including across source outages; they
+do not supply campaign URLs. The former monitor, directory sweep and separate
+monitor publisher have been retired. The sole firmware path uses the frontier
+and shared verified publisher. Historical public URL observations used by
+replay tests live under `tests/fixtures/`, outside runtime configuration.
+
 All preserved UPDs share one inventory queue. Available sections, tar members,
 CRAMFS/SquashFS filesystems and supported kernel streams are analyzed without
 executing firmware. Decoder failures retain the original payload and remain

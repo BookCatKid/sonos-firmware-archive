@@ -13,6 +13,7 @@ def firmware(c: Context):
                  '--profile-limit', c.options.get('profile_limit', 8),
                  '--profile-count', c.options.get('profile_count', 1200),
                  '--model-max', c.options.get('model_max', 255),
+                 '--inference-limit', c.options.get('inference_limit', 128),
                  '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 24), *roots, report=str(report)),
         c.task('extract-firmware', '--work-dir', c.work / 'extract', '--repository', c.repository,
                '--max-packages', c.options.get('extraction_limit', 24),

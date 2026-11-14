@@ -2,12 +2,39 @@ import unittest
 import tempfile
 import struct
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
-from sonos_firmware.metadata_sweep import BASELINE, PROFILE_FIELDS, build_profiles, discover_profiles
+from sonos_firmware.metadata_sweep import BASELINE, PROFILE_FIELDS, build_profiles, discover_profiles, discover_version_hints
 
 
 class MetadataSweepTests(unittest.TestCase):
+    def test_public_version_hints_feed_profile_queries_and_survive_a_source_outage(self):
+        hints = discover_version_hints({}, fetch=lambda: b'<p>Sonos 99.1-12345</p>')
+        self.assertEqual(hints['versions'], ['99.1-12345'])
+        planned = build_profiles({'evidence': [{'version': v} for v in hints['versions']]}, 100)
+        self.assertTrue(any(row['cmaj'] == 99 and row['cmin'] == 1 and row['cbld'] == 12345 for row in planned))
+        fetch = Mock()
+        discover_version_hints(hints, fetch=fetch)
+        fetch.assert_not_called()
+        hints['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
+        def failed():
+            raise TimeoutError('support page unavailable')
+        failed_hints = discover_version_hints(hints, fetch=failed)
+        self.assertEqual(failed_hints['versions'], ['99.1-12345'])
+        self.assertEqual(failed_hints['status'], 'failed')
+        discover_version_hints(failed_hints, fetch=fetch)
+        fetch.assert_not_called()
+
+    def test_malformed_metadata_retains_a_traceable_response_and_a_failed_profile(self):
+        with tempfile.TemporaryDirectory() as temporary, patch('sonos_firmware.metadata_sweep.time.sleep'):
+            state = discover_profiles({}, Path(temporary), {}, limit=1, count=1, fetch=lambda p: b'malformed UPS')
+            profile = next(iter(state['profiles'].values()))
+            captured = state['responses'][profile['response_sha256']]
+            self.assertEqual((Path(temporary)/captured['snapshot']).read_bytes(), b'malformed UPS')
+        self.assertEqual(profile['status'], 'failed')
+        self.assertEqual(captured['records'], [])
+        self.assertIn('parse_error', captured)
+
     def test_scheduled_profiles_resume_without_requiring_local_binary_inputs(self):
         seen = []
         uri = b'https://update.sonos.com/firmware/live/update.upm\0'

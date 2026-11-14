@@ -180,7 +180,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
 - `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
-- `scripts/check_catalog_firmware_directories.py` - weekly non-AI expansion of opaque official directories learned from desktop installers.
+- The firmware frontier expands exact directories observed in manifests and the archive's own records over the configured package-model range.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
 - `tests/` — parser and catalog tests.

@@ -291,6 +291,32 @@ class MetadataPublicationTests(unittest.TestCase):
 
 
 class FirmwareBootstrapTests(unittest.TestCase):
+    def test_disabled_hint_source_retains_its_observations_without_fetching_or_using_them(self):
+        import importlib.util
+        import sys
+        from unittest.mock import patch
+        script = Path(__file__).resolve().parents[1]/'scripts/discover_firmware.py'
+        spec = importlib.util.spec_from_file_location('disabled_hint_fixture', script)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            notes = {'versions': ['99.1-12345'], 'status': 'failed', 'error': 'previous outage'}
+            state_path = root/'state.json'
+            state_path.write_text(json.dumps({'release_notes': notes}))
+            state = {'manifests': [], 'candidates': [], 'probes': {}, 'checked_urls': [],
+                     'checked_this_run': 0, 'pending_manifest_urls': [], 'status': 'ok'}
+            argv = [str(script), '--state', str(state_path), '--catalog', str(root/'catalog.json'),
+                    '--evidence-dir', str(root/'metadata'), '--report', str(root/'report.json'),
+                    '--no-history-index', '--no-release-notes']
+            with patch.object(sys, 'argv', argv), patch.object(module, 'discover', return_value=state) as discover, \
+                 patch.object(module, 'discover_version_hints') as hints:
+                self.assertEqual(module.main(), 0)
+            hints.assert_not_called()
+            self.assertEqual(discover.call_args.kwargs['version_hints'], ())
+            self.assertEqual(json.loads(state_path.read_text())['release_notes'], notes)
+            self.assertEqual(json.loads((root/'report.json').read_text())['status'], 'ok')
+
     def test_empty_firmware_catalog_is_created_by_worker_without_binary_inputs(self):
         import importlib.util
         import sys
@@ -320,7 +346,6 @@ class FirmwareBootstrapTests(unittest.TestCase):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         with tempfile.TemporaryDirectory() as temporary, patch.object(sys, 'path', [str(scripts), *sys.path]):
-            import archive_monitor_firmware as publisher
             root = Path(temporary)
             evidence, work = root / 'restored-metadata', root / 'publication'
             evidence.mkdir(); work.mkdir()
@@ -331,7 +356,7 @@ class FirmwareBootstrapTests(unittest.TestCase):
                         'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
                         'metadata': {'system_version': '1.0'}}
             state = {'manifests': [manifest], 'probes': {}, 'checked_urls': [], 'status': 'ok'}
-            with patch.object(publisher, 'ensure_release'), patch.object(publisher, 'upload_small_verified') as upload:
+            with patch.object(module, 'ensure_release'), patch.object(module, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}) as upload:
                 self.assertFalse(module.preserve(state, root / 'catalog.json', root / 'frontier.json',
                                                  evidence, work, 'owner/repo'))
             upload.assert_called_once()

@@ -75,6 +75,17 @@ def expand_metadata_base(uri: str, models=range(256)) -> list[Candidate]:
     return result
 
 
+def host_counterpart(candidate: Candidate) -> Candidate | None:
+    """Try the other public production host using the observed path unchanged."""
+    parsed = urlsplit(candidate.url)
+    peers = {'update.sonos.com': 'update-firmware.sonos.com',
+             'update-firmware.sonos.com': 'update.sonos.com'}
+    if not official_firmware_url(candidate.url) or parsed.hostname not in peers:
+        return None
+    url = parsed._replace(netloc=peers[parsed.hostname]).geturl()
+    return Candidate(candidate.version, candidate.package_model, url, 'host-counterpart', candidate.filename)
+
+
 def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dict, list[Candidate]]:
     # Some historical mirrors preserved a complete XML document but truncated
     # the trailing signature comment. Parse only through the signed document's

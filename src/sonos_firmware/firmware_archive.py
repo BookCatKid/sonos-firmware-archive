@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import struct
 import tempfile
 import urllib.error
@@ -13,6 +14,21 @@ from .releases import ensure_release, publish_verified, verified_asset, publicat
 from .retry import checkpoint, select, due
 from .storage import atomic_json, file_sha256
 from .upd import parse_file
+
+
+def manifest_name(item):
+    """Immutable manifest identity includes both captured bytes and origin."""
+    origin = hashlib.sha256(item['url'].encode()).hexdigest()
+    return f"manifest-{item['sha256']}-{origin}.upm"
+
+
+def candidate_is_preserved(candidate, packages):
+    def secure(url):
+        return 'https://' + url[7:] if url.startswith('http://') else url
+    url = secure(candidate['url'])
+    return any(package.get('artifact_status') == 'preserved' and url in
+               {secure(source) for source in [package.get('source_url', ''), *package.get('source_urls', [])]}
+               for package in packages)
 
 
 def catalog_at(path):

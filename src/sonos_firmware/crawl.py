@@ -47,7 +47,7 @@ def rejected_url_kind(url: str) -> str:
 
 def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                     evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True,
-                    explore_channels=False, deadline=None) -> dict:
+                    explore_channels=False, deadline=None, paused_hosts=()) -> dict:
     """Return raw snapshot receipts, source edges and failures, including limits.
 
     Only explicit seed/history links or the literal sibling update.upm are visited.
@@ -62,9 +62,9 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     edges = []
     failures = []
     manifests = []
-    blocked = False
+    blocked = bool(paused_hosts)
     attempts = 0
-    blocked_hosts = set()
+    blocked_hosts = set(paused_hosts)
     deferred = []
 
     def add(url, parent, reason):
@@ -198,3 +198,23 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             'limits_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
             'blocked_hosts': sorted(blocked_hosts),
             'scope': 'manifest links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}
+
+
+def discovery_incomplete(graph: dict, manifests: list, challenged: bool) -> bool:
+    """Fail closed on real discovery gaps; ignore out-of-scope policy rejections.
+
+    Incomplete when probing was challenged, the crawl was blocked or capped,
+    a fetch/parse failed (anything but a clean 404), an in-scope artifact or
+    manifest URL sat on an unrecognized host ('unsupported'), or a manifest
+    carried an unrecognized-structure warning. 'out-of-scope' entries are
+    deterministic rejections of links that are not manifests or packages at
+    all (e.g. beta-app HTML pages) and can never hide archivable firmware.
+    """
+    if challenged or graph.get("blocked") or graph.get("limits_reached"):
+        return True
+    if any(f["kind"] not in ("not-found", "out-of-scope") for f in graph["failures"]):
+        return True
+    return any(
+        any("unrecognized" in w or "needs manifest source" in w for w in m["metadata"].get("warnings", []))
+        for m in manifests
+    )

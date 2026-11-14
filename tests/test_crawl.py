@@ -150,7 +150,7 @@ class PublicCapturedReplayTests(unittest.TestCase):
             if url in cache:
                 return cache[url]
             raise urllib.error.HTTPError(url,404,'offline fixture only, not a live404',{},None)
-        seeds=json.loads((root/'config/discovery-seeds.json').read_text())
+        seeds=json.loads((fixture/'observed-seeds.json').read_text())
         with tempfile.TemporaryDirectory() as d:
             graph=crawl_manifests({},[],seeds,Path(d),fetch=fetch,delay=0)
         reached={c.url for c in graph['candidates']}
@@ -185,7 +185,7 @@ class OutOfScopeClassificationTests(unittest.TestCase):
 
 class DiscoveryIncompleteTests(unittest.TestCase):
     def _call(self, failures, challenged=False, blocked=False, limits=False, warnings=()):
-        from sonos_firmware.monitor import discovery_incomplete
+        from sonos_firmware.crawl import discovery_incomplete
         graph = {'failures': failures, 'blocked': blocked, 'limits_reached': limits}
         manifests = [{'metadata': {'warnings': list(warnings)}}]
         return discovery_incomplete(graph, manifests, challenged)

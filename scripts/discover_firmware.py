@@ -13,11 +13,12 @@ sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
 from sonos_firmware.frontier import discover, monitor_report
 from sonos_firmware.archive_index import manifest_roots
-from sonos_firmware.firmware_archive import acquisition_state, archive_candidates
+from sonos_firmware.firmware_archive import acquisition_state, archive_candidates, manifest_name
+from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt
+from sonos_firmware.metadata_sweep import discover_version_hints
 
 
 def preserve(result, catalog_path, state_path, evidence, work, repository, max_packages=24):
-    from archive_monitor_firmware import ensure_release, upload_small_verified, manifest_name
     if catalog_path.exists():
         catalog = json.loads(catalog_path.read_text())
     else:
@@ -47,7 +48,7 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
                 prepared = True
             asset = work / manifest_name(manifest)
             asset.write_bytes(data)
-            upload_small_verified(repository, tag, asset, manifest['sha256'])
+            remote = publish_verified(repository, tag, asset, len(data), manifest['sha256'])
             meta = manifest['metadata']
             catalog.setdefault('source_manifests', []).append({
                 'version': meta.get('system_version') or meta.get('default_version') or 'unknown',
@@ -55,6 +56,7 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
                 'filename': asset.name, 'bytes': len(data), 'sha256': manifest['sha256'],
                 'source_url': manifest['url'], 'provenance': 'independent-public-protocol-discovery',
                 'release_tag': tag, 'release_asset': asset.name,
+                'publication': publication_receipt(repository, tag, asset.name, manifest, remote),
             })
             write_json(catalog_path, catalog)
         except Exception as error:
@@ -83,6 +85,8 @@ def main():
     parser.add_argument('--profile-limit', type=int, default=8)
     parser.add_argument('--profile-count', type=int, default=1200)
     parser.add_argument('--model-max', type=int, default=255)
+    parser.add_argument('--inference-limit', type=int, default=128)
+    parser.add_argument('--no-release-notes', action='store_true', help='disable public version hints for profile exploration')
     parser.add_argument('--publish', action='store_true')
     parser.add_argument('--max-packages', type=int, default=24)
     parser.add_argument('--artifact-root', type=json.loads, action='append', default=[],
@@ -94,18 +98,26 @@ def main():
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
+    hints = old.get('release_notes', {})
+    if not args.no_release_notes:
+        hints = discover_version_hints(hints)
     catalog = json.loads(args.catalog.read_text()) if args.catalog.exists() else {}
     known = []
     if not args.cold_start:
         for package in catalog.get('packages', []):
             for url in dict.fromkeys([package.get('source_url'), *package.get('source_urls', [])]):
-                if url and urlsplit(url).path.endswith('.upd') and package.get('package_model') is not None:
+                if url and urlsplit(url).path.endswith(('.upd', '.exe', '.dmg', '.bin')) and package.get('package_model') is not None:
+                    url = 'https://' + url[7:] if url.startswith('http://') else url
                     known.append({'version': package['version'], 'package_model': package['package_model'],
                         'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation'})
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
                       index_fetch=None if args.no_history_index else manifest_roots, artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
-                      model_max=args.model_max)
+                      model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
+                      inference_limit=args.inference_limit)
+    result['release_notes'] = hints
+    if not args.no_release_notes and hints.get('status') == 'failed':
+        result['status'] = 'partial'
     write_json(args.state, result)
     write_json(args.report, monitor_report(result, catalog))
     failed = False

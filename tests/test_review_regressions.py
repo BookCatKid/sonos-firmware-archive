@@ -31,17 +31,6 @@ class RedirectHistoryTests(unittest.TestCase):
             with self.subTest(name=name),tempfile.TemporaryDirectory() as d:
                 with patch.object(sys,'argv',['x','--current-only','--output',str(Path(d)/'out')]),patch.object(m,helper,return_value=[] if 'desktop' in name else {}) as call:self.assertEqual(m.main(),0)
                 call.assert_called_once_with(include_history=False)
-class GeneralIncompletePropagationTests(unittest.TestCase):
-    def test_nonfetch_incompleteness_keeps_directory_report_incomplete(self):
-        m=load('check_catalog_firmware_directories')
-        for reason in ['unsupported host','unrecognized manifest syntax']:
-            with self.subTest(reason=reason),tempfile.TemporaryDirectory() as d:
-                d=Path(d);(d/'catalog').write_text('{"packages":[]}');(d/'monitor').write_text(json.dumps({'status':'ok','discovery_incomplete':True,'discovery_graph':{'blocked':False,'limits_reached':False,'failures':[],'directories':[]},'manifests':[{'metadata':{'warnings':[reason]}}]}))
-                argv=['x','--catalog',str(d/'catalog'),'--monitor-report',str(d/'monitor'),'--output',str(d/'out'),'--seeds',str(d/'none'),'--delay','0']
-                with patch.object(sys,'argv',argv),patch.object(m,'probe') as probe:self.assertEqual(m.main(),1)
-                probe.assert_not_called();report=json.loads((d/'out').read_text());self.assertTrue(report['incomplete']);self.assertIn('monitor reported incomplete discovery',report['incomplete_reasons']);self.assertEqual(report['monitor_incomplete_evidence']['manifests'][0]['metadata']['warnings'],[reason])
-
-
 class HistoricalFallbackTests(unittest.TestCase):
     def test_history_helpers_still_try_archive_fallback(self):
         for name in ['discover_desktop_installers','discover_mobile_installers']:

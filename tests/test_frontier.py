@@ -8,7 +8,7 @@ import unittest
 import urllib.error
 from dataclasses import asdict
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from sonos_firmware import frontier
 from sonos_firmware.crawl import crawl_manifests
@@ -18,6 +18,167 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_one_request_inference_budget_rotates_between_fresh_namespaces(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        visited = []
+        def probe(c):
+            visited.append(c)
+            return {**asdict(c), 'available': False, 'http_status': 404}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        state = {}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            for _ in range(2):
+                state = frontier.discover(state, Path(temporary), inference_limit=1, model_max=2,
+                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+        self.assertEqual([row.package_model for row in visited], [0, 0])
+        self.assertEqual(len({row.url for row in visited}), 2)
+
+    def test_paused_catalog_hosts_cannot_reenter_crawl_or_starve_healthy_inference(self):
+        known = [{'version': '1.0-12345', 'url': HOST+f'/firmware/directory-{n}/Sonos.dmg',
+                  'filename': 'Sonos.dmg', 'package_model': 3, 'source': 'saved-archive-observation'} for n in range(3)]
+        def challenged():
+            raise urllib.error.HTTPError(HOST, 429, 'retry later', {}, None)
+        def probe(c):
+            self.assertFalse(c.url.startswith(HOST+'/'))
+            return {**asdict(c), 'available': False, 'http_status': 404}
+        fetch = Mock(return_value=b'<update_manifest version="1.1"></update_manifest>')
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), known_artifacts=known, inference_limit=1,
+                metadata_fetch=challenged, fetch=fetch, probe_fn=probe)
+        fetch.assert_not_called()
+        original = [row for key, row in state['inferred_namespaces'].items() if key.startswith(HOST+'/')]
+        peers = [row for key, row in state['inferred_namespaces'].items() if not key.startswith(HOST+'/')]
+        self.assertTrue(all(row['next_model'] == 0 for row in original))
+        self.assertEqual(sum(row['next_model'] for row in peers), 1)
+
+    def test_direct_manifest_image_advances_its_inference_cursor_without_losing_provenance(self):
+        root = HOST+'/firmware/feed/update.upm'
+        target = HOST+'/firmware/directory/1.0-12345-1-0.upd'
+        body = f'<update_manifest version="1.1"><image model="0" version="1.0-12345">{target}</image></update_manifest>'.encode()
+        def fetch(url):
+            return body if url == root else b'<update_manifest version="1.1"></update_manifest>'
+        def probe(c):
+            return {**asdict(c), 'available': c.package_model == 0, 'http_status': 200 if c.package_model == 0 else 404}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), model_max=2, fetch=fetch, probe_fn=probe,
+                                      metadata_fetch=lambda: (b'', {}))
+        self.assertEqual(state['inference_pending'], 0)
+        self.assertEqual(next(row for row in state['candidates'] if row['url'] == target)['source'], 'image')
+        self.assertEqual(len(state['candidates']), 2)
+
+    def test_transient_namespace_failure_retries_its_model_without_blocking_its_peer(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        visited = []
+        def probe(c):
+            visited.append((c.url, c.package_model))
+            failed = c.url.startswith(HOST+'/') and c.package_model == 1
+            return {**asdict(c), 'available': False, 'http_status': 503 if failed else 404}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), model_max=2, fetch=missing, probe_fn=probe,
+                                      metadata_fetch=lambda: (ups, {}))
+            self.assertEqual(state['inference_pending'], 2)
+            self.assertFalse(any(url.startswith(HOST+'/') and model == 2 for url, model in visited))
+            failed = next(row for row in state['inferred_namespaces'].values() if row.get('status') == 'failed')
+            state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
+                probe_fn=lambda c: self.fail('namespace retried before backoff'), metadata_fetch=lambda: (ups, {}))
+            failed = next(row for row in state['inferred_namespaces'].values() if row.get('status') == 'failed')
+            failed['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
+            state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
+                probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404}, metadata_fetch=lambda: (ups, {}))
+        self.assertEqual(state['inference_pending'], 0)
+
+    def test_many_observed_directories_keep_negative_probe_state_compact(self):
+        known = [{'version': '1.0-12345', 'url': HOST+f'/firmware/directory-{n}/Sonos.dmg',
+                  'filename': 'Sonos.dmg', 'package_model': 3, 'source': 'saved-archive-observation'} for n in range(61)]
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), known_artifacts=known, inference_limit=16,
+                fetch=missing, metadata_fetch=lambda: (b'', {}),
+                probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404})
+        self.assertEqual(len(state['inferred_namespaces']), 122)
+        self.assertEqual(len(state['candidates']), 122)
+        self.assertTrue(all(row['filename'] == 'Sonos.dmg' for row in state['candidates']))
+        self.assertEqual(state['inference_pending'], 61 * 512 - 16)
+
+    def test_negative_namespace_probes_resume_without_recording_a_url_inventory(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        visited = []
+        def probe(candidate):
+            visited.append((candidate.url, candidate.package_model))
+            return {**asdict(candidate), 'available': False, 'http_status': 404}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        state = {}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            for _ in range(3):
+                state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
+                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+            self.assertEqual(state['inference_pending'], 0)
+            state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
+                metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=lambda c: self.fail('namespace refreshed early'))
+        self.assertEqual(len(visited), 6)
+        self.assertEqual({model for _, model in visited}, {0, 1, 2})
+        self.assertEqual(state['candidates'], [])
+        self.assertEqual(state['probes'], {})
+        self.assertEqual(len(state['inferred_namespaces']), 2)
+
+    def test_own_installer_observations_expand_speaker_directories_without_a_manifest(self):
+        row = {'version': '91.0-69300', 'package_model': 3, 'filename': 'Sonos.dmg',
+               'url': HOST+'/firmware/Gold/known/Sonos.dmg', 'source': 'saved-archive-observation'}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), known_artifacts=[row], model_max=2, fetch=missing,
+                metadata_fetch=lambda: (b'', {}), probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200 if c.package_model == 2 else 404})
+        found = [row for row in state['candidates'] if row['source'] == 'observed-directory']
+        self.assertEqual({row['package_model'] for row in found}, {2})
+        self.assertEqual(state['inference_pending'], 0)
+        self.assertTrue(all('/firmware/Gold/known/91.0-69300-1-' in row['url'] for row in found))
+        self.assertEqual(len(frontier.monitor_report(state, {'packages': []})['available_uncatalogued_candidates']), 2)
+
+    def test_unknown_manifest_structure_cannot_report_complete_discovery(self):
+        root = HOST+'/firmware/current/update.upm'
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                fetch=lambda url: b'<update_manifest version="99"></update_manifest>')
+        self.assertEqual(state['status'], 'partial')
+        self.assertIn('unrecognized', state['manifests'][0]['metadata']['warnings'][0])
+
+    def test_untrusted_metadata_uri_is_reported_without_requesting_it(self):
+        uri = b'https://unknown-cdn.example/firmware/update.upm\0'
+        ups = struct.pack('<IIII', 0x35167F49, 14, len(uri)+16, 0) + uri
+        fetch = Mock(return_value=b'<update_manifest version="1.1"></update_manifest>')
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]):
+            state = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (ups, {}),
+                fetch=fetch)
+        fetch.assert_not_called()
+        self.assertEqual(state['status'], 'partial')
+        self.assertTrue(any('unknown-cdn.example' in row.get('url', '') for row in state['bootstrap_errors']))
+
+    def test_publication_identity_matches_observed_urls_instead_of_filenames(self):
+        candidate = {'url': HOST+'/firmware/one/1.2-3-1-8.upd'}
+        packages = [{'artifact_status': 'preserved', 'source_url': candidate['url'].replace('https:', 'http:')}]
+        self.assertTrue(frontier.candidate_is_preserved(candidate, packages))
+        alternate = {'url': candidate['url'].replace('/one/', '/two/')}
+        self.assertFalse(frontier.candidate_is_preserved(alternate, packages))
+        packages[0]['source_urls'] = [alternate['url']]
+        self.assertTrue(frontier.candidate_is_preserved(alternate, packages))
+
     def test_metadata_base_discovers_packages_even_when_its_manifest_is_gone(self):
         uri = (BASE + '^37.5-12345').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri) + 16, 0) + uri
@@ -26,13 +187,14 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
             result = frontier.discover({}, Path(temporary), fetch=fetch, metadata_fetch=lambda: (ups, {}),
-                model_max=2, probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200})
+                model_max=2, probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200 if c.package_model == 2 else 404})
         rows = result['candidates']
-        self.assertEqual({row['package_model'] for row in rows}, {0, 1, 2})
+        self.assertEqual({row['package_model'] for row in rows}, {2})
+        self.assertEqual(result['inference_pending'], 0)
         self.assertEqual({row['version'] for row in rows}, {'37.5-12345'})
-        self.assertTrue(all(row['url'].startswith(BASE+'37.5-12345-1-') for row in rows))
+        self.assertTrue(all('/firmware/Prod/discovered/37.5-12345-1-' in row['url'] for row in rows))
         self.assertTrue(all(row['metadata_sha256'] == hashlib.sha256(ups).hexdigest() for row in rows))
-        self.assertEqual(len(frontier.monitor_report(result, {'packages': []})['available_uncatalogued_candidates']), 1)
+        self.assertEqual(len(frontier.monitor_report(result, {'packages': []})['available_uncatalogued_candidates']), 2)
 
     def test_pending_roots_are_not_starved_by_a_small_manifest_budget(self):
         roots = [HOST+f'/firmware/{name}/update.upm' for name in ('one','two','three')]
@@ -148,7 +310,9 @@ class FrontierTests(unittest.TestCase):
         def probe(candidate): return {**asdict(candidate), 'available': True, 'http_status': 200, 'bytes': 1}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), patch.object(frontier.time, 'sleep'):
             result = frontier.discover({}, Path(temporary), fetch=fetch, probe_fn=probe, metadata_fetch=lambda: (b'', {}))
-        self.assertEqual({c['package_model'] for c in result['candidates']}, {1, 8, 17})
+        self.assertTrue(result['inference_pending'] > 0)
+        self.assertLess(len(result['candidates']), 150)
+        self.assertTrue({1, 8, 17}.issubset({c['package_model'] for c in result['candidates'] if c['source'] == 'image'}))
         self.assertIn(HOST + '/firmware/Dev/discovered/update.upm', calls)
         self.assertTrue(any(e['reason'] == 'content-location' for e in result['graph']['edges']))
         self.assertTrue(any(e['reason'] == 'manifest-base' for e in result['graph']['edges']))
@@ -203,8 +367,9 @@ class FrontierTests(unittest.TestCase):
     def test_previously_checked_candidates_rotate_when_a_run_budget_is_small(self):
         rows = [{'url': BASE + f'{i}.upd', 'version': f'{i}.0-1', 'package_model': 17,
                  'filename': f'{i}.upd', 'source': 'image'} for i in (1, 2, 3)]
-        state = {'candidates': rows, 'probe_sequence': 3,
-                 'probes': {r['url']: {**r, 'attempt_sequence': i} for i, r in enumerate(rows, 1)}}
+        peers = [{**r, 'url': r['url'].replace('update.sonos.com', 'update-firmware.sonos.com')} for r in rows]
+        state = {'candidates': rows + peers, 'probe_sequence': 6,
+                 'probes': {r['url']: {**r, 'attempt_sequence': i} for i, r in enumerate(rows + peers, 1)}}
         visited = []
         def probe(candidate):
             visited.append(candidate.url)
@@ -227,7 +392,6 @@ class PreservationTests(unittest.TestCase):
     def test_capture_failure_does_not_block_other_manifests_or_package_versions(self):
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
         import discover_firmware as publisher
-        import archive_monitor_firmware as archive
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             evidence = root / 'evidence'
@@ -244,7 +408,7 @@ class PreservationTests(unittest.TestCase):
                      'checked_urls': [c['url'] for c in candidates]}
             catalog = root / 'catalog.json'
             catalog.write_text(json.dumps({'packages': [], 'source_manifests': []}))
-            with patch.object(archive, 'ensure_release'), patch.object(archive, 'upload_small_verified'), \
+            with patch.object(publisher, 'ensure_release'), patch.object(publisher, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}), \
                  patch.object(publisher, 'archive_candidates', return_value={
                      'preserved': 1, 'pending': 1, 'errors': [{'url': candidates[0]['url'], 'error': 'first version failed'}]
                  }) as preserve:

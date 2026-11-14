@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import time
 import urllib.error
+import urllib.request
 
 from .metadata import (
     UPDATE_METADATA_URL,
@@ -12,10 +14,57 @@ from .metadata import (
     UpdateProfile,
     fetch_update_metadata,
 )
-from .retry import checkpoint, select
+from .retry import checkpoint, select, due
+from .discovery import USER_AGENT
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
 BASELINE = {"cmaj": 4, "cmin": 1, "cbld": 1, "subm": 100, "rev": 1, "reg": 2}
+RELEASE_NOTES_URL = 'https://support.sonos.com/en-us/article/release-notes-sonos-system-updates'
+
+
+def capture_response(data, evidence, responses):
+    """Retain exact UPS observations, including traceable parse failures."""
+    if len(data) > 2_000_000:
+        raise ValueError('UPS metadata exceeds 2 MB')
+    digest = hashlib.sha256(data).hexdigest()
+    evidence.mkdir(parents=True, exist_ok=True)
+    snapshot = evidence / (digest + '.ups')
+    snapshot.write_bytes(data)
+    captured = {'sha256': digest, 'bytes': len(data), 'snapshot': snapshot.name,
+                'source_url': UPDATE_METADATA_URL, 'records': []}
+    responses[digest] = captured
+    try:
+        captured['records'] = parse_update_metadata(data)
+        if not captured['records']:
+            raise ValueError('UPS metadata contains no records')
+    except ValueError as error:
+        captured['parse_error'] = str(error)
+    return captured
+
+
+def _fetch_version_hints():
+    request = urllib.request.Request(RELEASE_NOTES_URL, headers={'User-Agent': USER_AGENT})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        return response.read(2_000_001)
+
+
+def discover_version_hints(previous, *, fetch=_fetch_version_hints):
+    """Observed support-page versions guide queries, never guessed campaign URLs."""
+    if previous and not due(previous):
+        return previous
+    try:
+        body = fetch()
+        if not body or len(body) > 2_000_000:
+            raise ValueError('release-note response is empty or exceeds 2 MB')
+        versions = re.findall(r'\b\d{1,3}\.\d{1,3}-\d{1,10}\b', body.decode('utf-8', errors='replace'))
+        return {**checkpoint(previous, success=True, success_hours=6), 'status': 'observed',
+                'source_url': RELEASE_NOTES_URL, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
+                'versions': sorted(set(previous.get('versions', [])) | set(versions))}
+    except Exception as error:
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
+        return {**previous, **checkpoint(previous), 'status': 'failed',
+                'source_url': RELEASE_NOTES_URL, 'error': str(error)}
 
 
 def _profile_key(profile: dict[str, int]) -> str:
@@ -93,26 +142,21 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
             break
         key = _profile_key(profile)
         attempted += 1
+        captured = None
         try:
             data = fetch(profile)
-            if len(data) > 2_000_000:
-                raise ValueError('UPS metadata exceeds 2 MB')
-            digest = hashlib.sha256(data).hexdigest()
-            evidence.mkdir(parents=True, exist_ok=True)
-            snapshot = evidence / (digest + '.ups')
-            snapshot.write_bytes(data)
-            records = parse_update_metadata(data)
-            if not records:
-                raise ValueError('UPS metadata contains no records')
-            responses[digest] = {'sha256': digest, 'bytes': len(data), 'snapshot': snapshot.name,
-                                 'source_url': UPDATE_METADATA_URL, 'records': records}
+            captured = capture_response(data, evidence, responses)
+            if captured.get('parse_error'):
+                raise ValueError(captured['parse_error'])
             observations[key] = {**checkpoint(observations.get(key), success=True, success_hours=168),
-                                 'profile': profile, 'status': 'observed', 'response_sha256': digest}
+                                 'profile': profile, 'status': 'observed', 'response_sha256': captured['sha256']}
         except Exception as error:
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
             observations[key] = {**checkpoint(observations.get(key)), 'profile': profile,
                                  'status': 'failed', 'error': str(error)}
+            if captured:
+                observations[key]['response_sha256'] = captured['sha256']
             errors.append({'source': 'legacy-ups-profile', 'profile': profile, 'error': str(error),
                            'http_status': getattr(error, 'code', None)})
             if getattr(error, 'code', None) in {403, 429}:
