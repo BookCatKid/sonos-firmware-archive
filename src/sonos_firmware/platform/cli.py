@@ -36,7 +36,7 @@ def main(argv=None):
             selected = list(registry.values()) if args.select == 'all' else [registry[args.select]]
             selected = [t for t in selected if not args.due or is_due(root, t)]
             if args.matrix:
-                print(json.dumps({'include': [{'target': t.name, 'lock': t.lock or t.name,
+                print(json.dumps({'include': [{'target': t.name, 'provider': t.provider, 'lock': t.lock or t.name,
                     'java': 'java' in t.capabilities, 'apkeep': 'apkeep' in t.capabilities} for t in selected]}))
             elif args.json:
                 print(json.dumps([{'name': t.name, 'description': t.description,
