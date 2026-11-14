@@ -16,8 +16,6 @@ sys.path.insert(0, str(ROOT / "src"))
 from sonos_firmware.connectx import RECIPIENT, STATIC_URL, extract_package, package_version, sha256
 from sonos_firmware.discovery import _OPENER, USER_AGENT, official_firmware_url, write_json
 from sonos_firmware.extract import key_recipient_id, load_private_key
-from sonos_firmware.legacy import recover_legacy_updater_key
-from sonos_firmware.mdp import write_private_key_exclusive
 from archive_monitor_firmware import ensure_release, upload_small_verified
 
 
@@ -44,17 +42,10 @@ def download_release(package, destination, repository):
 
 
 def recover_key(catalog, directory, repository):
-    """Reproduce the existing recovery from a hash-verified public updater."""
-    source = next(r for r in catalog["raw_images"] if r.get("package_id") == "34.16-37101-1-17" and r["kind"] == "rootfs")
-    rootfs = directory / "key-source-rootfs.bin"
-    download_release(source, rootfs, repository)
-    updater = subprocess.check_output(["unsquashfs", "-cat", str(rootfs), "bin/upgrade"])
-    recovered = recover_legacy_updater_key(updater, 17)
-    if key_recipient_id(recovered.key) != RECIPIENT:
-        raise ValueError("reproduced updater key has wrong recipient")
+    """Use the shared recipient-verified recovery over cataloged plaintext sources."""
+    from sonos_firmware.key_recovery import recover_catalog_key
     output = directory / "model17.pem"
-    write_private_key_exclusive(output, recovered.key)
-    rootfs.unlink()
+    recover_catalog_key(ROOT, catalog, 17, RECIPIENT, output, repository)
     return output
 
 

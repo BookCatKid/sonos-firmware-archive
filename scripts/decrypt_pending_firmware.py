@@ -29,6 +29,18 @@ from sonos_firmware.catalog import EXTRACTABLE_SECTION_TYPES  # noqa: E402
 from sonos_firmware.extract import extract_components, extract_available_components  # noqa: E402
 from sonos_firmware.storage import atomic_json, file_sha256 as _sha256  # noqa: E402
 from sonos_firmware.retry import checkpoint, select  # noqa: E402
+from sonos_firmware.keyring import recipient_key_path  # noqa: E402
+
+
+def section_keys(args, package, model, recipient):
+    model = package.get('package_model', model)
+    manifest = args.upd_manifest_directory / (package['id'] + '.json')
+    rows = json.loads(manifest.read_text()).get('sections', []) if manifest.exists() else []
+    fingerprints = {row['recipient_id'] for row in rows if row.get('recipient_id') and row.get('encrypted')}
+    if recipient:
+        fingerprints.add(recipient)
+    return {fp: path for fp in fingerprints
+            if (path := recipient_key_path(args.key_directory, model, fp)).is_file()}
 
 
 def main() -> int:
@@ -57,17 +69,19 @@ def main() -> int:
     recovered = ledger["recovered_keys"]
     inventory_skipped = []
 
-    def still_needs(package, model=None):
+    def still_needs(package, model=None, recipient=None):
         receipt = args.receipt_directory / (package['id'] + '.json')
         if not receipt.exists():
             return True
         manifest = args.upd_manifest_directory / (package['id'] + '.json')
         if not manifest.exists():
             return package.get('extraction_policy') == 'all-sections'
-        key = args.key_directory / f'model{model}.pem' if model is not None else None
+        keys = section_keys(args, package, model, recipient)
+        key = recipient_key_path(args.key_directory, model, recipient) if model is not None else None
         desired = [s for s in json.loads(manifest.read_text()).get('sections', [])
                    if (package.get('extraction_policy') == 'all-sections' or s.get('section_type') in EXTRACTABLE_SECTION_TYPES)
-                   and (not s.get('encrypted') or key is not None and key.is_file())]
+                   and (not s.get('encrypted') or s.get('recipient_id') in keys or
+                        not s.get('recipient_id') and key is not None and key.is_file())]
         components = json.loads(receipt.read_text()).get('components', [])
         covered = {row.get('section_index') for row in components}
         return any(row['index'] not in covered for row in desired)
@@ -86,10 +100,22 @@ def main() -> int:
             if package is None:
                 continue
             receipt = args.receipt_directory / f"{package['id']}.json"
-            if still_needs(package, group.get("package_model")) and package["id"] not in seen:
+            model = package.get('package_model', group.get('package_model'))
+            if still_needs(package, model, recipient) and package["id"] not in seen:
+                chosen = recipient
+                manifest = args.upd_manifest_directory / (package['id'] + '.json')
+                if package.get('extraction_policy') != 'all-sections' and manifest.exists():
+                    keys = section_keys(args, package, model, recipient)
+                    receipt_path = args.receipt_directory / (package['id'] + '.json')
+                    receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else {}
+                    covered = {row.get('section_index') for row in receipt.get('components', [])}
+                    wanted = sorted({row['recipient_id'] for row in json.loads(manifest.read_text()).get('sections', [])
+                                     if row.get('section_type') in EXTRACTABLE_SECTION_TYPES and row.get('encrypted')
+                                     and row.get('recipient_id') in keys and row['index'] not in covered})
+                    chosen = wanted[0] if wanted else recipient
                 seen.add(package["id"])
-                pending.append({"package": package, "model": group.get("package_model"),
-                                "recipient": recipient})
+                pending.append({"package": package, "model": model,
+                                "recipient": chosen})
 
     # Preserved UPDs outside the ledger can still owe raw components: any
     # unencrypted extractable section is held to the same catalog standard
@@ -117,6 +143,8 @@ def main() -> int:
                for s in sections):
             seen.add(package["id"])
             pending.append({"package": package, "model": None, "recipient": None})
+        elif any(s.get('encrypted') for s in sections):
+            inventory_skipped.append({'package_id': package['id'], 'reason': 'no matching recipient key is available'})
 
     if not pending:
         print("no preserved packages are pending decryption")
@@ -134,8 +162,9 @@ def main() -> int:
     def identity(entry):
         return entry['package']['id']
     def revision(entry):
-        key = args.key_directory / f"model{entry['model']}.pem"
+        key = recipient_key_path(args.key_directory, entry['model'], entry['recipient'])
         return {'sha256': entry['package']['sha256'], 'recipient': entry['recipient'], 'key_available': key.is_file(),
+                'ready_recipients': sorted(section_keys(args, entry['package'], entry['model'], entry['recipient'])),
                 'policy': entry['package'].get('extraction_policy', 'legacy-components')}
     eligible = {key: row for key, row in observations.items()}
     for entry in pending:
@@ -177,7 +206,11 @@ def extract_one(entry, args, receipt_output):
     if not package['id'] or Path(package['id']).name != package['id'] or package['id'] in {'.', '..'}:
         raise ValueError('package ID must be a basename')
     skipped = []
-    key_path = args.key_directory / f"model{model}.pem" if model is not None else None
+    key_path = recipient_key_path(args.key_directory, model, recipient) if model is not None and recipient is not None else None
+    if package.get('extraction_policy') == 'all-sections':
+        available_keys = section_keys(args, package, model, recipient)
+        if available_keys:
+            key_path = next(iter(available_keys.values()))
     if key_path is not None and not key_path.is_file():
         manifest_path = args.upd_manifest_directory / (package['id'] + '.json')
         sections = json.loads(manifest_path.read_text()).get('sections', []) if manifest_path.exists() else []
@@ -200,7 +233,9 @@ def extract_one(entry, args, receipt_output):
     output = args.raw_directory / package["id"]
     output.mkdir(parents=True, exist_ok=True)
     if package.get('extraction_policy') == 'all-sections':
-        available = extract_available_components(source, output, key_path)
+        keys = section_keys(args, package, model, recipient)
+        chosen = keys if len(keys) > 1 else next(iter(keys.values()), key_path)
+        available = extract_available_components(source, output, chosen)
         components = available['components']
         skipped.extend({'package_id': package['id'], **row} for row in available['skipped'])
     elif key_path is None:
@@ -210,9 +245,18 @@ def extract_one(entry, args, receipt_output):
         if any(c.get("source_encrypted") for c in components):
             raise ValueError(f"keyless extraction produced decrypted content: {package['id']}")
     else:
-        components = extract_components(source, output, key_path)
+        keys = section_keys(args, package, model, recipient)
+        manifest = args.upd_manifest_directory / (package['id'] + '.json')
+        sections = json.loads(manifest.read_text()).get('sections', []) if manifest.exists() else []
+        fingerprints = {row['recipient_id'] for row in sections if row.get('encrypted') and row.get('recipient_id')}
+        if len(fingerprints) > 1:
+            components = extract_components(source, output, keys, skip_encrypted=True)
+            expected = set(keys)
+        else:
+            components = extract_components(source, output, key_path)
+            expected = {recipient}
         encrypted_recipients = {c.get("recipient_id") for c in components} - {None}
-        if not components or encrypted_recipients != {recipient}:
+        if not components or not encrypted_recipients <= expected:
             raise ValueError(f"decrypted recipient mismatch: {package['id']}")
     if not components:
         return None, skipped

@@ -120,6 +120,7 @@ jobs:
           SONOS_MODEL_12_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_12_PRIVATE_KEY }}
           SONOS_MODEL_16_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_16_PRIVATE_KEY }}
           SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+          SONOS_PRIVATE_KEYS: ${{ secrets.SONOS_PRIVATE_KEYS }}
         shell: bash
         run: |
           set -euo pipefail

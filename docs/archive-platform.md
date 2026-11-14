@@ -105,6 +105,24 @@ intended asset has been reconciled, including assets missing from local staging.
 Receipt updates merge coverage by section index, retaining earlier preserved
 sections when the current worker cannot decrypt them.
 
+The firmware worker refreshes recipient coverage before preparing keys. Legacy
+recovery selects hash-verified plaintext rootfs assets, with the original UPD
+as a fallback. It detects CRAMFS/SquashFS from content and reads `bin/upgrade`
+without executing firmware. Bounded wrapper discovery tries the supported
+derivations and validates the requested recipient; it needs no fixed release
+list, model-specific binary offset, or pre-downloaded local files. Failed
+sources back off in `data/discovery/key-recovery.json`, while later candidates
+continue. Successful sources are replayed to reproduce keys in a fresh worker.
+
+Private keys remain in temporary worker storage. The public ledger retains
+recipient fingerprints and recovery provenance, including source and updater
+hashes. Recipient-specific key files preserve rotations and allow different
+encrypted sections to use different keys. Optional configured keys can use
+`SONOS_PRIVATE_KEYS`, a JSON object mapping recipient fingerprints to PEM
+strings, or the existing per-model environment variables. Model-26 recovery
+continues to require its hash-bound public MDP3 and OTP evidence. A failed or
+unsupported recovery remains explicit and does not block plaintext extraction.
+
 Use the Actions run report to inspect errors and remaining work. Bounded
 completion is not proof that all historical releases have been discovered;
 coverage records must retain unresolved gaps and source failures.

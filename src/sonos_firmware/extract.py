@@ -5,9 +5,11 @@ from __future__ import annotations
 import hashlib
 import io
 import tarfile
+from collections.abc import Mapping
 from pathlib import Path, PurePosixPath
 
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.exceptions import UnsupportedAlgorithm
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
@@ -105,7 +107,15 @@ def _extract_components(
     output_dir.mkdir(parents=True, exist_ok=True)
     data = upd_path.read_bytes()
     sections = parse_bytes(data)
-    private_key = load_private_key(private_key_path) if private_key_path else None
+    private_keys = {}
+    paths = private_key_path if isinstance(private_key_path, Mapping) else {None: private_key_path}
+    for recipient, path in paths.items():
+        if path:
+            try:
+                private_keys[recipient] = load_private_key(path)
+            except (ValueError, TypeError, OSError, UnsupportedAlgorithm):
+                if not all_sections:
+                    raise
     package_id = upd_path.stem
     records: list[dict] = []
 
@@ -118,6 +128,7 @@ def _extract_components(
         payload = data[section.offset + 16 : section.offset + section.length]
         recipient = None
         if section.encrypted:
+            private_key = private_keys.get(section.recipient_id, private_keys.get(None))
             if private_key is None:
                 if skip_encrypted:
                     if skipped is not None:
@@ -164,7 +175,7 @@ def extract_components(upd_path, output_dir, private_key_path=None, legacy_model
 
 
 def extract_available_components(upd_path, output_dir, private_key_path=None):
-    """Extract every available section and describe those still blocked."""
+    """Extract available sections using a key path or recipient-to-path mapping."""
     skipped = []
     components = _extract_components(upd_path, output_dir, private_key_path,
                                      skip_encrypted=True, all_sections=True, skipped=skipped)

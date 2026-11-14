@@ -114,9 +114,15 @@ class DecryptPendingTests(unittest.TestCase):
 
     def test_missing_key_skips_without_failure(self):
         (self.keys / "model8.pem").unlink()
-        with mock.patch.object(MODULE, "extract_components") as extract:
+        (self.upd_manifests / (PACKAGE['id'] + '.json')).write_text(json.dumps({'sections': [
+            {'index': 7, 'section_type': 4, 'encrypted': True, 'recipient_id': RECIPIENT}]}))
+        with mock.patch.object(MODULE, "extract_components") as extract, \
+             mock.patch.object(MODULE.subprocess, 'run') as download:
             self.assertEqual(self._run(), 0)
         extract.assert_not_called()
+        download.assert_not_called()
+        state = json.loads((self.catalog.parent / 'discovery/firmware-extraction.json').read_text())
+        self.assertEqual(state['repositories']['BookCatKid/sonos-firmware-archive'][PACKAGE['id']]['status'], 'blocked')
         self.assertFalse((self.receipts / "99.0-1-8.json").exists())
 
     def test_legacy_plaintext_can_extract_despite_unavailable_model_key(self):
@@ -130,12 +136,17 @@ class DecryptPendingTests(unittest.TestCase):
         self.assertTrue(extract.call_args.kwargs['skip_encrypted'])
 
     def test_legacy_partial_receipt_does_not_suppress_newly_available_decryption(self):
-        (self.receipts / (PACKAGE['id'] + '.json')).write_text(json.dumps({'components': [{**COMPONENT, 'section_index': 0}]}))
+        prior = {**COMPONENT, 'section_index': 0, 'section_type': 6, 'filename': 'old-kernel.bin',
+                 'source_encrypted': False, 'recipient_id': None}
+        (self.receipts / (PACKAGE['id'] + '.json')).write_text(json.dumps({'components': [prior]}))
         (self.upd_manifests / (PACKAGE['id'] + '.json')).write_text(json.dumps({'sections': [
-            {'index': 0, 'section_type': 6, 'encrypted': False}, {'index': 1, 'section_type': 4, 'encrypted': True}]}))
-        with mock.patch.object(MODULE, 'extract_components', return_value=[COMPONENT]) as extract:
+            {'index': 0, 'section_type': 6, 'encrypted': False},
+            {'index': 1, 'section_type': 4, 'encrypted': True, 'recipient_id': RECIPIENT}]}))
+        current = {**COMPONENT, 'section_index': 1, 'section_type': 4, 'filename': 'new-rootfs.bin'}
+        with mock.patch.object(MODULE, 'extract_components', return_value=[current]) as extract:
             self.assertEqual(self._run(), 0)
         extract.assert_called_once()
+        self.assertEqual(extract.call_args.args[2], self.keys / 'model8.pem')
 
     def test_source_hash_mismatch_is_recorded_without_a_receipt(self):
         (self.staging / PACKAGE["filename"]).write_bytes(b"bogus")

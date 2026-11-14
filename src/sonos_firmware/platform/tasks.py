@@ -35,8 +35,8 @@ def extract_firmware(root, work, repository, limit=24):
         subprocess.run([sys.executable, str(root / 'scripts' / script), *(str(a) for a in args)], cwd=root, check=True)
     try:
         for script, arguments in [
-            ('prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
             ('refresh_key_recovery_ledger.py', ()),
+            ('prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
             ('decrypt_pending_firmware.py', ('--key-directory', keys, '--staging', work / 'sources',
              '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts,
              '--summary', report_path, '--max-packages', limit))]:
