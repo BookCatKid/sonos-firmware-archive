@@ -30,11 +30,12 @@ def walk_release_records(value, source: str, expected: dict) -> None:
 def recorded_assets(root: Path) -> dict:
     expected = {}
     catalog_path = root / "data/catalog.json"
-    walk_release_records(
-        json.loads(catalog_path.read_text(encoding="utf-8")),
-        str(catalog_path.relative_to(root)),
-        expected,
-    )
+    if catalog_path.exists():
+        walk_release_records(
+            json.loads(catalog_path.read_text(encoding="utf-8")),
+            str(catalog_path.relative_to(root)),
+            expected,
+        )
     for app_path in sorted((root / "data/apps").glob("*.json")):
         walk_release_records(
             json.loads(app_path.read_text(encoding="utf-8")),

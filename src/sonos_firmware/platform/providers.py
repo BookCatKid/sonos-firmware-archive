@@ -44,9 +44,9 @@ def mobile(c: Context):
 
 
 def web(c: Context):
-    report = c.work / 'discovery.json'
-    return [c.script('check_new_web_apps.py', '--output', report, accepted_codes=(0, 2), report=str(report)),
-            c.script('archive_web_apps.py', '--capture-dir', c.work / 'captures', '--upload', '--repo', c.repository)]
+    return [c.script('archive_web_apps.py', '--capture-dir', c.work / 'captures', '--upload', '--repo', c.repository,
+                     '--max-assets', c.options.get('max_assets', 500),
+                     report=str(c.root / 'data/apps/web-app-archive.json'))]
 
 
 def apple(c: Context):

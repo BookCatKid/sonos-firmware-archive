@@ -180,6 +180,64 @@ def publish_verified(repository: str, tag: str, path: Path, size: int, digest: s
     return remote
 
 
+def publish_collection(repository: str, tag: str, files: list[tuple[Path, dict]]) -> dict:
+    """Reconcile a collection before upload; return only verified publications.
+
+    A verified remote capture needs no local file. Missing assets require exact
+    local bytes. Never replace an existing name, including during a retry.
+    """
+    expected = {}
+    for path, capture in files:
+        name = capture['release_asset']
+        if not isinstance(name, str) or not name or Path(name).name != name or name in {'.', '..'}:
+            raise ValueError('release asset name must be a basename')
+        identity = (capture['bytes'], capture['sha256'])
+        if (not isinstance(identity[0], int) or isinstance(identity[0], bool) or identity[0] < 0 or
+            not isinstance(identity[1], str) or len(identity[1]) != 64 or
+            any(char not in '0123456789abcdef' for char in identity[1])):
+            raise ValueError('release collection needs sizes and SHA-256 receipts')
+        if name in expected and expected[name][1] != identity:
+            raise ValueError('conflicting capture identities for release asset: ' + name)
+        expected[name] = (path, identity)
+    if not expected:
+        return {}
+    observed = remote_assets(repository, tag)
+
+    def matches(name, asset):
+        size, digest = expected[name][1]
+        if asset['size'] != size or verified_remote_digest(asset) != digest:
+            raise RuntimeError(f'remote asset exists with different content: {tag}/{name}')
+        if not (asset.get('browser_download_url') or asset.get('url')):
+            raise ValueError('verified GitHub asset has no publication URL')
+
+    missing = []
+    # Complete preflight before any mutation: a late collision must not leave
+    # unrelated captures partially uploaded.
+    for name, (path, (size, digest)) in expected.items():
+        if name in observed:
+            matches(name, observed[name])
+        else:
+            if not path.is_file() or path.stat().st_size != size or file_sha256(path) != digest:
+                raise ValueError('capture missing or does not match its receipt: ' + name)
+            missing.append((name, path))
+    if missing:
+        release = public_release(repository, tag)
+        for name, path in missing:
+            upload_streaming(repository, release['id'], name, path)
+            time.sleep(1.1)
+        for attempt in range(10):
+            observed = remote_assets(repository, tag)
+            for name in expected.keys() & observed.keys():
+                matches(name, observed[name])
+            if expected.keys() <= observed.keys():
+                break
+            if attempt < 9:
+                time.sleep(2)
+        else:
+            raise RuntimeError(f'GitHub assets missing after upload: {tag}')
+    return {name: observed[name] for name in expected}
+
+
 def publication_receipt(repository, tag, name, capture, remote):
     return {'status': 'verified', 'repository': repository, 'release_tag': tag, 'release_asset': name,
             'release_url': remote.get('browser_download_url') or remote['url'],

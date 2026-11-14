@@ -26,7 +26,8 @@ def package_summary(package: dict) -> dict:
 def main() -> int:
     ledger_path = ROOT / "data/key-recovery-ledger.json"
     ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {"recovered_keys": {}, "key_origin": {}}
-    catalog = json.loads((ROOT / "data/catalog.json").read_text(encoding="utf-8"))
+    catalog_path = ROOT / 'data/catalog.json'
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8")) if catalog_path.exists() else {'packages': []}
     recovered = ledger["recovered_keys"]
     encrypted: dict[str, list[dict]] = defaultdict(list)
     plaintext: list[dict] = []

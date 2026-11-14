@@ -6,18 +6,14 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import json
-import subprocess
-import sys
-import time
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
 
-from sonos_firmware.releases import public_release, remote_assets, upload_asset, upload_streaming, verified_remote_digest  # noqa: E402
-from sonos_firmware.storage import atomic_json, file_sha256  # noqa: E402
+from sonos_firmware import releases
+from sonos_firmware.storage import atomic_json
 
 
 def main() -> int:
@@ -63,7 +59,7 @@ def main() -> int:
     preflight: list[dict] = []
     existing_targets: list[str] = []
     for tag, paths in sorted(groups.items()):
-        assets = remote_assets(args.repo, tag)
+        assets = releases.remote_assets(args.repo, tag)
         names = [item['release_asset'] for path, item in paths]
         existing = [name for name in names if name in assets]
         existing_targets.extend(f"{tag}/{name}" for name in existing)
@@ -85,52 +81,15 @@ def main() -> int:
             print(f"error: intended asset already exists: {target}")
         return 1
 
-    def upload(entry) -> tuple[str, int]:
+    def upload(entry):
         tag, paths = entry
-        release = public_release(args.repo, tag)
-        assets = remote_assets(args.repo, tag)
-        uploaded = 0
-        for path, item in paths:
-            name = item['release_asset']
-            asset = assets.get(name)
-            if asset is not None:
-                # Resume path: never fail or clobber on rerun. An existing
-                # asset that already matches the catalog is left in place;
-                # a mismatch is an error, not an overwrite.
-                if asset["size"] == item["bytes"] and verified_remote_digest(asset) == item["sha256"]:
-                    print(f"verified existing remote asset; skipping upload: {tag}/{name}")
-                    continue
-                raise RuntimeError(f"remote asset exists with different content: {tag}/{name}")
-            if not path.is_file() or path.stat().st_size != item['bytes'] or file_sha256(path) != item['sha256']:
-                raise ValueError(f'raw capture missing or does not match its receipt: {path.name}')
-            if path.stat().st_size >= 32 * 1024 * 1024:
-                upload_streaming(args.repo, release["id"], name, path)
-            else:
-                upload_asset(args.repo, release["id"], name, path)
-            uploaded += 1
-            time.sleep(1.1)
-        return tag, uploaded
+        releases.publish_collection(args.repo, tag, paths)
+        return tag, len(paths)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         for tag, count in pool.map(upload, sorted(groups.items())):
-            print(f"uploaded {count} raw assets to {tag}")
+            print(f"verified {count} raw assets in {tag}")
 
-    errors: list[str] = []
-    for tag, paths in sorted(groups.items()):
-        assets = remote_assets(args.repo, tag)
-        for path, item in paths:
-            name = item['release_asset']
-            asset = assets.get(name)
-            if asset is None:
-                errors.append(f"{tag}/{name}: missing")
-                continue
-            digest = verified_remote_digest(asset)
-            if asset["size"] != item["bytes"] or digest != item["sha256"]:
-                errors.append(f"{tag}/{name}: size or digest mismatch")
-    if errors:
-        for error in errors:
-            print(f"error: {error}")
-        return 1
     print(f"reconciled {sum(map(len, groups.values()))} raw assets across {len(groups)} releases")
     return 0
 

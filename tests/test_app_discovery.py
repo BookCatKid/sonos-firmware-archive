@@ -20,7 +20,7 @@ DESKTOP = load("discover_desktop_installers")
 MOBILE = load("discover_mobile_installers")
 GOOGLE_PLAY = load("discover_google_play_listings")
 ASSET_AUDIT = load("audit_release_assets")
-WEB = load("archive_web_apps")
+from sonos_firmware import web_archive as WEB
 family_for_wayback_url = DESKTOP.family_for_wayback_url
 version_for_url = DESKTOP.version_for_url
 mobile_family = MOBILE.family
@@ -92,6 +92,13 @@ class AppDiscoveryTests(unittest.TestCase):
             "headers": {"content-type": "text/html"},
         }
         assert WEB.classify(result) == "gated-or-redirected"
+
+    def test_web_entry_login_redirect_is_a_gap_but_a_public_locale_redirect_is_allowed(self):
+        result = {'requested_url': 'https://pro.sonos.com/', 'status': 200,
+                  'headers': {'content-type': 'text/html'}}
+        self.assertEqual(WEB.classify({**result, 'final_url': 'https://pro.sonos.com/en-us/login'}),
+                         'gated-or-redirected')
+        self.assertEqual(WEB.classify({**result, 'final_url': 'https://pro.sonos.com/en-us/'}), 'captured')
 
     def test_web_crawler_only_follows_static_same_host_assets(self):
         assert WEB.allowed_asset("https://pro.sonos.com/_next/static/a.js", "pro.sonos.com")

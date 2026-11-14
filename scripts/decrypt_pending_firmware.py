@@ -64,7 +64,7 @@ def main() -> int:
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
 
-    catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
+    catalog = json.loads(args.catalog.read_text(encoding="utf-8")) if args.catalog.exists() else {'packages': [], 'raw_images': []}
     ledger = json.loads(args.ledger.read_text(encoding="utf-8")) if args.ledger.exists() else {'recovered_keys': {}}
     recovered = ledger["recovered_keys"]
     inventory_skipped = []

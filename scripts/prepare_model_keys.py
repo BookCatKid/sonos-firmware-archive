@@ -26,7 +26,7 @@ def main():
     args = parser.parse_args()
     if args.max_sources <= 0:
         parser.error('--max-sources must be positive')
-    catalog = json.loads(args.catalog.read_text())
+    catalog = json.loads(args.catalog.read_text()) if args.catalog.exists() else {'packages': []}
     ledger = json.loads(args.ledger.read_text()) if args.ledger.exists() else {'recovered_keys': {}, 'missing_keys': []}
     recipients = recipient_models(ledger)
     origins = {}

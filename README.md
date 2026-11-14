@@ -11,6 +11,11 @@ is no initial download, hash inventory, or completed archive to prepare before
 adding a target. Discovery starts from public protocols and indexes and resumes
 from observations produced by earlier runs.
 
+The workers also initialize an empty archive: prior `data/` records and GitHub
+Releases are optional, and destination releases are created when first needed.
+Existing captures supplement discovery and retries; they are not bootstrap
+requirements. See [starting with no archive](docs/archive-platform.md#starting-with-no-archive).
+
 ## Local development
 
 ```bash
@@ -20,6 +25,7 @@ pip install -e '.[test]'
 sonos-archive targets
 sonos-archive run firmware --plan
 python scripts/run_tests.py
+# After a worker has created a catalog:
 sonos-fw verify
 ```
 

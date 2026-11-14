@@ -252,7 +252,7 @@ python scripts/archive_android_store_apps.py --source apkpure-recovery
 # Capture public Web controller/Pro deployment bodies locally. Add --upload to
 # publish every body plus the complete reconstruction bundles to Releases.
 python scripts/archive_web_apps.py
-python scripts/check_new_web_apps.py --output web-app-monitor-report.json
+python scripts/archive_web_apps.py --probe
 
 # Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \

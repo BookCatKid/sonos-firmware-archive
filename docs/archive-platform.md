@@ -31,6 +31,31 @@ checks any discovery checksum, publishes without overwriting, and reconciles
 GitHub's size and digest before adding a preserved artifact. Source adapters
 do not need their own hashing, retry ledger, or publication implementation.
 
+## Starting with no archive
+
+The configured public protocol, redirect, sitemap, and store-discovery roots
+are sufficient to start with no `data/` state and no GitHub Releases. Workers
+create their catalogs, retry ledgers, and destination releases as they discover
+and preserve sources. Adding a target requires neither locally downloaded
+firmware nor an inventory of release assets or hashes. Configure repository
+write credentials for CI; authenticated stores retain their declared capability
+requirements.
+
+Earlier receipts and releases improve historical coverage and permit exact
+publication reconciliation. They are optional inputs: binary-derived GPL leads
+supplement independent sitemap and version-grammar discovery. Firmware source
+preservation runs before extraction and key recovery. An empty extraction queue
+needs no keys or release downloads; unavailable keys leave encrypted captures
+preserved with their extraction gap recorded.
+
+Offline fixtures exercise protocol discovery through the first verified firmware
+publication into an empty destination, installer and web release creation,
+GPL discovery without prior versions, and the actual empty extraction worker.
+Run the cross-platform bootstrap checks with
+`python scripts/run_tests.py --pattern 'test_empty_platform.py'`.
+They do not claim that a source which has disappeared upstream can be recreated
+from nothing; unavailable historical bytes remain a documented discovery gap.
+
 ## Worker lifecycle
 
 The Actions worker discovers candidates and records their provenance. It
@@ -77,6 +102,19 @@ Older unresolved capture receipts remain visible and are retried independently;
 they never become preserved solely because a newer capture succeeded. Metadata
 checkpoints use the same atomic JSON writer across discovery, app acquisition,
 GPL acquisition, and orchestration.
+
+Web deployment capture runs each public site independently without a separate
+probe prerequisite. Web bodies and raw firmware images use the same collection
+publisher: it checks every intended name before upload, streams missing captures,
+and reconciles size and SHA-256 before promotion. Web capture budgets, source
+errors, and interrupted publications remain in the receipt for later workers.
+Adding a web deployment to the archive needs no existing destination release.
+Later batches prioritize saved pending URLs. Receipts retain all verified bodies
+and each capture-batch bundle as coverage accumulates; a smaller later batch
+cannot replace earlier captures. A fixed probe that did not complete has no
+asserted deployment fingerprint. When original worker files remain available,
+publication retries reuse them; otherwise they reconcile any exact captures
+already present at the destination without requiring those files.
 
 GPL discovery also scans this archive's published app, web and firmware assets
 automatically. It verifies their recorded size and hash in temporary CI storage,
