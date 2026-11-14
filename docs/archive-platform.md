@@ -92,10 +92,18 @@ Child Python tests inherit the guard, and Git fixtures use only file transport.
 
 The shared metadata commit command validates JSON and the firmware catalog,
 then stages only the target's declared data paths and its checkpoint. It refuses
-to include pre-staged unrelated changes. Firmware extraction restores the
-catalog checkpoint from immediately before extraction if publication fails,
-retaining earlier successfully published source records. New raw receipts are
-installed only after upload verification.
+to include pre-staged unrelated changes.
+
+Firmware extraction uses a bounded queue with durable retry timing. Failed
+packages back off; newly available keys and changed source hashes become
+eligible immediately. A failure does not stop extraction of other packages.
+Each extracted package has its own publication transaction. Catalog changes
+stay in worker staging until upload verification succeeds, including when a
+worker is interrupted. Failed publication retains earlier verified sources
+and extracted packages. New raw receipts are installed atomically after every
+intended asset has been reconciled, including assets missing from local staging.
+Receipt updates merge coverage by section index, retaining earlier preserved
+sections when the current worker cannot decrypt them.
 
 Use the Actions run report to inspect errors and remaining work. Bounded
 completion is not proof that all historical releases have been discovered;

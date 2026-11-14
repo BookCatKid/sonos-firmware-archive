@@ -2,6 +2,7 @@
 
 Imports are side-effect free. Network access happens only when called by a worker.
 """
+import hashlib
 import json
 import mimetypes
 import subprocess
@@ -175,3 +176,29 @@ def publish_verified(repository: str, tag: str, path: Path, size: int, digest: s
     if remote is None:
         raise RuntimeError(f'GitHub asset missing after upload: {tag}/{path.name}')
     return remote
+
+
+def verified_remote_digest(asset: dict) -> str:
+    digest = (asset.get("digest") or "").removeprefix("sha256:")
+    if digest:
+        return digest
+    hasher = hashlib.sha256()
+    request = urllib.request.Request(
+        asset["browser_download_url"], headers={"User-Agent": "sonos-firmware-archive/1"}
+    )
+    with urllib.request.urlopen(request, timeout=300) as response:
+        while block := response.read(1024 * 1024):
+            hasher.update(block)
+    return hasher.hexdigest()
+
+
+def upload_streaming(repository: str, release_id: int, name: str, path: Path) -> None:
+    endpoint = (
+        f"repos/{repository}/releases/{release_id}/assets?"
+        + urllib.parse.urlencode({"name": name})
+    )
+    subprocess.run([
+        "gh", "api", "--method", "POST",
+        "-H", f"Content-Type: {mimetypes.guess_type(name)[0] or 'application/octet-stream'}",
+        "--input", str(path), f"https://uploads.github.com/{endpoint}",
+    ], check=True, stdout=subprocess.DEVNULL)

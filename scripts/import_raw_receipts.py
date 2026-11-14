@@ -19,9 +19,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("receipts", type=Path, nargs="+")
     parser.add_argument("--upd-manifest-directory", type=Path, default=ROOT / "data/upd")
+    parser.add_argument('--catalog', type=Path, default=ROOT / 'data/catalog.json')
     args = parser.parse_args()
 
-    catalog_path = ROOT / "data/catalog.json"
+    catalog_path = args.catalog
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     packages = {item["id"]: item for item in catalog["packages"]}
     raw = {

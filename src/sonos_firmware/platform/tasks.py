@@ -25,33 +25,60 @@ def store_apple(root: Path, current_path: Path):
     write_json(root / 'data/apps/apple-app-store.json', current)
 
 
-def extract_firmware(root, work, repository):
+def extract_firmware(root, work, repository, limit=24):
     work.mkdir(parents=True, exist_ok=True)
     keys = work / 'keys'
     receipts = work / 'receipts'
+    report_path = work / 'extraction.json'
+    errors = []
     def run(script, *args):
         subprocess.run([sys.executable, str(root / 'scripts' / script), *(str(a) for a in args)], cwd=root, check=True)
     try:
-        run('prepare_model_keys.py', '--directory', keys, '--report', work / 'keys.json', '--repository', repository)
-        run('refresh_key_recovery_ledger.py')
-        run('decrypt_pending_firmware.py', '--key-directory', keys, '--staging', work / 'sources',
-            '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts, '--summary', work / 'extraction.json')
+        for script, arguments in [
+            ('prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
+            ('refresh_key_recovery_ledger.py', ()),
+            ('decrypt_pending_firmware.py', ('--key-directory', keys, '--staging', work / 'sources',
+             '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts,
+             '--summary', report_path, '--max-packages', limit))]:
+            try:
+                run(script, *arguments)
+            except (OSError, subprocess.CalledProcessError) as error:
+                errors.append({'step': script, 'error': str(error)})
         new = sorted(receipts.glob('*.json'))
-        if not new:
-            return
         catalog = root / 'data/catalog.json'
-        previous = catalog.read_bytes()
-        try:
-            run('import_raw_receipts.py', *new)
-            run('upload_raw_assets.py', '--directory', work / 'raw', '--repo', repository)
-        except Exception:
-            # Preserve catalog changes made by earlier source publication steps.
-            catalog.write_bytes(previous)
-            raise
         destination = root / 'data/raw'
-        destination.mkdir(parents=True, exist_ok=True)
+        published = []
         for receipt in new:
-            shutil.copyfile(receipt, destination / receipt.name)
+            previous = catalog.read_bytes()
+            staged_catalog = work / 'raw-catalog.json'
+            staged_catalog.write_bytes(previous)
+            promoted = False
+            try:
+                document = json.loads(receipt.read_text())
+                if any(component.get('package_id') != receipt.stem for component in document['components']):
+                    raise ValueError('extraction receipt contains another package')
+                run('import_raw_receipts.py', receipt, '--catalog', staged_catalog)
+                run('upload_raw_assets.py', '--directory', work / 'raw', '--catalog', staged_catalog,
+                    '--package-id', receipt.stem, '--repo', repository)
+                write_json(catalog, json.loads(staged_catalog.read_text()))
+                promoted = True
+                destination.mkdir(parents=True, exist_ok=True)
+                write_json(destination / receipt.name, document)
+                published.append(receipt.stem)
+            except Exception as error:
+                # Roll back only this package; retain earlier successful sources
+                # and extracted packages so another failure cannot strand them.
+                if promoted:
+                    write_json(catalog, json.loads(previous))
+                errors.append({'package_id': receipt.stem, 'step': 'publish', 'error': str(error)})
+        report = json.loads(report_path.read_text()) if report_path.exists() else {'schema_version': 1}
+        report['published'] = published
+        report['errors'] = report.get('errors', []) + errors
+        if errors:
+            report['status'] = 'partial'
+        write_json(report_path, report)
+        if errors:
+            raise RuntimeError(f'firmware extraction has {len(errors)} failed operations; verified progress retained')
     finally:
         shutil.rmtree(keys, ignore_errors=True)
 
@@ -67,6 +94,7 @@ def main():
     extract = sub.add_parser('extract-firmware')
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
+    extract.add_argument('--max-packages', type=int, default=24)
     args = parser.parse_args()
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         parser.error('acquisition tasks run in the CI worker; use the platform plan locally')
@@ -75,7 +103,9 @@ def main():
     elif args.task == 'store-google-play-metadata':
         write_json(args.root / 'data/apps/google-play-listings.json', json.loads(args.current.read_text()))
     elif args.task == 'extract-firmware':
-        extract_firmware(args.root, args.work_dir, args.repository)
+        if args.max_packages <= 0:
+            parser.error('--max-packages must be positive')
+        extract_firmware(args.root, args.work_dir, args.repository, args.max_packages)
 
 
 if __name__ == '__main__':

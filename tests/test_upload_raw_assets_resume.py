@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 import tempfile
 import unittest
@@ -13,26 +14,32 @@ MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(MODULE)
 
-CATALOG = json.loads((ROOT / "data/catalog.json").read_text(encoding="utf-8"))
-ITEMS = {
-    item["filename"]: item
-    for item in CATALOG["raw_images"]
-    if item.get("package_id") == "86.8-78270-1-8" and item.get("release_tag") and item.get("release_asset")
-}
-TAG = next(iter(ITEMS.values()))["release_tag"]
+PAYLOADS = {f'fixture-{kind}.bin': kind.encode() for kind in ('kernel', 'rootfs', 'preinstall')}
+TAG = 'firmware-fixture'
+ITEMS = {name: {'filename': name, 'package_id': 'fixture', 'release_tag': TAG, 'release_asset': name,
+                'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest()} for name, body in PAYLOADS.items()}
 
 
 class UploadResumeTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        directory = Path(self.tmp.name) / "86.8-78270-1-8"
-        directory.mkdir()
+        self.root = Path(self.tmp.name)
+        directory = self.root / 'raw/fixture'
+        directory.mkdir(parents=True)
+        (self.root / 'data').mkdir()
+        (self.root / 'data/catalog.json').write_text(json.dumps({'raw_images': list(ITEMS.values())}))
+        patcher = mock.patch.object(MODULE, 'ROOT', self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        sleeper = mock.patch.object(MODULE.time, 'sleep')
+        sleeper.start()
+        self.addCleanup(sleeper.stop)
         for name, item in ITEMS.items():
-            (directory / name).write_bytes(b"x" * min(item["bytes"], 16))
+            (directory / name).write_bytes(PAYLOADS[name])
         self.argv = [
             "upload_raw_assets.py",
-            "--directory", self.tmp.name,
-            "--package-id", "86.8-78270-1-8",
+            "--directory", str(self.root / 'raw'),
+            "--package-id", "fixture",
         ]
 
     def tearDown(self):
@@ -60,6 +67,28 @@ class UploadResumeTests(unittest.TestCase):
         self.assertEqual(result, 0)
         upload_asset.assert_not_called()
         upload_streaming.assert_not_called()
+
+    def test_missing_local_files_can_reconcile_verified_remote_assets(self):
+        for path in (self.root / 'raw/fixture').iterdir():
+            path.unlink()
+        self.assertEqual(self._run(set(ITEMS))[0], 0)
+
+    def test_missing_local_files_and_missing_remote_assets_cannot_claim_publication(self):
+        for path in (self.root / 'raw/fixture').iterdir():
+            path.unlink()
+        with self.assertRaisesRegex(ValueError, 'missing or does not match'):
+            self._run(set())
+
+    def test_corrupt_same_size_local_files_are_not_uploaded(self):
+        for path in (self.root / 'raw/fixture').iterdir():
+            path.write_bytes(b'x' * path.stat().st_size)
+        with self.assertRaisesRegex(ValueError, 'missing or does not match'):
+            self._run(set())
+
+    def test_requested_package_cannot_succeed_with_no_expected_assets(self):
+        self.argv[-1] = 'unrecognized-package'
+        with self.assertRaisesRegex(ValueError, 'no cataloged raw assets'):
+            self._run(set())
 
     def test_existing_mismatched_asset_errors_without_clobber(self):
         result, upload_asset, upload_streaming = self._run(set(ITEMS))

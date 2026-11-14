@@ -9,6 +9,7 @@ def firmware(c: Context):
                  '--report', report, '--seconds', c.options.get('seconds', 1200),
                  '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 24), report=str(report)),
         c.task('extract-firmware', '--work-dir', c.work / 'extract', '--repository', c.repository,
+               '--max-packages', c.options.get('extraction_limit', 24),
                after_failure=True, report=str(c.work / 'extract/extraction.json')),
         c.script('archive_connectx.py', '--work-dir', c.work / 'connectx', '--repository', c.repository,
                  '--max-packages', c.options.get('complete_limit', 4), '--publish', after_failure=True),

@@ -113,6 +113,84 @@ class TargetRegistrationTests(unittest.TestCase):
 
 
 class ExtractionCheckpointTests(unittest.TestCase):
+    def test_interrupted_upload_cannot_expose_staged_catalog_records(self):
+        from unittest.mock import patch
+        from sonos_firmware.platform.tasks import extract_firmware
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'data').mkdir()
+            catalog = root / 'data/catalog.json'
+            source = b'{"packages": [{"id": "verified-source"}], "raw_images": []}\n'
+            catalog.write_bytes(source)
+            work = root / 'worker'
+            def worker(command, **kwargs):
+                script = Path(command[1]).name
+                if script == 'decrypt_pending_firmware.py':
+                    (work / 'receipts').mkdir()
+                    (work / 'receipts/source.json').write_text('{"components": []}')
+                elif script == 'import_raw_receipts.py':
+                    staging = Path(command[command.index('--catalog') + 1])
+                    staging.write_text('{"packages": [], "raw_images": ["unverified"]}')
+                elif script == 'upload_raw_assets.py':
+                    self.assertEqual(catalog.read_bytes(), source)
+                    raise KeyboardInterrupt('simulated interrupted worker')
+            with patch('sonos_firmware.platform.tasks.subprocess.run', side_effect=worker):
+                with self.assertRaises(KeyboardInterrupt):
+                    extract_firmware(root, work, 'owner/repo')
+            self.assertEqual(catalog.read_bytes(), source)
+            self.assertFalse((root / 'data/raw/source.json').exists())
+
+    def test_successful_packages_publish_after_extraction_and_upload_failures(self):
+        from unittest.mock import patch
+        from sonos_firmware.platform.tasks import extract_firmware
+        import subprocess
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'data').mkdir()
+            catalog = root / 'data/catalog.json'
+            catalog.write_text(json.dumps({'packages': ['preserved-source'], 'raw_images': []}))
+            work = root / 'worker'
+            attempted = []
+            def worker(command, **kwargs):
+                script = Path(command[1]).name
+                if script == 'prepare_model_keys.py':
+                    keys = work / 'keys'
+                    keys.mkdir()
+                    (keys / 'model17.pem').write_text('private fixture')
+                    raise subprocess.CalledProcessError(1, command)
+                elif script == 'decrypt_pending_firmware.py':
+                    receipts = work / 'receipts'
+                    receipts.mkdir(parents=True)
+                    for package in ('alpha', 'beta', 'gamma', 'other'):
+                        component_package = 'alpha' if package == 'other' else package
+                        (receipts / (package + '.json')).write_text(json.dumps({'components': [{'package_id': component_package}]}))
+                    raise subprocess.CalledProcessError(1, command)
+                elif script == 'import_raw_receipts.py':
+                    package = Path(command[2]).stem
+                    staging = Path(command[command.index('--catalog') + 1])
+                    document = json.loads(staging.read_text())
+                    document['raw_images'].append(package)
+                    staging.write_text(json.dumps(document))
+                elif script == 'upload_raw_assets.py':
+                    package = command[command.index('--package-id') + 1]
+                    self.assertNotIn(package, json.loads(catalog.read_text())['raw_images'])
+                    attempted.append(package)
+                    if package == 'beta':
+                        raise subprocess.CalledProcessError(1, command)
+            with patch('sonos_firmware.platform.tasks.subprocess.run', side_effect=worker):
+                with self.assertRaisesRegex(RuntimeError, 'verified progress retained'):
+                    extract_firmware(root, work, 'owner/repo')
+            self.assertEqual(attempted, ['alpha', 'beta', 'gamma'])
+            document = json.loads(catalog.read_text())
+            self.assertEqual(document['packages'], ['preserved-source'])
+            self.assertEqual(document['raw_images'], ['alpha', 'gamma'])
+            self.assertEqual(sorted(path.stem for path in (root / 'data/raw').glob('*.json')), ['alpha', 'gamma'])
+            report = json.loads((work / 'extraction.json').read_text())
+            self.assertEqual(report['published'], ['alpha', 'gamma'])
+            self.assertEqual(report['status'], 'partial')
+            self.assertTrue(any(row.get('package_id') == 'other' for row in report['errors']))
+            self.assertFalse((work / 'keys').exists())
+
     def test_raw_upload_failure_keeps_earlier_source_publication_and_no_raw_receipt(self):
         from unittest.mock import patch
         from sonos_firmware.platform.tasks import extract_firmware
@@ -131,12 +209,13 @@ class ExtractionCheckpointTests(unittest.TestCase):
                     receipts.mkdir(parents=True)
                     (receipts / 'source.json').write_text('{"components": []}')
                 if script == 'import_raw_receipts.py':
-                    catalog.write_text('{"packages": [], "raw_images": ["not-yet-published"]}')
+                    staging = Path(command[command.index('--catalog') + 1])
+                    staging.write_text('{"packages": [], "raw_images": ["not-yet-published"]}')
                 if script == 'upload_raw_assets.py':
                     self.assertEqual(command[-2:], ['--repo', 'owner/custom-repository'])
                     raise subprocess.CalledProcessError(1, command)
             with patch('sonos_firmware.platform.tasks.subprocess.run', side_effect=worker):
-                with self.assertRaises(subprocess.CalledProcessError):
+                with self.assertRaisesRegex(RuntimeError, 'verified progress retained'):
                     extract_firmware(root, work, 'owner/custom-repository')
             self.assertEqual(catalog.read_bytes(), published_sources)
             self.assertFalse((root / 'data/raw/source.json').exists())

@@ -62,7 +62,7 @@ class DecryptPendingTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def _run(self):
+    def _run(self, *extra):
         argv = [
             "decrypt_pending_firmware.py",
             "--key-directory", str(self.keys),
@@ -73,7 +73,7 @@ class DecryptPendingTests(unittest.TestCase):
             "--receipt-directory", str(self.receipts),
             "--upd-manifest-directory", str(self.upd_manifests),
         ]
-        with mock.patch("sys.argv", argv):
+        with mock.patch("sys.argv", argv + list(extra)):
             return MODULE.main()
 
     def test_no_pending_is_noop(self):
@@ -96,7 +96,7 @@ class DecryptPendingTests(unittest.TestCase):
 
     def test_mixed_plaintext_components_are_accepted(self):
         plaintext_component = dict(COMPONENT, filename="99.0-1-8-extra-section-09.bin",
-                                   source_encrypted=False, recipient_id=None)
+                                   section_index=9, source_encrypted=False, recipient_id=None)
         def fake_extract(source, output, key):
             for component in (COMPONENT, plaintext_component):
                 (output / component["filename"]).write_bytes(b"test")
@@ -106,11 +106,10 @@ class DecryptPendingTests(unittest.TestCase):
         receipt = json.loads((self.receipts / "99.0-1-8.json").read_text())
         self.assertEqual(len(receipt["components"]), 2)
 
-    def test_recipient_mismatch_aborts(self):
+    def test_recipient_mismatch_is_recorded_without_a_receipt(self):
         bad = dict(COMPONENT, recipient_id="b" * 40)
         with mock.patch.object(MODULE, "extract_components", return_value=[bad]):
-            with self.assertRaises(ValueError):
-                self._run()
+            self.assertEqual(self._run(), 1)
         self.assertFalse((self.receipts / "99.0-1-8.json").exists())
 
     def test_missing_key_skips_without_failure(self):
@@ -120,7 +119,25 @@ class DecryptPendingTests(unittest.TestCase):
         extract.assert_not_called()
         self.assertFalse((self.receipts / "99.0-1-8.json").exists())
 
-    def test_source_hash_mismatch_aborts(self):
+    def test_legacy_plaintext_can_extract_despite_unavailable_model_key(self):
+        (self.keys / 'model8.pem').unlink()
+        (self.upd_manifests / (PACKAGE['id'] + '.json')).write_text(json.dumps({'sections': [
+            {'index': 0, 'section_type': 6, 'encrypted': False}, {'index': 1, 'section_type': 4, 'encrypted': True}]}))
+        with mock.patch.object(MODULE, 'extract_components', return_value=[{
+            **COMPONENT, 'section_index': 0, 'source_encrypted': False, 'recipient_id': None}]) as extract:
+            self.assertEqual(self._run(), 0)
+        self.assertIsNone(extract.call_args.args[2])
+        self.assertTrue(extract.call_args.kwargs['skip_encrypted'])
+
+    def test_legacy_partial_receipt_does_not_suppress_newly_available_decryption(self):
+        (self.receipts / (PACKAGE['id'] + '.json')).write_text(json.dumps({'components': [{**COMPONENT, 'section_index': 0}]}))
+        (self.upd_manifests / (PACKAGE['id'] + '.json')).write_text(json.dumps({'sections': [
+            {'index': 0, 'section_type': 6, 'encrypted': False}, {'index': 1, 'section_type': 4, 'encrypted': True}]}))
+        with mock.patch.object(MODULE, 'extract_components', return_value=[COMPONENT]) as extract:
+            self.assertEqual(self._run(), 0)
+        extract.assert_called_once()
+
+    def test_source_hash_mismatch_is_recorded_without_a_receipt(self):
         (self.staging / PACKAGE["filename"]).write_bytes(b"bogus")
 
         def fake_download(*args, **kwargs):
@@ -128,9 +145,41 @@ class DecryptPendingTests(unittest.TestCase):
             (self.staging / PACKAGE["filename"]).write_bytes(b"bogus")
 
         with mock.patch.object(MODULE.subprocess, "run", side_effect=fake_download) as run:
-            with self.assertRaises(ValueError):
-                self._run()
+            self.assertEqual(self._run(), 1)
         run.assert_called()
+
+    def test_failed_attempt_backs_off_and_newly_ready_key_retries_immediately(self):
+        with mock.patch.object(MODULE, 'extract_components', side_effect=ValueError('bad fixture')) as extract:
+            self.assertEqual(self._run(), 1)
+            self.assertEqual(self._run(), 0)
+            extract.assert_called_once()
+        state_path = self.catalog.parent / 'discovery/firmware-extraction.json'
+        state = json.loads(state_path.read_text())
+        state['repositories']['BookCatKid/sonos-firmware-archive'][PACKAGE['id']]['revision']['key_available'] = False
+        state_path.write_text(json.dumps(state))
+        with mock.patch.object(MODULE, 'extract_components', return_value=[COMPONENT]) as extract:
+            self.assertEqual(self._run(), 0)
+            extract.assert_called_once()
+
+    def test_failed_package_does_not_block_another_and_budget_includes_failure(self):
+        second = {**PACKAGE, 'id': 'another-package', 'filename': 'another-package.upd'}
+        self.catalog.write_text(json.dumps({'packages': [PACKAGE, second], 'raw_images': []}))
+        ledger = json.loads(self.ledger.read_text())
+        ledger['recovered_keys'][RECIPIENT]['coverage_packages'].append({'package_id': second['id'], 'artifact_status': 'preserved'})
+        self.ledger.write_text(json.dumps(ledger))
+        (self.staging / second['filename']).write_bytes(b'test')
+        calls = []
+        def extract(source, output, key):
+            calls.append(source.stem)
+            if source.stem == PACKAGE['id']:
+                raise ValueError('broken first fixture')
+            return [{**COMPONENT, 'package_id': second['id']}]
+        with mock.patch.object(MODULE, 'extract_components', side_effect=extract):
+            self.assertEqual(self._run('--max-packages', '1'), 1)
+            self.assertEqual(calls, [PACKAGE['id']])
+            self.assertEqual(self._run('--max-packages', '1'), 0)
+        self.assertEqual(calls, [PACKAGE['id'], second['id']])
+        self.assertTrue((self.receipts / (second['id'] + '.json')).exists())
 
 
 PLAINTEXT_PACKAGE = {
@@ -214,6 +263,21 @@ class PlaintextExtractionTests(unittest.TestCase):
         self.assertEqual(receipt["components"], [PLAINTEXT_COMPONENT])
         self.assertFalse((self.staging / PLAINTEXT_PACKAGE["filename"]).exists())
 
+    def test_keyless_completion_preserves_previously_decrypted_section_records(self):
+        package = {**PLAINTEXT_PACKAGE, 'extraction_policy': 'all-sections'}
+        self._catalog(package)
+        self._manifest(package['id'], [{'index': 0, 'section_type': 99, 'encrypted': False},
+                                      {'index': 1, 'section_type': 4, 'encrypted': True}])
+        prior = {**PLAINTEXT_COMPONENT, 'section_index': 1, 'source_encrypted': True}
+        (self.receipts / (package['id'] + '.json')).write_text(json.dumps({'components': [prior]}))
+        current = {**PLAINTEXT_COMPONENT, 'section_index': 0, 'filename': 'new-plaintext.bin', 'section_type': 99}
+        with mock.patch.object(MODULE, 'extract_available_components', return_value={
+            'components': [current], 'skipped': [{'section_index': 1, 'reason': 'no key'}]}):
+            self.assertEqual(self._run(), 0)
+        receipt = json.loads((self.receipts / (package['id'] + '.json')).read_text())
+        self.assertEqual({row['section_index']: row for row in receipt['components']}, {0: current, 1: prior})
+        self.assertEqual(receipt['source_sha256'], package['sha256'])
+
     def test_variant_fetches_exact_published_asset_and_extracts_under_catalog_id(self):
         import hashlib
         from test_upd import section
@@ -241,7 +305,7 @@ class PlaintextExtractionTests(unittest.TestCase):
         self._catalog(package)
         self._manifest(package['id'], [{'index': 0, 'section_type': 99, 'encrypted': False},
                                       {'index': 1, 'section_type': 4, 'encrypted': True}])
-        (self.receipts / (package['id'] + '.json')).write_text(json.dumps({'components': [{'section_index': 0}]}))
+        (self.receipts / (package['id'] + '.json')).write_text(json.dumps({'components': [{**PLAINTEXT_COMPONENT, 'section_index': 0}]}))
         self.ledger.write_text(json.dumps({'recovered_keys': {RECIPIENT: {'package_model': 17,
             'packages': [{'package_id': package['id'], 'artifact_status': 'preserved'}]}}}))
         (self.keys / 'model17.pem').write_bytes(b'fixture-key')
@@ -275,7 +339,7 @@ class PlaintextExtractionTests(unittest.TestCase):
     def test_existing_receipt_is_not_reextracted(self):
         self._catalog(PLAINTEXT_PACKAGE)
         self._manifest("36.4-1-6", [{"index": 6, "section_type": 4, "encrypted": False}])
-        (self.receipts / "36.4-1-6.json").write_text("{}")
+        (self.receipts / "36.4-1-6.json").write_text(json.dumps({'components': [PLAINTEXT_COMPONENT]}))
         with mock.patch.object(MODULE, "extract_components") as extract:
             self.assertEqual(self._run(), 0)
         extract.assert_not_called()
@@ -285,8 +349,7 @@ class PlaintextExtractionTests(unittest.TestCase):
         self._manifest("36.4-1-6", [{"index": 6, "section_type": 4, "encrypted": False}])
         bad = dict(PLAINTEXT_COMPONENT, source_encrypted=True, recipient_id="c" * 40)
         with mock.patch.object(MODULE, "extract_components", return_value=[bad]):
-            with self.assertRaises(ValueError):
-                self._run()
+            self.assertEqual(self._run(), 1)
         self.assertFalse((self.receipts / "36.4-1-6.json").exists())
 
     def test_ledger_packages_still_take_their_key_path(self):
