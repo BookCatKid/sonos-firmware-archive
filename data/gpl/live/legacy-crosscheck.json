@@ -10,48 +10,48 @@
   "totals": {
     "cdx_sha1_mismatches_compared": 16,
     "cdx_sha1_mismatches_with_identical_direct_bytes": 16,
-    "compared": 25,
-    "different": 3,
-    "identical": 22,
+    "compared": 27,
+    "different": 4,
+    "identical": 23,
     "legacy_records": 167,
-    "pending": 142
+    "pending": 140
   },
-  "updated": "2026-11-14T01:00:13+00:00",
+  "updated": "2026-11-14T01:59:31+00:00",
   "versions": {
     "10.2": {
       "counts": {
         "cdx_sha1_mismatches_compared": 0,
         "cdx_sha1_mismatches_with_identical_direct_bytes": 0,
-        "compared": 0,
-        "different": 0,
-        "identical": 0,
+        "compared": 2,
+        "different": 1,
+        "identical": 1,
         "legacy_records": 2,
-        "pending": 2
+        "pending": 0
       },
       "entries": {
         "gpl.html": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 3817,
+          "direct_release_asset": "direct-90a5dae2827a-gpl.html",
+          "direct_sha256": "90a5dae2827aee5b2efddd382c305b49323d2d99de010bd17b070a0b2372c09e",
           "filename": "gpl.html",
           "legacy_bytes": 7042,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "8C3B9611F83BADC6223A1E327085CA21044A7E51",
           "legacy_local_sha1": "8C3B9611F83BADC6223A1E327085CA21044A7E51",
           "legacy_sha256": "ad728aac6be0d47c331f7ad37fefd830ac340441126f4b2b88e8a8c5cf26a095",
-          "state": "awaiting-direct-published-source"
+          "state": "historical-content-differs"
         },
         "includes2.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 5456,
+          "direct_release_asset": "includes2.txz",
+          "direct_sha256": "609b05060a2f127b5fc83ff518dc6a5cf93546afc2c7dce54fd5b23c75543e02",
           "filename": "includes2.txz",
           "legacy_bytes": 5456,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "C5A1D7F1F1A771AED6B8ECFB2A4674A87DD76F61",
           "legacy_local_sha1": "C5A1D7F1F1A771AED6B8ECFB2A4674A87DD76F61",
           "legacy_sha256": "609b05060a2f127b5fc83ff518dc6a5cf93546afc2c7dce54fd5b23c75543e02",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         }
       }
     },
