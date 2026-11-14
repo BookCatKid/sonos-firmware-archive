@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "checked": "2026-11-13T16:55:49.139038+00:00",
-  "scope": "Exact model-17/static UPD URLs evidenced in repository JSON and manifests, plus firsthand public research. Protocol aliases and prior negative probes are retained as evidence; archive_connectx.py normalizes and merges these candidates without treating a negative probe as a proven release.",
+  "scope": "Historical research observations retained as provenance and coverage comparison. Runtime discovery does not consume this registry.",
   "limits": {
     "head_timeout_seconds": 12,
     "head_workers": 6,

@@ -9,7 +9,7 @@ import urllib.error
 import urllib.request
 from collections import deque
 from pathlib import Path
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import urljoin, urlsplit, urlunsplit
 
 from .discovery import Candidate, OFFICIAL_FIRMWARE_HOSTS, USER_AGENT, parse_manifest
 
@@ -23,7 +23,7 @@ def official(url: str) -> bool:
         port = p.port
     except ValueError:
         return False
-    return p.scheme == "https" and p.hostname in HOSTS and port in {None, 443} and not p.username and not p.password and p.path.startswith("/firmware/")
+    return p.scheme == "https" and p.hostname in HOSTS and port in {None, 443} and not p.username and not p.password and p.path.startswith(("/firmware/", "/releases/"))
 
 
 def normalize(url: str) -> str:
@@ -56,7 +56,8 @@ def rejected_url_kind(url: str) -> str:
     return 'out-of-scope'
 
 def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
-                    evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True) -> dict:
+                    evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True,
+                    explore_channels=False, deadline=None) -> dict:
     """Return raw snapshot receipts, source edges and failures, including limits.
 
     Only explicit seed/history links or the literal sibling update.upm are visited.
@@ -73,6 +74,8 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     manifests = []
     blocked = False
     attempts = 0
+    blocked_hosts = set()
+    deferred = []
 
     def add(url, parent, reason):
         url = normalize(url)
@@ -101,6 +104,18 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             directories.add((version, folder))
         add(folder + '/update.upm', url, 'sibling-manifest')
 
+    def channels(url):
+        if not explore_channels or not official(url):
+            return
+        p = urlsplit(url)
+        parts = p.path.split('/')
+        for index, part in enumerate(parts):
+            if part in {'Prod', 'Dev'}:
+                swapped = list(parts)
+                swapped[index] = 'Dev' if part == 'Prod' else 'Prod'
+                add(urlunsplit((p.scheme, p.netloc, '/'.join(swapped), p.query, '')), url, 'channel-counterpart')
+                break
+
     for item in initial:
         add(item['url'], 'current-feed', 'current-manifest')
     for item in (catalog.get('source_manifests', []) if include_history else []):
@@ -126,27 +141,48 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
 
     def retrieve(url):
         if fetch:
-            return fetch(url)
+            result = fetch(url)
+            return (result, url, None) if isinstance(result, bytes) else result
         req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT})
         with opener.open(req, timeout=15) as response:
             body = response.read(2_000_001)
             if len(body) > 2_000_000:
                 raise ValueError('manifest exceeds 2MB limit')
-            return body
+            return body, response.url, response.headers.get('Content-Location')
 
     while queue and attempts < max_manifests:
+        if deadline is not None and time.monotonic() >= deadline:
+            break
         url = queue.popleft()
+        if urlsplit(url).hostname in blocked_hosts:
+            deferred.append(url)
+            continue
         attempts += 1
         snapshot = None
         digest = None
         try:
-            body = bodies[url] if url in bodies else retrieve(url)
+            body, resolved, location = (bodies[url], url, None) if url in bodies else retrieve(url)
+            canonical = normalize(urljoin(resolved, location)) if location else resolved
+            if (location or resolved != url) and not official(canonical):
+                raise ValueError('manifest location outside official firmware hosts')
+            if canonical != url:
+                bodies.setdefault(canonical, body)
+                add(canonical, url, 'content-location' if location else 'redirect')
             digest = hashlib.sha256(body).hexdigest()
             snapshot = evidence_dir / (hashlib.sha256(url.encode()).hexdigest()[:16] + '-' + digest[:16] + '.upm')
             snapshot.write_bytes(body)  # retain unsupported/malformed bodies too
-            metadata, items = parse_manifest(snapshot, source_url=url)
-            manifests.append({'url': url, 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
+            metadata, items = parse_manifest(snapshot, source_url=canonical)
+            manifests.append({'url': canonical, 'request_url': url, 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
                               'metadata': metadata, 'candidate_total': len(items)})
+            channels(canonical)
+            base = metadata.get('base_url')
+            if base:
+                path = urlsplit(base).path
+                if '^' in path:
+                    sibling = base.split('^', 1)[0].rstrip('/') + '/update.upm'
+                    add(sibling, canonical, 'manifest-base')
+                elif path.endswith('.upm'):
+                    add(base, canonical, 'manifest-base')
             for c in items:
                 if not official(c.url):
                     failures.append({'url': c.url, 'parent': url, 'kind': rejected_url_kind(c.url), 'error': 'non-official artifact URL'})
@@ -163,11 +199,12 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                              'snapshot': str(snapshot) if snapshot else None, 'sha256': digest})
             if status in {403, 429}:
                 blocked = True
-                break
+                blocked_hosts.add(urlsplit(url).hostname)
         if url not in bodies and delay:
             time.sleep(delay)
     return {'manifests': manifests, 'candidates': list(candidates.values()),
             'directories': [{'version': v, 'directory': d} for v,d in sorted(directories)],
             'edges': edges, 'failures': failures, 'blocked': blocked,
-            'limits_reached': bool(queue), 'pending_manifest_urls': list(queue),
-            'scope': 'only evidenced URLs and literal sibling update.upm; no opaque-code guessing'}
+            'limits_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
+            'blocked_hosts': sorted(blocked_hosts),
+            'scope': 'manifest links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}

@@ -24,9 +24,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from sonos_firmware.discovery import USER_AGENT, download_all, write_json  # noqa: E402
+from sonos_firmware.discovery import OFFICIAL_FIRMWARE_HOSTS, USER_AGENT, download_all, write_json  # noqa: E402
 
-ALLOWED_FIRMWARE_HOSTS = {"update.sonos.com", "update-firmware.sonos.com"}
+ALLOWED_FIRMWARE_HOSTS = OFFICIAL_FIRMWARE_HOSTS
 
 def run(*args: str) -> None:
     subprocess.run(args, cwd=ROOT, check=True)
@@ -45,7 +45,7 @@ def official_firmware_url(url: str) -> bool:
     return (
         parsed.scheme == "https"
         and parsed.hostname in ALLOWED_FIRMWARE_HOSTS
-        and parsed.path.startswith("/firmware/")
+        and parsed.path.startswith(("/firmware/", "/releases/"))
     )
 
 

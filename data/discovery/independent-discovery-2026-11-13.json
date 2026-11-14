@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "method": "Cold start from public Sonos S1/S2 and legacy UPS protocol endpoints, without imported collections or saved release candidates.",
+  "protocol_roots": [
+    "https://update.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+    "https://update.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+    "https://update-stage.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+    "https://update-stage.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+    "https://update-perf.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+    "https://update-perf.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+    "https://update-test.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+    "https://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+    "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/update.upm",
+    "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm"
+  ],
+  "manifest_count": 29,
+  "candidate_count": 626,
+  "checked_candidate_count": 626,
+  "status_counts": {
+    "200": 244,
+    "404": 382
+  },
+  "manifest_snapshots": [
+    {
+      "url": "https://update.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "request_url": "https://update.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "sha256": "17f966dc5ebcfc1cc08ba14cc83ba53099366e4299cd6040c4cfd18b00acc1be",
+      "bytes": 6362
+    },
+    {
+      "url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-RhFftbkg3y-SP-1/update.upm",
+      "request_url": "https://update.sonos.com/firmware/Prod/2026-Sonos-22-RhFftbkg3y-SP-1/update.upm",
+      "sha256": "6da0eec0c2efdcadf729e95281bae7053d7b0c21b1de060c60a2f9bb4c768220",
+      "bytes": 13841
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/update.upm",
+      "request_url": "https://update-stage.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/update.upm",
+      "sha256": "014e44af9216545561c2be346cf988b5c885d1b460e48f3ee0094882c19d73b5",
+      "bytes": 5829
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "request_url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "sha256": "9cb9145e9e276706d2ba0cde06548b2dfbf8e433d9eb551982b66dd06fc58888",
+      "bytes": 5654
+    },
+    {
+      "url": "https://update-test.sonos.com/releases/alpha/c6f38e9f884349afba786f630ead94ca/update.upm",
+      "request_url": "https://update-test.sonos.com/releases/alpha/c6f38e9f884349afba786f630ead94ca/update.upm",
+      "sha256": "2524e17d818e3764a7e2c7c4bf7c7202a6e87e962b3167626713ba8aab69efce",
+      "bytes": 14366
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/update.upm",
+      "sha256": "e7ac0d003256586e1a302b45b88b115046bc8ffa61c3a1923d128bbdc81cf4c6",
+      "bytes": 6358
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm",
+      "sha256": "17f966dc5ebcfc1cc08ba14cc83ba53099366e4299cd6040c4cfd18b00acc1be",
+      "bytes": 6362
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-68080-v11.15.6-NUPz7mPXln-SP-8/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-68080-v11.15.6-NUPz7mPXln-SP-8/update.upm",
+      "sha256": "b783d6dfc52598b5af5ce0bff3caf24c8650fa672b2736a8f95753a401914fd2",
+      "bytes": 7699
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "sha256": "17f966dc5ebcfc1cc08ba14cc83ba53099366e4299cd6040c4cfd18b00acc1be",
+      "bytes": 6362
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/update.upm",
+      "sha256": "ec442a9dbba291e70baaa60bbba8cb78813ba3cce936e5fa4ca32853ea554dc0",
+      "bytes": 13274
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/update.upm",
+      "sha256": "0feef455c52bbadc467108b1dc4ea834d533b67c733624a7dcd3914d8e8da899",
+      "bytes": 5284
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/update.upm",
+      "sha256": "92737e3104ff4f4b76c904e38b50ef91660685327847a735d58fe71489800785",
+      "bytes": 6113
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/update.upm",
+      "sha256": "1cd8a02e505cda7eecef2eca2c7a92280fdbd4d0c7977bd7f1fa5f95dd44a502",
+      "bytes": 6096
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/update.upm",
+      "sha256": "558822e55d02e6f2fbcfcd758b302dfecfae2e287697ccab78db4c9aca18fee3",
+      "bytes": 6866
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/update.upm",
+      "sha256": "b8e35a49f4e463bc819b00840f91edbbdbd41e0949e32dd10adc7346d9c2fc0f",
+      "bytes": 8505
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/update.upm",
+      "sha256": "8b6a0ea9391968adc04435fa6e0081a49c75948b6fb0b04373c4fd80a3c8b215",
+      "bytes": 13853
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/update.upm",
+      "sha256": "57888b6982ff17a097093a33cceadcdba44204f3b9e47a5ece64669e64b2cfc5",
+      "bytes": 11880
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-77070-v17.2.3-rT0797IawE-RC-6/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-77070-v17.2.3-rT0797IawE-RC-6/update.upm",
+      "sha256": "725f3f4266b1114cc60712dc63d21c0b61795b972d990f97730dcae7e84a29ad",
+      "bytes": 12383
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/update.upm",
+      "sha256": "6b9fafe747841899c2f8359ad4ee1b84943f75629697c21cb6a3bc72a135f56c",
+      "bytes": 12205
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/update.upm",
+      "sha256": "6931d8a70a3b64cbf2f5aeff884f109c3557747216c3b664af2747474f0fdeb8",
+      "bytes": 12383
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-63071-v11.15.3-pkAzZSYXYB-SP-4/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-63071-v11.15.3-pkAzZSYXYB-SP-4/update.upm",
+      "sha256": "8e750cc91cd87340a08a53438ff97cff7e679257a64a80fbe546837c9eeb9a15",
+      "bytes": 6125
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/update.upm",
+      "sha256": "0d807127fcd6c281ce64c93ff85db5879d540bb725670dfb2eec01ef0645560e",
+      "bytes": 7697
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/update.upm",
+      "sha256": "2ca1d2abbb79f7276bb5ba4f0808c0b376dad7f95b4ea0c82c8cad58da1dbe6c",
+      "bytes": 7700
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/update.upm",
+      "sha256": "1e3a0cfdfa6ad039bec6e90af3b4c266b5899a3f4cf4cafdc6ff4547c4c252bf",
+      "bytes": 6697
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/update.upm",
+      "sha256": "e70c2cd24939fb7715959e46763e14984bc59044a6deecffa99e86de8a73d3d0",
+      "bytes": 12031
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/update.upm",
+      "sha256": "5f999cc5caf83e5c451d6a549cc292f29621721762a931c7ec8ca96e03ba562e",
+      "bytes": 13684
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.22-59130-v11.15-72ynP0v9lu-GA-2/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/57.22-59130-v11.15-72ynP0v9lu-GA-2/update.upm",
+      "sha256": "c8a96390b6adbdb8142aeca2dd7745147af15e628c5cb8f3638a4e08c0f50b7d",
+      "bytes": 6123
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/86.10-80260-v17.2.7-WghpQDvg5l-RC-2/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/86.10-80260-v17.2.7-WghpQDvg5l-RC-2/update.upm",
+      "sha256": "0968c4cdd66286b368038a07d55685a5da144819cbeda416c60efdfbc459b79c",
+      "bytes": 13651
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm",
+      "request_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm",
+      "sha256": "66aa81b4d662ceb31c02bd40aea137f2f859e0a9ceedb407b4571c5aa698efb3",
+      "bytes": 12206
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://update-perf.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+      "attempted": true,
+      "status": null,
+      "kind": "error",
+      "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-perf.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+      "attempted": true,
+      "status": null,
+      "kind": "error",
+      "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-test.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+      "parent": "https://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+      "kind": "out-of-scope",
+      "error": "non-official artifact URL"
+    },
+    {
+      "url": "https://update.sonos.com/firmware/Dev/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update.sonos.com/firmware/Prod/25.2-50130-v4.3.2-gvenes-LR-5/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/36.5-50160-v7.6-ufbIK2C8YZ-LR-3/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/45.1-56150-v9.1-vfpies-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update.sonos.com/firmware/Dev/2026-Sonos-22-RhFftbkg3y-SP-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.11-bd8880683-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Duke/Prod/3.9.9-01c251022-SP-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/jnixwd/ios.html",
+      "parent": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/update.upm",
+      "kind": "out-of-scope",
+      "error": "non-official artifact URL"
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/jnixwd/android.html",
+      "parent": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/update.upm",
+      "kind": "out-of-scope",
+      "error": "non-official artifact URL"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/Dev/57.3-79200-v11.2.2-vjulqe-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/36.4-77130-v7.5-tzyeup-LR-2/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+      "parent": "https://update-test.sonos.com/releases/alpha/c6f38e9f884349afba786f630ead94ca/update.upm",
+      "kind": "out-of-scope",
+      "error": "non-official artifact URL"
+    },
+    {
+      "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware-test.sonos.com/firmware/roundhouse/dev/2.2.1-524524467-Alpha-11/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware-test.sonos.com/firmware/ace/dev/3.12.4-136c7ecbe-Alpha-5/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update_1787082718.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.22-68080-v11.15.6-NUPz7mPXln-SP-8/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/55.1-74250-v11.0-ytwbbr-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.19-46310-v11.12-rozcvdwa-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.5-87010-v11.2.6-aocdfj-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/64.3-21150-v13.2.3-hkzgqn-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-qelzft-LR-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/73.0-42060-v15.5-eqsrsbpq-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/3.0.10-896b9db8f-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-77070-v17.2.3-rT0797IawE-RC-6/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-4/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.22-63071-v11.15.3-pkAzZSYXYB-SP-4/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/64.3-19080-v13.2-udvsve-GA-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Roundhouse/Prod/2.8.34-dffaf4d05-RC-3/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/57.22-59130-v11.15-72ynP0v9lu-GA-2/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/86.10-80260-v17.2.7-WghpQDvg5l-RC-2/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/97.1-80312-v18.8-jZ0oXJNpeN-RC-6/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Dev/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm",
+      "attempted": true,
+      "status": 404,
+      "kind": "not-found",
+      "error": "HTTP Error 404: Not Found",
+      "snapshot": null,
+      "sha256": null
+    }
+  ],
+  "new_artifact_observations": [
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-3.exe",
+      "version": "90.0-75190",
+      "package_model": 3,
+      "bytes": 57606216,
+      "sha256": "f09ca391d2af5c3555255bf2f54b7499634ecf66066074778c0448c66c12d95d"
+    },
+    {
+      "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-4.dmg",
+      "version": "90.0-75190",
+      "package_model": 4,
+      "bytes": 63194611,
+      "sha256": "f63e75686caca38d1ddb1206a127a1cbdc0c53129e2cbe4ff71fd66d0134dd94"
+    }
+  ],
+  "scope": "Publicly reachable graph observed in this run. Not a claim to have enumerated all historical releases or rediscovered the imported historical corpus."
+}

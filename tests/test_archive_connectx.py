@@ -52,7 +52,7 @@ class ArchiveConnectxTests(unittest.TestCase):
                 return data
             args = ['archive_connectx', '--work-dir', str(root / 'work'), '--catalog', str(catalog),
                     '--output', str(output), '--key', str(root / 'key.pem'), '--publish',
-                    '--history', str(root / 'no-history')]
+                    '--frontier', str(root / 'no-frontier')]
             with patch.object(sys, 'argv', args), patch.object(MODULE, 'candidates', return_value=[candidate]), \
                  patch.object(MODULE, 'acquire', side_effect=acquire), \
                  patch.object(MODULE, 'load_private_key'), \

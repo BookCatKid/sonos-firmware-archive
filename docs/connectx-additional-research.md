@@ -136,22 +136,18 @@ GitHub code search for `sonos extension:upm` exposed the 147-manifest collection
 
 The search also used 15 web queries covering the filename, the `connectx.udp` typo, the historical version, the existing MD5, ZIP/download/archive variants, and GitHub/Archive.org restrictions. Only first returned result sets were inspected. No additional retained static copy or capture digest surfaced. This follow-up did not simply repeat the earlier exact Archive.org queries or the previous 61-URL HEAD inventory.
 
-## Automated collection discovery
+## Independent runtime discovery
 
-The Actions workflow runs `scripts/discover_connectx_manifests.py` before each
-firmware backfill. It follows the collection repository's default branch,
-pins its commit, verifies each downloaded manifest against its Git blob hash,
-and keeps SHA-256 provenance. Unchanged manifests are cached by blob identity.
-Only model-17 URLs on the allowed official Sonos firmware hosts enter acquisition;
-relative references and unsupported hosts are not guessed into valid packages.
+The files above are provenance for historical payload observations. Runtime
+discovery starts from public Sonos protocol roots and follows the resulting
+manifest graph; it does not download this repository's candidate registry.
+See [discovery methods and limits](sonos-discovery-methods-research.md).
 
-The publisher preserves the exact manifest bodies in a dedicated GitHub Release,
-verifies each upload, and checkpoints its release location in
-`data/discovery/connectx-collection.json`. Firmware extraction then consumes the
-collection URLs together with existing catalog and historical candidate inputs.
-A failed collection update leaves the previous receipt usable and is reported
-as an incomplete discovery run after known-package preservation completes.
+`scripts/discover_firmware.py` handles both generations, legacy UPS references,
+canonical response locations, manifest base/image links, and inferred Dev/Prod
+counterparts. It also searches the public archive index for historical Sonos
+manifest paths and persists its own frontier between scheduled runs.
+`--cold-start` ignores saved discovery state for independent coverage checks.
 
-The expanded discovery set contains 122 official source URLs. It has yielded
-55 distinct fully decrypted snapshots: the original 30 versioned packages,
-the static `86.4-73207` snapshot, and the 24 additional versions above.
+The 55 previously extracted snapshots remain recorded as historical observations;
+that count must not be presented as a cold-start discovery result.

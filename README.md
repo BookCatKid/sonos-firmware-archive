@@ -220,7 +220,10 @@ sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
 # Read bin/anacapad from a plaintext type-23 tar, even if OS sections are encrypted.
 sonos-fw extract-anacapad /path/to/connectx.upd \
   --directory /path/to/raw --receipt /path/to/anacapad-receipt.json
-# Discover and completely extract evidenced historical ConnectX packages.
+# Discover firmware directly from public Sonos protocols and their manifest graph.
+python scripts/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
+  --report artifacts/discovery/report.json
+# Perform complete ConnectX extraction using the discovered frontier.
 python scripts/archive_connectx.py --work-dir artifacts/connectx
 sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
 

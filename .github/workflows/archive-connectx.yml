@@ -1,4 +1,4 @@
-name: archive complete ConnectX firmware
+name: discover and archive Sonos firmware
 
 on:
   schedule:
@@ -16,7 +16,7 @@ concurrency:
 jobs:
   archive:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -29,13 +29,54 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -e .
       - run: sudo apt-get update && sudo apt-get install -y squashfs-tools
-      - name: Discover historical manifest collection updates
+      - name: Restore captured manifest bodies
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/firmware-discovery/manifests
+          key: firmware-manifests-${{ github.run_id }}
+          restore-keys: firmware-manifests-
+      - name: Discover and preserve public Sonos firmware
         id: discovery
         continue-on-error: true
         run: >-
-          python scripts/discover_connectx_manifests.py
-          --work-dir "$RUNNER_TEMP/connectx-manifests"
+          python scripts/discover_firmware.py
+          --evidence-dir "$RUNNER_TEMP/firmware-discovery/manifests"
+          --work-dir "$RUNNER_TEMP/firmware-discovery/publish"
+          --report firmware-discovery-report.json --seconds 1800
           --publish --repository "$GITHUB_REPOSITORY"
+      - name: Extract newly preserved firmware with available keys
+        id: extraction
+        continue-on-error: true
+        env:
+          SONOS_MODEL_1_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_1_PRIVATE_KEY }}
+          SONOS_MODEL_8_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_8_PRIVATE_KEY }}
+          SONOS_MODEL_9_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_9_PRIVATE_KEY }}
+          SONOS_MODEL_12_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_12_PRIVATE_KEY }}
+          SONOS_MODEL_16_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_16_PRIVATE_KEY }}
+          SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          keydir="$RUNNER_TEMP/discovered-model-keys"
+          receipts="$RUNNER_TEMP/discovered-raw-receipts"
+          mkdir -p "$keydir"
+          trap 'rm -rf "$keydir"' EXIT
+          python scripts/prepare_model_keys.py --directory "$keydir" \
+            --report firmware-key-report.json --repository "$GITHUB_REPOSITORY"
+          python scripts/refresh_key_recovery_ledger.py
+          python scripts/decrypt_pending_firmware.py --key-directory "$keydir" \
+            --staging "$RUNNER_TEMP/firmware-decrypt" --receipt-output "$receipts" \
+            --summary firmware-decrypt-report.json
+          if compgen -G "$receipts/*.json" > /dev/null; then
+            cp data/catalog.json "$RUNNER_TEMP/catalog-before-raw.json"
+            python scripts/import_raw_receipts.py "$receipts"/*.json
+            if ! python scripts/upload_raw_assets.py; then
+              cp "$RUNNER_TEMP/catalog-before-raw.json" data/catalog.json
+              exit 1
+            fi
+            cp "$receipts"/*.json data/raw/
+          fi
       - name: Snapshot static URL and backfill evidenced historical versions
         id: archive
         env:
@@ -62,17 +103,28 @@ jobs:
         with:
           name: connectx-inventories
           path: |
+            firmware-discovery-report.json
+            firmware-decrypt-report.json
+            firmware-key-report.json
+            data/discovery/firmware-frontier.json
+            ${{ runner.temp }}/firmware-discovery/manifests/
             data/discovery/connectx-*.json
             data/upd/connectx-*.json
             data/raw/connectx-*.json
             data/filesystems/connectx-*.json
           retention-days: 30
+      - name: Retain captured manifest bodies for pending publication
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/firmware-discovery/manifests
+          key: firmware-manifests-${{ github.run_id }}
       - name: Commit verified ConnectX metadata
-        if: always() && steps.archive.outcome != 'skipped'
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          if [[ ! -f data/discovery/connectx-index.json ]]; then
+          if [[ ! -f data/discovery/firmware-frontier.json ]]; then
             exit 0
           fi
           python scripts/refresh_key_recovery_ledger.py
@@ -81,10 +133,10 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/discovery data/filesystems data/catalog.json data/upd data/raw data/key-recovery-ledger.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Preserve complete ConnectX firmware snapshots'
+            git commit -m 'Discover and preserve Sonos firmware'
             git pull --rebase origin main
             git push origin HEAD:main
           fi
       - name: Report incomplete historical discovery
-        if: always() && steps.discovery.outcome == 'failure'
+        if: always() && (steps.discovery.outcome == 'failure' || steps.extraction.outcome == 'failure' || steps.archive.outcome == 'failure')
         run: exit 1

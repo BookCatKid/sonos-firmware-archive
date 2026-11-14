@@ -58,7 +58,7 @@ def recover_key(catalog, directory, repository):
     return output
 
 
-def candidates(catalog, history=None):
+def candidates(catalog, discovered=None):
     """Use exact model-17 records and literal model-17 siblings of known UPDs."""
     rows = {STATIC_URL: {"source_url": STATIC_URL, "static": True}}
     for p in catalog["packages"]:
@@ -80,7 +80,9 @@ def candidates(catalog, history=None):
             filename = match[1] + "-1-17.upd"
             sibling = url.rsplit("/", 1)[0] + "/" + filename
             rows.setdefault(sibling, {"source_url": sibling, "version": match[1], "filename": filename})
-    for item in (history or {}).get("candidates", []):
+    for item in (discovered or {}).get("candidates", []):
+        if item.get("package_model") != 17:
+            continue
         url = item["url"]
         if url.startswith("http://"):
             url = "https://" + url[7:]
@@ -188,8 +190,7 @@ def main():
     parser.add_argument("--work-dir", type=Path, required=True)
     parser.add_argument("--key", type=Path)
     parser.add_argument("--catalog", type=Path, default=ROOT / "data/catalog.json")
-    parser.add_argument("--history", type=Path, default=ROOT / "data/discovery/connectx-history-candidates.json")
-    parser.add_argument("--collection", type=Path, default=ROOT / "data/discovery/connectx-collection.json")
+    parser.add_argument("--frontier", type=Path, default=ROOT / "data/discovery/firmware-frontier.json")
     parser.add_argument("--output", type=Path, default=ROOT / "data")
     parser.add_argument("--repository", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--publish", action="store_true")
@@ -204,11 +205,8 @@ def main():
         raise ValueError("key recipient mismatch")
     processed = 0
     failures = []
-    history = json.loads(args.history.read_text()) if args.history.exists() else {}
-    if args.collection.exists():
-        collection = json.loads(args.collection.read_text())
-        history.setdefault("candidates", []).extend(collection["candidates"])
-    rows = candidates(catalog, history)
+    discovered = json.loads(args.frontier.read_text()) if args.frontier.exists() else {}
+    rows = candidates(catalog, discovered)
     # Static must be fetched every run; otherwise finish pending history first.
     rows.sort(key=lambda p: (not p.get("static", False), p.get("source_key", p["source_url"]) in index["sources"]))
     try:

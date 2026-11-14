@@ -15,7 +15,10 @@ from urllib.parse import urljoin, urlsplit
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
-OFFICIAL_FIRMWARE_HOSTS = {"update.sonos.com", "update-firmware.sonos.com"}
+OFFICIAL_FIRMWARE_HOSTS = {
+    "update.sonos.com", "update-firmware.sonos.com", "update-stage.sonos.com",
+    "update-test.sonos.com", "update-perf.sonos.com", "update-firmware-test.sonos.com",
+}
 
 
 def official_firmware_url(url: str) -> bool:
@@ -73,7 +76,7 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
 
     def add(version: str, model: int, url: str, source: str) -> None:
         url = _secure(resolve(url))
-        filename = url.rsplit("/", 1)[-1]
+        filename = urlsplit(url).path.rsplit("/", 1)[-1]
         candidates[url] = Candidate(version, model, url, source, filename)
 
     for image in root.findall(".//image"):
@@ -105,6 +108,7 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
             add(default_version, model, url, "default-base")
 
     metadata = {
+        "base_url": _secure(resolve(root.get("base_url"))) if root.get("base_url") else None,
         "manifest_version": root.get("version"),
         "revision": root.get("revision"),
         "system_version": root.get("system_version"),

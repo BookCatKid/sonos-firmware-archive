@@ -12,19 +12,26 @@ replaced, and the same package can appear in multiple campaigns.
 
 ## Automated discovery and preservation
 
-[The ConnectX workflow](../.github/workflows/archive-connectx.yml) runs every
-six hours and supports manual dispatch. Each run downloads the static URL,
-reads its type-1 version header, and hashes the complete file. A snapshot's
-identity includes both the version and SHA-256, so a new version or different
-bytes under an unchanged version produce a separate archive entry.
+[The discovery workflow](../.github/workflows/archive-connectx.yml) runs every
+six hours and supports manual dispatch. It starts from anonymous S1/S2 Sonos
+protocol endpoints and the legacy UPS response, follows canonical response
+locations, manifest base/image links and literal package-directory siblings,
+and explores inferred Prod/Dev counterparts. It discovers every referenced
+model and artifact type, rather than filtering the crawler to ConnectX.
+Public archive-index searches supply historical paths when indexed copies exist.
 
-The same job backfills historical versions from the catalog and literal
-model-17 siblings of known official UPD URLs. Preserved packages are fetched
-from their verified GitHub Releases when the CDN is no longer available.
-Four new snapshots are processed per run; completed published snapshots are
-skipped while pending history is prioritized. Unavailable URLs and failures
-are recorded rather than treated as recovered firmware. The static URL is
-checked again on every run, including after the backlog is complete.
+The scanner saves its own frontier in `data/discovery/firmware-frontier.json`.
+Pending work resumes across runs; failed sources, dated negatives and host
+challenges remain explicit. A failure on one host does not block other hosts.
+Successfully discovered packages and captured manifest bodies are published
+independently, with verification before catalog registration.
+
+Available model keys then unlock preserved firmware through the shared raw
+extraction pipeline. The ConnectX step additionally inventories every section,
+unpacks application archives and root filesystems, and retains complete bundles.
+Its static recovery endpoint is checked by full-file hash every run. Snapshot
+identity includes the parsed version and SHA-256, so replacements do not overwrite
+older observations. Four complete ConnectX snapshots are processed per run.
 
 Each snapshot publishes the exact source UPD, a reproducible extraction
 bundle, and a section/file manifest. New catalog entries and individual
@@ -56,15 +63,21 @@ corresponding downloadable firmware build ever existed.
 A [separate external manifest collection](connectx-additional-research.md)
 subsequently supplied 24 additional live versions. Those have all been
 decrypted and inventoried, bringing the extraction set to 55 snapshots and
-the merged discovery inputs to 122 official URLs. The workflow now follows
-updates to that collection and preserves its exact manifest bodies as well.
+the historical research set to 122 official URLs. Those receipts are evidence,
+not the runtime discovery input. Independent discovery is measured separately
+from imported historical observations.
 
 To run the same discovery and extraction locally:
 
 ```sh
-python scripts/discover_connectx_manifests.py --work-dir artifacts/connectx-manifests
+python scripts/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
+  --report artifacts/discovery/report.json
 python scripts/archive_connectx.py --work-dir artifacts/connectx
 ```
+
+Use `--cold-start` on the discovery command to ignore saved frontier state.
+It does not read the historical candidate registries or an external repository.
+See [discovery methods and limits](sonos-discovery-methods-research.md).
 
 Supply `--key /secure/model17.pem` to use an existing key. Without it, the
 script reproduces the key from the historical updater as described below.
