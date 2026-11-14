@@ -10,13 +10,13 @@
   "totals": {
     "cdx_sha1_mismatches_compared": 16,
     "cdx_sha1_mismatches_with_identical_direct_bytes": 16,
-    "compared": 27,
-    "different": 4,
-    "identical": 23,
+    "compared": 38,
+    "different": 5,
+    "identical": 33,
     "legacy_records": 167,
-    "pending": 140
+    "pending": 129
   },
-  "updated": "2026-11-14T01:59:31+00:00",
+  "updated": "2026-11-14T11:07:36+00:00",
   "versions": {
     "10.2": {
       "counts": {
@@ -59,132 +59,132 @@
       "counts": {
         "cdx_sha1_mismatches_compared": 0,
         "cdx_sha1_mismatches_with_identical_direct_bytes": 0,
-        "compared": 0,
-        "different": 0,
-        "identical": 0,
+        "compared": 11,
+        "different": 1,
+        "identical": 10,
         "legacy_records": 31,
-        "pending": 31
+        "pending": 20
       },
       "entries": {
         "SonosOpenSourceAttributions.pdf": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 224054,
+          "direct_release_asset": "SonosOpenSourceAttributions.pdf",
+          "direct_sha256": "96d5ba08d79bdb0a0f33b06fca4f39622788832a820bc68b54fd59130ecb117a",
           "filename": "SonosOpenSourceAttributions.pdf",
           "legacy_bytes": 224054,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "09C338D6C92A0454D10B225794703E894E0CADF6",
           "legacy_local_sha1": "09C338D6C92A0454D10B225794703E894E0CADF6",
           "legacy_sha256": "96d5ba08d79bdb0a0f33b06fca4f39622788832a820bc68b54fd59130ecb117a",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "bluez.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 1716008,
+          "direct_release_asset": "bluez.txz",
+          "direct_sha256": "bab62ac89cbf2f62f1ea5a4854ab6789758d4d52855489a51df95c6c60743672",
           "filename": "bluez.txz",
           "legacy_bytes": 1716008,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "EEB4D862DD989B5DD1DADCF597BEBBC8F88E2D69",
           "legacy_local_sha1": "EEB4D862DD989B5DD1DADCF597BEBBC8F88E2D69",
           "legacy_sha256": "bab62ac89cbf2f62f1ea5a4854ab6789758d4d52855489a51df95c6c60743672",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "bridge-utils.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 53152,
+          "direct_release_asset": "bridge-utils.txz",
+          "direct_sha256": "d54785b52d463010d332583b3c27a1960f044e0c7ed6560ce26647d2275cfe7b",
           "filename": "bridge-utils.txz",
           "legacy_bytes": 53152,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "A28186C1FD0D31D9D60C1D0D4D3F1E22A71AF108",
           "legacy_local_sha1": "A28186C1FD0D31D9D60C1D0D4D3F1E22A71AF108",
           "legacy_sha256": "d54785b52d463010d332583b3c27a1960f044e0c7ed6560ce26647d2275cfe7b",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "busybox1.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 1841680,
+          "direct_release_asset": "busybox1.txz",
+          "direct_sha256": "452123fb8cece9cbf689e41028cb4a3026d3cc48b3d5768249c06c7aacd80d03",
           "filename": "busybox1.txz",
           "legacy_bytes": 1841680,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "65BCA79440FF9D84D8D5602325AC40F3A69F82DF",
           "legacy_local_sha1": "65BCA79440FF9D84D8D5602325AC40F3A69F82DF",
           "legacy_sha256": "452123fb8cece9cbf689e41028cb4a3026d3cc48b3d5768249c06c7aacd80d03",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "busybox2.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 980020,
+          "direct_release_asset": "busybox2.txz",
+          "direct_sha256": "8b67caac909f58c536a9bce0de22b7f95a3678b0c247e32ba202d7804a69d331",
           "filename": "busybox2.txz",
           "legacy_bytes": 980020,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "BF37311CA237F440E45071D8852C8ED2E92D21E3",
           "legacy_local_sha1": "BF37311CA237F440E45071D8852C8ED2E92D21E3",
           "legacy_sha256": "8b67caac909f58c536a9bce0de22b7f95a3678b0c247e32ba202d7804a69d331",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "chrony.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 314128,
+          "direct_release_asset": "chrony.txz",
+          "direct_sha256": "e2e73e3371aed1dfd1db93366d2e801cf78b21cb92714906d8569e5eaefd1e32",
           "filename": "chrony.txz",
           "legacy_bytes": 314128,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "CF4D1F643F38B9FDBE25DB1A3BB2DC78469167C7",
           "legacy_local_sha1": "CF4D1F643F38B9FDBE25DB1A3BB2DC78469167C7",
           "legacy_sha256": "e2e73e3371aed1dfd1db93366d2e801cf78b21cb92714906d8569e5eaefd1e32",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "cryptsetup.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 10557744,
+          "direct_release_asset": "cryptsetup.txz",
+          "direct_sha256": "3c08146efefde12f790a77e79395138a559b01c8c61b23222d919897d513fdf1",
           "filename": "cryptsetup.txz",
           "legacy_bytes": 10557744,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "DF2C5B7325A91C8F7735B342C73CCA912EF45D44",
           "legacy_local_sha1": "DF2C5B7325A91C8F7735B342C73CCA912EF45D44",
           "legacy_sha256": "3c08146efefde12f790a77e79395138a559b01c8c61b23222d919897d513fdf1",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "dbus.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 1993756,
+          "direct_release_asset": "dbus.txz",
+          "direct_sha256": "980ed27127e5cca3d50a1581019201ac8083b27e7e9520f6afa29b22314a3ee7",
           "filename": "dbus.txz",
           "legacy_bytes": 1993756,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "4EF6D0F23690621F8002EC12BBD6FBBF756BC3DA",
           "legacy_local_sha1": "4EF6D0F23690621F8002EC12BBD6FBBF756BC3DA",
           "legacy_sha256": "980ed27127e5cca3d50a1581019201ac8083b27e7e9520f6afa29b22314a3ee7",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "drivers.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 166568,
+          "direct_release_asset": "drivers.txz",
+          "direct_sha256": "820dfd427496b666a7772d3879cbd483c20b887fea8dfcf1c8c5185730990ff5",
           "filename": "drivers.txz",
           "legacy_bytes": 166568,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "0EF567CB53F4577687F8B7049DA93A2DB44C4FFB",
           "legacy_local_sha1": "0EF567CB53F4577687F8B7049DA93A2DB44C4FFB",
           "legacy_sha256": "820dfd427496b666a7772d3879cbd483c20b887fea8dfcf1c8c5185730990ff5",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "e2fsprogs.txz": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 5513388,
+          "direct_release_asset": "e2fsprogs.txz",
+          "direct_sha256": "826918cf30b11396f942b8d14170dbf16c4d34fc562593105c7eedf79d7a248c",
           "filename": "e2fsprogs.txz",
           "legacy_bytes": 5513388,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "FA6DF6B5D516E25748FCA3AF5E3F2C012F9FF6A5",
           "legacy_local_sha1": "FA6DF6B5D516E25748FCA3AF5E3F2C012F9FF6A5",
           "legacy_sha256": "826918cf30b11396f942b8d14170dbf16c4d34fc562593105c7eedf79d7a248c",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "eigen.txz": {
           "direct_bytes": null,
@@ -235,16 +235,16 @@
           "state": "awaiting-direct-published-source"
         },
         "gpl.html": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 3905,
+          "direct_release_asset": "direct-6fa8347abb45-gpl.html",
+          "direct_sha256": "6fa8347abb45b11d19039e676f8e0ca4c2682bcb8fb3fde4af05073bb31a08fc",
           "filename": "gpl.html",
           "legacy_bytes": 7176,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "53FA35C6A163C55DD58701A0634E5342B21EBFB8",
           "legacy_local_sha1": "53FA35C6A163C55DD58701A0634E5342B21EBFB8",
           "legacy_sha256": "3fab9d106da1511851e9b5e6270b78f8c188479501eb54b57d3b796437c46022",
-          "state": "awaiting-direct-published-source"
+          "state": "historical-content-differs"
         },
         "includes1.txz": {
           "direct_bytes": null,
