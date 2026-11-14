@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import time
+import math
 from dataclasses import asdict
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
 from .crawl import crawl_manifests, official
@@ -23,9 +24,24 @@ def protocol_roots():
 
 
 def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fetch=None, probe_fn=None,
-             metadata_fetch=fetch_update_metadata, index_fetch=None):
+             metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=()):
     start = time.monotonic()
+    static = {}
+    for root in artifact_roots:
+        if not isinstance(root, dict):
+            raise ValueError('artifact roots must be objects')
+        url, model, hours = root.get('url'), root.get('package_model'), root.get('refresh_hours', 6)
+        if (not isinstance(url, str) or not official(url) or
+            not urlsplit(url).path.endswith('.upd') or
+            not isinstance(model, int) or isinstance(model, bool) or not 0 <= model <= 0xffffffff or
+            not isinstance(hours, (int, float)) or isinstance(hours, bool) or not math.isfinite(hours) or hours <= 0):
+            raise ValueError('artifact roots require an official UPD URL, model and positive refresh cadence')
+        static[url] = {'version': 'unknown', 'package_model': model, 'url': url,
+                       'filename': PurePosixPath(urlsplit(url).path).name,
+                       'source': 'protocol-static', 'refresh_hours': hours}
     roots = protocol_roots()
+    roots.extend(row['url'].rsplit('/', 1)[0] + '/update.upm' for row in known_artifacts if official(row['url']))
+    roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in static)
     archive = state.get('archive_index', {})
     if index_fetch:
         archive = index_fetch(archive)
@@ -54,7 +70,9 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         key = manifest['url'], manifest['sha256']
         manifests[key] = {**manifests.get(key, {}), **manifest}
     candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url'])}
+    candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
+    candidates.update(static)
     prior_probes = state.get('probes', {})
     checks = {}
     blocked = set(graph.get('blocked_hosts', []))
@@ -69,7 +87,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         if time.monotonic() >= start + seconds:
             break
         fields = {key: row[key] for key in Candidate.__dataclass_fields__}
-        result = (probe_fn or probe)(Candidate(**fields))
+        result = {**row, **(probe_fn or probe)(Candidate(**fields))}
         sequence += 1
         result['attempt_sequence'] = sequence
         checks[row['url']] = result

@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .discovery import download
-from .releases import ensure_release, publish_verified, verified_asset
+from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
 from .retry import checkpoint, select, due
 from .storage import atomic_json, file_sha256
 from .upd import parse_file
@@ -67,7 +67,8 @@ def register_capture(root, capture, *, catalog_path=None):
     packages = {row['id']: row for row in catalog.get('packages', [])}
     original_id = Path(filename).stem if filename.endswith('.upd') else filename
     matches = [row for row in packages.values() if row.get('sha256') == digest and
-               row.get('filename') == filename and
+               (row.get('filename') == filename or candidate['url'] in
+                [row.get('source_url'), *row.get('source_urls', [])]) and
                row.get('package_model') == candidate['package_model']]
     if matches:
         package_id = matches[0]['id']
@@ -88,7 +89,9 @@ def register_capture(root, capture, *, catalog_path=None):
     record = {**prior, 'id': package_id, 'version': prior.get('version', candidate['version']),
               'advertised_versions': sorted(set(prior.get('advertised_versions', [prior['version']] if prior else [])) | {candidate['version']}), 'package_model': candidate['package_model'],
               'product': prior.get('product') or model.get('display_name'), 'model_number': prior.get('model_number'),
-              'filename': filename, 'artifact_type': Path(filename).suffix.removeprefix('.'),
+              'filename': prior.get('filename', filename),
+              'advertised_filenames': sorted(set(prior.get('advertised_filenames', [prior['filename']] if prior.get('filename') else [])) | {filename}),
+              'artifact_type': Path(filename).suffix.removeprefix('.'),
               'bytes': capture['bytes'], 'sha256': digest, 'artifact_status': 'preserved',
               'raw_status': (prior.get('raw_status', 'pending') if prior.get('artifact_status') == 'preserved' else 'pending') if is_upd else 'not-applicable',
               'source_url': prior.get('source_url') or candidate['url'],
@@ -118,12 +121,6 @@ def register_capture(root, capture, *, catalog_path=None):
                    packages=sorted(packages.values(), key=lambda row: (row['version'], row['package_model'], row['id'])))
     atomic_json(catalog_path, catalog)
     return record
-
-
-def publication_receipt(repository, tag, name, capture, remote):
-    return {'status': 'verified', 'repository': repository, 'release_tag': tag, 'release_asset': name,
-            'release_url': remote.get('browser_download_url') or remote['url'],
-            'sha256': capture['sha256'], 'bytes': capture['bytes']}
 
 
 def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_path=None):
@@ -206,6 +203,7 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
                     if capture and capture['sha256'] != artifact['sha256']:
                         backlog.append({'repository': repository, 'capture': capture})
                     capture = {**artifact, 'candidate': candidate, **inventory,
+                               'observation_revision': revision(candidate),
                                'release_tag': 'firmware-' + candidate['version'], 'release_asset': artifact['release_asset']}
                     versions = [row for row in sections if row['section_type'] == 1 and row['payload_length'] == 12]
                     if len(versions) == 1:
@@ -213,20 +211,23 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
                             stream.seek(versions[0]['offset'] + 16)
                             major, minor, build = struct.unpack('<III', stream.read(12))
                         capture['embedded_version'] = f'{major}.{minor}-{build}'
+                        if candidate['version'] == 'unknown':
+                            capture['candidate'] = {**candidate, 'version': capture['embedded_version']}
+                            capture['release_tag'] = 'firmware-' + capture['embedded_version']
                     observations[url]['pending_publication'] = capture
                     save()
                     tag, name = capture['release_tag'], capture['release_asset']
                     if tag not in ready:
-                        ensure_release(repository, tag, f"Sonos firmware {candidate['version']}", 'Exact source firmware captures and inventories.')
+                        ensure_release(repository, tag, f"Sonos firmware {capture['candidate']['version']}", 'Exact source firmware captures and inventories.')
                         ready.add(tag)
                     remote = publish_verified(repository, tag, body, capture['bytes'], capture['sha256'])
             capture['publication'] = publication_receipt(repository, tag, name, capture, remote)
             observations[url]['pending_publication'] = capture
             save()
             record = register_capture(root, capture, catalog_path=catalog_path)
-            checked_revision = revision(capture['candidate'])
+            checked_revision = capture.get('observation_revision', revision(capture['candidate']))
             changed = any(checked_revision.get(key) != value for key, value in revision(candidate).items())
-            observations[url] = {**checkpoint(previous, success=True, success_hours=168), 'candidate': candidate,
+            observations[url] = {**checkpoint(previous, success=True, success_hours=candidate.get('refresh_hours', 168)), 'candidate': candidate,
                                  'revision': checked_revision, 'sha256': capture['sha256'], 'package_id': record['id'],
                                  'status': 'needs-refresh' if changed else 'preserved'}
             preserved += 1

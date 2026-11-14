@@ -6,6 +6,7 @@ import sys
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
@@ -81,6 +82,8 @@ def main():
     parser.add_argument('--max-manifests', type=int, default=1024)
     parser.add_argument('--publish', action='store_true')
     parser.add_argument('--max-packages', type=int, default=24)
+    parser.add_argument('--artifact-root', type=json.loads, action='append', default=[],
+                        help='protocol artifact root JSON with url and package_model; version is read from captured bytes')
     parser.add_argument('--repository', default='BookCatKid/sonos-firmware-archive')
     parser.add_argument('--work-dir', type=Path)
     parser.add_argument('--no-history-index', action='store_true', help='restrict discovery to live Sonos protocol roots and saved observations')
@@ -88,10 +91,18 @@ def main():
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
-    result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
-                      index_fetch=None if args.no_history_index else manifest_roots)
-    write_json(args.state, result)
     catalog = json.loads(args.catalog.read_text()) if args.catalog.exists() else {}
+    known = []
+    if not args.cold_start:
+        for package in catalog.get('packages', []):
+            for url in dict.fromkeys([package.get('source_url'), *package.get('source_urls', [])]):
+                if url and urlsplit(url).path.endswith('.upd') and package.get('package_model') is not None:
+                    known.append({'version': package['version'], 'package_model': package['package_model'],
+                        'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation'})
+    result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
+                      index_fetch=None if args.no_history_index else manifest_roots, artifact_roots=args.artifact_root,
+                      known_artifacts=known)
+    write_json(args.state, result)
     write_json(args.report, monitor_report(result, catalog))
     failed = False
     if args.publish:

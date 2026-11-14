@@ -6,6 +6,11 @@
       "provider": "firmware",
       "description": "Public Sonos protocol and manifest discovery, source preservation and extraction",
       "interval_hours": 6,
+      "options": {
+        "artifact_roots": [
+          {"package_model": 17, "url": "https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd"}
+        ]
+      },
       "metadata": [
         "data/catalog.json",
         "data/discovery",

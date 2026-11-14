@@ -8,6 +8,8 @@ import sys
 from pathlib import Path
 
 from ..discovery import write_json
+from ..inventory_archive import inventory_preserved
+from ..firmware_inventory import InventoryLimits
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -25,7 +27,7 @@ def store_apple(root: Path, current_path: Path):
     write_json(root / 'data/apps/apple-app-store.json', current)
 
 
-def extract_firmware(root, work, repository, limit=24):
+def extract_firmware(root, work, repository, limit=24, inventory_limit=4, inventory_limits=None):
     work.mkdir(parents=True, exist_ok=True)
     keys = work / 'keys'
     receipts = work / 'receipts'
@@ -72,6 +74,15 @@ def extract_firmware(root, work, repository, limit=24):
                     write_json(catalog, json.loads(previous))
                 errors.append({'package_id': receipt.stem, 'step': 'publish', 'error': str(error)})
         report = json.loads(report_path.read_text()) if report_path.exists() else {'schema_version': 1}
+        try:
+            inventory = inventory_preserved(root, work / 'inventories', repository, keys, limit=inventory_limit,
+                                            limits=InventoryLimits(**(inventory_limits or {})))
+            report['inventory'] = inventory
+            errors.extend(inventory['errors'])
+            if inventory['pending']:
+                report['status'] = 'partial'
+        except Exception as error:
+            errors.append({'step': 'inventory', 'error': str(error)})
         report['published'] = published
         report['errors'] = report.get('errors', []) + errors
         if errors:
@@ -95,6 +106,8 @@ def main():
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
     extract.add_argument('--max-packages', type=int, default=24)
+    extract.add_argument('--inventory-limit', type=int, default=4)
+    extract.add_argument('--inventory-limits', type=json.loads, default={})
     args = parser.parse_args()
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         parser.error('acquisition tasks run in the CI worker; use the platform plan locally')
@@ -103,9 +116,9 @@ def main():
     elif args.task == 'store-google-play-metadata':
         write_json(args.root / 'data/apps/google-play-listings.json', json.loads(args.current.read_text()))
     elif args.task == 'extract-firmware':
-        if args.max_packages <= 0:
-            parser.error('--max-packages must be positive')
-        extract_firmware(args.root, args.work_dir, args.repository, args.max_packages)
+        if args.max_packages <= 0 or args.inventory_limit <= 0:
+            parser.error('extraction and inventory limits must be positive')
+        extract_firmware(args.root, args.work_dir, args.repository, args.max_packages, args.inventory_limit, args.inventory_limits)
 
 
 if __name__ == '__main__':

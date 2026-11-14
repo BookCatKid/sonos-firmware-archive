@@ -36,7 +36,7 @@ not need another workflow file. See [adding a target and worker behavior](docs/a
 
 | Target | Discovery or preservation scope |
 | --- | --- |
-| `firmware` | Public update protocols, manifest graphs, historical public indexes, UPD extraction, available-key recovery, and complete ConnectX inventories |
+| `firmware` | Public update protocols, manifest graphs, historical public indexes, UPD extraction, available-key recovery, and inventories across models |
 | `desktop` | Current redirects, WinGet, Homebrew history, and historical public indexes |
 | `mobile` | Official Sonos-hosted Android APKs and historical captures |
 | `web` | Public controller and Pro deployments and their referenced assets |

@@ -67,22 +67,26 @@ the historical research set to 122 official URLs. Those receipts are evidence,
 not the runtime discovery input. Independent discovery is measured separately
 from imported historical observations.
 
-To run the same discovery and extraction locally:
+The scheduled `firmware` target now handles this endpoint through the shared
+discovery, preservation, key-recovery and inventory worker. Its protocol root
+is declared in `config/targets.json`; captured versions come from the body.
+The worker also inventories all other preserved UPDs, rather than maintaining
+a separate ConnectX downloader. To inspect its plan without acquisition:
 
 ```sh
-python scripts/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
-  --report artifacts/discovery/report.json
-python scripts/archive_connectx.py --work-dir artifacts/connectx
+sonos-archive run firmware --plan
 ```
 
-Use `--cold-start` on the discovery command to ignore saved frontier state.
-It does not read the historical candidate registries or an external repository.
-See [discovery methods and limits](sonos-discovery-methods-research.md).
+Choose the `firmware` target in Actions to execute it. Public inventory reports
+and extraction bundles are recorded in the catalog only after size/hash
+verification. [Discovery methods and limits](sonos-discovery-methods-research.md)
+distinguish cold discovery from resumed archive observations.
 
-Supply `--key /secure/model17.pem` to use an existing key. Without it, the
-script reproduces the key from the historical updater as described below.
-`--max-packages N` bounds a backfill run; the default processes all candidates.
-`--publish` enables verified GitHub Release uploads and catalog registration.
+For optional analysis of an existing file, `sonos-fw inventory-upd FILE
+--directory OUTPUT` uses the same analyzer. `--private-key` supplies a key,
+`--store-sections` also carves stored ciphertext bytes, and `--bundle` writes
+a reproducible extraction archive. These are analysis options, not setup steps
+for the scheduled worker.
 
 ## Everything extracted
 

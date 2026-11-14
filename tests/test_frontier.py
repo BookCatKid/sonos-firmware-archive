@@ -18,6 +18,44 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_saved_unavailable_observations_resume_for_all_models(self):
+        row = {'version': '1.0-1', 'package_model': 8, 'url': BASE+'old.upd',
+               'filename': 'old.upd', 'source': 'saved-archive-observation'}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'), patch.object(frontier, 'crawl_manifests', return_value={
+                'manifests': [], 'candidates': [], 'blocked_hosts': [], 'pending_manifest_urls': [], 'failures': []}) as crawl:
+            result = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}), known_artifacts=[row],
+                probe_fn=lambda candidate: {**asdict(candidate), 'available': True, 'http_status': 200})
+        self.assertIn(row['url'], result['checked_urls'])
+        self.assertIn({'url': BASE+'update.upm'}, crawl.call_args.args[1])
+
+    def test_protocol_artifact_is_discovered_without_an_initial_version_or_hash(self):
+        url = 'https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd'
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
+            result = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
+                artifact_roots=[{'url': url, 'package_model': 17, 'refresh_hours': 6}],
+                probe_fn=lambda candidate: {**asdict(candidate), 'available': True, 'http_status': 200})
+        row = result['probes'][url]
+        self.assertEqual(row['version'], 'unknown')
+        self.assertEqual(row['refresh_hours'], 6)
+        self.assertEqual(row['source'], 'protocol-static')
+        self.assertIn(url.rsplit('/', 1)[0] + '/update.upm', result['roots'])
+
+    def test_invalid_protocol_configuration_is_rejected_before_network_work(self):
+        valid = {'url': BASE+'static.upd', 'package_model': 17}
+        invalid = [None, {}, {**valid, 'url': BASE.replace('https:', 'http:')+'static.upd'},
+                   {**valid, 'url': BASE.replace('update.sonos.com', 'update.sonos.com:444')+'static.upd'},
+                   {**valid, 'package_model': True}, {**valid, 'refresh_hours': float('inf')},
+                   {**valid, 'refresh_hours': '6'}]
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'crawl_manifests') as crawl, \
+             patch.object(frontier, 'fetch_update_metadata') as metadata:
+            for root in invalid:
+                with self.subTest(root=root), self.assertRaises(ValueError):
+                    frontier.discover({}, Path(temporary), artifact_roots=[root], metadata_fetch=metadata)
+            crawl.assert_not_called()
+            metadata.assert_not_called()
+
     def test_empty_state_discovers_base_headers_channels_and_every_model(self):
         root = HOST + '/firmware/swgen/1/latest/update.upm?anonymous=1'
         canonical = BASE + 'update.upm'

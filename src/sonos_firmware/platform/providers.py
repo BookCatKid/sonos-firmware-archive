@@ -1,18 +1,21 @@
 """Source adapters: translate one worker context into source-specific operations."""
+import json
 from .model import Context
 
 
 def firmware(c: Context):
     report = c.work / 'discovery.json'
+    roots = tuple(arg for root in c.options.get('artifact_roots', []) for arg in
+                  ('--artifact-root', json.dumps({**root, 'refresh_hours': c.target.interval_hours})))
     return [
         c.script('discover_firmware.py', '--evidence-dir', c.observations / 'manifests', '--work-dir', c.work / 'publish',
                  '--report', report, '--seconds', c.options.get('seconds', 1200),
-                 '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 24), report=str(report)),
+                 '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 24), *roots, report=str(report)),
         c.task('extract-firmware', '--work-dir', c.work / 'extract', '--repository', c.repository,
                '--max-packages', c.options.get('extraction_limit', 24),
+               '--inventory-limit', c.options.get('inventory_limit', 4),
+               '--inventory-limits', json.dumps(c.options.get('inventory_limits', {})),
                after_failure=True, report=str(c.work / 'extract/extraction.json')),
-        c.script('archive_connectx.py', '--work-dir', c.work / 'connectx', '--repository', c.repository,
-                 '--max-packages', c.options.get('complete_limit', 4), '--publish', after_failure=True),
     ]
 
 

@@ -89,6 +89,13 @@ def main() -> int:
     anacapad.add_argument("file", type=Path)
     anacapad.add_argument("--directory", type=Path, required=True)
     anacapad.add_argument("--receipt", type=Path)
+    inventory = sub.add_parser('inventory-upd', help='analyze all available UPD sections and recognized containers')
+    inventory.add_argument('file', type=Path)
+    inventory.add_argument('--directory', type=Path, required=True)
+    inventory.add_argument('--private-key', type=Path)
+    inventory.add_argument('--store-sections', action='store_true')
+    inventory.add_argument('--report', type=Path)
+    inventory.add_argument('--bundle', type=Path)
     mdp_inspect = sub.add_parser("mdp-inspect", help="inspect an MDP3 or complete manufacturing-page dump")
     mdp_inspect.add_argument("file", type=Path)
     recover = sub.add_parser(
@@ -130,6 +137,17 @@ def main() -> int:
         return _inspect(args.file)
     if args.command == "verify":
         return _verify(args.root)
+    if args.command == 'inventory-upd':
+        from .firmware_inventory import inventory_package, bundle
+        report = inventory_package(args.file, args.directory, args.private_key, store_sections=args.store_sections)
+        write_json(args.directory / 'inventory.json', report)
+        if args.report:
+            write_json(args.report, report)
+        if args.bundle:
+            bundle(args.directory, args.bundle)
+        print(json.dumps({'complete': report['complete'], 'sections': len(report['sections']),
+                          'blocked': len(report['skipped']), 'errors': report['errors']}, indent=2))
+        return 0 if report['complete'] else 1
     if args.command == "discover":
         metadata, candidates = parse_manifest(args.manifest, source_url=args.source_url)
         results = probe_all(candidates, args.workers)

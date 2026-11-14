@@ -106,6 +106,20 @@ def validate_catalog(root: str | Path) -> list[str]:
             errors.append(f"{package_id}: invalid sha256")
         if package.get("artifact_status") == "preserved" and not package.get("release_asset"):
             errors.append(f"{package_id}: preserved package has no release_asset")
+        inventory = package.get('inventory')
+        if inventory:
+            if package.get('artifact_status') != 'preserved' or inventory.get('source_sha256') != sha:
+                errors.append(f'{package_id}: inventory belongs to another or unpreserved source')
+            if not isinstance(inventory.get('complete'), bool):
+                errors.append(f'{package_id}: inventory has no explicit completeness state')
+            for name in ('manifest', 'bundle'):
+                publication = inventory.get('publications', {}).get(name, {})
+                digest = publication.get('sha256', '')
+                if (publication.get('status') != 'verified' or len(digest) != 64 or
+                    any(c not in '0123456789abcdef' for c in digest) or
+                    not isinstance(publication.get('bytes'), int) or publication['bytes'] <= 0 or
+                    not all(publication.get(key) for key in ('repository', 'release_tag', 'release_asset', 'release_url'))):
+                    errors.append(f'{package_id}: inventory {name} has no verified publication receipt')
         if package.get("artifact_status") == "preserved" and package.get("artifact_type") == "upd":
             manifest = root / "data/upd" / f"{package_id}.json"
             if not manifest.exists():

@@ -85,6 +85,42 @@ class AcquisitionTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_snapshot_filename_alias_keeps_its_existing_catalog_identity(self):
+        body = section(99, 0, b'snapshot')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old = candidate(filename='old-snapshot.upd')
+            original = archive.register_capture(root, captured(old, body))
+            current = {**old, 'filename': 'connectx.upd'}
+            result = archive.register_capture(root, captured(current, body))
+            self.assertEqual(result['id'], original['id'])
+            self.assertEqual(result['filename'], 'old-snapshot.upd')
+            self.assertEqual(result['advertised_filenames'], ['connectx.upd', 'old-snapshot.upd'])
+            self.assertEqual(len(archive.catalog_at(root/'data/catalog.json')['packages']), 1)
+
+    def test_static_endpoint_versions_come_from_bytes_and_request_revision_remains_unpinned(self):
+        import struct
+        row = candidate(source='protocol-static', version='unknown', refresh_hours=6)
+        first = section(1, 0, struct.pack('<III', 86, 4, 73207))
+        second = section(1, 0, struct.pack('<III', 87, 1, 74000))
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery.urllib.request, 'urlopen', side_effect=[Response(first), Response(second)]), \
+             patch.object(archive, 'ensure_release'), \
+             patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
+            root = Path(temporary)
+            archive.archive_candidates(root, 'owner/repo', [row], root/'worker')
+            state = archive.acquisition_state(root)
+            observation = state['sources']['owner/repo'][row['url']]
+            self.assertEqual(observation['revision']['version'], 'unknown')
+            self.assertEqual(observation['status'], 'preserved')
+            observation['next_attempt_at'] = ''
+            atomic_json(archive.acquisition_path(root), state)
+            archive.archive_candidates(root, 'owner/repo', [row], root/'worker')
+            packages = archive.catalog_at(root/'data/catalog.json')['packages']
+            self.assertEqual({record['version'] for record in packages}, {'86.4-73207', '87.1-74000'})
+            self.assertEqual(len({record['id'] for record in packages}), 2)
+            self.assertTrue(all(record['release_tag'] != 'firmware-unknown' for record in packages))
+
     def test_empty_checkout_acquires_hashes_publishes_and_registers_without_prepared_inventory(self):
         row = candidate()
         body = section(99, 0, b'fixture unknown section')

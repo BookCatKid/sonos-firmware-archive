@@ -217,8 +217,10 @@ sonos-fw extract-anacapad /path/to/connectx.upd \
 # Discover firmware directly from public Sonos protocols and their manifest graph.
 python scripts/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
   --report artifacts/discovery/report.json
-# Perform complete ConnectX extraction using the discovered frontier.
-python scripts/archive_connectx.py --work-dir artifacts/connectx
+# Inspect the shared discovery/extraction worker without acquiring artifacts.
+sonos-archive run firmware --plan
+# Analyze an already available UPD, regardless of model.
+sonos-fw inventory-upd /path/to/package.upd --directory /path/to/inventory
 sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
 
 # Capture read-only, privacy-redacted playback/network telemetry. Press Enter

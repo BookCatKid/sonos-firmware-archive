@@ -178,6 +178,12 @@ def publish_verified(repository: str, tag: str, path: Path, size: int, digest: s
     return remote
 
 
+def publication_receipt(repository, tag, name, capture, remote):
+    return {'status': 'verified', 'repository': repository, 'release_tag': tag, 'release_asset': name,
+            'release_url': remote.get('browser_download_url') or remote['url'],
+            'sha256': capture['sha256'], 'bytes': capture['bytes']}
+
+
 def verified_remote_digest(asset: dict) -> str:
     digest = (asset.get("digest") or "").removeprefix("sha256:")
     if digest:

@@ -105,6 +105,34 @@ intended asset has been reconciled, including assets missing from local staging.
 Receipt updates merge coverage by section index, retaining earlier preserved
 sections when the current worker cannot decrypt them.
 
+The firmware target declares mutable protocol artifacts in `artifact_roots`,
+alongside public manifest discovery. These roots carry product identity and
+refresh cadence, not release versions or hashes. Their captures use embedded
+versions when no version was advertised, retaining distinct bytes and historical
+catalog identities. Warm discovery also rechecks this archive's own observed
+URLs; cold discovery excludes that history.
+
+All preserved UPDs share one inventory queue. Available sections, tar members,
+CRAMFS/SquashFS filesystems and supported kernel streams are analyzed without
+executing firmware. Decoder failures retain the original payload and remain
+explicit. Full JSON inventories and extraction bundles go to Releases, with
+verified references in the catalog; large filesystem listings are not duplicated
+in Git. Stored ciphertext is referenced by its span in the preserved source,
+while the optional analysis command can also carve it into separate files.
+Inventory work resumes from `data/discovery/firmware-inventories.json`, including
+interrupted uploads. New keys, changed sources and decoder code changes make
+prior inventories eligible automatically. `inventory_limit` bounds each worker
+batch independently of primary component extraction.
+When an interrupted upload is already present remotely, the next worker verifies
+it without source acquisition. If an asset never reached GitHub, the worker
+rebuilds from the preserved UPD; the unfinished capture's hashes and successful
+receipts remain in the journal. Recovery checks have their own bounded allowance
+so missing uploads cannot consume the only acquisition slot. An inventory is
+referenced in the catalog only after both its manifest and bundle are verified.
+`inventory_limits` configures expanded bytes, file count, directory depth and
+decoder timeout. Compressed tar metadata is bounded before parsing, and legacy
+kernel scans have separate work and output bounds.
+
 The firmware worker refreshes recipient coverage before preparing keys. Legacy
 recovery selects hash-verified plaintext rootfs assets, with the original UPD
 as a fallback. It detects CRAMFS/SquashFS from content and reads `bin/upgrade`
