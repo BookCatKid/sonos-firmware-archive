@@ -306,12 +306,14 @@ Regenerate checked-in metadata from a local artifact directory:
 python scripts/generate_metadata.py /path/to/sonos-firmware-downloads
 ```
 
-To browse the catalog directly (including from a `file://` URL):
+To browse the current catalog, serve the repository root:
 
 ```bash
-python scripts/build_site.py
-open site/index.html
+python -m http.server 8000 --bind 127.0.0.1
 ```
+
+Open <http://127.0.0.1:8000/site/>. The viewer reads `data/catalog.json`
+directly; no generated JavaScript catalog or build step is required.
 
 ## Integrity and safety
 
