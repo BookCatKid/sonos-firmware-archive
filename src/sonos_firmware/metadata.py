@@ -88,7 +88,11 @@ def fetch_update_metadata(profile: UpdateProfile | None = None, timeout: float =
     url = f"{UPDATE_METADATA_URL}?{urlencode(profile.query())}"
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(request, timeout=timeout) as response:
-        data = response.read()
+        data = response.read(2_000_001)
+        if not data:
+            raise ValueError('empty UPS metadata response')
+        if len(data) > 2_000_000:
+            raise ValueError('UPS metadata exceeds 2 MB')
         response_metadata = {
             "status": response.status,
             "content_type": response.headers.get("Content-Type"),

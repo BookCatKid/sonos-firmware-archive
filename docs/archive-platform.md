@@ -112,6 +112,25 @@ versions when no version was advertised, retaining distinct bytes and historical
 catalog identities. Warm discovery also rechecks this archive's own observed
 URLs; cold discovery excludes that history.
 
+UPS responses feed that same frontier. Observed caret base URLs expand directly
+over the configured package-model range, even when their sibling manifest is
+missing. The default range is 0–255; explicit models found in manifests remain
+eligible outside that exploration range. Response hashes bind these candidates
+to their source observations, and distinct raw UPS responses remain in the
+worker's metadata cache under content-derived names.
+
+The firmware worker also explores synthetic metadata profiles automatically:
+`profile_limit` defaults to eight requests per run from a deterministic
+`profile_count` plan of 1,200. The plan combines protocol axes with versions
+observed by this archive; cold discovery needs no version inventory. Failed
+profiles back off, successful profiles refresh weekly, and an access challenge
+pauses that host while other protocol hosts continue. `model_max` configures
+base-URL expansion. These options use the usual target configuration or `--set`
+interface and require no workstation downloads. Deferred manifest roots retain
+FIFO priority across runs so a small crawl budget progresses through the queue.
+A rotating reservation of at most one quarter of the crawl budget refreshes
+current protocol feeds; a one-request budget goes entirely to the FIFO.
+
 All preserved UPDs share one inventory queue. Available sections, tar members,
 CRAMFS/SquashFS filesystems and supported kernel streams are analyzed without
 executing firmware. Decoder failures retain the original payload and remain

@@ -13,6 +13,27 @@ def record(record_type: int, body: bytes, unknown: int = 0) -> bytes:
 
 
 class MetadataTests(unittest.TestCase):
+    def test_metadata_fetch_is_bounded_before_parsing(self):
+        from unittest.mock import MagicMock, patch
+        from sonos_firmware.metadata import fetch_update_metadata
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = bytes(2_000_001)
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=response):
+            with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
+                fetch_update_metadata()
+        response.read.assert_called_once_with(2_000_001)
+
+    def test_empty_metadata_response_is_a_source_failure(self):
+        from unittest.mock import MagicMock, patch
+        from sonos_firmware.metadata import fetch_update_metadata
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b''
+        with patch('sonos_firmware.metadata.urllib.request.urlopen', return_value=response):
+            with self.assertRaisesRegex(ValueError, 'empty UPS'):
+                fetch_update_metadata()
+
     def test_parses_uri_records(self):
         data = record(BASE_URI_TYPE, b"http://example.test/^1.0\0") + record(
             MANIFEST_URI_TYPE, b"http://example.test/update.upm\0"

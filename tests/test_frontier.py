@@ -18,6 +18,84 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_metadata_base_discovers_packages_even_when_its_manifest_is_gone(self):
+        uri = (BASE + '^37.5-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri) + 16, 0) + uri
+        def fetch(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            result = frontier.discover({}, Path(temporary), fetch=fetch, metadata_fetch=lambda: (ups, {}),
+                model_max=2, probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200})
+        rows = result['candidates']
+        self.assertEqual({row['package_model'] for row in rows}, {0, 1, 2})
+        self.assertEqual({row['version'] for row in rows}, {'37.5-12345'})
+        self.assertTrue(all(row['url'].startswith(BASE+'37.5-12345-1-') for row in rows))
+        self.assertTrue(all(row['metadata_sha256'] == hashlib.sha256(ups).hexdigest() for row in rows))
+        self.assertEqual(len(frontier.monitor_report(result, {'packages': []})['available_uncatalogued_candidates']), 1)
+
+    def test_pending_roots_are_not_starved_by_a_small_manifest_budget(self):
+        roots = [HOST+f'/firmware/{name}/update.upm' for name in ('one','two','three')]
+        visited = []
+        def fetch(url):
+            visited.append(url)
+            return b'<update_manifest version="1.1"></update_manifest>'
+        state = {}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
+             patch.object(frontier.time, 'sleep'):
+            for _ in range(3):
+                state = frontier.discover(state, Path(temporary), max_manifests=1, fetch=fetch,
+                                           metadata_fetch=lambda: (b'', {}))
+        self.assertEqual(visited, roots)
+
+    def test_current_feeds_rotate_without_consuming_the_deferred_queue_budget(self):
+        roots = [HOST+f'/firmware/live-{n}/update.upm' for n in range(3)]
+        pending = [HOST+f'/firmware/old-{n}/update.upm' for n in range(20)]
+        visited = []
+        def fetch(url):
+            visited.append(url)
+            return b'<update_manifest version="1.1"></update_manifest>'
+        state = {'pending_manifest_urls': pending}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
+             patch.object(frontier.time, 'sleep'):
+            for _ in range(3):
+                state = frontier.discover(state, Path(temporary), max_manifests=4, fetch=fetch,
+                                           metadata_fetch=lambda: (b'', {}))
+        self.assertEqual(visited[::4], roots)
+        self.assertEqual([url for url in visited if url in pending], pending[:9])
+
+    def test_profile_response_flows_into_the_same_manifest_and_package_frontier(self):
+        uri = (BASE + '^42.0-45678').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri) + 16, 0) + uri
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), profile_limit=1, profile_count=2,
+                profile_fetch=lambda profile: ups, metadata_fetch=lambda: (b'', {}), model_max=1,
+                fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
+                probe_fn=lambda c: {**asdict(c), 'available': True})
+            self.assertTrue((Path(temporary)/(hashlib.sha256(ups).hexdigest()+'.ups')).is_file())
+        self.assertEqual(state['metadata_profiles']['attempted_this_run'], 1)
+        self.assertEqual({row['package_model'] for row in state['candidates']}, {0, 1})
+        self.assertIn(BASE+'update.upm', state['roots'])
+
+    def test_profile_challenge_pauses_its_host_but_not_other_protocol_hosts(self):
+        roots = [HOST+'/firmware/current/update.upm', 'https://update-stage.sonos.com/firmware/current/update.upm']
+        seen = []
+        def profile_fetch(profile):
+            raise urllib.error.HTTPError(HOST, 429, 'retry later', {}, None)
+        def fetch(url):
+            seen.append(url)
+            return b'<update_manifest version="1.1"></update_manifest>'
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
+             patch.object(frontier.time, 'sleep'), patch.object(frontier, 'fetch_update_metadata') as baseline:
+            state = frontier.discover({}, Path(temporary), profile_limit=2, profile_count=2,
+                profile_fetch=profile_fetch, metadata_fetch=baseline, fetch=fetch)
+        self.assertEqual(seen, [roots[1]])
+        self.assertIn(roots[0], state['pending_manifest_urls'])
+        self.assertEqual(state['blocked_hosts'], ['update.sonos.com'])
+        self.assertEqual(state['metadata_profiles']['attempted_this_run'], 1)
+        baseline.assert_not_called()
+
     def test_saved_unavailable_observations_resume_for_all_models(self):
         row = {'version': '1.0-1', 'package_model': 8, 'url': BASE+'old.upd',
                'filename': 'old.upd', 'source': 'saved-archive-observation'}

@@ -11,19 +11,9 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
-from .discovery import Candidate, OFFICIAL_FIRMWARE_HOSTS, USER_AGENT, parse_manifest
+from .discovery import Candidate, USER_AGENT, parse_manifest, official_firmware_url as official
 
-HOSTS = OFFICIAL_FIRMWARE_HOSTS
 PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$")
-
-
-def official(url: str) -> bool:
-    try:
-        p = urlsplit(url)
-        port = p.port
-    except ValueError:
-        return False
-    return p.scheme == "https" and p.hostname in HOSTS and port in {None, 443} and not p.username and not p.password and p.path.startswith(("/firmware/", "/releases/"))
 
 
 def normalize(url: str) -> str:

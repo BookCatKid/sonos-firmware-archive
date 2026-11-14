@@ -16,7 +16,6 @@ import json
 import re
 import subprocess
 import sys
-import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,9 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from sonos_firmware.discovery import OFFICIAL_FIRMWARE_HOSTS, USER_AGENT, download_all, write_json  # noqa: E402
-
-ALLOWED_FIRMWARE_HOSTS = OFFICIAL_FIRMWARE_HOSTS
+from sonos_firmware.discovery import USER_AGENT, download_all, write_json, official_firmware_url  # noqa: E402
 
 def run(*args: str) -> None:
     subprocess.run(args, cwd=ROOT, check=True)
@@ -38,15 +35,6 @@ def capture(*args: str) -> str:
 
 def safe(value: str) -> str:
     return re.sub(r"[^A-Za-z0-9._+-]+", "_", value)
-
-
-def official_firmware_url(url: str) -> bool:
-    parsed = urllib.parse.urlparse(url)
-    return (
-        parsed.scheme == "https"
-        and parsed.hostname in ALLOWED_FIRMWARE_HOSTS
-        and parsed.path.startswith(("/firmware/", "/releases/"))
-    )
 
 
 def ensure_release(repository: str, tag: str, title: str, notes: str) -> None:

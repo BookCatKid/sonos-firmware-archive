@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import os
+import re
 import tempfile
 import urllib.error
 import urllib.request
@@ -23,8 +24,14 @@ OFFICIAL_FIRMWARE_HOSTS = {
 
 
 def official_firmware_url(url: str) -> bool:
-    parsed = urlsplit(url)
-    return parsed.scheme == "https" and parsed.hostname in OFFICIAL_FIRMWARE_HOSTS
+    try:
+        parsed = urlsplit(url)
+        port = parsed.port
+    except ValueError:
+        return False
+    return (parsed.scheme == 'https' and parsed.hostname in OFFICIAL_FIRMWARE_HOSTS and
+            port in {None, 443} and not parsed.username and not parsed.password and
+            parsed.path.startswith(('/firmware/', '/releases/')))
 
 
 class _OfficialRedirect(urllib.request.HTTPRedirectHandler):
@@ -48,6 +55,24 @@ class Candidate:
 
 def _secure(url: str) -> str:
     return "https://" + url.removeprefix("http://") if url.startswith("http://") else url
+
+
+def expand_metadata_base(uri: str, models=range(256)) -> list[Candidate]:
+    """Expand an observed UPS caret base, without inventing a campaign path."""
+    uri = _secure(uri)
+    if not official_firmware_url(uri):
+        return []
+    parsed = urlsplit(uri)
+    match = re.fullmatch(r'(.*/)[\^](\d+\.\d+-\d+)', parsed.path)
+    if not match:
+        return []
+    version = match[2]
+    result = []
+    for model in models:
+        filename = f'{version}-1-{model}.upd'
+        url = parsed._replace(path=match[1] + filename, fragment='').geturl()
+        result.append(Candidate(version, model, url, 'metadata-base', filename))
+    return result
 
 
 def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dict, list[Candidate]]:

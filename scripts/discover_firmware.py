@@ -80,6 +80,9 @@ def main():
     parser.add_argument('--cold-start', action='store_true', help='ignore all saved frontier and catalog knowledge during discovery')
     parser.add_argument('--seconds', type=float, default=900)
     parser.add_argument('--max-manifests', type=int, default=1024)
+    parser.add_argument('--profile-limit', type=int, default=8)
+    parser.add_argument('--profile-count', type=int, default=1200)
+    parser.add_argument('--model-max', type=int, default=255)
     parser.add_argument('--publish', action='store_true')
     parser.add_argument('--max-packages', type=int, default=24)
     parser.add_argument('--artifact-root', type=json.loads, action='append', default=[],
@@ -101,7 +104,8 @@ def main():
                         'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation'})
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
                       index_fetch=None if args.no_history_index else manifest_roots, artifact_roots=args.artifact_root,
-                      known_artifacts=known)
+                      known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
+                      model_max=args.model_max)
     write_json(args.state, result)
     write_json(args.report, monitor_report(result, catalog))
     failed = False
