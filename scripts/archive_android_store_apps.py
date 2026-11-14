@@ -4,21 +4,21 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import re
 import shutil
 import subprocess
 import tempfile
-import time
-import urllib.parse
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
-from sonos_firmware.releases import receipt_matches_repository
+from sonos_firmware.releases import (
+    receipt_matches_repository, ensure_release, publish_collection, publication_receipt,
+)
+from sonos_firmware.storage import atomic_json, file_sha256
 
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
@@ -43,11 +43,7 @@ RELEASES = {
 
 
 def digest(path: Path) -> tuple[int, str]:
-    hasher = hashlib.sha256()
-    with path.open("rb") as source:
-        while chunk := source.read(1024 * 1024):
-            hasher.update(chunk)
-    return path.stat().st_size, hasher.hexdigest()
+    return path.stat().st_size, file_sha256(path)
 
 
 def verify_apk(path: Path, expected: str) -> dict:
@@ -117,110 +113,6 @@ def unpack_delivery(source: Path, scratch: Path) -> tuple[dict, list[Path]]:
             "version_name": metadata["version_name"],
         }, sorted(components)
     return apk_metadata(source, scratch), [source]
-
-
-def release_id(repository: str, tag: str) -> int | None:
-    endpoint = f"repos/{repository}/releases/tags/{urllib.parse.quote(tag, safe='')}"
-    for attempt in range(130):
-        result = subprocess.run(
-            ["gh", "api", endpoint, "--jq", ".id"], text=True,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        )
-        if result.returncode == 0:
-            return int(result.stdout.strip())
-        if "HTTP 404" in result.stdout:
-            return None
-        if "rate limit" in result.stdout.lower() and attempt < 129:
-            print(f"GitHub rate-limited release lookup; retrying in 30s ({attempt + 1}/130)",
-                  flush=True)
-            time.sleep(30)
-            continue
-        raise RuntimeError(f"GitHub release lookup failed for {tag}: {result.stdout}")
-    raise AssertionError("unreachable")
-
-
-def ensure_release(repository: str, tag: str, source_kind: str) -> int:
-    existing = release_id(repository, tag)
-    if existing is not None:
-        return existing
-    provenance = (
-        "Packages acquired directly from Google Play using an authenticated dedicated account."
-        if source_kind == "google-play-direct" else
-        "Third-party APKPure recovery copies of Google Play delivery sets; not direct-Play provenance."
-    )
-    created = subprocess.run([
-        "gh", "release", "create", tag, "--repo", repository,
-        "--title", tag.replace("-", " ").title(),
-        "--notes", provenance + " Every APK signature and SHA-256 is recorded in "
-        "data/apps/android-store-archive.json.",
-    ], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    if created.returncode == 0:
-        found = release_id(repository, tag)
-        if found is None:
-            raise RuntimeError(f"created release {tag} but could not resolve its ID")
-        return found
-    # `gh release view` can transiently fail even though the tag already exists.
-    # Treat GitHub's explicit already-exists response as successful idempotency,
-    # but preserve all other creation failures.
-    if "Release.tag_name already exists" in created.stdout:
-        found = release_id(repository, tag)
-        if found is not None:
-            return found
-    raise RuntimeError(f"could not create or find release {tag}: {created.stdout}")
-
-
-def remote_assets(repository: str, numeric_release_id: int) -> dict[str, dict]:
-    endpoint = f"repos/{repository}/releases/{numeric_release_id}/assets?per_page=100"
-    for attempt in range(130):
-        result = subprocess.run(
-            ["gh", "api", "--paginate", "--slurp", endpoint], text=True,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        )
-        if result.returncode == 0:
-            pages = json.loads(result.stdout)
-            return {item["name"]: item for page in pages for item in page}
-        if "rate limit" in result.stdout.lower() and attempt < 129:
-            print(f"GitHub rate-limited asset lookup; retrying in 30s ({attempt + 1}/130)",
-                  flush=True)
-            time.sleep(30)
-            continue
-        raise RuntimeError(f"GitHub asset lookup failed: {result.stdout}")
-    raise AssertionError("unreachable")
-
-
-def upload_batch(repository: str, tag: str, numeric_release_id: int,
-                 files: list[tuple[Path, str]]) -> dict[str, dict]:
-    assets = remote_assets(repository, numeric_release_id)
-    missing = [(path, name) for path, name in files if name not in assets]
-    if missing:
-        with tempfile.TemporaryDirectory(prefix="sonos-release-assets-") as temporary:
-            upload_paths = []
-            for path, name in missing:
-                upload_path = Path(temporary) / name
-                try:
-                    os.link(path, upload_path)
-                except OSError:
-                    shutil.copy2(path, upload_path)
-                upload_paths.append(str(upload_path))
-            subprocess.run(
-                ["gh", "release", "upload", tag, *upload_paths, "--repo", repository],
-                check=True,
-            )
-        assets = remote_assets(repository, numeric_release_id)
-    records = {}
-    for path, name in files:
-        remote = assets.get(name)
-        if remote is None:
-            raise RuntimeError(f"GitHub asset missing after upload: {tag}/{name}")
-        size, sha256 = digest(path)
-        remote_sha = (remote.get("digest") or "").removeprefix("sha256:")
-        if remote["size"] != size or (remote_sha and remote_sha != sha256):
-            raise RuntimeError(f"GitHub asset mismatch: {tag}/{name}")
-        records[name] = {
-            "release_asset": name,
-            "release_url": remote["browser_download_url"],
-        }
-    return records
 
 
 def acquire(package: str, source_kind: str, output: Path, apkeep: str,
@@ -311,27 +203,35 @@ def main() -> int:
                     record.update(verify_apk(component, info["signer_sha256"]))
                 component_records.append(record)
             tag = RELEASES[(args.source, info["family"])]
-            numeric_release_id = ensure_release(args.repo, tag, args.source)
+            provenance = (
+                'Packages acquired directly from Google Play using an authenticated dedicated account.'
+                if args.source == 'google-play-direct' else
+                'Third-party APKPure recovery copies; not direct-Play provenance.'
+            )
+            ensure_release(args.repo, tag, tag.replace('-', ' ').title(), provenance +
+                           ' Every APK signature and SHA-256 is recorded in data/apps/android-store-archive.json.')
             safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
-            uploads: list[tuple[Path, str]] = []
+            uploads = []
             for component, record in zip(components, component_records):
                 component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", component.stem)
                 asset_name = (f"{package}--{safe_version}--{component_name}--"
-                              f"{record['sha256'][:12]}{component.suffix.lower()}")
+                              f"{record['sha256']}{component.suffix.lower()}")
                 record.update({"release_tag": tag, "release_asset": asset_name})
-                uploads.append((component, asset_name))
+                uploads.append((component, record))
             wrapper = None
             if source.is_file() and source.suffix.lower() == ".xapk":
                 size, sha256 = digest(source)
-                name = f"{package}--{safe_version}--complete--{sha256[:12]}.xapk"
+                name = f"{package}--{safe_version}--complete--{sha256}.xapk"
                 wrapper = {"bytes": size, "sha256": sha256, "release_tag": tag,
                            "release_asset": name}
-                uploads.append((source, name))
-            uploaded = upload_batch(args.repo, tag, numeric_release_id, uploads)
+                uploads.append((source, wrapper))
+            uploaded = publish_collection(args.repo, tag, uploads)
             for record in component_records:
-                record.update(uploaded[record["release_asset"]])
+                record.update(publication_receipt(args.repo, tag, record['release_asset'],
+                                                  record, uploaded[record['release_asset']]))
             if wrapper:
-                wrapper.update(uploaded[wrapper["release_asset"]])
+                wrapper.update(publication_receipt(args.repo, tag, wrapper['release_asset'],
+                                                   wrapper, uploaded[wrapper['release_asset']]))
             records.append({
                 "source_kind": args.source,
                 "source_version_selector": args.version_selector,
@@ -360,8 +260,7 @@ def main() -> int:
                 "updated": datetime.now(timezone.utc).isoformat(),
                 "artifact_total": len(records), "artifacts": records,
             })
-            args.receipt.parent.mkdir(parents=True, exist_ok=True)
-            args.receipt.write_text(json.dumps(existing, indent=2) + "\n")
+            atomic_json(args.receipt, existing)
             print(f"archived {args.source} {package} {metadata['version_name']}")
     return 0
 

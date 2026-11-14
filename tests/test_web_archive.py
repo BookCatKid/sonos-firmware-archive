@@ -133,6 +133,37 @@ class WebArchiveTests(unittest.TestCase):
         self.assertEqual(result['pending_total'], 0)
         self.assertEqual(len(self.uploads), 3)
 
+    def test_release_creation_failure_can_retry_the_retained_bundle(self):
+        with patch.object(web, 'ensure_release', side_effect=OSError('release creation unavailable')):
+            first = self.run_archive()
+        self.assertEqual(first['pending_total'], 1)
+        self.assertEqual(self.github.releases, {})
+        with patch.object(web, 'capture', side_effect=AssertionError('must reuse retained capture')) as capture:
+            result = self.run_archive()
+        capture.assert_not_called()
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(len(self.uploads), 3)
+
+    def test_relative_static_dynamic_and_reexported_modules_are_captured(self):
+        bodies = {
+            'https://pro.sonos.com/': b'<script src="/_next/static/app.js"></script>',
+            'https://pro.sonos.com/_next/static/app.js':
+                b'import {value} from "./helper.mjs"; import("./lazy.js"); export * from "./reexport.js";',
+            'https://pro.sonos.com/_next/static/helper.mjs': b'export const value=1;',
+            'https://pro.sonos.com/_next/static/lazy.js': b'export default 2;',
+            'https://pro.sonos.com/_next/static/reexport.js': b'export const other=3;',
+        }
+        def fetch(url):
+            result = self.fetch(url)
+            result['body'] = bodies[url]
+            return result
+        with patch.object(web, 'fetch', side_effect=fetch):
+            result = self.run_archive()
+        self.assertEqual(result['status'], 'ok')
+        deployment, = result['deployments']
+        self.assertEqual({row['requested_url'] for row in deployment['resources']}, set(bodies))
+        self.assertEqual(len(self.uploads), len(bodies)+1)
+
     def test_explicit_metadata_resume_clears_pending_capture_and_failed_observation(self):
         self.lose_response = True
         self.assertEqual(self.run_archive()['status'], 'partial')

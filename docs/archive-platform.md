@@ -104,9 +104,10 @@ checkpoints use the same atomic JSON writer across discovery, app acquisition,
 GPL acquisition, and orchestration.
 
 Web deployment capture runs each public site independently without a separate
-probe prerequisite. Web bodies and raw firmware images use the same collection
-publisher: it checks every intended name before upload, streams missing captures,
-and reconciles size and SHA-256 before promotion. Web capture budgets, source
+probe prerequisite. Web bodies, raw firmware images, and signer-verified Android
+store deliveries use the same collection publisher. It checks every intended
+name before upload, streams missing captures, and reconciles size and SHA-256
+before promotion. Web capture budgets, source
 errors, and interrupted publications remain in the receipt for later workers.
 Adding a web deployment to the archive needs no existing destination release.
 Later batches prioritize saved pending URLs. Receipts retain all verified bodies

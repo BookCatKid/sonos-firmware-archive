@@ -119,6 +119,15 @@ def discover_urls(base_url: str, body: bytes) -> set[str]:
     ):
         if "${" not in raw and not raw.startswith("data:"):
             found.add(urllib.parse.urljoin(base_url, raw))
+    # Browser modules resolve relative imports against the importing script.
+    # Bare package specifiers need an import map and are not fetchable paths.
+    for pattern in (
+        r'''\b(?:import|export)\s*(?:[^;"'`()]*?\bfrom\s*)?["'`]([^"'`]+)["'`]''',
+        r'''\bimport\s*\(\s*["'`]([^"'`]+)["'`]''',
+    ):
+        for raw in re.findall(pattern, text):
+            if raw.startswith(('./', '../', '/', 'https://', 'http://')):
+                found.add(urllib.parse.urljoin(base_url, raw))
     found = {url for url in found if "${" not in url}
     return found
 
@@ -133,7 +142,7 @@ def allowed_asset(url: str, host: str) -> bool:
     if not path.startswith(STATIC_PREFIXES):
         return False
     return bool(re.search(
-        r"\.(?:js|css|json|map|woff2?|ttf|otf|png|jpe?g|gif|svg|webp|avif|ico)$",
+        r"\.(?:[cm]?js|wasm|css|json|map|woff2?|ttf|otf|png|jpe?g|gif|svg|webp|avif|ico)$",
         path, re.IGNORECASE,
     ))
 
@@ -281,9 +290,24 @@ def capture(
     return document, metadata
 
 
+def _stage_bundle(document, metadata):
+    bundle = Path(document["bundle"]["file"])
+    renamed_bundle = bundle.with_name(document["bundle"]["release_asset"])
+    if renamed_bundle != bundle:
+        try:
+            renamed_bundle.hardlink_to(bundle)
+        except FileExistsError:
+            if (renamed_bundle.stat().st_size != document['bundle']['bytes'] or
+                    file_sha256(renamed_bundle) != document['bundle']['sha256']):
+                raise ValueError('retained bundle name belongs to another capture')
+        document["bundle"]["file"] = str(renamed_bundle)
+    atomic_json(metadata, document)
+
+
 def upload_capture(document: dict, metadata: Path, repository: str) -> None:
     config = APPS[document["app"]]
     document['repository'] = repository
+    _stage_bundle(document, metadata)
     ensure_release(repository, config["release_tag"], config["title"],
                    "Account-free deployment snapshots, exact public response bodies and reconstruction bundles.")
     capture_dir = metadata.parent
@@ -291,13 +315,7 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
         item["release_asset"]: capture_dir / item["file"]
         for item in document["resources"] if item.get("file")
     }
-    bundle = Path(document["bundle"]["file"])
-    renamed_bundle = bundle.with_name(document["bundle"]["release_asset"])
-    if renamed_bundle != bundle:
-        bundle.rename(renamed_bundle)
-        document["bundle"]["file"] = str(renamed_bundle)
-    paths[document["bundle"]["release_asset"]] = renamed_bundle
-    atomic_json(metadata, document)
+    paths[document['bundle']['release_asset']] = Path(document['bundle']['file'])
     captures = [item for item in document["resources"] if item.get("release_asset")] + [document["bundle"]]
     observed = publish_collection(repository, config["release_tag"],
                                   [(paths[item["release_asset"]], item) for item in captures])
@@ -406,6 +424,9 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
         for document in select(pending, {row['bundle']['sha256']: row for row in pending},
                                key=lambda row: row['bundle']['sha256'], limit=4):
             try:
+                config = APPS[document['app']]
+                ensure_release(repository, document['release_tag'], config['title'],
+                               'Account-free web deployment capture recovery.')
                 captures = [item for item in document['resources'] if item.get('release_asset')] + [document['bundle']]
                 def retained_path(item):
                     if item is document['bundle']:
@@ -438,6 +459,7 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
             document['repository'] = repository
             document['bundle']['release_asset'] = (
                 f"sonos-{app}-{document['capture_id']}--{document['bundle']['sha256']}--complete.tar.gz")
+            _stage_bundle(document, metadata)
             state.setdefault('pending_captures', []).append(receipt_capture(document))
             observations[app] = {'status': 'pending', **checkpoint(observations.get(app))}
             save()
