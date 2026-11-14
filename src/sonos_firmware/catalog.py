@@ -111,18 +111,24 @@ def validate_catalog(root: str | Path) -> list[str]:
             if not manifest.exists():
                 errors.append(f"{package_id}: preserved UPD has no section manifest")
             else:
-                for section in load_json(manifest).get("sections", []):
-                    if section.get("section_type") not in EXTRACTABLE_SECTION_TYPES:
+                inventory = load_json(manifest)
+                if inventory.get('inventory_error') and package.get('raw_status') == 'complete':
+                    errors.append(f'{package_id}: complete extraction has an unresolved container inventory')
+                for section in inventory.get("sections", []):
+                    if package.get('extraction_policy') != 'all-sections' and section.get("section_type") not in EXTRACTABLE_SECTION_TYPES:
                         continue
                     if section.get("encrypted") and package.get("raw_status") != "complete":
                         continue
                     matches = raw_by_package_and_section.get((package_id, section.get("index")), [])
-                    if not matches:
+                    if not matches and package.get('extraction_policy') != 'all-sections':
                         # A handful of seed-era raw records predate section-index
                         # provenance but are still unambiguous by package and kind.
                         matches = raw_by_package_and_kind.get(
-                            (package_id, SECTION_KIND[section["section_type"]]), []
+                            (package_id, SECTION_KIND.get(section["section_type"])), []
                         )
+                    if not matches and package.get('raw_status') == 'pending':
+                        # The exact source is preserved; derivation remains queued.
+                        continue
                     if not matches:
                         errors.append(
                             f"{package_id}: complete UPD section {section.get('index')} "

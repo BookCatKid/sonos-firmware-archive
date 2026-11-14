@@ -9,6 +9,7 @@ from urllib.parse import urlencode, urlsplit
 from .crawl import crawl_manifests, official
 from .discovery import Candidate, probe
 from .monitor import candidate_is_preserved
+from .firmware_archive import capture_due
 from .metadata import fetch_update_metadata, parse_update_metadata
 
 
@@ -94,10 +95,16 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     return result
 
 
-def monitor_report(state, catalog):
-    # A previous HEAD success is history, not a fresh acquisition authorization.
+def monitor_report(state, catalog, acquisition=None, repository=None):
+    # Saved HEAD successes do not authorize new acquisition; pending publications
+    # can independently reconcile their already-captured bytes in the worker.
     current = [p for url, p in state['probes'].items() if url in state.get('checked_urls', []) and p.get('available')]
+    observations = (acquisition or {}).get('sources', {}).get(repository, {})
+    known = lambda row: candidate_is_preserved(row, catalog.get('packages', []))
+    errors = state.get('preservation_errors', [])
+    pending = state.get('preservation_pending', 0)
     return {'schema_version': 1, 'manifests': state['manifests'],
-            'status': state.get('status', 'partial'),
-            'available_uncatalogued_candidates': [c for c in current if not candidate_is_preserved(c, catalog.get('packages', []))],
-            'known_missing_now_available': []}
+            'status': 'partial' if errors or pending else state.get('status', 'partial'),
+            'available_uncatalogued_candidates': [c for c in current if not known(c)],
+            'available_refresh_candidates': [c for c in current if known(c) and capture_due(c, observations.get(c['url']))],
+            'known_missing_now_available': [], 'preservation_pending': pending, 'errors': errors}

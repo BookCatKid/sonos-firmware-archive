@@ -19,7 +19,7 @@ python -m venv .venv
 pip install -e '.[test]'
 sonos-archive targets
 sonos-archive run firmware --plan
-python -m unittest discover -s tests -q
+python scripts/run_tests.py
 sonos-fw verify
 ```
 

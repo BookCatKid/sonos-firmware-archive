@@ -29,7 +29,7 @@ class AutoArchiveMonitorTests(unittest.TestCase):
             "https://example.com/firmware/Prod/x/1.upd"
         ))
 
-    def test_collect_candidates_deduplicates_stable_identity(self):
+    def test_collect_candidates_retains_distinct_urls_with_the_same_filename(self):
         first = {
             "version": "99.0-12345",
             "package_model": 8,
@@ -53,7 +53,8 @@ class AutoArchiveMonitorTests(unittest.TestCase):
         }
         directory = {"uncatalogued_available": [first]}
         result = MODULE.collect_candidates(monitor, directory)
-        self.assertEqual(len(result), 1)
+        self.assertEqual(len(result), 2)
+        self.assertEqual({row['url'] for row in result}, {first['url'], alternate['url']})
         self.assertEqual(result[0]["package_model"], 8)
 
     def test_manifest_name_distinguishes_source_urls(self):

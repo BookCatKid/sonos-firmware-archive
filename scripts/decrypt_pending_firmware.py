@@ -17,7 +17,6 @@ Key material is read only from PEM files inside --key-directory (one
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import subprocess
 import sys
@@ -27,19 +26,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sonos_firmware.catalog import EXTRACTABLE_SECTION_TYPES  # noqa: E402
-from sonos_firmware.extract import extract_components  # noqa: E402
-
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+from sonos_firmware.extract import extract_components, extract_available_components  # noqa: E402
+from sonos_firmware.storage import atomic_json, file_sha256 as _sha256  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--key-directory", type=Path, required=True)
     parser.add_argument("--staging", type=Path, required=True)
     parser.add_argument("--catalog", type=Path, default=ROOT / "data/catalog.json")
@@ -57,6 +50,23 @@ def main() -> int:
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
     ledger = json.loads(args.ledger.read_text(encoding="utf-8"))
     recovered = ledger["recovered_keys"]
+    inventory_skipped = []
+
+    def still_needs(package, model=None):
+        receipt = args.receipt_directory / (package['id'] + '.json')
+        if not receipt.exists():
+            return True
+        if package.get('extraction_policy') != 'all-sections':
+            return False
+        manifest = args.upd_manifest_directory / (package['id'] + '.json')
+        if not manifest.exists():
+            return True
+        key = args.key_directory / f'model{model}.pem' if model is not None else None
+        desired = [s for s in json.loads(manifest.read_text()).get('sections', [])
+                   if not s.get('encrypted') or key is not None and key.is_file()]
+        covered = {row.get('section_index') for row in json.loads(receipt.read_text()).get('components', [])}
+        return any(row['index'] not in covered for row in desired)
+
 
     # recipient -> preserved package ids, from the ledger's own coverage rows
     pending: list[dict] = []
@@ -71,7 +81,7 @@ def main() -> int:
             if package is None:
                 continue
             receipt = args.receipt_directory / f"{package['id']}.json"
-            if not receipt.is_file() and package["id"] not in seen:
+            if still_needs(package, group.get("package_model")) and package["id"] not in seen:
                 seen.add(package["id"])
                 pending.append({"package": package, "model": group.get("package_model"),
                                 "recipient": recipient})
@@ -89,13 +99,16 @@ def main() -> int:
             continue
         if package.get("artifact_status") != "preserved" or package.get("artifact_type") != "upd":
             continue
-        if (args.receipt_directory / f"{package['id']}.json").is_file():
+        if not still_needs(package):
             continue
         manifest_path = args.upd_manifest_directory / f"{package['id']}.json"
         if not manifest_path.is_file():
             continue
-        sections = json.loads(manifest_path.read_text(encoding="utf-8")).get("sections", [])
-        if any(s.get("section_type") in EXTRACTABLE_SECTION_TYPES and not s.get("encrypted")
+        inventory = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if inventory.get('inventory_error'):
+            inventory_skipped.append({'package_id': package['id'], 'reason': inventory['inventory_error']})
+        sections = inventory.get("sections", [])
+        if any((package.get("extraction_policy") == "all-sections" or s.get("section_type") in EXTRACTABLE_SECTION_TYPES) and not s.get("encrypted")
                for s in sections):
             seen.add(package["id"])
             pending.append({"package": package, "model": None, "recipient": None})
@@ -103,7 +116,7 @@ def main() -> int:
     if not pending:
         print("no preserved packages are pending decryption")
         if args.summary:
-            args.summary.write_text(json.dumps({"pending": 0, "decrypted": [], "extracted_plaintext": [], "skipped": []}) + "\n", encoding="utf-8")
+            atomic_json(args.summary, {"pending": 0, "decrypted": [], "extracted_plaintext": [], "skipped": inventory_skipped})
         return 0
 
     receipt_output = args.receipt_output or args.receipt_directory
@@ -113,27 +126,36 @@ def main() -> int:
 
     decrypted: list[str] = []
     extracted_plaintext: list[str] = []
-    skipped: list[dict] = []
+    skipped: list[dict] = inventory_skipped
     for entry in pending:
         package, model, recipient = entry["package"], entry["model"], entry["recipient"]
         key_path = args.key_directory / f"model{model}.pem" if model is not None else None
         if key_path is not None and not key_path.is_file():
-            skipped.append({"package_id": package["id"], "reason": f"no key file for model {model}"})
-            print(f"skipping {package['id']}: no key file for model {model}", flush=True)
-            continue
-        source = args.staging / package["filename"]
+            manifest_path = args.upd_manifest_directory / (package['id'] + '.json')
+            sections = json.loads(manifest_path.read_text()).get('sections', []) if manifest_path.exists() else []
+            if package.get('extraction_policy') == 'all-sections' and any(not row.get('encrypted') for row in sections):
+                key_path = None
+            else:
+                skipped.append({"package_id": package["id"], "reason": f"no key file for model {model}"})
+                print(f"skipping {package['id']}: no key file for model {model}", flush=True)
+                continue
+        source = args.staging / (package["id"] + ".upd")
         if source.exists() and not (source.stat().st_size == package["bytes"] and _sha256(source) == package["sha256"]):
             source.unlink()
         if not source.exists():
             subprocess.run(
                 ["gh", "release", "download", package["release_tag"], "--pattern",
-                 package["filename"], "--dir", str(args.staging)],
+                 package.get("release_asset", package["filename"]), "--output", str(source), "--repo", args.repo],
                 cwd=ROOT, check=True)
         if source.stat().st_size != package["bytes"] or _sha256(source) != package["sha256"]:
             raise ValueError(f"source package hash mismatch: {package['id']}")
         output = args.raw_directory / package["id"]
         output.mkdir(parents=True, exist_ok=True)
-        if key_path is None:
+        if package.get('extraction_policy') == 'all-sections':
+            available = extract_available_components(source, output, key_path)
+            components = available['components']
+            skipped.extend({'package_id': package['id'], **row} for row in available['skipped'])
+        elif key_path is None:
             components = extract_components(source, output, None, skip_encrypted=True)
             if not components:
                 raise ValueError(f"no plaintext components extracted: {package['id']}")
@@ -144,9 +166,7 @@ def main() -> int:
             encrypted_recipients = {c.get("recipient_id") for c in components} - {None}
             if not components or encrypted_recipients != {recipient}:
                 raise ValueError(f"decrypted recipient mismatch: {package['id']}")
-        (receipt_output / f"{package['id']}.json").write_text(
-            json.dumps({"source": package["filename"], "components": components}, indent=2) + "\n",
-            encoding="utf-8")
+        atomic_json(receipt_output / f"{package['id']}.json", {"source": package["filename"], "components": components})
         source.unlink()
         if key_path is None:
             extracted_plaintext.append(package["id"])
@@ -159,7 +179,7 @@ def main() -> int:
                "extracted_plaintext": extracted_plaintext, "skipped": skipped}
     print(json.dumps(summary, indent=2))
     if args.summary:
-        args.summary.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        atomic_json(args.summary, summary)
     return 0
 
 

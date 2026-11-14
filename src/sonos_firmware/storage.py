@@ -19,3 +19,12 @@ def atomic_json(path, value, *, sort_keys=False):
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
+
+
+def file_sha256(path):
+    import hashlib
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()

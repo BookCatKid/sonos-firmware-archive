@@ -38,6 +38,14 @@ published bytes; a URL or a successful HEAD request alone cannot establish
 that a payload was preserved. Source-specific publishers verify publication
 before importing preserved records into their inventories.
 
+Firmware acquisition computes hashes from the received bytes without requiring
+a supplied checksum. Distinct captures at the same advertised filename receive
+separate immutable assets. Verified source publication is independent of
+extraction: new packages enter the catalog with extraction pending, and a parser
+failure is recorded without blocking source preservation. Extraction uses the
+exact recorded asset and package identity, saves all available section types,
+and records encrypted sections still awaiting a matching key.
+
 The runner cleans its temporary workspace on completion or failure. Small
 manifest observations are cached separately in the ephemeral worker so that
 publication can retry an exact observed body after a source URL changes.
@@ -77,6 +85,10 @@ and authenticated delivery are distinct scopes.
 Local plans and tests do not acquire live artifacts. `sonos-archive run TARGET`
 is a plan unless `--execute` is supplied, and execution rejects an environment
 outside GitHub Actions before starting commands or creating files.
+Run `python scripts/run_tests.py` for the offline fixture suite. Its guard
+rejects unmocked Python sockets, native HTTP requests, and external network
+tools; an attempted request fails the run even if source code catches it.
+Child Python tests inherit the guard, and Git fixtures use only file transport.
 
 The shared metadata commit command validates JSON and the firmware catalog,
 then stages only the target's declared data paths and its checkpoint. It refuses

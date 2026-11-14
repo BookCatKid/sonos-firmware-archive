@@ -35,7 +35,7 @@ def extract_firmware(root, work, repository):
         run('prepare_model_keys.py', '--directory', keys, '--report', work / 'keys.json', '--repository', repository)
         run('refresh_key_recovery_ledger.py')
         run('decrypt_pending_firmware.py', '--key-directory', keys, '--staging', work / 'sources',
-            '--raw-directory', work / 'raw', '--receipt-output', receipts, '--summary', work / 'extraction.json')
+            '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts, '--summary', work / 'extraction.json')
         new = sorted(receipts.glob('*.json'))
         if not new:
             return

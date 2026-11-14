@@ -2,11 +2,24 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from sonos_firmware.extract import extract_components
+from sonos_firmware.extract import extract_components, extract_available_components
 from test_upd import section
 
 
 class ExtractTests(unittest.TestCase):
+    def test_all_sections_preserves_unknown_types_and_reports_blocked_sections(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            package = root / 'variant--hash.upd'
+            package.write_bytes(section(99, 0, b'first') + section(99, 0, b'second') +
+                                section(4, 4, b'encrypted fixture') + section(6, 0, b'kernel'))
+            result = extract_available_components(package, root / 'raw')
+            self.assertEqual([row['section_index'] for row in result['components']], [0, 1, 3])
+            self.assertEqual([row['section_index'] for row in result['skipped']], [2])
+            self.assertEqual(len({row['filename'] for row in result['components']}), 3)
+            self.assertTrue(all(row['package_id'] == 'variant--hash' for row in result['components']))
+            self.assertEqual((root / 'raw' / result['components'][1]['filename']).read_bytes(), b'second')
+
     def test_extracts_named_plaintext_components(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -214,6 +214,42 @@ class PlaintextExtractionTests(unittest.TestCase):
         self.assertEqual(receipt["components"], [PLAINTEXT_COMPONENT])
         self.assertFalse((self.staging / PLAINTEXT_PACKAGE["filename"]).exists())
 
+    def test_variant_fetches_exact_published_asset_and_extracts_under_catalog_id(self):
+        import hashlib
+        from test_upd import section
+        body = section(99, 0, b'unknown plaintext') + section(4, 4, b'encrypted fixture')
+        package = {**PLAINTEXT_PACKAGE, 'id': 'variant--content-hash', 'filename': 'advertised.upd',
+                   'release_asset': 'advertised--immutable-hash.upd', 'extraction_policy': 'all-sections',
+                   'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest()}
+        self._catalog(package)
+        self._manifest(package['id'], [{'index': 0, 'section_type': 99, 'encrypted': False},
+                                       {'index': 1, 'section_type': 4, 'encrypted': True}])
+        def download(command, **kwargs):
+            self.assertEqual(command[command.index('--pattern') + 1], package['release_asset'])
+            output = Path(command[command.index('--output') + 1])
+            self.assertEqual(output.name, package['id'] + '.upd')
+            output.write_bytes(body)
+        with mock.patch.object(MODULE.subprocess, 'run', side_effect=download):
+            self.assertEqual(self._run(), 0)
+        receipt = json.loads((self.receipts / (package['id'] + '.json')).read_text())
+        self.assertEqual(len(receipt['components']), 1)
+        self.assertEqual(receipt['components'][0]['package_id'], package['id'])
+        self.assertEqual(receipt['components'][0]['section_type'], 99)
+
+    def test_partial_receipt_retries_when_a_matching_model_key_becomes_available(self):
+        package = {**PLAINTEXT_PACKAGE, 'extraction_policy': 'all-sections'}
+        self._catalog(package)
+        self._manifest(package['id'], [{'index': 0, 'section_type': 99, 'encrypted': False},
+                                      {'index': 1, 'section_type': 4, 'encrypted': True}])
+        (self.receipts / (package['id'] + '.json')).write_text(json.dumps({'components': [{'section_index': 0}]}))
+        self.ledger.write_text(json.dumps({'recovered_keys': {RECIPIENT: {'package_model': 17,
+            'packages': [{'package_id': package['id'], 'artifact_status': 'preserved'}]}}}))
+        (self.keys / 'model17.pem').write_bytes(b'fixture-key')
+        with mock.patch.object(MODULE, 'extract_available_components', return_value={
+            'components': [PLAINTEXT_COMPONENT], 'skipped': []}) as extract:
+            self.assertEqual(self._run(), 0)
+        self.assertEqual(extract.call_args.args[2], self.keys / 'model17.pem')
+
     def test_mixed_sections_extract_plaintext_keep_encrypted_pending(self):
         self._catalog(PLAINTEXT_PACKAGE)
         self._manifest("36.4-1-6", [

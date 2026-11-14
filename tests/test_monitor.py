@@ -48,14 +48,17 @@ class MonitorTests(unittest.TestCase):
         )
         self.assertEqual(result["unknown_versions"], [])
 
-    def test_preserved_candidate_matches_stable_identity(self):
+    def test_same_filename_does_not_prove_another_url_was_preserved(self):
         candidate = {
             "version": "1.2-3",
             "package_model": 5,
             "filename": "1.2-3-1-5.upd",
             "url": "https://update-firmware.sonos.com/elsewhere/1.2-3-1-5.upd",
         }
-        self.assertTrue(candidate_is_preserved(candidate, catalog()["packages"]))
+        self.assertFalse(candidate_is_preserved(candidate, catalog()["packages"]))
+        packages = catalog()["packages"]
+        packages[0]['source_urls'] = [candidate['url']]
+        self.assertTrue(candidate_is_preserved(candidate, packages))
 
     def test_available_uncatalogued_candidate_is_a_change(self):
         current = [{

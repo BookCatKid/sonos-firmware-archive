@@ -157,7 +157,7 @@ def preserve_manifests(report: dict, repository: str, work: Path, plan_only: boo
 
 
 def candidate_key(item: dict) -> tuple:
-    return (item.get("version"), item.get("package_model"), item.get("filename"))
+    return (item.get("version"), item.get("package_model"), item.get("filename"), item.get("url"))
 
 
 def collect_candidates(monitor: dict, directory: dict | None) -> list[dict]:
@@ -165,6 +165,7 @@ def collect_candidates(monitor: dict, directory: dict | None) -> list[dict]:
     sources = [
         monitor.get("available_uncatalogued_candidates", []),
         monitor.get("known_missing_now_available", []),
+        monitor.get("available_refresh_candidates", []),
     ]
     if directory:
         sources.append(directory.get("uncatalogued_available", []))

@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import concurrent.futures
-import hashlib
 import os
+import tempfile
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
-from .storage import atomic_json
+from .storage import atomic_json, file_sha256 as _sha256
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
@@ -166,33 +166,48 @@ def probe_all(candidates: list[Candidate], workers: int = 6, deadline: float | N
     return results
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
 def download(candidate: dict, directory: str | Path) -> dict:
-    directory = Path(directory)
-    directory.mkdir(parents=True, exist_ok=True)
-    destination = directory / candidate["filename"]
-    expected = candidate.get("bytes")
-    if destination.exists() and (expected is None or destination.stat().st_size == expected):
-        return {**candidate, "local_file": destination.name, "sha256": _sha256(destination), "downloaded": True}
-    temporary = destination.with_suffix(destination.suffix + ".part")
-    request = urllib.request.Request(candidate["url"], headers={"User-Agent": USER_AGENT})
     try:
-        with urllib.request.urlopen(request, timeout=60) as response, temporary.open("wb") as output:
-            while block := response.read(1024 * 1024):
-                output.write(block)
-        if expected is not None and temporary.stat().st_size != expected:
-            raise ValueError(f"size mismatch for {candidate['filename']}")
-        os.replace(temporary, destination)
-        return {**candidate, "local_file": destination.name, "sha256": _sha256(destination), "downloaded": True}
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        name = candidate['filename']
+        if not name or Path(name).name != name or name in {'.', '..'}:
+            raise ValueError('candidate filename must be a basename')
+        filename = Path(name)
+        expected = candidate.get('bytes')
+        expected_hash = candidate.get('expected_sha256')
+        if expected_hash:
+            expected_hash = expected_hash.lower()
+            if len(expected_hash) != 64 or any(c not in '0123456789abcdef' for c in expected_hash):
+                raise ValueError('invalid expected SHA-256')
+            cached = directory / (filename.stem + '--' + expected_hash + filename.suffix)
+            if cached.is_file() and (expected is None or cached.stat().st_size == expected) and _sha256(cached) == expected_hash:
+                return {**candidate, 'bytes': cached.stat().st_size, 'local_file': cached.name,
+                        'release_asset': cached.name, 'sha256': expected_hash, 'downloaded': True}
+        # Each request has isolated staging, including simultaneous same-name URLs.
+        with tempfile.TemporaryDirectory(dir=directory, prefix='capture-') as temporary:
+            body = Path(temporary) / 'payload'
+            request = urllib.request.Request(candidate['url'], headers={'User-Agent': USER_AGENT})
+            with urllib.request.urlopen(request, timeout=60) as response, body.open('wb') as output:
+                declared = response.headers.get('Content-Length')
+                while block := response.read(1024 * 1024):
+                    output.write(block)
+            size = body.stat().st_size
+            if declared is not None and size != int(declared):
+                raise ValueError('firmware capture does not match response Content-Length')
+            if size == 0 or expected is not None and size != expected:
+                raise ValueError('empty or size-mismatched firmware capture')
+            digest = _sha256(body)
+            if expected_hash and digest != expected_hash:
+                raise ValueError('firmware capture does not match expected SHA-256')
+            destination = directory / (filename.stem + '--' + digest + filename.suffix)
+            os.replace(body, destination)
+            return {**candidate, 'bytes': size, 'local_file': destination.name,
+                    'release_asset': destination.name, 'sha256': digest, 'downloaded': True}
     except Exception as error:
-        return {**candidate, "downloaded": False, "download_error": str(error)}
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
+        return {**candidate, 'downloaded': False, 'download_error': str(error)}
 
 
 def download_all(candidates: list[dict], directory: str | Path, workers: int = 3) -> list[dict]:

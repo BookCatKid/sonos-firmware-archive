@@ -91,12 +91,14 @@ def decrypt_envelope(payload: bytes, private_key, *, legacy_model8: bool = False
     return plaintext, recipient
 
 
-def extract_components(
+def _extract_components(
     upd_path: str | Path,
     output_dir: str | Path,
     private_key_path: str | Path | None = None,
     legacy_model8: bool = False,
     skip_encrypted: bool = False,
+    all_sections: bool = False,
+    skipped: list | None = None,
 ) -> list[dict]:
     upd_path = Path(upd_path)
     output_dir = Path(output_dir)
@@ -110,15 +112,28 @@ def extract_components(
     for section in sections:
         component = COMPONENT_NAMES.get(section.section_type)
         if component is None:
-            continue
+            if not all_sections:
+                continue
+            component = (f'section-{section.section_type}', '.bin')
         payload = data[section.offset + 16 : section.offset + section.length]
         recipient = None
         if section.encrypted:
             if private_key is None:
                 if skip_encrypted:
+                    if skipped is not None:
+                        skipped.append({'section_index': section.index, 'section_type': section.section_type,
+                                        'recipient_id': section.recipient_id, 'reason': 'no matching model key'})
                     continue
                 raise ValueError(f"section {section.index} requires recipient {section.recipient_id}")
-            payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
+            try:
+                payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
+            except ValueError as error:
+                if not all_sections:
+                    raise
+                if skipped is not None:
+                    skipped.append({'section_index': section.index, 'section_type': section.section_type,
+                                    'recipient_id': section.recipient_id, 'reason': str(error)})
+                continue
 
         kind, extension = component
         if kind == "rootfs" and payload.startswith(b"hsqs"):
@@ -142,6 +157,18 @@ def extract_components(
             }
         )
     return records
+
+
+def extract_components(upd_path, output_dir, private_key_path=None, legacy_model8=False, skip_encrypted=False):
+    return _extract_components(upd_path, output_dir, private_key_path, legacy_model8, skip_encrypted)
+
+
+def extract_available_components(upd_path, output_dir, private_key_path=None):
+    """Extract every available section and describe those still blocked."""
+    skipped = []
+    components = _extract_components(upd_path, output_dir, private_key_path,
+                                     skip_encrypted=True, all_sections=True, skipped=skipped)
+    return {'components': components, 'skipped': skipped}
 
 
 def extract_anacapad(upd_path: str | Path, output_dir: str | Path) -> dict:

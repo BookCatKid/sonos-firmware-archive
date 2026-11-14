@@ -129,9 +129,12 @@ class PreservationTests(unittest.TestCase):
             catalog = root / 'catalog.json'
             catalog.write_text(json.dumps({'packages': [], 'source_manifests': []}))
             with patch.object(archive, 'ensure_release'), patch.object(archive, 'upload_small_verified'), \
-                 patch.object(archive, 'preserve_candidates', side_effect=[RuntimeError('first version failed'), 1]) as preserve:
+                 patch.object(publisher, 'archive_candidates', return_value={
+                     'preserved': 1, 'pending': 1, 'errors': [{'url': candidates[0]['url'], 'error': 'first version failed'}]
+                 }) as preserve:
                 self.assertTrue(publisher.preserve(state, catalog, root / 'state.json', evidence, root, 'owner/repo'))
-            self.assertEqual(preserve.call_count, 2)
+            preserve.assert_called_once()
+            self.assertEqual(preserve.call_args.args[2], candidates)
             self.assertEqual(len(json.loads(catalog.read_text())['source_manifests']), 1)
             self.assertEqual(len(state['preservation_errors']), 2)
 

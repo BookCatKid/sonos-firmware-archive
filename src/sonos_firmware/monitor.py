@@ -56,20 +56,11 @@ def package_candidate(package: dict) -> Candidate:
 
 
 def candidate_is_preserved(candidate: dict, packages: list[dict]) -> bool:
-    """Match both exact URLs and stable manifest identity fields."""
-    url = secure_url(candidate["url"])
-    for package in packages:
-        if package.get("artifact_status") != "preserved":
-            continue
-        if secure_url(package.get("source_url", "")) == url:
-            return True
-        if (
-            package.get("version") == candidate["version"]
-            and package.get("package_model") == candidate["package_model"]
-            and package.get("filename") == candidate["filename"]
-        ):
-            return True
-    return False
+    """Match observed source URLs; filenames alone do not establish byte identity."""
+    url = secure_url(candidate['url'])
+    return any(package.get('artifact_status') == 'preserved' and url in
+               {secure_url(source) for source in [package.get('source_url', ''), *package.get('source_urls', [])]}
+               for package in packages)
 
 
 def summarize_changes(
