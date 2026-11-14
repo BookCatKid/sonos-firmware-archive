@@ -16,12 +16,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from archive_web_apps import public_release, remote_assets, upload_asset  # noqa: E402
+from sonos_firmware.releases import public_release, remote_assets, upload_asset  # noqa: E402
 from upload_firmware_release import upload_streaming, verified_remote_digest  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--repo', default='BookCatKid/sonos-firmware-archive')
     parser.add_argument("--directory", type=Path, default=ROOT / "artifacts/raw")
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--package-id", action="append", default=[])
@@ -49,7 +50,7 @@ def main() -> int:
     preflight: list[dict] = []
     existing_targets: list[str] = []
     for tag, paths in sorted(groups.items()):
-        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
+        assets = remote_assets(args.repo, tag)
         names = [path.name for path in paths]
         existing = [name for name in names if name in assets]
         existing_targets.extend(f"{tag}/{name}" for name in existing)
@@ -65,7 +66,7 @@ def main() -> int:
             json.dumps(
                 {
                     "audited_at": datetime.now(timezone.utc).isoformat(),
-                    "repository": "BookCatKid/sonos-firmware-archive",
+                    "repository": args.repo,
                     "releases": preflight,
                 },
                 indent=2,
@@ -80,8 +81,8 @@ def main() -> int:
 
     def upload(entry: tuple[str, list[Path]]) -> tuple[str, int]:
         tag, paths = entry
-        release = public_release("BookCatKid/sonos-firmware-archive", tag)
-        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
+        release = public_release(args.repo, tag)
+        assets = remote_assets(args.repo, tag)
         uploaded = 0
         for path in paths:
             item = expected[path.name]
@@ -95,9 +96,9 @@ def main() -> int:
                     continue
                 raise RuntimeError(f"remote asset exists with different content: {tag}/{path.name}")
             if path.stat().st_size >= 32 * 1024 * 1024:
-                upload_streaming("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
+                upload_streaming(args.repo, release["id"], path.name, path)
             else:
-                upload_asset("BookCatKid/sonos-firmware-archive", release["id"], path.name, path)
+                upload_asset(args.repo, release["id"], path.name, path)
             uploaded += 1
             time.sleep(1.1)
         return tag, uploaded
@@ -108,7 +109,7 @@ def main() -> int:
 
     errors: list[str] = []
     for tag, paths in sorted(groups.items()):
-        assets = remote_assets("BookCatKid/sonos-firmware-archive", tag)
+        assets = remote_assets(args.repo, tag)
         for path in paths:
             item = expected[path.name]
             asset = assets.get(path.name)

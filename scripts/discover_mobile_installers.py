@@ -120,6 +120,7 @@ def main() -> int:
         "collapse": "urlkey", "limit": "5000",
     }, doseq=True)
     cdx_url = f"{CDX}?{query}"
+    errors = []
     rows = [["timestamp", "original", "statuscode", "mimetype", "digest", "length"]]
     if not args.current_only:
         error = None
@@ -132,7 +133,7 @@ def main() -> int:
                 if attempt < 3:
                     time.sleep(min(2 ** attempt, 30))
         else:
-            raise RuntimeError(f"Wayback CDX query failed after 4 attempts: {error}")
+            errors.append({'source': cdx_url, 'error': f'Wayback CDX query failed after 4 attempts: {error}'})
     candidates = {}
     for timestamp, original, _status, _mime, digest, length in rows[1:]:
         url = original.replace("http://", "https://", 1)
@@ -153,7 +154,13 @@ def main() -> int:
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         results = list(pool.map(probe, candidates.values()))
     results.sort(key=lambda x: (x["family"], x["version"], x["url"]))
+    errors.extend({'source': x['url'], 'error': x.get('probe_error') or str(x.get('http_status'))}
+                  for x in results if x.get('probe_error') or x.get('http_status') in (403, 429)
+                  or (x.get('http_status') or 0) >= 500)
+    if not direct.get('location') or direct.get('location_source') != 'live':
+        errors.append({'source': REDIRECT, 'error': 'current redirect unresolved; historical fallback is not a live observation'})
     document = {
+        'status': 'partial' if errors else 'ok', 'errors': errors,
         "schema_version": 1, "checked": datetime.now(timezone.utc).isoformat(),
         "current_only": args.current_only,
         "official_redirect": {"url": REDIRECT, **direct},

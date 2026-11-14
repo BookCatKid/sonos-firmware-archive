@@ -12,7 +12,7 @@ replaced, and the same package can appear in multiple campaigns.
 
 ## Automated discovery and preservation
 
-[The discovery workflow](../.github/workflows/archive-connectx.yml) runs every
+[The shared discovery workflow](../.github/workflows/archive.yml) runs every
 six hours and supports manual dispatch. It starts from anonymous S1/S2 Sonos
 protocol endpoints and the legacy UPS response, follows canonical response
 locations, manifest base/image links and literal package-directory siblings,

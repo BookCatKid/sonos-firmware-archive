@@ -282,11 +282,17 @@ def main() -> int:
     parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
     candidates: dict = {}
+    errors = []
     wayback = {"skipped": "historical indexes deferred to weekly scan"}
     if not args.current_only:
-        winget_candidates(candidates)
-        homebrew_candidates(candidates)
-        wayback = wayback_candidates(candidates)
+        for name, source in [('winget', winget_candidates), ('homebrew', homebrew_candidates),
+                             ('wayback', wayback_candidates)]:
+            try:
+                result = source(candidates)
+                if name == 'wayback':
+                    wayback = result
+            except Exception as error:
+                errors.append({'source': name, 'error': str(error)})
     direct_redirects = check_direct_redirects(include_history=not args.current_only)
     for redirect in direct_redirects:
         url = redirect.get("location")
@@ -308,7 +314,13 @@ def main() -> int:
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         results = list(pool.map(probe, candidates.values()))
     results.sort(key=lambda x: (x["family"], x["platform"], x["version"], x["url"]))
+    errors.extend({'source': x['url'], 'error': x.get('probe_error') or str(x.get('http_status'))}
+                  for x in results if x.get('probe_error') or x.get('http_status') in (403, 429)
+                  or (x.get('http_status') or 0) >= 500)
+    errors.extend({'source': x.get('url'), 'error': 'current redirect unresolved; historical fallback is not a live observation'}
+                  for x in direct_redirects if not x.get('location') or x.get('location_source') != 'live-redirect')
     document = {
+        'status': 'partial' if errors else 'ok', 'errors': errors,
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
         "sources": ["official-current-redirects"] if args.current_only else ["microsoft/winget-pkgs", "Homebrew/homebrew-cask", "Sonos CDN HEAD"],

@@ -34,15 +34,13 @@ class CadenceTests(unittest.TestCase):
    with tempfile.TemporaryDirectory() as d:
     report=run_monitor(cat,include_history=False,evidence_dir=d)
   self.assertEqual(report['current_candidate_total'],1);self.assertEqual(report['known_missing_checked_total'],0)
- def test_workflow_owners_and_weekly_scope(self):
-  s=(ROOT/'.github/workflows/monitor-firmware.yml').read_text();a=(ROOT/'.github/workflows/auto-preserve.yml').read_text()
-  self.assertIn("group: monitor-firmware-sources\n  queue: max",s)
-  self.assertIn("group: sonos-preservation\n  queue: max",a)
-  self.assertIn('--monitor-report monitor-report.json',s)
-  self.assertNotIn("['web app'",a)
-  self.assertIn('43 7 * * 0',s);self.assertIn('--current-only',s)
-  self.assertNotIn('check_new_web_apps.py',s);self.assertNotIn('check_new_web_apps.py',a);self.assertNotIn('archive_web_apps.py',a)
-  self.assertIn('13 * * * *',(ROOT/'.github/workflows/archive-web-apps.yml').read_text())
+ def test_target_cadences_are_configured_independently(self):
+  from sonos_firmware.platform.registry import targets
+  configured=targets(ROOT)
+  self.assertEqual(configured['web'].interval_hours,1)
+  self.assertEqual(configured['firmware'].interval_hours,6)
+  self.assertEqual(configured['gpl-audit'].interval_hours,24)
+  self.assertTrue(configured['google-play'].manual)
 
 class TraversalCadenceTests(unittest.TestCase):
  def test_current_skips_history_but_follows_current_package_sibling(self):

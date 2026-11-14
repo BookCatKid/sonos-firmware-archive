@@ -1,0 +1,156 @@
+name: discover and archive
+
+on:
+  schedule:
+    - cron: '13 * * * *'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target name from config/targets.json, or all scheduled targets'
+        type: string
+        default: all
+      accept_google_play_tos:
+        description: 'Explicitly accept the Google Play terms presented by apkeep'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e .
+      - id: targets
+        env:
+          REQUESTED_TARGET: ${{ inputs.target || 'all' }}
+          EVENT: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--matrix --select "$REQUESTED_TARGET")
+          if [[ "$EVENT" == schedule || "$REQUESTED_TARGET" == all ]]; then args+=(--due); fi
+          matrix=$(sonos-archive targets "${args[@]}")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  archive:
+    needs: select
+    if: ${{ toJSON(fromJSON(needs.select.outputs.matrix).include) != '[]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
+    concurrency:
+      group: archive-${{ matrix.lock }}
+      queue: max
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e .
+      - uses: actions/setup-java@v5
+        if: matrix.java
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install filesystem extraction tools
+        if: matrix.target == 'firmware'
+        run: sudo apt-get update && sudo apt-get install -y squashfs-tools
+      - name: Verify pinned acquisition tool sources
+        if: matrix.apkeep
+        working-directory: tools/vendor
+        run: sha256sum --check SHA256SUMS
+      - name: Restore pinned acquisition tool
+        if: matrix.apkeep
+        id: apkeep_cache
+        continue-on-error: true
+        uses: actions/cache@v4
+        with:
+          path: ~/apkeep-tool
+          key: apkeep-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('tools/vendor/apkeep-1.0.0.tar.gz') }}
+      - name: Build pinned acquisition tool
+        if: matrix.apkeep && steps.apkeep_cache.outputs.cache-hit != 'true'
+        id: apkeep
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/apkeep-src" "$HOME/apkeep-tool"
+          tar -xzf tools/vendor/apkeep-1.0.0.tar.gz --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
+          cargo install --locked --path "$RUNNER_TEMP/apkeep-src" --root "$HOME/apkeep-tool"
+      - name: Add acquisition tool to worker path
+        if: matrix.apkeep
+        run: echo "$HOME/apkeep-tool/bin" >> "$GITHUB_PATH"
+      - name: Restore small discovery observations
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
+          key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: observations-${{ matrix.target }}-
+      - name: Discover, acquire, verify and publish
+        id: run
+        continue-on-error: true
+        env:
+          TARGET: ${{ matrix.target }}
+          EVENT: ${{ github.event_name }}
+          ACCEPT_TERMS: ${{ inputs.accept_google_play_tos }}
+          GOOGLE_PLAY_EMAIL: ${{ secrets.GOOGLE_PLAY_EMAIL }}
+          GOOGLE_PLAY_AAS_TOKEN: ${{ secrets.GOOGLE_PLAY_AAS_TOKEN }}
+          GOOGLE_PLAY_AUTH_TOKEN: ${{ secrets.GOOGLE_PLAY_AUTH_TOKEN }}
+          SONOS_MODEL_1_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_1_PRIVATE_KEY }}
+          SONOS_MODEL_8_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_8_PRIVATE_KEY }}
+          SONOS_MODEL_9_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_9_PRIVATE_KEY }}
+          SONOS_MODEL_12_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_12_PRIVATE_KEY }}
+          SONOS_MODEL_16_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_16_PRIVATE_KEY }}
+          SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          args=(--execute --repository "$GITHUB_REPOSITORY" --report "$RUNNER_TEMP/archive-report.json")
+          if [[ "$EVENT" == schedule ]]; then args+=(--if-due); fi
+          if [[ "$ACCEPT_TERMS" == true ]]; then args+=(--accept-google-play-tos); fi
+          sonos-archive run "$TARGET" "${args[@]}"
+      - name: Retain discovery observations
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
+          key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Commit validated target progress
+        if: always() && steps.run.outcome != 'skipped'
+        id: commit
+        continue-on-error: true
+        env:
+          TARGET: ${{ matrix.target }}
+        run: sonos-archive commit "$TARGET"
+      - name: Retain run report and metadata checkpoint
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: archive-${{ matrix.target }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/archive-report.json
+            ${{ runner.temp }}/metadata-checkpoint.patch
+            data/
+          retention-days: 30
+      - name: Report incomplete work
+        if: always() && (steps.run.outcome == 'failure' || steps.commit.outcome == 'failure')
+        run: exit 1

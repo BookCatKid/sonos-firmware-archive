@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from archive_web_apps import public_release, remote_assets, upload_asset  # noqa: E402
+from sonos_firmware.releases import public_release, remote_assets, upload_asset  # noqa: E402
 
 
 def verified_remote_digest(asset: dict) -> str:

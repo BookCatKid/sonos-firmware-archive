@@ -16,7 +16,13 @@ from sonos_firmware.archive_index import manifest_roots
 
 def preserve(result, catalog_path, state_path, evidence, work, repository):
     from archive_monitor_firmware import ensure_release, upload_small_verified, manifest_name, preserve_candidates
-    catalog = json.loads(catalog_path.read_text())
+    if catalog_path.exists():
+        catalog = json.loads(catalog_path.read_text())
+    else:
+        # The worker creates bookkeeping; adding a target needs no prior run.
+        catalog = {'schema_version': 1, 'generated': datetime.now(timezone.utc).date().isoformat(),
+                   'source_manifests': [], 'packages': [], 'raw_images': []}
+        write_json(catalog_path, catalog)
     errors = []
     tag = 'manifest-snapshots-' + datetime.now(timezone.utc).date().isoformat()
     prepared = False
@@ -26,7 +32,9 @@ def preserve(result, catalog_path, state_path, evidence, work, repository):
         if known:
             continue
         try:
-            path = Path(manifest['snapshot']).resolve()
+            # Cached observations move between workers; their old absolute
+            # temporary paths are not acquisition prerequisites.
+            path = (evidence / Path(manifest['snapshot']).name).resolve()
             if not path.is_relative_to(evidence.resolve()):
                 raise ValueError('manifest capture not in the discovery evidence directory')
             data = path.read_bytes()

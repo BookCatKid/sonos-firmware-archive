@@ -18,6 +18,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
+from sonos_firmware.releases import receipt_matches_repository
+
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
 APPS = {
@@ -282,7 +284,8 @@ def main() -> int:
         "schema_version": 1, "artifacts": []
     }
     records = existing.get("artifacts", [])
-    known = {(x["source_kind"], x["package"], x["version_code"]) for x in records}
+    known = {(x["source_kind"], x["package"], x["version_code"]) for x in records
+             if receipt_matches_repository(x, args.repo)}
     with tempfile.TemporaryDirectory(prefix="sonos-android-store-") as temporary:
         scratch = Path(temporary)
         for index, package in enumerate(packages):

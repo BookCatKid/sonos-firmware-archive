@@ -143,18 +143,15 @@ class ArchiveConnectxTests(unittest.TestCase):
                     os.umask(original_umask)
             self.assertEqual(*bundles)
 
-    def test_workflow_runs_static_checks_and_history_with_key_recovery(self):
-        import yaml
-        workflow = yaml.safe_load((ROOT / '.github/workflows/archive-connectx.yml').read_text())
-        trigger = workflow.get('on', workflow.get(True))
-        self.assertIn('schedule', trigger)
-        steps = workflow['jobs']['archive']['steps']
-        archive = next(s for s in steps if s.get('id') == 'archive')
-        self.assertIn('--publish', archive['run'])
-        self.assertIn('--max-packages 4', archive['run'])
-        self.assertIn('SONOS_MODEL_17_PRIVATE_KEY', archive['env'])
-        self.assertIn('trap', archive['run'])
-        self.assertEqual(workflow['concurrency']['group'], 'sonos-preservation')
+    def test_shared_firmware_provider_keeps_static_history_and_key_recovery(self):
+        from sonos_firmware.platform.registry import targets
+        from sonos_firmware.platform.runner import plan
+        steps = plan(targets(ROOT)['firmware'], ROOT, 'owner/repo')['steps']
+        extract = next(s for s in steps if s['name'] == 'extract-firmware')
+        archive = next(s for s in steps if s['name'] == 'archive_connectx')
+        self.assertTrue(extract['after_failure'])
+        self.assertIn('--publish', archive['command'])
+        self.assertEqual(archive['command'][archive['command'].index('--max-packages') + 1], '4')
 
 
 if __name__ == '__main__':

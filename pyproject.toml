@@ -20,6 +20,7 @@ test = ["PyYAML>=6.0"]
 
 [project.scripts]
 sonos-fw = "sonos_firmware.cli:main"
+sonos-archive = "sonos_firmware.platform.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
