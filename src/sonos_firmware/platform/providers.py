@@ -75,8 +75,10 @@ def gpl_indexes(c: Context):
 
 
 def gpl(c: Context):
-    return [c.script('discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5),
-            c.script('archive_gpl_direct.py', 'discover', '--limit', c.options.get('limit', 96), '--delay', 2.5),
+    return [c.script('discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5,
+                     report=str(c.root / 'data/gpl/live/site-evidence.json')),
+            c.script('archive_gpl_direct.py', 'discover', '--limit', c.options.get('limit', 96), '--delay', 2.5,
+                     report=str(c.root / 'data/gpl/live/discovery.json')),
             c.script('archive_gpl_direct.py', 'report', after_failure=True)]
 
 

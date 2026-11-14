@@ -77,8 +77,7 @@ class SitemapPrioritizationTests(unittest.TestCase):
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', url)
-            with patch.object(archive, 'seed_versions', return_value=set()), \
-                 patch.object(archive, 'offline_candidates', return_value={}), \
+            with patch.object(archive, 'offline_candidates', return_value={}), \
                  patch.object(archive, 'get_page', side_effect=fake_get_page), \
                  patch.object(archive, 'pause'):
                 self.assertEqual(archive.discover(args), 0)

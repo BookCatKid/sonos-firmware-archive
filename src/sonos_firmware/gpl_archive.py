@@ -46,6 +46,30 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def source_receipt_key(link: dict, entries: dict) -> str:
+    """Keep legacy keys while separating distinct source URLs with one filename."""
+    url = link.get('url') or link['fetch_url']
+    for key, record in entries.items():
+        if record.get('filename') == link['filename'] and (record.get('source_url') or record.get('fetch_url')) == url:
+            return key
+    name = link['filename']
+    if name not in entries:
+        return name
+    return name + '--source-' + sha256_bytes(url.encode())
+
+
+def source_receipt_keys(links: list[dict], entries: dict) -> dict[str, str]:
+    """Allocate distinct identities before any of the batch has been acquired."""
+    reserved = dict(entries)
+    result = {}
+    for link in links:
+        url = link.get('url') or link['fetch_url']
+        key = source_receipt_key(link, reserved)
+        reserved.setdefault(key, {'filename': link['filename'], 'source_url': url})
+        result[url] = key
+    return result
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as file:
@@ -259,6 +283,12 @@ def candidates(known: set[str], *, major_max: int = 120, minor_max: int = 99, ev
             else:
                 priority = 6
             records.append({"version": version, "priority": priority, "evidence": sorted(evidence.get(version, ()))})
+    # Bounds constrain speculative enumeration, not independently observed leads.
+    generated = {record['version'] for record in records}
+    for version, sources in evidence.items():
+        valid_version(version)
+        if version not in known and version not in generated:
+            records.append({'version': version, 'priority': 0, 'evidence': sorted(sources)})
     return sorted(records, key=lambda item: (item["priority"], version_key(item["version"])))
 
 

@@ -112,8 +112,7 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403,b'<Error><Code>AccessDenied</Code></Error>','application/xml',url)
-            with patch.object(mod,'seed_versions',return_value=set()), \
-                 patch.object(mod,'offline_candidates',return_value={}), \
+            with patch.object(mod,'offline_candidates',return_value={}), \
                  patch.object(mod,'get_page',side_effect=fake_get_page), \
                  patch.object(mod,'pause'):
                 self.assertEqual(mod.discover(args),0)

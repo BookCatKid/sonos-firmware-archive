@@ -15,22 +15,14 @@ from pathlib import Path
 from sonos_firmware.gpl_binary_evidence import scan_binary
 from sonos_firmware.gpl_archive import (
     HttpResult, atomic_json, candidates, capture_response, download_artifact,
-    get_page, index_url, load_json, offline_candidates, pause, sha256_bytes,
-    source_url, timestamp, valid_version, verify_artifact, file_sha256,
+    get_page, index_url, load_json, offline_candidates, pause,
+    timestamp, valid_version, file_sha256, source_receipt_keys,
 )
+
+from sonos_firmware.retry import checkpoint, due, select
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE = ROOT / "data/gpl/live"
-LEGACY = ROOT / "data/gpl/wayback-catalog.json"
-SEED = ROOT / "data/gpl/seed-versions.json"
-
-
-def seed_versions() -> set[str]:
-    seed = load_json(SEED, {"versions": []})
-    versions = set(seed["versions"])
-    if LEGACY.exists():
-        versions.update(item["release"] for item in load_json(LEGACY, {"releases": []})["releases"])
-    return {valid_version(item) for item in versions}
 
 
 def live_catalog(output: Path) -> dict:
@@ -40,20 +32,48 @@ def live_catalog(output: Path) -> dict:
     return catalog
 
 
+def index_key(snapshot, position):
+    return 'gpl.html' if position == 0 else 'gpl-index--' + snapshot['sha256'][:16] + '.html'
+
+
+def all_links(record):
+    return record.get('observed_links', record['links'])
+
+
 def save_index(version: str, response: HttpResult, output: Path) -> dict:
+    catalog = live_catalog(output)
+    prior = catalog['releases'].get(version)
+    snapshots = list(prior.get('index_snapshots', [])) if prior else []
+    if prior and not snapshots:
+        original = output / 'indexes' / (version + '.html')
+        if original.exists():
+            if file_sha256(original) != prior['sha256']:
+                raise ValueError('previous GPL index capture does not match its receipt')
+            retained = output / 'indexes' / (version + '--' + prior['sha256'] + '.html')
+            retained.write_bytes(original.read_bytes())
+            snapshots.append({key: prior[key] for key in ('sha256', 'bytes', 'url', 'checked_at') if key in prior})
+            snapshots[-1]['capture_file'] = str(retained.relative_to(output))
     record = capture_response(version, response, output)
-    if record["state"] == "verified":
-        catalog = live_catalog(output)
-        catalog["releases"][version] = record
-        catalog["updated"] = timestamp()
-        atomic_json(output / "catalog.json", catalog)
+    if record['state'] == 'verified':
+        retained = output / 'indexes' / (version + '--' + record['sha256'] + '.html')
+        retained.write_bytes(response.data)
+        if record['sha256'] not in {row['sha256'] for row in snapshots}:
+            snapshots.append({**{key: record[key] for key in ('sha256', 'bytes', 'url', 'checked_at')},
+                              'capture_file': str(retained.relative_to(output))})
+        record['index_snapshots'] = snapshots
+        links = {(row['url'], row['filename']): row for row in all_links(prior)} if prior else {}
+        links.update({(row['url'], row['filename']): row for row in record['links']})
+        record['observed_links'] = list(links.values())
+        catalog['releases'][version] = record
+        catalog['updated'] = timestamp()
+        atomic_json(output / 'catalog.json', catalog)
     return record
 
 
 def discover(args: argparse.Namespace) -> int:
     output = args.output
     catalog = live_catalog(output)
-    known = seed_versions() | {k for k, v in catalog["releases"].items() if v["state"] == "verified"}
+    known = {k for k, v in catalog["releases"].items() if v["state"] == "verified"}
     evidence = offline_candidates(ROOT)
     sitemap_evidence = load_json(output / "site-evidence.json", {"version_evidence": {}})
     for version, sources in sitemap_evidence.get("version_evidence", {}).items():
@@ -75,19 +95,28 @@ def discover(args: argparse.Namespace) -> int:
     todo = candidates(known, major_max=args.major_max, minor_max=args.minor_max, evidence=evidence)
     state = load_json(output / "discovery.json", {"schema_version": 1, "candidates": {}})
     checked = state["candidates"]
+    # Saved verified indexes are observations to refresh, not a release list
+    # required before discovery. New versions still come from evidence/grammar.
+    for version in sorted(known):
+        checked.setdefault(version, {k: v for k, v in catalog['releases'][version].items() if k != 'links'})
+        todo.append({'version': version, 'priority': -1, 'evidence': [index_url(version)]})
+    todo = select(todo, checked, key=lambda item: item['version'], limit=args.limit, force=args.recheck)
     total = 0
+    errors = []
     for item in todo:
         version = item["version"]
-        if not args.recheck and version in checked:
-            continue
-        if total >= args.limit:
-            break
         try:
             response = get_page(index_url(version))
             record = save_index(version, response, output)
         except (OSError, ValueError) as error:
             record = {"version": version, "url": index_url(version), "checked_at": timestamp(),
                       "state": "network-error", "reason": str(error)}
+        record.update(checkpoint(checked.get(version), success=record['state'] == 'verified',
+                                 negative=record['state'] == 'not-served', success_hours=168))
+        if record['state'] not in {'verified', 'not-served', 'access-denied'} or (
+            record['state'] == 'access-denied' and record.get('reason') != 'AccessDenied XML'
+        ):
+            errors.append({'version': version, 'state': record['state'], 'reason': record.get('reason')})
         record["priority"] = item["priority"]
         record["evidence"] = item["evidence"]
         checked[version] = {key: value for key, value in record.items() if key != "links"}
@@ -105,6 +134,8 @@ def discover(args: argparse.Namespace) -> int:
             print("stopping sweep on access challenge or network failure", flush=True)
             break
         pause(args.delay)
+    state.update(status='partial' if errors else 'ok', errors=errors, checked_this_run=total)
+    atomic_json(output / 'discovery.json', state)
     print(f"checked_this_run={total} verified_total={len([r for r in live_catalog(output)['releases'].values() if r['state']=='verified'])}")
     return 0
 
@@ -113,15 +144,17 @@ def indexes(args: argparse.Namespace) -> int:
     output = args.output
     versions = set(args.version)
     if args.all_known:
-        versions |= seed_versions()
         versions |= {v for v, x in live_catalog(output)["releases"].items() if x["state"] == "verified"}
     if not versions:
+        if args.all_known:
+            print('No observed GPL indexes to refresh; discovery starts independently.')
+            return 0
         raise ValueError("specify --version or --all-known")
     source = args.cache_dir
     for i, version in enumerate(sorted(versions, key=lambda s: tuple(map(int, s.split('.'))))):
         valid_version(version)
         if source:
-            path = source / f"sonos-gpl-20261112-{version}.html"
+            path = source / f"{version}.html"
             if not path.exists():
                 raise FileNotFoundError(f"missing directly captured Sonos index: {path}")
             response = HttpResult(200, path.read_bytes(), "text/html", index_url(version))
@@ -184,17 +217,24 @@ def archive(args: argparse.Namespace) -> int:
     records = load_json(args.output / "artifacts.json", {"schema_version": 1, "artifacts": {}})
     count = 0
     total_bytes = 0
-    terminal_states = {"invalid-artifact", "unexpected-content-type", "unknown-extension", "external-or-unsupported"}
+    validated_blobs = {}
+    def local_blob(item):
+        digest = item.get('sha256')
+        if not digest:
+            return None
+        if digest not in validated_blobs:
+            blob = args.store / 'sha256' / digest[:2] / digest
+            validated_blobs[digest] = blob if blob.is_file() and file_sha256(blob) == digest else None
+        return validated_blobs[digest]
     def incomplete(item: dict | None) -> bool:
         if not item:
             return True
         if item.get("published"):
             return False
-        if item.get("state") in terminal_states:
-            return args.retry_errors
-        if item.get("state") == "http-error" and item.get("http_status") in {403, 404}:
-            return args.retry_errors
-        return True
+        if item.get('state') == 'verified':
+            return args.publish or local_blob(item) is None
+        # Failures expire automatically; successful immutable content stays put.
+        return args.retry_errors or due(item)
     versions = list(args.version)
     if args.next:
         if versions:
@@ -205,34 +245,66 @@ def archive(args: argparse.Namespace) -> int:
             if entry["state"] != "verified":
                 continue
             prior = records["artifacts"].get(candidate, {})
-            pending = [link for link in entry["links"] if
+            keys = source_receipt_keys(all_links(entry), prior)
+            pending = [link for link in all_links(entry) if
                        link["kind"] in ("source", "attribution") and
                        (link["origin"] == "sonos" or args.include_upstream) and
-                       incomplete(prior.get(link["filename"]))]
-            if pending:
+                       incomplete(prior.get(keys[link['url']]))]
+            pending_indexes = args.publish and any(
+                not prior.get(index_key(snapshot, position), {}).get('published') or
+                prior[index_key(snapshot, position)].get('sha256') != snapshot.get('sha256')
+                for position, snapshot in enumerate(entry.get('index_snapshots', [entry])))
+            if pending or pending_indexes:
                 versions.append(candidate)
                 print(f"queued_incomplete_release={candidate} remaining={len(pending)}", flush=True)
     if not versions:
-        print("No pending GPL downloads in the chosen scope; review recorded failures and use --retry-errors to revisit them.")
+        print("No due GPL downloads in the chosen scope; failed sources remain scheduled for retry.")
         return 0
+    work = []
+    observations = {}
+    for version in versions:
+        entry = catalog['releases'].get(version)
+        if not entry or entry['state'] != 'verified':
+            raise ValueError(f'no verified direct-Sonos index for {version}')
+        prior = records['artifacts'].get(version, {})
+        keys = source_receipt_keys(all_links(entry), prior)
+        for link in all_links(entry):
+            if (args.filename and link['filename'] not in args.filename or
+                link['origin'] != 'sonos' and not args.include_upstream or
+                link['kind'] not in ('source', 'attribution') or not incomplete(prior.get(keys[link['url']]))):
+                continue
+            work.append({'version': version, 'link': link})
+            previous = prior.get(keys[link['url']])
+            if previous and previous.get('state') != 'verified':
+                observations[(version, link['url'])] = previous
+    chosen = select(work, observations, key=lambda item: (item['version'], item['link']['url']),
+                    limit=args.limit or len(work), force=args.retry_errors)
+    selected = {(item['version'], item['link']['url']) for item in chosen}
     for version in versions:
         valid_version(version)
         record = catalog["releases"].get(version)
         if not record or record["state"] != "verified":
             raise ValueError(f"no verified direct-Sonos index for {version}")
         version_assets = records["artifacts"].setdefault(version, {})
-        if args.publish and "gpl.html" not in version_assets:
-            index_path = args.output / "indexes" / f"{version}.html"
-            if file_sha256(index_path) != record["sha256"]:
-                raise ValueError(f"index checksum changed for {version}")
-            index_meta = {"state": "verified", "filename": "gpl.html", "sha256": record["sha256"],
-                          "bytes": index_path.stat().st_size, "release_tag": f"gpl-{version}", "release_asset": "gpl.html"}
-            receipt = publish({**index_meta, "version": version}, index_path, args.repo)
-            index_meta.update(receipt)
-            index_meta["published"] = True
-            version_assets["gpl.html"] = index_meta
-            atomic_json(args.output / "artifacts.json", records)
-        for link in record["links"]:
+        keys = source_receipt_keys(all_links(record), version_assets)
+        if args.publish:
+            for position, snapshot in enumerate(record.get('index_snapshots', [record])):
+                name = index_key(snapshot, position)
+                if version_assets.get(name, {}).get('published') and version_assets[name].get('sha256') == snapshot['sha256']:
+                    continue
+                index_path = args.output / snapshot.get('capture_file', f'indexes/{version}.html')
+                if file_sha256(index_path) != snapshot['sha256']:
+                    raise ValueError(f'index checksum changed for {version}')
+                index_meta = {'state': 'verified', 'filename': name, 'sha256': snapshot['sha256'],
+                              'bytes': index_path.stat().st_size, 'release_tag': f'gpl-{version}', 'release_asset': name}
+                receipt = publish({**index_meta, 'version': version}, index_path, args.repo)
+                index_meta.update(receipt)
+                index_meta['published'] = True
+                version_assets[name] = index_meta
+                atomic_json(args.output / 'artifacts.json', records)
+        for link in all_links(record):
+            if (version, link['url']) not in selected:
+                continue
             if args.filename and link["filename"] not in args.filename:
                 continue
             if args.limit and count >= args.limit:
@@ -241,12 +313,13 @@ def archive(args: argparse.Namespace) -> int:
                 continue
             if link["kind"] not in ("source", "attribution"):
                 continue
-            old = version_assets.get(link["filename"])
+            receipt_key = keys[link['url']]
+            old = version_assets.get(receipt_key)
             if not incomplete(old):
                 continue
             if old and old.get("state") in {"verified", "published"}:
-                blob = args.store / "sha256" / old["sha256"][:2] / old["sha256"]
-                if blob.is_file() and file_sha256(blob) == old["sha256"]:
+                blob = local_blob(old)
+                if blob:
                     if args.publish:
                         receipt = publish({**old, "version": version}, blob, args.repo)
                         old.update(receipt)
@@ -280,7 +353,10 @@ def archive(args: argparse.Namespace) -> int:
                         result["state"] = "published"
                     else:
                         result["publish_conflict"] = receipt
-            version_assets[link["filename"]] = result
+            result.update(source_url=link['url'], fetch_url=link.get('fetch_url'), origin=link['origin'], kind=link['kind'])
+            result.update(checkpoint(old, success=bool(result.get('published')) or result['state'] == 'verified',
+                                     negative=result.get('http_status') == 404))
+            version_assets[receipt_key] = result
             records["updated"] = timestamp()
             atomic_json(args.output / "artifacts.json", records)
             count += 1
@@ -310,17 +386,22 @@ def report(args: argparse.Namespace) -> int:
     site = load_json(args.output / "site-evidence.json", {"sitemaps": {}, "version_evidence": {}, "related_pages": []})
     binary = load_json(args.output / "binary-evidence.json", {"scans": {}, "version_evidence": {}})
     versions = {v: r for v, r in catalog["releases"].items() if r["state"] == "verified"}
-    source = sum(sum(link["origin"] == "sonos" for link in r["links"]) for r in versions.values())
-    upstream = sum(sum(link["origin"] == "upstream" for link in r["links"]) for r in versions.values())
+    source = sum(sum(link["origin"] == "sonos" for link in all_links(r)) for r in versions.values())
+    upstream = sum(sum(link["origin"] == "upstream" for link in all_links(r)) for r in versions.values())
     archived = sum(sum(r.get("state") in {"verified", "published"} for r in ver.values()) for ver in receipts.values())
     published = sum(sum(r.get("published", False) for r in ver.values()) for ver in receipts.values())
     release_coverage = {}
     for version, record in sorted(versions.items(), key=lambda pair: tuple(map(int, pair[0].split('.')))):
-        expected = {link["filename"] for link in record["links"]}
-        expected.add("gpl.html")
         data = receipts.get(version, {})
-        published_expected = {name for name in expected if data.get(name, {}).get("published")}
-        source_names = {link["filename"] for link in record["links"] if link["kind"] == "source"}
+        keys = source_receipt_keys(all_links(record), data)
+        expected = set(keys.values())
+        expected.update(index_key(snapshot, position) for position, snapshot in
+                        enumerate(record.get('index_snapshots', [record])))
+        index_digests = {index_key(snapshot, position): snapshot.get('sha256')
+                         for position, snapshot in enumerate(record.get('index_snapshots', [record]))}
+        published_expected = {name for name in expected if data.get(name, {}).get('published') and
+                              (not index_digests.get(name) or data[name].get('sha256') == index_digests[name])}
+        source_names = {keys[link.get('url') or link['fetch_url']] for link in all_links(record) if link["kind"] == "source"}
         source_published = source_names & published_expected
         fully_checked = {name for name in source_published if
                          data[name].get("stream_integrity", {}).get("state") == "verified" and
@@ -387,10 +468,10 @@ def main() -> int:
     p.set_defaults(func=discover)
     p = sub.add_parser("archive", help="Verify sources and optionally publish to GitHub Releases")
     p.add_argument("--version", action="append", default=[])
-    p.add_argument("--next", action="store_true", help="Archive oldest release with unpublished download links")
-    p.add_argument("--include-upstream", action="store_true", help="Also preserve the 13 distinct GNU/uClibc upstream sources")
-    p.add_argument("--continue-errors", action="store_true", help="Record permanent per-artifact gaps without blocking the next file")
-    p.add_argument("--retry-errors", action="store_true", help="Explicitly retry previously recorded permanent failures")
+    p.add_argument("--next", action="store_true", help="Resume unpublished sources and index snapshots across observed releases")
+    p.add_argument("--include-upstream", action="store_true", help="Also preserve allowlisted upstream sources linked by observed indexes")
+    p.add_argument("--continue-errors", action="store_true", help="Record per-artifact failures without blocking the next file")
+    p.add_argument("--retry-errors", action="store_true", help="Retry recorded failures immediately instead of waiting for backoff")
     p.add_argument("--filename", action="append", default=[], help="Only archive these exact source filenames")
     p.add_argument("--store", type=Path, default=ROOT / "artifacts/gpl-direct")
     p.add_argument("--limit", type=int, default=0)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Discover GPL index leads from public Sonos XML sitemaps, without Wayback.
 
-The job inspects only independently published Sonos sitemap URLs. Each page is
-fetched once per checkpoint unless explicitly rechecked. A matched version is
+The job inspects only independently published Sonos sitemap URLs. Successful
+pages refresh periodically and failures retry with backoff. A matched version is
 only a candidate; `archive_gpl_direct.py discover` validates the actual index.
 """
 
@@ -21,6 +21,7 @@ from sonos_firmware.gpl_archive import (
     USER_AGENT, VERSION_IN_URL, atomic_json, get_page, load_json, pause,
     sha256_bytes, timestamp, valid_version,
 )
+from sonos_firmware.retry import checkpoint, due
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "data/gpl/live/site-evidence.json"
@@ -86,7 +87,10 @@ def scan(args: argparse.Namespace) -> int:
     if state.get("schema_version") != 1:
         raise ValueError("unsupported sitemap checkpoint format")
     seeds = args.seed or SEEDS
-    queue = sorted(set(seeds))
+    # All observed children remain eligible even when their parents are not due.
+    queue = list(dict.fromkeys([*sorted(set(seeds)), *state['sitemaps'],
+                              *(child for row in state['sitemaps'].values() for child in row.get('sitemap_children', []))]))
+    queue.sort(key=lambda url: state['sitemaps'].get(url, {}).get('checked_at', ''))
     processed = set()
     requests = 0
     leads = {version: set(urls) for version, urls in state.get("version_evidence", {}).items()}
@@ -100,7 +104,7 @@ def scan(args: argparse.Namespace) -> int:
             continue
         processed.add(url)
         prior = state["sitemaps"].get(url)
-        if prior and not args.recheck:
+        if prior and not args.recheck and not due(prior):
             queue.extend(prior.get("sitemap_children", []))
             continue
         result = {"checked_at": timestamp(), "url": url, "state": "inconclusive"}
@@ -133,6 +137,11 @@ def scan(args: argparse.Namespace) -> int:
         except (OSError, ValueError) as error:
             result["state"] = "error"
             result["reason"] = str(error)
+        result.update(checkpoint(prior, success=result['state'] == 'verified-xml',
+                                 negative=result.get('http_status') == 404))
+        # A failed refresh does not erase previously discovered child links.
+        if prior and 'sitemap_children' not in result:
+            result['sitemap_children'] = prior.get('sitemap_children', [])
         state["sitemaps"][url] = result
         state["version_evidence"] = {version: sorted(pages) for version, pages in sorted(leads.items())}
         state["related_pages"] = sorted(related)
@@ -143,6 +152,10 @@ def scan(args: argparse.Namespace) -> int:
         if result["state"] in {"rate-limited", "error"}:
             break
         pause(args.delay)
+    errors = [{'url': url, 'state': row['state']} for url, row in state['sitemaps'].items()
+              if row['state'] != 'verified-xml' and row.get('http_status') != 404]
+    state.update(status='partial' if errors else 'ok', errors=errors)
+    atomic_json(args.output, state)
     print(f"processed_requests={requests} checkpointed_sitemaps={len(state['sitemaps'])} versions={sorted(leads)} related={len(related)}", flush=True)
     return 0
 

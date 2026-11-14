@@ -5,7 +5,7 @@ The objective is to identify and preserve **every publicly obtainable** original
 ## Existing material and provenance
 
 - `data/gpl/wayback-catalog.json` and the nine historical `gpl-<version>` Releases are **legacy captures**. They are not silently rewritten or represented as direct Sonos downloads. Sixteen recorded 7.3 Wayback CDX-vs-local SHA-1 mismatches remain separate audit evidence, but **all 16 historical local files have since been proved SHA-256/size-identical to current direct-Sonos downloads**. Of the 22 historical 7.3 records, 21 files match direct Sonos bytes; only `gpl.html` differs (the older page is preserved alongside the direct copy). The mismatches are not evidence of source-file corruption, and their cause in CDX digest derivation remains undetermined.
-- `data/gpl/seed-versions.json` contains the union of the versions in issue #23 and the previous archive. This is a discovery seed, not a completeness certificate.
+- `data/gpl/seed-versions.json` retains the historical issue/archive version list as evidence. Runtime discovery does not read this list.
 - `data/gpl/live/catalog.json` and `data/gpl/live/indexes/` contain directly fetched, validated Sonos GPL index bodies and exact SHA-256 checksums. The 39 initial index bodies were fetched straight from Sonos on November 12, 2026; none came from Wayback.
 - `data/gpl/live/discovery.json` records probes, including denied and inconclusive responses. A 403 XML `AccessDenied` response is **not** treated as confirmation that a version never existed.
 - `data/gpl/live/artifacts.json` records verified sources with size, SHA-256, exact original URL, encoded fetch URL, release asset and publication state. `data/gpl/live/report.json` is a generated coverage summary.
@@ -21,7 +21,11 @@ The objective is to identify and preserve **every publicly obtainable** original
 5. Verify every discovered page by HTTP response **and** expected Sonos GPL HTML and anchor links. Preserve the actual index bytes and SHA-256, not challenge pages or synthetic indexes. Never assume a 200 proves a valid GPL index.
 6. Compare the release-specific sources and notices against extracted firmware binaries and build IDs. A binary/source component-version match is a candidate; exact corresponding source must be established independently.
 
-No Wayback requests are made by the new archiver. Only the legacy catalog loader references earlier Wayback metadata for seed versions.
+No Wayback requests or maintained release lists are used by this discovery adapter. An empty state starts from public sitemaps and the version grammar. Previously archived metadata and binary observations can prioritize leads, but only directly validated indexes become verified releases.
+
+Failed checks retry automatically with exponential backoff from one hour to one day; explicit 404 observations refresh after seven days. Verified indexes refresh weekly and sitemaps daily. Each discovery batch reserves capacity for old retries while continuing new leads. `--recheck` bypasses backoff when explicitly requested.
+
+Index refreshes retain each distinct captured body under its SHA-256 and preserve earlier observed source links. Changed index snapshots are published as separate assets rather than replacing the original. Source receipts retain their exact source URL, including distinct URLs sharing one filename. Existing receipt keys remain stable; colliding names receive a URL identity suffix. Verified cached sources can publish immediately without another acquisition. Coverage includes all observed links and index snapshots; an index's latest `links` field still describes that exact body.
 
 ## Downloader
 
@@ -33,7 +37,7 @@ No Wayback requests are made by the new archiver. Only the legacy catalog loader
 
 `python scripts/archive_gpl_direct.py archive --version 18.6 --store /path/with/disk-space --include-upstream --publish` downloads source and PDF links, streams data into resumable `.part` files, checks tar integrity or PDF headers, and content-addresses verified assets by SHA-256. A minimum-free-space reserve protects the host. The `+` in Sonos filenames is percent-encoded as `%2B`; on November 12 five 18.6 hyperlinks with literal plus signs returned 403 while percent-encoded URLs served complete source archives. The `--filename NAME` selector permits a bounded targeted analysis.
 
-The `archive --next --limit N` mode advances through **multiple** incomplete releases in version order until the bounded attempt limit is reached; it does not stop after the first partially archived version. A bounded limit is mandatory for `--next`. Failed sources remain explicitly recorded and may be retried with `--retry-errors`.
+The `archive --next --limit N` mode advances through **multiple** incomplete releases in version order until the bounded attempt limit is reached; it does not stop after the first partially archived version. A bounded limit is mandatory for `--next`. Failed sources remain explicitly recorded and retry automatically after backoff; `--retry-errors` requests an immediate retry.
 
 A GitHub Actions workflow performs twice-daily bounded discovery and four daily staged archival batches (up to 90 attempts each) from a runner with adequate scratch disk space. It uses GitHub Releases tagged `gpl-<version>`, verifies server-side asset SHA-256 after upload, and commits receipts only after verification. If an older Wayback asset has the same name but different SHA-256, the direct-source copy is saved under a **distinct immutable asset name**, not overwritten; the original URL and filename remain in metadata. Sources linked to `ftp.gnu.org` and `www.uclibc.org` are handled separately from Sonos-hosted files.
 

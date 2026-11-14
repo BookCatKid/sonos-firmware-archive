@@ -98,7 +98,7 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
             stats["reused"] += 1
             stats["verified"] += 1
         else:
-            link = {"filename": name, "kind": "source", "origin": item.get("origin") or
+            link = {"filename": item.get("filename", name), "kind": "source", "origin": item.get("origin") or
                     ("sonos" if "sonos.com" in (item.get("fetch_url") or "") else "upstream"),
                     "url": item.get("source_url") or item.get("fetch_url"),
                     "fetch_url": item.get("fetch_url")}

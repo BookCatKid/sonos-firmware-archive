@@ -180,17 +180,27 @@ class GPLArchiveIntegrityTests(unittest.TestCase):
                 self.assertEqual(sha256_bytes(body), record["sha256"])
                 self.assertEqual(len(body), record["bytes"])
                 self.assertEqual(parse_index(version, body), record["links"])
-                self.assertEqual(len(set(x["filename"] for x in record["links"])), len(record["links"]))
+                self.assertEqual(len({(x['filename'], x['url']) for x in record['links']}), len(record['links']))
+                for snapshot in record.get('index_snapshots', []):
+                    captured = (ROOT / 'data/gpl/live' / snapshot['capture_file']).read_bytes()
+                    self.assertEqual(sha256_bytes(captured), snapshot['sha256'])
+                    self.assertEqual(len(captured), snapshot['bytes'])
 
     def test_direct_receipts_are_consistent_and_locally_verifiable(self):
         catalog = json.loads((ROOT / "data/gpl/live/catalog.json").read_text())
         receipts = json.loads((ROOT / "data/gpl/live/artifacts.json").read_text())
         for version, items in receipts["artifacts"].items():
-            expected = {"gpl.html"} | {item["filename"] for item in catalog["releases"][version]["links"]}
+            record = catalog['releases'][version]
+            links = record.get('observed_links', record['links'])
+            expected = {'gpl.html'} | {item['filename'] for item in links}
+            expected.update('gpl-index--' + snapshot['sha256'][:16] + '.html'
+                            for snapshot in record.get('index_snapshots', [])[1:])
             for filename, item in items.items():
                 with self.subTest(version=version, filename=filename):
-                    self.assertIn(filename, expected)
-                    self.assertEqual(item["filename"], filename)
+                    self.assertIn(item['filename'], expected)
+                    if item.get('kind') in ('source', 'attribution'):
+                        self.assertIn((item['filename'], item.get('source_url') or item.get('fetch_url')),
+                                      {(link['filename'], link['url']) for link in links})
                     self.assertEqual(len(item["sha256"]), 64)
                     self.assertGreater(item["bytes"], 0)
                     if item.get("published"):
@@ -360,7 +370,8 @@ class GPLMultiReleaseProgressTests(unittest.TestCase):
             root = Path(directory)
             (root / "catalog.json").write_text(json.dumps({"schema_version": 1, "releases": releases}))
             (root / "artifacts.json").write_text(json.dumps({"schema_version": 1, "artifacts": {
-                "6.4": {"done.tar.xz": {"filename": "done.tar.xz", "state": "published", "published": True}}
+                "6.4": {"done.tar.xz": {"filename": "done.tar.xz", "state": "published", "published": True,
+                        "source_url": "https://www.sonos.com/documents/gpl/6.4/done.tar.xz"}}
             }}))
             args = argparse.Namespace(output=root, next=True, version=[], include_upstream=False,
                                       retry_errors=False, continue_errors=True, filename=[], limit=2,
