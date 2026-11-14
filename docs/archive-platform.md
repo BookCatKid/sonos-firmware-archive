@@ -21,6 +21,14 @@ not require a workflow, release URL list, or local archive. Source-specific
 parsing and validation remain in their adapters; scheduling, temporary storage,
 reporting, and metadata commits use the shared runner.
 
+For installer sources, `sonos_firmware.app_archive.AppSource` supplies a shared
+acquisition loop. Its `acquire(candidate, destination)` callback streams one
+payload into worker storage and returns its fetch URL. `release_for(candidate)`
+returns a release tag and title. The common loop computes size and SHA-256,
+checks any discovery checksum, publishes without overwriting, and reconciles
+GitHub's size and digest before adding a preserved artifact. Source adapters
+do not need their own hashing, retry ledger, or publication implementation.
+
 ## Worker lifecycle
 
 The Actions worker discovers candidates and records their provenance. It
@@ -43,6 +51,22 @@ the next hourly tick; successful targets follow their declared cadence. Targets
 with a common metadata lock execute in order. Independent sources can proceed
 when another target fails. Android history uses a bounded, rotating queue and
 retries failures rather than permanently suppressing them.
+
+Desktop and official APK acquisition share per-repository URL observations.
+Current download URLs refresh at the target cadence; historical URLs refresh
+weekly by default. Changed checksums, ETags, versions, or HTTP availability
+become eligible immediately. Attempts include failures and are bounded; prior
+leads remain available when a new discovery report omits them. An unavailable
+or partial discovery report remains explicit even when earlier captures can
+finish publication.
+
+Captured content is staged as unpublished metadata before upload. If an upload
+response is lost, a later worker can reconcile the exact recorded asset without
+re-fetching its original URL. Changed bytes at one URL produce separate assets.
+Older unresolved capture receipts remain visible and are retried independently;
+they never become preserved solely because a newer capture succeeded. Metadata
+checkpoints use the same atomic JSON writer across discovery, app acquisition,
+GPL acquisition, and orchestration.
 
 `google-play` is manual and requires both configured credentials and explicit
 terms acceptance. Missing capabilities produce a blocked report. Apple metadata

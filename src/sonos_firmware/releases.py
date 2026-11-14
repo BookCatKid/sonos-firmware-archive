@@ -139,3 +139,39 @@ def receipt_matches_repository(record: dict, repository: str) -> bool:
         entries = [record]
     prefix = f'https://github.com/{repository}/releases/download/'.lower()
     return all(entry.get('release_url', '').lower().startswith(prefix) for entry in entries)
+
+
+def ensure_release(repository: str, tag: str, title: str, notes: str) -> None:
+    exists = subprocess.run(['gh', 'release', 'view', tag, '--repo', repository],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+    if not exists:
+        subprocess.run(['gh', 'release', 'create', tag, '--repo', repository,
+                        '--title', title, '--notes', notes], check=True)
+
+
+def verified_asset(repository: str, tag: str, name: str, size: int, digest: str) -> dict | None:
+    try:
+        remote = remote_assets(repository, tag).get(name)
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            error.close()
+            return None
+        raise
+    if remote is None:
+        return None
+    if remote.get('size') != size or (remote.get('digest') or '').removeprefix('sha256:') != digest:
+        raise RuntimeError(f'GitHub asset mismatch: {tag}/{name}')
+    if not (remote.get('browser_download_url') or remote.get('url')):
+        raise ValueError('verified GitHub asset has no publication URL')
+    return remote
+
+
+def publish_verified(repository: str, tag: str, path: Path, size: int, digest: str) -> dict:
+    """Publish without clobbering and return only a size/hash-reconciled asset."""
+    remote = verified_asset(repository, tag, path.name, size, digest)
+    if remote is None:
+        subprocess.run(['gh', 'release', 'upload', tag, str(path), '--repo', repository], check=True)
+        remote = verified_asset(repository, tag, path.name, size, digest)
+    if remote is None:
+        raise RuntimeError(f'GitHub asset missing after upload: {tag}/{path.name}')
+    return remote

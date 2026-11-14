@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from curl_cffi import requests as tls_requests
+from sonos_firmware.storage import atomic_json
 
 CDX = "https://web.archive.org/cdx/search/cdx"
 REDIRECT = "https://www.sonos.com/redir/controller_software_android2"
@@ -150,7 +151,9 @@ def main() -> int:
             "family": family(url), "platform": "fireos-android-apk",
             "version": version(url), "url": url, "sources": [],
         })
-        item["sources"].append("official-current-fireos-redirect")
+        item["sources"].append("official-current-fireos-redirect" if direct.get('location_source') == 'live' else 'historical-fireos-redirect')
+    for item in candidates.values():
+        item['current'] = item['url'] == direct.get('location') and direct.get('location_source') == 'live'
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         results = list(pool.map(probe, candidates.values()))
     results.sort(key=lambda x: (x["family"], x["version"], x["url"]))
@@ -169,8 +172,7 @@ def main() -> int:
         "available_live_total": sum(x.get("http_status") == 200 for x in results),
         "candidates": results,
     }
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(document, indent=2) + "\n")
+    atomic_json(args.output, document)
     print(f"candidates={len(results)} live={document['available_live_total']}")
     return 0
 

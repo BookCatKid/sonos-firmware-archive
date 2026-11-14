@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from curl_cffi import requests as tls_requests
+from sonos_firmware.storage import atomic_json
 
 WINGET_PACKAGES = {"Controller": "s2", "S1Controller": "s1"}
 HOMEBREW_PATHS = {
@@ -304,6 +305,7 @@ def main() -> int:
             version=version_for_url(url), url=url, sha256=None,
             source=f"official-direct:{redirect['name']}:{redirect['location_source']}",
         )
+    current_urls = {row['location'] for row in direct_redirects if row.get('location_source') == 'live-redirect'}
     for item in list(candidates.values()):
         other = counterpart(item)
         if other:
@@ -311,6 +313,8 @@ def main() -> int:
             add_candidate(candidates, family=item["family"], platform=platform,
                           version=item["version"], url=url, sha256=None,
                           source="derived-cross-platform")
+    for item in candidates.values():
+        item['current'] = item['url'] in current_urls
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         results = list(pool.map(probe, candidates.values()))
     results.sort(key=lambda x: (x["family"], x["platform"], x["version"], x["url"]))
@@ -331,8 +335,7 @@ def main() -> int:
         "available_total": sum(x["http_status"] == 200 for x in results),
         "candidates": results,
     }
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(document, indent=2) + "\n")
+    atomic_json(args.output, document)
     print(f"candidates={len(results)} available={document['available_total']}")
     return 0
 

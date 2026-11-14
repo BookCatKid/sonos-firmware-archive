@@ -21,6 +21,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
+from .storage import atomic_json as write_json
+
 BASE = "https://www.sonos.com/documents/gpl/"
 VERSION_RE = re.compile(r"^[1-9][0-9]{0,2}\.[0-9]{1,2}$")
 VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([1-9][0-9]{0,2}\.[0-9]{1,2})/", re.I)
@@ -36,10 +38,7 @@ def timestamp() -> str:
 
 
 def atomic_json(path: Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    write_json(path, value, sort_keys=True)
 
 
 def sha256_bytes(data: bytes) -> str:

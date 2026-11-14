@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import concurrent.futures
 import hashlib
-import json
 import os
 import urllib.error
 import urllib.request
@@ -12,6 +11,8 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
+
+from .storage import atomic_json
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
@@ -201,5 +202,4 @@ def download_all(candidates: list[dict], directory: str | Path, workers: int = 3
 
 
 def write_json(path: str | Path, value) -> None:
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    Path(path).write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+    atomic_json(path, value)
