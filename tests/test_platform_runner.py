@@ -223,6 +223,60 @@ class ExtractionCheckpointTests(unittest.TestCase):
 
 
 class HistoryBootstrapTests(unittest.TestCase):
+    def test_unattempted_discovery_survives_limit_and_later_listing_outage(self):
+        import importlib.util
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        import sys
+        root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location('queued_sweep', root/'scripts/sweep_android_store_history.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            acquired = []
+            def acquire(command, **kwargs):
+                acquired.append(command[command.index('--version-selector')+1])
+                state = json.loads((directory/'state.json').read_text())
+                self.assertEqual({row['version_selector'] for row in state['pending_selectors']}, {'first', 'later'})
+                return SimpleNamespace(returncode=1, stdout='fixture acquisition failure')
+            with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2', '--limit', '1',
+                    '--receipt', str(directory/'archive.json'), '--ledger', str(directory/'state.json')]), \
+                 patch.object(module, 'discover_versions', side_effect=[['first', 'later'], OSError('listing outage')]), \
+                 patch.object(module.subprocess, 'run', side_effect=acquire):
+                self.assertEqual(module.main(), 1)
+                self.assertEqual(module.main(), 1)
+            self.assertEqual(acquired, ['first', 'later'])
+
+    def test_previously_observed_selector_survives_an_unavailable_store_listing(self):
+        import importlib.util
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        import sys
+        root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location('retained_sweep', root/'scripts/sweep_android_store_history.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            ledger = directory/'state.json'
+            ledger.write_text(json.dumps({'attempts': [{'package': 'com.sonos.acr2', 'version_selector': 'old',
+                                                       'status': 'failed', 'checked': '2020-01-01'}]}))
+            acquired = []
+            def acquire(command, **kwargs):
+                acquired.append(command[command.index('--version-selector')+1])
+                return SimpleNamespace(returncode=0, stdout='verified publication')
+            with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2',
+                    '--receipt', str(directory/'archive.json'), '--ledger', str(ledger)]), \
+                 patch.object(module, 'discover_versions', side_effect=OSError('listing unavailable')), \
+                 patch.object(module.subprocess, 'run', side_effect=acquire):
+                self.assertEqual(module.main(), 1)
+            self.assertEqual(acquired, ['old'])
+            document = json.loads(ledger.read_text())
+            self.assertEqual(document['attempts'][0]['status'], 'archived')
+            self.assertEqual(document['pending_total'], 0)
+            self.assertEqual(document['status'], 'partial')
+
     def test_empty_archive_rotates_past_failed_selector_and_retains_retry(self):
         import importlib.util
         from unittest.mock import patch

@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from sonos_firmware.releases import receipt_matches_repository
+from sonos_firmware.storage import atomic_json
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ("com.sonos.acr2", "com.sonos.acr")
@@ -30,7 +31,7 @@ def discover_versions(apkeep: str, package: str) -> list[str]:
     return [item.strip() for item in match.group(1).split(",") if item.strip()]
 
 
-def write_ledger(path: Path, attempts: list[dict]) -> None:
+def write_ledger(path: Path, attempts: list[dict], pending_selectors: list[dict]) -> None:
     successful = sum(item["status"] == "archived" for item in attempts)
     failed = sum(item["status"] == "failed" for item in attempts)
     document = {
@@ -41,9 +42,9 @@ def write_ledger(path: Path, attempts: list[dict]) -> None:
         "archived_total": successful,
         "failed_total": failed,
         "attempts": attempts,
+        "pending_selectors": pending_selectors,
     }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(document, indent=2) + "\n")
+    atomic_json(path, document)
 
 
 def main() -> int:
@@ -57,18 +58,21 @@ def main() -> int:
     parser.add_argument("--ledger", type=Path,
                         default=ROOT / "data/apps/android-store-history-sweep.json")
     args = parser.parse_args()
+    if args.limit <= 0:
+        parser.error('--limit must be positive')
     packages = args.package or list(PACKAGES)
     receipt = json.loads(args.receipt.read_text()) if args.receipt.exists() else {'artifacts': []}
     archived = {
-        (item["package"], item.get("source_version_selector"))
+        (item["package"], selector)
         for item in receipt["artifacts"]
         if item.get("source_kind") == "apkpure-recovery" and receipt_matches_repository(item, args.repo)
+        for selector in {item.get('source_version_selector'), *item.get('source_version_selectors', [])}
     }
-    attempts = (json.loads(args.ledger.read_text()).get("attempts", [])
-                if args.ledger.exists() else [])
+    state = json.loads(args.ledger.read_text()) if args.ledger.exists() else {}
+    attempts = state.get('attempts', [])
     attempted = {(x["package"], x["version_selector"]): x for x in attempts}
 
-    pending = []
+    queue = {(row['package'], row['version_selector']): row for row in state.get('pending_selectors', [])}
     discovery_errors = []
     for package in packages:
         try:
@@ -82,7 +86,19 @@ def main() -> int:
             if key in archived:
                 print(f"already archived: {package}@{selector}", flush=True)
                 continue
-            pending.append((package, selector, rank))
+            queue.setdefault(key, {'package': package, 'version_selector': selector, 'rank': rank})
+    for attempt in attempts:
+        key = (attempt['package'], attempt['version_selector'])
+        if key[0] in packages and key not in archived:
+            queue.setdefault(key, {'package': key[0], 'version_selector': key[1], 'rank': len(queue)})
+    pending = [(row['package'], row['version_selector'], row.get('rank', rank))
+               for rank, row in enumerate(queue.values()) if row['package'] in packages
+               and (row['package'], row['version_selector']) not in archived]
+    def save():
+        write_ledger(args.ledger, attempts, [row for key, row in queue.items() if key not in archived])
+    # Save every observation before the bounded acquisition loop. Even a lead
+    # never attempted in this worker must survive a later listing outage.
+    save()
     # Untried selectors first, then oldest attempts. Rank interleaves packages
     # so a large history or a persistent failure cannot monopolize the worker.
     pending.sort(key=lambda item: (attempted.get(item[:2], {}).get('checked', ''), item[2], item[0]))
@@ -116,13 +132,13 @@ def main() -> int:
         else:
             attempts.append(record)
         attempted[key] = record
-        write_ledger(args.ledger, attempts)
-    write_ledger(args.ledger, attempts)
+        save()
+    save()
     document = json.loads(args.ledger.read_text())
     document.update(discovery_errors=discovery_errors,
                     pending_total=sum((p, s) not in archived for p, s, _ in pending))
     document['status'] = 'partial' if discovery_errors or document['pending_total'] else 'ok'
-    args.ledger.write_text(json.dumps(document, indent=2) + '\n')
+    atomic_json(args.ledger, document)
     return 1 if document['status'] == 'partial' else 0
 
 

@@ -103,6 +103,14 @@ they never become preserved solely because a newer capture succeeded. Metadata
 checkpoints use the same atomic JSON writer across discovery, app acquisition,
 GPL acquisition, and orchestration.
 
+Android store deliveries checkpoint their verified component identities before
+release creation or upload. A later worker can reconcile a complete stored
+delivery without the original download. Changed bytes at the same version code
+remain separate captures; selector aliases for identical bytes are retained.
+Failed captures are never promoted when only part of the delivery was uploaded.
+Each package can make progress independently, and previously observed selectors
+remain queued when a later store listing omits them or fails.
+
 Web deployment capture runs each public site independently without a separate
 probe prerequisite. Web bodies, raw firmware images, and signer-verified Android
 store deliveries use the same collection publisher. It checks every intended

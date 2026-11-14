@@ -15,10 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
-from sonos_firmware.releases import (
-    receipt_matches_repository, ensure_release, publish_collection, publication_receipt,
-)
-from sonos_firmware.storage import atomic_json, file_sha256
+from sonos_firmware.storage import file_sha256
+from sonos_firmware.delivery_archive import publish_delivery, recover_deliveries
 
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
@@ -149,6 +147,73 @@ def acquire(package: str, source_kind: str, output: Path, apkeep: str,
     return candidates[0]
 
 
+def preserve_package(args, package, index, scratch):
+    info = APPS[package]
+    delivery_dir = scratch / package
+    delivery_dir.mkdir()
+    source = args.input[index] if args.input else acquire(
+        package, args.source, delivery_dir, args.apkeep,
+        args.accept_google_play_tos, args.version_selector,
+    )
+    metadata, components = unpack_delivery(source, delivery_dir)
+    if metadata["package"] != package:
+        raise RuntimeError(f"package mismatch: expected {package}, got {metadata['package']}")
+    component_records = []
+    for component in components:
+        size, sha256 = digest(component)
+        record = {"name": component.name, "bytes": size, "sha256": sha256}
+        if component.suffix.lower() == ".apk":
+            record.update(verify_apk(component, info["signer_sha256"]))
+        component_records.append(record)
+    tag = RELEASES[(args.source, info["family"])]
+    provenance = (
+        'Packages acquired directly from Google Play using an authenticated dedicated account.'
+        if args.source == 'google-play-direct' else
+        'Third-party APKPure recovery copies; not direct-Play provenance.'
+    )
+    safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
+    uploads = []
+    for component, record in zip(components, component_records):
+        component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", component.stem)
+        asset_name = (f"{package}--{safe_version}--{component_name}--"
+                      f"{record['sha256']}{component.suffix.lower()}")
+        record.update({"release_tag": tag, "release_asset": asset_name})
+        uploads.append((component, record))
+    wrapper = None
+    if source.is_file() and source.suffix.lower() == ".xapk":
+        size, sha256 = digest(source)
+        name = f"{package}--{safe_version}--complete--{sha256}.xapk"
+        wrapper = {"bytes": size, "sha256": sha256, "release_tag": tag,
+                   "release_asset": name}
+        uploads.append((source, wrapper))
+    artifact = {
+        "source_kind": args.source,
+        "source_version_selector": args.version_selector,
+        "source_url": (f"https://play.google.com/store/apps/details?id={package}"
+                       if args.source == "google-play-direct" else info["apkpure_url"]),
+        "acquired_at": datetime.now(timezone.utc).isoformat(),
+        "acquisition_tool": {
+            "name": "apkeep", "version": "1.0.0",
+            "backend": ("google-play" if args.source == "google-play-direct"
+                        else "apk-pure"),
+        },
+        "delivery_profile": ({
+            "device": "px_9a", "locale": "en_US", "timezone": "UTC",
+            "split_apk": True, "include_dex_metadata": True,
+            "include_additional_files": True,
+        } if args.source == "google-play-direct" else None),
+        "family": info["family"], "package": package,
+        "version_code": str(metadata["version_code"]),
+        "version_name": metadata["version_name"],
+        "release_tag": tag, "complete_wrapper": wrapper,
+        "components": component_records,
+    }
+    publish_delivery(args.receipt, args.repo, artifact, uploads,
+                     title=tag.replace('-', ' ').title(), notes=provenance +
+                     ' Every APK signature and SHA-256 is recorded in data/apps/android-store-archive.json.')
+    print(f"archived {args.source} {package} {metadata['version_name']}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", choices=("google-play-direct", "apkpure-recovery"),
@@ -172,97 +237,28 @@ def main() -> int:
         parser.error("--version-selector requires APKPure recovery and exactly one --package")
     if args.input and len(args.input) != len(packages):
         parser.error("the number of --input paths must match --package")
-    existing = json.loads(args.receipt.read_text()) if args.receipt.exists() else {
-        "schema_version": 1, "artifacts": []
-    }
-    records = existing.get("artifacts", [])
-    known = {(x["source_kind"], x["package"], x["version_code"]) for x in records
-             if receipt_matches_repository(x, args.repo)}
+    recovered = recover_deliveries(args.receipt, args.repo, args.source, packages,
+                                   selector=args.version_selector)
+    resolved = {row['package'] for row in recovered if args.version_selector
+                and args.version_selector in {row.get('source_version_selector'), *row.get('source_version_selectors', [])}}
+    errors = []
     with tempfile.TemporaryDirectory(prefix="sonos-android-store-") as temporary:
         scratch = Path(temporary)
         for index, package in enumerate(packages):
-            info = APPS[package]
-            delivery_dir = scratch / package
-            delivery_dir.mkdir()
-            source = args.input[index] if args.input else acquire(
-                package, args.source, delivery_dir, args.apkeep,
-                args.accept_google_play_tos, args.version_selector,
-            )
-            metadata, components = unpack_delivery(source, scratch)
-            if metadata["package"] != package:
-                raise RuntimeError(f"package mismatch: expected {package}, got {metadata['package']}")
-            key = (args.source, package, str(metadata["version_code"]))
-            if key in known:
-                print(f"already archived: {key}")
+            if package in resolved and not (args.input and args.input[index].exists()):
+                print(f'reconciled prior delivery: {package}@{args.version_selector}')
                 continue
-            component_records = []
-            for component in components:
-                size, sha256 = digest(component)
-                record = {"name": component.name, "bytes": size, "sha256": sha256}
-                if component.suffix.lower() == ".apk":
-                    record.update(verify_apk(component, info["signer_sha256"]))
-                component_records.append(record)
-            tag = RELEASES[(args.source, info["family"])]
-            provenance = (
-                'Packages acquired directly from Google Play using an authenticated dedicated account.'
-                if args.source == 'google-play-direct' else
-                'Third-party APKPure recovery copies; not direct-Play provenance.'
-            )
-            ensure_release(args.repo, tag, tag.replace('-', ' ').title(), provenance +
-                           ' Every APK signature and SHA-256 is recorded in data/apps/android-store-archive.json.')
-            safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
-            uploads = []
-            for component, record in zip(components, component_records):
-                component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", component.stem)
-                asset_name = (f"{package}--{safe_version}--{component_name}--"
-                              f"{record['sha256']}{component.suffix.lower()}")
-                record.update({"release_tag": tag, "release_asset": asset_name})
-                uploads.append((component, record))
-            wrapper = None
-            if source.is_file() and source.suffix.lower() == ".xapk":
-                size, sha256 = digest(source)
-                name = f"{package}--{safe_version}--complete--{sha256}.xapk"
-                wrapper = {"bytes": size, "sha256": sha256, "release_tag": tag,
-                           "release_asset": name}
-                uploads.append((source, wrapper))
-            uploaded = publish_collection(args.repo, tag, uploads)
-            for record in component_records:
-                record.update(publication_receipt(args.repo, tag, record['release_asset'],
-                                                  record, uploaded[record['release_asset']]))
-            if wrapper:
-                wrapper.update(publication_receipt(args.repo, tag, wrapper['release_asset'],
-                                                   wrapper, uploaded[wrapper['release_asset']]))
-            records.append({
-                "source_kind": args.source,
-                "source_version_selector": args.version_selector,
-                "source_url": (f"https://play.google.com/store/apps/details?id={package}"
-                               if args.source == "google-play-direct" else info["apkpure_url"]),
-                "acquired_at": datetime.now(timezone.utc).isoformat(),
-                "acquisition_tool": {
-                    "name": "apkeep", "version": "1.0.0",
-                    "backend": ("google-play" if args.source == "google-play-direct"
-                                else "apk-pure"),
-                },
-                "delivery_profile": ({
-                    "device": "px_9a", "locale": "en_US", "timezone": "UTC",
-                    "split_apk": True, "include_dex_metadata": True,
-                    "include_additional_files": True,
-                } if args.source == "google-play-direct" else None),
-                "family": info["family"], "package": package,
-                "version_code": str(metadata["version_code"]),
-                "version_name": metadata["version_name"],
-                "release_tag": tag, "complete_wrapper": wrapper,
-                "components": component_records,
-            })
-            known.add(key)
-            existing.update({
-                "schema_version": 1,
-                "updated": datetime.now(timezone.utc).isoformat(),
-                "artifact_total": len(records), "artifacts": records,
-            })
-            atomic_json(args.receipt, existing)
-            print(f"archived {args.source} {package} {metadata['version_name']}")
-    return 0
+            try:
+                preserve_package(args, package, index, scratch)
+            except Exception as error:
+                errors.append({'package': package, 'error': str(error)})
+                print(f'FAILED {package}: {error}', flush=True)
+    document = json.loads(args.receipt.read_text()) if args.receipt.exists() else {}
+    pending = [row for row in document.get('pending_captures', []) if row['repository'] == args.repo
+               and row['artifact']['source_kind'] == args.source and row['artifact']['package'] in packages
+               and (args.version_selector is None or args.version_selector in {
+                   row['artifact'].get('source_version_selector'), *row['artifact'].get('source_version_selectors', [])})]
+    return 1 if errors or pending else 0
 
 
 if __name__ == "__main__":
