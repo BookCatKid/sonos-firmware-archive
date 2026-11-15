@@ -49,7 +49,7 @@ def main(argv=None):
         if args.command == 'commit':
             commit_metadata(root, target)
             return 0
-        options = {'accept_google_play_tos': args.accept_google_play_tos}
+        options = {'accept_google_play_tos': True} if args.accept_google_play_tos else {}
         for option in args.set:
             name, value = option.split('=', 1)
             if any(word in name.lower() for word in ('password', 'token', 'secret', 'private_key')):

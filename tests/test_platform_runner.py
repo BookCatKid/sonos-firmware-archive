@@ -57,16 +57,27 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(report['status'], 'blocked')
             self.assertFalse(report['executed'])
 
-    def test_native_partial_discovery_is_not_reported_as_complete(self):
+    def test_terms_acceptance_requires_an_explicit_boolean_true(self):
+        def forbidden(c): raise AssertionError('must not execute')
+        for value in ('false', 1):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as temporary:
+                report = run(self.target(capabilities=['google-play-terms']), Path(temporary), 'owner/repo',
+                             environment={'GITHUB_ACTIONS': 'true'}, options={'accept_google_play_tos': value},
+                             provider_map={'fixture': forbidden})
+                self.assertEqual(report['status'], 'blocked')
+                self.assertFalse(report['executed'])
+
+    def test_native_incomplete_discovery_is_not_reported_as_complete(self):
         def provider(c):
             return [Step('discover', ('fixture',), report=str(c.work / 'native.json'))]
         def execute(step, context, environment):
-            Path(step.report).write_text(json.dumps({'status': 'partial'}))
+            Path(step.report).write_text(json.dumps({'status': status}))
             return 0, 'completed bounded discovery'
-        with tempfile.TemporaryDirectory() as temporary:
-            report = run(self.target(), Path(temporary), 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
-                         provider_map={'fixture': provider}, execute=execute)
-            self.assertEqual(report['status'], 'partial')
+        for status in ('partial', 'incomplete', 'error', 'blocked', 'failed', 'unavailable'):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temporary:
+                report = run(self.target(), Path(temporary), 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
+                             provider_map={'fixture': provider}, execute=execute)
+                self.assertEqual(report['status'], 'partial')
 
     def test_credentials_are_not_written_into_run_reports(self):
         token = 'secret-value-must-never-be-in-the-report'
@@ -90,6 +101,28 @@ class RunnerTests(unittest.TestCase):
                 self.target(metadata=[path])
 
 class TargetRegistrationTests(unittest.TestCase):
+    def test_scheduled_cli_retains_explicit_target_configuration(self):
+        import contextlib
+        import io
+        from unittest.mock import patch
+        from sonos_firmware.platform import cli
+        visited = []
+        def execute_target(target, root, repository, **kwargs):
+            return run(target, root, repository, environment={'GITHUB_ACTIONS': 'true'},
+                       provider_map={'fixture': lambda c: [Step('check', ('fixture',))]},
+                       execute=lambda *args: (visited.append(True) or 0, 'configured task'), **kwargs)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root/'config').mkdir()
+            (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [
+                {'name': 'configured-source', 'provider': 'fixture', 'description': 'Configured source',
+                 'interval_hours': 6, 'metadata': ['data/source'], 'capabilities': ['google-play-terms'],
+                 'options': {'accept_google_play_tos': True}}]}))
+            with patch.object(cli, 'run', side_effect=execute_target), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
+                                          '--if-due', '--repository', 'owner/repo']), 0)
+            self.assertEqual(visited, [True])
+
     def test_registering_and_planning_target_needs_only_configuration(self):
         import contextlib
         import io

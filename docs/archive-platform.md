@@ -181,6 +181,14 @@ precomputed hashes are required to add or plan a target.
 terms acceptance. Missing capabilities produce a blocked report. Apple metadata
 and authenticated delivery are distinct scopes.
 
+Authenticated delivery can run unattended after the repository owner configures
+the `GOOGLE_PLAY_EMAIL` and token secrets, accepts the acquisition tool's terms,
+sets the target's `manual` field to `false`, and records
+`options.accept_google_play_tos: true` in `config/targets.json`. The normal
+scheduled matrix then uses its declared cadence. An omitted CLI acceptance flag
+retains that explicit configuration; `--set accept_google_play_tos=false`
+overrides it for a particular invocation. Credentials stay in worker secrets.
+
 ## Validation and publication
 
 Local plans and tests do not acquire live artifacts. `sonos-archive run TARGET`

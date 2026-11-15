@@ -47,7 +47,7 @@ def missing_capabilities(target, environment, options):
     for capability in target.capabilities:
         if capability in {'java', 'apkeep'} and not shutil.which(options.get(capability, capability)):
             missing.append(capability)
-        elif capability == 'google-play-terms' and not options.get('accept_google_play_tos'):
+        elif capability == 'google-play-terms' and options.get('accept_google_play_tos') is not True:
             missing.append(capability)
         elif capability == 'google-play-auth':
             if not environment.get('GOOGLE_PLAY_EMAIL') or not (
@@ -70,7 +70,7 @@ def redact(text, environment):
 def _source_incomplete(document):
     if not isinstance(document, dict):
         return False
-    return (document.get('status') in {'partial', 'incomplete', 'error', 'blocked'} or
+    return (document.get('status') in {'partial', 'incomplete', 'error', 'blocked', 'failed', 'unavailable'} or
             bool(document.get('incomplete') or document.get('discovery_incomplete') or
                  document.get('errors') or document.get('probe_errors') or document.get('skipped')))
 
