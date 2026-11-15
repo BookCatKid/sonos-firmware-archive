@@ -255,11 +255,18 @@ to their source observations, and distinct raw UPS responses remain in the
 worker's metadata cache under content-derived names.
 
 The firmware worker also explores synthetic metadata profiles automatically:
-`profile_limit` defaults to eight requests per run from a deterministic
-`profile_count` plan of 1,200. The plan combines protocol axes with versions
-observed by this archive; cold discovery needs no version inventory. Failed
-profiles back off, successful profiles refresh weekly, and an access challenge
-pauses that host while other protocol hosts continue. `model_max` configures
+`profile_limit` defaults to eight requests per run, with `profile_count` setting
+a planning window of 1,200 rather than a lifetime ceiling. A saved ordinal
+advances through unbounded field-axis, scaled-build and full-combination probes.
+Observed versions take priority. Unattempted profiles are checkpointed separately
+from completed observations, so changing hints, budgets or deadlines cannot
+discard pending work. Fresh hint and broad-search requests rotate independently
+of retries, so a stream of new version hints cannot starve exploration. Cold
+discovery needs no version inventory. Failed
+profiles back off, successful and negative profiles refresh, and endpoint access
+challenges have a shared cooldown that new profiles cannot bypass. Reports expose
+the cursor, current window, negative results and remaining pending profiles.
+`model_max` configures
 base-URL expansion. These options use the usual target configuration or `--set`
 interface and require no workstation downloads. Deferred manifest roots retain
 FIFO priority across runs so a small crawl budget progresses through the queue.

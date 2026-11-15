@@ -79,7 +79,8 @@ def main():
     parser.add_argument('--seconds', type=float, default=900)
     parser.add_argument('--max-manifests', type=int, default=1024)
     parser.add_argument('--profile-limit', type=int, default=8)
-    parser.add_argument('--profile-count', type=int, default=1200)
+    parser.add_argument('--profile-count', type=int, default=1200,
+                        help='profile planning window size; exploration continues across windows')
     parser.add_argument('--model-max', type=int, default=255,
                         help='initial package-model range; completed passes widen automatically')
     parser.add_argument('--inference-limit', type=int, default=128)

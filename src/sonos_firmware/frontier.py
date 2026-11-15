@@ -272,7 +272,7 @@ def monitor_report(state, catalog, acquisition=None, repository=None):
             'status': 'partial' if errors or pending else state.get('status', 'partial'),
             'model_exploration': state.get('model_exploration', {}),
             'metadata_discovery': {key: value for key, value in state.get('metadata_profiles', {}).items()
-                                   if key not in {'profiles', 'responses', 'errors'}},
+                                   if key not in {'profiles', 'pending_profiles', 'responses', 'errors'}},
             'archive_index_discovery': {
                 'status': state.get('archive_index', {}).get('status', 'not-requested'),
                 'manifest_urls': len(state.get('archive_index', {}).get('entries', {})),
