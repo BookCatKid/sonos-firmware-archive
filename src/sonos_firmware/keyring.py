@@ -18,8 +18,7 @@ def recipient_models(ledger):
         models = set(group.get('package_models', []))
         if group.get('package_model') is not None:
             models.add(group['package_model'])
-        models.update(row['package_model'] for row in group.get('packages', group.get('coverage_packages', []))
-                      if row.get('package_model') is not None)
+        models.update(row.get('package_model') for row in group.get('packages', group.get('coverage_packages', [])))
         for model in models:
             result.setdefault(model, set()).add(fingerprint)
     return result
@@ -39,7 +38,7 @@ def update_recovery_summary(ledger):
             del origin[field]
     recovered = ledger.get('recovered_keys', {})
     origin['summary'] = {'recovered_recipients': len(recovered),
-                         'models': sorted(recipient_models({'recovered_keys': recovered})),
+                         'models': sorted(model for model in recipient_models({'recovered_keys': recovered}) if model is not None),
                          'missing_recipient_groups': len(ledger.get('missing_keys', []))}
     origin['recovery_methods'] = sorted({proof['method'] for group in recovered.values()
                                         for proof in group.get('recovery_provenance', [])})
@@ -59,12 +58,12 @@ def prepare_keys(directory, recipients, environment, recoverers):
         bundle_error = False
     except (ValueError, TypeError):
         bundle, bundle_error = {}, True
-    for model, expected in sorted(targets.items()):
+    for model, expected in sorted(targets.items(), key=lambda item: (item[0] is None, item[0] or 0)):
         if not expected or any(len(fp) != 40 or any(c not in '0123456789abcdef' for c in fp) for fp in expected):
             raise ValueError('key recipients must be SHA-1 fingerprints')
         alias = directory / f'model{model}.pem'
         legacy_key = None
-        if alias.exists() or alias.is_symlink():
+        if model is not None and (alias.exists() or alias.is_symlink()):
             try:
                 if alias.is_symlink():
                     raise ValueError('key alias is a symlink')
@@ -74,7 +73,7 @@ def prepare_keys(directory, recipients, environment, recoverers):
             except (ValueError, TypeError, OSError, UnsupportedAlgorithm):
                 alias.unlink(missing_ok=True)
                 legacy_key = None
-        if len(expected) > 1:
+        if model is not None and len(expected) > 1:
             # A numeric alias cannot represent a rotated key set unambiguously.
             alias.unlink(missing_ok=True)
         for fingerprint in sorted(expected):
@@ -95,7 +94,7 @@ def prepare_keys(directory, recipients, environment, recoverers):
             if key is None and legacy_key and key_recipient_id(legacy_key) == fingerprint:
                 key = legacy_key
             if key is None:
-                for value in [bundle.get(fingerprint), environment.get(f'SONOS_MODEL_{model}_PRIVATE_KEY')]:
+                for value in [bundle.get(fingerprint), environment.get(f'SONOS_MODEL_{model}_PRIVATE_KEY') if model is not None else None]:
                     if not value:
                         continue
                     try:
@@ -110,19 +109,21 @@ def prepare_keys(directory, recipients, environment, recoverers):
             if key is None and recover:
                 try:
                     recovered = recover()
-                    if recovered.resolve().parent != directory.resolve() or recovered.name not in {destination.name, alias.name}:
+                    names = {destination.name, alias.name} if model is not None else {destination.name}
+                    if recovered.resolve().parent != directory.resolve() or recovered.name not in names:
                         raise ValueError('recovery wrote to an unexpected key path')
                     key = load_private_key(recovered)
                     if key_recipient_id(key) != fingerprint:
                         key = None
                         raise ValueError('unexpected key recipient')
-                    if len(expected) > 1:
+                    if model is not None and len(expected) > 1:
                         alias.unlink(missing_ok=True)
                 except Exception as error:
                     key = None
                     errors.append(f'optional recovery failed ({type(error).__name__})')
                     destination.unlink(missing_ok=True)
-                    alias.unlink(missing_ok=True)
+                    if model is not None:
+                        alias.unlink(missing_ok=True)
             if key is None:
                 unavailable.append({'model': model, 'recipient_id': fingerprint,
                                     'reasons': errors or ['no configured or reproducible key']})
@@ -130,9 +131,9 @@ def prepare_keys(directory, recipients, environment, recoverers):
             if not destination.exists():
                 write_private_key_exclusive(destination, key)
             destination.chmod(0o600)
-            if len(expected) == 1 and not alias.exists():
+            if model is not None and len(expected) == 1 and not alias.exists():
                 write_private_key_exclusive(alias, key)
-            if alias.exists():
+            if model is not None and alias.exists():
                 alias.chmod(0o600)
             validated[fingerprint] = key
     # A later model can supply the same recipient key an earlier model lacked.
@@ -141,11 +142,12 @@ def prepare_keys(directory, recipients, environment, recoverers):
         prepared = sorted(expected & validated.keys())
         if not prepared:
             continue
-        ready[str(model)] = prepared[0] if len(expected) == 1 else prepared
+        if model is not None:
+            ready[str(model)] = prepared[0] if len(expected) == 1 else prepared
         alias = directory / f'model{model}.pem'
-        if len(expected) == 1 and not alias.exists():
+        if model is not None and len(expected) == 1 and not alias.exists():
             write_private_key_exclusive(alias, validated[prepared[0]])
-    available = {fp: {'models': sorted(model for model, expected in targets.items() if fp in expected)}
+    available = {fp: {'models': sorted(model for model, expected in targets.items() if model is not None and fp in expected)}
                  for fp in validated}
     unavailable = [row for row in unavailable if row['recipient_id'] not in validated]
     return {'schema_version': 1, 'ready': ready, 'ready_recipients': available, 'unavailable': unavailable}

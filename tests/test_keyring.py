@@ -18,6 +18,53 @@ class KeyringTests(unittest.TestCase):
         cls.pem = cls.key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
                                        serialization.NoEncryption()).decode()
 
+    def test_unclassified_package_can_use_an_exact_recipient_key_without_a_model_alias(self):
+        ledger = {'missing_keys': [{'recipient_id': self.recipient, 'packages': [{'package_model': None}]}]}
+        recipients = recipient_models(ledger)
+        self.assertEqual(recipients, {None: {self.recipient}})
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            result = prepare_keys(directory, recipients, {'SONOS_PRIVATE_KEYS': json.dumps({self.recipient: self.pem})}, {})
+            self.assertEqual(result['ready'], {})
+            self.assertEqual(result['ready_recipients'][self.recipient]['models'], [])
+            self.assertEqual(result['unavailable'], [])
+            self.assertTrue(recipient_key_path(directory, None, self.recipient).is_file())
+            self.assertFalse((directory/'modelNone.pem').exists())
+            self.assertNotIn('PRIVATE KEY', json.dumps(result))
+
+    def test_known_and_unclassified_packages_share_the_same_validated_recipient(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            result = prepare_keys(Path(temporary), {None: {self.recipient}, 17: {self.recipient}},
+                                  {'SONOS_MODEL_17_PRIVATE_KEY': self.pem}, {})
+            self.assertEqual(result['ready_recipients'][self.recipient]['models'], [17])
+            self.assertEqual(result['unavailable'], [])
+
+    def test_worker_prepares_and_records_a_configured_key_without_model_context(self):
+        import importlib.util
+        import os
+        import sys
+        from unittest.mock import patch
+        root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location('unclassified_keys', root/'scripts/prepare_model_keys.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            ledger = directory/'ledger.json'
+            ledger.write_text(json.dumps({'missing_keys': [{'recipient_id': self.recipient,
+                'packages': [{'package_model': None, 'package_id': 'opaque'}]}]}))
+            with patch.object(sys, 'argv', ['prepare_model_keys.py', '--directory', str(directory/'keys'),
+                    '--report', str(directory/'report.json'), '--catalog', str(directory/'absent-catalog.json'),
+                    '--ledger', str(ledger), '--repository', 'fresh/archive']), \
+                 patch.dict(os.environ, {'SONOS_PRIVATE_KEYS': json.dumps({self.recipient: self.pem})}), \
+                 patch.object(module, 'recover_catalog_key') as recover:
+                module.main()
+            recover.assert_not_called()
+            report = json.loads((directory/'report.json').read_text())
+            self.assertEqual(report['ready_recipients'][self.recipient]['models'], [])
+            self.assertEqual(json.loads(ledger.read_text())['key_origin']['summary']['models'], [])
+            self.assertTrue(recipient_key_path(directory/'keys', None, self.recipient).is_file())
+
     def test_optional_recovery_failure_does_not_discard_a_configured_key(self):
         def unavailable(): raise ConnectionError('source unavailable')
         with tempfile.TemporaryDirectory() as temporary:

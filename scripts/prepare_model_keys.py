@@ -43,7 +43,7 @@ def main():
         return run
     result = prepare_keys(args.directory, recipients, os.environ,
                           {(model, fingerprint): recoverer(model, fingerprint)
-                           for model, fingerprints in recipients.items() for fingerprint in fingerprints})
+                           for model, fingerprints in recipients.items() for fingerprint in fingerprints if model is not None})
     result['recovery_provenance'] = {fp: proof for fp, proof in origins.items() if fp in result['ready_recipients']}
     missing = {row['recipient_id']: row for row in ledger.get('missing_keys', [])}
     for fingerprint, ready in result['ready_recipients'].items():
@@ -51,7 +51,7 @@ def main():
         group = ledger.setdefault('recovered_keys', {}).setdefault(fingerprint, {
             'coverage_packages': prior.get('packages', []),
             'key_family': origins.get(fingerprint, {}).get('method', 'configured-model-key')})
-        group.setdefault('package_model', ready['models'][0])
+        group.setdefault('package_model', ready['models'][0] if ready['models'] else None)
         group['package_models'] = sorted(ready['models'])
         if fingerprint in origins:
             proofs = group.setdefault('recovery_provenance', [])
