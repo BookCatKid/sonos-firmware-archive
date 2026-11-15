@@ -111,8 +111,11 @@ class FrontierTests(unittest.TestCase):
             self.assertEqual(state['inference_pending'], 2)
             self.assertFalse(any(url.startswith(HOST+'/') and model == 2 for url, model in visited))
             failed = next(row for row in state['inferred_namespaces'].values() if row.get('status') == 'failed')
+            def healthy_peer(candidate):
+                self.assertFalse(candidate.url.startswith(HOST+'/'), 'failed namespace retried before backoff')
+                return {**asdict(candidate), 'available': False, 'http_status': 404}
             state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
-                probe_fn=lambda c: self.fail('namespace retried before backoff'), metadata_fetch=lambda: (ups, {}))
+                probe_fn=healthy_peer, metadata_fetch=lambda: (ups, {}))
             failed = next(row for row in state['inferred_namespaces'].values() if row.get('status') == 'failed')
             failed['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
             state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
@@ -134,7 +137,7 @@ class FrontierTests(unittest.TestCase):
         self.assertTrue(all(row['filename'] == 'Sonos.dmg' for row in state['candidates']))
         self.assertEqual(state['inference_pending'], 61 * 512 - 16)
 
-    def test_negative_namespace_probes_resume_without_recording_a_url_inventory(self):
+    def test_negative_namespace_probes_widen_without_recording_a_url_inventory(self):
         uri = (BASE + '^1.0-12345').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
         visited = []
@@ -150,13 +153,105 @@ class FrontierTests(unittest.TestCase):
                 state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
                     metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
             self.assertEqual(state['inference_pending'], 0)
-            state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
-                metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=lambda c: self.fail('namespace refreshed early'))
-        self.assertEqual(len(visited), 6)
-        self.assertEqual({model for _, model in visited}, {0, 1, 2})
+            for _ in range(4):
+                state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
+                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+        self.assertEqual(len(visited), 14)
+        self.assertEqual({model for _, model in visited}, {0, 1, 2, 3})
+        self.assertTrue(all(row['model_max'] == 5 for row in state['inferred_namespaces'].values()))
         self.assertEqual(state['candidates'], [])
         self.assertEqual(state['probes'], {})
         self.assertEqual(len(state['inferred_namespaces']), 2)
+
+    def test_model_discovery_crosses_the_default_255_boundary_without_configuration_changes(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        state = {}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            for _ in range(9):
+                state = frontier.discover(state, Path(temporary), fetch=missing,
+                    metadata_fetch=lambda: (ups, {}), inference_limit=128,
+                    probe_fn=lambda candidate: {**asdict(candidate), 'available': candidate.package_model == 256,
+                                               'http_status': 200 if candidate.package_model == 256 else 404})
+        self.assertEqual({row['package_model'] for row in state['candidates']}, {256})
+        self.assertTrue(all(row['model_max'] == 511 for row in state['inferred_namespaces'].values()))
+        self.assertEqual(state['model_exploration']['policy'], 'expanding-passes')
+
+    def test_raising_initial_model_range_above_4095_preserves_the_cursor_and_request_budget(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        visited = []
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        def probe(candidate):
+            visited.append(candidate.package_model)
+            return {**asdict(candidate), 'available': False, 'http_status': 404}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), model_max=1, fetch=missing,
+                metadata_fetch=lambda: (ups, {}), inference_limit=2, probe_fn=probe)
+            state = frontier.discover(state, Path(temporary), model_max=5000, fetch=missing,
+                metadata_fetch=lambda: (ups, {}), inference_limit=2, probe_fn=probe)
+        self.assertEqual(visited, [0, 0, 1, 1])
+        self.assertTrue(all(row['model_max'] == 5000 and row['next_model'] == 2
+                            for row in state['inferred_namespaces'].values()))
+
+    def test_cached_available_model_does_not_make_later_models_skip_their_cursor(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        def probe(candidate):
+            return {**asdict(candidate), 'available': candidate.package_model == 0,
+                    'http_status': 200 if candidate.package_model == 0 else 404}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), model_max=1, fetch=missing,
+                                      metadata_fetch=lambda: (ups, {}), inference_limit=8, probe_fn=probe)
+            state = frontier.discover(state, Path(temporary), model_max=1, fetch=missing,
+                                      metadata_fetch=lambda: (ups, {}), inference_limit=8, probe_fn=probe)
+        self.assertTrue(all(row['next_model'] == 4 for row in state['inferred_namespaces'].values()))
+        self.assertTrue(all(row['model_max'] == 3 for row in state['inferred_namespaces'].values()))
+
+    def test_legacy_completed_range_widens_without_waiting_for_its_old_refresh_time(self):
+        uri = (BASE + '^1.0-12345').encode() + b'\0'
+        ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
+        state = {'inferred_namespaces': {BASE+'^1.0-12345': {
+            'next_model': 3, 'model_max': 2, 'status': 'complete', 'next_attempt_at': '2099-01-01T00:00:00+00:00'}}}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            result = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
+                metadata_fetch=lambda: (ups, {}), inference_limit=2,
+                probe_fn=lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404})
+        original = result['inferred_namespaces'][BASE+'^1.0-12345']
+        self.assertEqual(original['model_max'], 5)
+        self.assertEqual(original['next_model'], 1)
+
+    def test_saved_namespace_migration_needs_no_rediscovery_and_preserves_failed_cooldowns(self):
+        completed = BASE+'^1.0-12345'
+        failed = BASE+'other/^1.0-12345'
+        future = '2099-01-01T00:00:00+00:00'
+        state = {'inferred_namespaces': {
+            completed: {'source': 'metadata-base', 'next_model': 3, 'model_max': 2, 'status': 'complete', 'next_attempt_at': future},
+            failed: {'source': 'metadata-base', 'next_model': 1, 'model_max': 2, 'status': 'failed', 'next_attempt_at': future}}}
+        visited = []
+        def probe(candidate):
+            visited.append(candidate.url)
+            return {**asdict(candidate), 'available': False, 'http_status': 404}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            result = frontier.discover(state, Path(temporary), model_max=2, inference_limit=1,
+                metadata_fetch=lambda: (b'', {}), fetch=lambda url: self.fail('unexpected namespace rediscovery'),
+                probe_fn=probe)
+        self.assertEqual(len(visited), 1)
+        self.assertEqual(result['inferred_namespaces'][completed]['model_max'], 5)
+        self.assertEqual(result['inferred_namespaces'][failed]['next_model'], 1)
+        self.assertEqual(result['inferred_namespaces'][failed]['next_attempt_at'], future)
 
     def test_own_installer_observations_expand_speaker_directories_without_a_manifest(self):
         row = {'version': '91.0-69300', 'package_model': 3, 'filename': 'Sonos.dmg',

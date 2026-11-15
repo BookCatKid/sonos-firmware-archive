@@ -246,8 +246,11 @@ URLs; cold discovery excludes that history.
 
 UPS responses feed that same frontier. Observed caret base URLs expand directly
 over the configured package-model range, even when their sibling manifest is
-missing. The default range is 0–255; explicit models found in manifests remain
-eligible outside that exploration range. Response hashes bind these candidates
+missing. The first pass defaults to 0–255. Each completed pass doubles the range
+for the next pass, revisiting earlier IDs while seeking higher ones. `model_max`
+seeds the initial range; it is not a permanent ceiling, and increasing it does
+not erase a saved cursor or failure cooldown. Explicit models found in manifests
+remain eligible immediately. Response hashes bind these candidates
 to their source observations, and distinct raw UPS responses remain in the
 worker's metadata cache under content-derived names.
 
@@ -269,8 +272,10 @@ counterparts. `inference_limit` defaults to 128 generated candidates per run.
 Each namespace retains a model cursor and retry timing instead of storing a
 URL row for every negative probe. Available discoveries remain ordinary source
 observations. Incomplete namespaces resume automatically; completed ranges
-refresh weekly. Transient failures retry the same model without blocking other
-namespaces, and changing `model_max` makes the affected range eligible again.
+widen and revisit earlier IDs. Transient failures retry the same model without blocking other
+namespaces. Completed legacy checkpoints automatically enter expanding passes;
+the report distinguishes pending work in the current ranges from the continuing
+exploration policy. Cached available images retain cursor order when revisited.
 
 Public release-note versions are additional profile-query hints. Their source
 hash and observed versions are retained, including across source outages; they

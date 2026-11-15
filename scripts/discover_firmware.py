@@ -80,7 +80,8 @@ def main():
     parser.add_argument('--max-manifests', type=int, default=1024)
     parser.add_argument('--profile-limit', type=int, default=8)
     parser.add_argument('--profile-count', type=int, default=1200)
-    parser.add_argument('--model-max', type=int, default=255)
+    parser.add_argument('--model-max', type=int, default=255,
+                        help='initial package-model range; completed passes widen automatically')
     parser.add_argument('--inference-limit', type=int, default=128)
     parser.add_argument('--no-release-notes', action='store_true', help='disable public version hints for profile exploration')
     parser.add_argument('--publish', action='store_true')
