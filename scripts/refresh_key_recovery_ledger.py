@@ -61,7 +61,7 @@ def main() -> int:
             plaintext.append(item)
 
     def package_key(item: dict) -> tuple:
-        return (item["version"], item["package_model"], item["package_id"])
+        return (item["version"], item["package_model"] is None, item["package_model"] or 0, item["package_id"])
 
     for recipient, metadata in recovered.items():
         metadata["coverage_packages"] = sorted(encrypted.pop(recipient, []), key=package_key)

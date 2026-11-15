@@ -18,6 +18,29 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_indexed_packages_enter_discovery_without_any_available_manifest(self):
+        from sonos_firmware.archive_index import discover_sources
+        known = HOST+'/firmware/history/1.2-345-1-17.upd'
+        unknown = HOST+'/firmware/history/opaque.upd'
+        rows = [['timestamp', 'original', 'digest'],
+                ['20200101000000', known, 'known'], ['20200101000000', unknown, 'unknown']]
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'no manifest', {}, None)
+        def probe(candidate):
+            return {**asdict(candidate), 'available': candidate.url in {known, unknown},
+                    'http_status': 200 if candidate.url in {known, unknown} else 404}
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), fetch=missing, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1,
+                index_fetch=lambda previous: discover_sources(previous, fetch=lambda url: rows, pages=1))
+        self.assertEqual(state['manifests'], [])
+        self.assertTrue(state['probes'][known]['available'])
+        self.assertEqual(state['probes'][known]['package_model'], 17)
+        self.assertTrue(state['probes'][unknown]['available'])
+        self.assertIsNone(state['probes'][unknown]['package_model'])
+        self.assertEqual(len(state['probes'][unknown]['archive_captures']), 1)
+
     def test_one_request_inference_budget_rotates_between_fresh_namespaces(self):
         uri = (BASE + '^1.0-12345').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri

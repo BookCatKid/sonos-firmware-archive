@@ -47,7 +47,7 @@ _OPENER = urllib.request.build_opener(_OfficialRedirect())
 @dataclass(frozen=True)
 class Candidate:
     version: str
-    package_model: int
+    package_model: int | None
     url: str
     source: str
     filename: str

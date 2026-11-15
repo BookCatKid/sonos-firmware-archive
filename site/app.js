@@ -20,7 +20,7 @@ function render(){
   const filtered=packages.filter(p=>(!status.value||p.artifact_status===status.value)&&JSON.stringify(p).toLowerCase().includes(q));
   rows.replaceChildren(...filtered.map(p=>{
     const row=document.createElement('tr');
-    const product=element('span',p.product||`Package model ${p.package_model}`);
+    const product=element('span',p.product||(p.package_model==null?'Unclassified firmware':`Package model ${p.package_model}`));
     if(p.model_number)product.append(document.createElement('br'),element('code',p.model_number));
     cell(row,product);
     const repository=p.repository||document.querySelector('#repository').pathname.slice(1);

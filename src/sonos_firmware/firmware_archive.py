@@ -115,6 +115,8 @@ def register_capture(root, capture, *, catalog_path=None):
                                     ({prior['source_url']} if prior.get('source_url') else set())),
               'release_tag': publication['release_tag'], 'release_asset': publication['release_asset'],
               'release_url': publication['release_url'], 'repository': publication['repository']}
+    if candidate.get('archive_captures'):
+        record['discovery_evidence'] = {**prior.get('discovery_evidence', {}), **candidate['archive_captures']}
     if capture.get('embedded_version'):
         record['embedded_version'] = capture['embedded_version']
     if prior.get('artifact_status') != 'preserved':
@@ -134,7 +136,8 @@ def register_capture(root, capture, *, catalog_path=None):
                                        'sha256': digest, 'sections': capture['sections']})
     packages[package_id] = record
     catalog.update(generated=datetime.now(timezone.utc).date().isoformat(),
-                   packages=sorted(packages.values(), key=lambda row: (row['version'], row['package_model'], row['id'])))
+                   packages=sorted(packages.values(), key=lambda row: (
+                       row['version'], row['package_model'] is None, row['package_model'] or 0, row['id'])))
     atomic_json(catalog_path, catalog)
     return record
 

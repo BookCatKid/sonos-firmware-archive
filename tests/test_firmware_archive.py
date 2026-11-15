@@ -85,6 +85,24 @@ class AcquisitionTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_unclassified_upd_can_be_preserved_alongside_known_models_without_guessing(self):
+        rows = [candidate('unclassified', filename='opaque.upd', version='unknown', package_model=None,
+                          archive_captures={'capture': {'timestamp': '20200101000000', 'digest': 'index-evidence'}}),
+                candidate('known', filename='known.upd', version='unknown')]
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery.urllib.request, 'urlopen', side_effect=lambda request, **kw:
+                 Response(section(99, 0, request.full_url.encode()))), \
+             patch.object(archive, 'ensure_release'), \
+             patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
+            root = Path(temporary)
+            result = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            self.assertEqual(result['preserved'], 2)
+            records = archive.catalog_at(root/'data/catalog.json')['packages']
+            unclassified = next(row for row in records if row['filename'] == 'opaque.upd')
+            self.assertIsNone(unclassified['package_model'])
+            self.assertEqual(unclassified['discovery_evidence']['capture']['digest'], 'index-evidence')
+            self.assertEqual(validate_catalog(root), [])
+
     def test_snapshot_filename_alias_keeps_its_existing_catalog_identity(self):
         body = section(99, 0, b'snapshot')
         with tempfile.TemporaryDirectory() as temporary:

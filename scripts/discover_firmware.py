@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
 from sonos_firmware.frontier import discover, monitor_report
-from sonos_firmware.archive_index import manifest_roots
+from sonos_firmware.archive_index import discover_sources
 from sonos_firmware.firmware_archive import acquisition_state, archive_candidates, manifest_name
 from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt
 from sonos_firmware.metadata_sweep import discover_version_hints
@@ -106,12 +106,12 @@ def main():
     if not args.cold_start:
         for package in catalog.get('packages', []):
             for url in dict.fromkeys([package.get('source_url'), *package.get('source_urls', [])]):
-                if url and urlsplit(url).path.endswith(('.upd', '.exe', '.dmg', '.bin')) and package.get('package_model') is not None:
+                if url and urlsplit(url).path.endswith(('.upd', '.exe', '.dmg', '.bin')):
                     url = 'https://' + url[7:] if url.startswith('http://') else url
-                    known.append({'version': package['version'], 'package_model': package['package_model'],
+                    known.append({'version': package['version'], 'package_model': package.get('package_model'),
                         'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation'})
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
-                      index_fetch=None if args.no_history_index else manifest_roots, artifact_roots=args.artifact_root,
+                      index_fetch=None if args.no_history_index else discover_sources, artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
                       model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
                       inference_limit=args.inference_limit)

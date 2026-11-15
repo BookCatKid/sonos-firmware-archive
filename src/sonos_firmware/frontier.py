@@ -116,6 +116,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     if index_fetch:
         archive = index_fetch(archive)
         roots.extend(archive['entries'])
+        roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in archive.get('artifacts', {}) if official(url))
     bootstrap_errors = []
     metadata = discover_profiles(state.get('metadata_profiles', {}), evidence,
         {'packages': known_artifacts, 'evidence': [{'version': version} for version in version_hints]},
@@ -168,10 +169,18 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url'])}
     candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
+    for url, artifact in archive.get('artifacts', {}).items():
+        if official(url):
+            candidates[url] = {**artifact, **candidates.get(url, {}), 'archive_captures': artifact.get('captures', {})}
+            candidates[url].pop('captures', None)
+            if artifact.get('version') != 'unknown':
+                base = url.rsplit('/', 1)[0] + '/^' + artifact['version']
+                _add_namespace(namespaces, base, 'archive-directory', model_max)
     for directory in graph.get('directories', []):
         base = directory['directory'].rstrip('/') + '/^' + directory['version']
         _add_namespace(namespaces, base, 'observed-directory', model_max)
-    candidates.update(static)
+    for url, row in static.items():
+        candidates[url] = {**candidates.get(url, {}), **row}
     for row in list(candidates.values()):
         if row.get('inferred_only'):
             continue
@@ -231,7 +240,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     result['archive_index'] = archive
     result['metadata_profiles'] = metadata
     result['status'] = 'partial' if (
-        bootstrap_errors or metadata['status'] == 'partial' or inference_pending or archive.get('errors') or blocked or deferred or result['unchecked_this_run']
+        bootstrap_errors or metadata['status'] == 'partial' or inference_pending or archive.get('errors')
+        or archive.get('status') == 'partial' or blocked or deferred or result['unchecked_this_run']
         or discovery_incomplete(graph, graph['manifests'], bool(blocked))
     ) else 'ok'
     return result
@@ -249,6 +259,12 @@ def monitor_report(state, catalog, acquisition=None, repository=None):
             'status': 'partial' if errors or pending else state.get('status', 'partial'),
             'metadata_discovery': {key: value for key, value in state.get('metadata_profiles', {}).items()
                                    if key not in {'profiles', 'responses', 'errors'}},
+            'archive_index_discovery': {
+                'status': state.get('archive_index', {}).get('status', 'not-requested'),
+                'manifest_urls': len(state.get('archive_index', {}).get('entries', {})),
+                'artifact_urls': len(state.get('archive_index', {}).get('artifacts', {})),
+                'pending_hosts': state.get('archive_index', {}).get('pending_hosts', []),
+            },
             'available_uncatalogued_candidates': [c for c in current if not known(c)],
             'available_refresh_candidates': [c for c in current if known(c) and capture_due(c, observations.get(c['url']))],
             'known_missing_now_available': [], 'preservation_pending': pending, 'errors': errors}

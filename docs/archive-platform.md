@@ -58,6 +58,20 @@ from nothing; unavailable historical bytes remain a documented discovery gap.
 
 ## Worker lifecycle
 
+Historical index discovery queries both manifests and `.upd` payloads across
+the approved update hosts. Direct payload leads enter the same acquisition
+queue even when no manifest remains available. Filename metadata can identify
+a version and model; an unrecognized filename stays unclassified and can still
+be preserved and inventoried. Its source evidence remains separate from its
+verified publication receipt.
+
+The index retains timestamped capture variants rather than one row per URL,
+including variants behind static filenames. Query upgrades reset incompatible
+resume tokens while keeping earlier observations. Pending index pages and
+unvisited hosts remain explicit discovery work. The [CDX protocol documentation](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#collapsing)
+describes digest-based collapsing; an index digest is evidence of a capture,
+not a replacement for the SHA-256 computed from acquired bytes.
+
 The Actions worker discovers candidates and records their provenance. It
 acquires actual bytes in temporary storage and hashes them there. A hash
 identifies the captured content and allows verification against GitHub's
