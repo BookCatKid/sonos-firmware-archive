@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Enumerate and archive every anonymously available APKPure Sonos version."""
+"""Discover APKPure selectors and resume verified acquisition automatically."""
 
 from __future__ import annotations
 
@@ -22,13 +22,24 @@ PACKAGES = ("com.sonos.acr2", "com.sonos.acr")
 def discover_versions(apkeep: str, package: str) -> list[str]:
     with tempfile.TemporaryDirectory(prefix="sonos-apkpure-list-") as temporary:
         result = subprocess.run(
-            [apkeep, "-a", package, "-d", "apk-pure", "--list-versions", temporary],
+            [apkeep, "-a", package, "-d", "apk-pure", "-o", "output_format=json", "--list-versions", temporary],
             check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
         )
-    match = re.search(r"\|\s*(.+)", result.stdout)
-    if not match:
-        raise RuntimeError(f"could not parse version list for {package}: {result.stdout}")
-    return [item.strip() for item in match.group(1).split(",") if item.strip()]
+    try:
+        document = json.loads(result.stdout)
+        listing = document['apps'][package]
+        versions = listing['available_versions']
+        if document.get('source') != 'APKPure' or listing.get('error') or not isinstance(versions, list) or not versions:
+            raise ValueError('missing or empty APKPure version list')
+        selectors = []
+        for row in versions:
+            selector = row['version']
+            if not isinstance(selector, str) or not re.fullmatch(r'[A-Za-z0-9.-]+', selector):
+                raise ValueError('invalid APKPure version selector')
+            selectors.append(selector)
+    except (ValueError, KeyError, TypeError) as error:
+        raise RuntimeError(f'could not validate APKPure version list for {package}') from error
+    return list(dict.fromkeys(selectors))
 
 
 def write_ledger(path: Path, attempts: list[dict], pending_selectors: list[dict]) -> None:
