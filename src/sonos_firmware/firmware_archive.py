@@ -6,6 +6,7 @@ import hashlib
 import struct
 import tempfile
 import urllib.error
+from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,12 +37,49 @@ def catalog_at(path):
         'schema_version': 1, 'source_manifests': [], 'packages': [], 'raw_images': []}
 
 
+def manifest_publication(record, repository):
+    proof = record.get('publications', {}).get(repository) or record.get('publication', {})
+    return proof if (proof.get('status') == 'verified' and proof.get('repository') == repository and
+                     proof.get('sha256') == record['sha256'] and proof.get('bytes') == record['bytes']) else None
+
+
+def register_manifest(path, manifest, publication):
+    if (publication.get('status') != 'verified' or not publication.get('repository') or
+            publication.get('sha256') != manifest['sha256'] or publication.get('bytes') != manifest['bytes']):
+        raise ValueError('manifest has no matching verified publication')
+    catalog = catalog_at(path)
+    rows = catalog.setdefault('source_manifests', [])
+    record = next((row for row in rows if row.get('sha256') == manifest['sha256']
+                   and row.get('source_url') == manifest['url']), None)
+    if record is None:
+        record = {'sha256': manifest['sha256'], 'bytes': manifest['bytes'], 'source_url': manifest['url']}
+        rows.append(record)
+    meta = manifest.get('metadata', {})
+    publications = record.setdefault('publications', {})
+    prior = record.get('publication', {})
+    if prior.get('repository'):
+        publications[prior['repository']] = prior
+    publications[publication['repository']] = publication
+    record.update(version=meta.get('system_version') or meta.get('default_version') or 'unknown',
+                  default_version=meta.get('default_version'), revision=meta.get('revision'),
+                  filename=publication['release_asset'], release_tag=publication['release_tag'],
+                  release_asset=publication['release_asset'], publication=publication)
+    record.setdefault('provenance', manifest.get('provenance', 'independent-public-protocol-discovery'))
+    if manifest.get('fetched_from'):
+        retrieval = {'url': manifest['fetched_from'], **({'archive_capture': manifest['archive_capture']}
+                     if manifest.get('archive_capture') else {})}
+        if retrieval not in record.setdefault('retrievals', []):
+            record['retrievals'].append(retrieval)
+    atomic_json(path, catalog)
+    return record
+
+
 def acquisition_path(root):
     return root / 'data/discovery/firmware-acquisition.json'
 
 
-def acquisition_state(root):
-    path = acquisition_path(root)
+def acquisition_state(root, path=None):
+    path = path or acquisition_path(root)
     return json.loads(path.read_text()) if path.exists() else {'schema_version': 1, 'sources': {}}
 
 
@@ -117,6 +155,14 @@ def register_capture(root, capture, *, catalog_path=None):
               'release_url': publication['release_url'], 'repository': publication['repository']}
     if candidate.get('archive_captures'):
         record['discovery_evidence'] = {**prior.get('discovery_evidence', {}), **candidate['archive_captures']}
+    if capture.get('fetched_from'):
+        retrieval = {'url': capture['fetched_from'], **({'archive_capture': candidate['archive_capture']}
+                     if candidate.get('archive_capture') else {})}
+        if capture.get('memento_datetime'):
+            retrieval['memento_datetime'] = capture['memento_datetime']
+        record['retrievals'] = list(prior.get('retrievals', []))
+        if retrieval not in record['retrievals']:
+            record['retrievals'].append(retrieval)
     if capture.get('embedded_version'):
         record['embedded_version'] = capture['embedded_version']
     if prior.get('artifact_status') != 'preserved':
@@ -142,22 +188,25 @@ def register_capture(root, capture, *, catalog_path=None):
     return record
 
 
-def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_path=None):
+def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_path=None, state_path=None,
+                       paused_hosts=()):
     """Acquire bounded batches, retaining progress and exact interrupted captures."""
-    state = acquisition_state(root)
+    state_path = state_path or acquisition_path(root)
+    state = acquisition_state(root, state_path)
+    source_id = lambda row: row.get('acquisition_id') or row['url']
     observations = state.setdefault('sources', {}).setdefault(repository, {})
     catalog_path = catalog_path or root / 'data/catalog.json'
     catalog = catalog_at(catalog_path)
     known_urls = {url for row in catalog.get('packages', []) if row.get('artifact_status') == 'preserved'
                   for url in [row.get('source_url'), *row.get('source_urls', [])] if url}
-    current_urls = {row['url'] for row in candidates}
-    available = {row['url']: row for row in candidates}
+    current_sources = {source_id(row) for row in candidates}
+    available = {source_id(row): row for row in candidates}
     for url, row in observations.items():
         if row.get('pending_publication') and url not in available:
             available[url] = row['candidate']
     candidates = list(available.values())
     for candidate in candidates:
-        url = candidate['url']
+        url = source_id(candidate)
         if url in known_urls and url not in observations:
             observations[url] = {'status': 'needs-refresh', 'checked_at': '', 'candidate': candidate}
         observations.setdefault(url, {'status': 'pending'})['candidate'] = candidate
@@ -166,14 +215,15 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
         if 'revision' in row and any(row['revision'].get(key) != value for key, value in revision(row['candidate']).items()):
             del eligibility[url]
             observations[url]['status'] = 'needs-refresh'
-    queue = select(candidates, eligibility, key=lambda row: row['url'], limit=limit)
+    queue = select(candidates, eligibility, key=source_id, limit=limit)
     attempted = preserved = 0
     errors = []
     ready = set()
+    blocked = set(paused_hosts)
 
     def save():
         state.update(updated=datetime.now(timezone.utc).isoformat())
-        atomic_json(acquisition_path(root), state)
+        atomic_json(state_path, state)
 
     # Older captures at a mutable source URL remain independently reconcilable.
     backlog = state.setdefault('unpublished_captures', [])
@@ -199,22 +249,39 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
     save()
     work.mkdir(parents=True, exist_ok=True)
     for candidate in queue:
-        url = candidate['url']
+        url = source_id(candidate)
+        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[url]
         capture = previous.get('pending_publication')
+        if host in blocked and not capture and previous.get('status') != 'preserved':
+            continue
         attempted += 1
         try:
+            if previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None:
+                known = next((row for row in catalog.get('packages', [])
+                              if row['id'] == previous.get('package_id') and row.get('sha256') == previous.get('sha256')), None)
+                remote = verified_asset(repository, known['release_tag'], known['release_asset'],
+                                        known['bytes'], known['sha256']) if known else None
+                if remote:
+                    observations[url] = {**previous, **checkpoint(previous, success=True, success_hours=168), 'candidate': candidate}
+                    preserved += 1
+                    save()
+                    continue
             if capture:
                 tag, name = capture['release_tag'], capture['release_asset']
                 remote = verified_asset(repository, tag, name, capture['bytes'], capture['sha256'])
             else:
                 remote = None
             if remote is None:
-                if url not in current_urls:
+                if host in blocked:
+                    continue
+                if url not in current_sources:
                     raise ValueError('pending asset not visible; waiting for source availability')
                 with tempfile.TemporaryDirectory(dir=work, prefix='firmware-') as directory:
                     artifact = download(candidate, Path(directory))
                     if not artifact.get('downloaded'):
+                        if artifact.get('download_paused') or artifact.get('download_http_status') in {403, 429}:
+                            blocked.add(host)
                         raise ValueError(artifact.get('download_error', 'firmware acquisition failed'))
                     body = Path(directory) / artifact['local_file']
                     inventory = section_inventory(body) if candidate['filename'].endswith('.upd') else {'sections': []}
@@ -259,7 +326,9 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
         save()
-    errors = [{'url': url, 'error': row.get('error')} for url, row in observations.items() if row['status'] == 'failed']
+    errors = [{'url': row['candidate']['url'], 'error': row.get('error'),
+               **({'acquisition_id': url} if url != row['candidate']['url'] else {})}
+              for url, row in observations.items() if row['status'] == 'failed']
     unresolved = [row for row in backlog if row.get('repository') == repository]
     errors.extend({'url': row['capture']['candidate']['url'], 'error': row['error']}
                   for row in unresolved if row.get('error'))

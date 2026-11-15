@@ -80,14 +80,16 @@ class GenericInventoryTests(unittest.TestCase):
         from sonos_firmware.platform.runner import plan
         root = Path(__file__).resolve().parents[1]
         steps = plan(targets(root)['firmware'], root, 'owner/repo')['steps']
-        self.assertEqual(len(steps), 2)
+        self.assertEqual(len(steps), 3)
         command = steps[0]['command']
         artifact = json.loads(command[command.index('--artifact-root')+1])
         self.assertEqual(artifact['package_model'], 17)
         self.assertNotIn('version', artifact)
         self.assertNotIn('sha256', artifact)
-        self.assertIn('--inventory-limit', steps[1]['command'])
+        self.assertIn('archive-historical-firmware', steps[1]['command'])
         self.assertTrue(steps[1]['after_failure'])
+        self.assertIn('--inventory-limit', steps[2]['command'])
+        self.assertTrue(steps[2]['after_failure'])
 
     def test_every_plaintext_section_is_inventoried_without_a_version_header(self):
         from sonos_firmware.firmware_inventory import inventory_package

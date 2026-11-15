@@ -103,6 +103,11 @@ def main():
     apple.add_argument('--current', type=Path, required=True)
     google = sub.add_parser('store-google-play-metadata')
     google.add_argument('--current', type=Path, required=True)
+    history = sub.add_parser('archive-historical-firmware')
+    history.add_argument('--work-dir', type=Path, required=True)
+    history.add_argument('--repository', required=True)
+    history.add_argument('--limit', type=int, default=8)
+    history.add_argument('--manifest-limit', type=int, default=8)
     extract = sub.add_parser('extract-firmware')
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
@@ -127,6 +132,13 @@ def main():
         if args.max_packages <= 0 or args.inventory_limit <= 0:
             parser.error('extraction and inventory limits must be positive')
         extract_firmware(args.root, args.work_dir, args.repository, args.max_packages, args.inventory_limit, args.inventory_limits)
+    elif args.task == 'archive-historical-firmware':
+        from ..historical_firmware import archive_history
+        report = archive_history(args.root, args.work_dir, args.repository,
+                                 limit=args.limit, manifest_limit=args.manifest_limit)
+        write_json(args.work_dir / 'replay.json', report)
+        if report['status'] == 'partial':
+            raise RuntimeError('historical firmware replay has pending captures or errors; verified progress retained')
     elif args.task == 'scan-preserved-binaries':
         report = discover_preserved(args.root, args.work_dir, args.repository, limit=args.limit,
                                     max_bytes=args.max_bytes, max_source_bytes=args.max_source_bytes,

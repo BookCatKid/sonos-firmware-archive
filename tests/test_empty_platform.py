@@ -43,7 +43,7 @@ class EmptyPlatformTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'), \
              patch.object(releases, 'remote_assets', side_effect=github.assets), \
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=Response(body)):
+             patch.object(discovery.urllib.request, 'urlopen', side_effect=lambda *args, **kwargs: Response(body)):
             root = Path(temporary)
             result = frontier.discover({}, root/'observations', fetch=fetch, probe_fn=probe,
                 metadata_fetch=lambda: (b'', {}), profile_limit=0, inference_limit=1, max_manifests=8)
@@ -57,6 +57,19 @@ class EmptyPlatformTests(unittest.TestCase):
             self.assertEqual(catalog['packages'][0]['source_url'], payload_url)
             self.assertEqual(catalog['packages'][0]['artifact_status'], 'preserved')
             self.assertEqual(len(github.uploads), 2)
+            # Committed receipts from another destination cannot substitute for
+            # actually publishing the first manifest and payload in a fresh fork.
+            self.assertFalse(module.preserve(result, root/'data/catalog.json', root/'data/discovery/frontier.json',
+                root/'observations', root/'worker', 'another/archive'))
+            self.assertEqual(len(github.uploads), 4)
+            catalog = json.loads((root/'data/catalog.json').read_text())
+            self.assertEqual(len(catalog['source_manifests']), 1)
+            self.assertEqual(set(catalog['source_manifests'][0]['publications']), {'fresh/archive', 'another/archive'})
+            # Even a receipt for this repository must not hide deleted releases.
+            github.releases.clear()
+            self.assertFalse(module.preserve(result, root/'data/catalog.json', root/'data/discovery/frontier.json',
+                root/'observations', root/'worker', 'fresh/archive'))
+            self.assertEqual(len(github.uploads), 5)
 
     def test_all_registered_targets_plan_and_validate_without_any_archive_state(self):
         with tempfile.TemporaryDirectory() as temporary:

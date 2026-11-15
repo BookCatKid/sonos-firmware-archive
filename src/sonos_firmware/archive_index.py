@@ -8,6 +8,7 @@ from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit
 
 from .crawl import official, PACKAGE
 from .discovery import USER_AGENT, Candidate
+from .retry import checkpoint
 
 HOSTS = ('update.sonos.com', 'update-firmware.sonos.com', 'update-stage.sonos.com',
          'update-test.sonos.com', 'update-firmware-test.sonos.com', 'update-perf.sonos.com')
@@ -67,7 +68,7 @@ def discover_sources(previous, fetch=fetch_index, pages=2):
     for _ in range(pages):
         host = HOSTS[position % len(HOSTS)]
         position += 1
-        query = {'url': host + '/', 'matchType': 'prefix', 'output': 'json',
+        query = {'url': host + '/', 'matchType': 'prefix', 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
                  'filter': ['statuscode:200', 'original:.*[.]up[md]([?].*)?$'],
                  'collapse': 'digest', 'limit': 500, 'showResumeKey': 'true'}
@@ -115,7 +116,8 @@ def discover_sources(previous, fetch=fetch_index, pages=2):
                 completed.add(host)
             observations.append({'url': url, 'records': max(0, len(rows) - 1), 'more_pages': bool(resume)})
         except Exception as error:
-            errors.append({'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None)})
+            errors.append({'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None),
+                           **checkpoint()})
             if getattr(error, 'code', None) in (403, 429):
                 break
     pending_hosts = sorted(set(HOSTS) - completed)

@@ -72,6 +72,23 @@ unvisited hosts remain explicit discovery work. The [CDX protocol documentation]
 describes digest-based collapsing; an index digest is evidence of a capture,
 not a replacement for the SHA-256 computed from acquired bytes.
 
+The firmware worker replays indexed manifests and payloads automatically, using
+separate bounded queues (`history_manifest_limit` and `history_limit`, both eight
+per run). Each timestamped payload has its own acquisition identity even when
+the live URL still serves a newer version. Replay redirects must retain the
+requested timestamp, original source, and unmodified response mode. Access
+challenges pause further replay requests for that run. Saved index challenges
+use the shared retry cooldown; an expired or undated error cannot pause replay
+indefinitely.
+
+Historical manifests use the common manifest publisher and parser, retaining
+their original bytes, including gzip representations. Relative image links
+resolve against the vendor URL and join live discovery without assuming current
+availability. Undecodable manifests remain preserved with a discovery gap.
+Publication journals reconcile interrupted uploads without downloading source
+bytes again when GitHub already holds the exact asset. Neither historical queue
+requires an existing catalog, release, source checksum, or local firmware file.
+
 The Actions worker discovers candidates and records their provenance. It
 acquires actual bytes in temporary storage and hashes them there. A hash
 identifies the captured content and allows verification against GitHub's

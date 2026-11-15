@@ -13,8 +13,10 @@ sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
 from sonos_firmware.frontier import discover, monitor_report
 from sonos_firmware.archive_index import discover_sources
-from sonos_firmware.firmware_archive import acquisition_state, archive_candidates, manifest_name
-from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt
+from sonos_firmware.firmware_archive import (
+    acquisition_state, archive_candidates, manifest_name, manifest_publication, register_manifest,
+)
+from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt, verified_asset
 from sonos_firmware.metadata_sweep import discover_version_hints
 
 
@@ -32,9 +34,11 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
     for manifest in result['manifests']:
         known = next((m for m in catalog.get('source_manifests', [])
                       if m.get('sha256') == manifest['sha256'] and m.get('source_url') == manifest['url']), None)
-        if known:
-            continue
         try:
+            proof = manifest_publication(known, repository) if known else None
+            if proof and verified_asset(repository, proof['release_tag'], proof['release_asset'],
+                                        manifest['bytes'], manifest['sha256']):
+                continue
             # Cached observations move between workers; their old absolute
             # temporary paths are not acquisition prerequisites.
             path = (evidence / Path(manifest['snapshot']).name).resolve()
@@ -49,16 +53,8 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
             asset = work / manifest_name(manifest)
             asset.write_bytes(data)
             remote = publish_verified(repository, tag, asset, len(data), manifest['sha256'])
-            meta = manifest['metadata']
-            catalog.setdefault('source_manifests', []).append({
-                'version': meta.get('system_version') or meta.get('default_version') or 'unknown',
-                'default_version': meta.get('default_version'), 'revision': meta.get('revision'),
-                'filename': asset.name, 'bytes': len(data), 'sha256': manifest['sha256'],
-                'source_url': manifest['url'], 'provenance': 'independent-public-protocol-discovery',
-                'release_tag': tag, 'release_asset': asset.name,
-                'publication': publication_receipt(repository, tag, asset.name, manifest, remote),
-            })
-            write_json(catalog_path, catalog)
+            register_manifest(catalog_path, manifest, publication_receipt(repository, tag, asset.name, manifest, remote))
+            catalog = json.loads(catalog_path.read_text())
         except Exception as error:
             errors.append({'source': manifest['url'], 'error': str(error)})
     archive_root = catalog_path.parent.parent if catalog_path.parent.name == 'data' else catalog_path.parent

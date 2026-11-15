@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import concurrent.futures
+import gzip
+import io
 import os
 import re
 import tempfile
@@ -90,7 +92,13 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
     # Some historical mirrors preserved a complete XML document but truncated
     # the trailing signature comment. Parse only through the signed document's
     # closing element while retaining the original bytes untouched on disk.
-    text = Path(path).read_text(encoding="utf-8")
+    data = Path(path).read_bytes()
+    if data.startswith(b'\x1f\x8b'):
+        with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
+            data = stream.read(2_000_001)
+        if len(data) > 2_000_000:
+            raise ValueError('decoded manifest exceeds 2 MB')
+    text = data.decode('utf-8')
     closing = "</update_manifest>"
     end = text.find(closing)
     if end < 0:
@@ -224,8 +232,15 @@ def download(candidate: dict, directory: str | Path) -> dict:
         with tempfile.TemporaryDirectory(dir=directory, prefix='capture-') as temporary:
             body = Path(temporary) / 'payload'
             request = urllib.request.Request(candidate['url'], headers={'User-Agent': USER_AGENT})
-            with urllib.request.urlopen(request, timeout=60) as response, body.open('wb') as output:
+            if candidate.get('archive_capture') is not None:
+                from .archive_replay import open_capture
+                incoming = open_capture(candidate['url'], candidate['archive_capture'])
+            else:
+                incoming = urllib.request.urlopen(request, timeout=60)
+            with incoming as response, body.open('wb') as output:
                 declared = response.headers.get('Content-Length')
+                fetched_from = response.geturl() if hasattr(response, 'geturl') else candidate['url']
+                memento_datetime = response.headers.get('Memento-Datetime')
                 while block := response.read(1024 * 1024):
                     output.write(block)
             size = body.stat().st_size
@@ -239,11 +254,15 @@ def download(candidate: dict, directory: str | Path) -> dict:
             destination = directory / (filename.stem + '--' + digest + filename.suffix)
             os.replace(body, destination)
             return {**candidate, 'bytes': size, 'local_file': destination.name,
-                    'release_asset': destination.name, 'sha256': digest, 'downloaded': True}
+                    'release_asset': destination.name, 'sha256': digest, 'downloaded': True,
+                    'fetched_from': fetched_from,
+                    **({'memento_datetime': memento_datetime} if memento_datetime else {})}
     except Exception as error:
         if isinstance(error, urllib.error.HTTPError):
             error.close()
-        return {**candidate, 'downloaded': False, 'download_error': str(error)}
+        return {**candidate, 'downloaded': False, 'download_error': str(error),
+                'download_http_status': getattr(error, 'code', None),
+                'download_paused': bool(getattr(error, 'pause_replay', False))}
 
 
 def download_all(candidates: list[dict], directory: str | Path, workers: int = 3) -> list[dict]:
