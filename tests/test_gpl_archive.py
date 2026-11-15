@@ -13,6 +13,7 @@ from sonos_firmware.gpl_archive import (
     HttpResult, candidates, capture_response, classify_index, download_artifact,
     file_sha256, index_url, offline_candidates, parse_index, sha256_bytes,
     source_url, valid_version, verify_artifact,
+    version_at,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,7 +30,9 @@ class GPLArchiveTests(unittest.TestCase):
     def test_versions_are_strings_not_floats(self):
         self.assertEqual(index_url("14.12"), "https://www.sonos.com/documents/gpl/14.12/gpl.html")
         self.assertNotEqual(index_url("14.12"), index_url("14.2"))
-        for bad in ("nan", "0.0", "1.", "3.100", "3/../4", "3.1/", "3.1?x=1"):
+        for version in ('0.0', '3.100', '1000.1000'):
+            self.assertEqual(valid_version(version), version)
+        for bad in ("nan", "1.", '-1.0', '3.-1', "3/../4", "3.1/", "3.1?x=1"):
             with self.subTest(version=bad), self.assertRaises(ValueError):
                 valid_version(bad)
 
@@ -75,11 +78,18 @@ class GPLArchiveTests(unittest.TestCase):
             self.assertEqual((path / "indexes/11.3.html").read_bytes(), raw)
 
     def test_candidate_order_with_evidence_and_neighbors(self):
-        result = candidates({"14.12", "14.18"}, major_max=15, minor_max=20, evidence={"15.7": {"firmware.bin"}})
+        result = candidates({"14.12", "14.18"}, evidence={"15.7": {"firmware.bin"}})
         self.assertEqual(result[0]["version"], "15.7")
         self.assertEqual(result[0]["evidence"], ["firmware.bin"])
-        self.assertEqual(set(item["version"] for item in result if item["priority"] == 1), {"14.11", "14.13", "14.17", "14.19"})
+        self.assertEqual(set(item["version"] for item in result if item["priority"] == 1),
+                         {"14.11", "14.13", "14.17", "14.19", '13.12', '15.12', '13.18', '15.18'})
         self.assertNotIn("14.12", [item["version"] for item in result])
+
+    def test_numeric_frontier_reaches_every_pair_without_size_caps(self):
+        versions = {version_at(index) for index in range(45)}
+        self.assertEqual(len(versions), 45)
+        self.assertTrue({f'{major}.{minor}' for major in range(5) for minor in range(5)} <= versions)
+        self.assertEqual(version_at(2000*2001//2+1000), '1000.1000')
 
     def test_offline_evidence_from_firmware_reference(self):
         with tempfile.TemporaryDirectory() as directory:

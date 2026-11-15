@@ -30,9 +30,8 @@ def page(version='1.0', filename='source.tar.xz'):
 class RetryPolicyTests(unittest.TestCase):
     def test_observed_versions_are_not_dropped_by_speculative_guess_bounds(self):
         from sonos_firmware.gpl_archive import candidates
-        leads = candidates(set(), major_max=1, minor_max=0,
-                           evidence={'125.90': {'https://www.sonos.com/documents/gpl/125.90/gpl.html'}})
-        self.assertEqual([row['version'] for row in leads], ['125.90', '1.0'])
+        leads = candidates(set(), evidence={'1000.1000': {'https://www.sonos.com/documents/gpl/1000.1000/gpl.html'}})
+        self.assertEqual([row['version'] for row in leads], ['1000.1000'])
 
     def test_new_and_old_formats_are_due_without_manual_migration(self):
         self.assertTrue(retry.due(None, NOW))
@@ -77,8 +76,8 @@ class RetryPolicyTests(unittest.TestCase):
 
 class GPLRetryTests(unittest.TestCase):
     def args(self, root, **extra):
-        return Namespace(output=root / 'live', recheck=False, binary=[], major_max=1, minor_max=0,
-                         limit=4, delay=0, **extra)
+        return Namespace(output=root / 'live', recheck=False, binary=[], discovery_window=1,
+                         limit=1, delay=0, **extra)
 
     def test_completely_empty_directory_bootstraps_its_own_archive_state(self):
         module = load('archive_gpl_direct')
@@ -89,7 +88,77 @@ class GPLRetryTests(unittest.TestCase):
             with patch.object(module, 'ROOT', root), patch.object(module, 'get_page', return_value=page()), \
                  patch.object(module, 'pause'), patch.object(retry, '_now', return_value=NOW):
                 module.discover(args)
-            self.assertIn('1.0', module.live_catalog(args.output)['releases'])
+            self.assertIn('0.0', module.live_catalog(args.output)['releases'])
+
+    def test_numeric_cursor_archives_versions_above_former_major_and_minor_limits(self):
+        module = load('archive_gpl_direct')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            args = self.args(root)
+            args.output.mkdir()
+            ordinal = 2000*2001//2+1000
+            (args.output/'discovery.json').write_text(json.dumps({'schema_version': 1, 'candidates': {},
+                'exploration': {'next_ordinal': ordinal}}))
+            with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                 patch.object(module, 'get_page', return_value=page('1000.1000')) as fetch:
+                module.discover(args)
+            fetch.assert_called_once_with(index_url('1000.1000'))
+            self.assertIn('1000.1000', module.live_catalog(args.output)['releases'])
+            state = json.loads((args.output/'discovery.json').read_text())
+            self.assertGreater(state['exploration']['next_ordinal'], ordinal)
+
+    def test_failed_versions_remain_retryable_outside_the_current_numeric_window(self):
+        module = load('archive_gpl_direct')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            args = self.args(root)
+            args.output.mkdir()
+            (args.output/'discovery.json').write_text(json.dumps({'schema_version': 1, 'candidates': {
+                '1000.1000': {'version': '1000.1000', 'state': 'network-error',
+                              'checked_at': '2000-01-01T00:00:00+00:00'}}}))
+            with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                 patch.object(module, 'get_page', return_value=page('1000.1000')) as fetch:
+                module.discover(args)
+            fetch.assert_called_once_with(index_url('1000.1000'))
+            self.assertIn('1000.1000', module.live_catalog(args.output)['releases'])
+
+    def test_source_cooldown_is_not_bypassed_by_new_versions(self):
+        module = load('archive_gpl_direct')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            args = self.args(root)
+            with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                 patch.object(module, 'get_page', return_value=HttpResult(429, b'retry later', 'text/plain', index_url('0.0'))) as fetch:
+                module.discover(args)
+                module.discover(args)
+                self.assertEqual(fetch.call_count, 1)
+            state = json.loads((args.output/'discovery.json').read_text())
+            state['source_backoff']['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
+            (args.output/'discovery.json').write_text(json.dumps(state))
+            with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                 patch.object(module, 'get_page', return_value=page()) as fetch:
+                module.discover(args)
+                self.assertEqual(fetch.call_count, 1)
+            self.assertEqual(json.loads((args.output/'discovery.json').read_text())['source_backoff'], {})
+
+    def test_new_version_evidence_cannot_starve_numeric_exploration(self):
+        module = load('archive_gpl_direct')
+        requested = []
+        def missing(url):
+            requested.append(url)
+            return HttpResult(404, b'absent', 'text/plain', url)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            args = self.args(root)
+            with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                 patch.object(module, 'get_page', side_effect=missing):
+                for major in range(2000, 2006):
+                    with patch.object(module, 'offline_candidates', return_value={f'{major}.1000': {index_url(f'{major}.1000')}}):
+                        module.discover(args)
+            self.assertTrue({index_url(version) for version in ('0.0', '1.0', '0.1')} <= set(requested))
+            state = json.loads((args.output/'discovery.json').read_text())
+            self.assertGreaterEqual(state['exploration']['next_ordinal'], 3)
+            self.assertTrue(state['pending_versions'])
 
     def test_cold_start_discovers_without_a_release_list_or_archive(self):
         module = load('archive_gpl_direct')
@@ -103,8 +172,10 @@ class GPLRetryTests(unittest.TestCase):
                  patch.object(module, 'pause'), patch.object(retry, '_now', return_value=NOW):
                 self.assertEqual(module.discover(args), 0)
                 self.assertEqual(module.discover(args), 0)
-            fetch.assert_called_once_with(index_url('1.0'))
-            self.assertEqual(set(module.live_catalog(args.output)['releases']), {'1.0'})
+            self.assertEqual(fetch.call_count, 2)
+            self.assertEqual(len({call.args[0] for call in fetch.call_args_list}), 2)
+            self.assertEqual(len(module.live_catalog(args.output)['releases']), 2)
+            self.assertNotIn('99.98', module.live_catalog(args.output)['releases'])
 
     def test_failed_version_recovers_without_recheck_flag(self):
         module = load('archive_gpl_direct')
@@ -116,14 +187,14 @@ class GPLRetryTests(unittest.TestCase):
                  patch.object(retry, '_now', return_value=NOW):
                 module.discover(args)
                 module.discover(args)
-                self.assertEqual(fetch.call_count, 1)
+                self.assertEqual(fetch.call_count, 2)
             with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
                  patch.object(module, 'get_page', return_value=page()), \
                  patch.object(retry, '_now', return_value=NOW + timedelta(hours=2)):
                 module.discover(args)
-            self.assertIn('1.0', module.live_catalog(args.output)['releases'])
+            self.assertIn('0.0', module.live_catalog(args.output)['releases'])
             state = json.loads((args.output / 'discovery.json').read_text())
-            self.assertEqual(state['candidates']['1.0']['consecutive_failures'], 0)
+            self.assertEqual(state['candidates']['0.0']['consecutive_failures'], 0)
 
     def test_refreshed_index_retains_old_capture_links_and_publishes_both(self):
         module = load('archive_gpl_direct')

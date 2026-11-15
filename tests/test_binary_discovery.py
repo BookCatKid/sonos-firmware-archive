@@ -98,7 +98,7 @@ class BinaryDiscoveryTests(unittest.TestCase):
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             args = Namespace(output=root/'data/gpl/live', binary=[], recheck=False,
-                             major_max=25, minor_max=20, limit=1, delay=0)
+                             discovery_window=1, limit=1, delay=0)
             response = HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', '')
             with patch.object(module, 'offline_candidates', return_value={}), \
                  patch.object(module, 'get_page', return_value=response) as request, patch.object(module, 'pause'):

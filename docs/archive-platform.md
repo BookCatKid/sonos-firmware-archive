@@ -189,8 +189,13 @@ retain small hash/status checkpoints rather than full inventories.
 Binary evidence feeds the existing GPL index queue under the same metadata lock.
 Only a separately validated Sonos index establishes an available GPL release.
 Sitemap and index discovery continue when binary inspection is incomplete, so
-an unavailable archived asset cannot block independent discovery. The grammar
-bounds remain configurable as `major_max` and `minor_max`. No downloaded files or
+an unavailable archived asset cannot block independent discovery. Numeric
+exploration uses a saved ordinal rather than fixed major/minor bounds.
+`discovery_window` bounds speculative lookahead, while `limit` bounds requests.
+Observed versions, adjacent hypotheses and retained failed versions remain
+eligible independently of that window. Fresh evidence and numeric exploration
+rotate even with a one-request budget. Access-challenge cooldowns apply to the
+whole source, so a new version cannot bypass them. No downloaded files or
 precomputed hashes are required to add or plan a target.
 
 `google-play` is manual and requires both configured credentials and explicit

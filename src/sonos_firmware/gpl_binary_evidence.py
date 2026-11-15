@@ -21,10 +21,10 @@ CHUNK_BYTES = 1024 * 1024
 CARRY_BYTES = 256
 DEFAULT_SCAN_BUDGET = 768 * 1024 * 1024
 DEFAULT_ENTRY_BUDGET = 300 * 1024 * 1024
-ASCII_PATTERN = re.compile(rb"(?i)/documents/gpl/([1-9][0-9]{0,2}\.[0-9]{1,2})/")
+ASCII_PATTERN = re.compile(rb"(?i)/documents/gpl/([0-9]+\.[0-9]+)/")
 PREFIX_UTF16 = b"".join(bytes((c, 0)) for c in b"/documents/gpl/")
 UTF16_PATTERN = re.compile(re.escape(PREFIX_UTF16) +
-                           rb"((?:[1-9]\x00(?:[0-9]\x00){0,2})\.\x00(?:[0-9]\x00){1,2})/\x00")
+                           rb"((?:[0-9]\x00)+\.\x00(?:[0-9]\x00)+)/\x00")
 SCANNABLE_EXTENSIONS = {
     ".dex", ".so", ".dylib", ".dll", ".exe", ".elf", ".bin", ".wasm",
     ".js", ".json", ".xml", ".plist", ".html", ".txt", ".dart", ".map",

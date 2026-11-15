@@ -16,7 +16,7 @@ from sonos_firmware.gpl_binary_evidence import scan_binary
 from sonos_firmware.gpl_archive import (
     HttpResult, atomic_json, candidates, capture_response, download_artifact,
     get_page, index_url, load_json, offline_candidates, pause,
-    timestamp, valid_version, file_sha256, source_receipt_keys,
+    timestamp, valid_version, version_at, file_sha256, source_receipt_keys,
 )
 
 from sonos_firmware.retry import checkpoint, due, select
@@ -92,19 +92,69 @@ def discover(args: argparse.Namespace) -> int:
                 evidence.setdefault(version, set()).add(
                     f"binary:{report['filename']}:{location.get('entry') or '<raw>'}:"
                     f"{location['offset']}:{location['format']}")
-    todo = candidates(known, major_max=args.major_max, minor_max=args.minor_max, evidence=evidence)
     state = load_json(output / "discovery.json", {"schema_version": 1, "candidates": {}})
     checked = state["candidates"]
     # Saved verified indexes are observations to refresh, not a release list
     # required before discovery. New versions still come from evidence/grammar.
     for version in sorted(known):
         checked.setdefault(version, {k: v for k, v in catalog['releases'][version].items() if k != 'links'})
-        todo.append({'version': version, 'priority': -1, 'evidence': [index_url(version)]})
-    todo = select(todo, checked, key=lambda item: item['version'], limit=args.limit, force=args.recheck)
+    window = getattr(args, 'discovery_window', 512)
+    if not isinstance(window, int) or isinstance(window, bool) or not 1 <= window <= 10000:
+        raise ValueError('GPL discovery window must be between 1 and 10000')
+    if not isinstance(args.limit, int) or isinstance(args.limit, bool) or args.limit < 0:
+        raise ValueError('GPL request budget must be a nonnegative integer')
+    pending = dict(state.get('pending_versions', {}))
+    for item in candidates(known, evidence=evidence):
+        version = item['version']
+        if version not in checked:
+            prior = pending.get(version, {})
+            pending[version] = {**item, 'priority': min(prior.get('priority', item['priority']), item['priority']),
+                                'evidence': sorted(set(prior.get('evidence', [])) | set(item['evidence']))}
+    pending = {version: item for version, item in pending.items() if version not in checked}
+    exploration = state.get('exploration', {})
+    cursor, next_lane = exploration.get('next_ordinal', 0), exploration.get('next_fresh_lane', 0)
+    version_at(cursor)  # Validate the saved ordinal before any network request.
+    if next_lane not in (0, 1):
+        raise ValueError('GPL fresh-work lane must be zero or one')
+    backoff = dict(state.get('source_backoff', {}))
+    paused = bool(backoff) and not due(backoff)
     total = 0
-    errors = []
+    errors = [{'state': 'source-cooldown', 'reason': backoff.get('reason'),
+               'http_status': backoff.get('http_status')}] if paused else []
+
+    def save():
+        nonlocal cursor
+        while version_at(cursor) in checked or version_at(cursor) in pending:
+            cursor += 1
+        state.update(updated=timestamp(), status='partial' if errors or pending else 'ok', errors=errors,
+                     checked_this_run=total, pending_versions=pending, pending_version_total=len(pending),
+                     source_backoff=backoff,
+                     exploration={'policy': 'continuing-numeric-frontier', 'next_ordinal': cursor,
+                                  'window_size': window, 'next_fresh_lane': next_lane})
+        atomic_json(output/'discovery.json', state)
+
+    save()
+    speculative = []
+    ordinal = cursor
+    while not paused and args.limit and len(speculative) < window:
+        version = version_at(ordinal)
+        ordinal += 1
+        if version not in checked and version not in pending:
+            speculative.append({'version': version, 'priority': 2, 'evidence': []})
+    lanes = [list(pending.values()), speculative]
+    fresh = []
+    for offset in range(max(map(len, lanes))):
+        for lane in (next_lane, 1-next_lane):
+            if offset < len(lanes[lane]):
+                fresh.append(lanes[lane][offset])
+    retries = [{'version': version, 'priority': row.get('priority', -1),
+                'evidence': row.get('evidence', [index_url(version)])} for version, row in checked.items()]
+    todo = [] if paused else select(fresh+retries, checked, key=lambda item: item['version'],
+                                    limit=args.limit, force=args.recheck)
     for item in todo:
         version = item["version"]
+        if version not in checked:
+            next_lane = 1 if version in pending else 0
         try:
             response = get_page(index_url(version))
             record = save_index(version, response, output)
@@ -120,8 +170,7 @@ def discover(args: argparse.Namespace) -> int:
         record["priority"] = item["priority"]
         record["evidence"] = item["evidence"]
         checked[version] = {key: value for key, value in record.items() if key != "links"}
-        state["updated"] = timestamp()
-        atomic_json(output / "discovery.json", state)
+        pending.pop(version, None)
         total += 1
         print(f"{total}: {version} {record['state']} HTTP {record.get('http_status', 'n/a')}", flush=True)
         if record["state"] == "verified":
@@ -131,11 +180,15 @@ def discover(args: argparse.Namespace) -> int:
         if record["state"] in {"rate-limited", "network-error"} or (
             record["state"] == "access-denied" and record.get("reason") != "AccessDenied XML"
         ):
+            backoff = {**checkpoint(backoff), 'reason': record.get('reason'),
+                       'http_status': record.get('http_status')}
+            save()
             print("stopping sweep on access challenge or network failure", flush=True)
             break
+        backoff = {}
+        save()
         pause(args.delay)
-    state.update(status='partial' if errors else 'ok', errors=errors, checked_this_run=total)
-    atomic_json(output / 'discovery.json', state)
+    save()
     print(f"checked_this_run={total} verified_total={len([r for r in live_catalog(output)['releases'].values() if r['state']=='verified'])}")
     return 0
 
@@ -466,8 +519,8 @@ def main() -> int:
     p.add_argument("--delay", type=float, default=2.5)
     p.set_defaults(func=indexes)
     p = sub.add_parser("discover", help="Resume prioritized version grammar sweep")
-    p.add_argument("--major-max", type=int, default=120)
-    p.add_argument("--minor-max", type=int, default=99)
+    p.add_argument('--discovery-window', type=int, default=512,
+                   help='bounded speculative lookahead; the saved ordinal continues beyond each window')
     p.add_argument("--limit", type=int, default=48)
     p.add_argument("--delay", type=float, default=2.5)
     p.add_argument("--binary", type=Path, action="append", default=[])

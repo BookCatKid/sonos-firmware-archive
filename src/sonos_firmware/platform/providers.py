@@ -112,7 +112,7 @@ def gpl(c: Context):
             c.script('discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5,
                      report=str(c.root / 'data/gpl/live/site-evidence.json'), after_failure=True),
             c.script('archive_gpl_direct.py', 'discover', '--limit', c.options.get('limit', 96), '--delay', 2.5,
-                     '--major-max', c.options.get('major_max', 120), '--minor-max', c.options.get('minor_max', 99),
+                     '--discovery-window', c.options.get('discovery_window', 512),
                      report=str(c.root / 'data/gpl/live/discovery.json'), after_failure=True),
             c.script('archive_gpl_direct.py', 'report', after_failure=True)]
 

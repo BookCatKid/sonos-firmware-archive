@@ -1,4 +1,4 @@
-"""No-network regression tests for real archived Sonos controller binaries."""
+"""Offline fixture tests for archived controller formats and binary references."""
 from __future__ import annotations
 
 import tempfile
@@ -12,6 +12,16 @@ from sonos_firmware.gpl_binary_evidence import scan_binary
 
 
 class GPLBinaryReferenceTests(unittest.TestCase):
+    def test_ascii_and_utf16_references_have_no_fixed_numeric_version_width(self):
+        body = (b'ELF fixture /documents/gpl/1000.1000/gpl.html\0' +
+                '/documents/gpl/0.100/gpl.html'.encode('utf-16-le'))
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'fixture.bin'
+            path.write_bytes(body)
+            report = scan_binary(path)
+        self.assertTrue(report['complete'])
+        self.assertEqual(set(report['version_evidence']), {'1000.1000', '0.100'})
+
     def test_nested_tar_suffix_is_preserved_and_malformed_xapk_is_incomplete(self):
         bundle = io.BytesIO()
         with tarfile.open(fileobj=bundle, mode='w:xz') as archive:
@@ -159,7 +169,7 @@ class GPLBinaryReferenceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'source.apk'
             path.write_bytes(b'https://www.sonos.com/documents/gpl/22.17/gpl.html')
-            args=Namespace(output=Path(tmp)/'out',binary=[path],recheck=False,major_max=25,minor_max=20,limit=1,delay=2.5)
+            args=Namespace(output=Path(tmp)/'out',binary=[path],recheck=False,discovery_window=1,limit=1,delay=2.5)
             requested=[]
             def fake_get_page(url):
                 requested.append(url)
