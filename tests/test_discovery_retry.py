@@ -61,6 +61,19 @@ class RetryPolicyTests(unittest.TestCase):
         self.assertEqual([x['id'] for x in chosen[2:]], [str(n) for n in range(20, 26)])
         self.assertEqual(len(retry.select(items[:20], records, key=lambda x: x['id'], limit=8, now=NOW)), 8)
 
+    def test_journaling_unattempted_leads_does_not_take_reserved_retry_capacity(self):
+        items = list(range(40))
+        records = {n: {'checked_at': (NOW - timedelta(hours=n+1)).isoformat()} for n in range(20)}
+        records.update({n: {'status': 'pending', 'candidate': n} for n in range(20, 40)})
+        chosen = retry.select(items, records, key=lambda item: item, limit=8, now=NOW)
+        self.assertEqual(chosen[:2], [19, 18])
+        self.assertEqual(chosen[2:], list(range(20, 26)))
+
+    def test_explicit_cooldown_without_check_time_is_still_respected(self):
+        records = {'waiting': {'next_attempt_at': (NOW + timedelta(hours=1)).isoformat()},
+                   'new': {'status': 'pending'}}
+        self.assertEqual(retry.select(['waiting', 'new'], records, key=str, limit=8, now=NOW), ['new'])
+
 
 class GPLRetryTests(unittest.TestCase):
     def args(self, root, **extra):

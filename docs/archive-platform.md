@@ -142,6 +142,10 @@ Failed captures are never promoted when only part of the delivery was uploaded.
 Each package can make progress independently, and previously observed selectors
 remain queued when a later store listing omits them or fails.
 
+Saving an unattempted lead does not turn it into a retry. Shared bounded queues
+reserve capacity for due retries alongside new leads, including when both are
+already recorded in a durable journal. Explicit cooldowns remain in force.
+
 Web deployment capture runs each public site independently without a separate
 probe prerequisite. Web bodies, raw firmware images, and signer-verified Android
 store deliveries use the same collection publisher. It checks every intended

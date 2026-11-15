@@ -34,7 +34,7 @@ def select(items, records, *, key, limit, force=False, now=None):
     fresh, retries = [], []
     for item in items:
         prior = records.get(key(item))
-        if not prior:
+        if not prior or not (prior.get('checked_at') or prior.get('next_attempt_at')):
             fresh.append(item)
         elif force or due(prior, now):
             retries.append(item)

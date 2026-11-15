@@ -156,6 +156,23 @@ class HistoricalFirmwareTests(unittest.TestCase):
         self.assertEqual(len(self.fetched), 1)
         self.assertEqual(len(json.loads(self.frontier.read_text())['candidates']), 1)
 
+    def test_new_manifest_backlog_does_not_starve_interrupted_publication_recovery(self):
+        old = capture(url=MANIFEST)
+        self.index(manifests={'old': old})
+        self.responses[archive_replay.replay_url(MANIFEST, old)] = XML
+        self.github.lose_upload_response = True
+        self.assertEqual(self.run_history()['manifests']['preserved'], 0)
+        captures = {'old': old}
+        for day in range(1, 9):
+            item = capture(f'202101{day:02d}000000', MANIFEST)
+            captures[str(day)] = item
+            self.responses[archive_replay.replay_url(MANIFEST, item)] = XML
+        self.index(manifests=captures)
+        self.run_history(now=NOW+timedelta(hours=2), manifest_limit=4)
+        journal = json.loads((self.root/'data/discovery/historical-manifest-acquisition.json').read_text())
+        self.assertEqual(journal['sources']['fresh/archive']['old']['status'], 'preserved')
+        self.assertEqual(len(self.fetched), 4)  # Original capture plus three new ones; recovery needs no GET.
+
     def test_unsupported_manifest_is_preserved_and_discovery_remains_partial(self):
         item = capture(url=MANIFEST)
         self.index(manifests={'manifest': item})
