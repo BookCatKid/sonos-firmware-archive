@@ -27,6 +27,7 @@
       "interval_hours": 6,
       "metadata": [
         "data/apps/desktop-discovery.json",
+        "data/apps/desktop-history-index.json",
         "data/apps/desktop-archive.json"
       ]
     },
@@ -37,6 +38,7 @@
       "interval_hours": 6,
       "metadata": [
         "data/apps/mobile-discovery.json",
+        "data/apps/mobile-history-index.json",
         "data/apps/mobile-archive.json"
       ]
     },

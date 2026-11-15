@@ -10,9 +10,9 @@ class CadenceTests(unittest.TestCase):
   m=load('discover_desktop_installers')
   with tempfile.TemporaryDirectory() as d:
    out=Path(d)/'out.json'
-   with patch.object(sys,'argv',['x','--output',str(out),'--current-only']),patch.object(m,'winget_candidates') as winget,patch.object(m,'homebrew_candidates') as brew,patch.object(m,'wayback_candidates') as wayback,patch.object(m,'check_direct_redirects',return_value=[]):
+   with patch.object(sys,'argv',['x','--output',str(out),'--current-only']),patch.object(m,'winget_candidates') as winget,patch.object(m,'homebrew_candidates') as brew,patch.object(m,'check_direct_redirects',return_value=[]):
     self.assertEqual(m.main(),0)
-   self.assertFalse(winget.called);self.assertFalse(brew.called);self.assertFalse(wayback.called)
+   self.assertFalse(winget.called);self.assertFalse(brew.called)
    self.assertTrue(json.loads(out.read_text())['current_only'])
  def test_current_mobile_skips_wayback(self):
   m=load('discover_mobile_installers')

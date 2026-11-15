@@ -1,0 +1,167 @@
+"""Shared current and historical acquisition of public Sonos installers."""
+import json
+import re
+import urllib.error
+import urllib.request
+import zipfile
+from functools import partial
+from urllib.parse import urlsplit
+
+from .app_archive import AppSource, preserve
+from .archive_index import discover_sources
+from .archive_replay import canonical_source, open_capture
+from .retry import due
+from .storage import atomic_json
+
+HOSTS = ('update-software.sonos.com', 'update.sonos.com', 'update-beta.sonos.com')
+
+
+def official_source(url):
+    parsed = urlsplit(url)
+    return parsed.hostname in HOSTS and parsed.path.lower().endswith(('.exe', '.dmg', '.apk'))
+
+
+def family(url, platform):
+    name = urlsplit(url).path.rsplit('/', 1)[-1]
+    if re.search(r'Sonos_57\.', name):
+        return 's1'
+    if name.startswith('Sonos_'):
+        return 's2'
+    if platform == 'fireos-android-apk':
+        return 'legacy' if name.startswith('SonosAndroidController') else 's2'
+    match = re.search(r'SonosDesktopController([^.]*)', name)
+    token = match[1].lower() if match else ''
+    return 's1' if token.startswith('112') else 's2' if token.startswith(('12', '13')) else 'legacy'
+
+
+def version(url, platform):
+    name = urlsplit(url).path.rsplit('/', 1)[-1]
+    match = re.fullmatch(r'Sonos_(.+)\.(?:exe|dmg|apk)', name, re.I)
+    if match:
+        return match[1]
+    match = re.fullmatch(r'SonosDesktopController([^.]*)\.(?:exe|dmg)', name, re.I)
+    if match:
+        return 'classic-'+match[1]
+    match = re.fullmatch(r'SonosAndroidController(.+)\.apk', name, re.I)
+    return match[1] if match else 'unknown'
+
+
+def release_for(candidate):
+    family_name, platform = candidate['family'], candidate['platform']
+    if platform == 'fireos-android-apk':
+        return 'apps-fireos-'+family_name, f'Sonos {family_name} official Android installers'
+    return 'apps-'+family_name+'-'+platform, f'Sonos {family_name} {platform} installers'
+
+
+def acquire(candidate, destination, *, blocked=None):
+    blocked = set() if blocked is None else blocked
+    capture = candidate.get('archive_capture')
+    sources = [(candidate['url'], capture)] if capture is not None else [(candidate['url'], None)]
+    # Older saved URL observations may offer a replay as a fallback. Explicit
+    # timestamped acquisitions above always request that capture directly.
+    if capture is None:
+        timestamp = candidate.get('wayback_timestamp')
+        if not timestamp:
+            timestamp = next((row.split(':', 2)[1] for row in candidate.get('sources', [])
+                              if row.startswith('wayback-cdx:')), None)
+        if timestamp:
+            sources.append((candidate['url'], {'timestamp': timestamp}))
+    last_error = None
+    for url, replay in sources:
+        host = 'web.archive.org' if replay is not None else urlsplit(url).hostname
+        if host in blocked:
+            last_error = ValueError('installer source host is paused for this run')
+            continue
+        try:
+            response = (open_capture(url, replay, allowed=official_source, timeout=180) if replay is not None else
+                        urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
+            with response, destination.open('wb') as output:
+                if getattr(response, 'status', 200) != 200:
+                    raise ValueError('installer source did not return a complete HTTP 200 response')
+                if 'html' in response.headers.get('Content-Type', '').lower():
+                    raise ValueError('installer source returned an HTML page')
+                size = 0
+                while block := response.read(1024*1024):
+                    size += output.write(block)
+                declared = response.headers.get('Content-Length')
+                if declared is not None and int(declared) != size:
+                    raise ValueError('installer response has a truncated Content-Length')
+                fetched = response.geturl() if hasattr(response, 'geturl') else url
+            if candidate['platform'] == 'fireos-android-apk' and not zipfile.is_zipfile(destination):
+                raise ValueError('downloaded installer is not a ZIP/APK')
+            return fetched
+        except Exception as error:
+            destination.unlink(missing_ok=True)
+            last_error = error
+            if getattr(error, 'pause_replay', False) or getattr(error, 'code', None) in {403, 429}:
+                blocked.add(host)
+                error.pause_replay, error.pause_host = True, host
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+    raise last_error
+
+
+def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', paused_hosts=()):
+    return AppSource(partial(acquire, blocked=set(paused_hosts)), release_for,
+                     'Exact public Sonos installer captures with verified hashes and source provenance.',
+                     default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours)
+
+
+def _candidate(url, kind):
+    url = canonical_source(url, official_source)
+    suffix = urlsplit(url).path.rsplit('.', 1)[-1].lower()
+    if suffix not in (('exe', 'dmg') if kind == 'desktop' else ('apk',)):
+        return None
+    platform = 'fireos-android-apk' if suffix == 'apk' else 'windows' if suffix == 'exe' else 'macos'
+    return {'url': url, 'family': family(url, platform), 'platform': platform,
+            'version': version(url, platform), 'sources': ['public-archive-index']}
+
+
+def observed_candidates(path, kind):
+    """Indexed URLs remain independent live leads, including sibling inference."""
+    index = json.loads(path.read_text()) if path.exists() else {}
+    candidates = []
+    for url in index.get('artifacts', {}):
+        try:
+            candidate = _candidate(url, kind)
+            if candidate:
+                candidates.append(candidate)
+        except ValueError:
+            continue
+    return candidates
+
+
+def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_hours=168, current_refresh_hours=6):
+    if kind not in {'desktop', 'mobile'}:
+        raise ValueError('installer history kind must be desktop or mobile')
+    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in (limit, pages)):
+        raise ValueError('installer history limits must be positive integers')
+    path = root/'data/apps'/f'{kind}-history-index.json'
+    previous = json.loads(path.read_text()) if path.exists() else {}
+    extensions = ('exe', 'dmg') if kind == 'desktop' else ('apk',)
+    index = discover_sources(previous, pages=pages, roots={host: host+'/' for host in HOSTS},
+                             extensions=extensions, allowed=official_source)
+    atomic_json(path, index)
+    candidates, errors = [], list(index['errors'])
+    for url, row in index['artifacts'].items():
+        try:
+            candidate = _candidate(url, kind)
+        except ValueError as error:
+            errors.append({'url': url, 'error': str(error)})
+            continue
+        if not candidate:
+            continue
+        for identity, capture in row.get('captures', {}).items():
+            candidates.append({**candidate,
+                'acquisition_id': 'wayback:'+identity, 'archive_capture': capture,
+                'wayback_timestamp': capture['timestamp'], 'wayback_digest': capture.get('digest')})
+    discovery = work/'discovery.json'
+    atomic_json(discovery, {'status': index['status'], 'errors': errors, 'candidates': candidates})
+    paused = any(row.get('http_status') in {403, 429} and not due(row) for row in index['errors'])
+    result = preserve(source(default_platform='fireos-android-apk' if kind == 'mobile' else '',
+                             refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours),
+                      discovery, root/'data/apps'/f'{kind}-archive.json', repository,
+                      root=root, limit=limit, paused_hosts={'web.archive.org'} if paused else ())
+    return {'status': result['status'], 'artifact_total': result['artifact_total'],
+            'attempted': result['attempted_this_run'], 'errors': result['errors'],
+            'pending': result['pending_total'], 'index_status': index['status']}

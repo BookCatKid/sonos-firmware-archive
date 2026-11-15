@@ -238,6 +238,8 @@ def download(candidate: dict, directory: str | Path) -> dict:
             else:
                 incoming = urllib.request.urlopen(request, timeout=60)
             with incoming as response, body.open('wb') as output:
+                if getattr(response, 'status', 200) != 200:
+                    raise ValueError('firmware source did not return a complete HTTP 200 response')
                 declared = response.headers.get('Content-Length')
                 fetched_from = response.geturl() if hasattr(response, 'geturl') else candidate['url']
                 memento_datetime = response.headers.get('Memento-Datetime')

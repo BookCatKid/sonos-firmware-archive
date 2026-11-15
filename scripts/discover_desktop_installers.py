@@ -24,6 +24,7 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 from sonos_firmware.storage import atomic_json
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates
 
 WINGET_PACKAGES = {"Controller": "s2", "S1Controller": "s1"}
 HOMEBREW_PATHS = {
@@ -37,7 +38,6 @@ DIRECT_ENDPOINTS = {
     "s1-windows": "https://www.sonos.com/redir/controller_software_pc",
     "s1-macos": "https://www.sonos.com/redir/controller_software_mac",
 }
-WAYBACK_CDX = "https://web.archive.org/cdx/search/cdx"
 
 
 GH_API_ATTEMPTS = 4
@@ -135,58 +135,11 @@ def homebrew_candidates(target: dict) -> None:
 
 
 def family_for_wayback_url(url: str) -> str:
-    name = url.rsplit("/", 1)[-1]
-    if re.search(r"Sonos_57\.", name):
-        return "s1"
-    if name.startswith("Sonos_"):
-        return "s2"
-    match = re.search(r"SonosDesktopController([^.]*)", name)
-    token = match.group(1).lower() if match else ""
-    if token.startswith("112"):
-        return "s1"
-    if token.startswith(("12", "13")):
-        return "s2"
-    return "legacy"
+    return installer_family(url, "windows")
 
 
 def version_for_url(url: str) -> str:
-    name = url.rsplit("/", 1)[-1]
-    match = re.search(r"Sonos_([^.]*(?:\.[^.]*)*)\.(?:exe|dmg)$", name, re.I)
-    if match:
-        return match.group(1)
-    match = re.search(r"SonosDesktopController([^.]*)\.(?:exe|dmg)$", name, re.I)
-    return f"classic-{match.group(1)}" if match else "unknown"
-
-
-def wayback_candidates(target: dict) -> dict:
-    query = urllib.parse.urlencode({
-        "url": "update-software.sonos.com/software/",
-        "matchType": "prefix", "output": "json",
-        "fl": "timestamp,original,statuscode,mimetype,digest,length",
-        "filter": ["statuscode:200", r"original:.*\.(exe|dmg)$"],
-        "collapse": "urlkey", "limit": "5000",
-    }, doseq=True)
-    url = f"{WAYBACK_CDX}?{query}"
-    error = None
-    for attempt in range(3):
-        try:
-            rows = json.loads(urllib.request.urlopen(url, timeout=90).read())
-            break
-        except Exception as caught:
-            error = caught
-            if attempt < 2:
-                time.sleep(2 ** attempt)
-    else:
-        raise RuntimeError(f"Wayback CDX query failed after 3 attempts: {error}")
-    for timestamp, original, _status, _mime, digest, length in rows[1:]:
-        live_url = original.replace("http://", "https://", 1)
-        platform = "windows" if live_url.lower().endswith(".exe") else "macos"
-        add_candidate(
-            target, family=family_for_wayback_url(live_url), platform=platform,
-            version=version_for_url(live_url), url=live_url, sha256=None,
-            source=f"wayback-cdx:{timestamp}:{digest}:{length}",
-        )
-    return {"status": "ok", "row_total": max(0, len(rows) - 1), "url": url}
+    return installer_version(url, "windows")
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -284,14 +237,14 @@ def main() -> int:
     args = parser.parse_args()
     candidates: dict = {}
     errors = []
-    wayback = {"skipped": "historical indexes deferred to weekly scan"}
+    wayback = {"provider": "shared-installer-history"}
     if not args.current_only:
-        for name, source in [('winget', winget_candidates), ('homebrew', homebrew_candidates),
-                             ('wayback', wayback_candidates)]:
+        for item in observed_candidates(args.output.parent/'desktop-history-index.json', 'desktop'):
+            add_candidate(candidates, family=item['family'], platform=item['platform'], version=item['version'],
+                          url=item['url'], sha256=None, source='saved-installer-index')
+        for name, source in [('winget', winget_candidates), ('homebrew', homebrew_candidates)]:
             try:
-                result = source(candidates)
-                if name == 'wayback':
-                    wayback = result
+                source(candidates)
             except Exception as error:
                 errors.append({'source': name, 'error': str(error)})
     direct_redirects = check_direct_redirects(include_history=not args.current_only)

@@ -52,7 +52,8 @@ def acquisition_id(candidate):
     return candidate.get('acquisition_id') or candidate['url']
 
 
-def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None):
+def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None,
+             paused_hosts=()):
     if limit is not None and limit <= 0:
         raise ValueError('acquisition limit must be positive')
     if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
@@ -186,6 +187,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         save()
     remaining = max(0, limit - attempted) if limit else len(candidates)
     queue = select(list(candidates.values()), eligibility, key=acquisition_id, limit=remaining)
+    blocked = set(paused_hosts)
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
         for candidate in queue:
@@ -193,6 +195,10 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             identity = acquisition_id(candidate)
             previous = observations[identity]
             pending = previous.get('pending_publication')
+            archived = candidate.get('archive_capture') is not None
+            host = 'web.archive.org' if archived else urlsplit(url).hostname
+            if host in blocked and not pending and previous.get('status') != 'preserved':
+                continue
             attempted += 1
             try:
                 if pending:
@@ -201,6 +207,15 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                         finish(pending, candidate, previous, remote)
                         save()
                         continue
+                if archived and previous.get('status') == 'preserved':
+                    known = by_digest.get((candidate['family'], candidate['platform'], previous.get('sha256')))
+                    if known and verified_asset(repository, known['release_tag'], known['release_asset'], known['bytes'], known['sha256']):
+                        observations[acquisition_id(candidate)] = {**previous, **checkpoint(previous, success=True,
+                                                                                       success_hours=source.refresh_hours)}
+                        save()
+                        continue
+                if host in blocked:
+                    raise ValueError('source host is paused; exact capture remains queued')
                 with tempfile.TemporaryDirectory(dir=directory) as capture:
                     original = Path(urlsplit(url).path).name
                     if not original:
@@ -236,6 +251,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     remote = publish_verified(repository, tag, upload, size, digest)
                     finish(pending, candidate, previous, remote)
             except Exception as error:
+                if getattr(error, 'pause_replay', False) or getattr(error, 'code', None) in {403, 429}:
+                    blocked.add(getattr(error, 'pause_host', host))
                 identity = acquisition_id(candidate)
                 observations[identity] = {**checkpoint(previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
                                      'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},

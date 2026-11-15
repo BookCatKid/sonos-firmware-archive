@@ -535,7 +535,6 @@ class IndependentSourceFailureTests(unittest.TestCase):
             with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
                  patch.object(module, 'winget_candidates', side_effect=OSError('fixture unavailable')), \
                  patch.object(module, 'homebrew_candidates', return_value=None), \
-                 patch.object(module, 'wayback_candidates', return_value={}), \
                  patch.object(module, 'check_direct_redirects', return_value=[redirect]), \
                  patch.object(module, 'probe', side_effect=lambda item: {**item, 'http_status': 200}):
                 self.assertEqual(module.main(), 0)
@@ -544,24 +543,23 @@ class IndependentSourceFailureTests(unittest.TestCase):
             self.assertEqual(report['available_total'], 2)
             self.assertEqual(report['errors'][0]['source'], 'winget')
 
-    def test_mobile_history_failure_keeps_current_discovery_and_reports_partial(self):
+    def test_mobile_current_discovery_does_not_query_the_separate_history_index(self):
         import sys
         from unittest.mock import patch
         module = self.load('discover_mobile_installers')
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'discovery.json'
             with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
-                 patch.object(module.urllib.request, 'urlopen', side_effect=OSError('fixture unavailable')), \
-                 patch.object(module.time, 'sleep'), \
+                 patch.object(module.urllib.request, 'urlopen', side_effect=AssertionError('unexpected history query')) as fetch, \
                  patch.object(module, 'resolve_latest_redirect', return_value={
                      'location': 'https://update-software.sonos.com/software/android/Sonos_90.0-12345.apk',
                      'location_source': 'live'}), \
                  patch.object(module, 'probe', side_effect=lambda item: {**item, 'http_status': 200}):
                 self.assertEqual(module.main(), 0)
             report = json.loads(output.read_text())
-            self.assertEqual(report['status'], 'partial')
+            self.assertEqual(report['status'], 'ok')
             self.assertEqual(report['available_live_total'], 1)
-            self.assertIn('Wayback CDX query failed', report['errors'][0]['error'])
+            fetch.assert_not_called()
 
 
 if __name__ == '__main__':

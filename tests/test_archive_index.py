@@ -1,8 +1,46 @@
 import unittest
+from urllib.parse import urlsplit
 from sonos_firmware.archive_index import discover_sources
 
 
 class ArchiveIndexTests(unittest.TestCase):
+    def test_installer_suffixes_are_case_insensitive_without_changing_source_urls(self):
+        url = 'https://update-software.sonos.com/software/Sonos.EXE'
+        result = discover_sources({}, pages=1, roots={'software': 'update-software.sonos.com/'},
+            extensions=('exe',), allowed=lambda source: urlsplit(source).hostname == 'update-software.sonos.com',
+            fetch=lambda request: [['timestamp', 'original', 'digest'], ['20200101000000', url, 'capture']])
+        self.assertIn(url, result['artifacts'])
+        self.assertIn('%3Fi%3A', result['observations'][0]['url'])
+
+    def test_installer_index_uses_the_same_capture_and_pagination_contract(self):
+        root = 'update-software.sonos.com/software/'
+        url = 'https://'+root+'Sonos.exe'
+        def allowed(source):
+            return source.startswith('https://'+root)
+        def fetch(request):
+            return [['timestamp', 'original', 'digest'], ['20200101000000', url, 'old'],
+                    ['20210101000000', url, 'new'],
+                    ['20200101000000', 'https://outside.test/software/Sonos.exe', 'outside'], [], ['resume']]
+        result = discover_sources({}, fetch=fetch, pages=1, roots={'software': root},
+                                  extensions=('exe', 'dmg'), allowed=allowed)
+        self.assertEqual(set(result['artifacts']), {url})
+        self.assertEqual(len(result['artifacts'][url]['captures']), 2)
+        self.assertEqual(result['cursors'], {'software': 'resume'})
+        self.assertEqual(result['status'], 'partial')
+
+    def test_changed_index_query_resets_cursors_without_erasing_captures(self):
+        root = 'update-software.sonos.com/software/'
+        url = 'https://'+root+'Sonos.exe'
+        allowed = lambda source: urlsplit(source).hostname == 'update-software.sonos.com'
+        first = discover_sources({}, pages=1, roots={'software': root}, extensions=('exe',), allowed=allowed,
+            fetch=lambda request: [['timestamp', 'original', 'digest'], ['20200101000000', url, 'old'], [], ['resume']])
+        requests = []
+        second = discover_sources(first, pages=1, roots={'software': root}, extensions=('exe', 'dmg'), allowed=allowed,
+                                  fetch=lambda request: requests.append(request) or [])
+        self.assertNotIn('resumeKey=', requests[0])
+        self.assertIn(url, second['artifacts'])
+        self.assertNotEqual(first['query_revision'], second['query_revision'])
+
     def test_direct_packages_and_static_capture_variants_are_discovered_without_manifests(self):
         rows = [['timestamp', 'original', 'digest'],
                 ['20200101000000', 'http://update.sonos.com/firmware/history/1.2-345-1-17.upd', 'first'],

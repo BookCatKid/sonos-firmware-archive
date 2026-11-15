@@ -1,4 +1,4 @@
-"""Discover historical Sonos manifest and firmware captures through a resumable public index."""
+"""Discover timestamped public Sonos captures through a resumable archive index."""
 import hashlib
 import json
 import re
@@ -22,7 +22,7 @@ def fetch_index(url):
     return json.loads(body)
 
 
-def _capture(row, index_url):
+def _capture(row, index_url, allowed=official):
     if not isinstance(row, list) or len(row) != 3 or any(not isinstance(value, str) for value in row):
         raise ValueError('archive index capture must have timestamp, URL and digest fields')
     timestamp, original, digest = row
@@ -33,7 +33,7 @@ def _capture(row, index_url):
             parsed.port not in {None, 80 if parsed.scheme == 'http' else 443}):
         return None
     canonical = urlunsplit(('https', parsed.hostname, parsed.path, parsed.query, ''))
-    if not official(canonical):
+    if not allowed(canonical):
         return None
     capture = {'timestamp': timestamp, 'digest': digest, 'index_url': index_url,
                'original_url': urlunsplit((parsed.scheme, parsed.netloc, parsed.path, parsed.query, ''))}
@@ -52,25 +52,35 @@ def _observations(records):
     return result
 
 
-def discover_sources(previous, fetch=fetch_index, pages=2):
+def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
+                     extensions=('upm', 'upd'), allowed=official):
     if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
         raise ValueError('archive index page budget must be positive')
     if previous.get('schema_version') not in {None, 1, 2}:
         raise ValueError('unsupported archive index checkpoint schema')
-    # A broader query cannot safely reuse the old manifest-only resume token.
-    cursors = dict(previous.get('cursors', {})) if previous.get('schema_version') == 2 else {}
+    defaults = {host: host+'/' for host in HOSTS}
+    roots = defaults if roots is None else roots
+    if not roots or not extensions or any(not re.fullmatch(r'[a-z0-9]+(?:\.[a-z0-9]+)*', ext) for ext in extensions):
+        raise ValueError('archive index requires roots and literal filename extensions')
+    hosts = list(roots)
+    suffixes = 'up[md]' if tuple(extensions) == ('upm', 'upd') else '(?i:'+'|'.join(re.escape(ext) for ext in extensions)+')'
+    query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes]).encode()).hexdigest()
+    legacy = previous.get('query_revision') is None and roots == defaults and tuple(extensions) == ('upm', 'upd')
+    compatible = previous.get('schema_version') == 2 and (legacy or previous.get('query_revision') == query_revision)
+    # Query upgrades retain observations without reusing incompatible cursors.
+    cursors = dict(previous.get('cursors', {})) if compatible else {}
     entries = _observations(previous.get('entries', {}))
     artifacts = _observations(previous.get('artifacts', {}))
-    completed = set(previous.get('completed_hosts', [])) if previous.get('schema_version') == 2 else set()
+    completed = set(previous.get('completed_hosts', [])) if compatible else set()
     observations = []
     errors = []
     position = previous.get('next_host', 0)
     for _ in range(pages):
-        host = HOSTS[position % len(HOSTS)]
+        host = hosts[position % len(hosts)]
         position += 1
-        query = {'url': host + '/', 'matchType': 'prefix', 'output': 'json', 'gzip': 'false',
+        query = {'url': roots[host], 'matchType': 'prefix', 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
-                 'filter': ['statuscode:200', 'original:.*[.]up[md]([?].*)?$'],
+                 'filter': ['statuscode:200', 'original:.*[.]'+suffixes+'([?].*)?$'],
                  'collapse': 'digest', 'limit': 500, 'showResumeKey': 'true'}
         if cursors.get(host):
             query['resumeKey'] = unquote_plus(cursors[host])
@@ -87,7 +97,7 @@ def discover_sources(previous, fetch=fetch_index, pages=2):
                 raise ValueError('unexpected archive index fields')
             for row in rows[1:]:
                 try:
-                    observed = _capture(row, url)
+                    observed = _capture(row, url, allowed)
                 except (ValueError, TypeError) as error:
                     errors.append({'url': url, 'error': str(error)})
                     continue
@@ -97,9 +107,9 @@ def discover_sources(previous, fetch=fetch_index, pages=2):
                 capture_id = hashlib.sha256(json.dumps([
                     original, capture['timestamp'], capture['digest'], capture['original_url']]).encode()).hexdigest()
                 path = urlsplit(original).path
-                if path.endswith('.upm'):
+                if path.lower().endswith('.upm') and 'upm' in extensions:
                     target = entries.setdefault(original, {'captures': {}})
-                elif path.endswith('.upd'):
+                elif path.lower().endswith(tuple('.'+ext for ext in extensions)):
                     filename = path.rsplit('/', 1)[-1]
                     match = PACKAGE.fullmatch(filename)
                     candidate = Candidate(match[1] if match else 'unknown', int(match[2]) if match else None,
@@ -120,8 +130,9 @@ def discover_sources(previous, fetch=fetch_index, pages=2):
                            **checkpoint()})
             if getattr(error, 'code', None) in (403, 429):
                 break
-    pending_hosts = sorted(set(HOSTS) - completed)
-    return {'schema_version': 2, 'entries': entries, 'artifacts': artifacts, 'cursors': cursors, 'next_host': position % len(HOSTS),
+    pending_hosts = sorted(set(hosts) - completed)
+    return {'schema_version': 2, 'query_revision': query_revision,
+            'entries': entries, 'artifacts': artifacts, 'cursors': cursors, 'next_host': position % len(hosts),
             'completed_hosts': sorted(completed), 'pending_hosts': pending_hosts,
             'status': 'partial' if errors or pending_hosts or any(cursors.values()) else 'ok',
             'observations': observations, 'errors': errors}

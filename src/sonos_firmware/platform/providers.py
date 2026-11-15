@@ -34,7 +34,8 @@ def desktop(c: Context):
                      '--repo', c.repository, '--limit', c.options.get('limit', 12),
                      '--refresh-hours', c.target.interval_hours,
                      '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168),
-                     report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True)]
+                     report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True),
+            installer_history(c, 'desktop')]
 
 
 def mobile(c: Context):
@@ -44,7 +45,17 @@ def mobile(c: Context):
                      '--repo', c.repository, '--limit', c.options.get('limit', 12),
                      '--refresh-hours', c.target.interval_hours,
                      '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168),
-                     report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True)]
+                     report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True),
+            installer_history(c, 'mobile')]
+
+
+def installer_history(c, kind):
+    return c.task('archive-installer-history', '--kind', kind, '--work-dir', c.work/'history',
+                  '--repository', c.repository, '--limit', c.options.get('history_limit', 8),
+                  '--pages', c.options.get('history_pages', 1),
+                  '--refresh-hours', c.target.interval_hours,
+                  '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168), after_failure=True,
+                  report=str(c.work/'history/replay.json'))
 
 
 def web(c: Context):

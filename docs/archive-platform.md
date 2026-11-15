@@ -131,6 +131,17 @@ leads remain available when a new discovery report omits them. An unavailable
 or partial discovery report remains explicit even when earlier captures can
 finish publication.
 
+Desktop and official APK history use the same paginated archive index and exact
+replay validation as firmware. Every indexed capture has a separate acquisition
+identity, even when its live URL still serves another version. `history_pages`
+defaults to one index page per run and `history_limit` to eight acquisitions.
+The `desktop-history-index.json` and `mobile-history-index.json` observations
+retain cursors and captures under `data/apps/`. Both stages run automatically
+after current discovery, including when that discovery is incomplete. Current
+and historical installer acquisition share one implementation and publisher;
+previously published historical captures refresh against destination metadata
+without requiring their upstream bytes again.
+
 Captured content is staged as unpublished metadata before upload. If an upload
 response is lost, a later worker can reconcile the exact recorded asset without
 re-fetching its original URL. Changed bytes at one URL produce separate assets.

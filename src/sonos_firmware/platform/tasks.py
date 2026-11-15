@@ -108,6 +108,14 @@ def main():
     history.add_argument('--repository', required=True)
     history.add_argument('--limit', type=int, default=8)
     history.add_argument('--manifest-limit', type=int, default=8)
+    installers = sub.add_parser('archive-installer-history')
+    installers.add_argument('--kind', choices=('desktop', 'mobile'), required=True)
+    installers.add_argument('--work-dir', type=Path, required=True)
+    installers.add_argument('--repository', required=True)
+    installers.add_argument('--limit', type=int, default=8)
+    installers.add_argument('--pages', type=int, default=1)
+    installers.add_argument('--refresh-hours', type=float, default=6)
+    installers.add_argument('--historical-refresh-hours', type=float, default=168)
     extract = sub.add_parser('extract-firmware')
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
@@ -132,6 +140,14 @@ def main():
         if args.max_packages <= 0 or args.inventory_limit <= 0:
             parser.error('extraction and inventory limits must be positive')
         extract_firmware(args.root, args.work_dir, args.repository, args.max_packages, args.inventory_limit, args.inventory_limits)
+    elif args.task == 'archive-installer-history':
+        from ..installers import archive_history
+        report = archive_history(args.root, args.work_dir, args.repository, args.kind,
+                                 limit=args.limit, pages=args.pages, refresh_hours=args.historical_refresh_hours,
+                                 current_refresh_hours=args.refresh_hours)
+        write_json(args.work_dir/'replay.json', report)
+        if report['status'] == 'partial':
+            raise RuntimeError('installer history has pending captures or incomplete discovery; verified progress retained')
     elif args.task == 'archive-historical-firmware':
         from ..historical_firmware import archive_history
         report = archive_history(args.root, args.work_dir, args.repository,

@@ -5,9 +5,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
-import json
 import re
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -16,8 +14,8 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 from sonos_firmware.storage import atomic_json
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates
 
-CDX = "https://web.archive.org/cdx/search/cdx"
 REDIRECT = "https://www.sonos.com/redir/controller_software_android2"
 
 
@@ -96,16 +94,11 @@ def probe(item: dict) -> dict:
 
 
 def family(url: str) -> str:
-    name = url.rsplit("/", 1)[-1]
-    if name.startswith("SonosAndroidController"):
-        return "legacy"
-    return "s1" if re.search(r"Sonos_57\.", name) else "s2"
+    return installer_family(url, "fireos-android-apk")
 
 
 def version(url: str) -> str:
-    name = url.rsplit("/", 1)[-1]
-    match = re.search(r"(?:Sonos_|SonosAndroidController)([^.]*(?:\.[^.]*)*)\.apk$", name)
-    return match.group(1) if match else "unknown"
+    return installer_version(url, "fireos-android-apk")
 
 
 def main() -> int:
@@ -114,36 +107,9 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
-    query = urllib.parse.urlencode({
-        "url": "update-software.sonos.com/software/", "matchType": "prefix",
-        "output": "json", "fl": "timestamp,original,statuscode,mimetype,digest,length",
-        "filter": ["statuscode:200", r"original:.*\.apk$"],
-        "collapse": "urlkey", "limit": "5000",
-    }, doseq=True)
-    cdx_url = f"{CDX}?{query}"
     errors = []
-    rows = [["timestamp", "original", "statuscode", "mimetype", "digest", "length"]]
-    if not args.current_only:
-        error = None
-        for attempt in range(4):
-            try:
-                rows = json.loads(urllib.request.urlopen(cdx_url, timeout=90).read())
-                break
-            except Exception as caught:
-                error = caught
-                if attempt < 3:
-                    time.sleep(min(2 ** attempt, 30))
-        else:
-            errors.append({'source': cdx_url, 'error': f'Wayback CDX query failed after 4 attempts: {error}'})
-    candidates = {}
-    for timestamp, original, _status, _mime, digest, length in rows[1:]:
-        url = original.replace("http://", "https://", 1)
-        candidates[url] = {
-            "family": family(url), "platform": "fireos-android-apk",
-            "version": version(url), "url": url,
-            "wayback_timestamp": timestamp, "wayback_digest": digest,
-            "wayback_length": int(length), "sources": ["wayback-cdx"],
-        }
+    candidates = {} if args.current_only else {row['url']: row for row in
+        observed_candidates(args.output.parent/'mobile-history-index.json', 'mobile')}
     direct = resolve_latest_redirect(include_history=not args.current_only)
     if direct.get("location"):
         url = direct["location"]
@@ -167,7 +133,7 @@ def main() -> int:
         "schema_version": 1, "checked": datetime.now(timezone.utc).isoformat(),
         "current_only": args.current_only,
         "official_redirect": {"url": REDIRECT, **direct},
-        "wayback": {"url": cdx_url, "row_total": max(0, len(rows) - 1)},
+        "wayback": {"provider": "shared-installer-history"},
         "candidate_total": len(results),
         "available_live_total": sum(x.get("http_status") == 200 for x in results),
         "candidates": results,

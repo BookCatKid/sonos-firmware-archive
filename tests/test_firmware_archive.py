@@ -39,6 +39,16 @@ def captured(row, body):
 
 
 class AcquisitionTests(unittest.TestCase):
+    def test_partial_http_response_is_rejected_even_when_its_own_length_matches(self):
+        response = Response(b'short', {'Content-Length': '5', 'Content-Range': 'bytes 0-4/100'})
+        response.status = 206
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery.urllib.request, 'urlopen', return_value=response):
+            result = discovery.download(candidate(), temporary)
+            self.assertFalse(result['downloaded'])
+            self.assertIn('HTTP 200', result['download_error'])
+            self.assertEqual(list(Path(temporary).iterdir()), [])
+
     def test_parallel_urls_with_same_filename_have_distinct_immutable_captures(self):
         rows = [candidate('one'), candidate('two')]
         bodies = {row['url']: section(1, 0, row['url'].encode()) for row in rows}
