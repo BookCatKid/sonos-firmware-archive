@@ -48,6 +48,11 @@ preservation runs before extraction and key recovery. An empty extraction queue
 needs no keys or release downloads; unavailable keys leave encrypted captures
 preserved with their extraction gap recorded.
 
+Installer candidates may carry an `acquisition_id` for an individual historical
+capture. Their retries and interrupted uploads remain independent even when the
+source URL is identical. Equal bytes share an immutable asset while retaining
+each acquisition context in the receipt.
+
 Offline fixtures exercise protocol discovery through the first verified firmware
 publication into an empty destination, installer and web release creation,
 GPL discovery without prior versions, and the actual empty extraction worker.

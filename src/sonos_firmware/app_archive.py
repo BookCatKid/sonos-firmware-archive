@@ -48,6 +48,10 @@ def revision(candidate):
                                            'http_status', 'wayback_timestamp', 'wayback_digest') if candidate.get(key) is not None}
 
 
+def acquisition_id(candidate):
+    return candidate.get('acquisition_id') or candidate['url']
+
+
 def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None):
     if limit is not None and limit <= 0:
         raise ValueError('acquisition limit must be positive')
@@ -55,7 +59,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         raise ValueError('refresh intervals must be positive')
     document = json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'artifacts': [], 'gaps': []}
     records = document['artifacts']
-    gaps = {row['url']: row for row in document.get('gaps', [])}
+    gaps = {acquisition_id(row): row for row in document.get('gaps', [])}
     scoped = document.setdefault('source_observations', {})
     observations = scoped.setdefault(repository, {})
     by_digest = {(row['family'], row['platform'], row['sha256']): row for row in records
@@ -63,12 +67,15 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     candidates = {url: row['candidate'] for url, row in observations.items() if row.get('candidate')}
     for row in records:
         for url in row.get('source_urls', []):
-            candidate = {key: row[key] for key in ('family', 'platform', 'version', 'sources',
+            fallback = {key: row[key] for key in ('family', 'platform', 'version', 'sources',
                                                   'wayback_timestamp', 'wayback_digest') if key in row}
-            candidate['url'] = url
-            candidates.setdefault(url, candidate)
-            if receipt_matches_repository(row, repository):
-                observations.setdefault(url, {'candidate': candidate, 'status': 'needs-refresh',
+            fallback['url'] = url
+            contexts = [candidate for candidate in row.get('acquisitions', []) if candidate['url'] == url] or [fallback]
+            for candidate in contexts:
+                identity = acquisition_id(candidate)
+                candidates.setdefault(identity, candidate)
+                if receipt_matches_repository(row, repository):
+                    observations.setdefault(identity, {'candidate': candidate, 'status': 'needs-refresh',
                                               'checked_at': row.get('acquired_at', document.get('updated', ''))})
     for url, gap in gaps.items():
         candidate = {**gap, 'platform': gap.get('platform', source.default_platform)}
@@ -82,7 +89,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     incomplete = incoming.get('status') in {'partial', 'incomplete', 'error', 'blocked', 'failed', 'unavailable'}
     if incomplete and not discovery_errors:
         discovery_errors = [incoming.get('error') or 'discovery reported incomplete work']
-    candidates.update({row['url']: row for row in incoming.get('candidates', [])})
+    candidates.update({acquisition_id(row): row for row in incoming.get('candidates', [])})
     for url, candidate in candidates.items():
         observations.setdefault(url, {'status': 'pending'})['candidate'] = candidate
     eligibility = {}
@@ -103,7 +110,9 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
 
     def save():
         errors = [{'phase': 'discovery', 'error': error} for error in discovery_errors]
-        errors.extend({'url': url, 'error': row.get('error')} for url, row in observations.items() if row['status'] == 'failed')
+        errors.extend({'url': row['candidate']['url'], 'error': row.get('error'),
+                       **({'acquisition_id': identity} if identity != row['candidate']['url'] else {})}
+                      for identity, row in observations.items() if row['status'] == 'failed')
         outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
         errors.extend({'url': row['candidate']['url'], 'sha256': row['sha256'], 'error': 'capture awaiting publication reconciliation'} for row in outstanding)
         pending = sum(row['status'] in ('pending', 'needs-refresh') for row in observations.values())
@@ -135,9 +144,12 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         known['source_urls'] = sorted(set(known['source_urls']) | {captured['url']})
         known['sources'] = sorted(set(known.get('sources', [])) | set(captured.get('sources', [])))
         known['versions'] = sorted(set(known.get('versions', [known['version']])) | {captured['version']})
+        contexts = {acquisition_id(row): row for row in known.get('acquisitions', [])}
+        contexts[acquisition_id(captured)] = captured
+        known['acquisitions'] = list(contexts.values())
         document['unpublished_captures'] = [row for row in document.get('unpublished_captures', [])
                                           if not (row.get('repository') == repository and row['sha256'] == capture['sha256']
-                                                  and row['candidate']['url'] == captured['url'])]
+                                                  and acquisition_id(row['candidate']) == acquisition_id(captured))]
         return known
 
     def finish(capture, candidate, previous, remote):
@@ -146,15 +158,15 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         checked_revision = revision(captured)
         changed = any(checked_revision.get(key) != value for key, value in revision(candidate).items())
         hours = source.current_refresh_hours if candidate.get('current') else source.refresh_hours
-        observations[candidate['url']] = {**checkpoint(previous, success=True, success_hours=hours), 'candidate': candidate,
+        observations[acquisition_id(candidate)] = {**checkpoint(previous, success=True, success_hours=hours), 'candidate': candidate,
                                          'revision': checked_revision,
                                          'status': 'needs-refresh' if changed else 'preserved', 'sha256': capture['sha256'],
                                          'release_asset': known['release_asset']}
-        gaps.pop(candidate['url'], None)
+        gaps.pop(acquisition_id(candidate), None)
 
     save()
     outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
-    key = lambda row: (row['candidate']['url'], row['sha256'], row['release_asset'])
+    key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
     recoveries = select(outstanding, {key(row): row for row in outstanding}, key=key,
                         limit=max(1, limit // 4) if limit else len(outstanding))
     for capture in recoveries:
@@ -173,12 +185,13 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 error.close()
         save()
     remaining = max(0, limit - attempted) if limit else len(candidates)
-    queue = select(list(candidates.values()), eligibility, key=lambda row: row['url'], limit=remaining)
+    queue = select(list(candidates.values()), eligibility, key=acquisition_id, limit=remaining)
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
         for candidate in queue:
             url = candidate['url']
-            previous = observations[url]
+            identity = acquisition_id(candidate)
+            previous = observations[identity]
             pending = previous.get('pending_publication')
             attempted += 1
             try:
@@ -214,7 +227,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
                                'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
                                'acquired_at': datetime.now(timezone.utc).isoformat()}
-                    observations[url]['pending_publication'] = pending
+                    observations[acquisition_id(candidate)]['pending_publication'] = pending
                     save()
                     if tag not in ready:
                         ensure_release(repository, tag, title, source.notes)
@@ -223,12 +236,13 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     remote = publish_verified(repository, tag, upload, size, digest)
                     finish(pending, candidate, previous, remote)
             except Exception as error:
-                observations[url] = {**checkpoint(previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
+                identity = acquisition_id(candidate)
+                observations[identity] = {**checkpoint(previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
                                      'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
                                      'status': 'failed', 'error': str(error)}
                 if pending:
-                    observations[url]['pending_publication'] = pending
-                gaps[url] = {**candidate, 'reason': str(error), 'checked_at': observations[url]['checked_at']}
+                    observations[identity]['pending_publication'] = pending
+                gaps[identity] = {**candidate, 'reason': str(error), 'checked_at': observations[identity]['checked_at']}
                 if isinstance(error, urllib.error.HTTPError):
                     error.close()
             save()

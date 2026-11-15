@@ -78,7 +78,7 @@ class AppArchiveTests(unittest.TestCase):
         url = candidate['url']
         self.acquired.append(url)
         self.paths.append(destination)
-        data = self.data.get(url, b'MZ offline installer fixture')
+        data = self.data.get(candidate.get('acquisition_id', url), b'MZ offline installer fixture')
         if isinstance(data, Exception):
             raise data
         destination.write_bytes(data)
@@ -100,6 +100,36 @@ class AppArchiveTests(unittest.TestCase):
         self.assertTrue(all(not path.exists() for path in self.paths))
         self.assertEqual(len(self.github.uploads), 1)
         self.assertEqual(result['artifacts'][0]['sha256'], hashlib.sha256(self.github.uploads[0][3]).hexdigest())
+
+    def test_timestamped_captures_at_same_url_remain_distinct_queued_acquisitions(self):
+        rows = [self.candidate(acquisition_id='wayback:old'), self.candidate(acquisition_id='wayback:new')]
+        self.data.update({'wayback:old': b'MZ older captured installer', 'wayback:new': b'MZ newer captured installer'})
+        result = self.run_archive(rows)
+        self.assertEqual(result['artifact_total'], 2)
+        self.assertEqual(set(result['source_observations']['owner/repo']), {'wayback:old', 'wayback:new'})
+        self.assertEqual({row['acquisitions'][0]['acquisition_id'] for row in result['artifacts']},
+                         {'wayback:old', 'wayback:new'})
+        self.assertEqual(len(self.github.uploads), 2)
+
+    def test_same_url_historical_upload_recovers_independently_of_new_capture(self):
+        rows = [self.candidate(acquisition_id='wayback:old'), self.candidate(acquisition_id='wayback:new')]
+        self.data.update({'wayback:old': b'MZ older captured installer', 'wayback:new': b'MZ newer captured installer'})
+        self.github.lose_upload_response = True
+        self.assertEqual(self.run_archive(rows, limit=1)['artifact_total'], 0)
+        self.data['wayback:old'] = AssertionError('recovery must not acquire the old source again')
+        result = self.run_archive(rows, now=NOW+timedelta(hours=2))
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(result['artifact_total'], 2)
+        self.assertEqual(len(self.acquired), 2)
+        self.assertTrue(all(row['status'] == 'preserved' for row in result['source_observations']['owner/repo'].values()))
+
+    def test_identical_historical_bytes_keep_every_acquisition_context(self):
+        rows = [self.candidate(acquisition_id='wayback:old'), self.candidate(acquisition_id='wayback:new')]
+        result = self.run_archive(rows)
+        self.assertEqual(result['artifact_total'], 1)
+        self.assertEqual({row['acquisition_id'] for row in result['artifacts'][0]['acquisitions']},
+                         {'wayback:old', 'wayback:new'})
+        self.assertEqual(len(self.github.uploads), 1)
 
     def test_seen_url_refreshes_and_keeps_both_byte_distinct_snapshots(self):
         candidate = self.candidate()
