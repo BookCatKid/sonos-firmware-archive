@@ -203,6 +203,13 @@ The shared metadata commit command validates JSON and the firmware catalog,
 then stages only the target's declared data paths and its checkpoint. It refuses
 to include pre-staged unrelated changes.
 
+Release auditing also follows target metadata declarations. Completed legacy
+collections and verified publication proofs establish expected assets; pending
+upload journals and the auditor's own output do not. Child assets inherit their
+collection's tag, repository-specific proofs stay scoped to that destination,
+and conflicting identities fail validation. The audit uses the shared paginated
+release reader rather than relying on assets embedded in a release listing.
+
 Firmware extraction uses a bounded queue with durable retry timing. Failed
 packages back off; newly available keys and changed source hashes become
 eligible immediately. A failure does not stop extraction of other packages.

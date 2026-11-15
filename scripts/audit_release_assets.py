@@ -6,41 +6,67 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
+from sonos_firmware.releases import remote_assets, graphql_assets
+from sonos_firmware.storage import atomic_json
 
-def walk_release_records(value, source: str, expected: dict) -> None:
+
+def walk_release_records(value, source: str, expected: dict, repository=None, *, inherited_tag=None,
+                         inherited_repository=None, published=False) -> None:
     if isinstance(value, dict):
-        tag = value.get("release_tag")
+        if value.get('artifact_status') not in {None, 'preserved'} or value.get('published') is False:
+            return
+        tag = value.get("release_tag") or inherited_tag
         name = value.get("release_asset") or value.get("filename")
-        if tag and name and value.get("sha256") and isinstance(value.get("bytes"), int):
-            expected[(tag, name)] = {
+        owner = value.get('repository') or inherited_repository
+        url = value.get('release_url') or ''
+        if not value.get('repository') and url.startswith('https://github.com/'):
+            owner = '/'.join(url.split('/')[3:5])
+        matches_repository = not repository or not owner or owner.lower() == repository.lower()
+        published = published or value.get('status') == 'verified' or value.get('artifact_status') == 'preserved' or value.get('published') is True
+        if published and tag and name and value.get("sha256") and isinstance(value.get("bytes"), int) and matches_repository:
+            record = {
                 "bytes": value["bytes"],
                 "sha256": value["sha256"],
                 "source": source,
             }
-        for child in value.values():
-            walk_release_records(child, source, expected)
+            prior = expected.get((tag, name))
+            if prior and (prior['bytes'], prior['sha256']) != (record['bytes'], record['sha256']):
+                raise ValueError(f'conflicting publication identities: {tag}/{name}')
+            expected[(tag, name)] = record
+        for key, child in value.items():
+            if key in {'pending_captures', 'pending_publication', 'unpublished_captures'}:
+                continue
+            # Completed legacy collections predate explicit publication proofs.
+            legacy = (key in {'source_manifests', 'raw_images', 'artifacts', 'deployments'} and isinstance(child, list)
+                      or published and key in {'resources', 'components', 'complete_wrapper', 'bundle', 'bundles', 'alternate_bundles'})
+            walk_release_records(child, source, expected, repository, inherited_tag=tag, inherited_repository=owner,
+                                 published=legacy)
     elif isinstance(value, list):
         for child in value:
-            walk_release_records(child, source, expected)
+            walk_release_records(child, source, expected, repository, inherited_tag=inherited_tag,
+                                 inherited_repository=inherited_repository, published=published)
 
 
-def recorded_assets(root: Path) -> dict:
+def recorded_assets(root: Path, repository=None) -> dict:
     expected = {}
-    catalog_path = root / "data/catalog.json"
-    if catalog_path.exists():
+    paths = {root/'data/catalog.json', *(root/'data/apps').glob('*.json')}
+    if (root/'config/targets.json').exists():
+        from sonos_firmware.platform.registry import targets
+        for target in targets(root).values():
+            if target.provider == 'release-audit':
+                continue
+            for relative in target.metadata:
+                location = root/relative
+                paths.update(location.rglob('*.json') if location.is_dir() else [location])
+    for path in sorted(paths):
+        if not path.exists() or path.suffix != '.json':
+            continue
         walk_release_records(
-            json.loads(catalog_path.read_text(encoding="utf-8")),
-            str(catalog_path.relative_to(root)),
-            expected,
-        )
-    for app_path in sorted((root / "data/apps").glob("*.json")):
-        walk_release_records(
-            json.loads(app_path.read_text(encoding="utf-8")),
-            str(app_path.relative_to(root)),
-            expected,
+            json.loads(path.read_text(encoding="utf-8")), str(path.relative_to(root)), expected, repository,
         )
 
     # The GPL catalog predates explicit release_tag fields. Its publication
@@ -56,18 +82,15 @@ def recorded_assets(root: Path) -> dict:
                 if item.get("downloaded") and item.get("local_sha256")
             ]
             for item in artifacts:
-                expected[(tag, item["filename"])] = {
-                    "bytes": item["local_bytes"],
-                    "sha256": item["local_sha256"],
-                    "source": str(gpl_path.relative_to(root)),
-                }
+                walk_release_records({'release_tag': tag, 'release_asset': item['filename'],
+                    'bytes': item['local_bytes'], 'sha256': item['local_sha256'],
+                    'repository': item.get('repository'), 'release_url': item.get('release_url', '')},
+                    str(gpl_path.relative_to(root)), expected, repository, published=True)
             if not any(item["filename"] == "gpl.html" for item in artifacts):
                 index = release["index"]
-                expected[(tag, "gpl.html")] = {
-                    "bytes": index["bytes"],
-                    "sha256": index["sha256"],
-                    "source": f"{gpl_path.relative_to(root)}:index",
-                }
+                walk_release_records({'release_tag': tag, 'release_asset': 'gpl.html',
+                    'bytes': index['bytes'], 'sha256': index['sha256']},
+                    f'{gpl_path.relative_to(root)}:index', expected, repository, published=True)
     live_path = root / "data/gpl/live/artifacts.json"
     if live_path.exists():
         live = json.loads(live_path.read_text(encoding="utf-8"))
@@ -77,11 +100,8 @@ def recorded_assets(root: Path) -> dict:
                     continue
                 tag = item.get("release_tag") or f"gpl-{version}"
                 name = item.get("release_asset") or item["filename"]
-                key = (tag, name)
-                record = {"bytes": item["bytes"], "sha256": item["sha256"], "source": str(live_path.relative_to(root))}
-                if key in expected and (expected[key]["bytes"], expected[key]["sha256"]) != (record["bytes"], record["sha256"]):
-                    raise ValueError(f"conflicting old/new GPL asset identity: {tag}/{name}")
-                expected[key] = record
+                walk_release_records({**item, 'release_tag': tag, 'release_asset': name},
+                                     str(live_path.relative_to(root)), expected, repository, published=True)
     return expected
 
 
@@ -100,8 +120,17 @@ def github_assets(repository: str) -> tuple[int, dict]:
     releases = [release for page in pages for release in page]
     assets = {}
     for release in releases:
-        for asset in release.get("assets", []):
-            assets[(release["tag_name"], asset["name"])] = {
+        try:
+            observed = remote_assets(repository, release['tag_name'])
+        except urllib.error.HTTPError as error:
+            # A release listed by the authenticated API can be invisible to
+            # anonymous REST access (for example a private or draft release).
+            if error.code != 404:
+                raise
+            error.close()
+            observed = {item['name']: item for item in graphql_assets(repository, release['tag_name'])}
+        for name, asset in observed.items():
+            assets[(release["tag_name"], name)] = {
                 "bytes": asset["size"],
                 "sha256": (asset.get("digest") or "").removeprefix("sha256:"),
                 "url": asset["browser_download_url"],
@@ -119,7 +148,7 @@ def main() -> int:
         ["gh", "repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner"],
         text=True,
     ).strip()
-    expected = recorded_assets(root)
+    expected = recorded_assets(root, repository)
     release_total, actual = github_assets(repository)
     missing = []
     mismatched = []
@@ -148,8 +177,7 @@ def main() -> int:
         "mismatched": mismatched,
         "unrecorded_extras": extras,
     }
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    atomic_json(args.output, report)
     print(
         f"releases={release_total} github={len(actual)} recorded={len(expected)} "
         f"missing={len(missing)} mismatched={len(mismatched)} extras={len(extras)}"
