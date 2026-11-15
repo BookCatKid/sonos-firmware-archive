@@ -10,10 +10,6 @@ from .crawl import official, PACKAGE
 from .discovery import USER_AGENT, Candidate
 from .retry import checkpoint
 
-HOSTS = ('update.sonos.com', 'update-firmware.sonos.com', 'update-stage.sonos.com',
-         'update-test.sonos.com', 'update-firmware-test.sonos.com', 'update-perf.sonos.com')
-
-
 def fetch_index(url):
     with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=15) as response:
         body = response.read(2_000_001)
@@ -53,20 +49,22 @@ def _observations(records):
 
 
 def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
-                     extensions=('upm', 'upd'), allowed=official):
+                     extensions=('upm', 'upd'), allowed=official, match_type=None):
     if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
         raise ValueError('archive index page budget must be positive')
     if previous.get('schema_version') not in {None, 1, 2}:
         raise ValueError('unsupported archive index checkpoint schema')
-    defaults = {host: host+'/' for host in HOSTS}
+    match_type = match_type or ('domain' if roots is None else 'prefix')
+    if match_type not in {'domain', 'host', 'prefix', 'exact'}:
+        raise ValueError('unsupported archive index match scope')
+    defaults = {'sonos.com': 'sonos.com/'}
     roots = defaults if roots is None else roots
     if not roots or not extensions or any(not re.fullmatch(r'[a-z0-9]+(?:\.[a-z0-9]+)*', ext) for ext in extensions):
         raise ValueError('archive index requires roots and literal filename extensions')
     hosts = list(roots)
-    suffixes = 'up[md]' if tuple(extensions) == ('upm', 'upd') else '(?i:'+'|'.join(re.escape(ext) for ext in extensions)+')'
-    query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes]).encode()).hexdigest()
-    legacy = previous.get('query_revision') is None and roots == defaults and tuple(extensions) == ('upm', 'upd')
-    compatible = previous.get('schema_version') == 2 and (legacy or previous.get('query_revision') == query_revision)
+    suffixes = '(?i:'+'|'.join(re.escape(ext) for ext in extensions)+')'
+    query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes, match_type]).encode()).hexdigest()
+    compatible = previous.get('schema_version') == 2 and previous.get('query_revision') == query_revision
     # Query upgrades retain observations without reusing incompatible cursors.
     cursors = dict(previous.get('cursors', {})) if compatible else {}
     entries = _observations(previous.get('entries', {}))
@@ -75,10 +73,13 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
     observations = []
     errors = []
     position = previous.get('next_host', 0)
+    finished_this_run = set()
     for _ in range(pages):
         host = hosts[position % len(hosts)]
         position += 1
-        query = {'url': roots[host], 'matchType': 'prefix', 'output': 'json', 'gzip': 'false',
+        if host in finished_this_run:
+            continue
+        query = {'url': roots[host], 'matchType': match_type, 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
                  'filter': ['statuscode:200', 'original:.*[.]'+suffixes+'([?].*)?$'],
                  'collapse': 'digest', 'limit': 500, 'showResumeKey': 'true'}
@@ -124,8 +125,10 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                 completed.discard(host)
             else:
                 completed.add(host)
+                finished_this_run.add(host)
             observations.append({'url': url, 'records': max(0, len(rows) - 1), 'more_pages': bool(resume)})
         except Exception as error:
+            finished_this_run.add(host)
             errors.append({'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None),
                            **checkpoint()})
             if getattr(error, 'code', None) in (403, 429):

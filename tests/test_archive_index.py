@@ -74,13 +74,17 @@ class ArchiveIndexTests(unittest.TestCase):
             ['timestamp', 'original', 'digest'], ['20200101000000', url, 'new']])
         self.assertEqual({row['digest'] for row in result['entries'][url]['captures'].values()}, {'old', 'new'})
 
-    def test_unfinished_hosts_and_pages_keep_index_discovery_partial(self):
-        result = discover_sources({}, pages=1, fetch=lambda url: [])
+    def test_unfinished_pages_keep_domain_discovery_partial(self):
+        result = discover_sources({}, pages=1, fetch=lambda url: [
+            ['timestamp', 'original', 'digest'], [], ['resume']])
         self.assertEqual(result['status'], 'partial')
-        self.assertEqual(len(result['pending_hosts']), 5)
-        result = discover_sources(result, pages=5, fetch=lambda url: [])
+        self.assertEqual(result['pending_hosts'], ['sonos.com'])
+        requests = []
+        result = discover_sources(result, pages=5, fetch=lambda url: requests.append(url) or [])
         self.assertEqual(result['status'], 'ok')
         self.assertEqual(result['pending_hosts'], [])
+        self.assertEqual(len(requests), 1)
+        self.assertIn('resumeKey=resume', requests[0])
 
     def test_malformed_rows_do_not_poison_the_rest_of_a_page(self):
         result = discover_sources({}, pages=1, fetch=lambda url: [
@@ -97,14 +101,15 @@ class ArchiveIndexTests(unittest.TestCase):
                     ['20200101000000', 'https://outside.test/update.upm', 'bad'], [], ['next page']]
         result = discover_sources({}, fetch=fetch, pages=1)
         self.assertEqual(list(result['entries']), ['https://update.sonos.com/firmware/Prod/history/update.upm'])
-        self.assertEqual(result['cursors']['update.sonos.com'], 'next page')
-        self.assertEqual(result['next_host'], 1)
+        self.assertEqual(result['cursors']['sonos.com'], 'next page')
+        self.assertEqual(result['next_host'], 0)
         self.assertIn('showResumeKey=true', seen[0])
 
     def test_failed_index_preserves_existing_discoveries(self):
         def fetch(url): raise TimeoutError('unavailable')
-        previous = {'schema_version': 2, 'entries': {'https://update.sonos.com/firmware/old/update.upm': {'digest': 'known'}},
-                    'cursors': {'update.sonos.com': 'resume'}, 'next_host': 0}
+        previous = discover_sources({}, fetch=lambda url: [
+            ['timestamp', 'original', 'digest'],
+            ['20200101000000', 'https://update.sonos.com/firmware/old/update.upm', 'known'], [], ['resume']], pages=1)
         result = discover_sources(previous, fetch=fetch, pages=1)
         self.assertEqual(result['entries'][next(iter(previous['entries']))]['digest'], 'known')
         self.assertEqual(result['cursors'], previous['cursors'])
@@ -115,7 +120,9 @@ class ArchiveIndexTests(unittest.TestCase):
         def fetch(url):
             urls.append(url)
             return []
-        discover_sources({'schema_version': 2, 'cursors': {'update.sonos.com': 'org%2Carchive%29%2F+19980109140106%21'}}, fetch=fetch, pages=1)
+        previous = discover_sources({}, fetch=lambda url: [
+            ['timestamp', 'original', 'digest'], [], ['org%2Carchive%29%2F+19980109140106%21']], pages=1)
+        discover_sources(previous, fetch=fetch, pages=1)
         self.assertIn('resumeKey=org%2Carchive%29%2F+19980109140106%21', urls[0])
         self.assertNotIn('%252C', urls[0])
 

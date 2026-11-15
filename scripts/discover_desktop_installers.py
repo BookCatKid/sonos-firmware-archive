@@ -24,7 +24,9 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 from sonos_firmware.storage import atomic_json
-from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
+from sonos_firmware.source_urls import open_sonos, sonos_url
+from sonos_firmware.archive_replay import canonical_source
 
 WINGET_PACKAGES = {"Controller": "s2", "S1Controller": "s1"}
 HOMEBREW_PATHS = {
@@ -158,6 +160,7 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
             current = url
             status = None
             for _ in range(10):
+                current = canonical_source(current, sonos_url)
                 response = session.get(
                     current, allow_redirects=False, timeout=30,
                     headers={"Referer": "https://support.sonos.com/en-us/downloads"},
@@ -168,8 +171,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
                 if not next_url:
                     break
                 next_url = urllib.parse.urljoin(current, next_url)
-                if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.(?:exe|dmg)$", next_url):
-                    location = next_url
+                if installer_location(next_url, ('exe', 'dmg')):
+                    location = installer_location(next_url, ('exe', 'dmg'))
                     source = "live-redirect"
                     break
                 current = next_url
@@ -189,8 +192,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
                         break
                     embedded = re.search(r"/web/\d+id_/(https?://.+)$", next_url)
                     original = embedded.group(1) if embedded else next_url
-                    if re.search(r"https?://update-(?:software|beta)\.sonos\.com/.+\.(?:exe|dmg)$", original):
-                        location = original
+                    if installer_location(original, ('exe', 'dmg')):
+                        location = installer_location(original, ('exe', 'dmg'))
                         source = "wayback-latest-redirect"
                         break
                     current = next_url
@@ -218,7 +221,7 @@ def probe(item: dict) -> dict:
     request = urllib.request.Request(item["url"], method="HEAD",
                                      headers={"User-Agent": "sonos-firmware-archive/1"})
     try:
-        with urllib.request.urlopen(request, timeout=30) as response:
+        with open_sonos(request, timeout=30) as response:
             return {**item, "http_status": response.status,
                     "content_length": int(response.headers.get("Content-Length", 0)) or None,
                     "etag": response.headers.get("ETag")}

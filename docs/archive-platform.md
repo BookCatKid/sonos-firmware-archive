@@ -64,7 +64,11 @@ from nothing; unavailable historical bytes remain a documented discovery gap.
 ## Worker lifecycle
 
 Historical index discovery queries both manifests and `.upd` payloads across
-the approved update hosts. Direct payload leads enter the same acquisition
+`sonos.com` and all its subdomains, using the CDX
+[domain match scope](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#url-match-scope).
+Installer history uses that same domain scope with its own file types. Newly
+observed Sonos hosts and directories require no host-list or path-prefix changes.
+Direct payload leads enter the same acquisition
 queue even when no manifest remains available. Filename metadata can identify
 a version and model; an unrecognized filename stays unclassified and can still
 be preserved and inventoried. Its source evidence remains separate from its
@@ -76,6 +80,14 @@ resume tokens while keeping earlier observations. Pending index pages and
 unvisited hosts remain explicit discovery work. The [CDX protocol documentation](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#collapsing)
 describes digest-based collapsing; an index digest is evidence of a capture,
 not a replacement for the SHA-256 computed from acquired bytes.
+
+Live metadata, manifest traversal, firmware probes, installer redirects and
+payload acquisition share the first-party URL boundary: HTTPS Sonos domains,
+standard ports and no credentials. Payload redirects are checked before they
+are followed. Links outside those domains remain unresolved evidence rather
+than granting an arbitrary host access to the worker. Manifest images pointing
+to HTML landing pages are reported as discovery gaps requiring page traversal;
+they are not counted as preserved firmware or silently discarded.
 
 The firmware worker replays indexed manifests and payloads automatically, using
 separate bounded queues (`history_manifest_limit` and `history_limit`, both eight

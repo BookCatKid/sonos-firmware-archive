@@ -12,13 +12,19 @@ from .archive_index import discover_sources
 from .archive_replay import canonical_source, open_capture
 from .retry import due
 from .storage import atomic_json
-
-HOSTS = ('update-software.sonos.com', 'update.sonos.com', 'update-beta.sonos.com')
-
+from .source_urls import sonos_url, open_sonos
 
 def official_source(url):
-    parsed = urlsplit(url)
-    return parsed.hostname in HOSTS and parsed.path.lower().endswith(('.exe', '.dmg', '.apk'))
+    return sonos_url(url) and urlsplit(url).path.lower().endswith(('.exe', '.dmg', '.apk'))
+
+
+def installer_location(url, extensions):
+    """Recognize a first-party installer redirect without a distribution-host list."""
+    try:
+        url = canonical_source(url, official_source)
+    except ValueError:
+        return None
+    return url if urlsplit(url).path.lower().endswith(tuple('.'+ext for ext in extensions)) else None
 
 
 def family(url, platform):
@@ -74,7 +80,7 @@ def acquire(candidate, destination, *, blocked=None):
             continue
         try:
             response = (open_capture(url, replay, allowed=official_source, timeout=180) if replay is not None else
-                        urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
+                        open_sonos(urllib.request.Request(url, headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
             with response, destination.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('installer source did not return a complete HTTP 200 response')
@@ -139,8 +145,7 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
     path = root/'data/apps'/f'{kind}-history-index.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
     extensions = ('exe', 'dmg') if kind == 'desktop' else ('apk',)
-    index = discover_sources(previous, pages=pages, roots={host: host+'/' for host in HOSTS},
-                             extensions=extensions, allowed=official_source)
+    index = discover_sources(previous, pages=pages, extensions=extensions, allowed=official_source)
     atomic_json(path, index)
     candidates, errors = [], list(index['errors'])
     for url, row in index['artifacts'].items():

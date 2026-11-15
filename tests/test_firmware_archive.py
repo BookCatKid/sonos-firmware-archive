@@ -43,7 +43,7 @@ class AcquisitionTests(unittest.TestCase):
         response = Response(b'short', {'Content-Length': '5', 'Content-Range': 'bytes 0-4/100'})
         response.status = 206
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=response):
+             patch.object(discovery, 'open_sonos', return_value=response):
             result = discovery.download(candidate(), temporary)
             self.assertFalse(result['downloaded'])
             self.assertIn('HTTP 200', result['download_error'])
@@ -53,7 +53,7 @@ class AcquisitionTests(unittest.TestCase):
         rows = [candidate('one'), candidate('two')]
         bodies = {row['url']: section(1, 0, row['url'].encode()) for row in rows}
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=lambda request, **kw: Response(bodies[request.full_url])):
+             patch.object(discovery, 'open_sonos', side_effect=lambda request, **kw: Response(bodies[request.full_url])):
             results = discovery.download_all(rows, temporary)
             self.assertEqual(len({row['local_file'] for row in results}), 2)
             for row in results:
@@ -64,7 +64,7 @@ class AcquisitionTests(unittest.TestCase):
     def test_size_only_cache_does_not_hide_changed_bytes_at_a_url(self):
         row = candidate(bytes=4)
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=[Response(b'old!'), Response(b'new!')]) as fetch:
+             patch.object(discovery, 'open_sonos', side_effect=[Response(b'old!'), Response(b'new!')]) as fetch:
             first = discovery.download(row, temporary)
             second = discovery.download(row, temporary)
             self.assertNotEqual(first['sha256'], second['sha256'])
@@ -75,7 +75,7 @@ class AcquisitionTests(unittest.TestCase):
         body = b'new!'
         digest = hashlib.sha256(body).hexdigest()
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=Response(body)) as fetch:
+             patch.object(discovery, 'open_sonos', return_value=Response(body)) as fetch:
             path = Path(temporary) / ('same--' + digest + '.upd')
             path.write_bytes(b'bad!')
             result = discovery.download(candidate(bytes=4, expected_sha256=digest), temporary)
@@ -87,7 +87,7 @@ class AcquisitionTests(unittest.TestCase):
 
     def test_truncated_response_is_rejected_without_a_prior_size_or_checksum(self):
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=Response(b'short', {'Content-Length': '100'})):
+             patch.object(discovery, 'open_sonos', return_value=Response(b'short', {'Content-Length': '100'})):
             result = discovery.download(candidate(), temporary)
             self.assertFalse(result['downloaded'])
             self.assertIn('Content-Length', result['download_error'])
@@ -100,7 +100,7 @@ class PublicationTests(unittest.TestCase):
                           archive_captures={'capture': {'timestamp': '20200101000000', 'digest': 'index-evidence'}}),
                 candidate('known', filename='known.upd', version='unknown')]
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=lambda request, **kw:
+             patch.object(discovery, 'open_sonos', side_effect=lambda request, **kw:
                  Response(section(99, 0, request.full_url.encode()))), \
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
@@ -132,7 +132,7 @@ class PublicationTests(unittest.TestCase):
         first = section(1, 0, struct.pack('<III', 86, 4, 73207))
         second = section(1, 0, struct.pack('<III', 87, 1, 74000))
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=[Response(first), Response(second)]), \
+             patch.object(discovery, 'open_sonos', side_effect=[Response(first), Response(second)]), \
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
@@ -153,7 +153,7 @@ class PublicationTests(unittest.TestCase):
         row = candidate()
         body = section(99, 0, b'fixture unknown section')
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=Response(body)), \
+             patch.object(discovery, 'open_sonos', return_value=Response(body)), \
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}) as publish:
             root = Path(temporary)
@@ -170,7 +170,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_unsupported_container_does_not_block_source_publication(self):
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', return_value=Response(b'unsupported UPD container fixture')), \
+             patch.object(discovery, 'open_sonos', return_value=Response(b'unsupported UPD container fixture')), \
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
@@ -186,7 +186,7 @@ class PublicationTests(unittest.TestCase):
         rows = [candidate(str(i)) for i in range(3)]
         body = section(6, 0, b'kernel')
         with tempfile.TemporaryDirectory() as temporary, \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=[OSError('fixture failure'), Response(body)]) as fetch, \
+             patch.object(discovery, 'open_sonos', side_effect=[OSError('fixture failure'), Response(body)]) as fetch, \
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
@@ -201,7 +201,7 @@ class PublicationTests(unittest.TestCase):
         body = section(6, 0, b'kernel')
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            with patch.object(discovery.urllib.request, 'urlopen', return_value=Response(body)), \
+            with patch.object(discovery, 'open_sonos', return_value=Response(body)), \
                  patch.object(archive, 'ensure_release'), \
                  patch.object(archive, 'publish_verified', side_effect=OSError('lost response')):
                 first = archive.archive_candidates(root, 'owner/repo', [row], root / 'worker')
@@ -209,7 +209,7 @@ class PublicationTests(unittest.TestCase):
             state = archive.acquisition_state(root)
             state['sources']['owner/repo'][row['url']]['next_attempt_at'] = ''
             atomic_json(archive.acquisition_path(root), state)
-            with patch.object(discovery.urllib.request, 'urlopen') as fetch, \
+            with patch.object(discovery, 'open_sonos') as fetch, \
                  patch.object(archive, 'verified_asset', return_value={'url': 'https://github.com/fixture/asset'}):
                 result = archive.archive_candidates(root, 'owner/repo', [], root / 'worker')
             fetch.assert_not_called()

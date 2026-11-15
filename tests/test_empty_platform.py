@@ -43,7 +43,7 @@ class EmptyPlatformTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'), \
              patch.object(releases, 'remote_assets', side_effect=github.assets), \
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
-             patch.object(discovery.urllib.request, 'urlopen', side_effect=lambda *args, **kwargs: Response(body)):
+             patch.object(discovery, 'open_sonos', side_effect=lambda *args, **kwargs: Response(body)):
             root = Path(temporary)
             result = frontier.discover({}, root/'observations', fetch=fetch, probe_fn=probe,
                 metadata_fetch=lambda: (b'', {}), profile_limit=0, inference_limit=1, max_manifests=8)

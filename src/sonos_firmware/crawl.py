@@ -174,6 +174,10 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 elif path.endswith('.upm'):
                     add(base, canonical, 'manifest-base')
             for c in items:
+                if urlsplit(c.url).path.lower().endswith(('.html', '.htm')):
+                    failures.append({'url': c.url, 'parent': url, 'kind': 'unsupported',
+                                     'error': 'manifest image points to a page requiring link discovery'})
+                    continue
                 if not official(c.url):
                     failures.append({'url': c.url, 'parent': url, 'kind': rejected_url_kind(c.url), 'error': 'non-official artifact URL'})
                     continue

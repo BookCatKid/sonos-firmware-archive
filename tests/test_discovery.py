@@ -17,11 +17,15 @@ class DiscoveryTests(unittest.TestCase):
         for uri in ('https://evil.test/firmware/x/^1.2-3',
                     'https://user:pass@update.sonos.com/firmware/x/^1.2-3',
                     'https://update.sonos.com:444/firmware/x/^1.2-3',
-                    'https://update.sonos.com/software/x/^1.2-3',
                     'https://update.sonos.com/firmware/x/^unknown',
                     'https://update.sonos.com/firmware/x/^1.2-3/extra'):
             with self.subTest(uri=uri):
                 self.assertEqual(expand_metadata_base(uri), [])
+
+    def test_metadata_base_accepts_advertised_new_sonos_host_and_path(self):
+        rows = expand_metadata_base('https://new-firmware.sonos.com/new-layout/^1.2-3', [300])
+        self.assertEqual([row.url for row in rows],
+                         ['https://new-firmware.sonos.com/new-layout/1.2-3-1-300.upd'])
 
     def test_expands_placeholder_and_default_models(self):
         xml = """<?xml version='1.0'?>

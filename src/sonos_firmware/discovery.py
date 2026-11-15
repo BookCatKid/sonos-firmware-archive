@@ -16,35 +16,9 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
 from .storage import atomic_json, file_sha256 as _sha256
+from .source_urls import sonos_url as official_firmware_url, open_sonos
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
-
-OFFICIAL_FIRMWARE_HOSTS = {
-    "update.sonos.com", "update-firmware.sonos.com", "update-stage.sonos.com",
-    "update-test.sonos.com", "update-perf.sonos.com", "update-firmware-test.sonos.com",
-}
-
-
-def official_firmware_url(url: str) -> bool:
-    try:
-        parsed = urlsplit(url)
-        port = parsed.port
-    except ValueError:
-        return False
-    return (parsed.scheme == 'https' and parsed.hostname in OFFICIAL_FIRMWARE_HOSTS and
-            port in {None, 443} and not parsed.username and not parsed.password and
-            parsed.path.startswith(('/firmware/', '/releases/')))
-
-
-class _OfficialRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        if not official_firmware_url(newurl):
-            raise urllib.error.URLError(f"redirect to unsupported host: {newurl}")
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
-
-
-_OPENER = urllib.request.build_opener(_OfficialRedirect())
-
 
 @dataclass(frozen=True)
 class Candidate:
@@ -169,7 +143,7 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
     result = asdict(candidate)
     try:
         request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
-        with _OPENER.open(request, timeout=timeout) as response:
+        with open_sonos(request, timeout=timeout) as response:
             result.update(
                 available=response.status == 200,
                 http_status=response.status,
@@ -236,7 +210,7 @@ def download(candidate: dict, directory: str | Path) -> dict:
                 from .archive_replay import open_capture
                 incoming = open_capture(candidate['url'], candidate['archive_capture'])
             else:
-                incoming = urllib.request.urlopen(request, timeout=60)
+                incoming = open_sonos(request, timeout=60)
             with incoming as response, body.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('firmware source did not return a complete HTTP 200 response')

@@ -162,7 +162,7 @@ class PublicCapturedReplayTests(unittest.TestCase):
         self.assertFalse(graph['limits_reached'])
 
 class OutOfScopeClassificationTests(unittest.TestCase):
-    def test_non_archivable_link_is_out_of_scope_not_unsupported(self):
+    def test_image_page_needs_link_discovery_and_remains_a_coverage_gap(self):
         body = (b'<update_manifest version="1.1">'
                 b'<image model="16" version="28.1-83040">28.1-83040-1-16.upd</image>'
                 b'<image model="21" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/ios.html</image>'
@@ -171,7 +171,8 @@ class OutOfScopeClassificationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
         kinds = {f['kind'] for f in r['failures']}
-        self.assertEqual(kinds, {'out-of-scope'})
+        self.assertEqual(kinds, {'unsupported'})
+        self.assertEqual(len(r['candidates']), 1)
 
     def test_artifact_shaped_unknown_host_stays_fail_closed(self):
         body = (b'<update_manifest version="1.1">'

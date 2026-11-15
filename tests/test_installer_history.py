@@ -52,7 +52,7 @@ class InstallerHistoryTests(unittest.TestCase):
         patch.object(releases, 'remote_assets', side_effect=self.github.assets).start()
         patch.object(releases.subprocess, 'run', side_effect=self.github.command).start()
         patch.object(archive_replay.urllib.request, 'build_opener', return_value=self).start()
-        patch.object(installers.urllib.request, 'urlopen', side_effect=self.live).start()
+        patch.object(installers, 'open_sonos', side_effect=self.live).start()
         patch.object(installers, 'discover_sources', side_effect=lambda previous, **kwargs:
             archive_index.discover_sources(previous, fetch=self.index, **kwargs)).start()
 
@@ -61,7 +61,7 @@ class InstallerHistoryTests(unittest.TestCase):
         if self.index_error:
             raise self.index_error
         root = parse_qs(urlsplit(url).query)['url'][0]
-        return [['timestamp', 'original', 'digest'], *(self.rows if root.startswith(HOST+'/') else [])]
+        return [['timestamp', 'original', 'digest'], *(self.rows if root in (HOST+'/', 'sonos.com/') else [])]
 
     def live(self, request, **kwargs):
         self.live_requests.append(request.full_url)
@@ -153,7 +153,7 @@ class InstallerHistoryTests(unittest.TestCase):
         # Save indexed evidence from an earlier run without acquiring its bytes.
         with patch.object(retry, '_now', return_value=NOW):
             index = archive_index.discover_sources({}, fetch=self.index, pages=3,
-                roots={host: host+'/' for host in installers.HOSTS}, extensions=('exe', 'dmg'), allowed=installers.official_source)
+                extensions=('exe', 'dmg'), allowed=installers.official_source)
             atomic_json(self.root/'data/apps/desktop-history-index.json', index)
             current = self.root/'current.json'
             atomic_json(current, {'candidates': [{'url': URL, 'family': 's2', 'platform': 'windows',

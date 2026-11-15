@@ -14,7 +14,9 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 from sonos_firmware.storage import atomic_json
-from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
+from sonos_firmware.source_urls import open_sonos, sonos_url
+from sonos_firmware.archive_replay import canonical_source
 
 REDIRECT = "https://www.sonos.com/redir/controller_software_android2"
 
@@ -31,6 +33,7 @@ def resolve_latest_redirect(*, include_history: bool = True) -> dict:
         session = tls_requests.Session(impersonate="chrome")
         current = REDIRECT
         for _ in range(12):
+            current = canonical_source(current, sonos_url)
             response = session.get(
                 current, allow_redirects=False, timeout=30,
                 headers={"Referer": "https://support.sonos.com/en-us/downloads"},
@@ -41,8 +44,8 @@ def resolve_latest_redirect(*, include_history: bool = True) -> dict:
             if not location:
                 break
             current = urllib.parse.urljoin(current, location)
-            if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.apk$", current):
-                return {"live_http_status": live_status, "location": current,
+            if installer_location(current, ('apk',)):
+                return {"live_http_status": live_status, "location": installer_location(current, ('apk',)),
                         "location_source": "live"}
     except Exception as error:
         live_error = str(error)
@@ -66,8 +69,8 @@ def resolve_latest_redirect(*, include_history: bool = True) -> dict:
                 break
             embedded = re.search(r"/web/\d+id_/(https?://.+)$", location)
             original = embedded.group(1) if embedded else location
-            if re.search(r"https?://update(?:-software|-beta)?\.sonos\.com/.+\.apk$", original):
-                return {"live_http_status": live_status, "location": original,
+            if installer_location(original, ('apk',)):
+                return {"live_http_status": live_status, "location": installer_location(original, ('apk',)),
                         "location_source": "wayback"}
             current = location
         except Exception:
@@ -82,7 +85,7 @@ def probe(item: dict) -> dict:
     request = urllib.request.Request(item["url"], method="HEAD",
                                      headers={"User-Agent": "sonos-firmware-archive/1"})
     try:
-        with urllib.request.urlopen(request, timeout=30) as response:
+        with open_sonos(request, timeout=30) as response:
             return {**item, "http_status": response.status,
                     "content_length": int(response.headers.get("Content-Length", 0)) or None,
                     "etag": response.headers.get("ETag")}
