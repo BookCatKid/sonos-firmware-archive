@@ -169,7 +169,8 @@ class OutOfScopeClassificationTests(unittest.TestCase):
                 b'<image model="22" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/android.html</image>'
                 b'</update_manifest>')
         with tempfile.TemporaryDirectory() as d:
-            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
+            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d),
+                                fetch=lambda url: b'<html>No advertised download</html>', delay=0)
         kinds = {f['kind'] for f in r['failures']}
         self.assertEqual(kinds, {'unsupported'})
         self.assertEqual(len(r['candidates']), 1)

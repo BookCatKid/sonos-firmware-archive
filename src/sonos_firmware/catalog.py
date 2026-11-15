@@ -162,7 +162,7 @@ def validate_catalog(root: str | Path) -> list[str]:
                                 f"{package_id}: extracted section {section.get('index')} "
                                 "has no release location"
                             )
-    for manifest in catalog.get("source_manifests", []):
+    for manifest in [*catalog.get("source_manifests", []), *catalog.get('source_documents', [])]:
         if not manifest.get("release_tag") or not manifest.get("release_asset"):
             errors.append(f"source manifest {manifest.get('filename')}: missing release location")
     evidence_ids: set[str] = set()

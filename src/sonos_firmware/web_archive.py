@@ -23,6 +23,7 @@ from pathlib import Path
 from .releases import ensure_release, publish_collection, publication_receipt
 from .storage import atomic_json, file_sha256
 from .retry import checkpoint, select
+from .source_links import discover_urls
 
 ROOT = Path(__file__).resolve().parents[2]
 USER_AGENT = "sonos-firmware-archive/1 (+https://github.com/BookCatKid/sonos-firmware-archive)"
@@ -42,7 +43,6 @@ APPS = {
 }
 TEXT_TYPES = ("text/", "javascript", "json", "xml", "manifest")
 STATIC_PREFIXES = ("/_next/static/", "/assets/", "/fonts/")
-URL_RE = re.compile(r'''(?:(?:src|href)=["']([^"']+)|["'(]((?:https?://[^"')\\ ]+|/(?:_next/static|assets|fonts)/[^"')\\ ]+)))["') ]?''')
 
 
 class RedirectRecorder(urllib.request.HTTPRedirectHandler):
@@ -97,43 +97,13 @@ def is_text(headers: dict) -> bool:
     return any(marker in content_type for marker in TEXT_TYPES)
 
 
-def discover_urls(base_url: str, body: bytes) -> set[str]:
-    text = body.decode("utf-8", errors="replace")
-    found = set()
-    for match in URL_RE.finditer(text):
-        raw = (match.group(1) or match.group(2) or "").replace("\\u0026", "&")
-        if not raw or raw.startswith(("data:", "javascript:", "mailto:", "#")):
-            continue
-        found.add(urllib.parse.urljoin(base_url, raw))
-    # Next.js manifests often contain escaped route chunks outside attributes.
-    for raw in re.findall(r"/_next/static/[A-Za-z0-9_./%?=&+~@\[\]-]+", text):
-        found.add(urllib.parse.urljoin(base_url, raw))
-    # Next.js build manifests omit the /_next/ prefix for route chunks.
-    for raw in re.findall(r'''["'](static/(?:chunks|css|media)/[^"']+)["']''', text):
-        if "${" not in raw:
-            found.add(urllib.parse.urljoin(base_url, f"/_next/{raw}"))
-    # Web manifests use JSON src fields; stylesheets use url(...).
-    for raw in re.findall(
-        r'''(?:["'](?:src|href)["']\s*:\s*["']|url\(\s*["']?)([^"'()\s]+)''',
-        text,
-    ):
-        if "${" not in raw and not raw.startswith("data:"):
-            found.add(urllib.parse.urljoin(base_url, raw))
-    # Browser modules resolve relative imports against the importing script.
-    # Bare package specifiers need an import map and are not fetchable paths.
-    for pattern in (
-        r'''\b(?:import|export)\s*(?:[^;"'`()]*?\bfrom\s*)?["'`]([^"'`]+)["'`]''',
-        r'''\bimport\s*\(\s*["'`]([^"'`]+)["'`]''',
-    ):
-        for raw in re.findall(pattern, text):
-            if raw.startswith(('./', '../', '/', 'https://', 'http://')):
-                found.add(urllib.parse.urljoin(base_url, raw))
-    found = {url for url in found if "${" not in url}
-    return found
 
 
 def allowed_asset(url: str, host: str) -> bool:
-    parsed = urllib.parse.urlsplit(url)
+    try:
+        parsed = urllib.parse.urlsplit(url)
+    except ValueError:
+        return False
     if parsed.netloc != host:
         return False
     path = parsed.path

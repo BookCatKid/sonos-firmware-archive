@@ -17,9 +17,13 @@ from .storage import atomic_json, file_sha256
 from .upd import parse_file
 
 
-def manifest_name(item):
-    """Immutable manifest identity includes both captured bytes and origin."""
+def document_name(item):
+    """Immutable source document identity includes captured bytes and origin."""
     origin = hashlib.sha256(item['url'].encode()).hexdigest()
+    if item.get('document_type') == 'landing-page':
+        suffix = item.get('metadata', {}).get('format', 'html')
+        suffix = suffix if suffix in {'js', 'mjs', 'json', 'html'} else 'html'
+        return f"page-{item['sha256']}-{origin}.{suffix}"
     return f"manifest-{item['sha256']}-{origin}.upm"
 
 
@@ -37,24 +41,27 @@ def catalog_at(path):
         'schema_version': 1, 'source_manifests': [], 'packages': [], 'raw_images': []}
 
 
-def manifest_publication(record, repository):
+def document_publication(record, repository):
     proof = record.get('publications', {}).get(repository) or record.get('publication', {})
     return proof if (proof.get('status') == 'verified' and proof.get('repository') == repository and
                      proof.get('sha256') == record['sha256'] and proof.get('bytes') == record['bytes']) else None
 
 
-def register_manifest(path, manifest, publication):
+def register_document(path, manifest, publication):
     if (publication.get('status') != 'verified' or not publication.get('repository') or
             publication.get('sha256') != manifest['sha256'] or publication.get('bytes') != manifest['bytes']):
         raise ValueError('manifest has no matching verified publication')
     catalog = catalog_at(path)
-    rows = catalog.setdefault('source_manifests', [])
+    collection = 'source_documents' if manifest.get('document_type') == 'landing-page' else 'source_manifests'
+    rows = catalog.setdefault(collection, [])
     record = next((row for row in rows if row.get('sha256') == manifest['sha256']
                    and row.get('source_url') == manifest['url']), None)
     if record is None:
         record = {'sha256': manifest['sha256'], 'bytes': manifest['bytes'], 'source_url': manifest['url']}
         rows.append(record)
     meta = manifest.get('metadata', {})
+    if manifest.get('document_type'):
+        record.update(document_type=manifest['document_type'], metadata=meta)
     publications = record.setdefault('publications', {})
     prior = record.get('publication', {})
     if prior.get('repository'):

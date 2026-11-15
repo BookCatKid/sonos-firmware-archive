@@ -14,7 +14,7 @@ from sonos_firmware.discovery import write_json
 from sonos_firmware.frontier import discover, monitor_report
 from sonos_firmware.archive_index import discover_sources
 from sonos_firmware.firmware_archive import (
-    acquisition_state, archive_candidates, manifest_name, manifest_publication, register_manifest,
+    acquisition_state, archive_candidates, document_name, document_publication, register_document,
 )
 from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt, verified_asset
 from sonos_firmware.metadata_sweep import discover_version_hints
@@ -31,13 +31,15 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
     errors = []
     tag = 'manifest-snapshots-' + datetime.now(timezone.utc).date().isoformat()
     prepared = False
-    for manifest in result['manifests']:
-        known = next((m for m in catalog.get('source_manifests', [])
+    for manifest in [*result['manifests'], *result.get('documents', [])]:
+        known = next((m for m in [*catalog.get('source_manifests', []), *catalog.get('source_documents', [])]
                       if m.get('sha256') == manifest['sha256'] and m.get('source_url') == manifest['url']), None)
         try:
-            proof = manifest_publication(known, repository) if known else None
+            proof = document_publication(known, repository) if known else None
             if proof and verified_asset(repository, proof['release_tag'], proof['release_asset'],
                                         manifest['bytes'], manifest['sha256']):
+                register_document(catalog_path, manifest, proof)
+                catalog = json.loads(catalog_path.read_text())
                 continue
             # Cached observations move between workers; their old absolute
             # temporary paths are not acquisition prerequisites.
@@ -48,12 +50,12 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
             if len(data) != manifest['bytes'] or hashlib.sha256(data).hexdigest() != manifest['sha256']:
                 raise ValueError('manifest capture hash mismatch')
             if not prepared:
-                ensure_release(repository, tag, 'Sonos manifest snapshots', 'Directly discovered public Sonos update manifests.')
+                ensure_release(repository, tag, 'Sonos discovery snapshots', 'Directly discovered public Sonos update manifests and download pages.')
                 prepared = True
-            asset = work / manifest_name(manifest)
+            asset = work / document_name(manifest)
             asset.write_bytes(data)
             remote = publish_verified(repository, tag, asset, len(data), manifest['sha256'])
-            register_manifest(catalog_path, manifest, publication_receipt(repository, tag, asset.name, manifest, remote))
+            register_document(catalog_path, manifest, publication_receipt(repository, tag, asset.name, manifest, remote))
             catalog = json.loads(catalog_path.read_text())
         except Exception as error:
             errors.append({'source': manifest['url'], 'error': str(error)})

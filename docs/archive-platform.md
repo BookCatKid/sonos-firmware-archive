@@ -86,8 +86,22 @@ payload acquisition share the first-party URL boundary: HTTPS Sonos domains,
 standard ports and no credentials. Payload redirects are checked before they
 are followed. Links outside those domains remain unresolved evidence rather
 than granting an arbitrary host access to the worker. Manifest images pointing
-to HTML landing pages are reported as discovery gaps requiring page traversal;
-they are not counted as preserved firmware or silently discarded.
+to landing pages enter the same resumable traversal. HTML attributes, base URLs,
+refresh redirects, script references and literal download URLs use the shared
+web link discoverer. Page redirects to known payload formats become download
+leads without reading payloads into the page cache. Unvisited pages survive the
+crawl budget, and source challenges pause their host along with manifests.
+Empty pages, malformed links and unsupported download locations remain explicit
+coverage gaps. Static links cannot silently turn a landing page into a successful
+firmware capture.
+
+Exact page and script bytes publish through the same source-document publisher
+as update manifests. They use immutable content-and-origin asset names and
+verified publication receipts in `data/catalog.json` (`source_documents` for
+pages; the existing `source_manifests` collection retains update manifests).
+The page's parsed links stay with its receipt so discoveries retain provenance.
+Reprocessing an already-published body can refresh its parsed metadata without
+another upload. The shared link parser also serves web deployment captures.
 
 The firmware worker replays indexed manifests and payloads automatically, using
 separate bounded queues (`history_manifest_limit` and `history_limit`, both eight

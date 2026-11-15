@@ -80,6 +80,7 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
     root = ET.fromstring(text[: end + len(closing)])
     candidates: dict[str, Candidate] = {}
     warnings: list[str] = []
+    landing_links = []
     if root.get("version") not in {"1", "1.1"}:
         warnings.append(f"unrecognized manifest version: {root.get('version')}")
 
@@ -100,7 +101,11 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
 
     for image in root.findall(".//image"):
         url = (image.text or "").strip()
-        if image.get("is_store") == "1" or url.split("?", 1)[0].endswith(".upm"):
+        if image.get('is_store') == '1':
+            if url:
+                landing_links.append(_secure(resolve(url)))
+            continue
+        if url.split("?", 1)[0].endswith(".upm"):
             continue
         version = image.get("version", "unknown")
         model = int(image.get("model", "0").split(".", 1)[0])
@@ -133,6 +138,7 @@ def parse_manifest(path: str | Path, source_url: str | None = None) -> tuple[dic
         "system_version": root.get("system_version"),
         "default_version": default_version,
         "warnings": sorted(set(warnings)),
+        'landing_links': sorted(set(landing_links)),
         "manifest_links": sorted({resolve((e.text or "").strip())
             for e in root.iter() if (e.text or "").strip().split("?", 1)[0].endswith(".upm")}),
     }

@@ -9,7 +9,7 @@ from pathlib import Path
 from .archive_replay import replay_url, open_capture, canonical_source
 from .crawl import PACKAGE
 from .discovery import Candidate, official_firmware_url, parse_manifest
-from .firmware_archive import acquisition_state, archive_candidates, manifest_name, register_manifest
+from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
 from .retry import checkpoint, select, due
 from .storage import atomic_json
@@ -62,7 +62,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
         prior = observations[identity]
         manifest = prior.get('manifest')
         try:
-            remote = verified_asset(repository, manifest['release_tag'], manifest_name(manifest),
+            remote = verified_asset(repository, manifest['release_tag'], document_name(manifest),
                                     manifest['bytes'], manifest['sha256']) if manifest else None
             if remote is None:
                 if paused:
@@ -91,14 +91,14 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                         'release_tag': 'manifest-history-'+prior['archive_capture']['timestamp'][:8]}
                     prior['manifest'] = manifest
                     atomic_json(path, state)
-                    asset = body.with_name(manifest_name(manifest))
+                    asset = body.with_name(document_name(manifest))
                     body.rename(asset)
                     ensure_release(repository, manifest['release_tag'], 'Sonos historical manifests',
                                    'Exact independently discovered public update manifest captures.')
                     remote = publish_verified(repository, manifest['release_tag'], asset,
                                               manifest['bytes'], manifest['sha256'])
-            proof = publication_receipt(repository, manifest['release_tag'], manifest_name(manifest), manifest, remote)
-            register_manifest(root/'data/catalog.json', manifest, proof)
+            proof = publication_receipt(repository, manifest['release_tag'], document_name(manifest), manifest, remote)
+            register_document(root/'data/catalog.json', manifest, proof)
             remember_manifest(frontier, manifest)
             observations[identity] = {**prior, **checkpoint(prior, success=True, success_hours=168), 'status': 'preserved'}
             preserved += 1

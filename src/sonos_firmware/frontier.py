@@ -158,6 +158,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     # Resume our own observed frontier; never read a third-party URL inventory.
     pending = state.get('pending_manifest_urls', [])
     known_urls = [m['url'] for m in state.get('manifests', [])]
+    known_urls.extend(m['url'] for m in state.get('documents', []))
     # Reserve a small rotating slice for current feeds, then resume the FIFO.
     # A one-request budget reserves nothing, so it still drains deferred work.
     cursor = state.get('protocol_cursor', 0)
@@ -174,6 +175,10 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for manifest in graph['manifests']:
         key = manifest['url'], manifest['sha256']
         manifests[key] = {**manifests.get(key, {}), **manifest}
+    documents = {(m['url'], m['sha256']): m for m in state.get('documents', [])}
+    for document in graph.get('documents', []):
+        key = document['url'], document['sha256']
+        documents[key] = {**documents.get(key, {}), **document}
     candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url'])}
     candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
@@ -239,6 +244,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     deferred = list(dict.fromkeys(graph['pending_manifest_urls'] + [f['url'] for f in graph['failures']
                         if f.get('attempted') and official(f['url'])]))
     result = {'schema_version': 1, 'roots': roots, 'manifests': list(manifests.values()),
+              'documents': list(documents.values()),
               'candidates': list(retained.values()), 'probes': probes,
               'inferred_namespaces': namespaces, 'inference_pending': inference_pending,
               'model_exploration': {'policy': 'expanding-passes', 'namespaces': len(namespaces),
@@ -268,7 +274,7 @@ def monitor_report(state, catalog, acquisition=None, repository=None):
     known = lambda row: candidate_is_preserved(row, catalog.get('packages', []))
     errors = state.get('preservation_errors', [])
     pending = state.get('preservation_pending', 0)
-    return {'schema_version': 1, 'manifests': state['manifests'],
+    return {'schema_version': 1, 'manifests': state['manifests'], 'documents': state.get('documents', []),
             'status': 'partial' if errors or pending else state.get('status', 'partial'),
             'model_exploration': state.get('model_exploration', {}),
             'metadata_discovery': {key: value for key, value in state.get('metadata_profiles', {}).items()

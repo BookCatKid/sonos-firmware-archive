@@ -12,12 +12,27 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
 from .discovery import Candidate, USER_AGENT, parse_manifest, official_firmware_url as official
+from .source_links import discover_urls, PAYLOAD_SUFFIXES
 
-PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$")
+PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$", re.I)
+DOCUMENT_SUFFIXES = ('.html', '.htm', '.js', '.mjs', '.json', '.php', '.asp', '.aspx', '.jsp', '.cgi')
+STATIC_SUFFIXES = ('.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf')
+
+
+def landing_url(url):
+    try:
+        path = urlsplit(url).path.lower()
+    except ValueError:
+        return False
+    return path.endswith(DOCUMENT_SUFFIXES) or '.' not in path.rsplit('/', 1)[-1]
 
 
 def normalize(url: str) -> str:
-    return "https://" + url[7:] if url.startswith("http://") else url
+    try:
+        parsed = urlsplit(url)
+    except ValueError:
+        return url
+    return parsed._replace(scheme='https' if parsed.scheme == 'http' else parsed.scheme, fragment='').geturl()
 
 
 def mirror(url: str) -> bool:
@@ -34,14 +49,15 @@ def catalog_manifest_url(url: str) -> str:
 def rejected_url_kind(url: str) -> str:
     """Classify a rejected non-official URL.
 
-    A URL that is not manifest- or package-shaped (e.g. a beta-app HTML
-    page) can never be archivable firmware: rejecting it is out-of-scope
-    policy, not a discovery gap. An artifact- or manifest-shaped URL on an
-    unrecognized host stays fail-closed 'unsupported': it may be host
-    discovery the archive must not silently drop.
+    Rejected manifest, download and landing-page URLs remain coverage gaps.
+    Other link types can be outside this traversal's scope, such as static
+    images that contain no executable or document links.
     """
-    path = urlsplit(url).path.lower()
-    if path.endswith(('.upm', '.upd', '.exe', '.dmg', '.bin')):
+    try:
+        path = urlsplit(url).path.lower()
+    except ValueError:
+        return 'unsupported'
+    if path.endswith(('.upm', *PAYLOAD_SUFFIXES)) or landing_url(url):
         return 'unsupported'
     return 'out-of-scope'
 
@@ -61,7 +77,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     directories = set()
     edges = []
     failures = []
-    manifests = []
+    manifests, documents = [], []
     blocked = bool(paused_hosts)
     attempts = 0
     blocked_hosts = set(paused_hosts)
@@ -83,9 +99,10 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         if not official(url):
             return
         path = urlsplit(url).path
-        if not path.endswith(('.upd', '.exe', '.dmg', '.bin')):
+        if not path.lower().endswith(PAYLOAD_SUFFIXES):
             return
-        folder = url.rsplit('/', 1)[0]
+        parsed = urlsplit(url)
+        folder = parsed._replace(path=path.rsplit('/', 1)[0], query='', fragment='').geturl()
         # Exact filename build wins over the enclosing campaign build.
         m = PACKAGE.match(path.rsplit('/', 1)[-1])
         if m:
@@ -93,6 +110,20 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         elif version and re.fullmatch(r'\d+\.\d+-\d+', version) and path.endswith(('.exe', '.dmg')):
             directories.add((version, folder))
         add(folder + '/update.upm', url, 'sibling-manifest')
+
+    def artifact(url, parent, reason):
+        url = normalize(url)
+        if not official(url):
+            failures.append({'url': url, 'parent': parent, 'kind': 'unsupported',
+                             'error': 'download link outside Sonos source domains'})
+            return
+        filename = urlsplit(url).path.rsplit('/', 1)[-1]
+        match = PACKAGE.fullmatch(filename)
+        candidate = Candidate(match[1] if match else 'unknown', int(match[2]) if match else None,
+                              url, reason, filename)
+        candidates.setdefault(url, candidate)
+        edges.append({'url': url, 'parent': parent, 'reason': reason})
+        directory(url, candidate.version)
 
     def channels(url):
         if not explore_channels or not official(url):
@@ -117,7 +148,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         if isinstance(seed, dict) and all(k in seed for k in ('version', 'package_model', 'filename')) and official(normalize(url)):
             c = Candidate(seed['version'], seed['package_model'], normalize(url), 'verified-public-seed', seed['filename'])
             candidates[c.url] = c
-        if urlsplit(url).path.endswith('.upm'):
+        if urlsplit(url).path.lower().endswith('.upm') or landing_url(url):
             add(url, 'public-evidence-seed', 'seed-manifest')
         else:
             directory(url)
@@ -135,6 +166,8 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             return (result, url, None) if isinstance(result, bytes) else result
         req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT})
         with opener.open(req, timeout=15) as response:
+            if landing_url(url) and urlsplit(response.url).path.lower().endswith(PAYLOAD_SUFFIXES):
+                return None, response.url, None
             body = response.read(2_000_001)
             if len(body) > 2_000_000:
                 raise ValueError('manifest exceeds 2MB limit')
@@ -156,11 +189,43 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             if (location or resolved != url) and not official(canonical):
                 raise ValueError('manifest location outside official firmware hosts')
             if canonical != url:
+                if landing_url(url) and urlsplit(canonical).path.lower().endswith(PAYLOAD_SUFFIXES):
+                    artifact(canonical, url, 'landing-page-redirect')
+                    continue
                 bodies.setdefault(canonical, body)
                 add(canonical, url, 'content-location' if location else 'redirect')
             digest = hashlib.sha256(body).hexdigest()
-            snapshot = evidence_dir / (hashlib.sha256(url.encode()).hexdigest()[:16] + '-' + digest[:16] + '.upm')
+            page = landing_url(canonical) and not re.search(rb'<update_manifest(?:\s|>)', body)
+            suffix = (next((ext for ext in ('.js', '.mjs', '.json') if urlsplit(canonical).path.lower().endswith(ext)), '.html')
+                      if page else '.upm')
+            snapshot = evidence_dir / (hashlib.sha256(url.encode()).hexdigest()[:16] + '-' + digest[:16] + suffix)
             snapshot.write_bytes(body)  # retain unsupported/malformed bodies too
+            if page:
+                links = sorted(discover_urls(canonical, body))
+                documents.append({'url': canonical, 'request_url': url, 'sha256': digest, 'bytes': len(body),
+                                  'snapshot': str(snapshot), 'document_type': 'landing-page',
+                                  'metadata': {'format': suffix.removeprefix('.'), 'links': links, 'warnings': []}})
+                actionable = 0
+                for link in links:
+                    try:
+                        path = urlsplit(link).path.lower()
+                    except ValueError:
+                        failures.append({'url': link, 'parent': canonical, 'kind': 'unsupported',
+                                         'error': 'landing page advertises a malformed URL'})
+                        continue
+                    if path.endswith(PAYLOAD_SUFFIXES):
+                        artifact(link, canonical, 'landing-page-link')
+                        actionable += 1
+                    elif path.endswith('.upm') or landing_url(link):
+                        add(link, canonical, 'landing-page-link')
+                        actionable += 1
+                    elif not path.endswith(STATIC_SUFFIXES):
+                        failures.append({'url': link, 'parent': canonical, 'kind': 'unsupported',
+                                         'error': 'landing page advertises an unsupported link format'})
+                if not actionable:
+                    failures.append({'url': canonical, 'parent': url, 'kind': 'unsupported',
+                                     'error': 'landing page has no traversable download or document links'})
+                continue
             metadata, items = parse_manifest(snapshot, source_url=canonical)
             manifests.append({'url': canonical, 'request_url': url, 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
                               'metadata': metadata, 'candidate_total': len(items)})
@@ -174,9 +239,8 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 elif path.endswith('.upm'):
                     add(base, canonical, 'manifest-base')
             for c in items:
-                if urlsplit(c.url).path.lower().endswith(('.html', '.htm')):
-                    failures.append({'url': c.url, 'parent': url, 'kind': 'unsupported',
-                                     'error': 'manifest image points to a page requiring link discovery'})
+                if landing_url(c.url):
+                    add(c.url, url, 'manifest-landing-page')
                     continue
                 if not official(c.url):
                     failures.append({'url': c.url, 'parent': url, 'kind': rejected_url_kind(c.url), 'error': 'non-official artifact URL'})
@@ -186,6 +250,8 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 directory(c.url, c.version)
             for link in (metadata.get('manifest_links', []) if include_history else []):
                 add(link, url, 'manifest-link')
+            for link in metadata.get('landing_links', []):
+                add(link, url, 'manifest-store-link')
         except Exception as error:
             status = getattr(error, 'code', None)
             failures.append({'url': url, 'attempted': True, 'status': status,
@@ -194,14 +260,15 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             if status in {403, 429}:
                 blocked = True
                 blocked_hosts.add(urlsplit(url).hostname)
-        if url not in bodies and delay:
-            time.sleep(delay)
-    return {'manifests': manifests, 'candidates': list(candidates.values()),
+        finally:
+            if url not in bodies and delay:
+                time.sleep(delay)
+    return {'manifests': manifests, 'documents': documents, 'candidates': list(candidates.values()),
             'directories': [{'version': v, 'directory': d} for v,d in sorted(directories)],
             'edges': edges, 'failures': failures, 'blocked': blocked,
             'limits_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
             'blocked_hosts': sorted(blocked_hosts),
-            'scope': 'manifest links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}
+            'scope': 'manifest and landing-page links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}
 
 
 def discovery_incomplete(graph: dict, manifests: list, challenged: bool) -> bool:
@@ -210,9 +277,8 @@ def discovery_incomplete(graph: dict, manifests: list, challenged: bool) -> bool
     Incomplete when probing was challenged, the crawl was blocked or capped,
     a fetch/parse failed (anything but a clean 404), an in-scope artifact or
     manifest URL sat on an unrecognized host ('unsupported'), or a manifest
-    carried an unrecognized-structure warning. 'out-of-scope' entries are
-    deterministic rejections of links that are not manifests or packages at
-    all (e.g. beta-app HTML pages) and can never hide archivable firmware.
+    carried an unrecognized-structure warning. Landing pages and unsupported
+    download locations remain gaps; unrelated static resources can be excluded.
     """
     if challenged or graph.get("blocked") or graph.get("limits_reached"):
         return True
