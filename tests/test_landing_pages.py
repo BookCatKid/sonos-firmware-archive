@@ -66,6 +66,18 @@ class LandingPageTests(unittest.TestCase):
                     expected += '?x=1&y=2'
                 self.assertEqual(discover_urls(PAGE, body), {expected})
 
+    def test_valueless_refresh_attributes_do_not_discard_other_links(self):
+        for meta in ('<meta http-equiv>', '<meta http-equiv="refresh" content>'):
+            with self.subTest(meta=meta):
+                body = (meta+'<a href="'+PAYLOAD+'">Firmware</a>').encode()
+                self.assertEqual(discover_urls(PAGE, body), {PAYLOAD})
+
+    def test_escaped_script_urls_never_emit_a_truncated_prefix(self):
+        for url in (PAYLOAD, 'https://new-downloads.sonos.com/_next/static/chunks/main.js'):
+            with self.subTest(url=url):
+                body = ('const location = "'+url+'?x=1\\u0026y=2";').encode()
+                self.assertEqual(discover_urls(PAGE, body), {url+'?x=1&y=2'})
+
     def test_budget_resume_retains_a_page_discovered_at_the_end_of_the_batch(self):
         second = PAGE.replace('start.html', 'next.html')
         with tempfile.TemporaryDirectory() as temporary:

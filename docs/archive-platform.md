@@ -102,6 +102,10 @@ pages; the existing `source_manifests` collection retains update manifests).
 The page's parsed links stay with its receipt so discoveries retain provenance.
 Reprocessing an already-published body can refresh its parsed metadata without
 another upload. The shared link parser also serves web deployment captures.
+Replayed manifests use the same document-versus-payload routing. Saved replay
+metadata is reinterpreted on later runs without another payload acquisition;
+unresolved links remain in its metadata and coverage report. Previously queued
+HTML pages move to document traversal rather than being published as firmware.
 
 The firmware worker replays indexed manifests and payloads automatically, using
 separate bounded queues (`history_manifest_limit` and `history_limit`, both eight

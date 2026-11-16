@@ -7,7 +7,7 @@ import urllib.error
 from pathlib import Path
 
 from .archive_replay import replay_url, open_capture, canonical_source
-from .crawl import PACKAGE
+from .crawl import PACKAGE, landing_url
 from .discovery import Candidate, official_firmware_url, parse_manifest
 from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
@@ -17,14 +17,38 @@ from .storage import atomic_json
 
 def remember_manifest(frontier, manifest):
     """Offer historical leads to live discovery without claiming current availability."""
-    rows = {row['url']: row for row in frontier.get('candidates', [])}
+    pending = frontier.setdefault('pending_manifest_urls', [])
+    rows = {}
+    for row in frontier.get('candidates', []):
+        if landing_url(row['url']):
+            if row['url'] not in pending:
+                pending.append(row['url'])
+        else:
+            rows[row['url']] = row
+    unresolved = []
+    metadata = manifest.setdefault('metadata', {})
+
+    def accepted(url):
+        try:
+            return canonical_source(url)
+        except ValueError:
+            unresolved.append({'url': url, 'manifest_url': manifest['url'],
+                               'error': 'historical manifest link uses an unsupported URL'})
+            return None
+
     for candidate in manifest.get('candidates', []):
-        if not official_firmware_url(candidate['url']):
+        url = accepted(candidate['url'])
+        if url is None:
+            continue
+        if landing_url(url):
+            if url not in pending:
+                pending.append(url)
             continue
         lead = candidate.copy()
+        lead['url'] = url
         if not PACKAGE.fullmatch(lead['filename']):
             lead['version'] = 'unknown'
-        row = rows.setdefault(candidate['url'], lead)
+        row = rows.setdefault(url, lead)
         if row.get('package_model') is None:
             row['package_model'] = candidate['package_model']
         evidence = {'manifest_url': manifest['url'], 'sha256': manifest['sha256'],
@@ -32,14 +56,13 @@ def remember_manifest(frontier, manifest):
         if evidence not in row.setdefault('historical_manifests', []):
             row['historical_manifests'].append(evidence)
     frontier['candidates'] = list(rows.values())
-    pending = frontier.setdefault('pending_manifest_urls', [])
-    for url in manifest.get('metadata', {}).get('manifest_links', []):
-        try:
-            url = canonical_source(url)
-        except ValueError:
+    for link in [*metadata.get('manifest_links', []), *metadata.get('landing_links', [])]:
+        url = accepted(link)
+        if url is None:
             continue
         if url not in pending:
             pending.append(url)
+    metadata['unresolved_links'] = unresolved
 
 
 def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
@@ -54,6 +77,11 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                 observations.setdefault(identity, {'status': 'pending', 'url': url, 'archive_capture': capture})
             except (ValueError, TypeError) as error:
                 errors.append({'url': url, 'error': str(error)})
+    # Reinterpret saved metadata after parser/routing changes without requiring
+    # another replay acquisition or waiting for the ordinary refresh interval.
+    for row in observations.values():
+        if row.get('status') == 'preserved' and row.get('manifest'):
+            remember_manifest(frontier, row['manifest'])
     atomic_json(path, state)
     queue = select(list(observations), observations, key=lambda identity: identity, limit=limit)
     attempted = preserved = 0
@@ -113,6 +141,8 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     errors.extend({'url': row['url'], 'error': row['manifest'].get('parse_error') or 'manifest has parser warnings'}
                   for row in observations.values() if row.get('manifest') and
                   (row['manifest'].get('parse_error') or row['manifest']['metadata'].get('warnings')))
+    errors.extend(link for row in observations.values() for link in
+                  row.get('manifest', {}).get('metadata', {}).get('unresolved_links', []))
     return {'attempted': attempted, 'preserved': preserved, 'errors': errors,
             'pending': sum(row['status'] != 'preserved' for row in observations.values()), 'paused': paused}
 

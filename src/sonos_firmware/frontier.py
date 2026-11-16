@@ -8,7 +8,7 @@ from dataclasses import asdict
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
-from .crawl import crawl_manifests, official, discovery_incomplete
+from .crawl import crawl_manifests, official, discovery_incomplete, landing_url
 from .discovery import Candidate, probe, expand_metadata_base, host_counterpart
 from .firmware_archive import capture_due, candidate_is_preserved
 from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
@@ -156,7 +156,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                 roots.append(folder + '/update.upm')
                 _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'])
     # Resume our own observed frontier; never read a third-party URL inventory.
-    pending = state.get('pending_manifest_urls', [])
+    pending = list(state.get('pending_manifest_urls', []))
+    pending.extend(row['url'] for row in state.get('candidates', []) if landing_url(row['url']))
     known_urls = [m['url'] for m in state.get('manifests', [])]
     known_urls.extend(m['url'] for m in state.get('documents', []))
     # Reserve a small rotating slice for current feeds, then resume the FIFO.
@@ -179,7 +180,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for document in graph.get('documents', []):
         key = document['url'], document['sha256']
         documents[key] = {**documents.get(key, {}), **document}
-    candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url'])}
+    candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url']) and not landing_url(c['url'])}
     candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
     for url, artifact in archive.get('artifacts', {}).items():

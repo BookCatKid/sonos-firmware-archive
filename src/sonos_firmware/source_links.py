@@ -4,7 +4,7 @@ import urllib.parse
 from html import unescape
 from html.parser import HTMLParser
 
-URL_RE = re.compile(r'''(?:(?:src|href)=["']([^"']+)|["'(]((?:https?://[^"')\\ ]+|/(?:_next/static|assets|fonts)/[^"')\\ ]+)))["') ]?''')
+URL_RE = re.compile(r'''(?:(?:src|href)=["']([^"']+)|["'(]((?:https?://[^"')\\ ]+|/(?:_next/static|assets|fonts)/[^"')\\ ]+)))(?=["')\s]|$)''')
 PAYLOAD_SUFFIXES = ('.upd', '.exe', '.dmg', '.apk', '.bin', '.img', '.pkg', '.zip',
                     '.tar', '.gz', '.bz2', '.xz', '.tgz', '.txz')
 
@@ -22,8 +22,8 @@ class _Links(HTMLParser):
                 self.base = attrs.get('href')
             return
         self.links.extend(attrs[key] for key in ('href', 'src') if attrs.get(key))
-        if tag == 'meta' and attrs.get('http-equiv', '').lower() == 'refresh':
-            match = re.search(r'(?i)\burl\s*=\s*(.+)', attrs.get('content', ''))
+        if tag == 'meta' and (attrs.get('http-equiv') or '').lower() == 'refresh':
+            match = re.search(r'(?i)\burl\s*=\s*(.+)', attrs.get('content') or '')
             if match:
                 self.links.append(match[1].strip().strip('\"\''))
 
@@ -48,6 +48,9 @@ def discover_urls(base_url: str, body: bytes) -> set[str]:
     base_url = _join(base_url, parsed.base) if parsed.base else base_url
     # A base declaration changes resolution; it is not itself a navigation.
     text = re.sub(r'<base\b[^>]*>', '', text, flags=re.I)
+    # All literal scanners must see the same decoded query separators. Otherwise
+    # a scanner that stops at a backslash can add an extra truncated URL.
+    text = text.replace('\\u0026', '&').replace('\\/', '/')
     found = set()
     for raw in parsed.links:
         if raw and not raw.startswith(('data:', 'javascript:', 'mailto:', '#')):
