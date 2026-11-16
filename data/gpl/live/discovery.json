@@ -5334,6 +5334,106 @@
       "url": "https://www.sonos.com/documents/gpl/22.1/gpl.html",
       "version": "22.1"
     },
+    "22.10": {
+      "checked_at": "2026-11-16T00:02:28+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.10/gpl.html",
+      "version": "22.10"
+    },
+    "22.11": {
+      "checked_at": "2026-11-16T00:02:31+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.11/gpl.html",
+      "version": "22.11"
+    },
+    "22.12": {
+      "checked_at": "2026-11-16T00:02:34+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.12/gpl.html",
+      "version": "22.12"
+    },
+    "22.13": {
+      "checked_at": "2026-11-16T00:02:36+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.13/gpl.html",
+      "version": "22.13"
+    },
+    "22.14": {
+      "checked_at": "2026-11-16T00:02:39+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.14/gpl.html",
+      "version": "22.14"
+    },
+    "22.15": {
+      "checked_at": "2026-11-16T00:02:42+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.15/gpl.html",
+      "version": "22.15"
+    },
+    "22.16": {
+      "checked_at": "2026-11-16T00:02:44+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.16/gpl.html",
+      "version": "22.16"
+    },
+    "22.17": {
+      "checked_at": "2026-11-16T00:02:47+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.17/gpl.html",
+      "version": "22.17"
+    },
+    "22.18": {
+      "checked_at": "2026-11-16T00:02:50+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.18/gpl.html",
+      "version": "22.18"
+    },
+    "22.19": {
+      "checked_at": "2026-11-16T00:02:52+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.19/gpl.html",
+      "version": "22.19"
+    },
     "22.2": {
       "checked_at": "2026-11-15T15:47:29+00:00",
       "evidence": [],
@@ -5343,6 +5443,106 @@
       "state": "access-denied",
       "url": "https://www.sonos.com/documents/gpl/22.2/gpl.html",
       "version": "22.2"
+    },
+    "22.20": {
+      "checked_at": "2026-11-16T00:02:55+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.20/gpl.html",
+      "version": "22.20"
+    },
+    "22.21": {
+      "checked_at": "2026-11-16T00:02:58+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.21/gpl.html",
+      "version": "22.21"
+    },
+    "22.22": {
+      "checked_at": "2026-11-16T00:03:00+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.22/gpl.html",
+      "version": "22.22"
+    },
+    "22.23": {
+      "checked_at": "2026-11-16T00:03:03+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.23/gpl.html",
+      "version": "22.23"
+    },
+    "22.24": {
+      "checked_at": "2026-11-16T00:03:06+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.24/gpl.html",
+      "version": "22.24"
+    },
+    "22.25": {
+      "checked_at": "2026-11-16T00:03:08+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.25/gpl.html",
+      "version": "22.25"
+    },
+    "22.26": {
+      "checked_at": "2026-11-16T00:03:12+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.26/gpl.html",
+      "version": "22.26"
+    },
+    "22.27": {
+      "checked_at": "2026-11-16T00:03:14+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.27/gpl.html",
+      "version": "22.27"
+    },
+    "22.28": {
+      "checked_at": "2026-11-16T00:03:17+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.28/gpl.html",
+      "version": "22.28"
+    },
+    "22.29": {
+      "checked_at": "2026-11-16T00:03:20+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.29/gpl.html",
+      "version": "22.29"
     },
     "22.3": {
       "checked_at": "2026-11-15T15:47:32+00:00",
@@ -5354,6 +5554,106 @@
       "url": "https://www.sonos.com/documents/gpl/22.3/gpl.html",
       "version": "22.3"
     },
+    "22.30": {
+      "checked_at": "2026-11-16T00:03:22+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.30/gpl.html",
+      "version": "22.30"
+    },
+    "22.31": {
+      "checked_at": "2026-11-16T00:03:25+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.31/gpl.html",
+      "version": "22.31"
+    },
+    "22.32": {
+      "checked_at": "2026-11-16T00:03:28+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.32/gpl.html",
+      "version": "22.32"
+    },
+    "22.33": {
+      "checked_at": "2026-11-16T00:03:30+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.33/gpl.html",
+      "version": "22.33"
+    },
+    "22.34": {
+      "checked_at": "2026-11-16T00:03:33+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.34/gpl.html",
+      "version": "22.34"
+    },
+    "22.35": {
+      "checked_at": "2026-11-16T00:03:36+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.35/gpl.html",
+      "version": "22.35"
+    },
+    "22.36": {
+      "checked_at": "2026-11-16T00:03:38+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.36/gpl.html",
+      "version": "22.36"
+    },
+    "22.37": {
+      "checked_at": "2026-11-16T00:03:41+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.37/gpl.html",
+      "version": "22.37"
+    },
+    "22.38": {
+      "checked_at": "2026-11-16T00:03:44+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.38/gpl.html",
+      "version": "22.38"
+    },
+    "22.39": {
+      "checked_at": "2026-11-16T00:03:46+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.39/gpl.html",
+      "version": "22.39"
+    },
     "22.4": {
       "checked_at": "2026-11-15T15:47:35+00:00",
       "evidence": [],
@@ -5363,6 +5663,16 @@
       "state": "access-denied",
       "url": "https://www.sonos.com/documents/gpl/22.4/gpl.html",
       "version": "22.4"
+    },
+    "22.40": {
+      "checked_at": "2026-11-16T00:03:49+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.40/gpl.html",
+      "version": "22.40"
     },
     "22.5": {
       "checked_at": "2026-11-15T15:47:37+00:00",
@@ -5393,6 +5703,656 @@
       "state": "access-denied",
       "url": "https://www.sonos.com/documents/gpl/22.7/gpl.html",
       "version": "22.7"
+    },
+    "22.8": {
+      "checked_at": "2026-11-16T00:02:23+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.8/gpl.html",
+      "version": "22.8"
+    },
+    "22.9": {
+      "checked_at": "2026-11-16T00:02:26+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/22.9/gpl.html",
+      "version": "22.9"
+    },
+    "23.0": {
+      "checked_at": "2026-11-16T00:03:52+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.0/gpl.html",
+      "version": "23.0"
+    },
+    "23.1": {
+      "checked_at": "2026-11-16T00:03:54+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.1/gpl.html",
+      "version": "23.1"
+    },
+    "23.10": {
+      "checked_at": "2026-11-16T00:04:18+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.10/gpl.html",
+      "version": "23.10"
+    },
+    "23.11": {
+      "checked_at": "2026-11-16T00:04:21+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.11/gpl.html",
+      "version": "23.11"
+    },
+    "23.12": {
+      "checked_at": "2026-11-16T00:04:24+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.12/gpl.html",
+      "version": "23.12"
+    },
+    "23.13": {
+      "checked_at": "2026-11-16T00:04:26+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.13/gpl.html",
+      "version": "23.13"
+    },
+    "23.14": {
+      "checked_at": "2026-11-16T00:04:29+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.14/gpl.html",
+      "version": "23.14"
+    },
+    "23.15": {
+      "checked_at": "2026-11-16T00:04:32+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.15/gpl.html",
+      "version": "23.15"
+    },
+    "23.16": {
+      "checked_at": "2026-11-16T00:04:34+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.16/gpl.html",
+      "version": "23.16"
+    },
+    "23.17": {
+      "checked_at": "2026-11-16T00:04:37+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.17/gpl.html",
+      "version": "23.17"
+    },
+    "23.18": {
+      "checked_at": "2026-11-16T00:04:40+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.18/gpl.html",
+      "version": "23.18"
+    },
+    "23.19": {
+      "checked_at": "2026-11-16T00:04:43+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.19/gpl.html",
+      "version": "23.19"
+    },
+    "23.2": {
+      "checked_at": "2026-11-16T00:03:57+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.2/gpl.html",
+      "version": "23.2"
+    },
+    "23.20": {
+      "checked_at": "2026-11-16T00:04:45+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.20/gpl.html",
+      "version": "23.20"
+    },
+    "23.21": {
+      "checked_at": "2026-11-16T00:04:48+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.21/gpl.html",
+      "version": "23.21"
+    },
+    "23.22": {
+      "checked_at": "2026-11-16T00:04:51+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.22/gpl.html",
+      "version": "23.22"
+    },
+    "23.23": {
+      "checked_at": "2026-11-16T00:04:53+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.23/gpl.html",
+      "version": "23.23"
+    },
+    "23.24": {
+      "checked_at": "2026-11-16T00:04:56+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.24/gpl.html",
+      "version": "23.24"
+    },
+    "23.25": {
+      "checked_at": "2026-11-16T00:04:59+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.25/gpl.html",
+      "version": "23.25"
+    },
+    "23.26": {
+      "checked_at": "2026-11-16T00:05:01+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.26/gpl.html",
+      "version": "23.26"
+    },
+    "23.27": {
+      "checked_at": "2026-11-16T00:05:04+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.27/gpl.html",
+      "version": "23.27"
+    },
+    "23.28": {
+      "checked_at": "2026-11-16T00:05:07+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.28/gpl.html",
+      "version": "23.28"
+    },
+    "23.29": {
+      "checked_at": "2026-11-16T00:05:09+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.29/gpl.html",
+      "version": "23.29"
+    },
+    "23.3": {
+      "checked_at": "2026-11-16T00:04:00+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.3/gpl.html",
+      "version": "23.3"
+    },
+    "23.30": {
+      "checked_at": "2026-11-16T00:05:12+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.30/gpl.html",
+      "version": "23.30"
+    },
+    "23.31": {
+      "checked_at": "2026-11-16T00:05:15+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.31/gpl.html",
+      "version": "23.31"
+    },
+    "23.32": {
+      "checked_at": "2026-11-16T00:05:17+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.32/gpl.html",
+      "version": "23.32"
+    },
+    "23.33": {
+      "checked_at": "2026-11-16T00:05:20+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.33/gpl.html",
+      "version": "23.33"
+    },
+    "23.34": {
+      "checked_at": "2026-11-16T00:05:23+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.34/gpl.html",
+      "version": "23.34"
+    },
+    "23.35": {
+      "checked_at": "2026-11-16T00:05:26+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.35/gpl.html",
+      "version": "23.35"
+    },
+    "23.36": {
+      "checked_at": "2026-11-16T00:05:28+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.36/gpl.html",
+      "version": "23.36"
+    },
+    "23.37": {
+      "checked_at": "2026-11-16T00:05:31+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.37/gpl.html",
+      "version": "23.37"
+    },
+    "23.38": {
+      "checked_at": "2026-11-16T00:05:34+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.38/gpl.html",
+      "version": "23.38"
+    },
+    "23.39": {
+      "checked_at": "2026-11-16T00:05:36+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.39/gpl.html",
+      "version": "23.39"
+    },
+    "23.4": {
+      "checked_at": "2026-11-16T00:04:02+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.4/gpl.html",
+      "version": "23.4"
+    },
+    "23.40": {
+      "checked_at": "2026-11-16T00:05:39+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.40/gpl.html",
+      "version": "23.40"
+    },
+    "23.5": {
+      "checked_at": "2026-11-16T00:04:05+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.5/gpl.html",
+      "version": "23.5"
+    },
+    "23.6": {
+      "checked_at": "2026-11-16T00:04:08+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.6/gpl.html",
+      "version": "23.6"
+    },
+    "23.7": {
+      "checked_at": "2026-11-16T00:04:10+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.7/gpl.html",
+      "version": "23.7"
+    },
+    "23.8": {
+      "checked_at": "2026-11-16T00:04:13+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.8/gpl.html",
+      "version": "23.8"
+    },
+    "23.9": {
+      "checked_at": "2026-11-16T00:04:16+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/23.9/gpl.html",
+      "version": "23.9"
+    },
+    "24.0": {
+      "checked_at": "2026-11-16T00:05:42+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.0/gpl.html",
+      "version": "24.0"
+    },
+    "24.1": {
+      "checked_at": "2026-11-16T00:05:44+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.1/gpl.html",
+      "version": "24.1"
+    },
+    "24.10": {
+      "checked_at": "2026-11-16T00:06:08+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.10/gpl.html",
+      "version": "24.10"
+    },
+    "24.11": {
+      "checked_at": "2026-11-16T00:06:11+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.11/gpl.html",
+      "version": "24.11"
+    },
+    "24.12": {
+      "checked_at": "2026-11-16T00:06:14+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.12/gpl.html",
+      "version": "24.12"
+    },
+    "24.13": {
+      "checked_at": "2026-11-16T00:06:16+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.13/gpl.html",
+      "version": "24.13"
+    },
+    "24.14": {
+      "checked_at": "2026-11-16T00:06:19+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.14/gpl.html",
+      "version": "24.14"
+    },
+    "24.15": {
+      "checked_at": "2026-11-16T00:06:22+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.15/gpl.html",
+      "version": "24.15"
+    },
+    "24.16": {
+      "checked_at": "2026-11-16T00:06:24+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.16/gpl.html",
+      "version": "24.16"
+    },
+    "24.17": {
+      "checked_at": "2026-11-16T00:06:27+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.17/gpl.html",
+      "version": "24.17"
+    },
+    "24.18": {
+      "checked_at": "2026-11-16T00:06:30+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.18/gpl.html",
+      "version": "24.18"
+    },
+    "24.19": {
+      "checked_at": "2026-11-16T00:06:32+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.19/gpl.html",
+      "version": "24.19"
+    },
+    "24.2": {
+      "checked_at": "2026-11-16T00:05:47+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.2/gpl.html",
+      "version": "24.2"
+    },
+    "24.20": {
+      "checked_at": "2026-11-16T00:06:35+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.20/gpl.html",
+      "version": "24.20"
+    },
+    "24.21": {
+      "checked_at": "2026-11-16T00:06:38+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.21/gpl.html",
+      "version": "24.21"
+    },
+    "24.3": {
+      "checked_at": "2026-11-16T00:05:50+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.3/gpl.html",
+      "version": "24.3"
+    },
+    "24.4": {
+      "checked_at": "2026-11-16T00:05:52+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.4/gpl.html",
+      "version": "24.4"
+    },
+    "24.5": {
+      "checked_at": "2026-11-16T00:05:55+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.5/gpl.html",
+      "version": "24.5"
+    },
+    "24.6": {
+      "checked_at": "2026-11-16T00:05:58+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.6/gpl.html",
+      "version": "24.6"
+    },
+    "24.7": {
+      "checked_at": "2026-11-16T00:06:00+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.7/gpl.html",
+      "version": "24.7"
+    },
+    "24.8": {
+      "checked_at": "2026-11-16T00:06:03+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.8/gpl.html",
+      "version": "24.8"
+    },
+    "24.9": {
+      "checked_at": "2026-11-16T00:06:06+00:00",
+      "evidence": [],
+      "http_status": 403,
+      "priority": 3,
+      "reason": "AccessDenied XML",
+      "state": "access-denied",
+      "url": "https://www.sonos.com/documents/gpl/24.9/gpl.html",
+      "version": "24.9"
     },
     "3.0": {
       "checked_at": "2026-11-14T15:14:22+00:00",
@@ -8096,5 +9056,5 @@
     }
   },
   "schema_version": 1,
-  "updated": "2026-11-15T15:47:43+00:00"
+  "updated": "2026-11-16T00:06:38+00:00"
 }
