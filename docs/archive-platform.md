@@ -150,6 +150,29 @@ when another target fails. Android history uses a bounded, rotating queue and
 retries failures rather than permanently suppressing them.
 
 Desktop and official APK acquisition share per-repository URL observations.
+Desktop discovery walks nonrecursive Git trees under WinGet's Sonos vendor
+directory, discovering package names and retained version directories from the
+repository's current default branch. This avoids the GitHub Contents
+[1,000-entry directory limit](https://docs.github.com/en/rest/repos/contents#get-repository-content).
+Truncated tree responses and failures in individual versions remain explicit
+gaps while other entries continue. Installer YAML is parsed as data without
+constructing objects, retaining URL/hash associations and usable URL leads
+when a checksum is absent or malformed. Distinct advertised checksums for one
+URL have separate acquisition identities; observed hashes come from source
+metadata, and the worker computes and verifies actual payload hashes in CI.
+
+Homebrew history follows all commit pages for its source paths. Failed listing
+or file requests remain discovery errors, and later paths and commits continue.
+GitHub API access challenges pause further API requests for that worker run;
+raw-source challenges also stop the Homebrew sweep. Their incomplete reports
+remain eligible for the next scheduled retry.
+Observed version substitutions resolve the URL actually declared in each cask;
+the adapter does not rebuild a distribution hostname and filename from a version
+pair. Unrecognized Ruby interpolation stays an explicit gap, with no recipe
+execution. Historical HTTP Sonos URLs upgrade to HTTPS while retaining their
+advertised aliases. Neither package source requires a supplied local payload or
+checksum before discovery or archival can begin.
+
 Current download URLs refresh at the target cadence; historical URLs refresh
 weekly by default. Changed checksums, ETags, versions, or HTTP availability
 become eligible immediately. Attempts include failures and are bounded; prior

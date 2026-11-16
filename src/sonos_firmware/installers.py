@@ -80,7 +80,8 @@ def acquire(candidate, destination, *, blocked=None):
             continue
         try:
             response = (open_capture(url, replay, allowed=official_source, timeout=180) if replay is not None else
-                        open_sonos(urllib.request.Request(url, headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
+                        open_sonos(urllib.request.Request(canonical_source(url, sonos_url),
+                            headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
             with response, destination.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('installer source did not return a complete HTTP 200 response')

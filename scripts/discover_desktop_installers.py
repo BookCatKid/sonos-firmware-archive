@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import concurrent.futures
 import json
 import os
@@ -23,12 +24,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from curl_cffi import requests as tls_requests
+import yaml
 from sonos_firmware.storage import atomic_json
 from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
 from sonos_firmware.source_urls import open_sonos, sonos_url
 from sonos_firmware.archive_replay import canonical_source
 
-WINGET_PACKAGES = {"Controller": "s2", "S1Controller": "s1"}
 HOMEBREW_PATHS = {
     "Casks/s/sonos.rb": "s2",
     "Casks/sonos.rb": "s2",
@@ -43,18 +44,32 @@ DIRECT_ENDPOINTS = {
 
 
 GH_API_ATTEMPTS = 4
+GH_SOURCE_PAUSE = None
+
+
+class GitHubSourcePaused(RuntimeError):
+    pass
 
 
 def gh_output(cmd: list[str]) -> str:
+    global GH_SOURCE_PAUSE
+    if GH_SOURCE_PAUSE:
+        raise GH_SOURCE_PAUSE
     error = None
     for attempt in range(GH_API_ATTEMPTS):
         try:
-            return subprocess.check_output(cmd, text=True)
+            return subprocess.check_output(cmd, text=True, stderr=subprocess.PIPE)
         except subprocess.CalledProcessError as caught:
             error = caught
+            status = re.search(r'\bHTTP (\d{3})\b', caught.stderr or '')
+            if status and int(status[1]) in {401, 403, 429}:
+                GH_SOURCE_PAUSE = GitHubSourcePaused(f'GitHub metadata source paused after HTTP {status[1]}')
+                raise GH_SOURCE_PAUSE from caught
+            if status and int(status[1]) in {404, 422}:
+                raise RuntimeError((caught.stderr or str(caught)).strip()) from caught
             if attempt < GH_API_ATTEMPTS - 1:
                 time.sleep(min(2 ** attempt, 30))
-    raise error
+    raise RuntimeError((error.stderr or str(error)).strip()) from error
 
 
 def gh_json(endpoint: str) -> object:
@@ -69,71 +84,158 @@ def gh_lines(endpoint: str, jq: str) -> list[str]:
 
 def add_candidate(target: dict, *, family: str, platform: str, version: str,
                   url: str, sha256: str | None, source: str) -> None:
+    advertised_url = url
+    try:
+        url = canonical_source(url, sonos_url)
+    except ValueError:
+        pass  # Retain unsupported leads for the probe's explicit error report.
     # A WinGet package spans the pre-split and S1/S2 eras, so its package name
     # alone is not a reliable family label for historical filenames.
-    filename = url.rsplit("/", 1)[-1]
+    filename = urllib.parse.urlsplit(url).path.rsplit('/', 1)[-1]
     if filename.startswith("SonosDesktopController") or filename.startswith("Sonos_"):
         family = family_for_wayback_url(url)
-    key = (family, platform, url)
+    digest = sha256.lower() if sha256 else None
+    key = (family, platform, url, digest)
     item = target.setdefault(key, {
         "family": family, "platform": platform, "version": version,
-        "url": url, "expected_sha256": sha256.lower() if sha256 else None,
+        "url": url, "expected_sha256": digest,
         "sources": [],
     })
     if source not in item["sources"]:
         item["sources"].append(source)
-    if sha256:
-        digest = sha256.lower()
-        if item["expected_sha256"] not in (None, digest):
-            raise ValueError(f"conflicting hashes for {url}")
-        item["expected_sha256"] = digest
+    if advertised_url not in item.setdefault('advertised_urls', []):
+        item['advertised_urls'].append(advertised_url)
+    if digest:
+        item['acquisition_id'] = 'package-metadata:'+hashlib.sha256(
+            json.dumps([url, digest]).encode()).hexdigest()
 
 
-def winget_candidates(target: dict) -> None:
-    base = "repos/microsoft/winget-pkgs/contents/manifests/s/Sonos"
-    for package, family in WINGET_PACKAGES.items():
-        versions = gh_json(f"{base}/{package}?ref=master")
+def gh_tree(repository, revision):
+    result = gh_json(f'repos/{repository}/git/trees/{urllib.parse.quote(revision, safe="")}')
+    if not isinstance(result, dict) or result.get('truncated') is not False or not isinstance(result.get('tree'), list):
+        raise ValueError(f'incomplete Git tree: {repository}@{revision}')
+    return result['tree']
+
+
+def gh_directory(repository, path):
+    branch = gh_json(f'repos/{repository}')['default_branch']
+    entries = gh_tree(repository, branch)
+    for part in path.split('/'):
+        node = next((row for row in entries if row.get('type') == 'tree' and row.get('path') == part), None)
+        if node is None:
+            raise ValueError(f'Git directory not found: {repository}/{path}')
+        entries = gh_tree(repository, node['sha'])
+    return entries
+
+
+def winget_candidates(target: dict) -> list[dict]:
+    repository = 'microsoft/winget-pkgs'
+    packages = gh_directory(repository, 'manifests/s/Sonos')
+    errors = []
+    for package in packages:
+        if package.get('type') != 'tree':
+            continue
+        family = 's1' if package['path'].lower().startswith('s1') else 'unknown'
+        try:
+            versions = gh_tree(repository, package['sha'])
+        except GitHubSourcePaused as error:
+            errors.append({'source': f'winget:{package["path"]}', 'error': str(error)})
+            return errors
+        except Exception as error:
+            errors.append({'source': f'winget:{package["path"]}', 'error': str(error)})
+            continue
         for version in versions:
-            files = gh_json(version["url"].split("api.github.com/")[-1])
-            manifests = [f for f in files if f["name"].endswith(".installer.yaml")]
-            for manifest in manifests:
-                payload = gh_json(manifest["url"].split("api.github.com/")[-1])
-                text = base64.b64decode(payload["content"]).decode()
-                urls = re.findall(r"^\s*InstallerUrl:\s*(\S+)", text, re.M)
-                hashes = re.findall(r"^\s*InstallerSha256:\s*([0-9A-Fa-f]{64})", text, re.M)
-                for url, digest in zip(urls, hashes):
-                    add_candidate(target, family=family, platform="windows",
-                                  version=version["name"], url=url, sha256=digest,
-                                  source="winget-current")
+            if version.get('type') != 'tree':
+                continue
+            source = f'winget:{package["path"]}/{version["path"]}'
+            try:
+                files = gh_tree(repository, version['sha'])
+            except GitHubSourcePaused as error:
+                errors.append({'source': source, 'error': str(error)})
+                return errors
+            except Exception as error:
+                errors.append({'source': source, 'error': str(error)})
+                continue
+            for manifest in files:
+                if manifest.get('type') != 'blob' or not manifest['path'].endswith('.installer.yaml'):
+                    continue
+                try:
+                    payload = gh_json(f'repos/{repository}/git/blobs/{manifest["sha"]}')
+                    # BaseLoader keeps identifiers and digests as strings and
+                    # never constructs objects from YAML tags.
+                    document = yaml.load(base64.b64decode(payload['content']).decode(), Loader=yaml.BaseLoader)
+                    installers = document.get('Installers', [document])
+                    if not isinstance(installers, list) or not installers:
+                        raise ValueError('installer manifest has no installer records')
+                    for installer in installers:
+                        try:
+                            url = installer.get('InstallerUrl', document.get('InstallerUrl'))
+                            digest = installer.get('InstallerSha256', document.get('InstallerSha256'))
+                            if not isinstance(url, str) or not url:
+                                raise ValueError('installer record has no URL')
+                            if digest is not None and (not isinstance(digest, str) or not re.fullmatch(r'[0-9a-fA-F]{64}', digest)):
+                                errors.append({'source': source, 'error': 'installer record has an invalid SHA-256', 'url': url})
+                                digest = None
+                            add_candidate(target, family=family, platform='windows', version=version['path'],
+                                          url=url, sha256=digest, source=source+':'+manifest['sha'])
+                        except Exception as error:
+                            errors.append({'source': source, 'error': str(error)})
+                except GitHubSourcePaused as error:
+                    errors.append({'source': source, 'error': str(error)})
+                    return errors
+                except Exception as error:
+                    errors.append({'source': source, 'error': str(error)})
+    return errors
 
 
-def homebrew_candidates(target: dict) -> None:
+def homebrew_candidates(target: dict) -> list[dict]:
+    errors = []
     for path, family in HOMEBREW_PATHS.items():
-        commits = gh_lines(
-            f"repos/Homebrew/homebrew-cask/commits?path={path}&per_page=100", ".[].sha"
-        )
+        try:
+            commits = gh_lines(
+                f"repos/Homebrew/homebrew-cask/commits?path={path}&per_page=100", ".[].sha"
+            )
+        except GitHubSourcePaused as error:
+            errors.append({'source': f'homebrew:{path}', 'error': str(error)})
+            return errors
+        except Exception as error:
+            errors.append({'source': f'homebrew:{path}', 'error': str(error)})
+            continue
         for sha in commits:
             raw_url = f"https://raw.githubusercontent.com/Homebrew/homebrew-cask/{sha}/{path}"
             try:
-                text = urllib.request.urlopen(raw_url, timeout=20).read().decode()
-            except (urllib.error.HTTPError, urllib.error.URLError):
+                with urllib.request.urlopen(raw_url, timeout=20) as response:
+                    text = response.read().decode()
+            except (urllib.error.HTTPError, urllib.error.URLError, OSError, UnicodeError) as error:
+                if getattr(error, 'code', None) != 404:
+                    errors.append({'source': raw_url, 'error': str(error)})
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+                if getattr(error, 'code', None) in {401, 403, 429}:
+                    return errors
                 continue
-            version_match = re.search(r'^\s*version "([^"]+)"', text, re.M)
-            hash_match = re.search(r'^\s*sha256 "([0-9a-f]{64})"', text, re.M)
-            if not version_match or not hash_match:
-                continue
-            parts = version_match.group(1).split(",")
-            version = parts[0]
-            if len(parts) == 2:
-                url = f"https://update-software.sonos.com/software/{parts[1]}/Sonos_{version}.dmg"
-            else:
-                url_match = re.search(r'^\s*url "([^"]+)"', text, re.M)
-                if not url_match:
-                    continue
-                url = url_match.group(1)
-            add_candidate(target, family=family, platform="macos", version=version,
-                          url=url, sha256=hash_match.group(1),
-                          source=f"homebrew-history:{sha[:12]}")
+            try:
+                version_match = re.search(r'''^\s*version\s+(['"])([^'"\n]+)\1''', text, re.M)
+                version_text = version_match[2] if version_match else 'latest' if re.search(r'^\s*version\s+:latest\b', text, re.M) else None
+                url_match = re.search(r'''^\s*url\s+(['"])([^'"\n]+)\1''', text, re.M)
+                if version_text is None or url_match is None:
+                    raise ValueError('unsupported Homebrew version or URL declaration')
+                parts = version_text.split(',')
+                if url_match[1] == "'" and '#{' in url_match[2]:
+                    raise ValueError('single-quoted Homebrew URL cannot interpolate a version')
+                url = url_match[2].replace('#{version.csv.first}', parts[0])
+                if len(parts) > 1:
+                    url = url.replace('#{version.csv.second}', parts[1])
+                url = url.replace('#{version.no_dots}', version_text.replace('.', '')).replace('#{version}', version_text)
+                if '#{' in url:
+                    raise ValueError('unsupported Homebrew URL interpolation')
+                hash_match = re.search(r'''^\s*sha256\s+(['"])([0-9a-fA-F]{64})\1''', text, re.M)
+                add_candidate(target, family=family, platform='macos', version=parts[0],
+                              url=url, sha256=hash_match[2] if hash_match else None,
+                              source=f'homebrew-history:{sha}:{path}')
+            except Exception as error:
+                errors.append({'source': raw_url, 'error': str(error)})
+    return errors
 
 
 def family_for_wayback_url(url: str) -> str:
@@ -247,7 +349,9 @@ def main() -> int:
                           url=item['url'], sha256=None, source='saved-installer-index')
         for name, source in [('winget', winget_candidates), ('homebrew', homebrew_candidates)]:
             try:
-                source(candidates)
+                discovered_errors = source(candidates)
+                if isinstance(discovered_errors, list):
+                    errors.extend(discovered_errors)
             except Exception as error:
                 errors.append({'source': name, 'error': str(error)})
     direct_redirects = check_direct_redirects(include_history=not args.current_only)
