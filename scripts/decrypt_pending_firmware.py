@@ -170,7 +170,7 @@ def main() -> int:
     for entry in pending:
         if observations.get(identity(entry), {}).get('revision') != revision(entry):
             eligible.pop(identity(entry), None)
-    queue = select(pending, eligible, key=identity, limit=args.max_packages)
+    queue = select(pending, eligible, key=identity, limit=args.max_packages, state=state, queue=args.repo)
 
     decrypted: list[str] = []
     extracted_plaintext: list[str] = []

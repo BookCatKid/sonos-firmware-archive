@@ -27,8 +27,12 @@ def checkpoint(prior=None, *, success=False, negative=False, success_hours=24, n
             'next_attempt_at': (now + timedelta(hours=hours)).isoformat()}
 
 
-def select(items, records, *, key, limit, force=False, now=None):
-    """Keep source priority for new leads and reserve capacity for oldest retries."""
+def select(items, records, *, key, limit, force=False, now=None, state=None, queue='default'):
+    """Reserve retry capacity; persist alternating turns when only one slot fits.
+
+    Workers pass their saved state and a stable queue name. Larger batches keep
+    their retry reservation and source priority without needing rotation.
+    """
     if limit <= 0:
         return []
     fresh, retries = [], []
@@ -39,6 +43,16 @@ def select(items, records, *, key, limit, force=False, now=None):
         elif force or due(prior, now):
             retries.append(item)
     retries.sort(key=lambda item: records[key(item)].get('checked_at', ''))
+    if limit == 1 and state is not None:
+        rotation = state.setdefault('retry_rotation', {}).setdefault(queue, {})
+        lane = rotation.get('next_lane', 'retry')
+        if lane not in {'retry', 'fresh'}:
+            raise ValueError('retry queue lane must be retry or fresh')
+        use_retry = bool(retries) and (not fresh or lane == 'retry')
+        chosen = (retries if use_retry else fresh)[:1]
+        if chosen:
+            rotation['next_lane'] = 'fresh' if use_retry else 'retry'
+        return chosen
     reserved = min(len(retries), max(1, limit // 4))
     chosen = retries[:reserved] + fresh[:limit - reserved]
     # Fill spare capacity without starving either queue when the other is empty.

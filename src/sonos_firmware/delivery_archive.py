@@ -101,7 +101,8 @@ def recover_deliveries(receipt, repository, source_kind, packages, *, selector=N
         and row['artifact']['source_kind'] == source_kind and row['artifact']['package'] in packages
         and (selector is None or selector in {row['artifact'].get('source_version_selector'),
                                              *row['artifact'].get('source_version_selectors', [])})]
-    queue = select(pending, {row['capture_id']: row for row in pending}, key=lambda row: row['capture_id'], limit=limit)
+    queue = select(pending, {row['capture_id']: row for row in pending}, key=lambda row: row['capture_id'], limit=limit,
+                   state=document, queue=f'{repository}/{source_kind}/{",".join(sorted(packages))}/{selector or "*"}')
     recovered = []
     for capture in queue:
         artifact = capture['artifact']

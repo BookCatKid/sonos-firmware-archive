@@ -83,7 +83,8 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
         if row.get('status') == 'preserved' and row.get('manifest'):
             remember_manifest(frontier, row['manifest'])
     atomic_json(path, state)
-    queue = select(list(observations), observations, key=lambda identity: identity, limit=limit)
+    queue = select(list(observations), observations, key=lambda identity: identity, limit=limit,
+                   state=state, queue=repository)
     attempted = preserved = 0
     work.mkdir(parents=True, exist_ok=True)
     for identity in queue:

@@ -4,6 +4,7 @@ from __future__ import annotations
 import time
 import math
 import urllib.error
+from copy import deepcopy
 from dataclasses import asdict
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
@@ -41,7 +42,7 @@ def _add_namespace(namespaces, base, source, model_max, **evidence):
             other['parent_namespace'] = base
 
 
-def _namespace_candidates(namespaces, limit, blocked_hosts):
+def _namespace_candidates(namespaces, limit, blocked_hosts, scheduling):
     for row in namespaces.values():
         if row['next_model'] > row['model_max'] and due(row):
             row['model_max'] = 2*row['model_max'] + 1
@@ -51,7 +52,7 @@ def _namespace_candidates(namespaces, limit, blocked_hosts):
     active = sorted((base for base, row in namespaces.items() if due(row) and
                      urlsplit(base).hostname not in blocked_hosts),
                     key=lambda base: namespaces[base].get('checked_at', ''))
-    queue = select(active, records, key=lambda key: key, limit=limit)
+    queue = select(active, records, key=lambda key: key, limit=limit, state=scheduling, queue='inference')
     batch = max(1, limit // len(queue)) if queue else 0
     rows = []
     for base in queue:
@@ -92,6 +93,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
              metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=(),
              profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128):
     start = time.monotonic()
+    scheduling = {'retry_rotation': deepcopy(state.get('retry_rotation', {}))}
     if not isinstance(model_max, int) or isinstance(model_max, bool) or model_max < 0:
         raise ValueError('initial metadata model maximum must be a nonnegative integer')
     if not isinstance(inference_limit, int) or isinstance(inference_limit, bool) or not 1 <= inference_limit <= 4096:
@@ -202,7 +204,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         counterpart = host_counterpart(Candidate(**fields))
         if counterpart:
             candidates.setdefault(counterpart.url, {**row, **asdict(counterpart), 'parent_url': row['url']})
-    inference = _namespace_candidates(namespaces, inference_limit, graph.get('blocked_hosts', []))
+    inference = _namespace_candidates(namespaces, inference_limit, graph.get('blocked_hosts', []), scheduling)
     for row in inference:
         prior = candidates.get(row['url'])
         if not prior or prior.get('inferred_only'):
@@ -245,6 +247,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     deferred = list(dict.fromkeys(graph['pending_manifest_urls'] + [f['url'] for f in graph['failures']
                         if f.get('attempted') and official(f['url'])]))
     result = {'schema_version': 1, 'roots': roots, 'manifests': list(manifests.values()),
+              **scheduling,
               'documents': list(documents.values()),
               'candidates': list(retained.values()), 'probes': probes,
               'inferred_namespaces': namespaces, 'inference_pending': inference_pending,

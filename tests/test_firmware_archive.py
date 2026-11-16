@@ -275,6 +275,55 @@ class PublicationTests(unittest.TestCase):
             remaining = archive.acquisition_state(root)['unpublished_captures']
             self.assertEqual([r['repository'] for r in remaining], ['another/repo'])
 
+    def test_one_slot_rotates_between_old_publication_recovery_and_new_sources(self):
+        from datetime import timedelta
+        from sonos_firmware import releases, retry
+        from test_app_archive import FakeGitHub, NOW
+        github = FakeGitHub()
+        fresh = candidate('new')
+        body = section(99, 0, b'new synthetic payload')
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(releases, 'remote_assets', side_effect=github.assets), \
+             patch.object(releases.subprocess, 'run', side_effect=github.command), \
+             patch.object(archive, 'verified_asset', return_value=None), \
+             patch.object(discovery, 'open_sonos', side_effect=lambda *args, **kwargs: Response(body)) as acquire:
+            root = Path(temporary)
+            old = {'repository': 'owner/repo', 'capture': captured(candidate('old'), section(6, 0, b'old')),
+                   'checked_at': '2000-01-01T00:00:00+00:00'}
+            atomic_json(archive.acquisition_path(root), {'sources': {}, 'unpublished_captures': [old]})
+            with patch.object(retry, '_now', return_value=NOW):
+                first = archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+            self.assertEqual(first['attempted'], 1)
+            acquire.assert_not_called()
+            with patch.object(retry, '_now', return_value=NOW+timedelta(days=2)):
+                second = archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+            self.assertEqual(second['attempted'], 1)
+            self.assertEqual(second['preserved'], 1)
+            self.assertEqual(acquire.call_count, 1)
+            with patch.object(retry, '_now', return_value=NOW+timedelta(days=4)):
+                archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+            remaining = archive.acquisition_state(root)['unpublished_captures']
+            self.assertEqual(remaining[0]['consecutive_failures'], 2)
+            self.assertEqual(acquire.call_count, 1)
+
+    def test_paused_replay_does_not_consume_the_only_firmware_acquisition_slot(self):
+        from sonos_firmware import releases
+        from test_app_archive import FakeGitHub
+        github = FakeGitHub()
+        paused = candidate('paused', archive_capture={'timestamp': '20200101000000'}, acquisition_id='wayback:paused')
+        fresh = candidate('healthy')
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(releases, 'remote_assets', side_effect=github.assets), \
+             patch.object(releases.subprocess, 'run', side_effect=github.command), \
+             patch.object(discovery, 'open_sonos', return_value=Response(section(99, 0, b'fixture'))) as acquire:
+            root = Path(temporary)
+            result = archive.archive_candidates(root, 'owner/repo', [paused, fresh], root/'worker',
+                                                limit=1, paused_hosts={'web.archive.org'})
+            self.assertEqual(result['attempted'], 1)
+            self.assertEqual(result['preserved'], 1)
+            self.assertEqual(acquire.call_args.args[0].full_url, fresh['url'])
+            self.assertEqual(archive.acquisition_state(root)['sources']['owner/repo']['wayback:paused']['status'], 'pending')
+
     def test_receipt_automatically_publishes_with_declared_asset_name(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

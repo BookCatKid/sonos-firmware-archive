@@ -222,7 +222,6 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
         if 'revision' in row and any(row['revision'].get(key) != value for key, value in revision(row['candidate']).items()):
             del eligibility[url]
             observations[url]['status'] = 'needs-refresh'
-    queue = select(candidates, eligibility, key=source_id, limit=limit)
     attempted = preserved = 0
     errors = []
     ready = set()
@@ -234,8 +233,20 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
 
     # Older captures at a mutable source URL remain independently reconcilable.
     backlog = state.setdefault('unpublished_captures', [])
-    recovery = select([row for row in backlog if row.get('repository') == repository],
-                      {id(row): row for row in backlog}, key=id, limit=max(1, limit // 4)) if limit > 0 else []
+    pending = [row for row in backlog if row.get('repository') == repository]
+    def selectable(candidate):
+        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        previous = observations[source_id(candidate)]
+        return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
+    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', id(row))} for row in pending]
+    jobs.extend({'kind': 'source', 'row': row, 'key': ('source', source_id(row))}
+                for row in candidates if selectable(row))
+    jobs_due = {('recovery', id(row)): row for row in pending}
+    jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=limit,
+                    state=state, queue=repository)
+    recovery = [job['row'] for job in chosen if job['kind'] == 'recovery']
+    queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for row in recovery:
         attempted += 1
         capture = row['capture']
@@ -252,7 +263,6 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
         except Exception as error:
             row.update(checkpoint(row), error=str(error))
         save()
-    queue = queue[:max(0, limit - attempted)]
     save()
     work.mkdir(parents=True, exist_ok=True)
     for candidate in queue:

@@ -18,6 +18,31 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_one_slot_inference_does_not_repeat_only_a_failed_namespace(self):
+        from datetime import timedelta
+        from sonos_firmware import retry
+        from test_app_archive import NOW
+        bad = 'https://new-firmware.sonos.com/bad/^1.0-1'
+        good = 'https://new-firmware.sonos.com/good/^2.0-2'
+        state = {'inferred_namespaces': {
+            bad: {'next_model': 0, 'model_max': 0, 'status': 'failed', 'source': 'metadata-base',
+                  'checked_at': '2000-01-01T00:00:00+00:00'},
+            good: {'next_model': 0, 'model_max': 0, 'source': 'metadata-base'}}}
+        seen = []
+        def probe(candidate):
+            seen.append(candidate.url)
+            return {**asdict(candidate), 'available': False, 'http_status': 500 if '/bad/' in candidate.url else 404}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
+             patch.object(frontier.time, 'sleep'):
+            for index in range(3):
+                with patch.object(retry, '_now', return_value=NOW+timedelta(days=30*index)):
+                    state = frontier.discover(state, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                        probe_fn=probe, model_max=0, inference_limit=1)
+                state = json.loads(json.dumps(state))
+        self.assertIn('/bad/', seen[0])
+        self.assertIn('/good/', seen[1])
+        self.assertIn('/bad/', seen[2])
+
     def test_indexed_packages_enter_discovery_without_any_available_manifest(self):
         from sonos_firmware.archive_index import discover_sources
         known = HOST+'/firmware/history/1.2-345-1-17.upd'

@@ -116,7 +116,8 @@ def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*10
         previous = eligible.get(candidate['sha256'], {})
         if previous.get('status') == 'failed' and previous.get('source_revision') != candidate['source_revision']:
             eligible.pop(candidate['sha256'], None)
-    queue = select(sources, eligible, key=lambda row: row['sha256'], limit=limit)
+    queue = select(sources, eligible, key=lambda row: row['sha256'], limit=limit,
+                   state=document, queue=repository)
     work.mkdir(parents=True, exist_ok=True)
     attempted = 0
 

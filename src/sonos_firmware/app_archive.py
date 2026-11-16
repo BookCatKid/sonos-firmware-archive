@@ -167,9 +167,21 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
 
     save()
     outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
+    blocked = set(paused_hosts)
+    def selectable(candidate):
+        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        previous = observations[acquisition_id(candidate)]
+        return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
-    recoveries = select(outstanding, {key(row): row for row in outstanding}, key=key,
-                        limit=max(1, limit // 4) if limit else len(outstanding))
+    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding]
+    jobs.extend({'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
+                for row in candidates.values() if selectable(row))
+    jobs_due = {('recovery', *key(row)): row for row in outstanding}
+    jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=limit or len(jobs),
+                    state=document, queue=repository)
+    recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
+    queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for capture in recoveries:
         attempted += 1
         try:
@@ -185,9 +197,6 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
         save()
-    remaining = max(0, limit - attempted) if limit else len(candidates)
-    queue = select(list(candidates.values()), eligibility, key=acquisition_id, limit=remaining)
-    blocked = set(paused_hosts)
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
         for candidate in queue:

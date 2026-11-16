@@ -88,7 +88,8 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=4, acqui
 
     # Reconcile exact interrupted captures before requiring source bytes or keys.
     pending = [key for key, value in captures.items() if value['status'] == 'pending']
-    recover = select(pending, captures, key=lambda key: key, limit=max(1, limit // 4))
+    recover = select(pending, captures, key=lambda key: key, limit=max(1, limit // 4),
+                     state=journal, queue='publication')
     for identity in recover:
         capture = captures[identity]
         recovery_attempted += 1
@@ -123,7 +124,7 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=4, acqui
             errors.append({'package_id': capture['package_id'], 'error': str(error)})
         save()
     queue = select([row for row in packages if row['id'] not in resolved], eligible,
-                   key=lambda row: row['id'], limit=max(0, limit - attempted))
+                   key=lambda row: row['id'], limit=max(0, limit - attempted), state=journal, queue='inventory')
     for package in queue:
         identity = package['id']
         keys, revision = contexts[identity]

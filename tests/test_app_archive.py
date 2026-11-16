@@ -101,6 +101,34 @@ class AppArchiveTests(unittest.TestCase):
         self.assertEqual(len(self.github.uploads), 1)
         self.assertEqual(result['artifacts'][0]['sha256'], hashlib.sha256(self.github.uploads[0][3]).hexdigest())
 
+    def test_single_slot_cannot_be_monopolized_by_a_missing_old_upload(self):
+        old = {'repository': 'owner/repo', 'candidate': self.candidate('old.exe'),
+               'sha256': 'a'*64, 'bytes': 10, 'release_tag': 'missing-old', 'release_asset': 'old.exe',
+               'checked_at': '2000-01-01T00:00:00+00:00'}
+        self.receipt.write_text(json.dumps({'schema_version': 1, 'artifacts': [], 'unpublished_captures': [old]}))
+        fresh = self.candidate('new.exe')
+        first = self.run_archive([fresh], limit=1)
+        self.assertEqual(first['attempted_this_run'], 1)
+        self.assertEqual(self.acquired, [])
+        second = self.run_archive([fresh], now=NOW+timedelta(days=2), limit=1)
+        self.assertEqual(second['attempted_this_run'], 1)
+        self.assertEqual(second['artifact_total'], 1)
+        self.assertEqual(self.acquired, [fresh['url']])
+        third = self.run_archive([], now=NOW+timedelta(days=4), limit=1)
+        self.assertEqual(third['unpublished_captures'][0]['consecutive_failures'], 2)
+        self.assertEqual(len(self.acquired), 1)
+
+    def test_paused_unattempted_replay_cannot_take_a_healthy_sources_only_slot(self):
+        paused = self.candidate('paused.exe', acquisition_id='wayback:paused', archive_capture={'timestamp': '20200101000000'})
+        fresh = self.candidate('healthy.exe')
+        self.discovery.write_text(json.dumps({'candidates': [paused, fresh]}))
+        with patch.object(retry, '_now', return_value=NOW):
+            result = preserve(self.source, self.discovery, self.receipt, 'owner/repo', root=self.root,
+                              limit=1, paused_hosts={'web.archive.org'})
+        self.assertEqual(self.acquired, [fresh['url']])
+        self.assertEqual(result['attempted_this_run'], 1)
+        self.assertEqual(result['source_observations']['owner/repo']['wayback:paused']['status'], 'pending')
+
     def test_timestamped_captures_at_same_url_remain_distinct_queued_acquisitions(self):
         rows = [self.candidate(acquisition_id='wayback:old'), self.candidate(acquisition_id='wayback:new')]
         self.data.update({'wayback:old': b'MZ older captured installer', 'wayback:new': b'MZ newer captured installer'})

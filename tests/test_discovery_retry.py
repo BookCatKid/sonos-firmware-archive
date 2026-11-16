@@ -28,6 +28,27 @@ def page(version='1.0', filename='source.tar.xz'):
 
 
 class RetryPolicyTests(unittest.TestCase):
+    def test_single_slot_alternates_across_serialized_checkpoints(self):
+        state = {}
+        records = {'old': {'checked_at': '2000-01-01T00:00:00+00:00'}}
+        selected = []
+        for index in range(6):
+            chosen = retry.select(['old', f'new-{index}'], records, key=str, limit=1,
+                                  state=state, queue='source', now=NOW)
+            selected.extend(chosen)
+            state = json.loads(json.dumps(state))
+        self.assertEqual(selected, ['old', 'new-1', 'old', 'new-3', 'old', 'new-5'])
+
+    def test_independent_queues_do_not_change_each_others_turn(self):
+        state = {}
+        records = {'old': {'checked_at': '2000-01-01T00:00:00+00:00'}}
+        selected = [retry.select(['old', 'new'], records, key=str, limit=1, state=state, queue=queue, now=NOW)
+                    for queue in ('a', 'b', 'a', 'b')]
+        self.assertEqual(selected, [['old'], ['old'], ['new'], ['new']])
+        before = json.loads(json.dumps(state))
+        self.assertEqual(retry.select(['old'], records, key=str, limit=0, state=state, queue='a', now=NOW), [])
+        self.assertEqual(state, before)
+
     def test_observed_versions_are_not_dropped_by_speculative_guess_bounds(self):
         from sonos_firmware.gpl_archive import candidates
         leads = candidates(set(), evidence={'1000.1000': {'https://www.sonos.com/documents/gpl/1000.1000/gpl.html'}})
@@ -121,6 +142,30 @@ class GPLRetryTests(unittest.TestCase):
                 module.discover(args)
             fetch.assert_called_once_with(index_url('1000.1000'))
             self.assertIn('1000.1000', module.live_catalog(args.output)['releases'])
+
+    def test_one_request_runs_continue_discovery_while_old_failures_stay_due(self):
+        module = load('archive_gpl_direct')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            args = self.args(root)
+            args.output.mkdir()
+            (args.output/'discovery.json').write_text(json.dumps({'schema_version': 1, 'candidates': {
+                '1000.1000': {'version': '1000.1000', 'state': 'http-error',
+                              'checked_at': '2000-01-01T00:00:00+00:00'}}}))
+            requested = []
+            def fetch(url):
+                requested.append(url)
+                version = url.split('/')[-2]
+                return HttpResult(500, b'temporary failure', 'text/plain', url) if version == '1000.1000' else page(version)
+            with patch.object(module, 'ROOT', root), patch.object(module, 'get_page', side_effect=fetch), \
+                 patch.object(module, 'pause'):
+                for index in range(4):
+                    with patch.object(retry, '_now', return_value=NOW+timedelta(days=30*index)):
+                        module.discover(args)
+            self.assertEqual(requested[0], index_url('1000.1000'))
+            self.assertNotEqual(requested[1], index_url('1000.1000'))
+            self.assertEqual(requested[2], index_url('1000.1000'))
+            self.assertNotEqual(requested[3], index_url('1000.1000'))
 
     def test_source_cooldown_is_not_bypassed_by_new_versions(self):
         module = load('archive_gpl_direct')

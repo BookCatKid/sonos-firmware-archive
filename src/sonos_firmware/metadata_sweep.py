@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 import hashlib
 import re
 import time
@@ -135,6 +137,7 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
     if (not isinstance(limit, int) or isinstance(limit, bool) or not isinstance(count, int) or
         isinstance(count, bool) or not 0 <= limit <= count <= 10000):
         raise ValueError('metadata profile budgets must satisfy 0 <= limit <= count <= 10000')
+    scheduling = {'retry_rotation': deepcopy(previous.get('retry_rotation', {}))}
     observations = dict(previous.get('profiles', {}))
     responses = dict(previous.get('responses', {}))
     pending = {}
@@ -173,7 +176,8 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
     ordered.update({key: row['profile'] for key, row in observations.items()})
     source_backoff = dict(previous.get('source_backoff', {}))
     paused = bool(source_backoff) and not due(source_backoff)
-    queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit)
+    queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit,
+                                    state=scheduling)
     errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
                'http_status': source_backoff.get('http_status')}] if paused else []
     attempted = 0
@@ -213,7 +217,7 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
         time.sleep(.2)
     unchecked = len(pending)
     failed = sum(row.get('status') == 'failed' for row in observations.values())
-    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted,
+    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted, **scheduling,
             'source_backoff': source_backoff,
             'pending_profiles': list(pending.values()),
             'profile_exploration': {'policy': 'continuing-windows', 'generator_version': 1,

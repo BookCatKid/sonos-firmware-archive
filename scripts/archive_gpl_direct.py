@@ -150,7 +150,7 @@ def discover(args: argparse.Namespace) -> int:
     retries = [{'version': version, 'priority': row.get('priority', -1),
                 'evidence': row.get('evidence', [index_url(version)])} for version, row in checked.items()]
     todo = [] if paused else select(fresh+retries, checked, key=lambda item: item['version'],
-                                    limit=args.limit, force=args.recheck)
+                                    limit=args.limit, force=args.recheck, state=state)
     for item in todo:
         version = item["version"]
         if version not in checked:
@@ -331,7 +331,9 @@ def archive(args: argparse.Namespace) -> int:
             if previous and previous.get('state') != 'verified':
                 observations[(version, link['url'])] = previous
     chosen = select(work, observations, key=lambda item: (item['version'], item['link']['url']),
-                    limit=args.limit or len(work), force=args.retry_errors)
+                    limit=args.limit or len(work), force=args.retry_errors, state=records,
+                    queue=json.dumps([args.repo, 'all' if args.next else sorted(versions),
+                                      sorted(args.filename or []), bool(args.include_upstream)]))
     selected = {(item['version'], item['link']['url']) for item in chosen}
     for version in versions:
         valid_version(version)

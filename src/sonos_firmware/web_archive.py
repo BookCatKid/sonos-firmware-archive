@@ -392,7 +392,8 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
         pending = [row for row in state.get('pending_captures', [])
                    if row['repository'] == repository and row['app'] in apps]
         for document in select(pending, {row['bundle']['sha256']: row for row in pending},
-                               key=lambda row: row['bundle']['sha256'], limit=4):
+                               key=lambda row: row['bundle']['sha256'], limit=4,
+                               state=state, queue=f'{repository}/{",".join(sorted(apps))}'):
             try:
                 config = APPS[document['app']]
                 ensure_release(repository, document['release_tag'], config['title'],

@@ -153,6 +153,21 @@ with a common metadata lock execute in order. Independent sources can proceed
 when another target fails. Android history uses a bounded, rotating queue and
 retries failures rather than permanently suppressing them.
 
+The shared scheduler saves a retry/fresh rotation in each worker checkpoint.
+With a one-request budget, eligible retries and unattempted leads alternate
+across runs; neither needs the other queue to empty first. Larger batches keep
+their reserved retry capacity. Rotation is scoped to the repository or filtered
+queue and survives worker restarts. It does not bypass source cooldowns or count
+an unattempted journal entry as a retry.
+
+App and firmware publication schedule interrupted-capture recovery and source
+acquisition together under the same attempt limit. A missing older upload can
+retry without monopolizing a one-attempt worker. Source hosts already paused
+for the run are excluded from acquisition selection, while publication
+reconciliation remains possible without fetching their payloads. Profile,
+model inference, GPL, key recovery, extraction, inventory and delivery queues
+use the same saved rotation policy.
+
 Desktop and official APK acquisition share per-repository URL observations.
 Desktop discovery walks nonrecursive Git trees under WinGet's Sonos vendor
 directory, discovering package names and retained version directories from the

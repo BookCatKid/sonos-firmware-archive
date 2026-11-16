@@ -127,7 +127,8 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     # Failed candidates back off while new sources continue through the queue.
     preferred = [row for row in sources if records.get(identity(row), {}).get('status') == 'recovered'][:max_sources]
     other = [row for row in sources if row not in preferred]
-    queue = preferred + select(other, records, key=identity, limit=max_sources - len(preferred))
+    queue = preferred + select(other, records, key=identity, limit=max_sources - len(preferred),
+                               state=state, queue=f'{repository}/{expected_recipient}')
     output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     failures = []
     for source in queue:

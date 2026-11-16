@@ -3,6 +3,8 @@ import tempfile
 import struct
 import urllib.error
 import itertools
+import json
+from datetime import timedelta
 from pathlib import Path
 from unittest.mock import patch, Mock
 
@@ -26,6 +28,27 @@ class MetadataSweepTests(unittest.TestCase):
                 state = discover_profiles(state, Path(temporary), {}, limit=1, count=1,
                     fetch=lambda profile: seen.append(tuple(profile[field] for field in PROFILE_FIELDS)) or self.body())
         self.assertEqual(set(seen), set(itertools.product((0, 1), repeat=6)))
+
+    def test_one_slot_keeps_exploring_when_a_saved_profile_always_fails(self):
+        from sonos_firmware import retry
+        from test_app_archive import NOW
+        profile = {**BASELINE, 'cmaj': 777}
+        key = ':'.join(str(profile[field]) for field in PROFILE_FIELDS)
+        state = {'profiles': {key: {'profile': profile, 'status': 'failed',
+                                   'checked_at': '2000-01-01T00:00:00+00:00'}}}
+        seen = []
+        def fetch(profile):
+            seen.append(profile['cmaj'])
+            if profile['cmaj'] == 777:
+                raise TimeoutError('fixture profile failure')
+            return self.body()
+        with tempfile.TemporaryDirectory() as temporary, patch('sonos_firmware.metadata_sweep.time.sleep'):
+            for index in range(4):
+                with patch.object(retry, '_now', return_value=NOW+timedelta(days=30*index)):
+                    state = discover_profiles(state, Path(temporary), {}, limit=1, count=1, fetch=fetch)
+                state = json.loads(json.dumps(state))
+        self.assertEqual(seen[::2], [777, 777])
+        self.assertTrue(all(major != 777 for major in seen[1::2]))
 
     def test_failed_version_profile_remains_retryable_after_its_hint_disappears(self):
         def fetch(profile):
