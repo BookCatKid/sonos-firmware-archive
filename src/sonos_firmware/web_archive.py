@@ -333,7 +333,23 @@ def _register_deployments(existing, deployments):
                 if row['outcome'] == 'captured':
                     resources = {identity: value for identity, value in resources.items()
                         if value['requested_url'] != row['requested_url'] or value['outcome'] == 'captured'}
-                resources[(row['requested_url'], row.get('sha256'))] = row
+                identity = (row['requested_url'], row.get('sha256'))
+                previous = resources.get(identity)
+                if previous:
+                    publications = {}
+                    for capture in [*previous.get('publications', []), previous,
+                                    *row.get('publications', []), row]:
+                        if capture.get('status') != 'verified' or not capture.get('release_asset'):
+                            continue
+                        publication = {field: capture[field] for field in (
+                            'status', 'repository', 'release_tag', 'release_asset',
+                            'release_url', 'sha256', 'bytes') if field in capture}
+                        publication_key = (publication.get('repository'), publication.get('release_tag'),
+                                           publication['release_asset'])
+                        publications[publication_key] = publication
+                    if publications:
+                        row['publications'] = list(publications.values())
+                resources[identity] = row
             deployment['resources'] = list(resources.values())
             successful = {row['requested_url'] for row in resources.values() if row['outcome'] == 'captured'}
             deployment['pending_urls'] = sorted((set(prior.get('pending_urls', [])) |
@@ -342,7 +358,8 @@ def _register_deployments(existing, deployments):
             deployment['captured_total'] = sum(row['outcome'] == 'captured' for row in resources.values())
             deployment['gap_total'] = sum(row['outcome'] != 'captured' for row in resources.values())
             deployment['complete'] = not deployment['pending_urls'] and not deployment['gap_total']
-            bundles = {row['sha256']: row for row in [*prior.get('bundles', []), prior['bundle'], deployment['bundle']]}
+            bundles = {(row.get('repository'), row.get('release_tag'), row['release_asset'], row['sha256']): row
+                       for row in [*prior.get('bundles', []), prior['bundle'], deployment['bundle']]}
             deployment['bundles'] = list(bundles.values())
         deployment['bundle_scope'] = 'capture-batch'
         deployment['complete'] = deployment['complete'] and deployment.get('identity_complete', True)

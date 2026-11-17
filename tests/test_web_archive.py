@@ -144,6 +144,20 @@ class WebArchiveTests(unittest.TestCase):
                           'https://pro.sonos.com/_next/static/b.js'})
         self.assertEqual(len(deployment['bundles']), 2)
 
+    def test_repeated_capture_keeps_every_verified_publication_for_audit(self):
+        from test_release_audit import audit
+        self.run_archive()
+        for capture_id in ('next', 'third', 'third'):
+            result = web.archive_apps(('pro',), self.root/capture_id, self.receipt, 'fresh/archive',
+                                      capture_id=capture_id, upload=True)
+        deployment, = result['deployments']
+        self.assertEqual(deployment['captured_total'], 2)
+        expected = {}
+        audit.walk_release_records(result, 'web-receipt', expected, 'fresh/archive')
+        actual = {(tag, name) for (repository, tag), assets in self.github.releases.items()
+                  for name in assets}
+        self.assertEqual(set(expected), actual)
+
     def test_lost_upload_response_reconciles_without_original_worker_or_source(self):
         self.lose_response = True
         first = self.run_archive()

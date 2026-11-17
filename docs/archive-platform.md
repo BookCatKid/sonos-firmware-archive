@@ -92,6 +92,16 @@ cold-start acquisition and continued discovery, not exhaustive historical
 coverage. Google Play HTTP 403 responses, unavailable historical indexes and
 encrypted sections without keys remain explicit, retryable gaps.
 
+The [expanded archive's release audit](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44178000955)
+checked 1,693 recorded assets across 27 releases against GitHub's sizes and
+digests: none were missing or mismatched. It separately reported 82 unrecorded
+copies. Of these, 81 were older web resource publications overwritten in
+receipts when identical deployment content was captured again. The receipt
+merge now retains every verified publication without counting the same resource
+as additional deployment content; replaying the two saved live receipts retains
+all 81 references. The remaining extra is a page snapshot without a completed
+catalog record; an extra asset alone is not treated as a preservation receipt.
+
 ## Worker lifecycle
 
 Historical index discovery queries both manifests and `.upd` payloads across
