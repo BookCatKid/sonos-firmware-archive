@@ -10,13 +10,13 @@
   "totals": {
     "cdx_sha1_mismatches_compared": 16,
     "cdx_sha1_mismatches_with_identical_direct_bytes": 16,
-    "compared": 126,
-    "different": 22,
-    "identical": 104,
+    "compared": 128,
+    "different": 23,
+    "identical": 105,
     "legacy_records": 167,
-    "pending": 41
+    "pending": 39
   },
-  "updated": "2026-11-15T20:44:17+00:00",
+  "updated": "2026-11-17T03:04:02+00:00",
   "versions": {
     "10.2": {
       "counts": {
@@ -1767,36 +1767,36 @@
       "counts": {
         "cdx_sha1_mismatches_compared": 0,
         "cdx_sha1_mismatches_with_identical_direct_bytes": 0,
-        "compared": 0,
-        "different": 0,
-        "identical": 0,
+        "compared": 2,
+        "different": 1,
+        "identical": 1,
         "legacy_records": 2,
-        "pending": 2
+        "pending": 0
       },
       "entries": {
         "SonosOpenSourceAttributions.pdf": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 314401,
+          "direct_release_asset": "SonosOpenSourceAttributions.pdf",
+          "direct_sha256": "58d6eff3d6c123b64179d4973a4ce1a12f125f47ee16cbb65b87e484d0ef7b38",
           "filename": "SonosOpenSourceAttributions.pdf",
           "legacy_bytes": 314401,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "2D0648FA137E82A273B93BC004313C1C4F0ED8F7",
           "legacy_local_sha1": "2D0648FA137E82A273B93BC004313C1C4F0ED8F7",
           "legacy_sha256": "58d6eff3d6c123b64179d4973a4ce1a12f125f47ee16cbb65b87e484d0ef7b38",
-          "state": "awaiting-direct-published-source"
+          "state": "identical-direct-source"
         },
         "gpl.html": {
-          "direct_bytes": null,
-          "direct_release_asset": null,
-          "direct_sha256": null,
+          "direct_bytes": 4351,
+          "direct_release_asset": "direct-b263e96002b0-gpl.html",
+          "direct_sha256": "b263e96002b0975531897f5b2673565e287412f7bf22d60f345be3ec5e274fa1",
           "filename": "gpl.html",
           "legacy_bytes": 7767,
           "legacy_cdx_digest_match": true,
           "legacy_cdx_sha1": "54EBFC9A01CED9D6F079D7244E97F4E8809168A9",
           "legacy_local_sha1": "54EBFC9A01CED9D6F079D7244E97F4E8809168A9",
           "legacy_sha256": "02e65f2cfdd4d296425cf075d50c92123b51e95318ab2438e98f098530fcb59e",
-          "state": "awaiting-direct-published-source"
+          "state": "historical-content-differs"
         }
       }
     },
