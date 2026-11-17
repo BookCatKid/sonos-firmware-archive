@@ -1,4 +1,4 @@
-# Complete ConnectX firmware archive
+# ConnectX firmware preservation
 
 [Issue #24](https://github.com/BookCatKid/sonos-firmware-archive/issues/24)
 identified an additional official distribution channel:
@@ -12,8 +12,10 @@ replaced, and the same package can appear in multiple campaigns.
 
 ## Automated discovery and preservation
 
-[The shared discovery workflow](../.github/workflows/archive.yml) runs every
-six hours and supports manual dispatch. It starts from anonymous S1/S2 Sonos
+[The shared discovery workflow](../.github/workflows/archive.yml) checks for
+due targets hourly and supports manual dispatch. The firmware target normally
+runs every six hours; incomplete runs become eligible on the next hourly tick.
+It starts from anonymous S1/S2 Sonos
 protocol endpoints and the legacy UPS response, follows canonical response
 locations, manifest base/image links and literal package-directory siblings,
 and explores inferred Prod/Dev counterparts. It discovers every referenced
@@ -27,11 +29,14 @@ Successfully discovered packages and captured manifest bodies are published
 independently, with verification before catalog registration.
 
 Available model keys then unlock preserved firmware through the shared raw
-extraction pipeline. The ConnectX step additionally inventories every section,
-unpacks application archives and root filesystems, and retains complete bundles.
-Its static recovery endpoint is checked by full-file hash every run. Snapshot
-identity includes the parsed version and SHA-256, so replacements do not overwrite
-older observations. Four complete ConnectX snapshots are processed per run.
+extraction pipeline. The same firmware worker inventories every section,
+unpacks supported application archives and root filesystems, and publishes
+inventory bundles. Configured mutable protocol roots receive priority for
+their first capture instead of waiting behind versioned backlog. Successful
+captures refresh at their configured cadence. Snapshot identity includes the
+parsed version and SHA-256, so replacements do not overwrite older observations.
+Acquisition, extraction and inventory each have independent per-run budgets
+and durable queues; these apply to all firmware models.
 
 Each snapshot publishes the exact source UPD, a reproducible extraction
 bundle, and a section/file manifest. New catalog entries and individual
@@ -39,11 +44,20 @@ payload locations are registered only after release uploads pass size and
 SHA-256 verification. Existing preserved packages keep their catalog identity;
 the complete extraction bundle supplies their additional section inventories.
 
-The source-to-hash index is [`data/discovery/connectx-index.json`](../data/discovery/connectx-index.json).
-Section manifests use `data/upd/`, and extraction receipts use `data/raw/`.
-The receipts retain decryption results, tar members, unpacked kernel hashes,
-and links to filesystem inventories in `data/filesystems/`.
-`data/discovery/connectx-scan.json` records acquisition errors.
+The current source-to-hash and retry ledger is
+`data/discovery/firmware-acquisition.json`. Section manifests use `data/upd/`,
+and extraction receipts use `data/raw/`. Shared extraction and inventory
+queues are recorded in `data/discovery/firmware-extraction.json` and
+`data/discovery/firmware-inventories.json`; the catalog contains verified
+publication references. Earlier `connectx-index.json` and `connectx-scan.json`
+records are retained historical observations, not scheduled worker inputs.
+
+## Historical research evidence
+
+The following dated research counts describe earlier audits and captures.
+They do not establish that a new destination has acquired or inventoried every
+source. Current publication and extraction status comes from that repository's
+shared ledgers and verified catalog records.
 
 The [2026-11-13 manifest-coverage audit](../data/discovery/manifest-coverage-2026-11-13.json)
 verified all 68 preserved source manifests against their recorded SHA-256s.

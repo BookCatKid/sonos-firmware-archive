@@ -216,6 +216,10 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
         if row.get('pending_publication') and url not in available:
             available[url] = row['candidate']
     candidates = list(available.values())
+    # Mutable protocol roots can change while versioned backlog is draining.
+    # Prioritize their first capture; the shared selector still reserves retries
+    # and excludes successful captures until their refresh cadence is due.
+    candidates.sort(key=lambda row: row.get('source') != 'protocol-static')
     for candidate in candidates:
         url = source_id(candidate)
         if url in known_urls and url not in observations:

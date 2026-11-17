@@ -355,7 +355,8 @@ def probe(item: dict) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True, metavar="FILE.json",
+                        help="write the discovery report to this JSON file; parent directories are created")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
     parser.add_argument('--history-state', type=Path)

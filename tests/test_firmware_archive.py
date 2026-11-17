@@ -95,6 +95,23 @@ class AcquisitionTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_mutable_protocol_root_is_captured_before_historical_backlog(self):
+        historical = candidate('historical')
+        current = candidate('current', source='protocol-static', version='unknown', refresh_hours=6)
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery, 'open_advertised', side_effect=lambda request, **kw:
+                          Response(section(99, 0, request.full_url.encode()))) as fetch, \
+             patch.object(archive, 'ensure_release'), \
+             patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
+            root = Path(temporary)
+            archive.archive_candidates(root, 'owner/repo', [historical, current], root/'worker', limit=1)
+            self.assertEqual(fetch.call_args.args[0].full_url, current['url'])
+            archive.archive_candidates(root, 'owner/repo', [historical, current], root/'worker', limit=1)
+            self.assertEqual(fetch.call_args.args[0].full_url, historical['url'])
+            observations = archive.acquisition_state(root)['sources']['owner/repo']
+            for row in (current, historical):
+                self.assertEqual(observations[row['url']]['status'], 'preserved')
+
     def test_unclassified_upd_can_be_preserved_alongside_known_models_without_guessing(self):
         rows = [candidate('unclassified', filename='opaque.upd', version='unknown', package_model=None,
                           archive_captures={'capture': {'timestamp': '20200101000000', 'digest': 'index-evidence'}}),
