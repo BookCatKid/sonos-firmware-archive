@@ -42,12 +42,11 @@ def _distribution_scope(state, evidence):
                              for link in metadata.get(field, []))
             if 'document_links' not in metadata:
                 snapshot = evidence / Path(manifest.get('snapshot', '')).name
-                if snapshot.is_file():
-                    try:
-                        _, items = parse_manifest(snapshot, source_url=url)
-                        reachable.update(normalize(c.url) for c in items if landing_url(c.url))
-                    except (OSError, ValueError, SyntaxError):
-                        pass  # Retain recorded links even if an older body cannot be reinterpreted.
+                try:
+                    _, items = parse_manifest(snapshot, source_url=url)
+                    reachable.update(normalize(c.url) for c in items if landing_url(c.url))
+                except (OSError, ValueError, SyntaxError):
+                    pass  # Retain recorded links even if an older body cannot be reinterpreted.
     for url, revisions in documents.items():
         for document in revisions:
             edges[url].extend((link, 'landing-page-link') for link in document.get('metadata', {}).get('links', []))
@@ -64,10 +63,15 @@ def _distribution_scope(state, evidence):
                 allowed.update(metadata.get('links', []))
             else:
                 snapshot = evidence / Path(document.get('snapshot', '')).name
-                if snapshot.is_file():
-                    allowed.update(distribution_urls(parent, snapshot.read_bytes()))
-                else:
+                body = None
+                try:
+                    body = snapshot.read_bytes()
+                except OSError:
+                    pass
+                if body is None:
                     allowed.update(link for link in metadata.get('links', []) if distribution_url(parent, link))
+                else:
+                    allowed.update(distribution_urls(parent, body))
         for url, reason in edges[parent]:
             if reason == 'landing-page-link':
                 follows = url in allowed if allowed is not None else distribution_url(parent, url)

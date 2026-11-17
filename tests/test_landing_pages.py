@@ -111,6 +111,16 @@ class LandingPageTests(unittest.TestCase):
                                    'metadata': {'landing_links': []}}]}
             self.assertIn(PAGE, frontier._distribution_scope(state, evidence))
 
+    def test_unreadable_document_cache_retains_recorded_download_links(self):
+        state = {'manifests': [{'url': MANIFEST, 'metadata': {'landing_links': [PAGE]}}],
+                 'documents': [{'url': PAGE, 'snapshot': '/old-worker/page.html',
+                                'metadata': {'links': [PAYLOAD]}}]}
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence = Path(temporary)
+            (evidence/'page.html').write_bytes(b'cached body')
+            with patch.object(Path, 'read_bytes', side_effect=PermissionError('fixture cache unavailable')):
+                self.assertIn(PAYLOAD, frontier._distribution_scope(state, evidence))
+
     def test_cross_host_module_imports_remain_distribution_evidence(self):
         module = 'https://cdn.example/chunks/helper.mjs'
         body = ('import {get} from "'+module+'";').encode()
