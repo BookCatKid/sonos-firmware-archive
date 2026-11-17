@@ -6,16 +6,77 @@ import math
 import urllib.error
 from copy import deepcopy
 from dataclasses import asdict
+from collections import defaultdict, deque
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
-from .crawl import crawl_manifests, official, discovery_incomplete, landing_url
-from .discovery import Candidate, probe, expand_metadata_base, host_counterpart
+from .crawl import crawl_manifests, official, discovery_incomplete, landing_url, normalize
+from .discovery import Candidate, probe, expand_metadata_base, host_counterpart, parse_manifest
 from .firmware_archive import capture_due, candidate_is_preserved
 from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
 from .metadata_sweep import discover_profiles, capture_response
 from .source_urls import advertised_url
+from .source_links import distribution_url, distribution_urls
 from .retry import checkpoint, select, due
+
+
+def _distribution_scope(state, evidence):
+    """Rebuild scope from protocol edges, including older broad crawl queues."""
+    documents, manifests = defaultdict(list), defaultdict(list)
+    for row in state.get('documents', []):
+        documents[row['url']].append(row)
+    for row in state.get('manifests', []):
+        manifests[row['url']].append(row)
+    reachable = set(state.get('roots', [])) | set(manifests)
+    reachable.update(url for url in state.get('pending_manifest_urls', [])
+                     if urlsplit(url).path.lower().endswith('.upm'))
+    reachable.update(url for url, revisions in documents.items()
+                     if any(row.get('metadata', {}).get('link_scope') == 'software-distribution' for row in revisions))
+    edges = defaultdict(list)
+    for edge in state.get('graph', {}).get('edges', []):
+        edges[edge['parent']].append((edge['url'], edge.get('reason')))
+    for url, revisions in manifests.items():
+        for manifest in revisions:
+            metadata = manifest.get('metadata', {})
+            reachable.update(normalize(link) for field in ('landing_links', 'document_links', 'manifest_links')
+                             for link in metadata.get(field, []))
+            if 'document_links' not in metadata:
+                snapshot = evidence / Path(manifest.get('snapshot', '')).name
+                if snapshot.is_file():
+                    try:
+                        _, items = parse_manifest(snapshot, source_url=url)
+                        reachable.update(normalize(c.url) for c in items if landing_url(c.url))
+                    except (OSError, ValueError, SyntaxError):
+                        pass  # Retain recorded links even if an older body cannot be reinterpreted.
+    for url, revisions in documents.items():
+        for document in revisions:
+            edges[url].extend((link, 'landing-page-link') for link in document.get('metadata', {}).get('links', []))
+    queue = deque(reachable)
+    while queue:
+        parent = queue.popleft()
+        allowed = None
+        revisions = documents.get(parent, [])
+        if revisions:
+            allowed = set()
+        for document in revisions:
+            metadata = document.get('metadata', {})
+            if metadata.get('link_scope') == 'software-distribution':
+                allowed.update(metadata.get('links', []))
+            else:
+                snapshot = evidence / Path(document.get('snapshot', '')).name
+                if snapshot.is_file():
+                    allowed.update(distribution_urls(parent, snapshot.read_bytes()))
+                else:
+                    allowed.update(link for link in metadata.get('links', []) if distribution_url(parent, link))
+        for url, reason in edges[parent]:
+            if reason == 'landing-page-link':
+                follows = url in allowed if allowed is not None else distribution_url(parent, url)
+                if not follows:
+                    continue
+            if url not in reachable:
+                reachable.add(url)
+                queue.append(url)
+    return reachable
 
 
 def _configure_namespace(namespaces, base, model_max):
@@ -121,8 +182,10 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                        'source': 'protocol-static', 'refresh_hours': hours}
     live_roots = protocol_roots()
     roots = list(live_roots)
-    authorities = dict(state.get('advertised_sources', {}))
-    for row in [*state.get('manifests', []), *state.get('documents', []),
+    scoped_urls = _distribution_scope(state, evidence)
+    saved_documents = [row for row in state.get('documents', []) if row['url'] in scoped_urls]
+    authorities = {url: witness for url, witness in state.get('advertised_sources', {}).items() if url in scoped_urls}
+    for row in [*state.get('manifests', []), *saved_documents,
                 *state.get('candidates', []), *known_artifacts]:
         if row.get('advertised_by'):
             authorities[row['url']] = row['advertised_by']
@@ -167,10 +230,11 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                 _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'],
                                advertised_by=UPDATE_METADATA_URL)
     # Resume our own observed frontier; never read a third-party URL inventory.
-    pending = list(state.get('pending_manifest_urls', []))
+    pending = [url for url in state.get('pending_manifest_urls', []) if url in scoped_urls]
+    excluded_pending = len(state.get('pending_manifest_urls', []))-len(pending)
     pending.extend(row['url'] for row in state.get('candidates', []) if landing_url(row['url']))
     known_urls = [m['url'] for m in state.get('manifests', [])]
-    known_urls.extend(m['url'] for m in state.get('documents', []))
+    known_urls.extend(m['url'] for m in saved_documents)
     # Reserve a small rotating slice for current feeds, then resume the FIFO.
     # A one-request budget reserves nothing, so it still drains deferred work.
     cursor = state.get('protocol_cursor', 0)
@@ -189,11 +253,13 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for manifest in graph['manifests']:
         key = manifest['url'], manifest['sha256']
         manifests[key] = {**manifests.get(key, {}), **manifest}
-    documents = {(m['url'], m['sha256']): m for m in state.get('documents', [])}
+    documents = {(m['url'], m['sha256']): m for m in saved_documents}
     for document in graph.get('documents', []):
         key = document['url'], document['sha256']
         documents[key] = {**documents.get(key, {}), **document}
-    candidates = {c['url']: c for c in state.get('candidates', []) if advertised_url(c['url'], c.get('advertised_by')) and not landing_url(c['url'])}
+    candidates = {c['url']: c for c in state.get('candidates', [])
+                  if advertised_url(c['url'], c.get('advertised_by')) and not landing_url(c['url']) and
+                  (official(c['url']) or c['url'] in scoped_urls or c.get('inferred_namespace') in namespaces)}
     candidates.update({row['url']: row for row in known_artifacts if advertised_url(row['url'], row.get('advertised_by'))})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
     for url, artifact in archive.get('artifacts', {}).items():
@@ -270,6 +336,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
               'checked_urls': list(checks),
               'probe_sequence': sequence,
               'protocol_cursor': cursor,
+              'scope_exclusions': {'documents': len(state.get('documents', []))-len(saved_documents),
+                                   'queued_urls': excluded_pending},
               'blocked_hosts': sorted(blocked)}
     result['bootstrap_errors'] = bootstrap_errors
     result['archive_index'] = archive

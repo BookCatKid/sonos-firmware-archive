@@ -108,6 +108,13 @@ refresh redirects, script references and literal download URLs use the shared
 web link discoverer. Page redirects to known payload formats become download
 leads without reading payloads into the page cache. Unvisited pages survive the
 crawl budget, and source challenges pause their host along with manifests.
+Firmware-page traversal follows payload/manifest links, scripts and module
+imports, browser redirects, software download/release links and adjacent pages
+in the same directory. Site navigation, privacy links and schema namespaces
+remain in raw snapshot evidence without becoming a recursive firmware crawl.
+Earlier broad queues are reclassified from protocol roots and document edges;
+the worker records excluded queue/document counts and retains firmware leads.
+
 Empty pages, malformed links and unsupported download locations remain explicit
 coverage gaps. Static links cannot silently turn a landing page into a successful
 firmware capture.

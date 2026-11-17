@@ -30,6 +30,113 @@ def missing(url):
 
 
 class LandingPageTests(unittest.TestCase):
+    def test_store_navigation_and_namespace_urls_do_not_expand_the_firmware_frontier(self):
+        store = 'https://apps.apple.com/us/app/sonos/id123'
+        noise = ['https://apps.apple.com/al/iphone/today', 'https://www.sonos.com/legal/privacy',
+                 'https://schema.org', 'https://other.example/unrelated-game.html']
+        body = ('<a href="'+noise[0]+'">Choose region</a><a href="'+noise[1]+'">Privacy</a>'
+                '<script type="application/ld+json">{"@context":"'+noise[2]+'"}</script>'
+                '<a href="'+noise[3]+'">You might also like</a>'
+                '<a href="'+PAYLOAD+'">Firmware</a>').encode()
+        xml = ('<update_manifest version="1.1"><image is_store="1">'+store+'</image></update_manifest>').encode()
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            return body if url == store else missing(url)
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': MANIFEST, 'body': xml}], [], Path(temporary), fetch=fetch, delay=0)
+        self.assertFalse(set(noise) & set(calls))
+        self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
+
+    def test_download_buttons_can_delegate_to_an_opaque_external_document(self):
+        external = 'https://distribution.example/opaque-route'
+        body = ('<a href="'+external+'">Download previous firmware versions</a>').encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': PAGE, 'body': body}], [], Path(temporary), delay=0,
+                fetch=lambda url: ('<a href="'+PAYLOAD+'">Download</a>').encode() if url == external else missing(url))
+        self.assertTrue(any(row['url'] == external for row in graph['documents']))
+        self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
+
+    def test_old_navigation_queues_are_reclassified_without_losing_download_pages(self):
+        page = 'https://apps.apple.com/us/app/sonos/id123'
+        noise = 'https://apps.apple.com/al/iphone/today'
+        next_page = 'https://apps.apple.com/us/app/sonos/older.html'
+        state = {'roots': [MANIFEST], 'manifests': [{'url': MANIFEST, 'sha256': 'fixture',
+                 'metadata': {'landing_links': [page]}}],
+            'documents': [{'url': page, 'sha256': 'page', 'metadata': {'links': [noise, next_page]}},
+                          {'url': noise, 'sha256': 'noise', 'metadata': {'links': ['https://schema.org/']}}],
+            'pending_manifest_urls': [noise, next_page],
+            'advertised_sources': {page: MANIFEST, noise: MANIFEST, next_page: MANIFEST}, 'graph': {'edges': [
+                {'url': page, 'parent': MANIFEST, 'reason': 'manifest-store-link'},
+                {'url': noise, 'parent': page, 'reason': 'landing-page-link'},
+                {'url': next_page, 'parent': page, 'reason': 'landing-page-link'}]}}
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            if url == next_page:
+                return ('<a href="'+PAYLOAD+'">Download</a>').encode()
+            return missing(url)
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(frontier, 'protocol_roots', return_value=[MANIFEST]), patch.object(frontier.time, 'sleep'):
+            result = frontier.discover(state, Path(temporary), metadata_fetch=lambda: (b'', {}), fetch=fetch,
+                probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404}, inference_limit=1)
+        self.assertNotIn(noise, calls)
+        self.assertIn(next_page, calls)
+        self.assertNotIn(noise, [row['url'] for row in result['documents']])
+        self.assertNotIn(noise, result['pending_manifest_urls'])
+        self.assertEqual(result['scope_exclusions'], {'documents': 1, 'queued_urls': 1})
+
+    def test_scope_rebuild_unions_every_retained_manifest_and_document_revision(self):
+        page = 'https://distribution.example/start.html'
+        old = 'https://distribution.example/old.html'
+        noise = 'https://unrelated.example/privacy'
+        state = {'manifests': [
+            {'url': MANIFEST, 'metadata': {'landing_links': [page]}},
+            {'url': MANIFEST, 'metadata': {'landing_links': []}}],
+            'documents': [
+                {'url': page, 'metadata': {'link_scope': 'software-distribution', 'links': [old]}},
+                {'url': page, 'metadata': {'link_scope': 'software-distribution', 'links': []}}],
+            'pending_manifest_urls': [old, noise]}
+        with tempfile.TemporaryDirectory() as temporary:
+            reachable = frontier._distribution_scope(state, Path(temporary))
+        self.assertIn(page, reachable)
+        self.assertIn(old, reachable)
+        self.assertNotIn(noise, reachable)
+
+    def test_cached_older_manifest_recovers_its_normal_image_landing_page(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence = Path(temporary)
+            (evidence/'old.upm').write_bytes(XML)
+            state = {'manifests': [{'url': MANIFEST, 'snapshot': '/old-worker/old.upm',
+                                   'metadata': {'landing_links': []}}]}
+            self.assertIn(PAGE, frontier._distribution_scope(state, evidence))
+
+    def test_cross_host_module_imports_remain_distribution_evidence(self):
+        module = 'https://cdn.example/chunks/helper.mjs'
+        body = ('import {get} from "'+module+'";').encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': PAGE.replace('start.html', 'download.js'), 'body': body}], [],
+                Path(temporary), delay=0, fetch=lambda url: ('const image="'+PAYLOAD+'";').encode())
+        self.assertTrue(any(row['url'] == module for row in graph['documents']))
+        self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
+
+    def test_escaped_browser_redirects_keep_queries_and_remove_fragments(self):
+        target = 'https://distribution.example/opaque?x=1&y=2'
+        script = r'window.location.href="https:\/\/distribution.example\/opaque?x=1\u0026y=2#section";'.encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': PAGE, 'body': script}], [], Path(temporary), delay=0,
+                fetch=lambda url: ('<a href="'+PAYLOAD+'">Download</a>').encode() if url == target else missing(url))
+        self.assertTrue(any(row['url'] == target for row in graph['documents']))
+        self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
+
+    def test_nextjs_manifests_follow_chunks_outside_the_saved_scripts_directory(self):
+        from sonos_firmware.source_links import distribution_url, distribution_urls
+        script = 'https://distribution.example/_next/static/build/_buildManifest.js'
+        chunk = 'https://distribution.example/_next/static/chunks/page.js'
+        self.assertEqual(distribution_urls(script, b'self.manifest={page:["static/chunks/page.js"]}'), {chunk})
+        self.assertTrue(distribution_url(script, chunk))
+        self.assertFalse(distribution_url(script, 'https://distribution.example/legal/privacy'))
+
     def test_html_base_meta_refresh_and_script_links_share_web_discovery(self):
         body = b'''<base href="https://new-downloads.sonos.com/releases/">
             <a href=100.2-345-1-300.upd?x=1&amp;y=2#ignored>Download</a>

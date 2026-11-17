@@ -7,6 +7,7 @@ from html.parser import HTMLParser
 URL_RE = re.compile(r'''(?:(?:src|href)=["']([^"']+)|["'(]((?:https?://[^"')\\ ]+|/(?:_next/static|assets|fonts)/[^"')\\ ]+)))(?=["')\s]|$)''')
 PAYLOAD_SUFFIXES = ('.upd', '.exe', '.dmg', '.apk', '.bin', '.img', '.pkg', '.zip',
                     '.tar', '.gz', '.bz2', '.xz', '.tgz', '.txz')
+SOFTWARE_LINK = re.compile(r'\b(?:downloads?|firmware|installers?|software|controllers?|releases?|archives?|versions?|updates?)\b', re.I)
 
 
 class _Links(HTMLParser):
@@ -14,6 +15,8 @@ class _Links(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.base = None
         self.links = []
+        self.actions = []
+        self.anchor = None
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -22,10 +25,69 @@ class _Links(HTMLParser):
                 self.base = attrs.get('href')
             return
         self.links.extend(attrs[key] for key in ('href', 'src') if attrs.get(key))
+        if tag == 'script' and attrs.get('src'):
+            self.actions.append(attrs['src'])
+        if tag == 'a' and attrs.get('href'):
+            self.anchor = [attrs['href'], ' '.join(str(attrs.get(key) or '') for key in ('title', 'aria-label', 'rel'))]
+            if 'download' in attrs:
+                self.actions.append(attrs['href'])
         if tag == 'meta' and (attrs.get('http-equiv') or '').lower() == 'refresh':
             match = re.search(r'(?i)\burl\s*=\s*(.+)', attrs.get('content') or '')
             if match:
                 self.links.append(match[1].strip().strip('\"\''))
+                self.actions.append(self.links[-1])
+
+    def handle_data(self, data):
+        if self.anchor:
+            self.anchor[1] += data[:1000]
+
+    def handle_endtag(self, tag):
+        if tag == 'a' and self.anchor:
+            if SOFTWARE_LINK.search(self.anchor[1]) or re.fullmatch(r'\s*(?:next|previous)(?:\s+page)?\s*', self.anchor[1], re.I):
+                self.actions.append(self.anchor[0])
+            self.anchor = None
+
+
+def distribution_url(base, url, actions=()):
+    """Follow software evidence rather than transitive site navigation."""
+    try:
+        parent, child = urllib.parse.urlsplit(base), urllib.parse.urlsplit(url)
+    except ValueError:
+        return True  # Keep malformed leads visible to the caller's URL guard.
+    path = child.path.lower()
+    if path.endswith(('.upm', *PAYLOAD_SUFFIXES)) or path.startswith('/_next/static/') or url in actions:
+        return True
+    same_origin = (parent.scheme, parent.netloc) == (child.scheme, child.netloc)
+    folder = parent.path.rsplit('/', 1)[0]
+    if same_origin and folder and folder == child.path.rsplit('/', 1)[0]:
+        return True
+    return bool(SOFTWARE_LINK.search(child.path))
+
+
+def distribution_urls(base, body):
+    """Retain literal firmware/download links, scripts and download-page hops."""
+    links = discover_urls(base, body)
+    parsed = _Links()
+    text = body.decode('utf-8', errors='replace')
+    try:
+        parsed.feed(text)
+    except AssertionError:
+        pass
+    effective = _join(base, parsed.base) if parsed.base else base
+    def action_url(raw):
+        return _join(effective, unescape(raw.replace('\\/', '/').replace('\\u0026', '&'))).split('#', 1)[0]
+    actions = {action_url(url) for url in parsed.actions}
+    # Literal browser redirects are explicit navigation, including opaque CDNs.
+    for raw in re.findall(r'''(?:location(?:\.href)?\s*=|location\.(?:assign|replace)\s*\()\s*["']([^"']+)["']''', text):
+        actions.add(action_url(raw))
+    for pattern in (
+        r'''\b(?:import|export)\s*(?:[^;"'`()]*?\bfrom\s*)?["'`]([^"'`]+)["'`]''',
+        r'''\bimport\s*\(\s*["'`]([^"'`]+)["'`]''',
+    ):
+        for raw in re.findall(pattern, text):
+            if raw.startswith(('./', '../', '/', 'https://', 'http://')):
+                actions.add(action_url(raw))
+    return {url for url in links if distribution_url(effective, url, actions)}
 
 
 def _join(base, raw):

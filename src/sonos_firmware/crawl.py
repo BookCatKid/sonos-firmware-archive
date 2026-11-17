@@ -14,7 +14,7 @@ from urllib.parse import urljoin, urlsplit, urlunsplit
 
 from .discovery import Candidate, USER_AGENT, parse_manifest, official_firmware_url as official
 from .source_urls import advertised_url, open_advertised, sonos_url
-from .source_links import discover_urls, PAYLOAD_SUFFIXES
+from .source_links import discover_urls, distribution_urls, PAYLOAD_SUFFIXES
 
 PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$", re.I)
 DOCUMENT_SUFFIXES = ('.html', '.htm', '.js', '.mjs', '.json', '.php', '.asp', '.aspx', '.jsp', '.cgi')
@@ -212,10 +212,13 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             snapshot = evidence_dir / (hashlib.sha256(url.encode()).hexdigest()[:16] + '-' + digest[:16] + suffix)
             snapshot.write_bytes(body)  # retain unsupported/malformed bodies too
             if page:
-                links = sorted(discover_urls(canonical, body))
+                advertised = discover_urls(canonical, body)
+                links = sorted(distribution_urls(canonical, body))
                 documents.append({'url': canonical, 'request_url': url, 'advertised_by': authority(url), 'sha256': digest, 'bytes': len(body),
                                   'snapshot': str(snapshot), 'document_type': 'landing-page',
-                                  'metadata': {'format': suffix.removeprefix('.'), 'links': links, 'warnings': []}})
+                                  'metadata': {'format': suffix.removeprefix('.'), 'links': links, 'warnings': [],
+                                               'out_of_scope_link_total': len(advertised-set(links)),
+                                               'link_scope': 'software-distribution'}})
                 actionable = 0
                 for link in links:
                     try:
@@ -238,6 +241,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                                      'error': 'landing page has no traversable download or document links'})
                 continue
             metadata, items = parse_manifest(snapshot, source_url=canonical)
+            metadata['document_links'] = sorted({normalize(c.url) for c in items if landing_url(c.url)})
             manifests.append({'url': canonical, 'request_url': url, 'advertised_by': authority(url), 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
                               'metadata': metadata, 'candidate_total': len(items)})
             channels(canonical)
