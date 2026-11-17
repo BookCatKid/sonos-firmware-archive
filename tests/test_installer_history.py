@@ -194,7 +194,7 @@ class InstallerHistoryTests(unittest.TestCase):
                 with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
                      patch.object(module, 'probe', side_effect=lambda row: {**row, 'http_status': 200}):
                     if kind == 'desktop':
-                        with patch.object(module, 'winget_candidates'), patch.object(module, 'homebrew_candidates'), \
+                        with patch.object(module, 'winget_candidates'), patch.object(module, 'winget_history', return_value={'status': 'ok', 'pending_total': 0, 'errors': []}), patch.object(module, 'homebrew_candidates'), \
                              patch.object(module, 'check_direct_redirects', return_value=[]):
                             module.main()
                     else:

@@ -28,6 +28,14 @@ reporting, and metadata commits use the shared runner.
 Publication receipts in declared metadata paths feed binary inspection
 automatically; a new adapter needs no separate inspection URL list or workflow.
 
+Desktop package history walks WinGet commit pages and both changed and parent
+snapshots. Removed manifests and pre-alphabetical vendor layouts therefore
+remain discoverable. Page cursors and unattempted Git objects persist in
+`data/apps/desktop-package-history.json`; immutable metadata is cached in the
+worker's observation directory. A parser change replays cached objects. The
+`metadata_limit` option bounds each worker's graph work without a lifetime
+history limit. Current installers continue while historical work is pending.
+
 For installer sources, `sonos_firmware.app_archive.AppSource` supplies a shared
 acquisition loop. Its `acquire(candidate, destination)` callback streams one
 payload into worker storage and returns its fetch URL. `release_for(candidate)`

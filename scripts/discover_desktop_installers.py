@@ -29,6 +29,7 @@ from sonos_firmware.storage import atomic_json
 from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
 from sonos_firmware.source_urls import open_sonos, sonos_url
 from sonos_firmware.archive_replay import canonical_source
+from sonos_firmware.package_history import ManifestHistory
 
 HOMEBREW_PATHS = {
     "Casks/s/sonos.rb": "s2",
@@ -188,6 +189,15 @@ def winget_candidates(target: dict) -> list[dict]:
     return errors
 
 
+def winget_history(target, path, observations, limit, refresh_hours):
+    history = ManifestHistory(path, gh_json, observations=observations)
+    for item in history.advance(limit=limit, refresh_hours=refresh_hours):
+        for source in item['sources']:
+            add_candidate(target, family='unknown', platform='windows', version=item['version'],
+                          url=item['url'], sha256=item['expected_sha256'], source=source)
+    return {key: history.state[key] for key in ('status', 'pending_total', 'errors')}
+
+
 def homebrew_candidates(target: dict) -> list[dict]:
     errors = []
     for path, family in HOMEBREW_PATHS.items():
@@ -339,11 +349,22 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
+    parser.add_argument('--history-state', type=Path)
+    parser.add_argument('--history-limit', type=int, default=64)
+    parser.add_argument('--observations', type=Path)
+    parser.add_argument('--refresh-hours', type=float, default=6)
     args = parser.parse_args()
     candidates: dict = {}
     errors = []
     wayback = {"provider": "shared-installer-history"}
+    package_history = {'status': 'skipped', 'pending_total': 0, 'errors': []}
     if not args.current_only:
+        try:
+            package_history = winget_history(candidates, args.history_state or args.output.parent/'desktop-package-history.json',
+                                             args.observations, args.history_limit, args.refresh_hours)
+            errors.extend(package_history['errors'])
+        except Exception as error:
+            errors.append({'source': 'winget-history', 'error': str(error)})
         for item in observed_candidates(args.output.parent/'desktop-history-index.json', 'desktop'):
             add_candidate(candidates, family=item['family'], platform=item['platform'], version=item['version'],
                           url=item['url'], sha256=None, source='saved-installer-index')
@@ -384,7 +405,8 @@ def main() -> int:
     errors.extend({'source': x.get('url'), 'error': 'current redirect unresolved; historical fallback is not a live observation'}
                   for x in direct_redirects if not x.get('location') or x.get('location_source') != 'live-redirect')
     document = {
-        'status': 'partial' if errors else 'ok', 'errors': errors,
+        'status': 'partial' if errors or package_history['status'] == 'partial' else 'ok', 'errors': errors,
+        'package_history': package_history,
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
         "sources": ["official-current-redirects"] if args.current_only else ["microsoft/winget-pkgs", "Homebrew/homebrew-cask", "Sonos CDN HEAD"],

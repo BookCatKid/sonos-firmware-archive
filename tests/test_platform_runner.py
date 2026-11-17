@@ -547,7 +547,7 @@ class IndependentSourceFailureTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'discovery.json'
             with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
-                 patch.object(module, 'winget_candidates', side_effect=OSError('fixture unavailable')), \
+                 patch.object(module, 'winget_candidates', side_effect=OSError('fixture unavailable')), patch.object(module, 'winget_history', return_value={'status': 'ok', 'pending_total': 0, 'errors': []}), \
                  patch.object(module, 'homebrew_candidates', return_value=None), \
                  patch.object(module, 'check_direct_redirects', return_value=[redirect]), \
                  patch.object(module, 'probe', side_effect=lambda item: {**item, 'http_status': 200}):
