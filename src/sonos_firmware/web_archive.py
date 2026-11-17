@@ -202,8 +202,20 @@ def capture(
             "requested_url", "final_url", "status", "redirects", "headers"
         )}
         record.update({"outcome": outcome, "bytes": len(result["body"]), "sha256": digest})
-        if outcome == "captured":
-            name = safe_asset_name(capture_id, url, digest)
+        # A public login shell is useful source evidence and advertises public
+        # static bundles. Preserve its actual identity without promoting the
+        # requested authenticated application to a complete capture.
+        public_shell = (url == config['entry_url'] and outcome == 'gated-or-redirected' and
+                        result['status'] == 200 and
+                        'text/html' in result['headers'].get('content-type', '').lower() and
+                        urllib.parse.urlsplit(result['final_url']).scheme == 'https' and
+                        urllib.parse.urlsplit(result['final_url']).netloc == host)
+        if outcome == "captured" or public_shell:
+            name = safe_asset_name(capture_id, result['final_url'] if public_shell else url, digest)
+            if public_shell:
+                record['evidence_type'] = 'public-login-page'
+                if name.endswith('.bin'):
+                    name = name[:-4] + '.html'
             relative = Path("bodies") / name
             (capture_dir / relative).write_bytes(result["body"])
             record["file"] = str(relative)

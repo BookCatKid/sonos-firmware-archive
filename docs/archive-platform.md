@@ -347,6 +347,12 @@ or malformed listings stay retryable and cannot become a complete result.
 
 ## Validation and publication
 
+Web discovery preserves a public login shell served by the deployment host and
+follows its static script/style references. The shell retains its actual login
+URL and evidence type; the authenticated application remains an incomplete
+capture. Login HTML returned for a JavaScript asset is never substituted for
+that script.
+
 Local plans and tests do not acquire live artifacts. `sonos-archive run TARGET`
 is a plan unless `--execute` is supplied, and execution rejects an environment
 outside GitHub Actions before starting commands or creating files.

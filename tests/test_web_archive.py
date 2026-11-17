@@ -82,6 +82,48 @@ class WebArchiveTests(unittest.TestCase):
         self.assertEqual(result['deployments'][0]['pending_urls'], ['https://pro.sonos.com/_next/static/app.js'])
         self.assertFalse(result['deployments'][0]['complete'])
 
+    def test_public_login_shell_and_its_scripts_are_preserved_without_claiming_controller_access(self):
+        entry = web.APPS['controller']['entry_url']
+        script = entry+'_next/static/public-login.js'
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            result = self.fetch(url)
+            if url == entry:
+                result.update(final_url=entry+'en-us/login?callbackUrl=fixture',
+                              body=b'<html><script src="/_next/static/public-login.js"></script></html>')
+            return result
+        with patch.object(web, 'fetch', side_effect=fetch):
+            result = self.run_archive(('controller',))
+        deployment, = result['deployments']
+        self.assertIn(script, calls)
+        shell = next(row for row in deployment['resources'] if row['requested_url'] == entry)
+        self.assertEqual(shell['outcome'], 'gated-or-redirected')
+        self.assertEqual(shell['status'], 'verified')
+        self.assertIn(shell['release_asset'], self.uploads)
+        self.assertTrue(any(row['requested_url'] == script and row['status'] == 'verified'
+                            for row in deployment['resources']))
+        self.assertFalse(deployment['complete'])
+        self.assertFalse(deployment['identity_complete'])
+        self.assertEqual(result['status'], 'partial')
+
+    def test_login_html_returned_for_a_script_does_not_become_that_script(self):
+        entry = web.APPS['pro']['entry_url']
+        script = entry+'_next/static/app.js'
+        def fetch(url):
+            result = self.fetch(url)
+            if url == script:
+                result.update(final_url=entry+'en-us/login', body=b'<html>Sign in</html>',
+                              headers={'content-type': 'text/html'})
+            return result
+        with patch.object(web, 'fetch', side_effect=fetch):
+            result = self.run_archive()
+        deployment, = result['deployments']
+        row = next(row for row in deployment['resources'] if row['requested_url'] == script)
+        self.assertEqual(row['outcome'], 'gated-or-redirected')
+        self.assertNotIn('release_asset', row)
+        self.assertFalse(deployment['complete'])
+
     def test_bounded_batches_resume_pending_urls_and_retain_every_prior_capture(self):
         def fetch(url):
             result = self.fetch(url)
