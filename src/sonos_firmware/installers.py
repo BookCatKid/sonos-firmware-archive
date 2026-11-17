@@ -12,16 +12,16 @@ from .archive_index import discover_sources
 from .archive_replay import canonical_source, open_capture
 from .retry import due
 from .storage import atomic_json
-from .source_urls import sonos_url, open_sonos
+from .source_urls import sonos_url, open_advertised, advertised_url
 
 def official_source(url):
     return sonos_url(url) and urlsplit(url).path.lower().endswith(('.exe', '.dmg', '.apk'))
 
 
-def installer_location(url, extensions):
-    """Recognize a first-party installer redirect without a distribution-host list."""
+def installer_location(url, extensions, *, advertised_by=None):
+    """Recognize an advertised installer without a distribution-host list."""
     try:
-        url = canonical_source(url, official_source)
+        url = canonical_source(url, lambda u: advertised_url(u, advertised_by))
     except ValueError:
         return None
     return url if urlsplit(url).path.lower().endswith(tuple('.'+ext for ext in extensions)) else None
@@ -72,6 +72,7 @@ def acquire(candidate, destination, *, blocked=None):
                               if row.startswith('wayback-cdx:')), None)
         if timestamp:
             sources.append((candidate['url'], {'timestamp': timestamp}))
+    allowed = lambda url: advertised_url(url, candidate.get('advertised_by'))
     last_error = None
     for url, replay in sources:
         host = 'web.archive.org' if replay is not None else urlsplit(url).hostname
@@ -79,9 +80,10 @@ def acquire(candidate, destination, *, blocked=None):
             last_error = ValueError('installer source host is paused for this run')
             continue
         try:
-            response = (open_capture(url, replay, allowed=official_source, timeout=180) if replay is not None else
-                        open_sonos(urllib.request.Request(canonical_source(url, sonos_url),
-                            headers={'User-Agent': 'sonos-firmware-archive/1'}), timeout=180))
+            response = (open_capture(url, replay, allowed=allowed, timeout=180) if replay is not None else
+                        open_advertised(urllib.request.Request(canonical_source(url, allowed),
+                            headers={'User-Agent': 'sonos-firmware-archive/1'}),
+                            advertised_by=candidate.get('advertised_by'), timeout=180))
             with response, destination.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('installer source did not return a complete HTTP 200 response')

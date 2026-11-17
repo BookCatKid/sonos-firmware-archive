@@ -302,8 +302,8 @@ class FrontierTests(unittest.TestCase):
         self.assertEqual(state['status'], 'partial')
         self.assertIn('unrecognized', state['manifests'][0]['metadata']['warnings'][0])
 
-    def test_untrusted_metadata_uri_is_reported_without_requesting_it(self):
-        uri = b'https://unknown-cdn.example/firmware/update.upm\0'
+    def test_private_metadata_uri_is_reported_without_requesting_it(self):
+        uri = b'https://127.0.0.1/firmware/update.upm\0'
         ups = struct.pack('<IIII', 0x35167F49, 14, len(uri)+16, 0) + uri
         fetch = Mock(return_value=b'<update_manifest version="1.1"></update_manifest>')
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]):
@@ -311,7 +311,7 @@ class FrontierTests(unittest.TestCase):
                 fetch=fetch)
         fetch.assert_not_called()
         self.assertEqual(state['status'], 'partial')
-        self.assertTrue(any('unknown-cdn.example' in row.get('url', '') for row in state['bootstrap_errors']))
+        self.assertTrue(any('127.0.0.1' in row.get('url', '') for row in state['bootstrap_errors']))
 
     def test_publication_identity_matches_observed_urls_instead_of_filenames(self):
         candidate = {'url': HOST+'/firmware/one/1.2-3-1-8.upd'}
@@ -494,10 +494,10 @@ class FrontierTests(unittest.TestCase):
         self.assertIn(good, calls)
         self.assertIn(skipped, result['pending_manifest_urls'])
 
-    def test_outside_content_location_is_never_followed(self):
+    def test_private_content_location_is_never_followed(self):
         with tempfile.TemporaryDirectory() as temporary:
             result = crawl_manifests({}, [{'url': BASE + 'update.upm'}], [], Path(temporary),
-                fetch=lambda url: (b'<update_manifest version="1.1"></update_manifest>', url, 'https://outside.test/update.upm'), delay=0)
+                fetch=lambda url: (b'<update_manifest version="1.1"></update_manifest>', url, 'https://127.0.0.1/update.upm'), delay=0)
         self.assertFalse(result['manifests'])
         self.assertEqual(result['failures'][0]['kind'], 'error')
 

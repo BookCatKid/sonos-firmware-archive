@@ -52,7 +52,7 @@ class InstallerHistoryTests(unittest.TestCase):
         patch.object(releases, 'remote_assets', side_effect=self.github.assets).start()
         patch.object(releases.subprocess, 'run', side_effect=self.github.command).start()
         patch.object(archive_replay.urllib.request, 'build_opener', return_value=self).start()
-        patch.object(installers, 'open_sonos', side_effect=self.live).start()
+        patch.object(installers, 'open_advertised', side_effect=self.live).start()
         patch.object(installers, 'discover_sources', side_effect=lambda previous, **kwargs:
             archive_index.discover_sources(previous, fetch=self.index, **kwargs)).start()
 

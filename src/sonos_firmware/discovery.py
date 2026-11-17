@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
 from .storage import atomic_json, file_sha256 as _sha256
-from .source_urls import sonos_url as official_firmware_url, open_sonos
+from .source_urls import sonos_url as official_firmware_url, open_advertised, advertised_url
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
 
@@ -27,16 +27,17 @@ class Candidate:
     url: str
     source: str
     filename: str
+    advertised_by: str | None = None
 
 
 def _secure(url: str) -> str:
     return "https://" + url.removeprefix("http://") if url.startswith("http://") else url
 
 
-def expand_metadata_base(uri: str, models=range(256)) -> list[Candidate]:
+def expand_metadata_base(uri: str, models=range(256), *, advertised_by=None) -> list[Candidate]:
     """Expand an observed UPS caret base, without inventing a campaign path."""
     uri = _secure(uri)
-    if not official_firmware_url(uri):
+    if not advertised_url(uri, advertised_by):
         return []
     parsed = urlsplit(uri)
     match = re.fullmatch(r'(.*/)[\^](\d+\.\d+-\d+)', parsed.path)
@@ -47,7 +48,7 @@ def expand_metadata_base(uri: str, models=range(256)) -> list[Candidate]:
     for model in models:
         filename = f'{version}-1-{model}.upd'
         url = parsed._replace(path=match[1] + filename, fragment='').geturl()
-        result.append(Candidate(version, model, url, 'metadata-base', filename))
+        result.append(Candidate(version, model, url, 'metadata-base', filename, advertised_by))
     return result
 
 
@@ -149,7 +150,7 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
     result = asdict(candidate)
     try:
         request = urllib.request.Request(candidate.url, method="HEAD", headers={"User-Agent": USER_AGENT})
-        with open_sonos(request, timeout=timeout) as response:
+        with open_advertised(request, advertised_by=candidate.advertised_by, timeout=timeout) as response:
             result.update(
                 available=response.status == 200,
                 http_status=response.status,
@@ -214,9 +215,10 @@ def download(candidate: dict, directory: str | Path) -> dict:
             request = urllib.request.Request(candidate['url'], headers={'User-Agent': USER_AGENT})
             if candidate.get('archive_capture') is not None:
                 from .archive_replay import open_capture
-                incoming = open_capture(candidate['url'], candidate['archive_capture'])
+                incoming = open_capture(candidate['url'], candidate['archive_capture'],
+                    allowed=lambda url: advertised_url(url, candidate.get('advertised_by')))
             else:
-                incoming = open_sonos(request, timeout=60)
+                incoming = open_advertised(request, advertised_by=candidate.get('advertised_by'), timeout=60)
             with incoming as response, body.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('firmware source did not return a complete HTTP 200 response')

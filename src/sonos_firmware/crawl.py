@@ -8,10 +8,12 @@ import time
 import urllib.error
 import urllib.request
 from collections import deque
+from dataclasses import replace
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
 from .discovery import Candidate, USER_AGENT, parse_manifest, official_firmware_url as official
+from .source_urls import advertised_url, open_advertised, sonos_url
 from .source_links import discover_urls, PAYLOAD_SUFFIXES
 
 PACKAGE = re.compile(r"^(\d+\.\d+-\d+)-1-(\d+)\.upd$", re.I)
@@ -82,10 +84,17 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     attempts = 0
     blocked_hosts = set(paused_hosts)
     deferred = []
+    authorities = {}
 
-    def add(url, parent, reason):
+    def authority(url):
+        return url if sonos_url(url) else authorities.get(url)
+
+    def add(url, parent, reason, advertised_by=None):
         url = normalize(url)
-        if official(url) or (reason == 'catalog-manifest' and mirror(url)):
+        witness = advertised_by or authority(parent)
+        if advertised_url(url, witness) or (reason == 'catalog-manifest' and mirror(url)):
+            if witness:
+                authorities[url] = witness
             edges.append({'url': url, 'parent': parent, 'reason': reason})
             if url not in seen:
                 seen.add(url)
@@ -113,14 +122,14 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
 
     def artifact(url, parent, reason):
         url = normalize(url)
-        if not official(url):
+        if not advertised_url(url, authority(parent)):
             failures.append({'url': url, 'parent': parent, 'kind': 'unsupported',
                              'error': 'download link outside Sonos source domains'})
             return
         filename = urlsplit(url).path.rsplit('/', 1)[-1]
         match = PACKAGE.fullmatch(filename)
         candidate = Candidate(match[1] if match else 'unknown', int(match[2]) if match else None,
-                              url, reason, filename)
+                              url, reason, filename, authority(parent))
         candidates.setdefault(url, candidate)
         edges.append({'url': url, 'parent': parent, 'reason': reason})
         directory(url, candidate.version)
@@ -138,9 +147,9 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 break
 
     for item in initial:
-        add(item['url'], 'current-feed', 'current-manifest')
+        add(item['url'], 'current-feed', 'current-manifest', item.get('advertised_by'))
     for item in (catalog.get('source_manifests', []) if include_history else []):
-        add(catalog_manifest_url(item.get('source_url', '')), 'catalog', 'catalog-manifest')
+        add(catalog_manifest_url(item.get('source_url', '')), 'catalog', 'catalog-manifest', item.get('advertised_by'))
     for item in (catalog.get('packages', []) if include_history else []):
         directory(item.get('source_url', ''), item.get('version'))
     for seed in (seed_urls if include_history else []):
@@ -165,7 +174,9 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             result = fetch(url)
             return (result, url, None) if isinstance(result, bytes) else result
         req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT})
-        with opener.open(req, timeout=15) as response:
+        incoming = (opener.open(req, timeout=15) if mirror(url) else
+                    open_advertised(req, advertised_by=authority(url), timeout=15))
+        with incoming as response:
             if landing_url(url) and urlsplit(response.url).path.lower().endswith(PAYLOAD_SUFFIXES):
                 return None, response.url, None
             body = response.read(2_000_001)
@@ -186,7 +197,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         try:
             body, resolved, location = (bodies[url], url, None) if url in bodies else retrieve(url)
             canonical = normalize(urljoin(resolved, location)) if location else resolved
-            if (location or resolved != url) and not official(canonical):
+            if (location or resolved != url) and not advertised_url(canonical, authority(url)):
                 raise ValueError('manifest location outside official firmware hosts')
             if canonical != url:
                 if landing_url(url) and urlsplit(canonical).path.lower().endswith(PAYLOAD_SUFFIXES):
@@ -202,7 +213,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             snapshot.write_bytes(body)  # retain unsupported/malformed bodies too
             if page:
                 links = sorted(discover_urls(canonical, body))
-                documents.append({'url': canonical, 'request_url': url, 'sha256': digest, 'bytes': len(body),
+                documents.append({'url': canonical, 'request_url': url, 'advertised_by': authority(url), 'sha256': digest, 'bytes': len(body),
                                   'snapshot': str(snapshot), 'document_type': 'landing-page',
                                   'metadata': {'format': suffix.removeprefix('.'), 'links': links, 'warnings': []}})
                 actionable = 0
@@ -227,7 +238,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                                      'error': 'landing page has no traversable download or document links'})
                 continue
             metadata, items = parse_manifest(snapshot, source_url=canonical)
-            manifests.append({'url': canonical, 'request_url': url, 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
+            manifests.append({'url': canonical, 'request_url': url, 'advertised_by': authority(url), 'sha256': digest, 'bytes': len(body), 'snapshot': str(snapshot),
                               'metadata': metadata, 'candidate_total': len(items)})
             channels(canonical)
             base = metadata.get('base_url')
@@ -242,10 +253,10 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 if landing_url(c.url):
                     add(c.url, url, 'manifest-landing-page')
                     continue
-                if not official(c.url):
+                if not advertised_url(c.url, authority(canonical)):
                     failures.append({'url': c.url, 'parent': url, 'kind': rejected_url_kind(c.url), 'error': 'non-official artifact URL'})
                     continue
-                candidates[c.url] = c
+                candidates[c.url] = replace(c, advertised_by=authority(canonical))
                 edges.append({'url': c.url, 'parent': url, 'reason': c.source})
                 directory(c.url, c.version)
             for link in (metadata.get('manifest_links', []) if include_history else []):
@@ -267,7 +278,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
             'directories': [{'version': v, 'directory': d} for v,d in sorted(directories)],
             'edges': edges, 'failures': failures, 'blocked': blocked,
             'limits_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
-            'blocked_hosts': sorted(blocked_hosts),
+            'blocked_hosts': sorted(blocked_hosts), 'advertised_sources': authorities,
             'scope': 'manifest and landing-page links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}
 
 

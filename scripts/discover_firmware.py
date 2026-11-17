@@ -109,7 +109,8 @@ def main():
                 if url and urlsplit(url).path.endswith(('.upd', '.exe', '.dmg', '.bin')):
                     url = 'https://' + url[7:] if url.startswith('http://') else url
                     known.append({'version': package['version'], 'package_model': package.get('package_model'),
-                        'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation'})
+                        'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation',
+                        'advertised_by': package.get('advertised_sources', {}).get(url)})
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
                       index_fetch=None if args.no_history_index else discover_sources, artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,

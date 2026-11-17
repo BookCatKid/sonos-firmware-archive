@@ -94,11 +94,15 @@ unvisited hosts remain explicit discovery work. The [CDX protocol documentation]
 describes digest-based collapsing; an index digest is evidence of a capture,
 not a replacement for the SHA-256 computed from acquired bytes.
 
-Live metadata, manifest traversal, firmware probes, installer redirects and
-payload acquisition share the first-party URL boundary: HTTPS Sonos domains,
-standard ports and no credentials. Payload redirects are checked before they
-are followed. Links outside those domains remain unresolved evidence rather
-than granting an arbitrary host access to the worker. Manifest images pointing
+Live metadata starts at HTTPS Sonos domains. Manifest traversal, firmware probes,
+installer redirects and acquisition also follow public HTTPS CDN locations
+explicitly advertised by those sources or the Sonos package manifests in
+WinGet/Homebrew. Each external lead retains its originating Sonos URL or package
+repository, path and Git object identity through saved state and acquisition.
+New CDN hosts need no allowlist edits. Unattested external seeds, credentials,
+nonstandard ports and private network destinations are rejected; redirect
+destinations are checked before following and cross-host credentials are removed.
+Manifest images pointing
 to landing pages enter the same resumable traversal. HTML attributes, base URLs,
 refresh redirects, script references and literal download URLs use the shared
 web link discoverer. Page redirects to known payload formats become download

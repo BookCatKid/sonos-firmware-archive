@@ -132,6 +132,7 @@ class ManifestHistory:
             key = _key([url, digest, version])
             candidate = self.state['candidates'].setdefault(key, {'url': url, 'expected_sha256': digest,
                 'version': version, 'platform': 'windows', 'sources': []})
+            candidate['advertised_by'] = {'repository': REPOSITORY, 'path': job['path'], 'git_blob': job['sha']}
             source = 'winget-history:'+job['path']+':'+job['sha']
             if source not in candidate['sources']:
                 candidate['sources'].append(source)

@@ -106,16 +106,16 @@ class LandingPageTests(unittest.TestCase):
         response.__enter__.return_value = response
         response.url = PAYLOAD
         response.read.side_effect = AssertionError('payload read into page cache')
-        with tempfile.TemporaryDirectory() as temporary, patch.object(crawl.urllib.request, 'build_opener') as factory:
-            factory.return_value.open.return_value = response
+        with tempfile.TemporaryDirectory() as temporary, patch.object(crawl, 'open_advertised') as factory:
+            factory.return_value = response
             graph = crawl_manifests({}, [{'url': MANIFEST, 'body': XML}], [], Path(temporary),
                 delay=0, max_manifests=2)
         response.read.assert_not_called()
         self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
-        self.assertEqual(factory.return_value.open.call_args.args[0].full_url, PAGE)
+        self.assertEqual(factory.call_args.args[0].full_url, PAGE)
 
-    def test_external_payloads_and_empty_pages_remain_explicit_gaps(self):
-        for body in (b'<a href="https://outside.test/firmware.upd">Download</a>', b'<html>No links</html>'):
+    def test_private_payloads_and_empty_pages_remain_explicit_gaps(self):
+        for body in (b'<a href="https://127.0.0.1/firmware.upd">Download</a>', b'<html>No links</html>'):
             with self.subTest(body=body), tempfile.TemporaryDirectory() as temporary:
                 graph = crawl_manifests({}, [{'url': PAGE, 'body': body}], [], Path(temporary),
                     fetch=lambda url: self.fail('external URL fetched'), delay=0)
@@ -139,7 +139,7 @@ class LandingPageTests(unittest.TestCase):
         self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
         self.assertTrue(any('malformed URL' in row['error'] for row in graph['failures']))
 
-    def test_store_image_links_are_followed_and_external_stores_are_retained(self):
+    def test_store_image_links_are_followed_and_missing_external_stores_are_recorded(self):
         store = 'https://apps.apple.com/us/app/sonos/id123'
         xml = ('<update_manifest version="1.1"><image is_store="1">'+PAGE+'</image>'
                '<image is_store="1">'+store+'</image></update_manifest>').encode()
@@ -149,7 +149,7 @@ class LandingPageTests(unittest.TestCase):
             graph = crawl_manifests({}, [{'url': MANIFEST, 'body': xml}], [], Path(temporary),
                 fetch=fetch, delay=0)
         self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
-        self.assertTrue(any(row['url'] == store and row['kind'] == 'unsupported' for row in graph['failures']))
+        self.assertTrue(any(row['url'] == store and row['kind'] == 'not-found' for row in graph['failures']))
 
     def test_extensionless_xml_manifest_is_parsed_by_its_content(self):
         route = PAGE.rsplit('/', 1)[0]+'/manifest'
@@ -184,7 +184,7 @@ class LandingPageTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'), \
              patch.object(releases, 'remote_assets', side_effect=github.assets), \
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
-             patch.object(discovery, 'open_sonos', return_value=Response(body)):
+             patch.object(discovery, 'open_advertised', return_value=Response(body)):
             root = Path(temporary)
             evidence, work = root/'observations', root/'worker'
             work.mkdir()

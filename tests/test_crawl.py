@@ -175,9 +175,9 @@ class OutOfScopeClassificationTests(unittest.TestCase):
         self.assertEqual(kinds, {'unsupported'})
         self.assertEqual(len(r['candidates']), 1)
 
-    def test_artifact_shaped_unknown_host_stays_fail_closed(self):
+    def test_private_manifest_host_stays_fail_closed(self):
         body = (b'<update_manifest version="1.1">'
-                b'<link>https://firmware-cdn.example.com/Prod/99.0-1/update.upm</link>'
+                b'<link>https://127.0.0.1/Prod/99.0-1/update.upm</link>'
                 b'</update_manifest>')
         with tempfile.TemporaryDirectory() as d:
             r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)

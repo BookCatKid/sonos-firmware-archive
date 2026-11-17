@@ -59,6 +59,8 @@ def register_document(path, manifest, publication):
     if record is None:
         record = {'sha256': manifest['sha256'], 'bytes': manifest['bytes'], 'source_url': manifest['url']}
         rows.append(record)
+    if manifest.get('advertised_by'):
+        record['advertised_by'] = manifest['advertised_by']
     meta = manifest.get('metadata', {})
     if manifest.get('document_type'):
         record.update(document_type=manifest['document_type'], metadata=meta)
@@ -160,6 +162,8 @@ def register_capture(root, capture, *, catalog_path=None):
                                     ({prior['source_url']} if prior.get('source_url') else set())),
               'release_tag': publication['release_tag'], 'release_asset': publication['release_asset'],
               'release_url': publication['release_url'], 'repository': publication['repository']}
+    if candidate.get('advertised_by'):
+        record.setdefault('advertised_sources', {})[candidate['url']] = candidate['advertised_by']
     if candidate.get('archive_captures'):
         record['discovery_evidence'] = {**prior.get('discovery_evidence', {}), **candidate['archive_captures']}
     if capture.get('fetched_from'):

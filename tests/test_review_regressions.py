@@ -25,12 +25,12 @@ class RedirectHistoryTests(unittest.TestCase):
             rows = result if isinstance(result, list) else [result]
             self.assertTrue(all(row['location'] == location for row in rows))
 
-    def test_live_redirects_stop_before_requesting_outside_hosts(self):
+    def test_live_redirects_stop_before_requesting_private_hosts(self):
         for name in ['discover_desktop_installers', 'discover_mobile_installers']:
             m = load(name)
             helper = m.check_direct_redirects if 'desktop' in name else m.resolve_latest_redirect
             session = Mock()
-            session.get.return_value = Mock(status_code=302, headers={'location': 'https://outside.test/landing'})
+            session.get.return_value = Mock(status_code=302, headers={'location': 'https://127.0.0.1/landing'})
             with self.subTest(name=name), patch.object(m.tls_requests, 'Session', return_value=session):
                 result = helper(include_history=False)
             rows = result if isinstance(result, list) else [result]

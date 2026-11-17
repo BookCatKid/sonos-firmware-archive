@@ -14,6 +14,7 @@ from .discovery import Candidate, probe, expand_metadata_base, host_counterpart
 from .firmware_archive import capture_due, candidate_is_preserved
 from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
 from .metadata_sweep import discover_profiles, capture_response
+from .source_urls import advertised_url
 from .retry import checkpoint, select, due
 
 
@@ -28,7 +29,7 @@ def _configure_namespace(namespaces, base, model_max):
 
 
 def _add_namespace(namespaces, base, source, model_max, **evidence):
-    if not expand_metadata_base(base, [0]):
+    if not expand_metadata_base(base, [0], advertised_by=evidence.get('advertised_by')):
         return
     row = _configure_namespace(namespaces, base, model_max)
     row.update(source=source, **evidence)
@@ -58,7 +59,7 @@ def _namespace_candidates(namespaces, limit, blocked_hosts, scheduling):
     for base in queue:
         record = namespaces[base]
         models = range(record['next_model'], min(record['next_model'] + batch, record['model_max'] + 1))
-        for candidate in expand_metadata_base(base, models):
+        for candidate in expand_metadata_base(base, models, advertised_by=record.get('advertised_by')):
             rows.append({**asdict(candidate), 'source': record['source'], 'inferred_namespace': base,
                          'advance_inference': True,
                          **({'metadata_sha256': record['metadata_sha256']} if record.get('metadata_sha256') else {})})
@@ -120,6 +121,11 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                        'source': 'protocol-static', 'refresh_hours': hours}
     live_roots = protocol_roots()
     roots = list(live_roots)
+    authorities = dict(state.get('advertised_sources', {}))
+    for row in [*state.get('manifests', []), *state.get('documents', []),
+                *state.get('candidates', []), *known_artifacts]:
+        if row.get('advertised_by'):
+            authorities[row['url']] = row['advertised_by']
     roots.extend(row['url'].rsplit('/', 1)[0] + '/update.upm' for row in known_artifacts if official(row['url']))
     roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in static)
     archive = state.get('archive_index', {})
@@ -147,16 +153,19 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for response in metadata['responses'].values():
         for record in response['records']:
             url = record.get('uri', '').replace('http://', 'https://', 1)
-            if record['type'] in {7, 14} and not official(url):
+            if record['type'] in {7, 14} and not advertised_url(url, UPDATE_METADATA_URL):
                 bootstrap_errors.append({'source': 'legacy-ups-uri', 'url': url,
                                          'error': 'UPS URI uses an unsupported host or path'})
                 continue
-            if record['type'] == 14 and official(url):
+            if record['type'] == 14:
                 roots.append(url)
-            elif record['type'] == 7 and official(url):
+                authorities[url] = UPDATE_METADATA_URL
+            elif record['type'] == 7:
                 folder = url.split('^', 1)[0].rstrip('/') if '^' in url else url.rsplit('/', 1)[0]
                 roots.append(folder + '/update.upm')
-                _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'])
+                authorities[folder + '/update.upm'] = UPDATE_METADATA_URL
+                _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'],
+                               advertised_by=UPDATE_METADATA_URL)
     # Resume our own observed frontier; never read a third-party URL inventory.
     pending = list(state.get('pending_manifest_urls', []))
     pending.extend(row['url'] for row in state.get('candidates', []) if landing_url(row['url']))
@@ -168,7 +177,9 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     reserved = min(len(live_roots), max_manifests // 4)
     priority = [live_roots[(cursor + offset) % len(live_roots)] for offset in range(reserved)]
     cursor = (cursor + reserved) % len(live_roots) if live_roots else 0
-    initial = [{'url': url} for url in dict.fromkeys(priority + pending + roots + known_urls) if official(url)]
+    initial = [{'url': url, **({'advertised_by': authorities[url]} if url in authorities else {})}
+               for url in dict.fromkeys(priority + pending + roots + known_urls)
+               if advertised_url(url, authorities.get(url))]
     paused_hosts = {urlsplit(UPDATE_METADATA_URL).hostname} if any(
         error.get('http_status') in {403, 429} for error in bootstrap_errors) else set()
     observed = {'packages': [{'source_url': row['url'], 'version': row['version']} for row in known_artifacts]}
@@ -182,8 +193,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for document in graph.get('documents', []):
         key = document['url'], document['sha256']
         documents[key] = {**documents.get(key, {}), **document}
-    candidates = {c['url']: c for c in state.get('candidates', []) if official(c['url']) and not landing_url(c['url'])}
-    candidates.update({row['url']: row for row in known_artifacts if official(row['url'])})
+    candidates = {c['url']: c for c in state.get('candidates', []) if advertised_url(c['url'], c.get('advertised_by')) and not landing_url(c['url'])}
+    candidates.update({row['url']: row for row in known_artifacts if advertised_url(row['url'], row.get('advertised_by'))})
     candidates.update({c.url: asdict(c) for c in graph.pop('candidates')})
     for url, artifact in archive.get('artifacts', {}).items():
         if official(url):
@@ -200,7 +211,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for row in list(candidates.values()):
         if row.get('inferred_only'):
             continue
-        fields = {key: row[key] for key in Candidate.__dataclass_fields__}
+        fields = {key: row.get(key) for key in Candidate.__dataclass_fields__}
         counterpart = host_counterpart(Candidate(**fields))
         if counterpart:
             candidates.setdefault(counterpart.url, {**row, **asdict(counterpart), 'parent_url': row['url']})
@@ -229,7 +240,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
             continue
         if time.monotonic() >= start + seconds:
             break
-        fields = {key: row[key] for key in Candidate.__dataclass_fields__}
+        fields = {key: row.get(key) for key in Candidate.__dataclass_fields__}
         result = {**row, **(probe_fn or probe)(Candidate(**fields))}
         sequence += 1
         result['attempt_sequence'] = sequence
@@ -244,8 +255,9 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                 for url, row in candidates.items() if not row.get('inferred_only') or row.get('discovered_available')}
     probes = {url: row for url, row in {**prior_probes, **checks}.items() if url in retained}
     inference_pending = sum(max(0, row['model_max'] + 1 - row['next_model']) for row in namespaces.values())
+    authorities.update(graph.get('advertised_sources', {}))
     deferred = list(dict.fromkeys(graph['pending_manifest_urls'] + [f['url'] for f in graph['failures']
-                        if f.get('attempted') and official(f['url'])]))
+                        if f.get('attempted') and advertised_url(f['url'], authorities.get(f['url']))]))
     result = {'schema_version': 1, 'roots': roots, 'manifests': list(manifests.values()),
               **scheduling,
               'documents': list(documents.values()),
@@ -253,7 +265,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
               'inferred_namespaces': namespaces, 'inference_pending': inference_pending,
               'model_exploration': {'policy': 'expanding-passes', 'namespaces': len(namespaces),
                                     'pending_in_current_ranges': inference_pending},
-              'pending_manifest_urls': deferred, 'graph': graph,
+              'pending_manifest_urls': deferred, 'graph': graph, 'advertised_sources': authorities,
               'checked_this_run': len(checks), 'unchecked_this_run': len(candidates) - len(checks),
               'checked_urls': list(checks),
               'probe_sequence': sequence,

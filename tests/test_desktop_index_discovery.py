@@ -115,7 +115,7 @@ class DesktopIndexTests(unittest.TestCase):
         response = io.BytesIO(b'MZ fixture')
         response.headers = {}
         response.geturl = lambda: 'https://new-apps.sonos.com/Sonos.exe'
-        with tempfile.TemporaryDirectory() as temporary, patch.object(installers, 'open_sonos', return_value=response) as fetch:
+        with tempfile.TemporaryDirectory() as temporary, patch.object(installers, 'open_advertised', return_value=response) as fetch:
             result = installers.acquire({'url': 'http://new-apps.sonos.com:80/Sonos.exe', 'platform': 'windows'},
                                         Path(temporary)/'installer.exe')
         self.assertEqual(fetch.call_args.args[0].full_url, 'https://new-apps.sonos.com/Sonos.exe')

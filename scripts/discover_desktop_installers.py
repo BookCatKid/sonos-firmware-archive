@@ -27,7 +27,7 @@ from curl_cffi import requests as tls_requests
 import yaml
 from sonos_firmware.storage import atomic_json
 from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
-from sonos_firmware.source_urls import open_sonos, sonos_url
+from sonos_firmware.source_urls import open_advertised, sonos_url, advertised_url, curl_source_options
 from sonos_firmware.archive_replay import canonical_source
 from sonos_firmware.package_history import ManifestHistory
 
@@ -84,10 +84,10 @@ def gh_lines(endpoint: str, jq: str) -> list[str]:
 
 
 def add_candidate(target: dict, *, family: str, platform: str, version: str,
-                  url: str, sha256: str | None, source: str) -> None:
-    advertised_url = url
+                  url: str, sha256: str | None, source: str, advertised_by=None) -> None:
+    original_url = url
     try:
-        url = canonical_source(url, sonos_url)
+        url = canonical_source(url, lambda u: advertised_url(u, advertised_by))
     except ValueError:
         pass  # Retain unsupported leads for the probe's explicit error report.
     # A WinGet package spans the pre-split and S1/S2 eras, so its package name
@@ -104,8 +104,10 @@ def add_candidate(target: dict, *, family: str, platform: str, version: str,
     })
     if source not in item["sources"]:
         item["sources"].append(source)
-    if advertised_url not in item.setdefault('advertised_urls', []):
-        item['advertised_urls'].append(advertised_url)
+    if original_url not in item.setdefault('advertised_urls', []):
+        item['advertised_urls'].append(original_url)
+    if advertised_by:
+        item['advertised_by'] = advertised_by
     if digest:
         item['acquisition_id'] = 'package-metadata:'+hashlib.sha256(
             json.dumps([url, digest]).encode()).hexdigest()
@@ -178,7 +180,9 @@ def winget_candidates(target: dict) -> list[dict]:
                                 errors.append({'source': source, 'error': 'installer record has an invalid SHA-256', 'url': url})
                                 digest = None
                             add_candidate(target, family=family, platform='windows', version=version['path'],
-                                          url=url, sha256=digest, source=source+':'+manifest['sha'])
+                                          url=url, sha256=digest, source=source+':'+manifest['sha'],
+                                          advertised_by={'repository': repository, 'git_blob': manifest['sha'],
+                                              'path': f'manifests/s/Sonos/{package["path"]}/{version["path"]}/{manifest["path"]}'})
                         except Exception as error:
                             errors.append({'source': source, 'error': str(error)})
                 except GitHubSourcePaused as error:
@@ -194,7 +198,8 @@ def winget_history(target, path, observations, limit, refresh_hours):
     for item in history.advance(limit=limit, refresh_hours=refresh_hours):
         for source in item['sources']:
             add_candidate(target, family='unknown', platform='windows', version=item['version'],
-                          url=item['url'], sha256=item['expected_sha256'], source=source)
+                          url=item['url'], sha256=item['expected_sha256'], source=source,
+                          advertised_by=item.get('advertised_by'))
     return {key: history.state[key] for key in ('status', 'pending_total', 'errors')}
 
 
@@ -242,7 +247,8 @@ def homebrew_candidates(target: dict) -> list[dict]:
                 hash_match = re.search(r'''^\s*sha256\s+(['"])([0-9a-fA-F]{64})\1''', text, re.M)
                 add_candidate(target, family=family, platform='macos', version=parts[0],
                               url=url, sha256=hash_match[2] if hash_match else None,
-                              source=f'homebrew-history:{sha}:{path}')
+                              source=f'homebrew-history:{sha}:{path}',
+                              advertised_by={'repository': 'Homebrew/homebrew-cask', 'path': path, 'git_commit': sha})
             except Exception as error:
                 errors.append({'source': raw_url, 'error': str(error)})
     return errors
@@ -272,7 +278,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
             current = url
             status = None
             for _ in range(10):
-                current = canonical_source(current, sonos_url)
+                current = canonical_source(current, lambda u: advertised_url(u, url))
+                session.curl_options.update(curl_source_options(current, url))
                 response = session.get(
                     current, allow_redirects=False, timeout=30,
                     headers={"Referer": "https://support.sonos.com/en-us/downloads"},
@@ -283,8 +290,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
                 if not next_url:
                     break
                 next_url = urllib.parse.urljoin(current, next_url)
-                if installer_location(next_url, ('exe', 'dmg')):
-                    location = installer_location(next_url, ('exe', 'dmg'))
+                if installer_location(next_url, ('exe', 'dmg'), advertised_by=url):
+                    location = installer_location(next_url, ('exe', 'dmg'), advertised_by=url)
                     source = "live-redirect"
                     break
                 current = next_url
@@ -304,8 +311,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
                         break
                     embedded = re.search(r"/web/\d+id_/(https?://.+)$", next_url)
                     original = embedded.group(1) if embedded else next_url
-                    if installer_location(original, ('exe', 'dmg')):
-                        location = installer_location(original, ('exe', 'dmg'))
+                    if installer_location(original, ('exe', 'dmg'), advertised_by=url):
+                        location = installer_location(original, ('exe', 'dmg'), advertised_by=url)
                         source = "wayback-latest-redirect"
                         break
                     current = next_url
@@ -318,6 +325,8 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
 
 def counterpart(candidate: dict) -> tuple[str, str] | None:
     url = candidate["url"]
+    if not sonos_url(url):
+        return None
     if candidate["platform"] == "windows":
         changed = url.replace("/software/pc/dcr/", "/software/mac/mdcr/")
         if changed.endswith(".exe"):
@@ -333,7 +342,7 @@ def probe(item: dict) -> dict:
     request = urllib.request.Request(item["url"], method="HEAD",
                                      headers={"User-Agent": "sonos-firmware-archive/1"})
     try:
-        with open_sonos(request, timeout=30) as response:
+        with open_advertised(request, advertised_by=item.get('advertised_by'), timeout=30) as response:
             return {**item, "http_status": response.status,
                     "content_length": int(response.headers.get("Content-Length", 0)) or None,
                     "etag": response.headers.get("ETag")}
@@ -385,6 +394,7 @@ def main() -> int:
             candidates, family=family, platform=platform,
             version=version_for_url(url), url=url, sha256=None,
             source=f"official-direct:{redirect['name']}:{redirect['location_source']}",
+            advertised_by=redirect["url"],
         )
     current_urls = {row['location'] for row in direct_redirects if row.get('location_source') == 'live-redirect'}
     for item in list(candidates.values()):
