@@ -366,6 +366,13 @@ collection's tag, repository-specific proofs stay scoped to that destination,
 and conflicting identities fail validation. The audit uses the shared paginated
 release reader rather than relying on assets embedded in a release listing.
 
+GPL compressed-stream audits use the same durable retry queue as discovery.
+Earlier 403/404 responses, invalid sources and content mismatches remain pending
+with backoff; no manual retry flag is needed. New sources and failed checks share
+worker capacity. `stream-audit.json` reports outstanding work to the runner so
+an incomplete audit is scheduled again promptly. `--retry-failed` only bypasses
+the saved cooldown for an explicit run.
+
 Firmware extraction uses a bounded queue with durable retry timing. Failed
 packages back off; newly available keys and changed source hashes become
 eligible immediately. A failure does not stop extraction of other packages.

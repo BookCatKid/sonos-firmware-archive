@@ -138,7 +138,8 @@ def gpl_archive(c: Context):
 
 def gpl_audit(c: Context):
     return [c.script('audit_gpl_published_streams.py', '--store', c.work / 'audit',
-                     '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 25), '--delay', 2.5),
+                     '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 25), '--delay', 2.5,
+                     report=str(c.root/'data/gpl/live/stream-audit.json')),
             c.script('archive_gpl_direct.py', 'report', after_failure=True)]
 
 
