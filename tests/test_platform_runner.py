@@ -49,23 +49,16 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(workspaces[0].exists())
             self.assertTrue((root / 'data/platform/targets/new-source.json').exists())
 
-    def test_missing_authorization_blocks_only_that_target_without_running_it(self):
+    def test_missing_play_dependency_blocks_only_that_target_without_running_it(self):
+        from unittest.mock import patch
         def forbidden(c): raise AssertionError('must not execute')
-        with tempfile.TemporaryDirectory() as temporary:
-            report = run(self.target(capabilities=['google-play-terms']), Path(temporary), 'owner/repo',
+        with tempfile.TemporaryDirectory() as temporary, patch(
+                'sonos_firmware.platform.runner.importlib.util.find_spec', return_value=None):
+            report = run(self.target(capabilities=['goopdl']), Path(temporary), 'owner/repo',
                          environment={'GITHUB_ACTIONS': 'true'}, provider_map={'fixture': forbidden})
             self.assertEqual(report['status'], 'blocked')
             self.assertFalse(report['executed'])
-
-    def test_terms_acceptance_requires_an_explicit_boolean_true(self):
-        def forbidden(c): raise AssertionError('must not execute')
-        for value in ('false', 1):
-            with self.subTest(value=value), tempfile.TemporaryDirectory() as temporary:
-                report = run(self.target(capabilities=['google-play-terms']), Path(temporary), 'owner/repo',
-                             environment={'GITHUB_ACTIONS': 'true'}, options={'accept_google_play_tos': value},
-                             provider_map={'fixture': forbidden})
-                self.assertEqual(report['status'], 'blocked')
-                self.assertFalse(report['executed'])
+            self.assertEqual(report['pending'], ['goopdl'])
 
     def test_native_incomplete_discovery_is_not_reported_as_complete(self):
         def provider(c):
@@ -101,7 +94,7 @@ class RunnerTests(unittest.TestCase):
                 self.target(metadata=[path])
 
 class TargetRegistrationTests(unittest.TestCase):
-    def test_scheduled_cli_retains_explicit_target_configuration(self):
+    def test_scheduled_cli_retains_explicit_target_options(self):
         import contextlib
         import io
         from unittest.mock import patch
@@ -109,19 +102,18 @@ class TargetRegistrationTests(unittest.TestCase):
         visited = []
         def execute_target(target, root, repository, **kwargs):
             return run(target, root, repository, environment={'GITHUB_ACTIONS': 'true'},
-                       provider_map={'fixture': lambda c: [Step('check', ('fixture',))]},
-                       execute=lambda *args: (visited.append(True) or 0, 'configured task'), **kwargs)
+                       provider_map={'fixture': lambda c: [Step('check', ('fixture', str(c.options['limit'])))]},
+                       execute=lambda step, *args: (visited.append(step.command[-1]) or 0, 'configured task'), **kwargs)
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root/'config').mkdir()
             (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [
                 {'name': 'configured-source', 'provider': 'fixture', 'description': 'Configured source',
-                 'interval_hours': 6, 'metadata': ['data/source'], 'capabilities': ['google-play-terms'],
-                 'options': {'accept_google_play_tos': True}}]}))
+                 'interval_hours': 6, 'metadata': ['data/source'], 'options': {'limit': 5}}]}))
             with patch.object(cli, 'run', side_effect=execute_target), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
                                           '--if-due', '--repository', 'owner/repo']), 0)
-            self.assertEqual(visited, [True])
+            self.assertEqual(visited, ['5'])
 
     def test_registering_and_planning_target_needs_only_configuration(self):
         import contextlib
@@ -276,7 +268,7 @@ class HistoryBootstrapTests(unittest.TestCase):
             with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2', '--limit', '1',
                     '--receipt', str(directory/'archive.json'), '--ledger', str(directory/'state.json')]), \
                  patch.object(module, 'discover_versions', side_effect=[['first', 'later'], OSError('listing outage')]), \
-                 patch.object(module.subprocess, 'run', side_effect=acquire):
+                 patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
                 self.assertEqual(module.main(), 1)
             self.assertEqual(acquired, ['first', 'later'])
@@ -302,7 +294,7 @@ class HistoryBootstrapTests(unittest.TestCase):
             with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2',
                     '--receipt', str(directory/'archive.json'), '--ledger', str(ledger)]), \
                  patch.object(module, 'discover_versions', side_effect=OSError('listing unavailable')), \
-                 patch.object(module.subprocess, 'run', side_effect=acquire):
+                 patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
             self.assertEqual(acquired, ['old'])
             document = json.loads(ledger.read_text())
@@ -330,10 +322,13 @@ class HistoryBootstrapTests(unittest.TestCase):
                 self.assertIn('owner/repo', command)
                 return SimpleNamespace(returncode=1, stdout='fixture failure')
             with patch.object(sys, 'argv', argv), patch.object(module, 'discover_versions', return_value=['old', 'new']), \
-                 patch.object(module.subprocess, 'run', side_effect=acquire):
+                 patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
                 self.assertEqual(module.main(), 1)
-                self.assertEqual(module.main(), 1)
+                from datetime import datetime, timedelta, timezone
+                from sonos_firmware import retry
+                with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)):
+                    self.assertEqual(module.main(), 1)
             self.assertEqual(acquired, ['old', 'new', 'old'])
             document = json.loads(ledger.read_text())
             self.assertEqual(document['pending_total'], 2)

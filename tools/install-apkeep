@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Install the upstream release binary; no Rust toolchain or source build.
+set -euo pipefail
+destination=${1:?usage: install-apkeep DESTINATION_DIRECTORY}
+case "$(uname -s)-$(uname -m)" in
+  Linux-x86_64)
+    target=x86_64-unknown-linux-gnu
+    digest=a23579a3ba366d25a6d69848189b983d65662f4ecf4b9e11e16510811659de4e ;;
+  Linux-aarch64|Linux-arm64)
+    target=aarch64-unknown-linux-gnu
+    digest=5410acebd1b69427adcf98ccfdda6fa4dd3201e0540e5e2c01037b68e0a84049 ;;
+  *) echo 'No pinned apkeep binary for this worker platform' >&2; exit 1 ;;
+esac
+mkdir -p "$destination"
+temporary=$(mktemp "$destination/.apkeep.XXXXXX")
+trap 'rm -f "$temporary"' EXIT
+curl --fail --location --retry 5 --retry-all-errors \
+  "https://github.com/EFForg/apkeep/releases/download/1.0.0/apkeep-$target" \
+  --output "$temporary"
+echo "$digest  $temporary" | sha256sum --check --status
+chmod 755 "$temporary"
+mv "$temporary" "$destination/apkeep"

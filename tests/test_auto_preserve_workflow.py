@@ -44,23 +44,22 @@ class PlatformWorkflowTests(unittest.TestCase):
             name = f'SONOS_MODEL_{model}_PRIVATE_KEY'
             self.assertEqual(run['env'][name], '${{ secrets.' + name + ' }}')
 
-    def test_acquisition_tool_cache_is_pinned_and_build_failure_is_not_hidden(self):
-        cache = self.steps['apkeep_cache']
-        self.assertIn("hashFiles('tools/vendor/apkeep-1.0.0.tar.gz')", cache['with']['key'])
-        self.assertNotIn('restore-keys', cache['with'])
-        self.assertTrue(cache['continue-on-error'])
-        build = self.steps['apkeep']
-        self.assertIn("cache-hit != 'true'", build['if'])
-        self.assertIn(cache['with']['path'].replace('~', '$HOME'), build['run'])
-        self.assertIn('sha256sum --check', self.steps['Verify pinned acquisition tool sources']['run'])
+    def test_acquisition_uses_pinned_binary_and_optional_play_dependency(self):
+        installer = self.steps['Install pinned APKPure acquisition binary']
+        self.assertIn('tools/install-apkeep', installer['run'])
+        script = (ROOT/'tools/install-apkeep').read_text()
+        self.assertIn('releases/download/1.0.0/apkeep-', script)
+        self.assertIn('sha256sum --check', script)
+        self.assertNotIn('cargo', str(self.job))
+        self.assertEqual(self.steps['Install pinned Google Play client']['if'], 'matrix.goopdl')
+        self.assertIn("'.[google-play]'", self.steps['Install pinned Google Play client']['run'])
 
-    def test_google_play_requires_explicit_consent_and_is_not_scheduled(self):
-        triggers = self.workflow.get('on', self.workflow.get(True))
-        self.assertFalse(triggers['workflow_dispatch']['inputs']['accept_google_play_tos']['default'])
-        self.assertIn('"$ACCEPT_TERMS" == true', self.steps['run']['run'])
+    def test_google_play_is_scheduled_without_personal_credentials(self):
         from sonos_firmware.platform.registry import targets
-        from sonos_firmware.platform.runner import is_due
-        self.assertFalse(is_due(ROOT, targets(ROOT)['google-play']))
+        target = targets(ROOT)['google-play']
+        self.assertFalse(target.manual)
+        self.assertEqual(target.capabilities, ('java', 'goopdl'))
+        self.assertFalse(any(name.startswith('GOOGLE_PLAY_') for name in self.steps['run']['env']))
 
 
 if __name__ == '__main__':

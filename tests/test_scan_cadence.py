@@ -27,7 +27,7 @@ class CadenceTests(unittest.TestCase):
   self.assertEqual(configured['web'].interval_hours,1)
   self.assertEqual(configured['firmware'].interval_hours,6)
   self.assertEqual(configured['gpl-audit'].interval_hours,24)
-  self.assertTrue(configured['google-play'].manual)
+  self.assertFalse(configured['google-play'].manual)
 
 class TraversalCadenceTests(unittest.TestCase):
  def test_current_skips_history_but_follows_current_package_sibling(self):

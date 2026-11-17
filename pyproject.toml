@@ -18,6 +18,9 @@ dependencies = [
 
 [project.optional-dependencies]
 test = []
+google-play = [
+  "goopdl @ git+https://github.com/Villoh/goopdl.git@b66bf60d686fd93724b7c9f1963fe8bf4070b89d",
+]
 
 [project.scripts]
 sonos-fw = "sonos_firmware.cli:main"

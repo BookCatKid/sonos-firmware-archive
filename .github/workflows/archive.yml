@@ -9,10 +9,6 @@ on:
         description: 'Target name from config/targets.json, or all scheduled targets'
         type: string
         default: all
-      accept_google_play_tos:
-        description: 'Explicitly accept the Google Play terms presented by apkeep'
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -74,30 +70,18 @@ jobs:
       - name: Install filesystem extraction tools
         if: matrix.provider == 'firmware'
         run: sudo apt-get update && sudo apt-get install -y squashfs-tools
-      - name: Verify pinned acquisition tool sources
+      - name: Install pinned APKPure acquisition binary
         if: matrix.apkeep
+        run: |
+          bash tools/install-apkeep "$RUNNER_TEMP/acquisition-tools"
+          echo "$RUNNER_TEMP/acquisition-tools" >> "$GITHUB_PATH"
+      - name: Verify pinned APK inspection tools
+        if: matrix.java
         working-directory: tools/vendor
         run: sha256sum --check SHA256SUMS
-      - name: Restore pinned acquisition tool
-        if: matrix.apkeep
-        id: apkeep_cache
-        continue-on-error: true
-        uses: actions/cache@v4
-        with:
-          path: ~/apkeep-tool
-          key: apkeep-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('tools/vendor/apkeep-1.0.0.tar.gz') }}
-      - name: Build pinned acquisition tool
-        if: matrix.apkeep && steps.apkeep_cache.outputs.cache-hit != 'true'
-        id: apkeep
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/apkeep-src" "$HOME/apkeep-tool"
-          tar -xzf tools/vendor/apkeep-1.0.0.tar.gz --strip-components=1 -C "$RUNNER_TEMP/apkeep-src"
-          cargo install --locked --path "$RUNNER_TEMP/apkeep-src" --root "$HOME/apkeep-tool"
-      - name: Add acquisition tool to worker path
-        if: matrix.apkeep
-        run: echo "$HOME/apkeep-tool/bin" >> "$GITHUB_PATH"
+      - name: Install pinned Google Play client
+        if: matrix.goopdl
+        run: python -m pip install '.[google-play]'
       - name: Restore small discovery observations
         uses: actions/cache/restore@v4
         with:
@@ -110,10 +94,6 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
           EVENT: ${{ github.event_name }}
-          ACCEPT_TERMS: ${{ inputs.accept_google_play_tos }}
-          GOOGLE_PLAY_EMAIL: ${{ secrets.GOOGLE_PLAY_EMAIL }}
-          GOOGLE_PLAY_AAS_TOKEN: ${{ secrets.GOOGLE_PLAY_AAS_TOKEN }}
-          GOOGLE_PLAY_AUTH_TOKEN: ${{ secrets.GOOGLE_PLAY_AUTH_TOKEN }}
           SONOS_MODEL_1_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_1_PRIVATE_KEY }}
           SONOS_MODEL_8_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_8_PRIVATE_KEY }}
           SONOS_MODEL_9_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_9_PRIVATE_KEY }}
@@ -127,7 +107,6 @@ jobs:
           umask 077
           args=(--execute --repository "$GITHUB_REPOSITORY" --report "$RUNNER_TEMP/archive-report.json")
           if [[ "$EVENT" == schedule ]]; then args+=(--if-due); fi
-          if [[ "$ACCEPT_TERMS" == true ]]; then args+=(--accept-google-play-tos); fi
           sonos-archive run "$TARGET" "${args[@]}"
       - name: Retain discovery observations
         if: always()

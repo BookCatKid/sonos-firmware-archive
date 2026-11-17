@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import os
 import shutil
 import subprocess
@@ -45,15 +46,10 @@ def plan(target, root, repository, options=None, provider_map=None):
 def missing_capabilities(target, environment, options):
     missing = []
     for capability in target.capabilities:
+        if capability == 'goopdl' and importlib.util.find_spec('goopdl') is None:
+            missing.append(capability)
         if capability in {'java', 'apkeep'} and not shutil.which(options.get(capability, capability)):
             missing.append(capability)
-        elif capability == 'google-play-terms' and options.get('accept_google_play_tos') is not True:
-            missing.append(capability)
-        elif capability == 'google-play-auth':
-            if not environment.get('GOOGLE_PLAY_EMAIL') or not (
-                environment.get('GOOGLE_PLAY_AUTH_TOKEN') or environment.get('GOOGLE_PLAY_AAS_TOKEN')
-            ):
-                missing.append(capability)
     return missing
 
 

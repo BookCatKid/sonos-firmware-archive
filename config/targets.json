@@ -8,7 +8,10 @@
       "interval_hours": 6,
       "options": {
         "artifact_roots": [
-          {"package_model": 17, "url": "https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd"}
+          {
+            "package_model": 17,
+            "url": "https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd"
+          }
         ]
       },
       "metadata": [
@@ -79,17 +82,15 @@
     {
       "name": "google-play",
       "provider": "google-play",
-      "description": "Configured authenticated Google Play delivery acquisition",
+      "description": "Anonymous Google Play profile discovery and signer-verified versioned deliveries",
       "interval_hours": 6,
-      "manual": true,
       "capabilities": [
         "java",
-        "apkeep",
-        "google-play-terms",
-        "google-play-auth"
+        "goopdl"
       ],
       "metadata": [
-        "data/apps/android-store-archive.json"
+        "data/apps/android-store-archive.json",
+        "data/apps/google-play-sweep.json"
       ],
       "lock": "android-store"
     },

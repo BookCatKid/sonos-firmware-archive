@@ -41,6 +41,22 @@ def _identity(artifact):
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
+def delivery_profiles(artifact):
+    profiles = list(artifact.get('delivery_profiles', []))
+    if artifact.get('delivery_profile') and artifact['delivery_profile'] not in profiles:
+        profiles.append(artifact['delivery_profile'])
+    return profiles
+
+
+def _merge_profiles(target, incoming):
+    profiles = delivery_profiles(target)
+    for profile in delivery_profiles(incoming):
+        if profile not in profiles:
+            profiles.append(profile)
+    if profiles:
+        target['delivery_profiles'] = profiles
+
+
 def _promote(document, capture, repository, observed):
     artifact = capture['artifact']
     for asset in _assets(artifact):
@@ -53,6 +69,7 @@ def _promote(document, capture, repository, observed):
     if prior:
         selectors = set(prior.get('source_version_selectors', [])) | set(artifact.get('source_version_selectors', []))
         selectors.update(row['source_version_selector'] for row in (prior, artifact) if row.get('source_version_selector'))
+        _merge_profiles(artifact, prior)
         prior.update(artifact, source_version_selectors=sorted(selectors))
     else:
         document['artifacts'].append(artifact)
@@ -75,6 +92,7 @@ def publish_delivery(receipt, repository, artifact, files, *, title, notes):
     if prior:
         # Preserve the original observation after a mutable source changes.
         capture = prior
+        _merge_profiles(capture['artifact'], artifact)
         selectors = set(capture['artifact'].get('source_version_selectors', []))
         selectors.update(row['source_version_selector'] for row in (capture['artifact'], artifact)
                          if row.get('source_version_selector'))

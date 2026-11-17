@@ -76,13 +76,18 @@ def android_history(c: Context):
     # Acquisition is scheduled independently of a listing's observed-change flag.
     return [c.script('sweep_android_store_history.py', '--apkeep', c.options.get('apkeep', 'apkeep'),
                      '--repo', c.repository, '--limit', c.options.get('limit', 24),
+                     '--refresh-hours', c.target.interval_hours,
+                     '--seconds', c.options.get('seconds', 1200),
                      report=str(c.root / 'data/apps/android-store-history-sweep.json'))]
 
 
 def google_play(c: Context):
-    return [c.script('archive_android_store_apps.py', '--source', 'google-play-direct',
-                     '--accept-google-play-tos', '--repo', c.repository,
-                     '--apkeep', c.options.get('apkeep', 'apkeep'))]
+    return [c.script('sweep_android_store_history.py', '--source', 'google-play-direct',
+                     '--repo', c.repository, '--limit', c.options.get('limit', 12),
+                     '--discovery-limit', c.options.get('discovery_limit', 4),
+                     '--refresh-hours', c.target.interval_hours,
+                     '--seconds', c.options.get('seconds', 1200),
+                     report=str(c.root / 'data/apps/google-play-sweep.json'))]
 
 
 def google_play_listings(c: Context):

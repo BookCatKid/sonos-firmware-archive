@@ -8,7 +8,7 @@
    a plan must not perform network requests, downloads, or filesystem writes.
 2. Declare its name, provider, description, cadence, and owned metadata paths
    in `config/targets.json`. Declare worker capabilities such as `java` or
-   `apkeep` when required. Targets that share mutable metadata use the same
+   `apkeep` or `goopdl` when required. Targets that share mutable metadata use the same
    `lock`. Public protocol roots and product identities belong in the adapter;
    discovered release URLs belong in its observations.
 3. Add offline fixtures that exercise discovery from an empty state, failed
@@ -266,17 +266,39 @@ rotate even with a one-request budget. Access-challenge cooldowns apply to the
 whole source, so a new version cannot bypass them. No downloaded files or
 precomputed hashes are required to add or plan a target.
 
-`google-play` is manual and requires both configured credentials and explicit
-terms acceptance. Missing capabilities produce a blocked report. Apple metadata
-and authenticated delivery are distinct scopes.
+`google-play` runs on the normal schedule using the pinned goopdl Python extra
+and Aurora's anonymous token dispenser. Personal accounts and repository Google
+credentials are unnecessary. Its complete upstream device profile inventory
+rotates across runs, interleaving architectures. Each observed numeric version
+becomes a retained acquisition lead. Existing receipt metadata contributes
+historical code hints, but an empty archive starts from live profile discovery.
+Google Play does not expose an exhaustive historical version list: accepting a
+requested code does not prove Google still serves that version.
 
-Authenticated delivery can run unattended after the repository owner configures
-the `GOOGLE_PLAY_EMAIL` and token secrets, accepts the acquisition tool's terms,
-sets the target's `manual` field to `false`, and records
-`options.accept_google_play_tos: true` in `config/targets.json`. The normal
-scheduled matrix then uses its declared cadence. An omitted CLI acceptance flag
-retains that explicit configuration; `--set accept_google_play_tos=false`
-overrides it for a particular invocation. Credentials stay in worker secrets.
+Both Android stores use `sweep_android_store_history.py`, with source-specific
+ledgers and a shared metadata lock. Discovery observations, unattempted leads,
+failed attempts and cooldowns survive worker exit. A 429 pauses the whole source
+until `Retry-After`, or an exponential delay if none is supplied, then retries
+the same operation while the worker's time budget permits. A longer cooldown
+stays pending for a subsequent worker. There is no terminal retry count. Ordinary
+failures also remain retryable, with shared queue fairness and backoff.
+Package identities, archive families and signer trust anchors live once in
+`config/android-apps.json`; adding an Android app requires that declaration,
+not a list of versions, release URLs, predownloaded APKs or artifact hashes.
+
+Google Play acquisition checks the returned delivery code before downloading,
+then checks the actual APK manifest before publishing. Every returned base APK,
+split, dex metadata file, OBB and asset pack is requested. Every APK must pass
+signature verification against the configured Sonos signer. Identical deliveries
+are deduplicated while retaining all observed device profiles. Signed URLs,
+cookies and dispenser tokens stay in ephemeral worker storage outside metadata
+caches and uploads. Apple listing preservation remains a separate scope.
+
+APKPure discovery and download use the upstream apkeep release binary, pinned
+by SHA-256 in `tools/install-apkeep`. CI downloads the binary for its Linux
+architecture instead of compiling Rust. The upstream selector listing does not
+prove complete APKPure variant or historical coverage; failed or malformed
+listings cannot be treated as a complete result.
 
 ## Validation and publication
 

@@ -5,39 +5,23 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import shutil
 import subprocess
 import tempfile
 import zipfile
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from xml.etree import ElementTree
 
 from sonos_firmware.storage import file_sha256
-from sonos_firmware.delivery_archive import publish_delivery, recover_deliveries
+from sonos_firmware.delivery_archive import publish_delivery, recover_deliveries, delivery_profiles
+from sonos_firmware.android_store import acquire_play, GOOPDL_REVISION, safe_error, run_apkeep, store_apps, StoreError
+from sonos_firmware.storage import atomic_json
 
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
-APPS = {
-    "com.sonos.acr2": {
-        "family": "s2",
-        "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
-        "apkpure_url": "https://apkpure.com/sonos/com.sonos.acr2",
-    },
-    "com.sonos.acr": {
-        "family": "s1",
-        "signer_sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
-        "apkpure_url": "https://apkpure.com/sonos-s1-controller/com.sonos.acr",
-    },
-}
-RELEASES = {
-    ("google-play-direct", "s2"): "apps-google-play-s2",
-    ("google-play-direct", "s1"): "apps-google-play-s1",
-    ("apkpure-recovery", "s2"): "apps-google-play-recovery-s2",
-    ("apkpure-recovery", "s1"): "apps-google-play-recovery-s1",
-}
+APPS = store_apps(ROOT)
 
 
 def digest(path: Path) -> tuple[int, str]:
@@ -55,7 +39,7 @@ def verify_apk(path: Path, expected: str) -> dict:
             fields[key] = value
     signer = fields.get("signer.1.sha256")
     if fields.get("verified") != "true" or signer != expected:
-        raise RuntimeError(f"signature verification failed for {path.name}: {fields}")
+        raise StoreError('APKSignatureVerificationFailed')
     return {
         "verified": True,
         "signer_sha256": signer,
@@ -98,48 +82,44 @@ def unpack_delivery(source: Path, scratch: Path) -> tuple[dict, list[Path]]:
         with zipfile.ZipFile(source) as archive:
             metadata = json.loads(archive.read("manifest.json"))
             components = []
+            names = set()
             for member in archive.namelist():
-                if not member.lower().endswith(".apk"):
+                if member.endswith(('/', '\\')):
                     continue
-                target = output / Path(member).name
+                relative = PurePosixPath(member.replace('\\', '/'))
+                if relative.is_absolute() or not relative.parts or '..' in relative.parts:
+                    raise RuntimeError('unsafe component path in XAPK')
+                target = output.joinpath(*relative.parts)
+                if not target.resolve().is_relative_to(output.resolve()):
+                    raise RuntimeError('unsafe component path in XAPK')
+                if relative.as_posix().casefold() in names:
+                    raise RuntimeError('duplicate component path in XAPK')
+                names.add(relative.as_posix().casefold())
+                target.parent.mkdir(parents=True, exist_ok=True)
                 with archive.open(member) as incoming, target.open("wb") as outgoing:
                     shutil.copyfileobj(incoming, outgoing)
                 components.append(target)
-        return {
-            "package": metadata["package_name"],
-            "version_code": str(metadata["version_code"]),
-            "version_name": metadata["version_name"],
-        }, sorted(components)
+        apks = [path for path in components if path.suffix.lower() == '.apk']
+        if not apks:
+            raise RuntimeError('XAPK contains no APK')
+        preferred = next((path for path in apks if path.name in {
+            'base.apk', 'base-master.apk', metadata['package_name'] + '.apk'}), apks[0])
+        actual = apk_metadata(preferred, scratch)
+        if (actual['package'] != metadata['package_name'] or
+                str(actual['version_code']) != str(metadata['version_code'])):
+            raise RuntimeError('XAPK manifest does not match its APK')
+        return actual, sorted(components)
     return apk_metadata(source, scratch), [source]
 
 
 def acquire(package: str, source_kind: str, output: Path, apkeep: str,
-            accept_google_play_tos: bool = False,
             version_selector: str | None = None) -> Path:
     if source_kind == "apkpure-recovery":
         app = f"{package}@{version_selector}" if version_selector else package
         command = [apkeep, "-a", app, "-d", "apk-pure", str(output)]
     else:
-        if version_selector:
-            raise RuntimeError("version selectors are not supported by apkeep's direct Play CLI")
-        email = os.environ.get("GOOGLE_PLAY_EMAIL")
-        aas = os.environ.get("GOOGLE_PLAY_AAS_TOKEN")
-        auth = os.environ.get("GOOGLE_PLAY_AUTH_TOKEN")
-        if not email or not (aas or auth):
-            raise RuntimeError("direct Play acquisition requires GOOGLE_PLAY_EMAIL and "
-                               "GOOGLE_PLAY_AAS_TOKEN or GOOGLE_PLAY_AUTH_TOKEN")
-        config = output / "apkeep.ini"
-        token_line = f"aas_token = {aas}" if aas else f"auth_token = {auth}"
-        config.write_text(f"[google]\nemail = {email}\n{token_line}\n")
-        config.chmod(0o600)
-        command = [
-            apkeep, "-a", package, "-d", "google-play",
-            "-o", "split_apk=true,include_dex_metadata=true,include_additional_files=true",
-            "-i", str(config), str(output),
-        ]
-        if accept_google_play_tos:
-            command.insert(5, "--accept-tos")
-    subprocess.run(command, check=True)
+        raise ValueError('use acquire_play for direct Google Play delivery')
+    run_apkeep(command)
     candidates = [x for x in output.iterdir()
                   if x.name != "apkeep.ini" and (x.is_dir() or x.suffix in {".apk", ".xapk"})]
     if len(candidates) != 1:
@@ -151,23 +131,37 @@ def preserve_package(args, package, index, scratch):
     info = APPS[package]
     delivery_dir = scratch / package
     delivery_dir.mkdir()
-    source = args.input[index] if args.input else acquire(
-        package, args.source, delivery_dir, args.apkeep,
-        args.accept_google_play_tos, args.version_selector,
-    )
+    expected_code = args.version_code
+    if args.input:
+        source = args.input[index]
+    elif args.source == 'google-play-direct':
+        source, expected_code = acquire_play(package, delivery_dir / 'delivery', args.auth_dir,
+            args.play_arch, args.play_profile, args.version_code)
+    else:
+        source = acquire(package, args.source, delivery_dir, args.apkeep, args.version_selector)
     metadata, components = unpack_delivery(source, delivery_dir)
     if metadata["package"] != package:
-        raise RuntimeError(f"package mismatch: expected {package}, got {metadata['package']}")
+        raise StoreError('APKPackageMismatch')
+    if expected_code and str(metadata['version_code']) != str(expected_code):
+        raise StoreError('APKVersionMismatch')
     component_records = []
+    parts_root = (source if source.is_dir() else delivery_dir / (source.stem + '-components')
+                  if source.suffix.lower() == '.xapk' else source.parent)
     for component in components:
         size, sha256 = digest(component)
         record = {"name": component.name, "bytes": size, "sha256": sha256}
+        record['path'] = component.relative_to(parts_root).as_posix()
         if component.suffix.lower() == ".apk":
             record.update(verify_apk(component, info["signer_sha256"]))
+            actual = apk_metadata(component, delivery_dir)
+            if actual['package'] != package or str(actual['version_code']) != str(metadata['version_code']):
+                raise StoreError('APKComponentIdentityMismatch')
+            record['metadata'] = actual
         component_records.append(record)
-    tag = RELEASES[(args.source, info["family"])]
+    prefix = 'apps-google-play-' if args.source == 'google-play-direct' else 'apps-google-play-recovery-'
+    tag = prefix + info['family']
     provenance = (
-        'Packages acquired directly from Google Play using an authenticated dedicated account.'
+        'Packages acquired directly from Google Play using anonymous goopdl authentication.'
         if args.source == 'google-play-direct' else
         'Third-party APKPure recovery copies; not direct-Play provenance.'
     )
@@ -188,17 +182,15 @@ def preserve_package(args, package, index, scratch):
         uploads.append((source, wrapper))
     artifact = {
         "source_kind": args.source,
-        "source_version_selector": args.version_selector,
+        "source_version_selector": args.version_selector or args.version_code,
         "source_url": (f"https://play.google.com/store/apps/details?id={package}"
                        if args.source == "google-play-direct" else info["apkpure_url"]),
         "acquired_at": datetime.now(timezone.utc).isoformat(),
-        "acquisition_tool": {
-            "name": "apkeep", "version": "1.0.0",
-            "backend": ("google-play" if args.source == "google-play-direct"
-                        else "apk-pure"),
-        },
+        "acquisition_tool": ({"name": "goopdl", "revision": GOOPDL_REVISION, "backend": "google-play"}
+                             if args.source == 'google-play-direct' else
+                             {"name": "apkeep", "version": "1.0.0", "backend": "apk-pure"}),
         "delivery_profile": ({
-            "device": "px_9a", "locale": "en_US", "timezone": "UTC",
+            "arch": args.play_arch, "device": args.play_profile, "authentication": "anonymous",
             "split_apk": True, "include_dex_metadata": True,
             "include_additional_files": True,
         } if args.source == "google-play-direct" else None),
@@ -227,23 +219,34 @@ def main() -> int:
                         default=ROOT / "data/apps/android-store-archive.json")
     parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--apkeep", default="apkeep")
-    parser.add_argument(
-        "--accept-google-play-tos", action="store_true",
-        help="explicitly pass apkeep's --accept-tos flag; never enabled automatically",
-    )
+    parser.add_argument('--version-code', help='exact Google Play numeric version code')
+    parser.add_argument('--play-arch', default='arm64')
+    parser.add_argument('--play-profile')
+    parser.add_argument('--auth-dir', type=Path, help='ephemeral anonymous token directory, never archived')
+    parser.add_argument('--result', type=Path, help='sanitized acquisition result for the retry queue')
     args = parser.parse_args()
     packages = args.package or list(APPS)
     if args.version_selector and (args.source != "apkpure-recovery" or len(packages) != 1):
         parser.error("--version-selector requires APKPure recovery and exactly one --package")
     if args.input and len(args.input) != len(packages):
         parser.error("the number of --input paths must match --package")
+    if args.version_code and (args.source != 'google-play-direct' or not args.version_code.isdecimal()
+                             or int(args.version_code) <= 0 or len(packages) != 1):
+        parser.error('--version-code requires direct Play, a positive integer and exactly one package')
+    selector = args.version_selector or args.version_code
     recovered = recover_deliveries(args.receipt, args.repo, args.source, packages,
-                                   selector=args.version_selector)
-    resolved = {row['package'] for row in recovered if args.version_selector
-                and args.version_selector in {row.get('source_version_selector'), *row.get('source_version_selectors', [])}}
+                                   selector=selector)
+    resolved = {row['package'] for row in recovered if selector
+                and selector in {row.get('source_version_selector'), *row.get('source_version_selectors', [])}
+                and (args.source != 'google-play-direct' or {
+                    'arch': args.play_arch, 'device': args.play_profile, 'authentication': 'anonymous',
+                    'split_apk': True, 'include_dex_metadata': True, 'include_additional_files': True}
+                    in delivery_profiles(row))}
     errors = []
     with tempfile.TemporaryDirectory(prefix="sonos-android-store-") as temporary:
         scratch = Path(temporary)
+        if args.auth_dir is None:
+            args.auth_dir = scratch / 'anonymous-auth'
         for index, package in enumerate(packages):
             if package in resolved and not (args.input and args.input[index].exists()):
                 print(f'reconciled prior delivery: {package}@{args.version_selector}')
@@ -251,13 +254,20 @@ def main() -> int:
             try:
                 preserve_package(args, package, index, scratch)
             except Exception as error:
-                errors.append({'package': package, 'error': str(error)})
-                print(f'FAILED {package}: {error}', flush=True)
+                sanitized = safe_error(error) if args.source == 'google-play-direct' else error
+                errors.append({'package': package, 'error': str(sanitized),
+                               'status_code': getattr(sanitized, 'status_code', None),
+                               'observed_version_code': getattr(sanitized, 'observed_version_code', None),
+                               'retry_after': getattr(sanitized, 'retry_after', None)})
+                print(f'FAILED {package}: {sanitized}', flush=True)
     document = json.loads(args.receipt.read_text()) if args.receipt.exists() else {}
     pending = [row for row in document.get('pending_captures', []) if row['repository'] == args.repo
                and row['artifact']['source_kind'] == args.source and row['artifact']['package'] in packages
-               and (args.version_selector is None or args.version_selector in {
+               and (selector is None or selector in {
                    row['artifact'].get('source_version_selector'), *row['artifact'].get('source_version_selectors', [])})]
+    if args.result:
+        atomic_json(args.result, {'status': 'partial' if errors or pending else 'ok', 'errors': errors,
+                                  'pending_total': len(pending)})
     return 1 if errors or pending else 0
 
 

@@ -38,6 +38,8 @@ class AndroidStorePublicationTests(unittest.TestCase):
             patch.object(releases.time, 'sleep'),
             patch.object(STORE, 'unpack_delivery', return_value=(
                 {'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}, [self.apk])),
+            patch.object(STORE, 'apk_metadata', return_value={
+                'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}),
             patch.object(STORE.subprocess, 'check_output', side_effect=self.verify),
         ):
             mocked.start()
@@ -145,6 +147,8 @@ class AndroidStorePublicationTests(unittest.TestCase):
             return {'package': 'com.sonos.acr', 'version_code': '1', 'version_name': '1.0'}, [second]
         self.signer = STORE.APPS['com.sonos.acr']['signer_sha256']
         with patch.object(STORE, 'unpack_delivery', side_effect=unpack), \
+             patch.object(STORE, 'apk_metadata', return_value={
+                 'package': 'com.sonos.acr', 'version_code': '1', 'version_name': '1.0'}), \
              patch.object(sys, 'argv', ['archive_android_store_apps.py', '--source', 'apkpure-recovery',
                  '--input', str(self.apk), '--input', str(second), '--repo', 'fresh/archive',
                  '--receipt', str(self.receipt)]):
@@ -204,3 +208,87 @@ class AndroidStorePublicationTests(unittest.TestCase):
         self.assertEqual(len(records), 2)
         self.assertEqual(len({row['delivery_sha256'] for row in records}), 2)
         self.assertEqual(len(self.uploads), 2)
+
+    def test_requested_google_play_code_must_match_actual_apk_before_publication(self):
+        with patch.object(sys, 'argv', ['archive', '--source', 'google-play-direct',
+                '--package', 'com.sonos.acr2', '--version-code', '2', '--input', str(self.apk),
+                '--receipt', str(self.receipt), '--repo', 'fresh/archive']):
+            self.assertEqual(STORE.main(), 1)
+        self.assertEqual(self.uploads, [])
+        self.assertEqual(self.github.releases, {})
+
+    def test_signed_split_with_wrong_version_cannot_be_published(self):
+        split = self.root/'split.apk'
+        split.write_bytes(b'synthetic split')
+        metadata = {'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}
+        with patch.object(STORE, 'unpack_delivery', return_value=(metadata, [self.apk, split])), \
+             patch.object(STORE, 'apk_metadata', side_effect=[metadata, {**metadata, 'version_code': '2'}]):
+            self.assertEqual(self.run_archive(), 1)
+        self.assertEqual(self.uploads, [])
+
+    def test_identical_play_delivery_retains_all_successful_device_profiles(self):
+        for profile in ('one', 'two'):
+            with patch.object(sys, 'argv', ['archive', '--source', 'google-play-direct',
+                    '--package', 'com.sonos.acr2', '--version-code', '1', '--play-profile', profile,
+                    '--input', str(self.apk), '--receipt', str(self.receipt), '--repo', 'fresh/archive']):
+                self.assertEqual(STORE.main(), 0)
+        record, = json.loads(self.receipt.read_text())['artifacts']
+        self.assertEqual({profile['device'] for profile in record['delivery_profiles']}, {'one', 'two'})
+        self.assertEqual(len(self.uploads), 1)
+
+
+class XAPKContentsTests(unittest.TestCase):
+    def delivery(self, root):
+        import zipfile
+        path = root/'fixture.xapk'
+        with zipfile.ZipFile(path, 'w') as archive:
+            archive.writestr('manifest.json', json.dumps({'package_name': 'com.sonos.acr2',
+                'version_code': '1', 'version_name': '1.0'}))
+            archive.writestr('base.apk', b'synthetic base')
+            archive.writestr('split.apk', b'synthetic split')
+            archive.writestr('Android/obb/com.sonos.acr2/main.1.com.sonos.acr2.obb', b'synthetic expansion')
+        return path
+
+    def test_xapk_retains_expansion_and_manifest_as_well_as_apks(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = self.delivery(root)
+            with patch.object(STORE, 'apk_metadata', return_value={
+                    'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}):
+                metadata, components = STORE.unpack_delivery(path, root)
+            self.assertEqual(len(components), 4)
+            self.assertIn('main.1.com.sonos.acr2.obb', [part.name for part in components])
+            self.assertEqual(metadata['version_code'], '1')
+
+    def test_xapk_wrapper_cannot_mislabel_the_actual_apk(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = self.delivery(root)
+            with patch.object(STORE, 'apk_metadata', return_value={
+                    'package': 'com.sonos.acr2', 'version_code': '2', 'version_name': '2.0'}):
+                with self.assertRaisesRegex(RuntimeError, 'manifest does not match'):
+                    STORE.unpack_delivery(path, root)
+
+    def test_xapk_keeps_same_basename_in_distinct_directories(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = self.delivery(root)
+            with zipfile.ZipFile(path, 'a') as archive:
+                archive.writestr('left/info.json', '{}')
+                archive.writestr('right/info.json', '{}')
+            with patch.object(STORE, 'apk_metadata', return_value={
+                    'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}):
+                _, parts = STORE.unpack_delivery(path, root)
+            self.assertEqual(len([part for part in parts if part.name == 'info.json']), 2)
+
+    def test_xapk_paths_cannot_escape_worker_extraction_directory(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = self.delivery(root)
+            with zipfile.ZipFile(path, 'a') as archive:
+                archive.writestr('../escaped.json', '{}')
+            with self.assertRaisesRegex(RuntimeError, 'unsafe component path'):
+                STORE.unpack_delivery(path, root)
+            self.assertFalse((root/'escaped.json').exists())

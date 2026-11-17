@@ -180,7 +180,8 @@ python scripts/archive_android_store_apps.py --source apkpure-recovery
 python scripts/audit_release_assets.py --output release-asset-audit.json
 ```
 
-Direct Google Play acquisition is a separate manually dispatched workflow. It
-uses the vendored pinned `apkeep` source, refuses implicit terms acceptance,
-requires a dedicated account's repository secrets, verifies every returned APK,
-uploads the complete served set, and commits the resulting receipt.
+The current [archive platform](archive-platform.md) schedules anonymous Google
+Play acquisition through goopdl and historical APKPure acquisition through the
+pinned apkeep release binary. Both verify returned APKs and publish through the
+shared delivery receipt path. The dated acquisition findings above describe
+the sources used at the time of those captures.

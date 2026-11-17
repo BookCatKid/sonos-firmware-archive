@@ -51,7 +51,7 @@ not need another workflow file. See [adding a target and worker behavior](docs/a
 | `google-play-listings` | Public listing observations, independent of delivery acquisition |
 | `release-audit` | Weekly reconciliation of recorded Release sizes and hashes |
 | `gpl-indexes` | Manual refresh of observed GPL indexes |
-| `google-play` | Authenticated deliveries; manual by default, with optional explicitly configured scheduling |
+| `google-play` | Anonymous delivery discovery across device profiles, with verified current and historical acquisition |
 | `gpl` | Public site indexes and bounded version exploration |
 | `gpl-archive` | Resumable acquisition and verified publication of original source archives |
 | `gpl-audit` | Published compressed-stream integrity checks |

@@ -24,7 +24,6 @@ def main(argv=None):
     execution.add_argument('--if-due', action='store_true')
     execution.add_argument('--repository')
     execution.add_argument('--report', type=Path)
-    execution.add_argument('--accept-google-play-tos', action='store_true')
     execution.add_argument('--set', action='append', default=[], metavar='NAME=JSON')
     commit = sub.add_parser('commit', help='validate and commit a CI target metadata checkpoint')
     commit.add_argument('target')
@@ -37,7 +36,8 @@ def main(argv=None):
             selected = [t for t in selected if not args.due or is_due(root, t)]
             if args.matrix:
                 print(json.dumps({'include': [{'target': t.name, 'provider': t.provider, 'lock': t.lock or t.name,
-                    'java': 'java' in t.capabilities, 'apkeep': 'apkeep' in t.capabilities} for t in selected]}))
+                    'java': 'java' in t.capabilities, 'apkeep': 'apkeep' in t.capabilities,
+                    'goopdl': 'goopdl' in t.capabilities} for t in selected]}))
             elif args.json:
                 print(json.dumps([{'name': t.name, 'description': t.description,
                                   'capabilities': t.capabilities, 'manual': t.manual} for t in selected], indent=2))
@@ -49,7 +49,7 @@ def main(argv=None):
         if args.command == 'commit':
             commit_metadata(root, target)
             return 0
-        options = {'accept_google_play_tos': True} if args.accept_google_play_tos else {}
+        options = {}
         for option in args.set:
             name, value = option.split('=', 1)
             if any(word in name.lower() for word in ('password', 'token', 'secret', 'private_key')):
