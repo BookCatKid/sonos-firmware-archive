@@ -46,6 +46,7 @@ class PlatformWorkflowTests(unittest.TestCase):
 
     def test_acquisition_uses_pinned_binary_and_optional_play_dependency(self):
         installer = self.steps['Install pinned APKPure acquisition binary']
+        self.assertEqual(installer['continue-on-error'], '${{ matrix.apkeep_optional }}')
         self.assertIn('tools/install-apkeep', installer['run'])
         script = (ROOT/'tools/install-apkeep').read_text()
         self.assertIn('releases/download/1.0.0/apkeep-', script)
@@ -58,8 +59,23 @@ class PlatformWorkflowTests(unittest.TestCase):
         from sonos_firmware.platform.registry import targets
         target = targets(ROOT)['google-play']
         self.assertFalse(target.manual)
-        self.assertEqual(target.capabilities, ('java', 'goopdl'))
+        self.assertEqual(target.capabilities, ('goopdl',))
+        self.assertEqual(target.optional_capabilities, ('java',))
         self.assertFalse(any(name.startswith('GOOGLE_PLAY_') for name in self.steps['run']['env']))
+
+    def test_optional_android_tools_are_still_selected_for_worker_installation(self):
+        import contextlib
+        import io
+        import json
+        from sonos_firmware.platform.cli import main
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(main(['--root', str(ROOT), 'targets', '--matrix', '--select', 'android-history']), 0)
+        worker, = json.loads(output.getvalue())['include']
+        self.assertTrue(worker['java'])
+        self.assertTrue(worker['java_optional'])
+        self.assertTrue(worker['apkeep'])
+        self.assertTrue(worker['apkeep_optional'])
 
 
 if __name__ == '__main__':

@@ -40,6 +40,7 @@ def plan(target, root, repository, options=None, provider_map=None):
         raise ValueError(f'unknown provider: {target.provider}')
     return {'schema_version': 1, 'target': target.name, 'provider': target.provider,
             'status': 'planned', 'executed': False, 'capabilities': list(target.capabilities),
+            'optional_capabilities': list(target.optional_capabilities),
             'metadata': list(target.metadata), 'steps': [asdict(step) for step in implementation(context)]}
 
 

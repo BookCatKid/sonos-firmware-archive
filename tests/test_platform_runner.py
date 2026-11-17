@@ -88,6 +88,19 @@ class RunnerTests(unittest.TestCase):
             with self.subTest(target=target.name):
                 self.assertTrue(plan(target, root, 'owner/repo')['steps'])
 
+    def test_optional_tools_do_not_block_independent_provider_work(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temporary, patch(
+                'sonos_firmware.platform.runner.shutil.which', return_value=None):
+            target = self.target(optional_capabilities=['apkeep'])
+            report = run(target, Path(temporary), 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
+                provider_map={'fixture': lambda c: [Step('metadata', ('fixture',))]},
+                execute=lambda *args: (0, 'metadata discovered'))
+            self.assertTrue(report['executed'])
+            self.assertEqual(report['status'], 'ok')
+            self.assertEqual(plan(target, Path(temporary), 'owner/repo', provider_map={
+                'fixture': lambda c: [Step('metadata', ('fixture',))]})['optional_capabilities'], ['apkeep'])
+
     def test_target_metadata_cannot_stage_code_or_escape_the_checkout(self):
         for path in ('src', '../secrets', '/etc', 'data/../keys'):
             with self.subTest(path=path), self.assertRaises(ValueError):
@@ -268,6 +281,8 @@ class HistoryBootstrapTests(unittest.TestCase):
             with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2', '--limit', '1',
                     '--receipt', str(directory/'archive.json'), '--ledger', str(directory/'state.json')]), \
                  patch.object(module, 'discover_versions', side_effect=[['first', 'later'], OSError('listing outage')]), \
+                 patch.object(module, 'discover_apkpure', return_value={'variants': [], 'errors': []}), \
+                 patch.object(module, 'discover_sdk_levels', return_value={'levels': [29], 'errors': []}), \
                  patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
                 self.assertEqual(module.main(), 1)
@@ -294,6 +309,8 @@ class HistoryBootstrapTests(unittest.TestCase):
             with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2',
                     '--receipt', str(directory/'archive.json'), '--ledger', str(ledger)]), \
                  patch.object(module, 'discover_versions', side_effect=OSError('listing unavailable')), \
+                 patch.object(module, 'discover_apkpure', return_value={'variants': [], 'errors': []}), \
+                 patch.object(module, 'discover_sdk_levels', return_value={'levels': [29], 'errors': []}), \
                  patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
             self.assertEqual(acquired, ['old'])
@@ -322,6 +339,8 @@ class HistoryBootstrapTests(unittest.TestCase):
                 self.assertIn('owner/repo', command)
                 return SimpleNamespace(returncode=1, stdout='fixture failure')
             with patch.object(sys, 'argv', argv), patch.object(module, 'discover_versions', return_value=['old', 'new']), \
+                 patch.object(module, 'discover_apkpure', return_value={'variants': [], 'errors': []}), \
+                 patch.object(module, 'discover_sdk_levels', return_value={'levels': [29], 'errors': []}), \
                  patch.object(module, 'run_acquisition', side_effect=acquire):
                 self.assertEqual(module.main(), 1)
                 self.assertEqual(module.main(), 1)

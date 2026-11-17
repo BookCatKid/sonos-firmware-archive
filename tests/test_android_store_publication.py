@@ -31,6 +31,7 @@ class AndroidStorePublicationTests(unittest.TestCase):
         self.uploads = []
         self.signer = STORE.APPS['com.sonos.acr2']['signer_sha256']
         for mocked in (
+            patch.object(STORE.shutil, 'which', return_value='/fixture/tool'),
             patch.object(releases, 'remote_assets', side_effect=self.github.assets),
             patch.object(releases.subprocess, 'run', side_effect=self.github.command),
             patch.object(releases, 'public_release', side_effect=lambda repo, tag: {'id': tag}),
@@ -235,6 +236,122 @@ class AndroidStorePublicationTests(unittest.TestCase):
         record, = json.loads(self.receipt.read_text())['artifacts']
         self.assertEqual({profile['device'] for profile in record['delivery_profiles']}, {'one', 'two'})
         self.assertEqual(len(self.uploads), 1)
+
+    def variant_args(self, variant, *, include_input=True):
+        return ['archive', '--source', 'apkpure-recovery', '--package', 'com.sonos.acr2',
+                '--asset-url', 'https://fixture.invalid/'+variant, '--asset-type', 'APK',
+                '--variant-arch', 'arm64-v8a', '--variant', variant, '--version-code', '1',
+                '--version-selector', '1.0', '--receipt', str(self.receipt), '--repo', 'fresh/archive',
+                *(['--input', str(self.apk)] if include_input else [])]
+
+    def test_identical_apkpure_assets_preserve_variant_and_source_url_evidence(self):
+        for variant in ('one', 'two'):
+            with patch.object(sys, 'argv', self.variant_args(variant)):
+                self.assertEqual(STORE.main(), 0)
+        artifact, = json.loads(self.receipt.read_text())['artifacts']
+        self.assertEqual(artifact['acquisition_tool']['backend'], 'apkpure-api')
+        self.assertEqual({profile['variant'] for profile in artifact['delivery_profiles']}, {'one', 'two'})
+        self.assertEqual(set(artifact['source_urls']), {'https://fixture.invalid/one', 'https://fixture.invalid/two'})
+        self.assertEqual(len(self.uploads), 1)
+
+    def test_unavailable_apk_inspection_defers_before_downloading_an_asset(self):
+        with patch.object(STORE.shutil, 'which', return_value=None), \
+             patch.object(STORE, 'acquire_variant') as acquire, \
+             patch.object(sys, 'argv', self.variant_args('one', include_input=False)):
+            self.assertEqual(STORE.main(), 1)
+        acquire.assert_not_called()
+        self.assertEqual(self.uploads, [])
+
+    def test_source_download_filename_does_not_duplicate_an_identical_base_apk(self):
+        self.assertEqual(self.run_archive('1.0'), 0)
+        alternative = self.root/'delivery.apk'
+        alternative.write_bytes(self.apk.read_bytes())
+        metadata = {'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}
+        arguments = self.variant_args('one')
+        arguments[arguments.index('--input')+1] = str(alternative)
+        with patch.object(STORE, 'unpack_delivery', return_value=(metadata, [alternative])), \
+             patch.object(sys, 'argv', arguments):
+            self.assertEqual(STORE.main(), 0)
+        self.assertEqual(len(self.uploads), 1)
+        self.assertEqual(len(json.loads(self.receipt.read_text())['artifacts']), 1)
+
+    def test_new_component_naming_repairs_a_partial_upload_from_the_old_naming(self):
+        extra = self.root/'metadata.dm'
+        extra.write_bytes(b'synthetic dex metadata')
+        metadata = {'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}
+        original = STORE.publish_delivery
+        def legacy_names(receipt, repo, artifact, files, **kwargs):
+            for asset in artifact['components']:
+                asset['release_asset'] = asset['release_asset'].replace('--base--', '--legacy-base--')
+            return original(receipt, repo, artifact, files, **kwargs)
+        def partial_upload(repo, tag, name, path):
+            if path == extra:
+                raise OSError('interrupted second upload')
+            self.upload(repo, tag, name, path)
+        with patch.object(STORE, 'unpack_delivery', return_value=(metadata, [self.apk, extra])):
+            with patch.object(STORE, 'publish_delivery', side_effect=legacy_names), \
+                 patch.object(releases, 'upload_streaming', side_effect=partial_upload):
+                self.assertEqual(self.run_archive('1.0'), 1)
+            with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)):
+                self.assertEqual(self.run_archive('1.0'), 0)
+        document = json.loads(self.receipt.read_text())
+        self.assertEqual(document['pending_captures'], [])
+        self.assertEqual(len(self.uploads), 2)
+        self.assertTrue(any('--legacy-base--' in asset['release_asset'] for asset in document['artifacts'][0]['components']))
+
+    def test_recovering_one_variant_does_not_skip_a_different_variant_at_same_version(self):
+        def upload_then_lose_response(*args):
+            self.upload(*args)
+            raise TimeoutError('upload response lost')
+        with patch.object(releases, 'upload_streaming', side_effect=upload_then_lose_response), \
+             patch.object(sys, 'argv', self.variant_args('one')):
+            self.assertEqual(STORE.main(), 1)
+        with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)), \
+             patch.object(STORE, 'acquire_variant', return_value=self.apk) as acquire, \
+             patch.object(sys, 'argv', self.variant_args('two', include_input=False)):
+            self.assertEqual(STORE.main(), 0)
+        acquire.assert_called_once()
+        artifact, = json.loads(self.receipt.read_text())['artifacts']
+        self.assertEqual({profile['variant'] for profile in artifact['delivery_profiles']}, {'one', 'two'})
+
+    def test_recovered_selector_does_not_fulfill_a_different_requested_version_code(self):
+        def upload_then_lose_response(*args):
+            self.upload(*args)
+            raise TimeoutError('upload response lost')
+        with patch.object(releases, 'upload_streaming', side_effect=upload_then_lose_response), \
+             patch.object(sys, 'argv', self.variant_args('one')):
+            self.assertEqual(STORE.main(), 1)
+        arguments = self.variant_args('one', include_input=False)
+        arguments[arguments.index('--version-code')+1] = '2'
+        with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)), \
+             patch.object(STORE, 'acquire_variant', return_value=self.apk) as acquire, \
+             patch.object(sys, 'argv', arguments):
+            self.assertEqual(STORE.main(), 1)
+        acquire.assert_called_once()
+        artifact, = json.loads(self.receipt.read_text())['artifacts']
+        self.assertEqual(artifact['version_code'], '1')
+
+    def test_variant_merge_retains_prior_unprofiled_selector_evidence(self):
+        self.assertEqual(self.run_archive('1.0'), 0)
+        with patch.object(sys, 'argv', self.variant_args('one')):
+            self.assertEqual(STORE.main(), 0)
+        artifact, = json.loads(self.receipt.read_text())['artifacts']
+        self.assertIn({}, artifact['delivery_profiles'])
+        self.assertIn({'arch': 'arm64-v8a', 'variant': 'one'}, artifact['delivery_profiles'])
+
+    def test_variant_recovery_does_not_assume_legacy_selector_serves_the_same_variant(self):
+        def upload_then_lose_response(*args):
+            self.upload(*args)
+            raise TimeoutError('upload response lost')
+        with patch.object(releases, 'upload_streaming', side_effect=upload_then_lose_response), \
+             patch.object(sys, 'argv', self.variant_args('one')):
+            self.assertEqual(STORE.main(), 1)
+        with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)), \
+             patch.object(STORE, 'acquire', return_value=self.apk) as acquire, \
+             patch.object(sys, 'argv', ['archive', '--source', 'apkpure-recovery', '--package', 'com.sonos.acr2',
+                 '--version-selector', '1.0', '--receipt', str(self.receipt), '--repo', 'fresh/archive']):
+            self.assertEqual(STORE.main(), 0)
+        acquire.assert_called_once()
 
 
 class XAPKContentsTests(unittest.TestCase):

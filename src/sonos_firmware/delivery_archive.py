@@ -41,20 +41,64 @@ def _identity(artifact):
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
+def _body_key(asset):
+    return Path(asset['release_asset']).suffix.lower(), asset['bytes'], asset['sha256']
+
+
+def _content_key(artifact):
+    wrapper = artifact.get('complete_wrapper')
+    parts = sorted(('wrapper' if row is wrapper else 'component', *_body_key(row)) for row in _assets(artifact))
+    return artifact['package'], artifact['source_kind'], str(artifact['version_code']), tuple(parts)
+
+
+def _reuse_publication_names(document, repository, artifact, files):
+    """Keep existing publication/journal names when a downloader renames files.
+
+    Matching the complete content set preserves old partial uploads and avoids
+    another asset copy for an identical delivery from a different source URL.
+    """
+    candidates = [row['artifact'] for row in document.get('pending_captures', []) if row['repository'] == repository]
+    candidates += [row for row in document['artifacts'] if receipt_matches_repository(row, repository)]
+    key = _content_key(artifact)
+    prior = next((row for row in candidates if row['release_tag'] == artifact['release_tag']
+                  and _content_key(row) == key), None)
+    if prior is None:
+        return files
+    names, paths = {}, {}
+    for record in _assets(prior):
+        names.setdefault(_body_key(record), []).append(record['release_asset'])
+    for path, record in files:
+        paths.setdefault(_body_key(record), []).append(path)
+    remapped = []
+    for record in _assets(artifact):
+        body = _body_key(record)
+        record['release_asset'] = names[body].pop()
+        remapped.append((paths[body].pop(), record))
+    return remapped
+
+
 def delivery_profiles(artifact):
     profiles = list(artifact.get('delivery_profiles', []))
-    if artifact.get('delivery_profile') and artifact['delivery_profile'] not in profiles:
-        profiles.append(artifact['delivery_profile'])
+    if 'delivery_profile' in artifact:
+        # An unprofiled selector capture is evidence of its own. Do not lose
+        # it when the same bytes are later observed as a structured variant.
+        profile = artifact['delivery_profile'] or {}
+        if profile not in profiles:
+            profiles.append(profile)
     return profiles
 
 
-def _merge_profiles(target, incoming):
+def _merge_observations(target, incoming):
     profiles = delivery_profiles(target)
     for profile in delivery_profiles(incoming):
         if profile not in profiles:
             profiles.append(profile)
     if profiles:
         target['delivery_profiles'] = profiles
+    urls = set(target.get('source_urls', [])) | set(incoming.get('source_urls', []))
+    urls.update(row['source_url'] for row in (target, incoming) if row.get('source_url'))
+    if urls:
+        target['source_urls'] = sorted(urls)
 
 
 def _promote(document, capture, repository, observed):
@@ -69,7 +113,7 @@ def _promote(document, capture, repository, observed):
     if prior:
         selectors = set(prior.get('source_version_selectors', [])) | set(artifact.get('source_version_selectors', []))
         selectors.update(row['source_version_selector'] for row in (prior, artifact) if row.get('source_version_selector'))
-        _merge_profiles(artifact, prior)
+        _merge_observations(artifact, prior)
         prior.update(artifact, source_version_selectors=sorted(selectors))
     else:
         document['artifacts'].append(artifact)
@@ -84,6 +128,7 @@ def publish_delivery(receipt, repository, artifact, files, *, title, notes):
     if not apks or any(row.get('verified') is not True for row in apks):
         raise ValueError('delivery requires at least one signature-verified APK')
     document = _load(receipt)
+    files = _reuse_publication_names(document, repository, artifact, files)
     capture = {'repository': repository, 'capture_id': _identity(artifact),
                'artifact': artifact, 'title': title, 'notes': notes}
     pending = document.setdefault('pending_captures', [])
@@ -92,7 +137,7 @@ def publish_delivery(receipt, repository, artifact, files, *, title, notes):
     if prior:
         # Preserve the original observation after a mutable source changes.
         capture = prior
-        _merge_profiles(capture['artifact'], artifact)
+        _merge_observations(capture['artifact'], artifact)
         selectors = set(capture['artifact'].get('source_version_selectors', []))
         selectors.update(row['source_version_selector'] for row in (capture['artifact'], artifact)
                          if row.get('source_version_selector'))

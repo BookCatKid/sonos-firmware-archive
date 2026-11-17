@@ -69,15 +69,16 @@
       "provider": "android-history",
       "description": "Signer-verified Android deliveries and discovered historical versions",
       "interval_hours": 24,
-      "capabilities": [
-        "java",
-        "apkeep"
-      ],
+      "capabilities": [],
       "metadata": [
         "data/apps/android-store-archive.json",
         "data/apps/android-store-history-sweep.json"
       ],
-      "lock": "android-store"
+      "lock": "android-store",
+      "optional_capabilities": [
+        "java",
+        "apkeep"
+      ]
     },
     {
       "name": "google-play",
@@ -85,14 +86,16 @@
       "description": "Anonymous Google Play profile discovery and signer-verified versioned deliveries",
       "interval_hours": 6,
       "capabilities": [
-        "java",
         "goopdl"
       ],
       "metadata": [
         "data/apps/android-store-archive.json",
         "data/apps/google-play-sweep.json"
       ],
-      "lock": "android-store"
+      "lock": "android-store",
+      "optional_capabilities": [
+        "java"
+      ]
     },
     {
       "name": "gpl",

@@ -14,11 +14,15 @@ class Target:
     capabilities: tuple[str, ...] = ()
     options: dict = field(default_factory=dict)
     lock: str | None = None
+    optional_capabilities: tuple[str, ...] = ()
 
     @classmethod
     def from_dict(cls, item):
         target = cls(**{**item, 'metadata': tuple(item['metadata']),
-                        'capabilities': tuple(item.get('capabilities', []))})
+                        'capabilities': tuple(item.get('capabilities', [])),
+                        'optional_capabilities': tuple(item.get('optional_capabilities', []))})
+        if set(target.capabilities) & set(target.optional_capabilities):
+            raise ValueError('a capability cannot be both required and optional')
         if not target.name or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in target.name):
             raise ValueError('target names must contain only lowercase letters, digits and hyphens')
         if target.interval_hours <= 0:

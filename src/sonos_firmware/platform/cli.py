@@ -36,11 +36,16 @@ def main(argv=None):
             selected = [t for t in selected if not args.due or is_due(root, t)]
             if args.matrix:
                 print(json.dumps({'include': [{'target': t.name, 'provider': t.provider, 'lock': t.lock or t.name,
-                    'java': 'java' in t.capabilities, 'apkeep': 'apkeep' in t.capabilities,
-                    'goopdl': 'goopdl' in t.capabilities} for t in selected]}))
+                    'java': 'java' in (*t.capabilities, *t.optional_capabilities),
+                    'java_optional': 'java' in t.optional_capabilities,
+                    'apkeep': 'apkeep' in (*t.capabilities, *t.optional_capabilities),
+                    'apkeep_optional': 'apkeep' in t.optional_capabilities,
+                    'goopdl': 'goopdl' in (*t.capabilities, *t.optional_capabilities),
+                    'goopdl_optional': 'goopdl' in t.optional_capabilities} for t in selected]}))
             elif args.json:
                 print(json.dumps([{'name': t.name, 'description': t.description,
-                                  'capabilities': t.capabilities, 'manual': t.manual} for t in selected], indent=2))
+                                  'capabilities': t.capabilities, 'optional_capabilities': t.optional_capabilities,
+                                  'manual': t.manual} for t in selected], indent=2))
             else:
                 for target in selected:
                     print(f'{target.name}: {target.description}')

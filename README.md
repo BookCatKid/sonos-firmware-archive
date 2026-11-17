@@ -47,7 +47,7 @@ not need another workflow file. See [adding a target and worker behavior](docs/a
 | `mobile` | Official Sonos-hosted Android APKs and historical captures |
 | `web` | Public controller and Pro deployments and their referenced assets |
 | `apple-listings` | Public Apple listing metadata and history |
-| `android-history` | Discovered APKPure version selectors and signer-verified deliveries |
+| `android-history` | APKPure version/architecture discovery, older selector history and signer-verified deliveries |
 | `google-play-listings` | Public listing observations, independent of delivery acquisition |
 | `release-audit` | Weekly reconciliation of recorded Release sizes and hashes |
 | `gpl-indexes` | Manual refresh of observed GPL indexes |

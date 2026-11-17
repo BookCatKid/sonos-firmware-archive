@@ -11,6 +11,11 @@
    `apkeep` or `goopdl` when required. Targets that share mutable metadata use the same
    `lock`. Public protocol roots and product identities belong in the adapter;
    discovered release URLs belong in its observations.
+   Tools used by only part of a provider can be declared in
+   `optional_capabilities`; their absence must produce a partial source report
+   while supported discovery and acquisition continue.
+   Android listing discovery continues without Java; new payload downloads
+   defer until the APK inspection toolchain is available.
 3. Add offline fixtures that exercise discovery from an empty state, failed
    acquisition, and retry after partial publication. Plan it with
    `sonos-archive run TARGET --plan`. No binary inputs or precomputed hashes
@@ -270,8 +275,9 @@ precomputed hashes are required to add or plan a target.
 and Aurora's anonymous token dispenser. Personal accounts and repository Google
 credentials are unnecessary. Its complete upstream device profile inventory
 rotates across runs, interleaving architectures. Each observed numeric version
-becomes a retained acquisition lead. Existing receipt metadata contributes
-historical code hints, but an empty archive starts from live profile discovery.
+becomes a retained acquisition lead. Discovered APKPure metadata and existing
+receipts contribute historical numeric codes. An empty archive starts from
+live discovery; APKPure metadata can supply codes without acquiring any APKs.
 Google Play does not expose an exhaustive historical version list: accepting a
 requested code does not prove Google still serves that version.
 
@@ -294,11 +300,38 @@ are deduplicated while retaining all observed device profiles. Signed URLs,
 cookies and dispenser tokens stay in ephemeral worker storage outside metadata
 caches and uploads. Apple listing preservation remains a separate scope.
 
-APKPure discovery and download use the upstream apkeep release binary, pinned
-by SHA-256 in `tools/install-apkeep`. CI downloads the binary for its Linux
-architecture instead of compiling Rust. The upstream selector listing does not
-prove complete APKPure variant or historical coverage; failed or malformed
-listings cannot be treated as a complete result.
+APKPure discovery combines its structured version API with apkeep's older
+selector listing. The API protocol and public client headers follow
+[Obtainium's APKPure adapter](https://github.com/ImranR98/Obtainium/blob/main/lib/app_sources/apkpure.dart).
+Every advertised asset and architecture is retained separately, even when
+multiple assets share a numeric version code. Malformed rows report partial
+discovery while valid rows continue. Unknown formats remain pending leads.
+SDK context also affects APKPure history. Contexts come from Google's public
+[Android SDK repository index](https://dl.google.com/android/repository/repository2-1.xml)
+and observed app minimum/target SDK fields, rather than a maintained SDK list
+or a maximum SDK constant. The documented client SDK is only a bootstrap.
+Contexts rotate within each worker's discovery budget; a successful empty
+context is refreshed periodically and does not declare the app unavailable.
+An SDK-index outage does not pause independent APKPure requests.
+
+Variants are normalized once with references from each SDK context, keeping
+duplicate API responses out of committed state. Raw responses stay in the
+worker's observation cache, separated by SDK, and are reinterpreted on later
+runs, including when the live API is unavailable. No SDK packages are acquired.
+
+Structured asset acquisition checks the actual APK version against the metadata
+code, verifies every APK signer, and uses the same delivery publication journal
+as other Android acquisitions. Identical bytes retain all observed variants and
+source URLs. APK asset names use manifest base/split roles. When identical
+content already has publication names or a partial-upload journal, those names
+are reused so a naming change can finish the original capture. Google Play reads numeric hints from the discovery ledger; this
+does not require a prior payload acquisition or an existing release.
+
+Older APKPure selector discovery and acquisition use the upstream apkeep
+release binary, pinned by SHA-256 in `tools/install-apkeep`. CI downloads the
+binary for its Linux architecture instead of compiling Rust. Neither an API
+response nor a selector listing proves exhaustive historical coverage. Failed
+or malformed listings stay retryable and cannot become a complete result.
 
 ## Validation and publication
 

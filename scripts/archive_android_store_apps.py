@@ -18,6 +18,7 @@ from sonos_firmware.storage import file_sha256
 from sonos_firmware.delivery_archive import publish_delivery, recover_deliveries, delivery_profiles
 from sonos_firmware.android_store import acquire_play, GOOPDL_REVISION, safe_error, run_apkeep, store_apps, StoreError
 from sonos_firmware.storage import atomic_json
+from sonos_firmware.apkpure import acquire_variant
 
 ROOT = Path(__file__).resolve().parents[1]
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
@@ -65,6 +66,7 @@ def apk_metadata(path: Path, scratch: Path) -> dict:
                         (yml_code.group(1).strip() if yml_code else None),
         "version_name": root.attrib.get(ANDROID_NS + "versionName") or
                         (yml_name.group(1).strip() if yml_name else None),
+        "split": root.attrib.get('split'),
     }
 
 
@@ -127,16 +129,29 @@ def acquire(package: str, source_kind: str, output: Path, apkeep: str,
     return candidates[0]
 
 
+def requested_profile(args):
+    if args.source == 'google-play-direct':
+        return {'arch': args.play_arch, 'device': args.play_profile, 'authentication': 'anonymous',
+                'split_apk': True, 'include_dex_metadata': True, 'include_additional_files': True}
+    if args.variant:
+        return {'arch': args.variant_arch, 'variant': args.variant}
+    return None
+
+
 def preserve_package(args, package, index, scratch):
     info = APPS[package]
     delivery_dir = scratch / package
     delivery_dir.mkdir()
     expected_code = args.version_code
+    if not args.input and any(shutil.which(tool) is None for tool in ('java', 'javac')):
+        raise StoreError('APKInspectionUnavailable')
     if args.input:
         source = args.input[index]
     elif args.source == 'google-play-direct':
         source, expected_code = acquire_play(package, delivery_dir / 'delivery', args.auth_dir,
             args.play_arch, args.play_profile, args.version_code)
+    elif args.asset_url:
+        source = acquire_variant(args.asset_url, args.asset_type, delivery_dir)
     else:
         source = acquire(package, args.source, delivery_dir, args.apkeep, args.version_selector)
     metadata, components = unpack_delivery(source, delivery_dir)
@@ -168,7 +183,12 @@ def preserve_package(args, package, index, scratch):
     safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
     uploads = []
     for component, record in zip(components, component_records):
-        component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", component.stem)
+        if component.suffix.lower() == '.apk':
+            split = record['metadata'].get('split')
+            role = 'split-' + split if split else 'base'
+        else:
+            role = component.stem
+        component_name = re.sub(r"[^A-Za-z0-9._-]+", "_", role)
         asset_name = (f"{package}--{safe_version}--{component_name}--"
                       f"{record['sha256']}{component.suffix.lower()}")
         record.update({"release_tag": tag, "release_asset": asset_name})
@@ -184,16 +204,13 @@ def preserve_package(args, package, index, scratch):
         "source_kind": args.source,
         "source_version_selector": args.version_selector or args.version_code,
         "source_url": (f"https://play.google.com/store/apps/details?id={package}"
-                       if args.source == "google-play-direct" else info["apkpure_url"]),
+                       if args.source == "google-play-direct" else args.asset_url or info["apkpure_url"]),
         "acquired_at": datetime.now(timezone.utc).isoformat(),
         "acquisition_tool": ({"name": "goopdl", "revision": GOOPDL_REVISION, "backend": "google-play"}
                              if args.source == 'google-play-direct' else
+                             {"name": "sonos-firmware-archive", "backend": "apkpure-api"} if args.asset_url else
                              {"name": "apkeep", "version": "1.0.0", "backend": "apk-pure"}),
-        "delivery_profile": ({
-            "arch": args.play_arch, "device": args.play_profile, "authentication": "anonymous",
-            "split_apk": True, "include_dex_metadata": True,
-            "include_additional_files": True,
-        } if args.source == "google-play-direct" else None),
+        "delivery_profile": requested_profile(args),
         "family": info["family"], "package": package,
         "version_code": str(metadata["version_code"]),
         "version_name": metadata["version_name"],
@@ -219,7 +236,11 @@ def main() -> int:
                         default=ROOT / "data/apps/android-store-archive.json")
     parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
     parser.add_argument("--apkeep", default="apkeep")
-    parser.add_argument('--version-code', help='exact Google Play numeric version code')
+    parser.add_argument('--version-code', help='expected numeric version code, verified against actual APKs')
+    parser.add_argument('--asset-url', help='APKPure asset advertised by structured discovery')
+    parser.add_argument('--asset-type')
+    parser.add_argument('--variant-arch')
+    parser.add_argument('--variant')
     parser.add_argument('--play-arch', default='arm64')
     parser.add_argument('--play-profile')
     parser.add_argument('--auth-dir', type=Path, help='ephemeral anonymous token directory, never archived')
@@ -230,18 +251,21 @@ def main() -> int:
         parser.error("--version-selector requires APKPure recovery and exactly one --package")
     if args.input and len(args.input) != len(packages):
         parser.error("the number of --input paths must match --package")
-    if args.version_code and (args.source != 'google-play-direct' or not args.version_code.isdecimal()
+    if args.asset_url and (args.source != 'apkpure-recovery' or not args.asset_type or
+                           not args.variant or not args.variant_arch or not args.version_code or len(packages) != 1):
+        parser.error('--asset-url requires one APKPure package, asset type, variant, architecture and version code')
+    if args.variant and not args.asset_url:
+        parser.error('--variant requires --asset-url')
+    if args.version_code and ((args.source != 'google-play-direct' and not args.asset_url) or not args.version_code.isdecimal()
                              or int(args.version_code) <= 0 or len(packages) != 1):
-        parser.error('--version-code requires direct Play, a positive integer and exactly one package')
+        parser.error('--version-code requires a versioned store source, positive integer and exactly one package')
     selector = args.version_selector or args.version_code
     recovered = recover_deliveries(args.receipt, args.repo, args.source, packages,
                                    selector=selector)
     resolved = {row['package'] for row in recovered if selector
                 and selector in {row.get('source_version_selector'), *row.get('source_version_selectors', [])}
-                and (args.source != 'google-play-direct' or {
-                    'arch': args.play_arch, 'device': args.play_profile, 'authentication': 'anonymous',
-                    'split_apk': True, 'include_dex_metadata': True, 'include_additional_files': True}
-                    in delivery_profiles(row))}
+                and (args.version_code is None or str(row.get('version_code')) == args.version_code)
+                and (requested_profile(args) or {}) in delivery_profiles(row)}
     errors = []
     with tempfile.TemporaryDirectory(prefix="sonos-android-store-") as temporary:
         scratch = Path(temporary)
