@@ -1,6 +1,40 @@
 import unittest
+import ssl
+import urllib.error
+from unittest.mock import Mock, patch
 from urllib.parse import urlsplit
-from sonos_firmware.archive_index import discover_sources
+from sonos_firmware.archive_index import discover_sources, fetch_index
+
+
+class ArchiveIndexTransportTests(unittest.TestCase):
+    def test_certificate_failure_uses_verified_browser_transport(self):
+        failure = urllib.error.URLError(ssl.SSLCertVerificationError('fixture certificate chain'))
+        response = Mock(status_code=200, headers={})
+        response.iter_content.return_value = iter([b'[["timestamp","original","digest"]]'])
+        with patch('urllib.request.urlopen', side_effect=failure), \
+             patch('curl_cffi.requests.get', return_value=response) as fallback:
+            self.assertEqual(fetch_index('https://web.archive.org/cdx/search/cdx?fixture'),
+                             [['timestamp', 'original', 'digest']])
+        self.assertNotEqual(fallback.call_args.kwargs.get('verify'), False)
+        response.close.assert_called_once()
+
+    def test_http_rate_limit_is_not_retried_as_a_tls_problem(self):
+        failure = urllib.error.HTTPError('https://web.archive.org/cdx', 429, 'rate limited', {}, None)
+        with patch('urllib.request.urlopen', side_effect=failure), \
+             patch('curl_cffi.requests.get') as fallback:
+            with self.assertRaises(urllib.error.HTTPError) as raised:
+                fetch_index('https://web.archive.org/cdx')
+        self.assertEqual(raised.exception.code, 429)
+        fallback.assert_not_called()
+
+    def test_browser_fallback_preserves_the_index_size_bound(self):
+        response = Mock(status_code=200, headers={})
+        response.iter_content.return_value = iter([b'x' * 2_000_001])
+        with patch('urllib.request.urlopen', side_effect=ssl.SSLError('fixture TLS failure')), \
+             patch('curl_cffi.requests.get', return_value=response):
+            with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
+                fetch_index('https://web.archive.org/cdx')
+        response.close.assert_called_once()
 
 
 class ArchiveIndexTests(unittest.TestCase):

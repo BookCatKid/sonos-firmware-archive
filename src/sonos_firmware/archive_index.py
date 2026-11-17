@@ -2,6 +2,8 @@
 import hashlib
 import json
 import re
+import ssl
+import urllib.error
 import urllib.request
 from dataclasses import asdict
 from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit
@@ -11,8 +13,29 @@ from .discovery import USER_AGENT, Candidate
 from .retry import checkpoint
 
 def fetch_index(url):
-    with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=15) as response:
-        body = response.read(2_000_001)
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=15) as response:
+            body = response.read(2_000_001)
+    except (urllib.error.URLError, ssl.SSLError) as error:
+        # A different TLS implementation/trust store can serve metadata when
+        # urllib's certificate chain fails. Keep certificate validation enabled
+        # and leave HTTP failures, including rate limits, to the retry ledger.
+        if not isinstance(getattr(error, 'reason', error), ssl.SSLError):
+            raise
+        from curl_cffi import requests
+        response = requests.get(url, impersonate='chrome', timeout=15, stream=True)
+        try:
+            if response.status_code != 200:
+                raise urllib.error.HTTPError(url, response.status_code, 'archive index request failed',
+                                             response.headers, None)
+            chunks = bytearray()
+            for chunk in response.iter_content():
+                if len(chunks) + len(chunk) > 2_000_000:
+                    raise ValueError('archive index page exceeds 2 MB')
+                chunks.extend(chunk)
+            body = bytes(chunks)
+        finally:
+            response.close()
     if len(body) > 2_000_000:
         raise ValueError('archive index page exceeds 2 MB')
     return json.loads(body)
