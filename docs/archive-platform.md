@@ -327,7 +327,11 @@ context is refreshed periodically and does not declare the app unavailable.
 An SDK-index outage does not pause independent APKPure requests.
 
 Variants are normalized once with references from each SDK context, keeping
-duplicate API responses out of committed state. Raw responses stay in the
+duplicate API responses out of committed state. Rotating Winudf download tickets
+refresh the usable URL without creating another asset identity. Version, ABI,
+format, path and content-selecting parameters still distinguish assets; unknown
+CDN query parameters are retained. Earlier ticket-based observations and verified
+attempts migrate without downloading those deliveries again. Raw responses stay in the
 worker's observation cache, separated by SDK, and are reinterpreted on later
 runs, including when the live API is unavailable. No SDK packages are acquired.
 

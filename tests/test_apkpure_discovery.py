@@ -1,5 +1,6 @@
 """Metadata-first APKPure discovery retains ABI variants and retry signals."""
 import importlib.util
+import hashlib
 import json
 import tempfile
 import types
@@ -29,6 +30,33 @@ def row(arch='arm64-v8a', **changes):
 
 
 class APKPureMetadataTests(unittest.TestCase):
+    def test_rotating_winudf_tickets_do_not_create_new_asset_variants(self):
+        def ticket(token, key, arch='arm64-v8a'):
+            return row(arch, asset={'url': 'https://data.winudf.com/APK/fixture?package_name='+PACKAGE+
+                       '&token='+token+'&k='+key+'&filename=Sonos.apk', 'type': 'APK'})
+        parsed = apkpure.parse_versions({'retcode': 0, 'version_list': [ticket('old', 'one'),
+            ticket('new', 'two'), ticket('other', 'three', 'armeabi-v7a')]}, PACKAGE)
+        self.assertEqual(len(parsed['variants']), 2)
+        arm = next(v for v in parsed['variants'] if v['arch'] == 'arm64-v8a')
+        self.assertIn('token=new', arm['asset_url'])
+        fresh, = apkpure.parse_versions({'retcode': 0, 'version_list': [ticket('later', 'four')]}, PACKAGE)['variants']
+        self.assertEqual(arm['variant'], fresh['variant'])
+
+    def test_content_selectors_and_unknown_host_parameters_remain_distinct(self):
+        for host, query in [('data.winudf.com', 'content'), ('new-cdn.example', 'token')]:
+            rows = [row(asset={'url': f'https://{host}/APK/fixture?{query}={value}', 'type': 'APK'})
+                    for value in ('one', 'two')]
+            parsed = apkpure.parse_versions({'retcode': 0, 'version_list': rows}, PACKAGE)
+            self.assertEqual(len(parsed['variants']), 2)
+
+    def test_non_utf8_content_parameters_keep_their_exact_asset_identity(self):
+        rows = [row(asset={'url': 'https://data.winudf.com/APK/fixture?content='+value+'&token=rotate',
+                           'type': 'APK'}) for value in ('%FF', '%FE')]
+        result = apkpure.parse_versions({'retcode': 0, 'version_list': rows}, PACKAGE)
+        self.assertEqual(len(result['variants']), 2)
+        self.assertEqual({v['asset_identity'] for v in result['variants']},
+            {'https://data.winudf.com/APK/fixture?content=%FF', 'https://data.winudf.com/APK/fixture?content=%FE'})
+
     def test_same_version_code_retains_every_architecture_and_distinct_asset(self):
         first = row()
         second = row('armeabi-v7a')
@@ -157,6 +185,36 @@ class APKPureSweepFixture:
             return SWEEP.main()
 
 class APKPureSweepTests(APKPureSweepFixture, unittest.TestCase):
+    def test_old_ticket_observations_merge_without_redownloading_a_verified_asset(self):
+        old = apkpure.parse_versions({'retcode': 0, 'version_list': [row(asset={
+            'url': 'https://data.winudf.com/APK/fixture?token=old&k=old', 'type': 'APK'})]}, PACKAGE)['variants'][0]
+        old.pop('version_id')
+        old.pop('asset_identity')
+        old['variant'] = 'one-version-'+hashlib.sha256(old['asset_url'].encode()).hexdigest()
+        other = {**old, 'asset_url': old['asset_url'].replace('old', 'other'), 'sdk_context': 36}
+        other['variant'] = 'one-version-'+hashlib.sha256(other['asset_url'].encode()).hexdigest()
+        keys = [PACKAGE+':'+lead['variant'] for lead in (old, other)]
+        self.ledger.write_text(json.dumps({'repository': 'fresh/archive',
+            'observed_variants': dict(zip(keys, [old, other])), 'pending_selectors': [old, other],
+            'discovery': {PACKAGE+'|||apkpure-api|sdk=29': {'variants': keys}},
+            'attempts': [{**old, 'status': 'archived'}]}))
+        self.receipt.write_text(json.dumps({'artifacts': [{'package': PACKAGE,
+            'source_kind': 'apkpure-recovery', 'source_version_selector': old['version_selector'],
+            'delivery_profiles': [{'arch': old['arch'], 'variant': old['variant']}],
+            'release_url': 'https://github.com/fresh/archive/releases/download/tag/verified.apk'}]}))
+        self.parsed = apkpure.parse_versions({'retcode': 0, 'version_list': [row(asset={
+            'url': 'https://data.winudf.com/APK/fixture?token=fresh&k=fresh', 'type': 'APK'})]}, PACKAGE)
+        acquired = []
+        self.run_sweep(acquire=lambda command, **kwargs: acquired.append(command) or
+                       types.SimpleNamespace(returncode=1, stdout='unrelated selector unavailable'))
+        state = json.loads(self.ledger.read_text())
+        observation, = state['observed_variants'].values()
+        self.assertEqual(observation['sdk_contexts'], [29, 36])
+        self.assertFalse(any(v.get('variant') for v in state['pending_selectors']))
+        self.assertTrue(all('--asset-url' not in command for command in acquired))
+        references = state['discovery'][PACKAGE+'|||apkpure-api|sdk=29']['variants']
+        self.assertEqual(references, [PACKAGE+':'+observation['variant']])
+
     def test_variants_are_checkpointed_before_acquisition_and_remain_distinct_after_outage(self):
         acquired = []
         def acquire(command, **kwargs):
@@ -265,6 +323,19 @@ class SDKMetadataTests(unittest.TestCase):
 
 
 class SDKContextSweepTests(APKPureSweepFixture, unittest.TestCase):
+    def test_rotating_tickets_share_one_observation_across_sdk_contexts(self):
+        def metadata(package, **kwargs):
+            sdk = kwargs['sdk']
+            return apkpure.parse_versions({'retcode': 0, 'version_list': [row(asset={
+                'url': f'https://data.winudf.com/APK/fixture?token=ticket{sdk}&k=key{sdk}', 'type': 'APK'})]},
+                package, sdk=sdk)
+        with patch.object(SWEEP, 'discover_sdk_levels', return_value={'levels': [21, 29, 36], 'errors': []}):
+            self.run_sweep(metadata=metadata)
+        state = json.loads(self.ledger.read_text())
+        observation, = state['observed_variants'].values()
+        self.assertEqual(observation['sdk_contexts'], [21, 29, 36])
+        self.assertEqual(len([v for v in state['pending_selectors'] if v.get('variant')]), 1)
+
     def test_new_and_old_sdk_contexts_expose_independent_version_leads(self):
         def metadata(package, **kwargs):
             sdk = kwargs['sdk']

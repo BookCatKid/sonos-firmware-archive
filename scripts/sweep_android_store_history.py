@@ -20,6 +20,7 @@ from sonos_firmware.delivery_archive import delivery_profiles
 from sonos_firmware.apkpure import (
     discover_versions as discover_apkpure, parse_versions as parse_apkpure,
     discover_sdk_levels, parse_sdk_levels,
+    normalize_variant,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,8 +50,12 @@ def discover_versions(apkeep: str, package: str, *, timeout=None) -> list[str]:
     return list(dict.fromkeys(selectors))
 
 
-def identity(row):
+def original_identity(row):
     return (row['package'], str(row['version_selector']), row.get('arch'), row.get('profile'), row.get('variant'))
+
+
+def identity(row):
+    return original_identity(normalize_variant(row))
 
 
 def profile_identity(row):
@@ -184,6 +189,10 @@ def main() -> int:
                 if selector:
                     archived.add((item['package'], str(selector), profile.get('arch'), profile.get('device'), profile.get('variant')))
     for attempt in attempts:
+        if original_identity(attempt) in archived:
+            # Old publication profiles used the full signed URL hash. Keep
+            # their verified success authoritative under the stable identity.
+            archived.add(identity(attempt))
         if identity(attempt) not in archived:
             queue.setdefault(identity(attempt), {key: value for key, value in attempt.items() if key not in {
                 'checked', 'checked_at', 'status', 'error', 'next_attempt_at', 'consecutive_failures', 'exit_code'}})
@@ -207,9 +216,11 @@ def main() -> int:
         keys = []
         sdk_hints = set(state.get('sdk_hints', []))
         for lead in leads:
+            lead = normalize_variant(lead)
             key = lead['package'] + ':' + lead['variant']
             observation = observed.setdefault(key, {})
             contexts = set(observation.get('sdk_contexts', []))
+            contexts.update(lead.get('sdk_contexts', []))
             contexts.add(lead.get('sdk_context', 29))
             observation.update(lead, sdk_contexts=sorted(contexts))
             sdk_hints.update(int(lead[field]) for field in ('sdk_version', 'target_sdk_version')
@@ -218,6 +229,16 @@ def main() -> int:
             keys.append(key)
         state['sdk_hints'] = sorted(sdk_hints)
         return keys
+
+    # Re-key earlier ticket-based observations and their profile references.
+    # Attempts and verified publication receipts remain historical evidence.
+    aliases = {key: lead['package']+':'+normalize_variant(lead)['variant'] for key, lead in observed.items()}
+    earlier = list(observed.values())
+    observed.clear()
+    remember(earlier)
+    for record in discovery.values():
+        if record.get('variants'):
+            record['variants'] = list(dict.fromkeys(aliases.get(key, key) for key in record['variants']))
 
     # Older ledgers embedded complete API rows under every context. Normalize
     # them once, preserving code hints and per-context provenance without copies.

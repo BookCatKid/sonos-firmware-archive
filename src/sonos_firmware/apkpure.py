@@ -8,7 +8,7 @@ from email.utils import parsedate_to_datetime
 import hashlib
 import json
 from pathlib import Path
-from urllib.parse import urlencode, urlsplit
+from urllib.parse import urlencode, urlsplit, unquote_to_bytes
 from xml.etree import ElementTree
 
 from curl_cffi.requests import Session
@@ -20,6 +20,28 @@ API = 'https://tapi.pureapk.com/v3/get_app_his_version'
 HEADERS = {'Ual-Access-Businessid': 'projecta',
            'Ual-Access-ProjectA': '{"device_info":{"os_ver":"29"}}'}
 SDK_INDEX = 'https://dl.google.com/android/repository/repository2-1.xml'
+
+
+def normalize_variant(lead):
+    """Separate an APKPure asset's identity from its current download ticket."""
+    if lead.get('discovered_from') != 'apkpure-api' or not lead.get('asset_url'):
+        return lead
+    parts = urlsplit(lead['asset_url'])
+    canonical = parts._replace(fragment='').geturl()
+    # These fields rotate on APKPure's observed Winudf distribution endpoint.
+    # Unknown hosts and content-selecting parameters retain their full identity.
+    if parts.hostname == 'data.winudf.com':
+        query = [field for field in parts.query.split('&')
+                 if unquote_to_bytes(field.partition('=')[0]) not in {b'token', b'k'}]
+        canonical = parts._replace(query='&'.join(query), fragment='').geturl()
+    version_id = lead.get('version_id')
+    if version_id is None:
+        prior = str(lead.get('variant', 'asset'))
+        prefix, separator, suffix = prior.rpartition('-')
+        version_id = prefix if separator and len(suffix) == 64 and all(c in '0123456789abcdef' for c in suffix) else prior
+    context = [canonical, str(lead['version_code']), lead.get('arch'), lead.get('asset_type')]
+    variant = str(version_id) + '-' + hashlib.sha256(json.dumps(context).encode()).hexdigest()
+    return {**lead, 'variant': variant, 'version_id': str(version_id), 'asset_identity': canonical}
 
 
 def _http_status(response, kind='APKPureHTTPError'):
@@ -60,9 +82,8 @@ def parse_versions(document, package, *, sdk=29):
             if not isinstance(architectures, list) or not all(isinstance(a, str) for a in architectures):
                 raise ValueError('InvalidArchitectures')
             arch = ','.join(sorted(set(architectures))) or 'universal'
-            variant = str(row.get('version_id') or 'asset') + '-' + hashlib.sha256(url.encode()).hexdigest()
             lead = {'package': package, 'version_code': code, 'version_name': str(name),
-                    'version_selector': str(name), 'arch': arch, 'variant': variant,
+                    'version_selector': str(name), 'arch': arch, 'version_id': str(row.get('version_id') or 'asset'),
                     'asset_url': url, 'asset_type': str(asset.get('type', '')).upper(),
                     'rank': rank, 'discovered_from': 'apkpure-api', 'sdk_context': sdk}
             for field in ('sdk_version', 'target_sdk_version'):
@@ -70,7 +91,8 @@ def parse_versions(document, package, *, sdk=29):
                 if value.isdecimal() and int(value) > 0:
                     sdk_hints.add(int(value))
                     lead[field] = value
-            variants[(code, arch, variant, url)] = lead
+            lead = normalize_variant(lead)
+            variants[(code, arch, lead['variant'])] = lead
         except (ValueError, TypeError, AttributeError) as error:
             errors.append({'row': rank, 'error': str(error) if isinstance(error, ValueError) else 'MalformedVariant'})
     return {'variants': list(variants.values()), 'errors': errors, 'sdk_hints': sorted(sdk_hints)}
