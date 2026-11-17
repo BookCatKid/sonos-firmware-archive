@@ -172,7 +172,9 @@ as Actions artifacts even when execution or its metadata commit fails.
 
 Each target has a report under `data/platform/targets/`, containing step
 outcomes, errors, pending work, and its next due time. Incomplete runs retry on
-the next hourly tick; successful targets follow their declared cadence. Targets
+the next hourly tick. The CLI emits redacted phase start/finish messages to
+stderr as work proceeds; stdout remains the final JSON report. Successful targets
+follow their declared cadence. Targets
 with a common metadata lock execute in order. Independent sources can proceed
 when another target fails. Android history uses a bounded, rotating queue and
 retries failures rather than permanently suppressing them.

@@ -6,6 +6,7 @@ import importlib.util
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
@@ -97,9 +98,12 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
             failed = False
             for step in implementation(context):
                 record = {'name': step.name, 'status': 'skipped'}
+                label = redact(f'[{target.name}] {step.name}', environment)
                 if failed and not step.after_failure:
                     report['steps'].append(record)
+                    print(f'{label}: skipped after an earlier failure', file=sys.stderr, flush=True)
                     continue
+                print(f'{label}: starting', file=sys.stderr, flush=True)
                 log = work / (str(len(report['steps'])) + '.log')
                 try:
                     if execute:
@@ -124,6 +128,7 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
                     record.update(status='failed', error=redact(str(error), environment))
                     report['errors'].append({'step': step.name, 'error': record['error']})
                 report['steps'].append(record)
+                print(f'{label}: {record["status"]}', file=sys.stderr, flush=True)
             if report['errors']:
                 report['status'] = 'partial' if any(s['status'] in {'ok', 'partial'} for s in report['steps']) else 'failed'
             elif report['pending']:
