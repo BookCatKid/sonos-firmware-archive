@@ -74,6 +74,24 @@ Run the cross-platform bootstrap checks with
 They do not claim that a source which has disappeared upstream can be recreated
 from nothing; unavailable historical bytes remain a documented discovery gap.
 
+Live validation on 2026-11-17 used a separate
+[empty validation repository](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44121253300),
+with no archive metadata, existing releases, cached observations or supplied
+private keys. Its initial run preserved 24 firmware/installer sources, registered
+181 raw components and published four inventories. A
+[subsequent firmware run](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44136098248)
+raised those totals to 48 sources, 333 raw components and eight published
+inventories. Recovery from verified legacy updater sources found six recipient
+keys for models 1, 8, 9, 12, 16 and 17. Twelve recipient groups still lacked keys.
+
+The subsequent run also reclassified the older navigation-heavy discovery
+queue: pending document URLs fell from 34,010 to 340, while retained manifests
+increased from 27 to 29 and firmware candidates from 1,054 to 1,185. Publication
+errors were zero; 458 candidate captures remained pending. This is evidence of
+cold-start acquisition and continued discovery, not exhaustive historical
+coverage. Google Play HTTP 403 responses, unavailable historical indexes and
+encrypted sections without keys remain explicit, retryable gaps.
+
 ## Worker lifecycle
 
 Historical index discovery queries both manifests and `.upd` payloads across
