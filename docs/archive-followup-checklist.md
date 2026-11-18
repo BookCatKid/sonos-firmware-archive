@@ -16,10 +16,10 @@ acquisition and private-key handling stay in CI; local tests use synthetic data.
 | 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | Pending live source and extraction evidence. |
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Pending comparison. |
-| 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI fixed; TLS fallback under verification. |
+| 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | Audit backlog and encoding paths. |
-| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | TLS fallback under verification. |
-| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | Investigate observed HTTP 403 failures. |
+| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | TLS fallback verified offline; continue live index and replay investigation. |
+| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | Extend existing live evidence and audit coverage. |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | Audit SDK coverage and live receipts. |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Audit live backlog. |
@@ -29,7 +29,7 @@ acquisition and private-key handling stay in CI; local tests use synthetic data.
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Audit source adapters and worker checkpoints. |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root ordering fixed; audit remaining queues. |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Repair older references and investigate page snapshot. |
-| 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Verify existing tests against real worker call sites. |
+| 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh per-run inventories, corruption, outages and registration after earlier failures; continue other worker acceptance checks. |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | Extend per-target acceptance evidence. |
 | 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | ConnectX runtime documentation corrected; continue repository audit. |
 | 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | Requires approved deployment after fixes and validation. |

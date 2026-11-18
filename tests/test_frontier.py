@@ -532,6 +532,78 @@ class FrontierTests(unittest.TestCase):
 
 
 class PreservationTests(unittest.TestCase):
+    def test_new_document_registers_after_an_earlier_release_inventory_failure(self):
+        from sonos_firmware import releases
+        from sonos_firmware.firmware_archive import register_document
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+        import discover_firmware as publisher
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog = root/'data/catalog.json'
+            manifests = []
+            for label in ('old', 'new'):
+                body = label.encode()
+                (root/(label+'.upm')).write_bytes(body)
+                manifests.append({'url': BASE+label+'.upm', 'snapshot': label+'.upm',
+                                  'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(), 'metadata': {}})
+            tag = 'manifest-snapshots-fixture'
+            old, new = manifests
+            asset = {'size': new['bytes'], 'digest': 'sha256:'+new['sha256'],
+                     'browser_download_url': 'https://github.com/owner/repo/releases/download/'+tag+'/'+publisher.document_name(new)}
+            proof = releases.publication_receipt('owner/repo', tag, publisher.document_name(old), old,
+                                                 {'url': 'https://github.com/owner/repo/releases/download/'+tag+'/old'})
+            register_document(catalog, old, proof)
+            state = {'manifests': manifests, 'probes': {}}
+            with patch.object(publisher, 'datetime') as clock, \
+                 patch.object(releases, 'remote_assets', side_effect=urllib.error.URLError('fixture inventory outage')), \
+                 patch.object(publisher, 'ensure_release'), \
+                 patch.object(publisher, 'publish_verified', return_value=asset), \
+                 patch.object(publisher, 'archive_candidates', return_value={'errors': [], 'pending': 0}):
+                clock.now.return_value.date.return_value.isoformat.return_value = 'fixture'
+                self.assertTrue(publisher.preserve(state, catalog, root/'state.json', root, root, 'owner/repo'))
+            self.assertEqual(len(json.loads(catalog.read_text())['source_manifests']), 2)
+            self.assertEqual(len(state['preservation_errors']), 1)
+
+    def test_existing_documents_share_one_release_inventory_without_cached_bodies(self):
+        from sonos_firmware import releases
+        from sonos_firmware.firmware_archive import register_document
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+        import discover_firmware as publisher
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog = root/'data/catalog.json'
+            manifests, assets = [], {}
+            for index in range(3):
+                body = f'<update_manifest version="{index}"/>'.encode()
+                manifest = {'url': BASE+str(index)+'.upm', 'snapshot': 'missing.upm',
+                            'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(), 'metadata': {}}
+                name = publisher.document_name(manifest)
+                asset = {'size': len(body), 'digest': 'sha256:'+manifest['sha256'],
+                         'browser_download_url': 'https://github.com/owner/repo/releases/download/snapshots/'+name}
+                assets[name] = asset
+                proof = releases.publication_receipt('owner/repo', 'snapshots', name, manifest, asset)
+                register_document(catalog, manifest, proof)
+                manifests.append(manifest)
+            state = {'manifests': manifests, 'probes': {}}
+            with patch.object(releases, 'remote_assets', return_value=assets) as inventory, \
+                 patch.object(publisher, 'publish_verified', side_effect=AssertionError('already published')), \
+                 patch.object(publisher, 'archive_candidates', return_value={'errors': [], 'pending': 0}):
+                self.assertFalse(publisher.preserve(state, catalog, root/'state.json', root/'no-cache', root, 'owner/repo'))
+                inventory.assert_called_once_with('owner/repo', 'snapshots')
+                # A later run must fetch fresh metadata and still reject corruption.
+                inventory.reset_mock()
+                assets[name]['digest'] = 'sha256:'+'0'*64
+                self.assertTrue(publisher.preserve(state, catalog, root/'state.json', root/'no-cache', root, 'owner/repo'))
+                inventory.assert_called_once_with('owner/repo', 'snapshots')
+                self.assertEqual(len(state['preservation_errors']), 1)
+                self.assertIn('GitHub asset mismatch', state['preservation_errors'][0]['error'])
+                inventory.reset_mock()
+                inventory.side_effect = urllib.error.URLError('fixture inventory outage')
+                self.assertTrue(publisher.preserve(state, catalog, root/'state.json', root/'no-cache', root, 'owner/repo'))
+                inventory.assert_called_once_with('owner/repo', 'snapshots')
+                self.assertEqual(len(state['preservation_errors']), 3)
+            self.assertEqual(len(json.loads(catalog.read_text())['source_manifests']), 3)
+
     def test_capture_failure_does_not_block_other_manifests_or_package_versions(self):
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
         import discover_firmware as publisher
@@ -551,15 +623,23 @@ class PreservationTests(unittest.TestCase):
                      'checked_urls': [c['url'] for c in candidates]}
             catalog = root / 'catalog.json'
             catalog.write_text(json.dumps({'packages': [], 'source_manifests': []}))
-            with patch.object(publisher, 'ensure_release'), patch.object(publisher, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}), \
-                 patch.object(publisher, 'archive_candidates', return_value={
+            operations = []
+            def publish(*args):
+                operations.append('document')
+                return {'url': 'https://github.com/fixture/asset'}
+            def acquire(*args, **kwargs):
+                operations.append('firmware')
+                return {
                      'preserved': 1, 'pending': 1, 'errors': [{'url': candidates[0]['url'], 'error': 'first version failed'}]
-                 }) as preserve:
+                }
+            with patch.object(publisher, 'ensure_release'), patch.object(publisher, 'publish_verified', side_effect=publish), \
+                 patch.object(publisher, 'archive_candidates', side_effect=acquire) as preserve:
                 self.assertTrue(publisher.preserve(state, catalog, root / 'state.json', evidence, root, 'owner/repo'))
             preserve.assert_called_once()
             self.assertEqual(preserve.call_args.args[2], candidates)
             self.assertEqual(len(json.loads(catalog.read_text())['source_manifests']), 1)
             self.assertEqual(len(state['preservation_errors']), 2)
+            self.assertEqual(operations, ['firmware', 'document'])
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import argparse
 import json
 import sys
 import hashlib
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -11,6 +12,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
+from sonos_firmware import releases
 from sonos_firmware.frontier import discover, monitor_report
 from sonos_firmware.archive_index import discover_sources
 from sonos_firmware.firmware_archive import (
@@ -29,15 +31,35 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
                    'source_manifests': [], 'packages': [], 'raw_images': []}
         write_json(catalog_path, catalog)
     errors = []
+    # Capture live sources before reconciling a potentially large document
+    # archive: a mutable endpoint may change while metadata uploads are pending.
+    archive_root = catalog_path.parent.parent if catalog_path.parent.name == 'data' else catalog_path.parent
+    report = monitor_report(result, catalog, acquisition_state(archive_root), repository)
+    candidates = report['available_uncatalogued_candidates'] + report['available_refresh_candidates']
+    archived = archive_candidates(archive_root, repository, candidates, work,
+                                  limit=max_packages, catalog_path=catalog_path)
+    errors.extend(archived['errors'])
+    catalog = json.loads(catalog_path.read_text())
     tag = 'manifest-snapshots-' + datetime.now(timezone.utc).date().isoformat()
     prepared = False
+    inventories = {}
     for manifest in [*result['manifests'], *result.get('documents', [])]:
         known = next((m for m in [*catalog.get('source_manifests', []), *catalog.get('source_documents', [])]
                       if m.get('sha256') == manifest['sha256'] and m.get('source_url') == manifest['url']), None)
         try:
             proof = document_publication(known, repository) if known else None
+            if proof and proof['release_tag'] not in inventories:
+                try:
+                    inventories[proof['release_tag']] = releases.remote_assets(repository, proof['release_tag'])
+                except urllib.error.HTTPError as error:
+                    inventories[proof['release_tag']] = {} if error.code == 404 else error
+                    error.close()
+                except Exception as error:
+                    inventories[proof['release_tag']] = error
+            if proof and isinstance(inventories[proof['release_tag']], Exception):
+                raise inventories[proof['release_tag']]
             if proof and verified_asset(repository, proof['release_tag'], proof['release_asset'],
-                                        manifest['bytes'], manifest['sha256']):
+                                        manifest['bytes'], manifest['sha256'], inventory=inventories[proof['release_tag']]):
                 register_document(catalog_path, manifest, proof)
                 catalog = json.loads(catalog_path.read_text())
                 continue
@@ -55,16 +77,12 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
             asset = work / document_name(manifest)
             asset.write_bytes(data)
             remote = publish_verified(repository, tag, asset, len(data), manifest['sha256'])
+            if isinstance(inventories.get(tag), dict):
+                inventories[tag][asset.name] = remote
             register_document(catalog_path, manifest, publication_receipt(repository, tag, asset.name, manifest, remote))
             catalog = json.loads(catalog_path.read_text())
         except Exception as error:
             errors.append({'source': manifest['url'], 'error': str(error)})
-    archive_root = catalog_path.parent.parent if catalog_path.parent.name == 'data' else catalog_path.parent
-    report = monitor_report(result, catalog, acquisition_state(archive_root), repository)
-    candidates = report['available_uncatalogued_candidates'] + report['available_refresh_candidates']
-    archived = archive_candidates(archive_root, repository, candidates, work,
-                                  limit=max_packages, catalog_path=catalog_path)
-    errors.extend(archived['errors'])
     result['preservation_pending'] = archived['pending']
     result['preservation_errors'] = errors
     write_json(state_path, result)

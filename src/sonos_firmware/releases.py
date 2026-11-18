@@ -152,9 +152,10 @@ def ensure_release(repository: str, tag: str, title: str, notes: str) -> None:
                         '--title', title, '--notes', notes], check=True)
 
 
-def verified_asset(repository: str, tag: str, name: str, size: int, digest: str) -> dict | None:
+def verified_asset(repository: str, tag: str, name: str, size: int, digest: str, *, inventory=None) -> dict | None:
+    """Verify an asset, optionally using an inventory fetched for this operation."""
     try:
-        remote = remote_assets(repository, tag).get(name)
+        remote = (remote_assets(repository, tag) if inventory is None else inventory).get(name)
     except urllib.error.HTTPError as error:
         if error.code == 404:
             error.close()
