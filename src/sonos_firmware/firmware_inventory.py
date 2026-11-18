@@ -56,6 +56,44 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def elf_header(data: bytes) -> dict | None:
+    """Describe an ELF header only; never load or execute the object.
+
+    Layout: https://gabi.xinuos.com/elf/02-eheader.html
+    Machine registry: https://gabi.xinuos.com/elf/a-emachine.html
+    Unknown machine IDs remain usable metadata, not a decoding restriction.
+    """
+    if not data.startswith(b'\x7fELF'):
+        return None
+    result = {'format': 'ELF'}
+    if len(data) < 16:
+        return {**result, 'header_error': 'truncated ELF identification'}
+    bits = {1: 32, 2: 64}.get(data[4])
+    order = {1: 'little', 2: 'big'}.get(data[5])
+    if bits is None or order is None or data[6] != 1:
+        return {**result, 'header_error': 'unsupported ELF class, byte order or identification version',
+                'class_id': data[4], 'data_encoding': data[5], 'identification_version': data[6]}
+    result.update(bits=bits, byte_order=order, os_abi=data[7], abi_version=data[8])
+    layout = ('<' if order == 'little' else '>') + ('HHIIIIIHHHHHH' if bits == 32 else 'HHIQQQIHHHHHH')
+    if len(data) < 16 + struct.calcsize(layout):
+        return {**result, 'header_error': 'truncated ELF header'}
+    kind, machine, version, entry, phoff, shoff, flags, size, *_ = struct.unpack_from(layout, data, 16)
+    architectures = {3: 'x86', 8: 'MIPS', 20: 'PowerPC', 21: 'PowerPC64',
+                     40: 'ARM', 62: 'x86-64', 183: 'AArch64', 243: 'RISC-V'}
+    result.update(machine=machine, architecture=architectures.get(machine), object_type=kind,
+                  object_type_name={1: 'relocatable', 2: 'executable', 3: 'shared-object', 4: 'core'}.get(kind),
+                  version=version, entry_point=entry, flags=flags, header_bytes=size,
+                  program_header_offset=phoff, section_header_offset=shoff)
+    if version != 1 or size != 16 + struct.calcsize(layout):
+        result['header_error'] = 'invalid ELF header size or version'
+    return result
+
+
+def _annotate_elf(record, data):
+    if (metadata := elf_header(data[:64])) is not None:
+        record['elf'] = metadata
+
+
 def package_version(data: bytes) -> str:
     headers = [s for s in parse_bytes(data) if s.section_type == 1]
     if len(headers) != 1 or headers[0].payload_length != 12:
@@ -145,6 +183,7 @@ def _unpack_tar_members(archive, directory, budget, inventory, seen):
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(content)
             record["sha256"] = sha256(content)
+            _annotate_elf(record, content)
         elif member.isdir():
             directory.joinpath(*path.parts).mkdir(parents=True, exist_ok=True)
         inventory.append(record)
@@ -242,6 +281,7 @@ def _unpack_cramfs(payload, directory, budget):
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_bytes(content)
                 record.update(type='file', size=len(content), sha256=sha256(content))
+                _annotate_elf(record, content)
         else:
             budget.consume(0)
             record.update(type='special', device=inode['size'])
@@ -281,6 +321,10 @@ def _unpack_squashfs(component, directory, budget):
     budget.consume(*measure())
     manifest = filesystem_manifest(directory)
     manifest['format'] = 'squashfs'
+    for record in manifest['entries']:
+        if record['type'] == 'file':
+            with (directory / record['path']).open('rb') as stream:
+                _annotate_elf(record, stream.read(64))
     return manifest
 
 
@@ -326,6 +370,7 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
         record['extraction'] = 'decrypted' if section.encrypted else 'plaintext'
         record['component'] = component['filename']
         payload = (directory / component['filename']).read_bytes()
+        _annotate_elf(component, payload)
         expanded = directory / (prefix + '-files')
         prior_budget = budget.bytes, budget.files
         try:
@@ -369,11 +414,18 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
                     report['derived'].append({'package_id': source.stem, 'section_index': section.index,
                         'section_type': section.section_type, 'kind': 'kernel-data', 'filename': name,
                         'bytes': len(kernel), 'sha256': sha256(kernel)})
+                    _annotate_elf(report['derived'][-1], kernel)
         except Exception as error:
             shutil.rmtree(expanded, ignore_errors=True)
             budget.bytes, budget.files = prior_budget
             record['analysis_error'] = {'type': type(error).__name__, 'message': getattr(error, 'strerror', None) or str(error)}
             report['errors'].append({'section_index': section.index, **record['analysis_error']})
+        binaries = [component, *record.get('members', []), *record.get('filesystem', {}).get('entries', []),
+                    *(row for row in report['derived'] if row['section_index'] == section.index)]
+        for binary in binaries:
+            if error := binary.get('elf', {}).get('header_error'):
+                report['errors'].append({'section_index': section.index,
+                    'path': binary.get('path', binary.get('filename')), 'type': 'ELFHeaderError', 'message': error})
         report['sections'].append(record)
     report['payloads_complete'] = not report['skipped']
     report['complete'] = report['payloads_complete'] and not report['errors']

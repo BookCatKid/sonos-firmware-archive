@@ -17,7 +17,7 @@ independent web-archive indexes.
 | Item | Acceptance evidence required | Follow-up status |
 | --- | --- | --- |
 | 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
-| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components; file-level extraction and full inventory remain pending. |
+| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components. Generic ELF header analysis now describes application/filesystem/raw/kernel binaries; full live inventory evidence remains pending. |
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |

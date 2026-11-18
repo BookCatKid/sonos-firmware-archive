@@ -118,6 +118,16 @@ symlink target. Gzip-compressed uImage kernel data and gzip streams inside histo
 zImage boot wrappers are decompressed separately.
 Firmware programs and preinstall scripts are never executed.
 
+ELF files found in application archives, root filesystems, raw sections and
+unpacked kernels include static header metadata: machine ID, architecture name
+when recognized, bitness, byte order, ABI, object type and entry point. The
+layout follows the [ELF specification](https://gabi.xinuos.com/elf/02-eheader.html)
+and its [machine registry](https://gabi.xinuos.com/elf/a-emachine.html).
+Unknown machine IDs remain recorded without blocking extraction. Malformed
+ELF headers make the analysis incomplete while retaining the extracted bytes
+and their hashes. Header classification does not establish that an executable
+is valid or safe to run.
+
 A single-executable convenience command is also available:
 
 ```sh
