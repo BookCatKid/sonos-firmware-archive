@@ -115,6 +115,15 @@ class ReleaseSeriesTests(unittest.TestCase):
         self.assertEqual(self.series.errors[0]['release_tag'], self.base)
         self.assertEqual(len(self.github.releases[(self.repo, self.base)]), 1000)
 
+    def test_throttled_inventory_preserves_server_delay_and_does_not_open_a_partition(self):
+        error = urllib.error.HTTPError('https://api.github.com/fixture', 429, 'retry later',
+                                       {'Retry-After': '75'}, None)
+        self.github.inventory_failure = error
+        with self.assertRaises(urllib.error.HTTPError) as raised:
+            self.series.publish(*self.capture())
+        self.assertIs(raised.exception, error)
+        self.assertFalse(self.github.releases)
+
     def test_inventory_is_shared_across_uploads_and_refreshes_on_restart(self):
         self.series.publish(*self.capture())
         self.series.publish(*self.capture('other.upm', b'other metadata'))
@@ -138,6 +147,16 @@ class ReleaseSeriesTests(unittest.TestCase):
         with patch.object(releases, 'verified_remote_digest', return_value=capture['sha256']) as verify:
             self.assertEqual(self.series.publish(path, capture)['sha256'], capture['sha256'])
         verify.assert_called_once()
+
+    def test_exact_tag_revalidation_can_verify_older_assets_without_digest_metadata(self):
+        path, capture = self.capture()
+        self.series.publish(path, capture)
+        remote = self.github.releases[(self.repo, self.base)][path.name]
+        del remote['digest']
+        with patch.object(releases, 'verified_remote_digest', return_value=capture['sha256']) as verify:
+            self.assertEqual(releases.verified_asset(self.repo, self.base, path.name,
+                capture['bytes'], capture['sha256']), remote)
+        verify.assert_called_once_with(remote)
 
     def test_manifest_preservation_rolls_over_a_full_release_and_records_actual_tag(self):
         root = Path(__file__).resolve().parents[1]

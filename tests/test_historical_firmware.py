@@ -174,6 +174,84 @@ class HistoricalFirmwareTests(unittest.TestCase):
         journal = json.loads((self.root/'data/discovery/historical-manifest-acquisition.json').read_text())
         self.assertEqual(journal['sources']['fresh/archive']['manifest']['manifest']['release_tag'], row['release_tag'])
 
+    def test_interrupted_overflow_upload_recovers_without_replay_or_cached_body(self):
+        item = capture(url=MANIFEST)
+        self.index(manifests={'manifest': item})
+        self.responses[archive_replay.replay_url(MANIFEST, item)] = XML
+        base = 'manifest-history-'+item['timestamp'][:8]
+        self.github.releases[('fresh/archive', base)] = {f'old-{i}': {'size': 1} for i in range(1000)}
+        with patch.object(history.ReleaseSeries, '_proof', side_effect=RuntimeError('worker interrupted after upload')):
+            self.assertEqual(self.run_history()['manifests']['preserved'], 0)
+        self.assertEqual(len(self.github.releases[('fresh/archive', base+'-part-2')]), 1)
+        self.responses.clear()
+        self.index()
+        resumed = self.run_history(now=NOW+timedelta(hours=2))
+        self.assertEqual(resumed['manifests']['preserved'], 1)
+        self.assertEqual(len(self.fetched), 1)
+        row, = catalog_at(self.root/'data/catalog.json')['source_manifests']
+        self.assertEqual(row['release_tag'], base+'-part-2')
+
+    def test_manifest_replay_retry_after_defers_new_captures_across_restarts(self):
+        old, peer = capture(url=MANIFEST), capture('20210101000000', MANIFEST)
+        self.index(manifests={'old': old})
+        url = archive_replay.replay_url(MANIFEST, old)
+        self.responses[url] = urllib.error.HTTPError(url, 429, 'retry later', {'Retry-After': '75'}, None)
+        def archive(now):
+            with patch.object(retry, '_now', return_value=now):
+                frontier = json.loads(self.frontier.read_text())
+                return history.archive_manifests(self.root, self.root/'worker', 'fresh/archive', frontier, limit=4)
+        archive(NOW)
+        self.index(manifests={'old': old, 'peer': peer})
+        self.responses[archive_replay.replay_url(MANIFEST, peer)] = XML
+        archive(NOW+timedelta(seconds=74))
+        self.assertEqual(self.fetched, [url])
+        self.responses[url] = XML
+        resumed = archive(NOW+timedelta(seconds=76))
+        self.assertEqual(resumed['preserved'], 2)
+        self.assertEqual(len(self.fetched), 3)
+
+    def test_manifest_publication_retry_after_defers_source_requests_and_resumes(self):
+        old, peer = capture(url=MANIFEST), capture('20210101000000', MANIFEST)
+        self.index(manifests={'old': old})
+        url = archive_replay.replay_url(MANIFEST, old)
+        self.responses[url] = XML
+        self.github.inventory_failure = urllib.error.HTTPError('https://api.github.com/fixture', 429,
+            'retry later', {'Retry-After': '75'}, None)
+        def archive(now):
+            with patch.object(retry, '_now', return_value=now):
+                return history.archive_manifests(self.root, self.root/'worker', 'fresh/archive',
+                    json.loads(self.frontier.read_text()), limit=4)
+        first = archive(NOW)
+        self.assertEqual(first['preserved'], 0)
+        self.assertTrue(first['paused'])
+        self.assertEqual(first['paused_hosts'], [])
+        self.assertFalse(self.github.releases)
+        self.index(manifests={'old': old, 'peer': peer})
+        self.responses[archive_replay.replay_url(MANIFEST, peer)] = XML
+        archive(NOW+timedelta(seconds=74))
+        self.assertEqual(self.fetched, [url])
+        self.assertEqual(archive(NOW+timedelta(seconds=76))['preserved'], 2)
+
+    def test_manifest_replay_throttle_does_not_pause_an_independent_archive(self):
+        old = capture(url=MANIFEST)
+        other = {**capture('20210101000000', MANIFEST), 'provider': 'commoncrawl',
+                 'filename': 'crawl/fixture.warc.gz', 'offset': '0', 'length': '100'}
+        self.index(manifests={'old': old, 'other': other})
+        visited = []
+        def replay(url, item):
+            host = archive_replay.capture_host(item)
+            visited.append(host)
+            if host == 'web.archive.org':
+                raise urllib.error.HTTPError('https://web.archive.org/fixture', 429,
+                    'retry later', {'Retry-After': '75'}, None)
+            return Response('https://data.commoncrawl.org/crawl/fixture.warc.gz', XML)
+        with patch.object(history, 'open_capture', side_effect=replay), patch.object(retry, '_now', return_value=NOW):
+            result = history.archive_manifests(self.root, self.root/'worker', 'fresh/archive',
+                json.loads(self.frontier.read_text()), limit=4)
+        self.assertEqual(visited, ['web.archive.org', 'data.commoncrawl.org'])
+        self.assertEqual(result['preserved'], 1)
+        self.assertEqual(result['paused_hosts'], ['web.archive.org'])
+
     def test_new_manifest_backlog_does_not_starve_interrupted_publication_recovery(self):
         old = capture(url=MANIFEST)
         self.index(manifests={'old': old})

@@ -13,7 +13,7 @@ from .discovery import Candidate, official_firmware_url, parse_manifest
 from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
 from .releases import verified_asset, publication_receipt
 from .release_series import ReleaseSeries
-from .retry import checkpoint, select
+from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .storage import atomic_json
 
 
@@ -71,6 +71,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     blocked = {'web.archive.org'} if paused is True else set(paused or ())
     path = root/'data/discovery/historical-manifest-acquisition.json'
     state = acquisition_state(root, path)
+    backoff = RequestBackoff(state, repository)
     observations = state.setdefault('sources', {}).setdefault(repository, {})
     errors = []
     for url, entry in frontier.get('archive_index', {}).get('entries', {}).items():
@@ -86,20 +87,39 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
         if row.get('status') == 'preserved' and row.get('manifest'):
             remember_manifest(frontier, row['manifest'])
     atomic_json(path, state)
-    queue = select(list(observations), observations, key=lambda identity: identity, limit=limit,
+    eligible = [identity for identity, row in observations.items() if row.get('manifest') or
+                (capture_host(row['archive_capture']) not in blocked and
+                 not backoff.paused(capture_host(row['archive_capture'])))]
+    queue = select(eligible, observations, key=lambda identity: identity,
+                   limit=0 if backoff.paused('publication') else limit,
                    state=state, queue=repository)
     attempted = preserved = 0
     series = {}
+    def publisher_for(capture):
+        tag = 'manifest-history-'+capture['timestamp'][:8]
+        return series.setdefault(tag, ReleaseSeries(repository, tag, 'Sonos historical manifests',
+            'Exact independently discovered public update manifest captures.'))
     work.mkdir(parents=True, exist_ok=True)
     for identity in queue:
+        if backoff.paused('publication'):
+            break
         prior = observations[identity]
         manifest = prior.get('manifest')
+        host = capture_host(prior['archive_capture'])
+        phase = 'publication'
         try:
+            proof = None
             remote = verified_asset(repository, manifest['release_tag'], document_name(manifest),
                                     manifest['bytes'], manifest['sha256']) if manifest else None
-            if remote is None:
-                if capture_host(prior['archive_capture']) in blocked:
+            if manifest and remote is None:
+                proof = publisher_for(prior['archive_capture']).reconcile(document_name(manifest), manifest)
+                if proof:
+                    manifest['release_tag'] = proof['release_tag']
+                    atomic_json(path, state)
+            if remote is None and proof is None:
+                if host in blocked or backoff.paused(host):
                     continue
+                phase = 'acquisition'
                 attempted += 1
                 with tempfile.TemporaryDirectory(dir=work, prefix='manifest-') as directory:
                     with open_capture(prior['url'], prior['archive_capture']) as response:
@@ -110,6 +130,8 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                         fetched_from = response.geturl()
                     body = Path(directory)/'capture.upm'
                     body.write_bytes(data)
+                    backoff.clear(host)
+                    phase = 'publication'
                     metadata, candidates, parse_error = {}, [], None
                     try:
                         metadata, candidates = parse_manifest(body, prior['url'])
@@ -126,28 +148,23 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                     atomic_json(path, state)
                     asset = body.with_name(document_name(manifest))
                     body.rename(asset)
-                    tag = manifest['release_tag']
-                    publisher = series.setdefault(tag, ReleaseSeries(repository, tag, 'Sonos historical manifests',
-                        'Exact independently discovered public update manifest captures.'))
-                    proof = publisher.publish(asset, manifest)
+                    proof = publisher_for(prior['archive_capture']).publish(asset, manifest)
                     manifest['release_tag'] = proof['release_tag']
                     # Persist the actual partition before catalog registration;
                     # a worker restart can reconcile an interrupted publication.
                     atomic_json(path, state)
-                    remote = {'size': proof['bytes'], 'digest': 'sha256:'+proof['sha256'],
-                              'browser_download_url': proof['release_url']}
-            proof = publication_receipt(repository, manifest['release_tag'], document_name(manifest), manifest, remote)
+            proof = proof or publication_receipt(repository, manifest['release_tag'], document_name(manifest), manifest, remote)
             register_document(root/'data/catalog.json', manifest, proof)
+            backoff.clear('publication')
             remember_manifest(frontier, manifest)
             observations[identity] = {**prior, **checkpoint(prior, success=True, success_hours=168), 'status': 'preserved'}
             preserved += 1
         except Exception as error:
-            observations[identity] = {**prior, **checkpoint(prior), 'status': 'failed', 'error': str(error)}
-            if getattr(error, 'pause_replay', False):
-                blocked.add(getattr(error, 'pause_host', capture_host(prior['archive_capture'])))
+            observations[identity] = {**prior, **error_checkpoint(error, prior), 'status': 'failed', 'error': str(error)}
+            scope = getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication'
+            if backoff.failed(scope, error) and phase == 'acquisition':
+                blocked.add(scope)
             if isinstance(error, urllib.error.HTTPError):
-                if error.code in {403, 429}:
-                    blocked.add(capture_host(prior['archive_capture']))
                 error.close()
         atomic_json(path, state)
     errors.extend(error for publisher in series.values() for error in publisher.errors)
@@ -157,9 +174,10 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                   (row['manifest'].get('parse_error') or row['manifest']['metadata'].get('warnings')))
     errors.extend(link for row in observations.values() for link in
                   row.get('manifest', {}).get('metadata', {}).get('unresolved_links', []))
+    blocked.update(scope for scope in backoff.records if scope != 'publication' and backoff.paused(scope))
     return {'attempted': attempted, 'preserved': preserved, 'errors': errors,
             'pending': sum(row['status'] != 'preserved' for row in observations.values()),
-            'paused': bool(blocked), 'paused_hosts': sorted(blocked)}
+            'paused': bool(blocked) or backoff.paused('publication'), 'paused_hosts': sorted(blocked)}
 
 
 def archive_history(root, work, repository, *, limit=8, manifest_limit=8):

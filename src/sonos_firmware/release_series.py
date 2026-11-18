@@ -2,6 +2,7 @@
 import re
 import subprocess
 import urllib.error
+from pathlib import Path
 from urllib.parse import quote
 
 from . import releases
@@ -58,17 +59,17 @@ class ReleaseSeries:
         return self._assets[tag]
 
     def _proof(self, tag, path, capture, remote):
-        if (remote.get('name', path.name) != path.name or remote.get('size') != capture['bytes'] or
-                releases.verified_remote_digest(remote) != capture['sha256']):
-            raise RuntimeError(f'GitHub asset mismatch: {tag}/{path.name}')
-        if not (remote.get('browser_download_url') or remote.get('url')):
-            raise ValueError('verified GitHub asset has no publication URL')
+        remote = releases.verified_asset(self.repository, tag, path.name, capture['bytes'],
+                                        capture['sha256'], inventory={path.name: remote})
+        if remote is None:
+            raise RuntimeError(f'GitHub asset missing after upload: {tag}/{path.name}')
         return releases.publication_receipt(self.repository, tag, path.name, capture, remote)
 
-    def publish(self, path, capture):
-        if (not path.is_file() or path.stat().st_size != capture['bytes'] or
-                file_sha256(path) != capture['sha256']):
-            raise ValueError('capture missing or does not match its receipt: '+path.name)
+    def reconcile(self, name, capture):
+        """Find a verified capture without requiring cached source bytes."""
+        path = Path(name)
+        if path.name != name or name in {'', '.', '..'}:
+            raise ValueError('release asset name must be a basename')
         if self._tags is None:
             self._tags = sorted({self.base_tag, *(tag for tag in matching_tags(
                 self.repository, self.base_tag) if self._ordinal(tag))}, key=self._ordinal)
@@ -78,6 +79,8 @@ class ReleaseSeries:
             try:
                 remote = self._inventory(tag).get(path.name)
             except Exception as error:
+                if getattr(error, 'code', None) in {403, 429, 503}:
+                    raise
                 # Preserve fresh evidence elsewhere when one older release
                 # cannot be reconciled. Report that uncertainty to the caller;
                 # an unavailable partition never counts as empty or verified.
@@ -85,6 +88,14 @@ class ReleaseSeries:
                 continue
             if remote is not None:
                 return self._proof(tag, path, capture, remote)
+        return None
+
+    def publish(self, path, capture):
+        if (not path.is_file() or path.stat().st_size != capture['bytes'] or
+                file_sha256(path) != capture['sha256']):
+            raise ValueError('capture missing or does not match its receipt: '+path.name)
+        if proof := self.reconcile(path.name, capture):
+            return proof
         while True:
             tag = next((tag for tag in self._tags if tag not in self._unavailable and
                         len(self._inventory(tag)) < 1000), None)

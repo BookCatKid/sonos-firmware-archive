@@ -163,10 +163,12 @@ def verified_asset(repository: str, tag: str, name: str, size: int, digest: str,
         raise
     if remote is None:
         return None
-    if remote.get('size') != size or (remote.get('digest') or '').removeprefix('sha256:') != digest:
+    if remote.get('size') != size or remote.get('name', name) != name:
         raise RuntimeError(f'GitHub asset mismatch: {tag}/{name}')
     if not (remote.get('browser_download_url') or remote.get('url')):
         raise ValueError('verified GitHub asset has no publication URL')
+    if verified_remote_digest(remote) != digest:
+        raise RuntimeError(f'GitHub asset mismatch: {tag}/{name}')
     return remote
 
 
