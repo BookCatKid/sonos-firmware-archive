@@ -4,7 +4,7 @@ import struct
 import urllib.error
 import itertools
 import json
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch, Mock
 
@@ -12,6 +12,53 @@ from sonos_firmware.metadata_sweep import BASELINE, PROFILE_FIELDS, build_profil
 
 
 class MetadataSweepTests(unittest.TestCase):
+    def test_profile_service_unavailable_pauses_untried_profiles(self):
+        fetch = Mock(side_effect=urllib.error.HTTPError('https://update.sonos.com/fixture', 503,
+            'temporarily unavailable', {'Retry-After': '75'}, None))
+        with tempfile.TemporaryDirectory() as temporary, patch('sonos_firmware.metadata_sweep.time.sleep'):
+            state = discover_profiles({}, Path(temporary), {}, limit=2, count=2, fetch=fetch)
+            self.assertEqual(fetch.call_count, 1)
+            self.assertEqual(state['source_backoff']['http_status'], 503)
+            discover_profiles(state, Path(temporary), {}, limit=2, count=2, fetch=fetch)
+            self.assertEqual(fetch.call_count, 1)
+
+    def test_profile_server_retry_deadline_survives_restart_and_resumes(self):
+        now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        def throttle(profile):
+            raise urllib.error.HTTPError('https://update.sonos.com/fixture', 429,
+                'retry later', {'Retry-After': '75'}, None)
+        with tempfile.TemporaryDirectory() as temporary, patch('sonos_firmware.metadata_sweep.time.sleep'):
+            directory = Path(temporary)
+            with patch('sonos_firmware.retry._now', return_value=now):
+                state = discover_profiles({}, directory, {}, limit=1, count=1, fetch=throttle)
+            expected = (now+timedelta(seconds=75)).isoformat()
+            self.assertEqual(state['source_backoff']['next_attempt_at'], expected)
+            self.assertEqual(next(iter(state['profiles'].values()))['next_attempt_at'], expected)
+            fetch = Mock(return_value=self.body())
+            with patch('sonos_firmware.retry._now', return_value=now+timedelta(seconds=74)):
+                state = discover_profiles(state, directory, {}, limit=1, count=1, fetch=fetch)
+            fetch.assert_not_called()
+            with patch('sonos_firmware.retry._now', return_value=now+timedelta(seconds=76)):
+                resumed = discover_profiles(state, directory, {}, limit=1, count=1, fetch=fetch)
+            self.assertEqual(resumed['attempted_this_run'], 1)
+            self.assertEqual(resumed['source_backoff'], {})
+
+    def test_release_note_hints_honor_server_retry_after_across_restarts(self):
+        now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        def throttle():
+            raise urllib.error.HTTPError('https://support.sonos.com/fixture', 429,
+                'retry later', {'Retry-After': '75'}, None)
+        with patch('sonos_firmware.retry._now', return_value=now):
+            state = discover_version_hints({}, fetch=throttle)
+        self.assertEqual(state['next_attempt_at'], (now+timedelta(seconds=75)).isoformat())
+        fetch = Mock(return_value=b'<p>Sonos 99.1-12345</p>')
+        with patch('sonos_firmware.retry._now', return_value=now+timedelta(seconds=74)):
+            state = discover_version_hints(state, fetch=fetch)
+        fetch.assert_not_called()
+        with patch('sonos_firmware.retry._now', return_value=now+timedelta(seconds=76)):
+            resumed = discover_version_hints(state, fetch=fetch)
+        self.assertEqual(resumed['versions'], ['99.1-12345'])
+
     @staticmethod
     def body():
         uri = b'https://update.sonos.com/firmware/live/update.upm\0'

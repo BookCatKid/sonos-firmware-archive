@@ -73,6 +73,20 @@ while publishing discovery snapshots. The shared document publisher now searches
 existing numbered partitions before uploading, reconciles lost responses, rolls
 full partitions forward and records the actual tag. Inventory failures remain
 reported while fresh documents can be preserved in a healthy partition.
+The [live rollover validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44340640914)
+published 203 documents into `manifest-snapshots-2026-11-18-part-2` with zero
+preservation errors. All 203 catalog references match GitHub asset names, sizes,
+digests and download URLs. The run reached 143 preserved sources and 33 manifest
+URLs discovered through its own traversal. Its overall status remains partial:
+455 source candidates await preservation and encrypted components still lack
+some recipient keys. No external manifest collection supplied those URLs.
+
+Historical manifest replay and metadata-profile exploration retain server
+retry deadlines across workers. They defer newly queued requests to a throttled
+host and resume after its deadline. Publication throttles have a separate scope;
+one replay provider can continue while another is paused. HTTP 503 metadata
+maintenance responses also pause the endpoint's untried profiles. Release-note
+version hints use the same server-aware retry timing.
 
 Installer handoff tests cover an empty checkout and publication from a native
 manifest lead without a prior binary or hash. Channel traversal regressions

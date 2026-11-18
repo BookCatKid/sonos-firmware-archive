@@ -16,7 +16,7 @@ from .metadata import (
     UpdateProfile,
     fetch_update_metadata,
 )
-from .retry import checkpoint, select, due
+from .retry import checkpoint, select, due, error_checkpoint
 from .discovery import USER_AGENT
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
@@ -65,7 +65,7 @@ def discover_version_hints(previous, *, fetch=_fetch_version_hints):
     except Exception as error:
         if isinstance(error, urllib.error.HTTPError):
             error.close()
-        return {**previous, **checkpoint(previous), 'status': 'failed',
+        return {**previous, **error_checkpoint(error, previous), 'status': 'failed',
                 'source_url': RELEASE_NOTES_URL, 'error': str(error)}
 
 
@@ -201,7 +201,7 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
             negative = getattr(error, 'code', None) in {404, 410}
-            observations[key] = {**checkpoint(observations.get(key), negative=negative), 'profile': profile,
+            observations[key] = {**error_checkpoint(error, observations.get(key), negative=negative), 'profile': profile,
                                  'status': 'not-served' if negative else 'failed', 'error': str(error),
                                  'http_status': getattr(error, 'code', None)}
             if captured:
@@ -210,8 +210,8 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
                 errors.append({'source': 'legacy-ups-profile', 'profile': profile, 'error': str(error),
                                'http_status': getattr(error, 'code', None)})
             pending.pop(key, None)
-            if getattr(error, 'code', None) in {403, 429}:
-                source_backoff = {**checkpoint(source_backoff), 'http_status': error.code, 'error': str(error)}
+            if getattr(error, 'code', None) in {403, 429, 503}:
+                source_backoff = {**error_checkpoint(error, source_backoff), 'http_status': error.code, 'error': str(error)}
                 break
         pending.pop(key, None)
         time.sleep(.2)
