@@ -47,7 +47,7 @@ def _promote(root, capture, current_revision):
     atomic_json(path, catalog)
 
 
-def inventory_preserved(root, work, repository, key_directory, *, limit=4, acquire=None, build=None, limits=None):
+def inventory_preserved(root, work, repository, key_directory, *, limit=24, acquire=None, build=None, limits=None):
     if limit <= 0:
         raise ValueError('inventory batch limit must be positive')
     limits = limits or firmware_inventory.InventoryLimits()
@@ -71,14 +71,25 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=4, acqui
         except Exception as error:
             errors.append({'package_id': identity, 'error': str(error)})
     packages = [row for row in packages if row['id'] in contexts]
-    eligible = dict(observations)
+    # Persist first-inventory order independently of the catalog's lexical sort.
+    # Newly preserved older versions must not continually overtake queued work.
+    journal.setdefault('queue_sequence', max((row.get('queued_order', 0)
+                                             for row in observations.values()), default=0))
     for package in packages:
-        prior = observations.get(package['id'], {})
+        identity = package['id']
+        prior = observations.get(identity, {})
         revision = contexts[package['id']][1]
         if prior.get('revision') != revision:
-            eligible.pop(package['id'], None)
-        elif prior.get('status') == 'published':
-            eligible[package['id']] = {**prior, 'next_attempt_at': '9999-01-01T00:00:00+00:00'}
+            prior = observations[identity] = {'status': 'pending', 'revision': revision,
+                **({'queued_order': prior['queued_order']} if prior.get('status') == 'pending'
+                   and 'queued_order' in prior else {})}
+        if prior.get('status') == 'pending' and 'queued_order' not in prior:
+            journal['queue_sequence'] += 1
+            prior['queued_order'] = journal['queue_sequence']
+    packages.sort(key=lambda row: observations.get(row['id'], {}).get('queued_order', 0))
+    eligible = {identity: ({**prior, 'next_attempt_at': '9999-01-01T00:00:00+00:00'}
+                          if prior.get('status') == 'published' else prior)
+                for identity, prior in observations.items()}
     attempted = published = 0
     recovery_attempted = 0
     resolved = set()
@@ -86,6 +97,7 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=4, acqui
     def save():
         atomic_json(state_path, state)
 
+    save()
     # Reconcile exact interrupted captures before requiring source bytes or keys.
     pending = [key for key, value in captures.items() if value['status'] == 'pending']
     recover = select(pending, captures, key=lambda key: key, limit=max(1, limit // 4),

@@ -28,7 +28,7 @@ def store_apple(root: Path, current_path: Path):
     write_json(root / 'data/apps/apple-app-store.json', current)
 
 
-def extract_firmware(root, work, repository, limit=24, inventory_limit=4, inventory_limits=None):
+def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inventory_limits=None):
     work.mkdir(parents=True, exist_ok=True)
     keys = work / 'keys'
     receipts = work / 'receipts'
@@ -120,7 +120,7 @@ def main():
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
     extract.add_argument('--max-packages', type=int, default=24)
-    extract.add_argument('--inventory-limit', type=int, default=4)
+    extract.add_argument('--inventory-limit', type=int, default=24)
     extract.add_argument('--inventory-limits', type=json.loads, default={})
     binaries = sub.add_parser('scan-preserved-binaries')
     binaries.add_argument('--work-dir', type=Path, required=True)

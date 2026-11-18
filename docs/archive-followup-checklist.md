@@ -31,7 +31,7 @@ independent web-archive indexes.
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Audit metadata and binary acquisition prerequisites. |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | Audit formats, recovery methods and live ledgers. |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Audit source adapters and worker checkpoints. |
-| 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root ordering fixed; audit remaining queues. |
+| 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root ordering and durable inventory queue order fixed; pending first inventories precede new arrivals and decoder reanalysis. Audit remaining queues. |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Repair older references and investigate page snapshot. |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh per-run inventories, corruption, outages and registration after earlier failures; continue other worker acceptance checks. |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | Extend per-target acceptance evidence. |
@@ -53,6 +53,19 @@ cover a missing Prod sibling that leads to available Dev history, and a 429
 that retains the counterpart in the frontier without another host request.
 The metadata-only [first-party traversal comparison](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422877)
 starts from protocol roots; no external manifest collection supplies its URLs.
+It completed with zero pending URLs: both traversals found 29 manifest URLs;
+production found 41 installer URLs and included all 37 reference installer URLs.
+This establishes method parity for the current first-party graph, not complete
+historical coverage of campaigns that are no longer linked from those roots.
+The [native mobile run](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422866)
+published a newly discovered Sonos-hosted `85.00.12` beta APK (339,757,559 bytes).
+GitHub's asset size and digest match its receipt. That run remained partial:
+two advertised QA APK URLs returned 404 and the historical index timed out.
+Hash-verified publication alone does not establish APK signature verification.
+
+Inventory workers persist the order of waiting first analyses across catalog
+insertions and decoder changes. Their default batch is 24, matching the source
+extraction batch, with per-package resource bounds and resumable observations.
 
 The metadata-only [Google Play diagnostic](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44207881506)
 received HTTP 403 from Aurora's dispenser with both the SDK transport and

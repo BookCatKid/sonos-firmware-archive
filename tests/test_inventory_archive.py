@@ -14,6 +14,48 @@ from test_upd import section
 
 
 class InventoryArchiveTests(unittest.TestCase):
+    def test_new_catalog_entries_do_not_overtake_waiting_first_inventories(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bodies = {}
+            first, body = self.source(root, 'a')
+            bodies[first['id']] = body
+            waiting, body = self.source(root, 'z')
+            bodies[waiting['id']] = body
+            calls = []
+            def acquire(package, path, repo):
+                calls.append(package['id'])
+                path.write_bytes(bodies[package['id']])
+            with patch.object(inventory, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
+                inventory.inventory_preserved(root, root/'worker', 'owner/repo', root/'keys',
+                                             acquire=acquire, limit=1)
+                newcomer, body = self.source(root, 'a0')
+                bodies[newcomer['id']] = body
+                inventory.inventory_preserved(root, root/'worker', 'owner/repo', root/'keys',
+                                             acquire=acquire, limit=1)
+            self.assertEqual(calls, [first['id'], waiting['id']])
+
+    def test_decoder_reanalysis_does_not_overtake_waiting_first_inventory(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            first, first_body = self.source(root, 'a')
+            waiting, waiting_body = self.source(root, 'z')
+            bodies = {first['id']: first_body, waiting['id']: waiting_body}
+            calls = []
+            def acquire(package, path, repo):
+                calls.append(package['id'])
+                path.write_bytes(bodies[package['id']])
+            with patch.object(inventory, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
+                with patch.object(inventory, 'decoder_revision', return_value='old'):
+                    inventory.inventory_preserved(root, root/'worker', 'owner/repo', root/'keys',
+                                                 acquire=acquire, limit=1)
+                with patch.object(inventory, 'decoder_revision', return_value='new'):
+                    inventory.inventory_preserved(root, root/'worker', 'owner/repo', root/'keys',
+                                                 acquire=acquire, limit=1)
+                    inventory.inventory_preserved(root, root/'worker', 'owner/repo', root/'keys',
+                                                 acquire=acquire, limit=1)
+            self.assertEqual(calls, [first['id'], waiting['id'], first['id']])
+
     def source(self, root, name='one', body=None):
         body = body or section(99, 0, name.encode())
         row = candidate(name, filename=name+'.upd', package_model=8)

@@ -21,7 +21,7 @@ def firmware(c: Context):
                after_failure=True, report=str(c.work / 'history/replay.json')),
         c.task('extract-firmware', '--work-dir', c.work / 'extract', '--repository', c.repository,
                '--max-packages', c.options.get('extraction_limit', 24),
-               '--inventory-limit', c.options.get('inventory_limit', 4),
+               '--inventory-limit', c.options.get('inventory_limit', 24),
                '--inventory-limits', json.dumps(c.options.get('inventory_limits', {})),
                after_failure=True, report=str(c.work / 'extract/extraction.json')),
     ]
