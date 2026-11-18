@@ -188,6 +188,10 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         if deadline is not None and time.monotonic() >= deadline:
             break
         url = queue.popleft()
+        # Channel availability is independent: a missing or malformed Prod
+        # manifest must not hide Dev history. Queue before host backoff too so
+        # challenged counterparts survive in the resumable frontier.
+        channels(url)
         if urlsplit(url).hostname in blocked_hosts:
             deferred.append(url)
             continue

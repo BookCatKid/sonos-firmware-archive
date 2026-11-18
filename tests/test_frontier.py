@@ -18,6 +18,44 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_missing_prod_sibling_still_discovers_dev_history(self):
+        root = HOST + '/firmware/latest/update.upm'
+        prod = HOST + '/firmware/Prod/history/update.upm'
+        dev = prod.replace('/Prod/', '/Dev/')
+        installer = dev.rsplit('/', 1)[0] + '/1.0-12345-1-3.exe'
+        body = ('<update_manifest version="1.1"><image model="3" version="1.0-12345">'
+                + prod.rsplit('/', 1)[0] + '/1.0-12345-1-3.exe</image></update_manifest>').encode()
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            if url == root:
+                return body
+            if url == dev:
+                return ('<update_manifest version="1.1"><image model="3" version="1.0-12345">'
+                        + installer + '</image></update_manifest>').encode()
+            raise urllib.error.HTTPError(url, 404, 'missing', {}, None)
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': root}], [], Path(temporary), fetch=fetch,
+                                    explore_channels=True, delay=0)
+        self.assertIn(dev, calls)
+        self.assertIn(installer, {candidate.url for candidate in graph['candidates']})
+        self.assertEqual(calls.count(prod), 1)
+        self.assertEqual(calls.count(dev), 1)
+        self.assertIn({'url': dev, 'parent': prod, 'reason': 'channel-counterpart'}, graph['edges'])
+
+    def test_challenged_channel_counterpart_is_retained_without_another_request(self):
+        prod = BASE + 'update.upm'
+        dev = prod.replace('/Prod/', '/Dev/')
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            raise urllib.error.HTTPError(url, 429, 'retry later', {}, None)
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': prod}], [], Path(temporary), fetch=fetch,
+                                    explore_channels=True, delay=0)
+        self.assertEqual(calls, [prod])
+        self.assertIn(dev, graph['pending_manifest_urls'])
+
     def test_one_slot_inference_does_not_repeat_only_a_failed_namespace(self):
         from datetime import timedelta
         from sonos_firmware import retry

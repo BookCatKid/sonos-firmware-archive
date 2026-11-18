@@ -16,10 +16,10 @@ independent web-archive indexes.
 
 | Item | Acceptance evidence required | Follow-up status |
 | --- | --- | --- |
-| 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | First-capture ordering fixed; live validation running. |
-| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | Pending live source and extraction evidence. |
+| 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
+| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components; file-level extraction and full inventory remain pending. |
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
-| 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Pending comparison. |
+| 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | Audit backlog and encoding paths. |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | TLS fallback verified offline; continue live index and replay investigation. |
@@ -41,8 +41,18 @@ independent web-archive indexes.
 
 Live validation of mutable-root acquisition:
 [run 44198556575](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44198556575).
+Its ConnectX capture is 19,697,417 bytes with SHA-256
+`5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a`,
+published under `firmware-86.4-73207` in the isolated validation archive.
 The acquisition regression checks that a mutable root is captured before the
 historical backlog and that the historical candidate is processed next.
+
+Installer handoff tests cover an empty checkout and publication from a native
+manifest lead without a prior binary or hash. Channel traversal regressions
+cover a missing Prod sibling that leads to available Dev history, and a 429
+that retains the counterpart in the frontier without another host request.
+The metadata-only [first-party traversal comparison](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422877)
+starts from protocol roots; no external manifest collection supplies its URLs.
 
 The metadata-only [Google Play diagnostic](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44207881506)
 received HTTP 403 from Aurora's dispenser with both the SDK transport and
