@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-08T21:23:40.248405+00:00",
+  "updated": "2026-11-18T23:00:34.958684+00:00",
   "discovery": "data/apps/desktop-discovery.json",
-  "artifact_total": 99,
+  "artifact_total": 101,
   "artifacts": [
     {
       "family": "legacy",
@@ -329,6 +329,25 @@
     {
       "family": "s1",
       "platform": "macos",
+      "version": "57.23-83121",
+      "original_filename": "Sonos_57.23-83121.dmg",
+      "bytes": 56084400,
+      "sha256": "20244698b45bb8cd14d2cd5ade4aa322ec518e77c2da23abd256c3a2dd9f7f3e",
+      "source_urls": [
+        "https://update-software.sonos.com/software/40G2W5Dpkq/Sonos_57.23-83121.dmg"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/40G2W5Dpkq/Sonos_57.23-83121.dmg",
+      "sources": [
+        "official-direct:s1-macos:live-redirect",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-macos",
+      "release_asset": "Sonos_57.23-83121--20244698b45b.dmg",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-macos/Sonos_57.23-83121--20244698b45b.dmg"
+    },
+    {
+      "family": "s1",
+      "platform": "macos",
       "version": "classic-11213",
       "original_filename": "SonosDesktopController11213.dmg",
       "bytes": 48445626,
@@ -632,6 +651,25 @@
       "release_tag": "apps-s1-windows",
       "release_asset": "Sonos_57.22-71190--4dfe77785aa9.exe",
       "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.22-71190--4dfe77785aa9.exe"
+    },
+    {
+      "family": "s1",
+      "platform": "windows",
+      "version": "57.23-83121",
+      "original_filename": "Sonos_57.23-83121.exe",
+      "bytes": 37934968,
+      "sha256": "907f218e537dd18dd89e76cad10caf48af46a93c1fce749f38d6e9a490bc4a60",
+      "source_urls": [
+        "https://update-software.sonos.com/software/40G2W5Dpkq/Sonos_57.23-83121.exe"
+      ],
+      "fetched_from": "https://update-software.sonos.com/software/40G2W5Dpkq/Sonos_57.23-83121.exe",
+      "sources": [
+        "official-direct:s1-windows:live-redirect",
+        "derived-cross-platform"
+      ],
+      "release_tag": "apps-s1-windows",
+      "release_asset": "Sonos_57.23-83121--907f218e537d.exe",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-s1-windows/Sonos_57.23-83121--907f218e537d.exe"
     },
     {
       "family": "s1",
