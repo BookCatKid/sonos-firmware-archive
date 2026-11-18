@@ -23,7 +23,7 @@ MAX_UPDATER_BYTES = 8 * 1024 * 1024
 
 
 def select_updater_sources(root, catalog, model):
-    """Select by plaintext section identity, never a release/version inventory."""
+    """Select plaintext or previously decrypted rootfs with source provenance."""
     rows = []
     seen = set()
     for package in catalog.get('packages', []):
@@ -37,15 +37,42 @@ def select_updater_sources(root, catalog, model):
         inventory = json.loads(manifest.read_text())
         if inventory.get('sha256') != package.get('sha256'):
             continue
+        receipt_path = root / 'data/raw' / (identity + '.json')
+        try:
+            receipt = json.loads(receipt_path.read_text()) if receipt_path.is_file() else {}
+        except (OSError, ValueError):
+            receipt = {}
+        if (not isinstance(receipt, dict) or not isinstance(receipt.get('components'), list) or
+                any(not isinstance(component, dict) for component in receipt['components'])):
+            receipt = {}
         for section in inventory.get('sections', []):
-            if section.get('section_type') != 4 or section.get('encrypted'):
+            if section.get('section_type') != 4:
                 continue
-            references = [('raw', raw) for raw in catalog.get('raw_images', [])
-                          if raw.get('package_id') == identity and raw.get('sha256') == section['sha256']
-                          and raw.get('bytes') == section['payload_length'] and
-                          (raw.get('section_index') == section['index'] or
-                           raw.get('section_index') is None and raw.get('kind') == 'rootfs')]
-            references.append(('upd', package))
+            references = []
+            encrypted = bool(section.get('encrypted'))
+            for raw in catalog.get('raw_images', []):
+                if raw.get('package_id') != identity:
+                    continue
+                if encrypted:
+                    # Ciphertext section hashes cannot identify plaintext. A
+                    # completed extraction receipt must bind it to this exact
+                    # source before it can become another recovery source.
+                    fields = ('package_id', 'section_index', 'section_type', 'bytes', 'sha256',
+                              'source_encrypted', 'recipient_id')
+                    if (receipt.get('source_sha256') != package['sha256'] or
+                            raw.get('section_index') != section['index'] or raw.get('section_type') != 4 or
+                            raw.get('source_encrypted') is not True or not section.get('recipient_id') or
+                            raw.get('recipient_id') != section['recipient_id'] or
+                            not any(all(proof.get(field) == raw.get(field) for field in fields)
+                                    for proof in receipt.get('components', []))):
+                        continue
+                elif (raw.get('sha256') != section['sha256'] or raw.get('bytes') != section['payload_length'] or
+                      not (raw.get('section_index') == section['index'] or
+                           raw.get('section_index') is None and raw.get('kind') == 'rootfs')):
+                    continue
+                references.append(('raw', raw))
+            if not encrypted:
+                references.append(('upd', package))
             for kind, reference in references:
                 if not all(reference.get(key) for key in ('sha256', 'bytes', 'release_tag', 'release_asset')):
                     continue
@@ -57,6 +84,9 @@ def select_updater_sources(root, catalog, model):
                 source = {key: reference[key] for key in ('sha256', 'bytes', 'release_tag', 'release_asset')}
                 source.update(kind=kind, package_id=identity, model=model, section_index=section['index'],
                               section_sha256=section['sha256'], section_bytes=section['payload_length'])
+                if encrypted:
+                    source.update(source_sha256=package['sha256'], section_encrypted=True,
+                                  source_recipient_id=section['recipient_id'])
                 key = (kind, source['release_tag'], source['release_asset'], section['index'])
                 if key not in seen:
                     seen.add(key)

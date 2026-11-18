@@ -29,7 +29,7 @@ independent web-archive indexes.
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Live CI reinspection verified both current and native beta APKs, their actual package/version metadata and configured Sonos signer. Historical backlog and unavailable QA URLs remain. |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Investigate remaining resources and redirects. |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Audit metadata and binary acquisition prerequisites. |
-| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | Audit formats, recovery methods and live ledgers. |
+| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI classified 78 incomplete inventories: 28 recipient groups lack matching keys; available components report no decoder errors. Recovery can now use verified, previously decrypted rootfs when its receipt binds it to the exact original source and component. Continue recipient-specific recovery and live validation. |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Snapshot publication now rolls full 1,000-asset releases into numbered partitions, with actual-tag receipts, cached inventories and no partition-count ceiling. Continue auditing other source adapters and worker checkpoints. |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root and inventory ordering fixed. Firmware/app downloads and historical manifest replay retain server retry timing across restarts, including new URLs, independent archive hosts and separate publication throttles. Release rollover propagates HTTP throttles instead of treating them as isolated inventory outages. Continue remaining queue audits. |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Repair older references and investigate page snapshot. |
@@ -87,6 +87,29 @@ host and resume after its deadline. Publication throttles have a separate scope;
 one replay provider can continue while another is paused. HTTP 503 metadata
 maintenance responses also pause the endpoint's untried profiles. Release-note
 version hints use the same server-aware retry timing.
+
+The [incomplete-inventory audit](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44346965134)
+verified all 78 incomplete published reports against their receipts. Their
+skipped sections identify 28 recipient groups with no matching model key;
+available-component analysis reports no decoder errors. This cannot establish
+what formats remain inside encrypted sections.
+
+Key recovery previously selected only originally plaintext root filesystems.
+It can now select a published decrypted rootfs when `data/raw` binds its
+component hash, size, section, recipient and model package to the exact original
+source SHA-256. Recovery still verifies downloaded bytes and accepts only the
+requested public recipient fingerprint. Tests recover a new synthetic key from
+a filesystem encrypted with an older key, and reject missing, stale or
+conflicting extraction receipts. Failed-source queues and successful-source
+reproduction remain shared with the existing recovery worker.
+
+The [model-26 recovery validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44348573166)
+restored the two tracked public recovery inputs omitted from the isolated
+validation source. CI prepared seven recipient keys and completed raw extraction
+and inventories for all four preserved model-26 sources. Keys stayed ephemeral
+in CI; only publication/catalog evidence was retained. The published-input
+regression now runs only in CI, while local recovery tests use generated keys.
+The remaining unmatched recipient-group count is 27.
 
 Installer handoff tests cover an empty checkout and publication from a native
 manifest lead without a prior binary or hash. Channel traversal regressions

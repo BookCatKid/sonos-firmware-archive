@@ -61,7 +61,68 @@ class RecoveryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        cls.transport_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         cls.recipient = key_recipient_id(cls.key)
+
+    def chained_catalog(self, root):
+        filesystem = cramfs_image(self.updater(17))
+        catalog, _ = source_catalog(root, 17, filesystem)
+        body = section(4, 4, envelope(filesystem, self.transport_key))
+        package = catalog['packages'][0]
+        package.update(sha256=digest(body), bytes=len(body))
+        atomic_json(root/'data/upd/arbitrary-source.json', {'sha256': digest(body),
+            'sections': [row.to_dict() for row in parse_bytes(body)]})
+        component = catalog['raw_images'][0]
+        component.update(section_type=4, source_encrypted=True, recipient_id=key_recipient_id(self.transport_key))
+        receipt = {'source_sha256': digest(body), 'components': [dict(component)]}
+        atomic_json(root/'data/raw/arbitrary-source.json', receipt)
+        return catalog, filesystem, receipt
+
+    def test_published_decrypted_updater_can_recover_a_later_recipient(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, filesystem, _ = self.chained_catalog(root)
+            visited = []
+            def fetch(source, path, repo):
+                visited.append(source)
+                path.write_bytes(filesystem)
+            output = root/'keys/rotated.pem'
+            proof = recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
+                read_artifact=fetch)
+            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
+            self.assertEqual([row['kind'] for row in visited], ['raw'])
+            self.assertEqual(proof['source']['source_sha256'], catalog['packages'][0]['sha256'])
+            self.assertEqual(proof['source']['source_recipient_id'], key_recipient_id(self.transport_key))
+            self.assertTrue(proof['source']['section_encrypted'])
+
+    def test_decrypted_source_needs_a_matching_parent_and_component_receipt(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, _, receipt = self.chained_catalog(root)
+            self.assertEqual(len(recovery.select_updater_sources(root, catalog, 17)), 1)
+            path = root/'data/raw/arbitrary-source.json'
+            for bad in [{**receipt, 'source_sha256': '0'*64},
+                        {**receipt, 'components': [{**receipt['components'][0], 'sha256': '0'*64}]},
+                        {**receipt, 'components': [{**receipt['components'][0], 'recipient_id': '0'*40}]},
+                        [], None, {**receipt, 'components': None}, {**receipt, 'components': {}},
+                        {**receipt, 'components': [None]}]:
+                with self.subTest(receipt=bad):
+                    atomic_json(path, bad)
+                    self.assertEqual(recovery.select_updater_sources(root, catalog, 17), [])
+            path.unlink()
+            self.assertEqual(recovery.select_updater_sources(root, catalog, 17), [])
+
+    def test_malformed_receipt_does_not_hide_other_updater_sources(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, filesystem, _ = self.chained_catalog(root)
+            atomic_json(root/'data/raw/arbitrary-source.json', None)
+            healthy, _ = source_catalog(root, 17, filesystem, identity='healthy-source')
+            catalog['packages'].extend(healthy['packages'])
+            catalog['raw_images'].extend(healthy['raw_images'])
+            sources = recovery.select_updater_sources(root, catalog, 17)
+            self.assertEqual([row['package_id'] for row in sources], ['healthy-source', 'healthy-source'])
+            self.assertEqual([row['kind'] for row in sources], ['raw', 'upd'])
 
     def updater(self, model, *, order='big', word=SYSTEM_WORD, relocated=False):
         body = _synthetic_updater_from_seed(legacy_seed(model, word, byte_order=order), self.key)
