@@ -30,6 +30,7 @@ def firmware(c: Context):
 def desktop(c: Context):
     discovery = c.root / 'data/apps/desktop-discovery.json'
     return [c.script('discover_desktop_installers.py', '--output', discovery,
+                     '--archive-root', c.root,
                      '--history-limit', c.options.get('metadata_limit', 64),
                      '--refresh-hours', c.target.interval_hours,
                      '--observations', c.observations / 'package-index', report=str(discovery)),
@@ -43,7 +44,7 @@ def desktop(c: Context):
 
 def mobile(c: Context):
     discovery = c.root / 'data/apps/mobile-discovery.json'
-    return [c.script('discover_mobile_installers.py', '--output', discovery, report=str(discovery)),
+    return [c.script('discover_mobile_installers.py', '--output', discovery, '--archive-root', c.root, report=str(discovery)),
             c.script('archive_mobile_installers.py', '--discovery', discovery,
                      '--repo', c.repository, '--limit', c.options.get('limit', 12),
                      '--refresh-hours', c.target.interval_hours,

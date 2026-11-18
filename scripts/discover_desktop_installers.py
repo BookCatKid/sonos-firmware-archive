@@ -26,7 +26,7 @@ from pathlib import Path
 from curl_cffi import requests as tls_requests
 import yaml
 from sonos_firmware.storage import atomic_json
-from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location, manifest_candidates
 from sonos_firmware.source_urls import open_advertised, sonos_url, advertised_url, curl_source_options
 from sonos_firmware.archive_replay import canonical_source
 from sonos_firmware.package_history import ManifestHistory
@@ -327,6 +327,18 @@ def counterpart(candidate: dict) -> tuple[str, str] | None:
     url = candidate["url"]
     if not sonos_url(url):
         return None
+    parsed = urllib.parse.urlsplit(url)
+    protocol = re.fullmatch(r'(.*?/)(\d+\.\d+-\d+)-1-(\d+)\.(exe|dmg)', parsed.path, re.I)
+    if protocol:
+        folder, build, model, suffix = protocol.groups()
+        if candidate['platform'] == 'windows' and (model, suffix.lower()) == ('3', 'exe'):
+            platform, model, suffix = 'macos', '4', 'dmg'
+        elif candidate['platform'] == 'macos' and (model, suffix.lower()) == ('4', 'dmg'):
+            platform, model, suffix = 'windows', '3', 'exe'
+        else:
+            return None
+        path = folder+build+'-1-'+model+'.'+suffix
+        return platform, parsed._replace(path=path).geturl()
     if candidate["platform"] == "windows":
         changed = url.replace("/software/pc/dcr/", "/software/mac/mdcr/")
         if changed.endswith(".exe"):
@@ -357,6 +369,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True, metavar="FILE.json",
                         help="write the discovery report to this JSON file; parent directories are created")
+    parser.add_argument('--archive-root', type=Path, default=Path(__file__).resolve().parents[1],
+                        help="archive checkout whose own manifest observations supply optional installer leads")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
     parser.add_argument('--history-state', type=Path)
@@ -369,6 +383,12 @@ def main() -> int:
     wayback = {"provider": "shared-installer-history"}
     package_history = {'status': 'skipped', 'pending_total': 0, 'errors': []}
     if not args.current_only:
+        native = manifest_candidates(args.archive_root, 'desktop')
+        errors.extend(native['errors'])
+        for item in native['candidates']:
+            for source in item['sources']:
+                add_candidate(candidates, family=item['family'], platform=item['platform'], version=item['version'],
+                              url=item['url'], sha256=None, source=source, advertised_by=item.get('advertised_by'))
         try:
             package_history = winget_history(candidates, args.history_state or args.output.parent/'desktop-package-history.json',
                                              args.observations, args.history_limit, args.refresh_hours)

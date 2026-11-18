@@ -14,7 +14,7 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 from sonos_firmware.storage import atomic_json
-from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location
+from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location, manifest_candidates
 from sonos_firmware.source_urls import open_advertised, sonos_url, advertised_url, curl_source_options
 from sonos_firmware.archive_replay import canonical_source
 
@@ -107,13 +107,24 @@ def version(url: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True, metavar='FILE.json',
+                        help='write the discovery report to this JSON file; parent directories are created')
+    parser.add_argument('--archive-root', type=Path, default=Path(__file__).resolve().parents[1],
+                        help="archive checkout whose own manifest observations supply optional installer leads")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
     args = parser.parse_args()
     errors = []
     candidates = {} if args.current_only else {row['url']: row for row in
         observed_candidates(args.output.parent/'mobile-history-index.json', 'mobile')}
+    if not args.current_only:
+        native = manifest_candidates(args.archive_root, 'mobile')
+        errors.extend(native['errors'])
+        for item in native['candidates']:
+            previous = candidates.setdefault(item['url'], item)
+            previous['sources'] = sorted(set(previous['sources']) | set(item['sources']))
+            if item.get('advertised_by'):
+                previous['advertised_by'] = item['advertised_by']
     direct = resolve_latest_redirect(include_history=not args.current_only)
     if direct.get("location"):
         url = direct["location"]

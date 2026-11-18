@@ -5,6 +5,7 @@ import urllib.error
 import urllib.request
 import zipfile
 from functools import partial
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from .app_archive import AppSource, preserve
@@ -29,6 +30,9 @@ def installer_location(url, extensions, *, advertised_by=None):
 
 def family(url, platform):
     name = urlsplit(url).path.rsplit('/', 1)[-1]
+    protocol = re.fullmatch(r'(\d+\.\d+-\d+)-1-\d+\.(?:exe|dmg)', name, re.I)
+    if protocol:
+        return 's1' if protocol[1].startswith('57.') else 'unknown'
     if re.search(r'Sonos_57\.', name):
         return 's1'
     if name.startswith('Sonos_'):
@@ -36,12 +40,17 @@ def family(url, platform):
     if platform == 'fireos-android-apk':
         return 'legacy' if name.startswith('SonosAndroidController') else 's2'
     match = re.search(r'SonosDesktopController([^.]*)', name)
-    token = match[1].lower() if match else ''
+    if match is None:
+        return 'unknown'
+    token = match[1].lower()
     return 's1' if token.startswith('112') else 's2' if token.startswith(('12', '13')) else 'legacy'
 
 
 def version(url, platform):
     name = urlsplit(url).path.rsplit('/', 1)[-1]
+    protocol = re.fullmatch(r'(\d+\.\d+-\d+)-1-\d+\.(?:exe|dmg)', name, re.I)
+    if protocol:
+        return protocol[1]
     match = re.fullmatch(r'Sonos_(.+)\.(?:exe|dmg|apk)', name, re.I)
     if match:
         return match[1]
@@ -116,14 +125,70 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours)
 
 
-def _candidate(url, kind):
-    url = canonical_source(url, official_source)
+def _candidate(url, kind, *, advertised_by=None, source='public-archive-index'):
+    url = canonical_source(url, lambda value: advertised_url(value, advertised_by))
     suffix = urlsplit(url).path.rsplit('.', 1)[-1].lower()
     if suffix not in (('exe', 'dmg') if kind == 'desktop' else ('apk',)):
         return None
     platform = 'fireos-android-apk' if suffix == 'apk' else 'windows' if suffix == 'exe' else 'macos'
-    return {'url': url, 'family': family(url, platform), 'platform': platform,
-            'version': version(url, platform), 'sources': ['public-archive-index']}
+    result = {'url': url, 'family': family(url, platform), 'platform': platform,
+              'version': version(url, platform), 'sources': [source]}
+    if advertised_by:
+        result['advertised_by'] = advertised_by
+    return result
+
+
+def manifest_candidates(root, kind):
+    """Reuse this checkout's protocol observations; neither input is required."""
+    if kind not in {'desktop', 'mobile'}:
+        raise ValueError('installer kind must be desktop or mobile')
+    root = Path(root)
+    candidates, errors = {}, []
+    for relative, field in (('data/catalog.json', 'packages'),
+                            ('data/discovery/firmware-frontier.json', 'candidates')):
+        path = root/relative
+        if not path.exists():
+            continue
+        try:
+            document = json.loads(path.read_text())
+            rows = document.get(field, [])
+            if not isinstance(rows, list):
+                raise ValueError('invalid native manifest observations')
+        except (OSError, ValueError, AttributeError) as error:
+            errors.append({'source': relative, 'error': str(error)})
+            continue
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get('source_urls', []), list):
+                errors.append({'source': relative, 'error': 'invalid native artifact observation'})
+                continue
+            urls = [row.get('source_url') or row.get('url'), *row.get('source_urls', [])]
+            for url in urls:
+                try:
+                    if url is not None and not isinstance(url, str):
+                        errors.append({'source': relative, 'error': 'invalid native installer URL alias'})
+                        continue
+                    if not url:
+                        continue
+                    suffix = urlsplit(url).path.rsplit('.', 1)[-1].lower()
+                    if suffix not in (('exe', 'dmg') if kind == 'desktop' else ('apk',)):
+                        continue
+                    witness = row.get('advertised_by') or row.get('advertised_sources', {}).get(url)
+                    candidate = _candidate(url, kind, advertised_by=witness,
+                                           source='firmware-observation:'+relative)
+                    if candidate['version'] == 'unknown' and isinstance(row.get('version'), str):
+                        candidate['version'] = row['version']
+                    if candidate['family'] == 'unknown' and isinstance(row.get('family'), str) and row['family'] in {'s1', 's2', 'legacy'}:
+                        candidate['family'] = row['family']
+                    prior = candidates.setdefault(candidate['url'], candidate)
+                    for field in ('family', 'version'):
+                        if prior.get(field) in {None, '', 'unknown'} and candidate.get(field) not in {None, '', 'unknown'}:
+                            prior[field] = candidate[field]
+                    prior['sources'] = sorted(set(prior['sources']) | set(candidate['sources']))
+                    if candidate.get('advertised_by'):
+                        prior['advertised_by'] = candidate['advertised_by']
+                except (ValueError, TypeError, AttributeError) as error:
+                    errors.append({'source': relative, 'error': str(error)})
+    return {'candidates': list(candidates.values()), 'errors': errors}
 
 
 def observed_candidates(path, kind):

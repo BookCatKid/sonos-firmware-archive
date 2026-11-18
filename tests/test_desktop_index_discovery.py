@@ -211,7 +211,7 @@ url 'https://new-apps.sonos.com/#{version.csv.second}/client_#{version.csv.first
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'discovery.json'
             error = {'source': 'homebrew:commit', 'error': 'metadata unavailable'}
-            with patch.object(sys, 'argv', ['desktop', '--output', str(output)]), \
+            with patch.object(sys, 'argv', ['desktop', '--output', str(output), '--archive-root', temporary]), \
                  patch.object(MODULE, 'winget_candidates', return_value=[]), patch.object(MODULE, 'winget_history', return_value={'status': 'ok', 'pending_total': 0, 'errors': []}), \
                  patch.object(MODULE, 'homebrew_candidates', return_value=[error]), \
                  patch.object(MODULE, 'check_direct_redirects', return_value=[]):

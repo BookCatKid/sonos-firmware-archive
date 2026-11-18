@@ -191,7 +191,7 @@ class InstallerHistoryTests(unittest.TestCase):
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
                 output = index_path.with_name(kind+'-discovery.json')
-                with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
+                with patch.object(sys, 'argv', ['discover', '--output', str(output), '--archive-root', str(self.root)]), \
                      patch.object(module, 'probe', side_effect=lambda row: {**row, 'http_status': 200}):
                     if kind == 'desktop':
                         with patch.object(module, 'winget_candidates'), patch.object(module, 'winget_history', return_value={'status': 'ok', 'pending_total': 0, 'errors': []}), patch.object(module, 'homebrew_candidates'), \
