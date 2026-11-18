@@ -14,6 +14,7 @@ def firmware(c: Context):
                  '--profile-count', c.options.get('profile_count', 1200),
                  '--model-max', c.options.get('model_max', 255),
                  '--inference-limit', c.options.get('inference_limit', 128),
+                 '--index-pages', c.options.get('index_pages', 2),
                  '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 24), *roots, report=str(report)),
         c.task('archive-historical-firmware', '--work-dir', c.work / 'history', '--repository', c.repository,
                '--limit', c.options.get('history_limit', 8),

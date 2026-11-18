@@ -6,11 +6,11 @@ import ssl
 import urllib.error
 import urllib.request
 from dataclasses import asdict
-from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit
+from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit, parse_qs
 
 from .crawl import official, PACKAGE
 from .discovery import USER_AGENT, Candidate
-from .retry import checkpoint
+from .retry import error_checkpoint, due
 
 def fetch_index(url):
     try:
@@ -38,7 +38,12 @@ def fetch_index(url):
             response.close()
     if len(body) > 2_000_000:
         raise ValueError('archive index page exceeds 2 MB')
-    return json.loads(body)
+    if not body.strip():
+        return []
+    try:
+        return json.loads(body)
+    except json.JSONDecodeError:
+        return [json.loads(line) for line in body.splitlines() if line.strip()]
 
 
 def _capture(row, index_url, allowed=official):
@@ -71,6 +76,68 @@ def _observations(records):
     return result
 
 
+def _remember(entries, artifacts, original, capture, extensions):
+    identity_fields = [original, capture['timestamp'], capture['digest'], capture['original_url']]
+    if capture.get('provider'):
+        identity_fields.extend([capture['provider'], capture['filename'], capture['offset'], capture['length']])
+    identity = hashlib.sha256(json.dumps(identity_fields).encode()).hexdigest()
+    path = urlsplit(original).path
+    if path.lower().endswith('.upm') and 'upm' in extensions:
+        target = entries.setdefault(original, {'captures': {}})
+    elif path.lower().endswith(tuple('.'+ext for ext in extensions)):
+        filename = path.rsplit('/', 1)[-1]
+        match = PACKAGE.fullmatch(filename)
+        candidate = Candidate(match[1] if match else 'unknown', int(match[2]) if match else None,
+                              original, 'public-archive-index', filename)
+        target = artifacts.setdefault(original, {**asdict(candidate), 'captures': {}})
+    else:
+        return
+    target.setdefault('captures', {})[identity] = capture
+    # Native archive object filenames are replay metadata, never payload names.
+    target.update({key: capture[key] for key in ('timestamp', 'digest', 'index_url', 'original_url') if key in capture})
+
+
+def paused_index_hosts(index):
+    # Common Crawl's index and payload storage are separate hosts. A failed
+    # index request must not pause working replay storage or another provider.
+    return {'web.archive.org'} if any(row.get('http_status') in {403, 429} and not due(row)
+        and urlsplit(row.get('url') or 'https://web.archive.org').hostname == 'web.archive.org' for row in index.get('errors', [])) else set()
+
+
+def discover_archives(previous, fetch=fetch_index, pages=2, **options):
+    """Combine independent indexes behind one capture/publication contract."""
+    from .commoncrawl import discover
+    def provider_state(name):
+        state = dict(previous.get(name, previous if name == 'wayback' else {}))
+        for field in ('entries', 'artifacts'):
+            records = {}
+            for url, row in _observations(previous.get(field, {})).items():
+                captures = {identity: capture for identity, capture in row.get('captures', {}).items()
+                            if capture.get('provider', 'wayback') == name}
+                if captures or (name == 'wayback' and not row.get('captures')):
+                    records[url] = {**row, 'captures': captures}
+            state[field] = records
+        return state
+    wayback = discover_sources(provider_state('wayback'), fetch=fetch, pages=pages, **options)
+    commoncrawl = discover(provider_state('commoncrawl'), fetch, pages=pages,
+        roots=options.get('roots') or {'sonos.com': 'sonos.com/'},
+        extensions=options.get('extensions', ('upm', 'upd')), allowed=options.get('allowed', official),
+        match_type=options.get('match_type') or ('domain' if options.get('roots') is None else 'prefix'))
+    merged = {}
+    for field in ('entries', 'artifacts'):
+        records = _observations(previous.get(field, {}))
+        for provider in (wayback, commoncrawl):
+            for url, row in provider.get(field, {}).items():
+                prior = records.get(url, {})
+                records[url] = {**prior, **row, 'captures': {**prior.get('captures', {}), **row.get('captures', {})}}
+        merged[field] = records
+    cursors = lambda state: {key: value for key, value in state.items() if key not in {'entries', 'artifacts'}}
+    return {**wayback, **merged, 'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
+            'observations': wayback['observations']+commoncrawl['observations'],
+            'errors': wayback['errors']+commoncrawl['errors'],
+            'status': 'ok' if wayback['status'] == commoncrawl['status'] == 'ok' else 'partial'}
+
+
 def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                      extensions=('upm', 'upd'), allowed=official, match_type=None):
     if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
@@ -93,14 +160,29 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
     entries = _observations(previous.get('entries', {}))
     artifacts = _observations(previous.get('artifacts', {}))
     completed = set(previous.get('completed_hosts', [])) if compatible else set()
+    retries = dict(previous.get('retries', {})) if compatible else {}
+    index_retry = previous.get('index_retry', {}) if compatible else {}
+    if compatible:
+        for error in previous.get('errors', []):
+            root = parse_qs(urlsplit(error.get('url', '')).query).get('url', [None])[0]
+            for host, value in roots.items():
+                if root == value and error.get('next_attempt_at'):
+                    retries.setdefault(host, error)
+            if error.get('http_status') in {403, 429} and error.get('next_attempt_at') and not index_retry:
+                index_retry = error
     observations = []
     errors = []
     position = previous.get('next_host', 0)
     finished_this_run = set()
     for _ in range(pages):
+        if not due(index_retry):
+            break
         host = hosts[position % len(hosts)]
         position += 1
         if host in finished_this_run:
+            continue
+        if not due(retries.get(host)):
+            finished_this_run.add(host)
             continue
         query = {'url': roots[host], 'matchType': match_type, 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
@@ -128,22 +210,10 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                 if observed is None:
                     continue
                 original, capture = observed
-                capture_id = hashlib.sha256(json.dumps([
-                    original, capture['timestamp'], capture['digest'], capture['original_url']]).encode()).hexdigest()
-                path = urlsplit(original).path
-                if path.lower().endswith('.upm') and 'upm' in extensions:
-                    target = entries.setdefault(original, {'captures': {}})
-                elif path.lower().endswith(tuple('.'+ext for ext in extensions)):
-                    filename = path.rsplit('/', 1)[-1]
-                    match = PACKAGE.fullmatch(filename)
-                    candidate = Candidate(match[1] if match else 'unknown', int(match[2]) if match else None,
-                                          original, 'public-archive-index', filename)
-                    target = artifacts.setdefault(original, {**asdict(candidate), 'captures': {}})
-                else:
-                    continue
-                target.setdefault('captures', {})[capture_id] = capture
-                target.update(capture)
+                _remember(entries, artifacts, original, capture, extensions)
             cursors[host] = resume
+            retries.pop(host, None)
+            index_retry = {}
             if resume:
                 completed.discard(host)
             else:
@@ -152,13 +222,17 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
             observations.append({'url': url, 'records': max(0, len(rows) - 1), 'more_pages': bool(resume)})
         except Exception as error:
             finished_this_run.add(host)
-            errors.append({'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None),
-                           **checkpoint()})
+            completed.discard(host)
+            retries[host] = {'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None),
+                             **error_checkpoint(error, retries.get(host))}
             if getattr(error, 'code', None) in (403, 429):
+                index_retry = retries[host]
                 break
+    errors.extend(retries.values())
     pending_hosts = sorted(set(hosts) - completed)
     return {'schema_version': 2, 'query_revision': query_revision,
             'entries': entries, 'artifacts': artifacts, 'cursors': cursors, 'next_host': position % len(hosts),
+            'retries': retries, 'index_retry': index_retry,
             'completed_hosts': sorted(completed), 'pending_hosts': pending_hosts,
             'status': 'partial' if errors or pending_hosts or any(cursors.values()) else 'ok',
             'observations': observations, 'errors': errors}

@@ -14,6 +14,13 @@ class ReplayPaused(ValueError):
     pause_host = 'web.archive.org'
 
 
+def capture_host(capture):
+    provider = (capture or {}).get('provider', 'wayback')
+    if provider not in {'wayback', 'commoncrawl'}:
+        raise ValueError('unsupported archive capture provider')
+    return 'data.commoncrawl.org' if provider == 'commoncrawl' else 'web.archive.org'
+
+
 def canonical_source(url, allowed=official_firmware_url):
     parsed = urlsplit(url)
     if (parsed.scheme not in {'http', 'https'} or parsed.username or parsed.password or
@@ -26,12 +33,16 @@ def canonical_source(url, allowed=official_firmware_url):
 
 
 def replay_url(original, capture, *, allowed=official_firmware_url):
+    host = capture_host(capture)
     timestamp = capture.get('timestamp')
     if not isinstance(timestamp, str) or not re.fullmatch(r'\d{14}', timestamp):
         raise ValueError('replay requires an exact capture timestamp')
     source = capture.get('original_url') or original
     if canonical_source(source, allowed) != canonical_source(original, allowed):
         raise ValueError('capture belongs to another source URL')
+    if host == 'data.commoncrawl.org':
+        from .commoncrawl import capture_url
+        return capture_url(capture)
     return f'https://web.archive.org/web/{timestamp}id_/{source}'
 
 
@@ -59,6 +70,9 @@ class _ReplayRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def open_capture(original, capture, *, timeout=60, allowed=official_firmware_url):
+    if capture_host(capture) == 'data.commoncrawl.org':
+        from .commoncrawl import open_capture as open_commoncrawl
+        return open_commoncrawl(original, capture, timeout=timeout, allowed=allowed)
     url = replay_url(original, capture, allowed=allowed)
     opener = urllib.request.build_opener(_ReplayRedirect(original, capture['timestamp'], allowed))
     response = opener.open(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=timeout)

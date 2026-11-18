@@ -1,5 +1,7 @@
 """Bounded discovery queues with durable retries and periodic refreshes."""
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
+import math
 
 
 def _now(now=None):
@@ -25,6 +27,31 @@ def checkpoint(prior=None, *, success=False, negative=False, success_hours=24, n
     hours = success_hours if success else 168 if negative else min(24, 2 ** min(failures - 1, 5))
     return {'checked_at': now.isoformat(), 'consecutive_failures': failures,
             'next_attempt_at': (now + timedelta(hours=hours)).isoformat()}
+
+
+def error_checkpoint(error, prior=None, *, now=None):
+    """Use a server's Retry-After when supplied; otherwise retain backoff."""
+    now = _now(now)
+    result = checkpoint(prior, now=now)
+    value = (getattr(error, 'headers', None) or {}).get('Retry-After')
+    if value is None:
+        return result
+    try:
+        seconds = float(value)
+        if not math.isfinite(seconds) or seconds < 0:
+            return result
+        after = now + timedelta(seconds=seconds)
+    except ValueError:
+        try:
+            after = parsedate_to_datetime(value)
+            if after.tzinfo is None:
+                after = after.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError, OverflowError):
+            return result
+    except (TypeError, OverflowError):
+        return result
+    result['next_attempt_at'] = max(now, after).isoformat()
+    return result
 
 
 def select(items, records, *, key, limit, force=False, now=None, state=None, queue='default'):

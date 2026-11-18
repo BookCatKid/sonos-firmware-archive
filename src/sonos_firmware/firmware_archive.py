@@ -15,6 +15,7 @@ from .releases import ensure_release, publish_verified, verified_asset, publicat
 from .retry import checkpoint, select, due
 from .storage import atomic_json, file_sha256
 from .upd import parse_file
+from .archive_replay import capture_host
 
 
 def document_name(item):
@@ -243,7 +244,7 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
     backlog = state.setdefault('unpublished_captures', [])
     pending = [row for row in backlog if row.get('repository') == repository]
     def selectable(candidate):
-        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[source_id(candidate)]
         return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
     jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', id(row))} for row in pending]
@@ -275,7 +276,7 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
     work.mkdir(parents=True, exist_ok=True)
     for candidate in queue:
         url = source_id(candidate)
-        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[url]
         capture = previous.get('pending_publication')
         if host in blocked and not capture and previous.get('status') != 'preserved':

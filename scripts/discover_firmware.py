@@ -5,6 +5,7 @@ import json
 import sys
 import hashlib
 import urllib.error
+from functools import partial
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -14,7 +15,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
 from sonos_firmware import releases
 from sonos_firmware.frontier import discover, monitor_report
-from sonos_firmware.archive_index import discover_sources
+from sonos_firmware.archive_index import discover_archives as discover_sources
 from sonos_firmware.firmware_archive import (
     acquisition_state, archive_candidates, document_name, document_publication, register_document,
 )
@@ -112,9 +113,13 @@ def main():
     parser.add_argument('--repository', default='BookCatKid/sonos-firmware-archive')
     parser.add_argument('--work-dir', type=Path)
     parser.add_argument('--no-history-index', action='store_true', help='restrict discovery to live Sonos protocol roots and saved observations')
+    parser.add_argument('--index-pages', type=int, default=2,
+                        help='per-provider index page budget; collection and page cursors resume across runs')
     args = parser.parse_args()
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
+    if args.index_pages <= 0:
+        parser.error('--index-pages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
     hints = old.get('release_notes', {})
     if not args.no_release_notes:
@@ -130,7 +135,7 @@ def main():
                         'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation',
                         'advertised_by': package.get('advertised_sources', {}).get(url)})
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
-                      index_fetch=None if args.no_history_index else discover_sources, artifact_roots=args.artifact_root,
+                      index_fetch=None if args.no_history_index else partial(discover_sources, pages=args.index_pages), artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
                       model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
                       inference_limit=args.inference_limit)

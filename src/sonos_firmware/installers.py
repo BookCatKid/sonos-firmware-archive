@@ -10,9 +10,8 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from .app_archive import AppSource, preserve
-from .archive_index import discover_sources
-from .archive_replay import canonical_source, open_capture
-from .retry import due
+from .archive_index import discover_archives as discover_sources, paused_index_hosts
+from .archive_replay import canonical_source, open_capture, capture_host
 from .storage import atomic_json
 from .source_urls import sonos_url, open_advertised, advertised_url
 
@@ -87,7 +86,7 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     allowed = lambda url: advertised_url(url, candidate.get('advertised_by'))
     last_error = None
     for url, replay in sources:
-        host = 'web.archive.org' if replay is not None else urlsplit(url).hostname
+        host = capture_host(replay) if replay is not None else urlsplit(url).hostname
         if host in blocked:
             last_error = ValueError('installer source host is paused for this run')
             continue
@@ -233,15 +232,16 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
             continue
         for identity, capture in row.get('captures', {}).items():
             candidates.append({**candidate,
-                'acquisition_id': 'wayback:'+identity, 'archive_capture': capture,
-                'wayback_timestamp': capture['timestamp'], 'wayback_digest': capture.get('digest')})
+                'acquisition_id': capture.get('provider', 'wayback')+':'+identity, 'archive_capture': capture,
+                **({'wayback_timestamp': capture['timestamp'], 'wayback_digest': capture.get('digest')}
+                   if capture.get('provider', 'wayback') == 'wayback' else {})})
     discovery = work/'discovery.json'
     atomic_json(discovery, {'status': index['status'], 'errors': errors, 'candidates': candidates})
-    paused = any(row.get('http_status') in {403, 429} and not due(row) for row in index['errors'])
+    paused = paused_index_hosts(index)
     result = preserve(source(default_platform='fireos-android-apk' if kind == 'mobile' else '',
                              refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours),
                       discovery, root/'data/apps'/f'{kind}-archive.json', repository,
-                      root=root, limit=limit, paused_hosts={'web.archive.org'} if paused else ())
+                      root=root, limit=limit, paused_hosts=paused)
     return {'status': result['status'], 'artifact_total': result['artifact_total'],
             'attempted': result['attempted_this_run'], 'errors': result['errors'],
             'pending': result['pending_total'], 'index_status': index['status']}

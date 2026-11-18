@@ -1,6 +1,9 @@
 import unittest
 import ssl
 import urllib.error
+from datetime import timedelta
+from test_app_archive import NOW
+from sonos_firmware import retry
 from unittest.mock import Mock, patch
 from urllib.parse import urlsplit
 from sonos_firmware.archive_index import discover_sources, fetch_index
@@ -38,6 +41,34 @@ class ArchiveIndexTransportTests(unittest.TestCase):
 
 
 class ArchiveIndexTests(unittest.TestCase):
+    def test_rate_limit_preserves_cursor_and_honors_retry_after_across_runs(self):
+        with patch.object(retry, '_now', return_value=NOW):
+            first = discover_sources({}, pages=1, fetch=lambda url: [
+                ['timestamp', 'original', 'digest'], [], ['saved-page']])
+            def limited(url):
+                raise urllib.error.HTTPError(url, 429, 'slow down', {'Retry-After': '75'}, None)
+            failed = discover_sources(first, fetch=limited, pages=1)
+        with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)), \
+             patch('urllib.request.urlopen') as network:
+            waiting = discover_sources(failed, fetch=lambda url: self.fail('retried before Retry-After'), pages=1)
+        self.assertEqual(waiting['status'], 'partial')
+        self.assertEqual(waiting['cursors'], first['cursors'])
+        requests = []
+        with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
+            recovered = discover_sources(waiting, fetch=lambda url: requests.append(url) or [], pages=1)
+        self.assertEqual(recovered['status'], 'ok')
+        self.assertIn('resumeKey=saved-page', requests[0])
+        self.assertEqual(recovered['errors'], [])
+
+    def test_retry_after_http_date_and_invalid_value_use_durable_backoff(self):
+        from email.utils import format_datetime
+        for value, expected in ((format_datetime(NOW+timedelta(days=2)), NOW+timedelta(days=2)),
+                                ('invalid', NOW+timedelta(hours=1))):
+            with self.subTest(value=value):
+                error = urllib.error.HTTPError('https://web.archive.org/', 429, 'retry later', {'Retry-After': value}, None)
+                record = retry.error_checkpoint(error, now=NOW)
+                self.assertEqual(record['next_attempt_at'], expected.isoformat())
+
     def test_installer_suffixes_are_case_insensitive_without_changing_source_urls(self):
         url = 'https://update-software.sonos.com/software/Sonos.EXE'
         result = discover_sources({}, pages=1, roots={'software': 'update-software.sonos.com/'},

@@ -6,12 +6,13 @@ import tempfile
 import urllib.error
 from pathlib import Path
 
-from .archive_replay import replay_url, open_capture, canonical_source
+from .archive_replay import replay_url, open_capture, canonical_source, capture_host
+from .archive_index import paused_index_hosts
 from .crawl import PACKAGE, landing_url
 from .discovery import Candidate, official_firmware_url, parse_manifest
 from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
-from .retry import checkpoint, select, due
+from .retry import checkpoint, select
 from .storage import atomic_json
 
 
@@ -66,6 +67,7 @@ def remember_manifest(frontier, manifest):
 
 
 def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
+    blocked = {'web.archive.org'} if paused is True else set(paused or ())
     path = root/'data/discovery/historical-manifest-acquisition.json'
     state = acquisition_state(root, path)
     observations = state.setdefault('sources', {}).setdefault(repository, {})
@@ -94,7 +96,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
             remote = verified_asset(repository, manifest['release_tag'], document_name(manifest),
                                     manifest['bytes'], manifest['sha256']) if manifest else None
             if remote is None:
-                if paused:
+                if capture_host(prior['archive_capture']) in blocked:
                     continue
                 attempted += 1
                 with tempfile.TemporaryDirectory(dir=work, prefix='manifest-') as directory:
@@ -133,9 +135,11 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
             preserved += 1
         except Exception as error:
             observations[identity] = {**prior, **checkpoint(prior), 'status': 'failed', 'error': str(error)}
-            paused = paused or bool(getattr(error, 'pause_replay', False))
+            if getattr(error, 'pause_replay', False):
+                blocked.add(getattr(error, 'pause_host', capture_host(prior['archive_capture'])))
             if isinstance(error, urllib.error.HTTPError):
-                paused = paused or error.code in {403, 429}
+                if error.code in {403, 429}:
+                    blocked.add(capture_host(prior['archive_capture']))
                 error.close()
         atomic_json(path, state)
     errors.extend({'url': row['url'], 'error': row['error']} for row in observations.values() if row['status'] == 'failed')
@@ -145,7 +149,8 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     errors.extend(link for row in observations.values() for link in
                   row.get('manifest', {}).get('metadata', {}).get('unresolved_links', []))
     return {'attempted': attempted, 'preserved': preserved, 'errors': errors,
-            'pending': sum(row['status'] != 'preserved' for row in observations.values()), 'paused': paused}
+            'pending': sum(row['status'] != 'preserved' for row in observations.values()),
+            'paused': bool(blocked), 'paused_hosts': sorted(blocked)}
 
 
 def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
@@ -154,7 +159,7 @@ def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
     frontier_path = root/'data/discovery/firmware-frontier.json'
     frontier = json.loads(frontier_path.read_text()) if frontier_path.exists() else {}
     index = frontier.get('archive_index', {})
-    paused = any(row.get('http_status') in {403, 429} and not due(row) for row in index.get('errors', []))
+    paused = paused_index_hosts(index)
     manifests = archive_manifests(root, work, repository, frontier, limit=manifest_limit, paused=paused)
     atomic_json(frontier_path, frontier)
     state_path = root/'data/discovery/historical-firmware-acquisition.json'
@@ -174,18 +179,19 @@ def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
                     model = contexts.get(url, {}).get('package_model')
                 row = Candidate(artifact.get('version', 'unknown'), model, url,
                                 'public-archive-replay', url.split('?', 1)[0].rsplit('/', 1)[-1])
-                source_id = 'wayback:'+identity
+                source_id = capture.get('provider', 'wayback')+':'+identity
                 candidates[source_id] = {**asdict(row), 'acquisition_id': source_id, 'available': True,
                     'archive_capture': capture, 'archive_captures': {identity: capture}}
             except (ValueError, TypeError) as error:
                 errors.append({'url': url, 'capture_id': identity, 'error': str(error)})
     rows = sorted(candidates.values(), key=lambda row: (row['archive_capture']['timestamp'], row['url'], row['acquisition_id']))
-    paused = manifests.pop('paused')
+    manifests.pop('paused')
+    paused = set(manifests.pop('paused_hosts'))
     result = archive_candidates(root, repository, rows, work, limit=limit, state_path=state_path,
-                                paused_hosts={'web.archive.org'} if paused else ())
+                                paused_hosts=paused)
     result['errors'].extend(errors)
     result['manifests'] = manifests
     if paused:
-        result['errors'].append({'source': 'web.archive.org', 'error': 'replay deferred after an archive access challenge'})
+        result['errors'].extend({'source': host, 'error': 'replay deferred after an archive access challenge'} for host in sorted(paused))
     result['status'] = 'partial' if result['pending'] or result['errors'] or manifests['pending'] or manifests['errors'] else 'ok'
     return result

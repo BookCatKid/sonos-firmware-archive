@@ -122,6 +122,28 @@ catalog record; an extra asset alone is not treated as a preservation receipt.
 
 ## Worker lifecycle
 
+Historical firmware and installer discovery combines Wayback with Common Crawl
+through `archive_index.discover_archives`. Common Crawl collections come from
+its public [registry](https://index.commoncrawl.org/collinfo.json), with durable
+collection/page cursors and alternating recent/older collection traversal.
+It uses the [paged index interface](https://github.com/webrecorder/pywb/wiki/CDX-Server-API#pagination-api)
+without a result-line limit. An empty query is distinguished from a missing
+collection; malformed pages retain their valid observations and remain queued
+for retry. Index failures retain captures already found by either provider.
+
+Common Crawl captures use their native WARC/ARC byte ranges. The shared replay
+module checks the HTTP range, original URI, timestamp, status, truncation flag
+and available payload digests before the normal publisher hashes and registers
+the bytes. [warcio](https://github.com/webrecorder/warcio) parses the archive
+record and HTTP encodings. Software payload filenames stay distinct from archive
+object paths. Both providers share acquisition/publication queues; their host
+backoff is independent, honors Retry-After, and survives worker restarts.
+Capture records appear once in the shared checkpoint, with each provider's
+cursors stored separately. This adds no production workflow or release list.
+The firmware target's `index_pages` option sets its per-provider page budget;
+installer targets use `history_pages`. These budgets control work per run, not
+the collections or historical captures that can eventually be discovered.
+
 Historical index discovery queries both manifests and `.upd` payloads across
 `sonos.com` and all its subdomains, using the CDX
 [domain match scope](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#url-match-scope).

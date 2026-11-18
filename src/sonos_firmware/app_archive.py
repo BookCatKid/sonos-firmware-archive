@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset
 from .retry import checkpoint, select
 from .storage import atomic_json
+from .archive_replay import capture_host
 
 
 @dataclass(frozen=True)
@@ -194,7 +195,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
     blocked = set(paused_hosts)
     def selectable(candidate):
-        host = 'web.archive.org' if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[acquisition_id(candidate)]
         return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
@@ -230,7 +231,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             previous = observations[identity]
             pending = previous.get('pending_publication')
             archived = candidate.get('archive_capture') is not None
-            host = 'web.archive.org' if archived else urlsplit(url).hostname
+            host = capture_host(candidate['archive_capture']) if archived else urlsplit(url).hostname
             if host in blocked and not pending and previous.get('status') != 'preserved':
                 continue
             attempted += 1
