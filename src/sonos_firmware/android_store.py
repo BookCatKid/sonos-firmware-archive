@@ -43,12 +43,19 @@ def safe_error(error):
     """Keep retry signals, never protocol messages containing signed URLs."""
     if isinstance(error, StoreError):
         return error
+    kind = type(error).__name__
+    cause = error.__cause__
+    if cause is not None and type(cause).__module__ == 'goopdl.auth':
+        kind = {
+            'DispenserUnavailableError': 'GooglePlayTokenDispenserUnavailable',
+            'DispenserRateLimitedError': 'GooglePlayTokenDispenserRateLimited',
+        }.get(type(cause).__name__, kind)
     status = getattr(error, 'status_code', None)
     # goopdl's CDN downloader detaches httpx errors and may retain the HTTP
     # status only in its safe error label. Preserve 429 without retaining URLs.
     if status is None and re.search(r'HTTP\s*429\b', str(error), re.IGNORECASE):
         status = 429
-    return StoreError(type(error).__name__, status_code=status,
+    return StoreError(kind, status_code=status,
                       retry_after=getattr(error, 'retry_after', None))
 
 

@@ -9,6 +9,10 @@ Issue references do not authorize comments or closure; all issues remain open.
 Existing tests and validation runs are starting evidence. Each requirement
 needs evidence at its stated scope before it can be marked complete. Payload
 acquisition and private-key handling stay in CI; local tests use synthetic data.
+Public manifest repositories are comparison evidence only. Their manifests,
+repository lists and version URLs must not become runtime discovery inputs.
+Historical discovery must come from Sonos protocols, source traversal and
+independent web-archive indexes.
 
 | Item | Acceptance evidence required | Follow-up status |
 | --- | --- | --- |
@@ -39,3 +43,9 @@ Live validation of mutable-root acquisition:
 [run 44198556575](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44198556575).
 The acquisition regression checks that a mutable root is captured before the
 historical backlog and that the historical candidate is processed next.
+
+The metadata-only [Google Play diagnostic](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44207881506)
+received HTTP 403 from Aurora's dispenser with both the SDK transport and
+certificate-verified curl. No anonymous token was issued and no APK was fetched.
+The adapter now distinguishes dispenser failures from Play API failures while
+retaining throttle status and retry delays without recording response secrets.

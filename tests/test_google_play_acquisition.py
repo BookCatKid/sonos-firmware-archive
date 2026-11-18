@@ -259,6 +259,24 @@ class ProcessBudgetTests(unittest.TestCase):
 
 @unittest.skipUnless(importlib.util.find_spec('goopdl') is not None, 'install the google-play extra for SDK contract tests')
 class PinnedGoopdlContractTests(unittest.TestCase):
+    def test_dispenser_refusal_is_distinguished_from_a_play_api_refusal(self):
+        from goopdl.api import PlayAPIError, RateLimitedError
+        from goopdl.auth import DispenserUnavailableError, DispenserRateLimitedError
+        error = PlayAPIError('sensitive upstream detail must not enter receipts', status_code=403)
+        error.__cause__ = DispenserUnavailableError(403)
+        sanitized = android_store.safe_error(error)
+        self.assertEqual(str(sanitized), 'GooglePlayTokenDispenserUnavailable')
+        self.assertEqual(sanitized.status_code, 403)
+        play_error = android_store.safe_error(PlayAPIError('another private detail', status_code=403))
+        self.assertEqual(str(play_error), 'PlayAPIError')
+        self.assertEqual(play_error.status_code, 403)
+        limited = RateLimitedError('private throttle detail', retry_after=75)
+        limited.__cause__ = DispenserRateLimitedError(75)
+        sanitized = android_store.safe_error(limited)
+        self.assertEqual(str(sanitized), 'GooglePlayTokenDispenserRateLimited')
+        self.assertEqual(sanitized.status_code, 429)
+        self.assertEqual(sanitized.retry_after, 75)
+
     def test_pinned_sdk_delivers_all_advertised_part_types_through_our_adapter(self):
         from goopdl.api import DeliveryResult, SplitInfo, DexMetadata, AdditionalFile
         dist = importlib.metadata.distribution('goopdl')
