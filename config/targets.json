@@ -38,6 +38,7 @@
     {
       "name": "mobile",
       "provider": "mobile",
+      "optional_capabilities": ["java"],
       "description": "Official Sonos-hosted Android packages",
       "interval_hours": 6,
       "metadata": [

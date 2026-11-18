@@ -130,9 +130,13 @@ class InstallerHistoryTests(unittest.TestCase):
         url = URL.replace('.exe', '.apk')
         self.add('20200101000000', apk(b'old manifest'), url)
         self.add('20210101000000', apk(b'new manifest'), url)
-        result = self.run_history('mobile')
+        with patch('sonos_firmware.apk.inspect_official', return_value={'verified': True, 'package': 'fixture.app'}), \
+             patch.object(installers.shutil, 'which', return_value='/fixture/java'):
+            result = self.run_history('mobile')
         self.assertEqual(result['status'], 'ok')
         self.assertEqual(result['artifact_total'], 2)
+        saved = json.loads((self.root/'data/apps/mobile-archive.json').read_text())
+        self.assertTrue(all(row['verification']['verified'] for row in saved['artifacts']))
         self.assertEqual({row[1] for row in self.github.uploads}, {'apps-fireos-s2'})
         self.assertEqual(self.live_requests, [])
 

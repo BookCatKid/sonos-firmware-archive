@@ -44,6 +44,24 @@ checks any discovery checksum, publishes without overwriting, and reconciles
 GitHub's size and digest before adding a preserved artifact. Source adapters
 do not need their own hashing, retry ledger, or publication implementation.
 
+An optional `inspect(candidate, path)` callback verifies the captured file before
+publication and returns metadata saved with its receipt. Its
+`inspection_revision` identifies the inspection code and tools. Existing
+receipts without that revision, and receipts from older inspector revisions,
+enter the acquisition queue for reinspection. Pending uploads can reuse their
+saved verification after a lost response; older uninspected uploads must pass
+the current inspector before registration.
+
+Official mobile APKs and Android store deliveries share signature and manifest
+inspection in `sonos_firmware.apk`. Mobile receipts retain every reported signer,
+signature schemes, actual package ID, version code/name and split identity.
+Explicit package/version expectations must match. The URL's advertised version
+is retained separately because firmware build labels may differ from APK version
+names. Fire OS signer certificates are compared with configured Play pins as
+metadata; a certificate observed from an official source is not silently treated
+as a matching Play trust anchor. Missing Java or javac leaves discovery running
+and defers APK downloads with an actionable inspection error.
+
 ## Starting with no archive
 
 The configured public protocol, redirect, sitemap, and store-discovery roots

@@ -26,6 +26,8 @@ class AppSource:
     default_platform: str = ''
     refresh_hours: float = 168
     current_refresh_hours: float = 6
+    inspect: Callable[[dict, Path], dict] | None = None
+    inspection_revision: str | None = None
 
 
 def receipt_path(path: Path, root: Path) -> str:
@@ -45,7 +47,9 @@ def file_digest(path):
 
 def revision(candidate):
     return {key: candidate[key] for key in ('version', 'expected_sha256', 'etag', 'content_length',
-                                           'http_status', 'wayback_timestamp', 'wayback_digest') if candidate.get(key) is not None}
+                                           'http_status', 'wayback_timestamp', 'wayback_digest',
+                                           'package', 'version_code', 'expected_package',
+                                           'expected_version_code', 'expected_version_name') if candidate.get(key) is not None}
 
 
 def acquisition_id(candidate):
@@ -58,6 +62,14 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         raise ValueError('acquisition limit must be positive')
     if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
         raise ValueError('refresh intervals must be positive')
+    if bool(source.inspect) != bool(source.inspection_revision):
+        raise ValueError('an installer inspector requires a stable revision')
+    if source.inspection_revision is not None and not isinstance(source.inspection_revision, str):
+        raise ValueError('installer inspection revision must be a string')
+
+    def inspected(capture):
+        return source.inspect is None or (capture.get('inspection_revision') == source.inspection_revision
+                                          and isinstance(capture.get('verification'), dict))
     document = json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'artifacts': [], 'gaps': []}
     records = document['artifacts']
     gaps = {acquisition_id(row): row for row in document.get('gaps', [])}
@@ -78,6 +90,12 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 if receipt_matches_repository(row, repository):
                     observations.setdefault(identity, {'candidate': candidate, 'status': 'needs-refresh',
                                               'checked_at': row.get('acquired_at', document.get('updated', ''))})
+    for capture in document.get('unpublished_captures', []):
+        if capture.get('repository') == repository and source.inspect and not inspected(capture):
+            candidate = capture['candidate']
+            identity = acquisition_id(candidate)
+            candidates.setdefault(identity, candidate)
+            observations.setdefault(identity, {'candidate': candidate, 'status': 'pending'})
     for url, gap in gaps.items():
         candidate = {**gap, 'platform': gap.get('platform', source.default_platform)}
         candidates.setdefault(url, candidate)
@@ -106,6 +124,9 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 # New evidence of changed bytes is new work, even at a known URL.
                 eligibility.pop(url)
                 observation['status'] = 'needs-refresh'
+        if source.inspect and observation.get('inspection_revision') != source.inspection_revision:
+            eligibility.pop(url, None)
+            observation['status'] = 'needs-refresh'
     ready = set()
     attempted = added = 0
 
@@ -148,6 +169,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         contexts = {acquisition_id(row): row for row in known.get('acquisitions', [])}
         contexts[acquisition_id(captured)] = captured
         known['acquisitions'] = list(contexts.values())
+        if capture.get('verification') is not None:
+            known.update(verification=capture['verification'], inspection_revision=capture['inspection_revision'])
         document['unpublished_captures'] = [row for row in document.get('unpublished_captures', [])
                                           if not (row.get('repository') == repository and row['sha256'] == capture['sha256']
                                                   and acquisition_id(row['candidate']) == acquisition_id(captured))]
@@ -163,6 +186,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                                          'revision': checked_revision,
                                          'status': 'needs-refresh' if changed else 'preserved', 'sha256': capture['sha256'],
                                          'release_asset': known['release_asset']}
+        if capture.get('inspection_revision'):
+            observations[acquisition_id(candidate)]['inspection_revision'] = capture['inspection_revision']
         gaps.pop(acquisition_id(candidate), None)
 
     save()
@@ -173,7 +198,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         previous = observations[acquisition_id(candidate)]
         return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
-    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding]
+    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row)]
     jobs.extend({'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
                 for row in candidates.values() if selectable(row))
     jobs_due = {('recovery', *key(row)): row for row in outstanding}
@@ -210,7 +235,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 continue
             attempted += 1
             try:
-                if pending:
+                if pending and inspected(pending):
                     remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
                     if remote:
                         finish(pending, candidate, previous, remote)
@@ -233,6 +258,9 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     fetched_from = source.acquire(candidate, path)
                     if not isinstance(fetched_from, str) or not fetched_from:
                         raise ValueError('acquisition did not return its source URL')
+                    verification = source.inspect(candidate, path) if source.inspect else None
+                    if source.inspect and not isinstance(verification, dict):
+                        raise ValueError('installer inspection did not return a verification record')
                     size, digest = path.stat().st_size, file_digest(path)
                     if size <= 0:
                         raise ValueError('installer capture is empty')
@@ -251,6 +279,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
                                'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
                                'acquired_at': datetime.now(timezone.utc).isoformat()}
+                    if source.inspect:
+                        pending.update(verification=verification, inspection_revision=source.inspection_revision)
                     observations[acquisition_id(candidate)]['pending_publication'] = pending
                     save()
                     if tag not in ready:
@@ -266,6 +296,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 observations[identity] = {**checkpoint(previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
                                      'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
                                      'status': 'failed', 'error': str(error)}
+                if source.inspect:
+                    observations[identity]['inspection_revision'] = source.inspection_revision
                 if pending:
                     observations[identity]['pending_publication'] = pending
                 gaps[identity] = {**candidate, 'reason': str(error), 'checked_at': observations[identity]['checked_at']}

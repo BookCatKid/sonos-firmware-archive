@@ -44,7 +44,7 @@ not need another workflow file. See [adding a target and worker behavior](docs/a
 | --- | --- |
 | `firmware` | Public update protocols, manifest graphs, historical public indexes, UPD extraction, available-key recovery, and inventories across models |
 | `desktop` | Current redirects, WinGet, Homebrew history, and historical public indexes |
-| `mobile` | Official Sonos-hosted Android APKs and historical captures |
+| `mobile` | Official Sonos-hosted Android APKs and historical captures, with signature and manifest inspection |
 | `web` | Public controller and Pro deployments and their referenced assets |
 | `apple-listings` | Public Apple listing metadata and history |
 | `android-history` | APKPure version/architecture discovery, older selector history and signer-verified deliveries |

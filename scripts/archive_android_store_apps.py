@@ -12,8 +12,8 @@ import tempfile
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
-from xml.etree import ElementTree
 
+from sonos_firmware.apk import verify_apk, apk_metadata
 from sonos_firmware.storage import file_sha256
 from sonos_firmware.delivery_archive import publish_delivery, recover_deliveries, delivery_profiles
 from sonos_firmware.android_store import acquire_play, GOOPDL_REVISION, safe_error, run_apkeep, store_apps, StoreError
@@ -21,53 +21,11 @@ from sonos_firmware.storage import atomic_json
 from sonos_firmware.apkpure import acquire_variant
 
 ROOT = Path(__file__).resolve().parents[1]
-ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
 APPS = store_apps(ROOT)
 
 
 def digest(path: Path) -> tuple[int, str]:
     return path.stat().st_size, file_sha256(path)
-
-
-def verify_apk(path: Path, expected: str) -> dict:
-    output = subprocess.check_output(
-        [str(ROOT / "tools/android/verify-apk"), str(path)], text=True
-    )
-    fields: dict[str, str] = {}
-    for line in output.splitlines():
-        if "=" in line:
-            key, value = line.split("=", 1)
-            fields[key] = value
-    signer = fields.get("signer.1.sha256")
-    if fields.get("verified") != "true" or signer != expected:
-        raise StoreError('APKSignatureVerificationFailed')
-    return {
-        "verified": True,
-        "signer_sha256": signer,
-        "signer_subject": fields.get("signer.1.subject"),
-        "schemes": [name for name in ("v1", "v2", "v3", "v4")
-                    if fields.get(name) == "true"],
-    }
-
-
-def apk_metadata(path: Path, scratch: Path) -> dict:
-    decoded = scratch / (path.name + "-decoded")
-    subprocess.run([
-        "java", "-jar", str(ROOT / "tools/vendor/apktool-3.0.3.jar"),
-        "d", "-f", "-s", str(path), "-o", str(decoded),
-    ], check=True, stdout=subprocess.DEVNULL)
-    root = ElementTree.parse(decoded / "AndroidManifest.xml").getroot()
-    apktool_yml = (decoded / "apktool.yml").read_text()
-    yml_code = re.search(r"^\s*versionCode:\s*['\"]?([^'\"\n]+)", apktool_yml, re.MULTILINE)
-    yml_name = re.search(r"^\s*versionName:\s*['\"]?([^'\"\n]+)", apktool_yml, re.MULTILINE)
-    return {
-        "package": root.attrib["package"],
-        "version_code": root.attrib.get(ANDROID_NS + "versionCode") or
-                        (yml_code.group(1).strip() if yml_code else None),
-        "version_name": root.attrib.get(ANDROID_NS + "versionName") or
-                        (yml_name.group(1).strip() if yml_name else None),
-        "split": root.attrib.get('split'),
-    }
 
 
 def unpack_delivery(source: Path, scratch: Path) -> tuple[dict, list[Path]]:

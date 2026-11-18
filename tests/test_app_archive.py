@@ -101,6 +101,76 @@ class AppArchiveTests(unittest.TestCase):
         self.assertEqual(len(self.github.uploads), 1)
         self.assertEqual(result['artifacts'][0]['sha256'], hashlib.sha256(self.github.uploads[0][3]).hexdigest())
 
+    def test_inspection_failure_prevents_publication_and_respects_backoff(self):
+        from dataclasses import replace
+        from unittest.mock import Mock
+        inspect = Mock(side_effect=ValueError('bad APK signature'))
+        self.source = replace(self.source, inspect=inspect, inspection_revision='first')
+        first = self.run_archive([self.candidate()])
+        self.assertEqual(first['artifact_total'], 0)
+        self.assertEqual(self.github.releases, {})
+        self.assertIn('bad APK signature', first['errors'][0]['error'])
+        again = self.run_archive()
+        self.assertEqual(again['attempted_this_run'], 0)
+        self.assertEqual(inspect.call_count, 1)
+
+    def test_old_receipt_and_changed_inspector_are_rechecked_before_refresh_is_due(self):
+        from dataclasses import replace
+        from unittest.mock import Mock
+        self.run_archive([self.candidate()])
+        inspect = Mock(return_value={'verified': True, 'package': 'fixture.app'})
+        self.source = replace(self.source, inspect=inspect, inspection_revision='first')
+        checked = self.run_archive()
+        self.assertEqual(checked['artifacts'][0]['verification']['package'], 'fixture.app')
+        self.assertEqual(checked['artifacts'][0]['inspection_revision'], 'first')
+        self.assertEqual(len(self.github.uploads), 1)
+        self.assertEqual(inspect.call_count, 1)
+        self.assertEqual(self.run_archive()['attempted_this_run'], 0)
+        self.source = replace(self.source, inspection_revision='second')
+        self.assertEqual(self.run_archive()['artifacts'][0]['inspection_revision'], 'second')
+        self.assertEqual(inspect.call_count, 2)
+        self.assertEqual(len(self.github.uploads), 1)
+
+    def test_inspected_upload_response_loss_recovers_without_another_inspection(self):
+        from dataclasses import replace
+        from unittest.mock import Mock
+        inspect = Mock(return_value={'verified': True})
+        self.source = replace(self.source, inspect=inspect, inspection_revision='first')
+        self.github.lose_upload_response = True
+        failed = self.run_archive([self.candidate()])
+        self.assertEqual(failed['artifact_total'], 0)
+        self.assertEqual(inspect.call_count, 1)
+        result = self.run_archive(now=NOW+timedelta(hours=2))
+        self.assertEqual(result['artifact_total'], 1)
+        self.assertTrue(result['artifacts'][0]['verification']['verified'])
+        self.assertEqual(inspect.call_count, 1)
+        self.assertEqual(len(self.acquired), 1)
+
+    def test_old_pending_publication_cannot_bypass_new_inspection(self):
+        from dataclasses import replace
+        from unittest.mock import Mock
+        self.github.lose_upload_response = True
+        self.assertEqual(self.run_archive([self.candidate()])['artifact_total'], 0)
+        inspect = Mock(side_effect=ValueError('inspection failed'))
+        self.source = replace(self.source, inspect=inspect, inspection_revision='first')
+        result = self.run_archive()
+        self.assertEqual(result['artifact_total'], 0)
+        self.assertEqual(inspect.call_count, 1)
+        self.assertEqual(len(self.github.uploads), 1)
+
+    def test_changed_package_expectation_forces_reinspection_of_preserved_bytes(self):
+        from dataclasses import replace
+        from unittest.mock import Mock
+        inspect = Mock(return_value={'verified': True, 'package': 'fixture.app'})
+        self.source = replace(self.source, inspect=inspect, inspection_revision='first')
+        self.run_archive([self.candidate(expected_package='fixture.app')])
+        inspect.side_effect = ValueError('different package expected')
+        result = self.run_archive([self.candidate(expected_package='different.app')])
+        self.assertEqual(result['status'], 'partial')
+        self.assertIn('different package expected', result['errors'][0]['error'])
+        self.assertEqual(inspect.call_count, 2)
+        self.assertEqual(len(self.github.uploads), 1)
+
     def test_single_slot_cannot_be_monopolized_by_a_missing_old_upload(self):
         old = {'repository': 'owner/repo', 'candidate': self.candidate('old.exe'),
                'sha256': 'a'*64, 'bytes': 10, 'release_tag': 'missing-old', 'release_asset': 'old.exe',

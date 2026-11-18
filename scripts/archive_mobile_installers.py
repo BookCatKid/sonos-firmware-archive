@@ -24,7 +24,10 @@ def main() -> int:
                               current_refresh_hours=args.refresh_hours,
                               default_platform='fireos-android-apk')
     result = preserve(source, args.discovery, args.receipt, args.repo, root=ROOT, limit=args.limit)
-    print(f"verified artifacts={result['artifact_total']} attempted={result['attempted_this_run']} new={result['added_this_run']}")
+    inspected = sum(row.get('inspection_revision') == source.inspection_revision and
+                    row.get('verification', {}).get('verified') is True for row in result['artifacts'])
+    print(f"hash-verified artifacts={result['artifact_total']} signature-checked={inspected} "
+          f"attempted={result['attempted_this_run']} new={result['added_this_run']}")
     return 1 if result['status'] == 'partial' else 0
 
 

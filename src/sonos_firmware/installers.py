@@ -1,6 +1,7 @@
 """Shared current and historical acquisition of public Sonos installers."""
 import json
 import re
+import shutil
 import urllib.error
 import urllib.request
 import zipfile
@@ -68,7 +69,9 @@ def release_for(candidate):
     return 'apps-'+family_name+'-'+platform, f'Sonos {family_name} {platform} installers'
 
 
-def acquire(candidate, destination, *, blocked=None):
+def acquire(candidate, destination, *, blocked=None, inspection_required=False):
+    if inspection_required and not all(shutil.which(tool) for tool in ('java', 'javac')):
+        raise ValueError('APKInspectionUnavailable: Java and javac are required before downloading APKs')
     blocked = set() if blocked is None else blocked
     capture = candidate.get('archive_capture')
     sources = [(candidate['url'], capture)] if capture is not None else [(candidate['url'], None)]
@@ -120,9 +123,13 @@ def acquire(candidate, destination, *, blocked=None):
 
 
 def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', paused_hosts=()):
-    return AppSource(partial(acquire, blocked=set(paused_hosts)), release_for,
+    from .apk import inspect_official, inspection_revision
+    mobile = default_platform == 'fireos-android-apk'
+    return AppSource(partial(acquire, blocked=set(paused_hosts), inspection_required=mobile), release_for,
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
-                     default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours)
+                     default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
+                     inspect=inspect_official if mobile else None,
+                     inspection_revision=inspection_revision() if mobile else None)
 
 
 def _candidate(url, kind, *, advertised_by=None, source='public-archive-index'):

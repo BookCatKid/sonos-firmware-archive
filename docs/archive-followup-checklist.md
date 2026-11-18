@@ -25,8 +25,8 @@ independent web-archive indexes.
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | TLS fallback verified offline; continue live index and replay investigation. |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | Extend existing live evidence and audit coverage. |
-| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | Audit SDK coverage and live receipts. |
-| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Audit live backlog. |
+| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | Store and official APKs now share signature/manifest inspection; receipt migration and interrupted-upload verification are tested. Audit full SDK coverage and live receipts. |
+| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Native beta APK published; official-source signature/identity inspection and migration implemented, awaiting live validation. Historical backlog remains. |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Investigate remaining resources and redirects. |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Audit metadata and binary acquisition prerequisites. |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | Audit formats, recovery methods and live ledgers. |
