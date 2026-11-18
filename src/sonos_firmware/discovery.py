@@ -191,6 +191,15 @@ def probe_all(candidates: list[Candidate], workers: int = 6, deadline: float | N
     return results
 
 
+class DownloadFailure(RuntimeError):
+    """Retain safe request timing after a failed download becomes a receipt."""
+    def __init__(self, receipt):
+        super().__init__(receipt.get('download_error', 'firmware acquisition failed'))
+        self.status_code = receipt.get('download_http_status')
+        self.retry_after = receipt.get('download_retry_after')
+        self.pause_replay = bool(receipt.get('download_paused'))
+
+
 def download(candidate: dict, directory: str | Path) -> dict:
     try:
         directory = Path(directory)
@@ -242,10 +251,13 @@ def download(candidate: dict, directory: str | Path) -> dict:
                     'fetched_from': fetched_from,
                     **({'memento_datetime': memento_datetime} if memento_datetime else {})}
     except Exception as error:
+        from .retry import retry_after_seconds
+        delay = retry_after_seconds(error)
         if isinstance(error, urllib.error.HTTPError):
             error.close()
         return {**candidate, 'downloaded': False, 'download_error': str(error),
                 'download_http_status': getattr(error, 'code', None),
+                **({'download_retry_after': delay} if delay is not None else {}),
                 'download_paused': bool(getattr(error, 'pause_replay', False))}
 
 

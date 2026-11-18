@@ -13,7 +13,7 @@ from typing import Callable
 from urllib.parse import urlsplit
 
 from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset
-from .retry import checkpoint, select
+from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .storage import atomic_json
 from .archive_replay import capture_host
 
@@ -76,6 +76,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     gaps = {acquisition_id(row): row for row in document.get('gaps', [])}
     scoped = document.setdefault('source_observations', {})
     observations = scoped.setdefault(repository, {})
+    backoff = RequestBackoff(document, repository)
     by_digest = {(row['family'], row['platform'], row['sha256']): row for row in records
                  if receipt_matches_repository(row, repository)}
     candidates = {url: row['candidate'] for url, row in observations.items() if row.get('candidate')}
@@ -197,47 +198,56 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     def selectable(candidate):
         host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[acquisition_id(candidate)]
-        return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
+        return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
+                or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
     jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row)]
     jobs.extend({'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
                 for row in candidates.values() if selectable(row))
     jobs_due = {('recovery', *key(row)): row for row in outstanding}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=limit or len(jobs),
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit or len(jobs),
                     state=document, queue=repository)
     recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
     queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for capture in recoveries:
+        if backoff.paused('publication'):
+            break
         attempted += 1
         try:
             known = by_digest.get((capture['candidate']['family'], capture['candidate']['platform'], capture['sha256']))
             tag, asset = (known['release_tag'], known['release_asset']) if known else (capture['release_tag'], capture['release_asset'])
             remote = verified_asset(repository, tag, asset, capture['bytes'], capture['sha256'])
+            backoff.clear('publication')
             if remote:
                 register(capture, remote)
             else:
                 capture.update(checkpoint(capture))
         except Exception as error:
-            capture.update(checkpoint(capture), error=str(error))
+            capture.update(error_checkpoint(error, capture), error=str(error))
+            backoff.failed('publication', error)
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
         save()
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
         for candidate in queue:
+            if backoff.paused('publication'):
+                break
             url = candidate['url']
             identity = acquisition_id(candidate)
             previous = observations[identity]
             pending = previous.get('pending_publication')
             archived = candidate.get('archive_capture') is not None
             host = capture_host(candidate['archive_capture']) if archived else urlsplit(url).hostname
-            if host in blocked and not pending and previous.get('status') != 'preserved':
+            if (host in blocked or backoff.paused(host)) and not pending and previous.get('status') != 'preserved':
                 continue
             attempted += 1
+            phase = 'publication'
             try:
                 if pending and inspected(pending):
                     remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
+                    backoff.clear('publication')
                     if remote:
                         finish(pending, candidate, previous, remote)
                         save()
@@ -249,14 +259,16 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                                                                                        success_hours=source.refresh_hours)}
                         save()
                         continue
-                if host in blocked:
-                    raise ValueError('source host is paused; exact capture remains queued')
+                if host in blocked or backoff.paused(host):
+                    continue
                 with tempfile.TemporaryDirectory(dir=directory) as capture:
                     original = Path(urlsplit(url).path).name
                     if not original:
                         raise ValueError('installer URL has no filename')
                     path = Path(capture) / original
+                    phase = 'acquisition'
                     fetched_from = source.acquire(candidate, path)
+                    backoff.clear(host)
                     if not isinstance(fetched_from, str) or not fetched_from:
                         raise ValueError('acquisition did not return its source URL')
                     verification = source.inspect(candidate, path) if source.inspect else None
@@ -267,6 +279,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                         raise ValueError('installer capture is empty')
                     if candidate.get('expected_sha256') and candidate['expected_sha256'].lower() != digest:
                         raise ValueError('installer SHA-256 does not match the discovery checksum')
+                    phase = 'publication'
                     identity = (candidate['family'], candidate['platform'], digest)
                     known = by_digest.get(identity)
                     tag, title = source.release_for(candidate)
@@ -290,11 +303,12 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     path.rename(upload)
                     remote = publish_verified(repository, tag, upload, size, digest)
                     finish(pending, candidate, previous, remote)
+                    backoff.clear('publication')
             except Exception as error:
-                if getattr(error, 'pause_replay', False) or getattr(error, 'code', None) in {403, 429}:
+                if backoff.failed(getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication', error) and phase == 'acquisition':
                     blocked.add(getattr(error, 'pause_host', host))
                 identity = acquisition_id(candidate)
-                observations[identity] = {**checkpoint(previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
+                observations[identity] = {**error_checkpoint(error, previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
                                      'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
                                      'status': 'failed', 'error': str(error)}
                 if source.inspect:

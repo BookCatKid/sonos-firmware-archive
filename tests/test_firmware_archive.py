@@ -95,6 +95,64 @@ class AcquisitionTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+
+    def test_request_backoff_survives_download_receipts_and_worker_restarts(self):
+        import urllib.error
+        from datetime import timedelta
+        from sonos_firmware import releases, retry
+        from test_app_archive import FakeGitHub, NOW
+        github = FakeGitHub()
+        rows = [candidate('first'), candidate('peer')]
+        calls = []
+        failing = True
+        def fetch(request, **kwargs):
+            calls.append(request.full_url)
+            if failing:
+                raise urllib.error.HTTPError(request.full_url, 429, 'retry later', {'Retry-After': '75'}, None)
+            return Response(section(99, 0, request.full_url.encode()))
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery, 'open_advertised', side_effect=fetch), \
+             patch.object(releases, 'remote_assets', side_effect=github.assets), \
+             patch.object(releases.subprocess, 'run', side_effect=github.command):
+            root = Path(temporary)
+            with patch.object(retry, '_now', return_value=NOW):
+                archive.archive_candidates(root, 'owner/repo', rows[:1], root/'worker')
+            with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)):
+                waiting = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            self.assertEqual(waiting['attempted'], 0)
+            self.assertEqual(calls, [rows[0]['url']])
+            failing = False
+            with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
+                resumed = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            self.assertEqual(resumed['preserved'], 2)
+            self.assertEqual(validate_catalog(root), [])
+
+    def test_publication_throttle_does_not_fetch_fresh_firmware_before_retry_after(self):
+        import urllib.error
+        from datetime import timedelta
+        from sonos_firmware import releases, retry
+        from test_app_archive import FakeGitHub, NOW
+        github = FakeGitHub()
+        github.inventory_failure = urllib.error.HTTPError('https://api.github.com/fixture', 429,
+            'retry later', {'Retry-After': '75'}, None)
+        rows = [candidate('first'), candidate('peer')]
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(discovery, 'open_advertised', side_effect=lambda request, **kwargs:
+                 Response(section(99, 0, request.full_url.encode()))) as fetch, \
+             patch.object(releases, 'remote_assets', side_effect=github.assets), \
+             patch.object(releases.subprocess, 'run', side_effect=github.command):
+            root = Path(temporary)
+            with patch.object(retry, '_now', return_value=NOW):
+                archive.archive_candidates(root, 'owner/repo', rows[:1], root/'worker')
+            with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)):
+                waiting = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            self.assertEqual(waiting['attempted'], 0)
+            self.assertEqual(fetch.call_count, 1)
+            with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
+                resumed = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            self.assertEqual(resumed['preserved'], 2)
+            self.assertEqual(validate_catalog(root), [])
+
     def test_mutable_protocol_root_is_captured_before_historical_backlog(self):
         historical = candidate('historical')
         current = candidate('current', source='protocol-static', version='unknown', refresh_hours=6)

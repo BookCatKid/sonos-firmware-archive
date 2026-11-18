@@ -29,17 +29,19 @@ def checkpoint(prior=None, *, success=False, negative=False, success_hours=24, n
             'next_attempt_at': (now + timedelta(hours=hours)).isoformat()}
 
 
-def error_checkpoint(error, prior=None, *, now=None):
-    """Use a server's Retry-After when supplied; otherwise retain backoff."""
+def retry_after_seconds(error, *, now=None):
+    """Normalize server timing before exceptions cross a JSON receipt seam."""
     now = _now(now)
-    result = checkpoint(prior, now=now)
-    value = (getattr(error, 'headers', None) or {}).get('Retry-After')
+    headers = getattr(error, 'headers', None) or {}
+    value = headers.get('Retry-After', headers.get('retry-after'))
     if value is None:
-        return result
+        value = getattr(error, 'retry_after', None)
+    if value is None:
+        return None
     try:
         seconds = float(value)
         if not math.isfinite(seconds) or seconds < 0:
-            return result
+            return None
         after = now + timedelta(seconds=seconds)
     except ValueError:
         try:
@@ -47,11 +49,38 @@ def error_checkpoint(error, prior=None, *, now=None):
             if after.tzinfo is None:
                 after = after.replace(tzinfo=timezone.utc)
         except (ValueError, TypeError, OverflowError):
-            return result
+            return None
     except (TypeError, OverflowError):
-        return result
-    result['next_attempt_at'] = max(now, after).isoformat()
+        return None
+    return max(0, (after-now).total_seconds())
+
+
+def error_checkpoint(error, prior=None, *, now=None, negative=False):
+    """Use a server's Retry-After when supplied; otherwise retain backoff."""
+    now = _now(now)
+    result = checkpoint(prior, now=now, negative=negative)
+    if (seconds := retry_after_seconds(error, now=now)) is not None:
+        result['next_attempt_at'] = (now+timedelta(seconds=seconds)).isoformat()
     return result
+
+
+class RequestBackoff:
+    """Persist source-host and publication throttles independently per archive."""
+    def __init__(self, state, repository):
+        self.records = state.setdefault('request_backoff', {}).setdefault(repository, {})
+
+    def paused(self, scope):
+        return not due(self.records.get(scope))
+
+    def failed(self, scope, error):
+        status = getattr(error, 'code', getattr(error, 'status_code', None))
+        if status not in {403, 429, 503} and not getattr(error, 'pause_replay', False):
+            return False
+        self.records[scope] = {**error_checkpoint(error, self.records.get(scope)), 'http_status': status}
+        return True
+
+    def clear(self, scope):
+        self.records.pop(scope, None)
 
 
 def select(items, records, *, key, limit, force=False, now=None, state=None, queue='default'):

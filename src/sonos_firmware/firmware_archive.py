@@ -10,9 +10,9 @@ from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .discovery import download
+from .discovery import download, DownloadFailure
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
-from .retry import checkpoint, select, due
+from .retry import checkpoint, select, due, error_checkpoint, RequestBackoff
 from .storage import atomic_json, file_sha256
 from .upd import parse_file
 from .archive_replay import capture_host
@@ -235,6 +235,7 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
     errors = []
     ready = set()
     blocked = set(paused_hosts)
+    backoff = RequestBackoff(state, repository)
 
     def save():
         state.update(updated=datetime.now(timezone.utc).isoformat())
@@ -246,22 +247,26 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
     def selectable(candidate):
         host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[source_id(candidate)]
-        return host not in blocked or previous.get('pending_publication') or previous.get('status') == 'preserved'
+        return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
+                or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
     jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', id(row))} for row in pending]
     jobs.extend({'kind': 'source', 'row': row, 'key': ('source', source_id(row))}
                 for row in candidates if selectable(row))
     jobs_due = {('recovery', id(row)): row for row in pending}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=limit,
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit,
                     state=state, queue=repository)
     recovery = [job['row'] for job in chosen if job['kind'] == 'recovery']
     queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for row in recovery:
+        if backoff.paused('publication'):
+            break
         attempted += 1
         capture = row['capture']
         try:
             remote = verified_asset(repository, capture['release_tag'], capture['release_asset'],
                                     capture['bytes'], capture['sha256'])
+            backoff.clear('publication')
             if remote is None:
                 raise ValueError('older capture is not yet visible in its release')
             capture['publication'] = publication_receipt(repository, capture['release_tag'],
@@ -269,19 +274,24 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
             register_capture(root, capture, catalog_path=catalog_path)
             backlog.remove(row)
             preserved += 1
+            backoff.clear('publication')
         except Exception as error:
-            row.update(checkpoint(row), error=str(error))
+            row.update(error_checkpoint(error, row), error=str(error))
+            backoff.failed('publication', error)
         save()
     save()
     work.mkdir(parents=True, exist_ok=True)
     for candidate in queue:
+        if backoff.paused('publication'):
+            break
         url = source_id(candidate)
         host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
         previous = observations[url]
         capture = previous.get('pending_publication')
-        if host in blocked and not capture and previous.get('status') != 'preserved':
+        if (host in blocked or backoff.paused(host)) and not capture and previous.get('status') != 'preserved':
             continue
         attempted += 1
+        phase = 'publication'
         try:
             if previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None:
                 known = next((row for row in catalog.get('packages', [])
@@ -296,19 +306,23 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
             if capture:
                 tag, name = capture['release_tag'], capture['release_asset']
                 remote = verified_asset(repository, tag, name, capture['bytes'], capture['sha256'])
+                backoff.clear('publication')
             else:
                 remote = None
             if remote is None:
-                if host in blocked:
+                if host in blocked or backoff.paused(host):
                     continue
                 if url not in current_sources:
                     raise ValueError('pending asset not visible; waiting for source availability')
                 with tempfile.TemporaryDirectory(dir=work, prefix='firmware-') as directory:
+                    phase = 'acquisition'
                     artifact = download(candidate, Path(directory))
                     if not artifact.get('downloaded'):
                         if artifact.get('download_paused') or artifact.get('download_http_status') in {403, 429}:
                             blocked.add(host)
-                        raise ValueError(artifact.get('download_error', 'firmware acquisition failed'))
+                        raise DownloadFailure(artifact)
+                    backoff.clear(host)
+                    phase = 'publication'
                     body = Path(directory) / artifact['local_file']
                     inventory = section_inventory(body) if candidate['filename'].endswith('.upd') else {'sections': []}
                     sections = inventory['sections']
@@ -343,8 +357,10 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
                                  'revision': checked_revision, 'sha256': capture['sha256'], 'package_id': record['id'],
                                  'status': 'needs-refresh' if changed else 'preserved'}
             preserved += 1
+            backoff.clear('publication')
         except Exception as error:
-            observations[url] = {**checkpoint(previous), 'candidate': candidate, 'revision': revision(candidate),
+            backoff.failed(host if phase == 'acquisition' else 'publication', error)
+            observations[url] = {**error_checkpoint(error, previous), 'candidate': candidate, 'revision': revision(candidate),
                                  'status': 'failed', 'error': str(error)}
             if capture:
                 observations[url]['pending_publication'] = capture

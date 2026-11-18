@@ -28,6 +28,28 @@ def page(version='1.0', filename='source.tar.xz'):
 
 
 class RetryPolicyTests(unittest.TestCase):
+    def test_valid_server_deadline_can_exceed_local_backoff_cap(self):
+        import urllib.error
+        from email.utils import format_datetime
+        expected = NOW+timedelta(days=8)
+        for value in (str(8*24*60*60), format_datetime(expected)):
+            with self.subTest(value=value):
+                error = urllib.error.HTTPError('https://example.test', 429, 'retry later', {'Retry-After': value}, None)
+                self.assertEqual(retry.error_checkpoint(error, now=NOW)['next_attempt_at'], expected.isoformat())
+
+    def test_request_backoff_scopes_survive_serialization_without_blocking_other_repositories(self):
+        import urllib.error
+        state = {}
+        error = urllib.error.HTTPError('https://example.test', 503, 'unavailable', {'Retry-After': '75'}, None)
+        with patch.object(retry, '_now', return_value=NOW):
+            retry.RequestBackoff(state, 'owner/first').failed('publication', error)
+        state = json.loads(json.dumps(state))
+        with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)):
+            self.assertTrue(retry.RequestBackoff(state, 'owner/first').paused('publication'))
+            self.assertFalse(retry.RequestBackoff(state, 'owner/second').paused('publication'))
+        with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
+            self.assertFalse(retry.RequestBackoff(state, 'owner/first').paused('publication'))
+
     def test_single_slot_alternates_across_serialized_checkpoints(self):
         state = {}
         records = {'old': {'checked_at': '2000-01-01T00:00:00+00:00'}}

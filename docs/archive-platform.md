@@ -144,6 +144,14 @@ The firmware target's `index_pages` option sets its per-provider page budget;
 installer targets use `history_pages`. These budgets control work per run, not
 the collections or historical captures that can eventually be discovered.
 
+Firmware and installer acquisition receipts retain normalized Retry-After timing
+when downloads fail. Their request-backoff ledgers distinguish source hosts from
+publication requests and remain scoped to the destination repository. New URLs
+on a throttled host wait across worker restarts; independent source hosts keep
+progressing. A publication throttle defers additional acquisition and retries
+the saved publication metadata after the deadline. Valid numeric and HTTP-date
+deadlines are honored in full; malformed values use the ordinary backoff policy.
+
 Historical index discovery queries both manifests and `.upd` payloads across
 `sonos.com` and all its subdomains, using the CDX
 [domain match scope](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#url-match-scope).
