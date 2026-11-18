@@ -17,7 +17,7 @@ independent web-archive indexes.
 | Item | Acceptance evidence required | Follow-up status |
 | --- | --- | --- |
 | 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
-| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components. Generic ELF header analysis now describes application/filesystem/raw/kernel binaries; full live inventory evidence remains pending. |
+| 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components plus a complete inventory and extraction bundle. The inventory records 373 filesystem/member entries and identifies Anacapa as ELF32, big-endian PowerPC. Published inventory/bundle sizes and digests match their receipts; production validation remains item 21. |
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
@@ -30,7 +30,7 @@ independent web-archive indexes.
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Investigate remaining resources and redirects. |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Audit metadata and binary acquisition prerequisites. |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | Audit formats, recovery methods and live ledgers. |
-| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Audit source adapters and worker checkpoints. |
+| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Snapshot publication now rolls full 1,000-asset releases into numbered partitions, with actual-tag receipts, cached inventories and no partition-count ceiling. Continue auditing other source adapters and worker checkpoints. |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root and inventory ordering fixed. Firmware/app request timing now survives download receipts and restarts, including new URLs, independent hosts and separate publication throttles. Continue remaining queue audits. |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Repair older references and investigate page snapshot. |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh per-run inventories, corruption, outages and registration after earlier failures; continue other worker acceptance checks. |
@@ -46,6 +46,33 @@ Its ConnectX capture is 19,697,417 bytes with SHA-256
 published under `firmware-86.4-73207` in the isolated validation archive.
 The acquisition regression checks that a mutable root is captured before the
 historical backlog and that the historical candidate is processed next.
+
+The [inventory drain](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44231069195)
+completed five batches with zero worker errors and zero pending inventory jobs,
+publishing 106 reports. This does not mean every encrypted source was decrypted:
+individual reports retain their own completeness and missing-key evidence.
+ConnectX's report is complete and has no analysis errors. Its
+[published inventory](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/releases/download/firmware-86.4-73207/inventory-5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a-221bcc589fdfbdd513baa14b1ca0ec105c8c5b67310af7092d047588ad5054dc.json)
+is 121,275 bytes; its SHA-256 is
+`221bcc589fdfbdd513baa14b1ca0ec105c8c5b67310af7092d047588ad5054dc`.
+The extraction bundle in the same release is 19,458,508 bytes with SHA-256
+`9f2b98058a8c65877cc317a136d41c46024f7ac6582d03556b13a84bb8cbf089`.
+It includes the inventoried `bin/anacapad` executable (13,651,008 bytes), whose
+SHA-256 is `e4f2514c5cae8ba44fcb975c20f23c200c6a5d9e1ba88ba0ba732224a853d84f`.
+Architecture comes from the executable's ELF header, rather than a fixed offset.
+The independent [published-bundle audit](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44340635676)
+downloaded the published inventory and bundle in CI, verified their receipt
+hashes, and streamed every regular member without extracting or executing it.
+All 190 regular files matched their inventoried sizes and SHA-256 hashes,
+including Anacapa; there were no missing, duplicate or uninventoried files.
+Only the resulting JSON evidence was downloaded for local review.
+
+The [next firmware validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44230244613)
+reached 120 preserved sources but exposed GitHub's 1,000-assets-per-release limit
+while publishing discovery snapshots. The shared document publisher now searches
+existing numbered partitions before uploading, reconciles lost responses, rolls
+full partitions forward and records the actual tag. Inventory failures remain
+reported while fresh documents can be preserved in a healthy partition.
 
 Installer handoff tests cover an empty checkout and publication from a native
 manifest lead without a prior binary or hash. Channel traversal regressions

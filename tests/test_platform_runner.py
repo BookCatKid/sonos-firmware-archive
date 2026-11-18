@@ -457,7 +457,10 @@ class FirmwareBootstrapTests(unittest.TestCase):
                         'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
                         'metadata': {'system_version': '1.0'}}
             state = {'manifests': [manifest], 'probes': {}, 'checked_urls': [], 'status': 'ok'}
-            with patch.object(module, 'ensure_release'), patch.object(module, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}) as upload:
+            proof = {'status': 'verified', 'repository': 'owner/repo', 'release_tag': 'fixture',
+                     'release_asset': module.document_name(manifest), 'release_url': 'https://github.com/fixture/asset',
+                     'bytes': len(body), 'sha256': manifest['sha256']}
+            with patch.object(module.ReleaseSeries, 'publish', return_value=proof) as upload:
                 self.assertFalse(module.preserve(state, root / 'catalog.json', root / 'frontier.json',
                                                  evidence, work, 'owner/repo'))
             upload.assert_called_once()

@@ -300,13 +300,14 @@ def verified_remote_digest(asset: dict) -> str:
     return hasher.hexdigest()
 
 
-def upload_streaming(repository: str, release_id: int, name: str, path: Path) -> None:
+def upload_streaming(repository: str, release_id: int, name: str, path: Path) -> dict:
     endpoint = (
         f"repos/{repository}/releases/{release_id}/assets?"
         + urllib.parse.urlencode({"name": name})
     )
-    subprocess.run([
+    response = subprocess.run([
         "gh", "api", "--method", "POST",
         "-H", f"Content-Type: {mimetypes.guess_type(name)[0] or 'application/octet-stream'}",
         "--input", str(path), f"https://uploads.github.com/{endpoint}",
-    ], check=True, stdout=subprocess.DEVNULL)
+    ], check=True, capture_output=True, text=True)
+    return json.loads(response.stdout)

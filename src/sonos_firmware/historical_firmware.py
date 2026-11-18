@@ -11,7 +11,8 @@ from .archive_index import paused_index_hosts
 from .crawl import PACKAGE, landing_url
 from .discovery import Candidate, official_firmware_url, parse_manifest
 from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
-from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
+from .releases import verified_asset, publication_receipt
+from .release_series import ReleaseSeries
 from .retry import checkpoint, select
 from .storage import atomic_json
 
@@ -88,6 +89,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     queue = select(list(observations), observations, key=lambda identity: identity, limit=limit,
                    state=state, queue=repository)
     attempted = preserved = 0
+    series = {}
     work.mkdir(parents=True, exist_ok=True)
     for identity in queue:
         prior = observations[identity]
@@ -124,10 +126,16 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                     atomic_json(path, state)
                     asset = body.with_name(document_name(manifest))
                     body.rename(asset)
-                    ensure_release(repository, manifest['release_tag'], 'Sonos historical manifests',
-                                   'Exact independently discovered public update manifest captures.')
-                    remote = publish_verified(repository, manifest['release_tag'], asset,
-                                              manifest['bytes'], manifest['sha256'])
+                    tag = manifest['release_tag']
+                    publisher = series.setdefault(tag, ReleaseSeries(repository, tag, 'Sonos historical manifests',
+                        'Exact independently discovered public update manifest captures.'))
+                    proof = publisher.publish(asset, manifest)
+                    manifest['release_tag'] = proof['release_tag']
+                    # Persist the actual partition before catalog registration;
+                    # a worker restart can reconcile an interrupted publication.
+                    atomic_json(path, state)
+                    remote = {'size': proof['bytes'], 'digest': 'sha256:'+proof['sha256'],
+                              'browser_download_url': proof['release_url']}
             proof = publication_receipt(repository, manifest['release_tag'], document_name(manifest), manifest, remote)
             register_document(root/'data/catalog.json', manifest, proof)
             remember_manifest(frontier, manifest)
@@ -142,6 +150,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                     blocked.add(capture_host(prior['archive_capture']))
                 error.close()
         atomic_json(path, state)
+    errors.extend(error for publisher in series.values() for error in publisher.errors)
     errors.extend({'url': row['url'], 'error': row['error']} for row in observations.values() if row['status'] == 'failed')
     errors.extend({'url': row['url'], 'error': row['manifest'].get('parse_error') or 'manifest has parser warnings'}
                   for row in observations.values() if row.get('manifest') and

@@ -30,6 +30,18 @@ class FakeGitHub:
             raise urllib.error.HTTPError('https://api.github.com/fixture', 404, 'missing', {}, None)
         return self.releases[(repo, tag)]
 
+    def matching_tags(self, repo, prefix):
+        return [tag for owner, tag in self.releases if owner == repo and tag.startswith(prefix)]
+
+    def public_release(self, repo, tag):
+        self.assets(repo, tag)
+        return {'id': tag}
+
+    def upload_streaming(self, repo, release_id, name, path):
+        assert name == path.name
+        self.command(['gh', 'release', 'upload', release_id, str(path), '--repo', repo])
+        return self.releases[(repo, release_id)][name]
+
     def command(self, command, **kwargs):
         assert command[:2] == ['gh', 'release']
         repo = command[command.index('--repo') + 1]

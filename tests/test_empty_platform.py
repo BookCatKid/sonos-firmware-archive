@@ -13,7 +13,7 @@ from sonos_firmware.platform.registry import targets
 from sonos_firmware.platform.runner import plan
 from sonos_firmware.platform.git_state import validate_metadata
 from sonos_firmware.platform.tasks import extract_firmware
-from sonos_firmware import discovery, frontier, releases
+from sonos_firmware import discovery, frontier, releases, release_series
 from test_app_archive import FakeGitHub
 from test_firmware_archive import Response
 from test_upd import section
@@ -43,6 +43,9 @@ class EmptyPlatformTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'), \
              patch.object(releases, 'remote_assets', side_effect=github.assets), \
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
+             patch.object(release_series, 'matching_tags', side_effect=github.matching_tags), \
+             patch.object(releases, 'public_release', side_effect=github.public_release), \
+             patch.object(releases, 'upload_streaming', side_effect=github.upload_streaming), \
              patch.object(discovery, 'open_advertised', side_effect=lambda *args, **kwargs: Response(body)):
             root = Path(temporary)
             result = frontier.discover({}, root/'observations', fetch=fetch, probe_fn=probe,

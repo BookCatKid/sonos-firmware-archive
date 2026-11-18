@@ -19,7 +19,8 @@ from sonos_firmware.archive_index import discover_archives as discover_sources
 from sonos_firmware.firmware_archive import (
     acquisition_state, archive_candidates, document_name, document_publication, register_document,
 )
-from sonos_firmware.releases import ensure_release, publish_verified, publication_receipt, verified_asset
+from sonos_firmware.releases import verified_asset
+from sonos_firmware.release_series import ReleaseSeries
 from sonos_firmware.metadata_sweep import discover_version_hints
 
 
@@ -42,7 +43,8 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
     errors.extend(archived['errors'])
     catalog = json.loads(catalog_path.read_text())
     tag = 'manifest-snapshots-' + datetime.now(timezone.utc).date().isoformat()
-    prepared = False
+    series = ReleaseSeries(repository, tag, 'Sonos discovery snapshots',
+                           'Directly discovered public Sonos update manifests and download pages.')
     inventories = {}
     for manifest in [*result['manifests'], *result.get('documents', [])]:
         known = next((m for m in [*catalog.get('source_manifests', []), *catalog.get('source_documents', [])]
@@ -72,18 +74,22 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
             data = path.read_bytes()
             if len(data) != manifest['bytes'] or hashlib.sha256(data).hexdigest() != manifest['sha256']:
                 raise ValueError('manifest capture hash mismatch')
-            if not prepared:
-                ensure_release(repository, tag, 'Sonos discovery snapshots', 'Directly discovered public Sonos update manifests and download pages.')
-                prepared = True
             asset = work / document_name(manifest)
             asset.write_bytes(data)
-            remote = publish_verified(repository, tag, asset, len(data), manifest['sha256'])
-            if isinstance(inventories.get(tag), dict):
-                inventories[tag][asset.name] = remote
-            register_document(catalog_path, manifest, publication_receipt(repository, tag, asset.name, manifest, remote))
+            proof = series.publish(asset, manifest)
+            # Extend a previously complete inventory without enumerating a
+            # thousand old assets again after each new document upload.
+            if isinstance(inventories.get(proof['release_tag']), dict):
+                inventories[proof['release_tag']][asset.name] = {
+                    'size': proof['bytes'], 'digest': 'sha256:'+proof['sha256'],
+                    'browser_download_url': proof['release_url']}
+            elif isinstance(inventories.get(proof['release_tag']), Exception):
+                inventories.pop(proof['release_tag'])
+            register_document(catalog_path, manifest, proof)
             catalog = json.loads(catalog_path.read_text())
         except Exception as error:
             errors.append({'source': manifest['url'], 'error': str(error)})
+    errors.extend(series.errors)
     result['preservation_pending'] = archived['pending']
     result['preservation_errors'] = errors
     write_json(state_path, result)

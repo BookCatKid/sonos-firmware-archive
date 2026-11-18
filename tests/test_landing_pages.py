@@ -8,7 +8,7 @@ from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
-from sonos_firmware import discovery, frontier, releases
+from sonos_firmware import discovery, frontier, releases, release_series
 from sonos_firmware import crawl
 from sonos_firmware.catalog import validate_catalog
 from sonos_firmware.crawl import crawl_manifests
@@ -301,6 +301,9 @@ class LandingPageTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'), \
              patch.object(releases, 'remote_assets', side_effect=github.assets), \
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
+             patch.object(release_series, 'matching_tags', side_effect=github.matching_tags), \
+             patch.object(releases, 'public_release', side_effect=github.public_release), \
+             patch.object(releases, 'upload_streaming', side_effect=github.upload_streaming), \
              patch.object(discovery, 'open_advertised', return_value=Response(body)):
             root = Path(temporary)
             evidence, work = root/'observations', root/'worker'

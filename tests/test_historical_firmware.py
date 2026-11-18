@@ -11,7 +11,7 @@ from datetime import timedelta
 from pathlib import Path
 from unittest.mock import patch
 
-from sonos_firmware import archive_replay, historical_firmware as history, releases, retry
+from sonos_firmware import archive_replay, historical_firmware as history, releases, retry, release_series
 from sonos_firmware.catalog import validate_catalog
 from sonos_firmware.firmware_archive import catalog_at
 from sonos_firmware.storage import atomic_json
@@ -48,6 +48,9 @@ class HistoricalFirmwareTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(releases, 'remote_assets', side_effect=self.github.assets).start()
         patch.object(releases.subprocess, 'run', side_effect=self.github.command).start()
+        patch.object(release_series, 'matching_tags', side_effect=self.github.matching_tags).start()
+        patch.object(releases, 'public_release', side_effect=self.github.public_release).start()
+        patch.object(releases, 'upload_streaming', side_effect=self.github.upload_streaming).start()
         # Keep the actual redirect, source-identity and response validation in play.
         patch.object(archive_replay.urllib.request, 'build_opener', return_value=self).start()
 
@@ -147,7 +150,8 @@ class HistoricalFirmwareTests(unittest.TestCase):
         self.index(manifests={'manifest': item})
         self.responses[archive_replay.replay_url(MANIFEST, item)] = XML
         self.github.lose_upload_response = True
-        self.assertEqual(self.run_history()['manifests']['preserved'], 0)
+        with patch.object(history.ReleaseSeries, '_proof', side_effect=RuntimeError('worker interrupted after upload')):
+            self.assertEqual(self.run_history()['manifests']['preserved'], 0)
         self.responses.clear()
         self.index()
         result = self.run_history(now=NOW+timedelta(hours=2))
@@ -156,12 +160,27 @@ class HistoricalFirmwareTests(unittest.TestCase):
         self.assertEqual(len(self.fetched), 1)
         self.assertEqual(len(json.loads(self.frontier.read_text())['candidates']), 1)
 
+    def test_historical_manifest_rollover_records_actual_partition(self):
+        item = capture(url=MANIFEST)
+        self.index(manifests={'manifest': item})
+        self.responses[archive_replay.replay_url(MANIFEST, item)] = XML
+        base = 'manifest-history-'+item['timestamp'][:8]
+        self.github.releases[('fresh/archive', base)] = {f'old-{i}': {'size': 1} for i in range(1000)}
+        result = self.run_history()
+        self.assertEqual(result['manifests']['preserved'], 1)
+        row, = catalog_at(self.root/'data/catalog.json')['source_manifests']
+        self.assertEqual(row['release_tag'], base+'-part-2')
+        self.assertEqual(row['publication']['release_tag'], row['release_tag'])
+        journal = json.loads((self.root/'data/discovery/historical-manifest-acquisition.json').read_text())
+        self.assertEqual(journal['sources']['fresh/archive']['manifest']['manifest']['release_tag'], row['release_tag'])
+
     def test_new_manifest_backlog_does_not_starve_interrupted_publication_recovery(self):
         old = capture(url=MANIFEST)
         self.index(manifests={'old': old})
         self.responses[archive_replay.replay_url(MANIFEST, old)] = XML
         self.github.lose_upload_response = True
-        self.assertEqual(self.run_history()['manifests']['preserved'], 0)
+        with patch.object(history.ReleaseSeries, '_proof', side_effect=RuntimeError('worker interrupted after upload')):
+            self.assertEqual(self.run_history()['manifests']['preserved'], 0)
         captures = {'old': old}
         for day in range(1, 9):
             item = capture(f'202101{day:02d}000000', MANIFEST)

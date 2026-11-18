@@ -594,8 +594,8 @@ class PreservationTests(unittest.TestCase):
             state = {'manifests': manifests, 'probes': {}}
             with patch.object(publisher, 'datetime') as clock, \
                  patch.object(releases, 'remote_assets', side_effect=urllib.error.URLError('fixture inventory outage')), \
-                 patch.object(publisher, 'ensure_release'), \
-                 patch.object(publisher, 'publish_verified', return_value=asset), \
+                 patch.object(publisher.ReleaseSeries, 'publish', return_value=releases.publication_receipt(
+                     'owner/repo', tag, publisher.document_name(new), new, asset)), \
                  patch.object(publisher, 'archive_candidates', return_value={'errors': [], 'pending': 0}):
                 clock.now.return_value.date.return_value.isoformat.return_value = 'fixture'
                 self.assertTrue(publisher.preserve(state, catalog, root/'state.json', root, root, 'owner/repo'))
@@ -624,7 +624,7 @@ class PreservationTests(unittest.TestCase):
                 manifests.append(manifest)
             state = {'manifests': manifests, 'probes': {}}
             with patch.object(releases, 'remote_assets', return_value=assets) as inventory, \
-                 patch.object(publisher, 'publish_verified', side_effect=AssertionError('already published')), \
+                 patch.object(publisher.ReleaseSeries, 'publish', side_effect=AssertionError('already published')), \
                  patch.object(publisher, 'archive_candidates', return_value={'errors': [], 'pending': 0}):
                 self.assertFalse(publisher.preserve(state, catalog, root/'state.json', root/'no-cache', root, 'owner/repo'))
                 inventory.assert_called_once_with('owner/repo', 'snapshots')
@@ -662,15 +662,17 @@ class PreservationTests(unittest.TestCase):
             catalog = root / 'catalog.json'
             catalog.write_text(json.dumps({'packages': [], 'source_manifests': []}))
             operations = []
-            def publish(*args):
+            def publish(path, manifest):
                 operations.append('document')
-                return {'url': 'https://github.com/fixture/asset'}
+                return {'status': 'verified', 'repository': 'owner/repo', 'release_tag': 'fixture',
+                        'release_asset': path.name, 'release_url': 'https://github.com/fixture/asset',
+                        'bytes': manifest['bytes'], 'sha256': manifest['sha256']}
             def acquire(*args, **kwargs):
                 operations.append('firmware')
                 return {
                      'preserved': 1, 'pending': 1, 'errors': [{'url': candidates[0]['url'], 'error': 'first version failed'}]
                 }
-            with patch.object(publisher, 'ensure_release'), patch.object(publisher, 'publish_verified', side_effect=publish), \
+            with patch.object(publisher.ReleaseSeries, 'publish', side_effect=publish), \
                  patch.object(publisher, 'archive_candidates', side_effect=acquire) as preserve:
                 self.assertTrue(publisher.preserve(state, catalog, root / 'state.json', evidence, root, 'owner/repo'))
             preserve.assert_called_once()
