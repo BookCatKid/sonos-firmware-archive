@@ -241,7 +241,7 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
     result = preserve(source(default_platform='fireos-android-apk' if kind == 'mobile' else '',
                              refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours),
                       discovery, root/'data/apps'/f'{kind}-archive.json', repository,
-                      root=root, limit=limit, paused_hosts=paused)
+                      root=root, limit=limit, paused_hosts=paused, discovery_reference=path)
     return {'status': result['status'], 'artifact_total': result['artifact_total'],
             'attempted': result['attempted_this_run'], 'errors': result['errors'],
             'pending': result['pending_total'], 'index_status': index['status']}

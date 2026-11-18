@@ -563,7 +563,7 @@ class IndependentSourceFailureTests(unittest.TestCase):
         module = self.load('discover_mobile_installers')
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'discovery.json'
-            with patch.object(sys, 'argv', ['discover', '--output', str(output)]), \
+            with patch.object(sys, 'argv', ['discover', '--output', str(output), '--archive-root', temporary]), \
                  patch.object(module.urllib.request, 'urlopen', side_effect=AssertionError('unexpected history query')) as fetch, \
                  patch.object(module, 'resolve_latest_redirect', return_value={
                      'location': 'https://update-software.sonos.com/software/android/Sonos_90.0-12345.apk',

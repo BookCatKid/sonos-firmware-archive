@@ -39,6 +39,20 @@ def apk(body):
 
 
 class InstallerHistoryTests(unittest.TestCase):
+    def test_history_receipt_references_durable_index_instead_of_worker_discovery_file(self):
+        self.add('20200101000000', b'MZ historical fixture')
+        self.run_history()
+        receipt = json.loads((self.root/'data/apps/desktop-archive.json').read_text())
+        self.assertEqual(receipt['discovery'], 'data/apps/desktop-history-index.json')
+        self.assertTrue((self.root/receipt['discovery']).is_file())
+        receipt['discovery'] = '/vanished-worker/discovery.json'
+        atomic_json(self.root/'data/apps/desktop-archive.json', receipt)
+        self.responses.clear()
+        self.run_history(now=NOW+timedelta(seconds=1))
+        migrated = json.loads((self.root/'data/apps/desktop-archive.json').read_text())
+        self.assertEqual(migrated['discovery'], 'data/apps/desktop-history-index.json')
+        self.assertEqual(len(self.replays), 1)
+
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)

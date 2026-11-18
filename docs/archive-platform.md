@@ -140,6 +140,9 @@ object paths. Both providers share acquisition/publication queues; their host
 backoff is independent, honors Retry-After, and survives worker restarts.
 Capture records appear once in the shared checkpoint, with each provider's
 cursors stored separately. This adds no production workflow or release list.
+Historical installer receipts reference the durable index in `data/apps/`,
+including when no capture is due. The synthesized worker discovery file is an
+acquisition input; its temporary path is not the persisted provenance reference.
 The firmware target's `index_pages` option sets its per-provider page budget;
 installer targets use `history_pages`. These budgets control work per run, not
 the collections or historical captures that can eventually be discovered.

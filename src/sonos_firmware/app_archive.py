@@ -58,7 +58,7 @@ def acquisition_id(candidate):
 
 
 def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None,
-             paused_hosts=()):
+             paused_hosts=(), discovery_reference: Path | None = None):
     if limit is not None and limit <= 0:
         raise ValueError('acquisition limit must be positive')
     if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
@@ -141,7 +141,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         errors.extend({'url': row['candidate']['url'], 'sha256': row['sha256'], 'error': 'capture awaiting publication reconciliation'} for row in outstanding)
         pending = sum(row['status'] in ('pending', 'needs-refresh') for row in observations.values())
         document.update(updated=datetime.now(timezone.utc).isoformat(), repository=repository,
-                        discovery=receipt_path(discovery, root), artifact_total=len(records),
+                        discovery=receipt_path(discovery_reference or discovery, root), artifact_total=len(records),
                         artifacts=sorted(records, key=lambda row: (row['family'], row['platform'], row['version'], row['sha256'])),
                         gap_total=len(gaps), gaps=sorted(gaps.values(), key=lambda row: row['url']),
                         status='partial' if errors or pending else 'ok', errors=errors, pending_total=pending,
