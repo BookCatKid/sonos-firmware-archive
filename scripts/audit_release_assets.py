@@ -41,7 +41,10 @@ def walk_release_records(value, source: str, expected: dict, repository=None, *,
             if key in {'pending_captures', 'pending_publication', 'unpublished_captures'}:
                 continue
             # Completed legacy collections predate explicit publication proofs.
-            legacy = (key in {'source_manifests', 'raw_images', 'artifacts', 'deployments'} and isinstance(child, list)
+            # Superseded captures stay on the Release after a later capture of
+            # the same deployment replaces them in the receipt.
+            legacy = (key in {'source_manifests', 'raw_images', 'artifacts', 'deployments',
+                              'superseded_captures'} and isinstance(child, list)
                       or published and key in {'resources', 'components', 'complete_wrapper', 'bundle', 'bundles', 'alternate_bundles'})
             walk_release_records(child, source, expected, repository, inherited_tag=tag, inherited_repository=owner,
                                  published=legacy)
@@ -163,6 +166,16 @@ def main() -> int:
         {"release_tag": tag, "release_asset": name, **actual[(tag, name)]}
         for tag, name in sorted(set(actual) - set(expected))
     ]
+    # An asset whose exact bytes are already recorded under another release is
+    # a duplicate publication, not an unexplained one. Distinguishing the two
+    # keeps the remaining unrecorded assets actionable.
+    by_digest = {}
+    for (tag, name), record in expected.items():
+        by_digest.setdefault(record["sha256"], []).append({"release_tag": tag, "release_asset": name})
+    for extra in extras:
+        extra["recorded_as"] = by_digest.get(extra["sha256"], [])
+    duplicated = [extra for extra in extras if extra["recorded_as"]]
+    unexplained = [extra for extra in extras if not extra["recorded_as"]]
     report = {
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
@@ -173,14 +186,19 @@ def main() -> int:
         "missing_total": len(missing),
         "mismatched_total": len(mismatched),
         "unrecorded_extra_total": len(extras),
+        "duplicated_extra_total": len(duplicated),
+        "unexplained_extra_total": len(unexplained),
         "missing": missing,
         "mismatched": mismatched,
         "unrecorded_extras": extras,
+        "duplicated_extras": duplicated,
+        "unexplained_extras": unexplained,
     }
     atomic_json(args.output, report)
     print(
         f"releases={release_total} github={len(actual)} recorded={len(expected)} "
-        f"missing={len(missing)} mismatched={len(mismatched)} extras={len(extras)}"
+        f"missing={len(missing)} mismatched={len(mismatched)} extras={len(extras)} "
+        f"duplicated={len(duplicated)} unexplained={len(unexplained)}"
     )
     return 1 if missing or mismatched else 0
 

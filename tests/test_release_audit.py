@@ -1,6 +1,7 @@
 """Release auditing follows configured targets and verified publication state."""
 import importlib.util
 import json
+import sys
 import tempfile
 import unittest
 import urllib.error
@@ -109,3 +110,36 @@ class ReleaseAuditTests(unittest.TestCase):
         self.assertEqual(count, 1)
         self.assertEqual(set(result), {('fixture', 'source.bin')})
         fetch.assert_called_once_with('owner/archive', 'fixture')
+
+    def test_a_duplicate_publication_is_distinguished_from_an_unexplained_asset(self):
+        """An asset already recorded under another release explains its own bytes."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            atomic_json(root/'config/targets.json', {'schema_version': 1, 'targets': [
+                {'name': 'apps', 'provider': 'fixture', 'description': 'Fixture',
+                 'interval_hours': 6, 'metadata': ['data/apps']}]})
+            atomic_json(root/'data/apps/archive.json', {'artifacts': [
+                asset('source.bin', release_tag='firmware-fixture', status='verified')]})
+            duplicated = {'bytes': 10, 'sha256': 'a'*64,
+                          'url': 'https://github.com/owner/archive/releases/download/seed/source.bin'}
+            unexplained = {'bytes': 99, 'sha256': 'f'*64,
+                           'url': 'https://github.com/owner/archive/releases/download/seed/other.bin'}
+            output = root/'audit.json'
+            with patch.object(audit, 'github_assets', return_value=(2, {
+                    ('firmware-fixture', 'source.bin'): {'bytes': 10, 'sha256': 'a'*64,
+                        'url': 'https://github.com/owner/archive/releases/download/firmware-fixture/source.bin'},
+                    ('seed', 'source.bin'): duplicated,
+                    ('seed', 'other.bin'): unexplained})), \
+                 patch.object(audit, 'recorded_assets', return_value={('firmware-fixture', 'source.bin'): {
+                     'bytes': 10, 'sha256': 'a'*64, 'source': 'data/apps/archive.json'}}), \
+                 patch('sys.argv', ['audit', '--repo', 'owner/archive', '--output', str(output)]):
+                self.assertEqual(audit.main(), 0)
+            report = json.loads(output.read_text())
+        self.assertEqual(report['missing_total'], 0)
+        self.assertEqual(report['unrecorded_extra_total'], 2)
+        self.assertEqual(report['duplicated_extra_total'], 1)
+        self.assertEqual(report['unexplained_extra_total'], 1)
+        self.assertEqual([row['release_asset'] for row in report['duplicated_extras']], ['source.bin'])
+        self.assertEqual([row['recorded_as'] for row in report['duplicated_extras']],
+                         [[{'release_tag': 'firmware-fixture', 'release_asset': 'source.bin'}]])
+        self.assertEqual([row['release_asset'] for row in report['unexplained_extras']], ['other.bin'])
