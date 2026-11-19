@@ -21,7 +21,7 @@ independent web-archive indexes.
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
-| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | Audit backlog and encoding paths. |
+| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Common Crawl collection/page discovery and native WARC/ARC replay implemented alongside Wayback; independent host backoff and exact-range publication covered offline. Live coverage validation pending. |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | Extend existing live evidence and audit coverage. |
@@ -354,3 +354,81 @@ recoverable checkpoint patch;
 `test_deleted_tracked_metadata_is_published` proves a removal is committed; and
 `test_captured_manifest_can_resume_after_worker_directory_changes` resumes a
 capture whose previous worker directory no longer exists.
+
+## GPL index and source coverage (item 6)
+
+The direct-Sonos GPL catalogue holds 39 verified indexes covering versions 6.4
+through 18.6. Their advertised links and acquisition receipts reconcile
+completely:
+
+```
+$ PYTHONPATH=src .venv/bin/python scripts/audit_gpl_link_coverage.py
+versions=39 links=1409 unattempted=1 (published=1408, unattempted=1)
+  unattempted 14.12/libusb-1.0.23.txz (sonos)
+```
+
+The 1,409 links comprise 1,112 Sonos-hosted sources and 297 upstream sources
+(glibc, uClibc and similar at their own project hosts). All 297 upstream links
+are published, so "follow their source links" is satisfied rather than merely
+enumerated.
+
+**The reported `+`/URL-encoding failure is real and now proven live.** A GPL
+filename may contain literal `+` (for example
+`mmc-utils-0.1+git-r0-patched.tar.xz`). Sonos's CDN treats an unencoded `+` in
+the path as an access denial, not as a literal character:
+
+```
+$ curl -o /dev/null -w '%{http_code} %{size_download}\n' \
+    'https://www.sonos.com/documents/gpl/18.6/mmc-utils-0.1+git-r0-patched.tar.xz'
+403 111
+
+$ curl -o /dev/null -w '%{http_code} %{size_download}\n' \
+    'https://www.sonos.com/documents/gpl/18.6/mmc-utils-0.1%2Bgit-r0-patched.tar.xz'
+200 56748
+```
+
+The 403 body is the CDN's `AccessDenied` XML, which is why a naive fetcher
+reports "not found" for a file that plainly exists. `source_url()` normalizes
+the path segment with `quote(filename, safe="-._~")` so every `+` becomes `%2B`;
+`tests/test_gpl_archive.py::test_plus_encoding_is_not_query_form_encoding`
+pins that, and
+`test_every_retained_direct_index_has_exact_integrity_and_links` requires all
+five `+`-bearing 18.6 links to carry `%2B` in their `fetch_url`. Those five are
+published with real byte counts (9,100,376 / 159,516 / 56,748 / 666,308 /
+125,612), and the 56,748 matches the live `%2B` response above.
+
+**Compressed contents are validated, not assumed.** `verify_artifact()` checks
+the tar member list *and* drains the entire compressor stream, because tar
+iteration stops at its end-of-archive marker before the XZ/gzip/bzip2 CRC and
+footer — a truncated archive can otherwise pass. It rejects empty member sets,
+absolute or `..` member paths, unknown compression and invalid archives.
+
+That validation found the one unaccounted link. `14.12/libusb-1.0.23.txz` is
+advertised by a verified index and served with HTTP 200, but the body is a
+well-formed 108-byte XZ stream containing an empty tar:
+
+```
+$ curl -o libusb.txz https://www.sonos.com/documents/gpl/14.12/libusb-1.0.23.txz
+$ ls -l libusb.txz
+108 bytes      # sha256 5ca1b6c461fc194055d52b181f57c63dc1d34c19d041f6395e6f6abc039692bb
+$ tar tvJf libusb.txz
+                # no members
+$ PYTHONPATH=src .venv/bin/python -c "verify_artifact(...)"
+(False, 'empty-tar', 0)
+```
+
+Sonos published an empty archive for that component. Rejecting it is correct;
+the defect was that the rejection was invisible. Neither existing audit could
+see it: the publication audit only compares GitHub assets, which this never
+became, and the compressed-stream audit only revalidates *published* receipts.
+`scripts/audit_gpl_link_coverage.py` closes that hole by requiring every
+advertised link to end in exactly one accounted state — `published`, or
+`recorded:<terminal-state>` — and failing the job on `unattempted`. It is wired
+into the `gpl-audit` target ahead of the stream audit, so the next acquisition
+pass that records this link turns the job green and the archive gains a durable
+explanation instead of a silent retry loop.
+
+`tests/test_gpl_link_coverage.py` covers the classifier (13 tests, including the
+real committed catalogue) and the validator's empty, truncated, escaping-member
+and complete cases. Two of them were confirmed to fail against deliberately
+broken code.
