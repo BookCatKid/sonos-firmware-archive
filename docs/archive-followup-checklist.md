@@ -35,9 +35,9 @@ independent web-archive indexes.
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh inventories, corruption, outages, registration after earlier failures and interrupted overflow uploads. Historical recovery finds accepted numbered-partition assets without replay or cached bytes; older GitHub assets lacking digest metadata are verified by body hash. Continue other worker acceptance checks. |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
-| 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | ConnectX runtime documentation corrected; continue repository audit. |
+| 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | Providers and targets are in exact 1:1 correspondence across all 13 targets; 48 scripts are each wired or documented; no documentation names a missing path or retired workflow. Enforced by `scripts/audit_repository_consistency.py` in `verify.yml`. See [repository consistency](#repository-consistency-item-20). |
 | 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | Requires approved deployment after fixes and validation. |
-| 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Link from PR only; do not comment on or close issues. |
+| 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Checked against evidence and linked from PR #26 with a per-issue section. Issues #23, #24 and #25 remain open with no comments added and no closure. |
 
 Live validation of mutable-root acquisition:
 [run 44198556575](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44198556575).
@@ -514,3 +514,57 @@ same-size content change is still re-downloaded and distinguished by SHA-256.
 committed catalogue, duplicate-content detection, receipt completeness and the
 withdrawn-component listing. One was confirmed to fail against deliberately
 broken code.
+
+## Repository consistency (item 20)
+
+Consistency is now checked rather than asserted:
+
+```
+$ PYTHONPATH=src .venv/bin/python scripts/audit_repository_consistency.py
+targets=13 scripts=48 orphan_scripts=0 doc_path_problems=0 retired_workflows=0 unreachable_targets=0
+```
+
+Five invariants, all currently satisfied:
+
+1. **Providers and targets correspond exactly.** The 13 providers in `BUILTINS`
+   are the 13 providers named by `config/targets.json`. There is no adapter
+   without a target and no target without an adapter, so a rename cannot leave a
+   dead reference.
+2. **Every target is reachable.** Each of the 13 plans from a checkout with no
+   archive state and produces at least one step. This is the same guarantee item
+   19 exercises in depth.
+3. **No orphan scripts.** All 48 scripts under `scripts/` are wired into a
+   provider, a workflow or another module, or documented as a manual tool. The
+   one genuine orphan found, `import_manifest.py`, is now documented in
+   [maintenance tools](maintenance-tools.md) along with the other manual
+   recovery commands, so an operator can find it and a future orphan is reported
+   instead of forgotten.
+4. **No documentation points at a missing path.** Every backticked repo path in
+   `docs/` and `README.md` resolves. Links pinned to a commit hash are exempt,
+   because they describe history rather than today's tree.
+5. **No documentation advertises a retired workflow.** Only `archive.yml` and
+   `verify.yml` remain. `docs/archive-platform-runtime-audit.md` describes the
+   pre-unification ten-workflow layout and pins every such link to commit
+   `d34f6c8`, so it reads as a historical record rather than a stale instruction.
+   `docs/maintenance-tools.md` states the current layout explicitly.
+
+The audit runs in `verify.yml` after the test suite, so a pull request that
+orphans a script, drops a provider or breaks a documentation link fails CI.
+
+Two findings were investigated and deliberately **not** deleted:
+
+- `scripts/upload_firmware_release.py` was flagged in the runtime audit as a
+  weaker duplicate publication path. It is now a thin wrapper over
+  `firmware_archive.upload_receipt`, which verifies size and SHA-256 through the
+  shared `verified_asset`/`publish_verified` publisher, so it performs the same
+  reconciliation as the workers. It is kept as a documented manual tool rather
+  than removed.
+- The historical importers and key-recovery scripts are manual tools, not
+  runtime discovery inputs. `data/gpl/seed-versions.json` is retained as
+  evidence and is not read by any runtime path (verified by grep across `src/`,
+  `scripts/` and workflows).
+
+`tests/test_repository_consistency.py` adds 14 tests: the live repository plus
+fixtures for orphan scripts, documented scripts, broken documentation paths,
+pinned historical links, retired workflow references, unknown providers and the
+CLI exit code.
