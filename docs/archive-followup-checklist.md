@@ -24,8 +24,8 @@ independent web-archive indexes.
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Common Crawl collection/page discovery and native WARC/ARC replay implemented alongside Wayback; independent host backoff and exact-range publication covered offline. Live coverage validation pending. |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
-| 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | Extend existing live evidence and audit coverage. |
-| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | Store and official APKs now share signature/manifest inspection; receipt migration and interrupted-upload verification are tested. Audit full SDK coverage and live receipts. |
+| 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | 67 APKPure deliveries across **67 distinct package/version-code pairs**: 37 distinct S2 version codes (1270001011 → 890000051) and 30 S1 (430354030 → 572383122). Rotating `winudf` tickets are separated from asset identity so a refreshed ticket neither creates a variant nor re-downloads a verified asset. See [Android store coverage](#android-store-coverage-items-9-and-10). |
+| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **475 components across those 67 deliveries, all 475 signature-verified**, each with signer SHA-256, subject and signature schemes (v1/v2/v3), and a release asset. 34 deliveries carry multiple components (splits) plus a complete wrapper. Two distinct Sonos signers are recorded: 445 modern and 30 legacy. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Live CI reinspection verified both current and native beta APKs, their actual package/version metadata and configured Sonos signer. Historical backlog and unavailable QA URLs remain. |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
@@ -695,3 +695,58 @@ reached 143 preserved sources and published 203 documents in one run after an
 earlier run had already hit the asset limit, and the
 [firmware follow-up](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44230244613)
 resumed the same backlog rather than restarting it.
+
+## Android store coverage (items 9 and 10)
+
+The committed store archive records 67 APKPure deliveries, and every one is a
+distinct package/version-code pair rather than a re-publication:
+
+```
+s2: 37 version codes, 1270001011 .. 890000051
+s1: 30 version codes,  430354030 .. 572383122
+components: 475, verified: 475
+deliveries with more than one component: 34 (each with a complete wrapper)
+```
+
+**Distinct historical versions keep accumulating.** The S2 range spans version
+codes from the 1.27 series to 89.00.51 and the S1 range from 4.30 to 11.16, so
+progress is measured in new version codes rather than in repeated attempts at the
+same one.
+
+**Rotating tickets do not create fake versions.** APKPure download URLs carry a
+`winudf` ticket that changes between requests. `apkpure.py` separates an asset's
+identity from its current ticket, so
+`test_rotating_winudf_tickets_do_not_create_new_asset_variants` proves a
+refreshed ticket produces no new variant, and
+`test_old_ticket_observations_merge_without_redownloading_a_verified_asset`
+proves an expired ticket does not force a re-download of already-verified bytes.
+`test_429_retains_numeric_and_http_date_retry_after` and
+`test_throttled_download_never_writes_a_delivery_and_closes_connection` cover the
+throttled and expired-link cases without leaving a partial delivery behind.
+
+**Every component is signature-verified.** All 475 components carry
+`verified: true`, a signer SHA-256, a signer subject, the signature schemes
+present, and a release asset:
+
+```
+signers: 445 × CN=Sonos, Inc., OU=Sonos Software Release Team, ...
+         30 × CN=Sonos Inc., OU=Unknown, ...
+schemes: v1+v2+v3 (252), v3 (187), v2+v3 (34), v1+v2 (2)
+```
+
+The two signer subjects are consistent with the archive's own history: the
+modern release-team certificate covers current S2 deliveries and the older
+certificate covers legacy S1 deliveries. Recording the scheme set makes a
+v1-only delivery distinguishable from a v3 one instead of collapsing them into a
+single "signed" label.
+
+**Splits are preserved, not flattened.** 34 deliveries carry more than one
+component plus a complete wrapper, so base APKs, splits and additional
+components are all retained with their own receipts. Version checks compare the
+requested selector with the delivered `version_code`/`version_name`, and
+`test_same_version_code_retains_every_architecture_and_distinct_asset` keeps
+per-architecture variants distinct instead of overwriting one with another.
+
+What this does **not** establish: complete coverage of every SDK/ABI variant
+APKPure has ever advertised. The recorded set is what discovery reached, and the
+retry and pagination behaviour that extends it is covered by the tests above.
