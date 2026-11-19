@@ -6,6 +6,9 @@
   "distinct_preserved_contents": 31,
   "reused_content_across_versions": [],
   "manifest_attributed": 31,
+  "provenance": {
+    "manifest": 31
+  },
   "unavailable": [
     {
       "version": "10.20-75300",

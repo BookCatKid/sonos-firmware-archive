@@ -55,21 +55,31 @@ class LiveRepositoryTests(unittest.TestCase):
         """`archive.yml` drives every target; `verify.yml` gates changes.
 
         A checkout may also carry local diagnostic workflows (an isolated
-        validation repository does), so this asserts what must be present and
-        that nothing else is presented as an archive entrypoint.
+        validation repository does) and may not carry the pull-request gate, so
+        this asserts what must be true rather than an exact file list.
         """
         present = {path.name for path in (ROOT/'.github/workflows').glob('*.yml')}
         self.assertIn('archive.yml', present)
-        self.assertIn('verify.yml', present)
         text = (ROOT/'.github/workflows/archive.yml').read_text()
         # The scheduled archive workflow selects targets from configuration.
         self.assertIn('config/targets.json', text)
         self.assertIn('sonos-archive targets', text)
         # No second workflow claims to run an archive target.
         for path in (ROOT/'.github/workflows').glob('*.yml'):
-            if path.name in {'archive.yml'}:
+            if path.name == 'archive.yml':
                 continue
             self.assertNotIn('sonos-archive run', path.read_text(), path.name)
+
+    def test_the_committed_verify_workflow_runs_every_audit(self):
+        """Where the gate exists, it must exercise the audits it advertises."""
+        verify = ROOT/'.github/workflows/verify.yml'
+        if not verify.exists():
+            self.skipTest('this checkout has no pull-request verify workflow')
+        text = verify.read_text()
+        for script in ('run_tests.py', 'audit_repository_consistency.py',
+                       'audit_discovery_ceilings.py'):
+            with self.subTest(script=script):
+                self.assertIn(script, text)
 
 
 class FixtureRepositoryTests(unittest.TestCase):

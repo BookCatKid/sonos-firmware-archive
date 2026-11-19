@@ -133,8 +133,10 @@ class ConnectXCoverageTests(unittest.TestCase):
         self.assertEqual(report['errors'], [])
         # Preserved contents are distinct, not one file relabelled many times.
         self.assertEqual(report['distinct_preserved_contents'], report['preserved_components'])
-        # Every preserved component is attributed to a manifest it came from.
-        self.assertEqual(report['manifest_attributed'], report['preserved_components'])
+        # Every preserved component falls in exactly one provenance class: it was
+        # reached through a manifest document, at a version-pinned URL, or neither.
+        self.assertEqual(sum(report['provenance'].values()), report['preserved_components'])
+        self.assertLessEqual(report['manifest_attributed'], report['preserved_components'])
         # Withdrawn components are named rather than counted as covered.
         self.assertEqual(len(report['unavailable']),
                          report['advertised_components'] - report['preserved_components'])

@@ -54,7 +54,7 @@ def audit(catalog: dict, index: dict | None = None) -> dict:
             errors.append({"id": identity, "error": f"unaccounted state {row.get('artifact_status')!r}"})
         if row.get("artifact_status") != PRESERVED:
             continue
-        for field in ("sha256", "bytes", "release_tag", "release_asset"):
+        for field in ("sha256", "bytes", "release_tag", "release_asset", "source_url"):
             if not row.get(field):
                 errors.append({"id": identity, "error": f"preserved without {field}"})
         if row.get("release_tag") and not row["release_tag"].startswith("firmware-"):
@@ -66,6 +66,19 @@ def audit(catalog: dict, index: dict | None = None) -> dict:
                     "state": row.get("artifact_status")}
                    for row in packages if row.get("artifact_status") != PRESERVED]
 
+    # Provenance classes: a capture reached through a manifest document, one
+    # reached at a version-pinned URL without a recorded manifest, or neither.
+    # Every preserved component must fall in exactly one class.
+    provenance = Counter()
+    for row in preserved:
+        url = row.get("source_url") or ""
+        if row.get("source_manifest"):
+            provenance["manifest"] += 1
+        elif row.get("version") and f"/{row['version']}" in url:
+            provenance["versioned-url"] += 1
+        else:
+            provenance["other"] += 1
+
     report = {
         "schema_version": 1,
         "advertised_versions": len(by_version),
@@ -75,6 +88,7 @@ def audit(catalog: dict, index: dict | None = None) -> dict:
         "reused_content_across_versions": sorted(
             digest for digest, count in digests.items() if count > 1),
         "manifest_attributed": sum(1 for row in preserved if row.get("source_manifest")),
+        "provenance": dict(provenance),
         "unavailable": unavailable,
         "errors": errors,
     }
