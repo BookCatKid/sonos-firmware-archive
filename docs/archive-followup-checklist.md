@@ -23,20 +23,20 @@ independent web-archive indexes.
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots (244 available, 382 absent) with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. Wayback CDX returns empty for the mutable ConnectX URL and Common Crawl has no capture under that prefix. See [historical index routes](#historical-index-routes-item-7). |
-| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
+| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Blocked externally.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | 67 APKPure deliveries across **67 distinct package/version-code pairs**: 37 distinct S2 version codes (1270001011 → 890000051) and 30 S1 (430354030 → 572383122). Rotating `winudf` tickets are separated from asset identity so a refreshed ticket neither creates a variant nor re-downloads a verified asset. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **475 components across those 67 deliveries, all 475 signature-verified**, each with signer SHA-256, subject and signature schemes (v1/v2/v3), and a release asset. 34 deliveries carry multiple components (splits) plus a complete wrapper. Two distinct Sonos signers are recorded: 445 modern and 30 legacy. See [Android store coverage](#android-store-coverage-items-9-and-10). |
-| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Live CI reinspection verified both current and native beta APKs, their actual package/version metadata and configured Sonos signer. Historical backlog and unavailable QA URLs remain. |
+| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. Exactly **1 gap** is recorded with its reason: a Wayback body that is not a valid ZIP/APK. Live CI also reinspected both current and native beta APKs against the configured Sonos signer. See [official mobile coverage](#official-mobile-coverage-item-11). |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
-| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI classified 78 incomplete inventories: 28 recipient groups lack matching keys; available components report no decoder errors. Recovery can now use verified, previously decrypted rootfs when its receipt binds it to the exact original source and component. Continue recipient-specific recovery and live validation. |
+| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI verified all 78 incomplete inventories: 28 recipient groups lacked matching keys, with no decoder errors in available components; model-26 recovery resolved one, leaving 27. Revisit-on-improvement is automatic: the inventory revision includes `ready_recipients` and a hash of the decoder sources, so a new key or a changed decoder re-queues the package. Remaining work needs recipient keys, which exist only as CI secrets. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14). |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
-| 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh inventories, corruption, outages, registration after earlier failures and interrupted overflow uploads. Historical recovery finds accepted numbered-partition assets without replay or cached bytes; older GitHub assets lacking digest metadata are verified by body hash. Continue other worker acceptance checks. |
+| 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Each named failure mode has a regression: interrupted uploads keep staged records out of the catalog, lost responses reconcile without overwriting, conflicting names get distinct identities, and changed content is re-verified by body hash when a digest is absent. 34 Android deliveries carry multi-component splits plus a complete wrapper, so partial deliveries stay pending rather than completing. See [publication recovery](#publication-recovery-item-18). |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
 | 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | Providers and targets are in exact 1:1 correspondence across all 13 targets; 48 scripts are each wired or documented; no documentation names a missing path or retired workflow. Enforced by `scripts/audit_repository_consistency.py` in `verify.yml`. See [repository consistency](#repository-consistency-item-20). |
-| 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | Requires approved deployment after fixes and validation. |
+| 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | **Blocked on merge approval.** The workflow has not been dispatched against the production archive. Every item above is evidenced in the isolated archive or from committed data; this is the only item that requires the production deployment. |
 | 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Checked against evidence and linked from PR #26 with a per-issue section. Issues #23, #24 and #25 remain open with no comments added and no closure. |
 
 Live validation of mutable-root acquisition:
@@ -833,3 +833,108 @@ HTTP-date `Retry-After`, durable backoff) and `tests/test_commoncrawl.py`
 (429 pauses the index host then resumes; collection enumeration with page
 cursors), with native WARC/ARC replay covered alongside Wayback rather than
 replacing it.
+
+## Official mobile coverage (item 11)
+
+The committed mobile archive holds 40 official Sonos-hosted installers across 40
+distinct versions:
+
+```
+families: s2 26, legacy 11, s1 3
+versions: 40 distinct
+recovered via Wayback CDX: 32
+with release asset: 40
+recorded gaps: 1
+```
+
+Every artifact carries its `source_urls`, `fetched_from`, Wayback timestamp and
+digest, and a release receipt, so the route that produced each capture is
+preserved with it. Reused URLs are handled by recording the capture's own
+identity rather than the URL as the key.
+
+The single gap is recorded rather than hidden:
+
+```
+SonosAndroidController1305.apk
+reason: downloaded body is not a valid ZIP/APK
+source: wayback-cdx 20210422...
+```
+
+That is the honest outcome for a Wayback capture whose stored body is not a
+usable package. It stays visible as a gap instead of being silently counted as
+preserved or dropped.
+
+Live CI separately reinspected the current and native beta APKs, verifying their
+actual package/version metadata against the configured Sonos signer
+([run 44232600762](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44232600762)),
+and published a newly discovered Sonos-hosted `85.00.12` beta APK whose GitHub
+asset size and digest matched its receipt
+([run 44229422866](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422866)).
+Two advertised QA APK URLs returned 404 in that run and remain unavailable.
+
+What this does **not** establish: that every historical official build ever
+served has been found. The 40 captures are what the protocol roots, manifests and
+Wayback CDX reached.
+
+## Firmware revisit and missing keys (item 14)
+
+The item has two halves, and both are implemented.
+
+**Unsupported containers and failed decoders are investigated.** The
+incomplete-inventory audit verified all 78 incomplete published reports against
+their receipts. Their skipped sections identify 28 recipient groups with no
+matching model key, and the available-component analysis reports **no decoder
+errors**, which means the limitation is key material rather than an unsupported
+format. Model-26 recovery then resolved one of those groups, leaving 27.
+
+**Improvements trigger revisits automatically.** An inventory's revision is a
+composite of the source hash, the sorted set of recipient fingerprints whose keys
+are present, a hash of the decoder sources themselves, and the configured limits:
+
+```
+revision = {source_sha256, ready_recipients, decoder_revision, limits}
+```
+
+`decoder_revision()` hashes `inventory_archive`, `firmware_inventory`, `extract`,
+`cramfs`, `upd` and `catalog`, so editing a decoder changes the revision. When a
+stored revision differs from the current one the package becomes eligible again.
+This is pinned by
+`test_changed_decoder_or_new_key_makes_a_new_inventory_eligible` (a changed
+decoder produces a second acquisition and publication) and
+`test_decoder_reanalysis_does_not_overtake_waiting_first_inventory` (a revisit
+never jumps ahead of a package that has never been analysed).
+
+**Previously decrypted rootfs is reusable as a recovery source** when its receipt
+binds the component hash, size, section, recipient and model package to the exact
+original source SHA-256. Recovery verifies downloaded bytes and accepts only the
+requested public recipient fingerprint; tests recover a new synthetic key from a
+filesystem encrypted with an older key and reject stale, malformed or conflicting
+receipts.
+
+**What remains needs keys, not code.** The 27 unmatched recipient groups cannot
+be progressed without private key material, which exists only as CI secrets. No
+key was read, generated or committed during this work.
+
+## Publication recovery (item 18)
+
+Each failure mode the item names has a regression, and the live archive shows the
+behaviour holding.
+
+| Failure mode | Regression |
+| --- | --- |
+| Interrupted upload leaves staged records out of the catalog | `test_interrupted_upload_cannot_expose_staged_catalog_records` |
+| Successful work survives a later unrelated failure | `test_successful_packages_publish_after_extraction_and_upload_failures`, `test_raw_upload_failure_keeps_earlier_source_publication_and_no_raw_receipt` |
+| Lost response after GitHub stored the delivery | Android delivery reconciliation tests (`response lost after GitHub stored the delivery`, `upload response lost`) |
+| Conflicting filenames keep distinct identities | `test_parallel_urls_with_same_filename_have_distinct_immutable_captures`, `test_new_url_with_same_filename_is_published_without_overwriting_old_bytes`, `test_snapshot_filename_alias_keeps_its_existing_catalog_identity` |
+| Changed content at a stable name | `test_size_only_cache_does_not_hide_changed_bytes_at_a_url`, `test_a_resource_with_different_content_leaves_the_capture_unrecorded` |
+| Partial delivery stays pending | `test_partial_delivery_stays_pending_when_original_inputs_are_unavailable` |
+| Overflow into numbered partitions | `test_metadata_commit_preserves_unrelated_local_work_and_retains_patch`, `test_deleted_tracked_metadata_is_published` |
+
+The Android receipts show the multi-component case in production: 34 of the 67
+APKPure deliveries carry more than one component plus a complete wrapper, and all
+475 components are individually verified, so a split that fails to upload cannot
+mark its delivery complete.
+
+The publication audit is the end-to-end check that this holds across the whole
+archive: 135 releases, 4,551 assets, 0 missing, 0 mismatched, and every unrecorded
+extra explained as a duplicate publication.
