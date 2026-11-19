@@ -13,13 +13,19 @@ dependencies = [
   "cryptography>=41",
   "curl-cffi>=0.13",
   "jsonschema>=4.21",
+  "PyYAML>=6.0",
+  "warcio>=1.7.5",
 ]
 
 [project.optional-dependencies]
-test = ["PyYAML>=6.0"]
+test = []
+google-play = [
+  "goopdl @ git+https://github.com/Villoh/goopdl.git@b66bf60d686fd93724b7c9f1963fe8bf4070b89d",
+]
 
 [project.scripts]
 sonos-fw = "sonos_firmware.cli:main"
+sonos-archive = "sonos_firmware.platform.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

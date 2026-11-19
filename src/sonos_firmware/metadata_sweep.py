@@ -2,42 +2,79 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 import hashlib
-import json
-import os
+import re
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
-from pathlib import Path
-from urllib.parse import urlencode
 
 from .metadata import (
-    BASE_URI_TYPE,
-    MANIFEST_URI_TYPE,
-    SYNTHETIC_IDENTIFIERS,
     UPDATE_METADATA_URL,
-    USER_AGENT,
     parse_update_metadata,
+    UpdateProfile,
+    fetch_update_metadata,
 )
+from .retry import checkpoint, select, due, error_checkpoint
+from .discovery import USER_AGENT
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
 BASELINE = {"cmaj": 4, "cmin": 1, "cbld": 1, "subm": 100, "rev": 1, "reg": 2}
+RELEASE_NOTES_URL = 'https://support.sonos.com/en-us/article/release-notes-sonos-system-updates'
+
+
+def capture_response(data, evidence, responses):
+    """Retain exact UPS observations, including traceable parse failures."""
+    if len(data) > 2_000_000:
+        raise ValueError('UPS metadata exceeds 2 MB')
+    digest = hashlib.sha256(data).hexdigest()
+    evidence.mkdir(parents=True, exist_ok=True)
+    snapshot = evidence / (digest + '.ups')
+    snapshot.write_bytes(data)
+    captured = {'sha256': digest, 'bytes': len(data), 'snapshot': snapshot.name,
+                'source_url': UPDATE_METADATA_URL, 'records': []}
+    responses[digest] = captured
+    try:
+        captured['records'] = parse_update_metadata(data)
+        if not captured['records']:
+            raise ValueError('UPS metadata contains no records')
+    except ValueError as error:
+        captured['parse_error'] = str(error)
+    return captured
+
+
+def _fetch_version_hints():
+    request = urllib.request.Request(RELEASE_NOTES_URL, headers={'User-Agent': USER_AGENT})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        return response.read(2_000_001)
+
+
+def discover_version_hints(previous, *, fetch=_fetch_version_hints):
+    """Observed support-page versions guide queries, never guessed campaign URLs."""
+    if previous and not due(previous):
+        return previous
+    try:
+        body = fetch()
+        if not body or len(body) > 2_000_000:
+            raise ValueError('release-note response is empty or exceeds 2 MB')
+        versions = re.findall(r'\b\d{1,3}\.\d{1,3}-\d{1,10}\b', body.decode('utf-8', errors='replace'))
+        return {**checkpoint(previous, success=True, success_hours=6), 'status': 'observed',
+                'source_url': RELEASE_NOTES_URL, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
+                'versions': sorted(set(previous.get('versions', [])) | set(versions))}
+    except Exception as error:
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
+        return {**previous, **error_checkpoint(error, previous), 'status': 'failed',
+                'source_url': RELEASE_NOTES_URL, 'error': str(error)}
 
 
 def _profile_key(profile: dict[str, int]) -> str:
     return ":".join(str(profile[field]) for field in PROFILE_FIELDS)
 
 
-def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
-    """Build a deterministic mix of known-version, axis, and pairwise profiles."""
-    profiles: dict[str, dict[str, int]] = {}
-
-    def add(**changes: int) -> None:
-        profile = {**BASELINE, **changes}
-        profiles.setdefault(_profile_key(profile), profile)
-
-    add()
+def _version_profiles(catalog):
+    profiles = {_profile_key(BASELINE): dict(BASELINE)}
     versions = {
         item.get("version")
         for group in (catalog.get("packages", []), catalog.get("evidence", []))
@@ -52,189 +89,140 @@ def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
         except (ValueError, TypeError):
             continue
         for submodel in (0, 1, 100):
-            add(**values, subm=submodel)
+            profile = {**BASELINE, **values, 'subm': submodel}
+            profiles.setdefault(_profile_key(profile), profile)
+    return list(profiles.values())
 
-    for value in range(128):
-        add(cmaj=value)
-    for value in range(64):
-        add(cmin=value)
-    for value in range(256):
-        add(subm=value)
-    for value in range(32):
-        add(rev=value)
-        add(reg=value)
-    for value in (0, 1, 10, 100, 1000, 10000, 99999):
-        add(cbld=value)
 
-    index = 0
+def _profile_at(index):
+    """Interleave unbounded axis probes, build scales, and full combinations."""
+    if index == 0:
+        return dict(BASELINE)
+    value, lane = divmod(index-1, len(PROFILE_FIELDS)+2)
+    if lane < len(PROFILE_FIELDS):
+        return {**BASELINE, PROFILE_FIELDS[lane]: value}
+    if lane == len(PROFILE_FIELDS):
+        return {**BASELINE, 'cbld': value*value}
+    # Interleaved bits enumerate every finite tuple without materializing a
+    # Cartesian product or imposing a maximum on any protocol field.
+    coordinates = [0]*len(PROFILE_FIELDS)
+    bit = 0
+    while value:
+        for field in range(len(PROFILE_FIELDS)):
+            coordinates[field] |= (value & 1) << bit
+            value >>= 1
+        bit += 1
+    return dict(zip(PROFILE_FIELDS, coordinates))
+
+
+def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
+    """Preview a bounded prefix of the continuing profile search."""
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
+        raise ValueError('profile preview limit must be a nonnegative integer')
+    profiles = {_profile_key(profile): profile for profile in _version_profiles(catalog)} if limit else {}
+    index = 1
     while len(profiles) < limit:
-        add(
-            cmaj=(index * 37) % 128,
-            cmin=(index * 17) % 64,
-            cbld=(index * 7919) % 100000,
-            subm=(index * 73) % 256,
-            rev=(index * 7) % 32,
-            reg=(index * 11) % 32,
-        )
+        profile = _profile_at(index)
+        profiles.setdefault(_profile_key(profile), profile)
         index += 1
     return list(profiles.values())[:limit]
 
 
 def fetch_profile(profile: dict[str, int], timeout: float = 20) -> bytes:
-    query = urlencode({**profile, **SYNTHETIC_IDENTIFIERS})
-    request = urllib.request.Request(
-        f"{UPDATE_METADATA_URL}?{query}", headers={"User-Agent": USER_AGENT}
-    )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.read()
+    return fetch_update_metadata(UpdateProfile(*(profile[field] for field in PROFILE_FIELDS)), timeout)[0]
 
 
-def _write_json_atomic(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
-
-
-def run_sweep(
-    catalog: dict,
-    output: Path,
-    raw_directory: Path,
-    limit: int = 1200,
-    delay: float = 0.2,
-    checkpoint_every: int = 25,
-) -> dict:
-    profiles = build_profiles(catalog, limit)
-    planned_keys = {_profile_key(profile) for profile in profiles}
-    completed: dict[str, dict] = {}
-    started = datetime.now(timezone.utc).isoformat()
-    if output.exists():
-        previous = json.loads(output.read_text(encoding="utf-8"))
-        if previous.get("schema_version") == 1:
-            completed = {
-                _profile_key(item["profile"]): item
-                for item in previous.get("results", [])
-                if _profile_key(item["profile"]) in planned_keys
-            }
-            started = previous.get("started", started)
-
-    raw_directory.mkdir(parents=True, exist_ok=True)
-    consecutive_errors = 0
-
-    def report(status: str) -> dict:
-        results = list(completed.values())
-        variants: dict[str, dict] = {}
-        for result in results:
-            sha256 = result.get("sha256")
-            if not sha256:
-                continue
-            variant = variants.setdefault(
-                sha256,
-                {
-                    "sha256": sha256,
-                    "bytes": result["bytes"],
-                    "raw_file": result["raw_file"],
-                    "profile_total": 0,
-                    "manifest_uris": set(),
-                },
-            )
-            variant["profile_total"] += 1
-            variant["manifest_uris"].update(result.get("manifest_uris", []))
-            base_uris = result.get("base_uris")
-            if base_uris is None and result.get("raw_file"):
-                records = parse_update_metadata(Path(result["raw_file"]).read_bytes())
-                base_uris = [item["uri"] for item in records if item["type"] == BASE_URI_TYPE]
-            variant.setdefault("base_uris", set()).update(base_uris or [])
-        serializable_variants = []
-        for variant in variants.values():
-            serializable_variants.append(
-                {
-                    **variant,
-                    "manifest_uris": sorted(variant["manifest_uris"]),
-                    "base_uris": sorted(variant["base_uris"]),
-                }
-            )
-        known_urls = {
-            item.get("source_url", "").replace("http://", "https://", 1)
-            for item in catalog.get("source_manifests", [])
-        }
-        observed_urls = {
-            uri.replace("http://", "https://", 1)
-            for variant in serializable_variants
-            for uri in variant["manifest_uris"]
-        }
-        observed_base_urls = {
-            uri.replace("http://", "https://", 1)
-            for variant in serializable_variants
-            for uri in variant["base_uris"]
-        }
-        package_urls = [
-            item.get("source_url", "").replace("http://", "https://", 1)
-            for item in catalog.get("packages", [])
-        ]
-        unknown_base_urls = sorted(
-            uri
-            for uri in observed_base_urls
-            if not any(url.startswith(uri.split("^", 1)[0]) for url in package_urls)
-        )
-        return {
-            "schema_version": 1,
-            "status": status,
-            "started": started,
-            "updated": datetime.now(timezone.utc).isoformat(),
-            "method": (
-                "rate-limited GET of default-1-1.ups using public sonostool synthetic "
-                "identifiers; query strings and identifier values are not retained"
-            ),
-            "profile_fields": list(PROFILE_FIELDS),
-            "planned_profile_total": len(profiles),
-            "completed_profile_total": len(results),
-            "error_total": sum("error" in item for item in results),
-            "unique_response_total": len(serializable_variants),
-            "unknown_manifest_uris": sorted(observed_urls - known_urls),
-            "unknown_base_uris": unknown_base_urls,
-            "variants": sorted(serializable_variants, key=lambda item: item["sha256"]),
-            "results": results,
-        }
-
-    pending = [profile for profile in profiles if _profile_key(profile) not in completed]
-    for position, profile in enumerate(pending, 1):
+def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadline=None, fetch=fetch_profile):
+    """Resume bounded windows over an open-ended profile search."""
+    if (not isinstance(limit, int) or isinstance(limit, bool) or not isinstance(count, int) or
+        isinstance(count, bool) or not 0 <= limit <= count <= 10000):
+        raise ValueError('metadata profile budgets must satisfy 0 <= limit <= count <= 10000')
+    scheduling = {'retry_rotation': deepcopy(previous.get('retry_rotation', {}))}
+    observations = dict(previous.get('profiles', {}))
+    responses = dict(previous.get('responses', {}))
+    pending = {}
+    for entry in previous.get('pending_profiles', []):
+        profile = entry.get('profile', entry)
+        kind = entry.get('kind', 'search') if 'profile' in entry else 'search'
+        if kind not in {'hint', 'search'}:
+            raise ValueError('unsupported pending metadata profile kind')
+        pending[_profile_key(profile)] = {'profile': profile, 'kind': kind}
+    exploration = previous.get('profile_exploration', {})
+    cursor = exploration.get('next_profile_index', 0) if exploration.get('generator_version') == 1 else 0
+    if not isinstance(cursor, int) or isinstance(cursor, bool) or cursor < 0:
+        raise ValueError('metadata profile cursor must be a nonnegative integer')
+    next_lane = exploration.get('next_fresh_lane', 0)
+    if next_lane not in (0, 1):
+        raise ValueError('metadata profile lane must be zero or one')
+    seeds = _version_profiles(catalog) if limit else []
+    if limit and not any(entry['kind'] == 'search' for entry in pending.values()):
+        for index in range(cursor, cursor+count):
+            profile = _profile_at(index)
+            if _profile_key(profile) not in observations:
+                pending[_profile_key(profile)] = {'profile': profile, 'kind': 'search'}
+        cursor += count
+    for profile in seeds:
+        if _profile_key(profile) not in observations:
+            pending.setdefault(_profile_key(profile), {'profile': profile, 'kind': 'hint'})
+    baseline = _profile_key(BASELINE)
+    ordered = {baseline: pending[baseline]['profile']} if baseline in pending else {}
+    lanes = [[key for key, entry in pending.items() if key != baseline and entry['kind'] == kind]
+             for kind in ('hint', 'search')]
+    for offset in range(max(map(len, lanes))):
+        for lane in (next_lane, 1-next_lane):
+            if offset < len(lanes[lane]):
+                key = lanes[lane][offset]
+                ordered[key] = pending[key]['profile']
+    ordered.update({key: row['profile'] for key, row in observations.items()})
+    source_backoff = dict(previous.get('source_backoff', {}))
+    paused = bool(source_backoff) and not due(source_backoff)
+    queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit,
+                                    state=scheduling, queue='legacy-ups-profiles')
+    errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
+               'http_status': source_backoff.get('http_status')}] if paused else []
+    attempted = 0
+    for profile in queue:
+        if deadline is not None and time.monotonic() >= deadline:
+            break
         key = _profile_key(profile)
+        if key in pending and key not in observations and key != baseline:
+            next_lane = 1 if pending[key]['kind'] == 'hint' else 0
+        attempted += 1
+        captured = None
         try:
-            body = fetch_profile(profile)
-            records = parse_update_metadata(body)
-            digest = hashlib.sha256(body).hexdigest()
-            raw_path = raw_directory / f"{digest}.ups"
-            if not raw_path.exists():
-                raw_path.write_bytes(body)
-            completed[key] = {
-                "profile": profile,
-                "bytes": len(body),
-                "sha256": digest,
-                "raw_file": str(raw_path),
-                "manifest_uris": sorted(
-                    item["uri"] for item in records if item["type"] == MANIFEST_URI_TYPE
-                ),
-                "base_uris": sorted(
-                    item["uri"] for item in records if item["type"] == BASE_URI_TYPE
-                ),
-            }
-            consecutive_errors = 0
-        except urllib.error.HTTPError as error:
-            completed[key] = {"profile": profile, "http_status": error.code, "error": str(error)}
-            consecutive_errors += 1
+            data = fetch(profile)
+            source_backoff = {}
+            captured = capture_response(data, evidence, responses)
+            if captured.get('parse_error'):
+                raise ValueError(captured['parse_error'])
+            observations[key] = {**checkpoint(observations.get(key), success=True, success_hours=168),
+                                 'profile': profile, 'status': 'observed', 'response_sha256': captured['sha256']}
         except Exception as error:
-            completed[key] = {"profile": profile, "error": str(error)}
-            consecutive_errors += 1
-        if position % checkpoint_every == 0:
-            _write_json_atomic(output, report("running"))
-        if consecutive_errors >= 20:
-            final = report("stopped-after-20-consecutive-errors")
-            _write_json_atomic(output, final)
-            return final
-        if delay:
-            time.sleep(delay)
-
-    final = report("complete")
-    _write_json_atomic(output, final)
-    return final
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            negative = getattr(error, 'code', None) in {404, 410}
+            observations[key] = {**error_checkpoint(error, observations.get(key), negative=negative), 'profile': profile,
+                                 'status': 'not-served' if negative else 'failed', 'error': str(error),
+                                 'http_status': getattr(error, 'code', None)}
+            if captured:
+                observations[key]['response_sha256'] = captured['sha256']
+            if not negative:
+                errors.append({'source': 'legacy-ups-profile', 'profile': profile, 'error': str(error),
+                               'http_status': getattr(error, 'code', None)})
+            pending.pop(key, None)
+            if getattr(error, 'code', None) in {403, 429, 503}:
+                source_backoff = {**error_checkpoint(error, source_backoff), 'http_status': error.code, 'error': str(error)}
+                break
+        pending.pop(key, None)
+        time.sleep(.2)
+    unchecked = len(pending)
+    failed = sum(row.get('status') == 'failed' for row in observations.values())
+    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted, **scheduling,
+            'source_backoff': source_backoff,
+            'pending_profiles': list(pending.values()),
+            'profile_exploration': {'policy': 'continuing-windows', 'generator_version': 1,
+                                    'next_profile_index': cursor, 'window_size': count, 'next_fresh_lane': next_lane},
+            'planned_profile_total': len(observations)+unchecked, 'unchecked_profile_total': unchecked,
+            'negative_profile_total': sum(row.get('status') == 'not-served' for row in observations.values()),
+            'failed_profile_total': failed, 'pending_profile_total': unchecked + failed,
+            'status': 'disabled' if not limit else 'partial' if unchecked or failed else 'ok', 'errors': errors}

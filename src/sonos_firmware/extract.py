@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import hashlib
-from pathlib import Path
+import io
+import tarfile
+from collections.abc import Mapping
+from pathlib import Path, PurePosixPath
 
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.exceptions import UnsupportedAlgorithm
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
@@ -89,34 +93,58 @@ def decrypt_envelope(payload: bytes, private_key, *, legacy_model8: bool = False
     return plaintext, recipient
 
 
-def extract_components(
+def _extract_components(
     upd_path: str | Path,
     output_dir: str | Path,
     private_key_path: str | Path | None = None,
     legacy_model8: bool = False,
     skip_encrypted: bool = False,
+    all_sections: bool = False,
+    skipped: list | None = None,
 ) -> list[dict]:
     upd_path = Path(upd_path)
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     data = upd_path.read_bytes()
     sections = parse_bytes(data)
-    private_key = load_private_key(private_key_path) if private_key_path else None
+    private_keys = {}
+    paths = private_key_path if isinstance(private_key_path, Mapping) else {None: private_key_path}
+    for recipient, path in paths.items():
+        if path:
+            try:
+                private_keys[recipient] = load_private_key(path)
+            except (ValueError, TypeError, OSError, UnsupportedAlgorithm):
+                if not all_sections:
+                    raise
     package_id = upd_path.stem
     records: list[dict] = []
 
     for section in sections:
         component = COMPONENT_NAMES.get(section.section_type)
         if component is None:
-            continue
+            if not all_sections:
+                continue
+            component = (f'section-{section.section_type}', '.bin')
         payload = data[section.offset + 16 : section.offset + section.length]
         recipient = None
         if section.encrypted:
+            private_key = private_keys.get(section.recipient_id, private_keys.get(None))
             if private_key is None:
                 if skip_encrypted:
+                    if skipped is not None:
+                        skipped.append({'section_index': section.index, 'section_type': section.section_type,
+                                        'recipient_id': section.recipient_id, 'reason': 'no matching model key'})
                     continue
                 raise ValueError(f"section {section.index} requires recipient {section.recipient_id}")
-            payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
+            try:
+                payload, recipient = decrypt_envelope(payload, private_key, legacy_model8=legacy_model8)
+            except ValueError as error:
+                if not all_sections:
+                    raise
+                if skipped is not None:
+                    skipped.append({'section_index': section.index, 'section_type': section.section_type,
+                                    'recipient_id': section.recipient_id, 'reason': str(error)})
+                continue
 
         kind, extension = component
         if kind == "rootfs" and payload.startswith(b"hsqs"):
@@ -140,3 +168,59 @@ def extract_components(
             }
         )
     return records
+
+
+def extract_components(upd_path, output_dir, private_key_path=None, legacy_model8=False, skip_encrypted=False):
+    return _extract_components(upd_path, output_dir, private_key_path, legacy_model8, skip_encrypted)
+
+
+def extract_available_components(upd_path, output_dir, private_key_path=None):
+    """Extract available sections using a key path or recipient-to-path mapping."""
+    skipped = []
+    components = _extract_components(upd_path, output_dir, private_key_path,
+                                     skip_encrypted=True, all_sections=True, skipped=skipped)
+    return {'components': components, 'skipped': skipped}
+
+
+def extract_anacapad(upd_path: str | Path, output_dir: str | Path) -> dict:
+    """Read bin/anacapad from a plaintext type-23 tar without unpacking paths."""
+    upd_path = Path(upd_path)
+    data = upd_path.read_bytes()
+    matches = []
+    for section in parse_bytes(data):
+        if section.section_type != 23 or section.encrypted:
+            continue
+        payload = data[section.offset + 16 : section.offset + section.length]
+        with tarfile.open(fileobj=io.BytesIO(payload), mode="r:") as archive:
+            for member in archive:
+                if PurePosixPath(member.name) != PurePosixPath("bin/anacapad"):
+                    continue
+                if not member.isfile():
+                    raise ValueError("bin/anacapad must be a regular tar member")
+                with archive.extractfile(member) as handle:
+                    binary = handle.read()
+                if len(binary) != member.size:
+                    raise ValueError("truncated bin/anacapad tar member")
+                matches.append((section, binary))
+    if len(matches) != 1:
+        raise ValueError(f"expected one plaintext bin/anacapad member, found {len(matches)}")
+
+    section, binary = matches[0]
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filename = f"{upd_path.stem}-anacapad"
+    (output_dir / filename).write_bytes(binary)
+    return {
+        "package_id": upd_path.stem,
+        "section_index": section.index,
+        "section_type": section.section_type,
+        "kind": "anacapad",
+        "filename": filename,
+        "bytes": len(binary),
+        "sha256": _sha256(binary),
+        "source_encrypted": False,
+        "recipient_id": None,
+        "archive_member": "bin/anacapad",
+        "archive_sha256": section.sha256,
+        "source_sha256": _sha256(data),
+    }

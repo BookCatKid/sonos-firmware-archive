@@ -1,0 +1,12 @@
+{
+  "com.sonos.acr2": {
+    "family": "s2",
+    "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+    "apkpure_url": "https://apkpure.com/sonos/com.sonos.acr2"
+  },
+  "com.sonos.acr": {
+    "family": "s1",
+    "signer_sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
+    "apkpure_url": "https://apkpure.com/sonos-s1-controller/com.sonos.acr"
+  }
+}

@@ -16,9 +16,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RELEASES = (
-    "7.2", "7.3", "9.2", "10.2", "10.6", "12.0", "13.2", "14.4", "14.18",
-)
+sys.path.insert(0, str(ROOT / 'src'))
+from sonos_firmware.gpl_archive import valid_version
 USER_AGENT = "sonos-firmware-archive/0.1 (+GPL preservation research)"
 
 
@@ -183,13 +182,13 @@ def run(release: str, output_root: Path, delay: float) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--release", action="append", choices=DEFAULT_RELEASES)
+    parser.add_argument("--release", action="append", type=valid_version, required=True,
+                        help="explicit version for historical capture maintenance; discovery uses the archive platform")
     parser.add_argument("--delay", type=float, default=0.2)
     parser.add_argument("--output-root", type=Path, default=ROOT / "data/gpl")
     args = parser.parse_args()
-    releases = args.release or DEFAULT_RELEASES
     catalog = {"schema_version": 1, "releases": []}
-    for release in releases:
+    for release in args.release:
         print(f"processing {release}", flush=True)
         catalog["releases"].append(run(release, args.output_root, args.delay))
         write_path = args.output_root / "wayback-catalog.json"

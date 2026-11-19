@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import struct
 import unittest
 from pathlib import Path
@@ -19,6 +20,8 @@ OTP_SHA256 = "5c218954d7ee17fb84d75c937e6fae1f4c7b0ae434f2185992786c8c08208e5b"
 RECIPIENT = "b271039ff7ab0f3d395039f1f079ff71af9dea71"
 
 
+@unittest.skipUnless(os.environ.get('GITHUB_ACTIONS') == 'true',
+                     'published-key recovery runs in CI; local tests use generated inputs')
 class PublishedModel26InputTests(unittest.TestCase):
     def test_published_inputs_recover_matching_recipient(self):
         self.assertTrue(FIELD.is_file(), "published MDP3 field must be tracked")

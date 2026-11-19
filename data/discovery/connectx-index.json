@@ -1,0 +1,986 @@
+{
+  "schema_version": 1,
+  "snapshots": [
+    {
+      "id": "connectx-28.1-83040-277b1e97298a1944",
+      "version": "28.1-83040",
+      "sha256": "277b1e97298a19449800498d9d7cdac6f7b5a6a86f26390a7cb104049011c6aa",
+      "bytes": 4698656,
+      "complete": true,
+      "manifest": "raw/connectx-28.1-83040-277b1e97298a1944.json",
+      "extraction_asset": "connectx-28.1-83040-277b1e97298a1944-extracted.tar.xz",
+      "extraction_sha256": "456754ed86a0a3ea4cdebaeb83e43f37725895d32349e85f53dc26578204a9d1"
+    },
+    {
+      "id": "connectx-34.16-37101-ccbb884d22a6dcca",
+      "version": "34.16-37101",
+      "sha256": "ccbb884d22a6dccae2c7dcdf9ecacb6a9217a5439a5f9b74a10e2598eb719e42",
+      "bytes": 5014032,
+      "complete": true,
+      "manifest": "raw/connectx-34.16-37101-ccbb884d22a6dcca.json",
+      "extraction_asset": "connectx-34.16-37101-ccbb884d22a6dcca-extracted.tar.xz",
+      "extraction_sha256": "5c79b70597842b5f7091163d9cc570001873f34291bd0851aeb4fc71d76f8d78"
+    },
+    {
+      "id": "connectx-55.1-74250-d9e593b1535dcf12",
+      "version": "55.1-74250",
+      "sha256": "d9e593b1535dcf12e63bf816c78a476953a1c24004c0f9076dd0f7ec4b1c0975",
+      "bytes": 5682418,
+      "complete": true,
+      "manifest": "raw/connectx-55.1-74250-d9e593b1535dcf12.json",
+      "extraction_asset": "connectx-55.1-74250-d9e593b1535dcf12-extracted.tar.xz",
+      "extraction_sha256": "ee462ab12038a5e7d075b5bb1867d059d180c29e7de4946159098738b43b3c25"
+    },
+    {
+      "id": "connectx-57.14-37030-ac45e96627c1febf",
+      "version": "57.14-37030",
+      "sha256": "ac45e96627c1febff9b980de21689b6eb52847fe4a6f01244276fd7a30f2285a",
+      "bytes": 5861497,
+      "complete": true,
+      "manifest": "raw/connectx-57.14-37030-ac45e96627c1febf.json",
+      "extraction_asset": "connectx-57.14-37030-ac45e96627c1febf-extracted.tar.xz",
+      "extraction_sha256": "a066a29c9a87cab24fe46336b46470d19581e7c1868f5adc530aa2456fb8f893"
+    },
+    {
+      "id": "connectx-57.15-39070-6437f387a6f38606",
+      "version": "57.15-39070",
+      "sha256": "6437f387a6f38606366b858eb74ec66488bcd708954719250adf1c444c72a95e",
+      "bytes": 5861514,
+      "complete": true,
+      "manifest": "raw/connectx-57.15-39070-6437f387a6f38606.json",
+      "extraction_asset": "connectx-57.15-39070-6437f387a6f38606-extracted.tar.xz",
+      "extraction_sha256": "be0f5f53aea25af7b209a4ce8b03b6ce3d80764440d3acea824de72f8c2d125a"
+    },
+    {
+      "id": "connectx-57.18-44230-f719b3ac6d1499ea",
+      "version": "57.18-44230",
+      "sha256": "f719b3ac6d1499ea28b5831ab4d34274169bc063aedcca16413dad4175f55766",
+      "bytes": 5869706,
+      "complete": true,
+      "manifest": "raw/connectx-57.18-44230-f719b3ac6d1499ea.json",
+      "extraction_asset": "connectx-57.18-44230-f719b3ac6d1499ea-extracted.tar.xz",
+      "extraction_sha256": "e2a58634b62ee6d4f5fc198caa6f28fc063de78cbd28e5bd8da5ccb80accfdd4"
+    },
+    {
+      "id": "connectx-57.18-45134-f22efab5658ffbe5",
+      "version": "57.18-45134",
+      "sha256": "f22efab5658ffbe575f9f62cfae9ea6fa613f3882168c56d16e48a944ea3b660",
+      "bytes": 5869706,
+      "complete": true,
+      "manifest": "raw/connectx-57.18-45134-f22efab5658ffbe5.json",
+      "extraction_asset": "connectx-57.18-45134-f22efab5658ffbe5-extracted.tar.xz",
+      "extraction_sha256": "543fb08b92b04c40bcab984424faa211aad3ccd6db913cc38bd6d7d8909dc952"
+    },
+    {
+      "id": "connectx-57.19-46310-2d7bfe64d6a0bda0",
+      "version": "57.19-46310",
+      "sha256": "2d7bfe64d6a0bda015600fbd537e55b5ccab543e07445173b4952e3fa809fd45",
+      "bytes": 5873802,
+      "complete": true,
+      "manifest": "raw/connectx-57.19-46310-2d7bfe64d6a0bda0.json",
+      "extraction_asset": "connectx-57.19-46310-2d7bfe64d6a0bda0-extracted.tar.xz",
+      "extraction_sha256": "ba17aa8e9eba08e350655610da9958a5e77ed92b899b0785cf61ea8d563f79c3"
+    },
+    {
+      "id": "connectx-57.21-50280-5cb98969f2663a4a",
+      "version": "57.21-50280",
+      "sha256": "5cb98969f2663a4a48667049aee41d00f20374a527a757e5a49a3edcab6178fc",
+      "bytes": 5872972,
+      "complete": true,
+      "manifest": "raw/connectx-57.21-50280-5cb98969f2663a4a.json",
+      "extraction_asset": "connectx-57.21-50280-5cb98969f2663a4a-extracted.tar.xz",
+      "extraction_sha256": "e83e36cd23895a521c97ec74e4e12aaafb5702ab556ae3941bc783b88810d174"
+    },
+    {
+      "id": "connectx-57.21-51190-3515340c566569d7",
+      "version": "57.21-51190",
+      "sha256": "3515340c566569d7f6b73985aec1a5cba0aba01088e27aa3764e99bd4d095c2b",
+      "bytes": 5872972,
+      "complete": true,
+      "manifest": "raw/connectx-57.21-51190-3515340c566569d7.json",
+      "extraction_asset": "connectx-57.21-51190-3515340c566569d7-extracted.tar.xz",
+      "extraction_sha256": "9a6892f27c080b9ee7c1c6f65674be929eff093200c611dc21aa8c4b4aee2428"
+    },
+    {
+      "id": "connectx-57.22-59130-590548cdc2dbea0c",
+      "version": "57.22-59130",
+      "sha256": "590548cdc2dbea0c300b8f0877b97b5ec61d65a75a8c2e2f61a3ee29961d12a3",
+      "bytes": 5872972,
+      "complete": true,
+      "manifest": "raw/connectx-57.22-59130-590548cdc2dbea0c.json",
+      "extraction_asset": "connectx-57.22-59130-590548cdc2dbea0c-extracted.tar.xz",
+      "extraction_sha256": "334b25c3d877308d781c854cf7d0cd6cb6c19922f7c7b088872119cdb6524009"
+    },
+    {
+      "id": "connectx-57.22-63071-414dacc2f1999e02",
+      "version": "57.22-63071",
+      "sha256": "414dacc2f1999e024d3e2e20fe510e19c7c32ad1c7f44bd2bea0038f15226905",
+      "bytes": 5872989,
+      "complete": true,
+      "manifest": "raw/connectx-57.22-63071-414dacc2f1999e02.json",
+      "extraction_asset": "connectx-57.22-63071-414dacc2f1999e02-extracted.tar.xz",
+      "extraction_sha256": "5ea698c495667a4fc55ab987ac1c9614a9a16829332773bb5e48ac2547ab0046"
+    },
+    {
+      "id": "connectx-57.22-65130-3701eb66136ee1b9",
+      "version": "57.22-65130",
+      "sha256": "3701eb66136ee1b9150daa3eed1cc62642981ab0736a92f9ba71db52d96158ab",
+      "bytes": 5872989,
+      "complete": true,
+      "manifest": "raw/connectx-57.22-65130-3701eb66136ee1b9.json",
+      "extraction_asset": "connectx-57.22-65130-3701eb66136ee1b9-extracted.tar.xz",
+      "extraction_sha256": "1f9c5702de7f6258efae428da9f89966a67da07d53e9aff3b1bc347c81c26d6c"
+    },
+    {
+      "id": "connectx-57.22-67080-aca4ba9a3b9847cc",
+      "version": "57.22-67080",
+      "sha256": "aca4ba9a3b9847cc4c7a845d801b59abe0b88eba211883409cfb69a6a65e9192",
+      "bytes": 5872989,
+      "complete": true,
+      "manifest": "raw/connectx-57.22-67080-aca4ba9a3b9847cc.json",
+      "extraction_asset": "connectx-57.22-67080-aca4ba9a3b9847cc-extracted.tar.xz",
+      "extraction_sha256": "3f703e0ab4bd71ff99999a06a865ac61e8add9ff0e71dfaf6d69347e600ddca7"
+    },
+    {
+      "id": "connectx-57.23-74170-aad8981038e71e86",
+      "version": "57.23-74170",
+      "sha256": "aad8981038e71e868bf71c78e26a88493e443cd1bec2d80066412738d4631830",
+      "bytes": 5872989,
+      "complete": true,
+      "manifest": "raw/connectx-57.23-74170-aad8981038e71e86.json",
+      "extraction_asset": "connectx-57.23-74170-aad8981038e71e86-extracted.tar.xz",
+      "extraction_sha256": "1b6f0cea61b74c5b6664b4605b8ff2a65cb98131fb633d69ff9fec1656bfc09b"
+    },
+    {
+      "id": "connectx-57.5-87010-aee5fdd3f52393d6",
+      "version": "57.5-87010",
+      "sha256": "aee5fdd3f52393d6eb19edcc747a2f028ffc0a89bce2364a41202d856545040e",
+      "bytes": 5715186,
+      "complete": true,
+      "manifest": "raw/connectx-57.5-87010-aee5fdd3f52393d6.json",
+      "extraction_asset": "connectx-57.5-87010-aee5fdd3f52393d6-extracted.tar.xz",
+      "extraction_sha256": "0642e69c6b916f79f8f7685645011c3a76d4d523822362006f206d3ab4bed379"
+    },
+    {
+      "id": "connectx-57.9-23010-7a46272c17dd5e89",
+      "version": "57.9-23010",
+      "sha256": "7a46272c17dd5e895f374c180f52633248da7f082a037ace922ea7b6344efbf2",
+      "bytes": 5719282,
+      "complete": true,
+      "manifest": "raw/connectx-57.9-23010-7a46272c17dd5e89.json",
+      "extraction_asset": "connectx-57.9-23010-7a46272c17dd5e89-extracted.tar.xz",
+      "extraction_sha256": "8bd62247d8bd3758760be6f0dbec2c1cf42ad8daad2d19aa32c50aa581b1dfd6"
+    },
+    {
+      "id": "connectx-62.1-86220-fd0ebfada4541f74",
+      "version": "62.1-86220",
+      "sha256": "fd0ebfada4541f745df1d2c6d511a3e397be2cbd79bf02250dff7e749d2922fb",
+      "bytes": 6534386,
+      "complete": true,
+      "manifest": "raw/connectx-62.1-86220-fd0ebfada4541f74.json",
+      "extraction_asset": "connectx-62.1-86220-fd0ebfada4541f74-extracted.tar.xz",
+      "extraction_sha256": "17a1109f6e3c265fff9d720b19de5505468517ab5d2d0800c9788c3155e47d17"
+    },
+    {
+      "id": "connectx-63.2-90210-f3941376658fb55e",
+      "version": "63.2-90210",
+      "sha256": "f3941376658fb55eebc934935466bc08c37ac67954dfaf972c1572e6e41b568b",
+      "bytes": 6702322,
+      "complete": true,
+      "manifest": "raw/connectx-63.2-90210-f3941376658fb55e.json",
+      "extraction_asset": "connectx-63.2-90210-f3941376658fb55e-extracted.tar.xz",
+      "extraction_sha256": "3b8b5865d38eb59f47274f557021428b23b878cba99e3159eafd2b339b31a7fb"
+    },
+    {
+      "id": "connectx-64.3-19080-cf8432ad4062fd0f",
+      "version": "64.3-19080",
+      "sha256": "cf8432ad4062fd0f7704efe2cc12e111294901503639fa78600922b7737a6b86",
+      "bytes": 6718706,
+      "complete": true,
+      "manifest": "raw/connectx-64.3-19080-cf8432ad4062fd0f.json",
+      "extraction_asset": "connectx-64.3-19080-cf8432ad4062fd0f-extracted.tar.xz",
+      "extraction_sha256": "7bc696443f4549c6bb6d0f60b64e8edd5253345a9f1fddd5f9c1117b4e5e706c"
+    },
+    {
+      "id": "connectx-65.1-21040-b0f8e1fc887ada8b",
+      "version": "65.1-21040",
+      "sha256": "b0f8e1fc887ada8b88384e981b7446b371c7811c74383de957f128b105304c58",
+      "bytes": 6739186,
+      "complete": true,
+      "manifest": "raw/connectx-65.1-21040-b0f8e1fc887ada8b.json",
+      "extraction_asset": "connectx-65.1-21040-b0f8e1fc887ada8b-extracted.tar.xz",
+      "extraction_sha256": "a13f07a861dcfee67a535d8a81ab26207e38c651e25804bced543af93f91cd19"
+    },
+    {
+      "id": "connectx-66.4-23090-931535498363a750",
+      "version": "66.4-23090",
+      "sha256": "931535498363a7503c04b06e0ab84a03991cd8cade59f64d0fbb9921946661e1",
+      "bytes": 6739186,
+      "complete": true,
+      "manifest": "raw/connectx-66.4-23090-931535498363a750.json",
+      "extraction_asset": "connectx-66.4-23090-931535498363a750-extracted.tar.xz",
+      "extraction_sha256": "76125ea2003ee7995d9c6a71c6ad3d07a1bfd2f710cef3c9427f50d953359093"
+    },
+    {
+      "id": "connectx-67.1-27100-e2d41a1767be3846",
+      "version": "67.1-27100",
+      "sha256": "e2d41a1767be384671cc417c659633cb9914805f3cfd393fa4ec1f3bd01f07e1",
+      "bytes": 8503177,
+      "complete": true,
+      "manifest": "raw/connectx-67.1-27100-e2d41a1767be3846.json",
+      "extraction_asset": "connectx-67.1-27100-e2d41a1767be3846-extracted.tar.xz",
+      "extraction_sha256": "cafa9d75b5a244ed30013768480d8a7c5f43b197b91050e51b21d403eb8089fa"
+    },
+    {
+      "id": "connectx-68.2-28040-00600526018d2e13",
+      "version": "68.2-28040",
+      "sha256": "00600526018d2e13329f720b2e4dbc41d8e5ab825515f057e54e0f0018575fdd",
+      "bytes": 8499098,
+      "complete": true,
+      "manifest": "raw/connectx-68.2-28040-00600526018d2e13.json",
+      "extraction_asset": "connectx-68.2-28040-00600526018d2e13-extracted.tar.xz",
+      "extraction_sha256": "64f73b6460ea3dac70a3c85d25cad166765e132ccc5c8ad0e56e7582ea7cd16d"
+    },
+    {
+      "id": "connectx-70.1-34112-1f4be4c0fec2c130",
+      "version": "70.1-34112",
+      "sha256": "1f4be4c0fec2c130ea9e5915c94b9acdaca5f83f59b16a5e39585030a0b72ce4",
+      "bytes": 8847658,
+      "complete": true,
+      "manifest": "raw/connectx-70.1-34112-1f4be4c0fec2c130.json",
+      "extraction_asset": "connectx-70.1-34112-1f4be4c0fec2c130-extracted.tar.xz",
+      "extraction_sha256": "57177af84922fc68b64912863f5ea9f981cb9905a9eee71a5af459f4044b92e1"
+    },
+    {
+      "id": "connectx-70.3-35070-e48c8676974d6913",
+      "version": "70.3-35070",
+      "sha256": "e48c8676974d69131b7b44158e44266f8625d45d5bee21a9de8a3a4391a28335",
+      "bytes": 9990682,
+      "complete": true,
+      "manifest": "raw/connectx-70.3-35070-e48c8676974d6913.json",
+      "extraction_asset": "connectx-70.3-35070-e48c8676974d6913-extracted.tar.xz",
+      "extraction_sha256": "249f532f86c5c0cd75cee8dc0cd86d84a7881beb60a0814767afd776e9281cde"
+    },
+    {
+      "id": "connectx-73.0-41050-236d273d543b97c0",
+      "version": "73.0-41050",
+      "sha256": "236d273d543b97c0cef396bfe8c0600ac40a43d8574d409eea4d1befea34ce98",
+      "bytes": 10433849,
+      "complete": true,
+      "manifest": "raw/connectx-73.0-41050-236d273d543b97c0.json",
+      "extraction_asset": "connectx-73.0-41050-236d273d543b97c0-extracted.tar.xz",
+      "extraction_sha256": "466c876f4b750db309704670039ebcd0cfa0f22edfd53b39772de63c45801b61"
+    },
+    {
+      "id": "connectx-73.0-42060-c6f85eedb24ab648",
+      "version": "73.0-42060",
+      "sha256": "c6f85eedb24ab648875ff5235797e907064db7aa5193ed4e9577cab3e4a0b751",
+      "bytes": 10442073,
+      "complete": true,
+      "manifest": "raw/connectx-73.0-42060-c6f85eedb24ab648.json",
+      "extraction_asset": "connectx-73.0-42060-c6f85eedb24ab648-extracted.tar.xz",
+      "extraction_sha256": "508f969c5228b8076cf739387c99bc53c24928f546a272a64df88102db8dadc9"
+    },
+    {
+      "id": "connectx-74.0-43110-10dd27ec816f1cb1",
+      "version": "74.0-43110",
+      "sha256": "10dd27ec816f1cb11fab71fe9fefce451b00dc8587816527753c42ac82c4c038",
+      "bytes": 17261897,
+      "complete": true,
+      "manifest": "raw/connectx-74.0-43110-10dd27ec816f1cb1.json",
+      "extraction_asset": "connectx-74.0-43110-10dd27ec816f1cb1-extracted.tar.xz",
+      "extraction_sha256": "b3b0fdbd8f3e0ffb73d85026ba4fbfea134e1fbf7ddf26ba4cd6ccce9711c631"
+    },
+    {
+      "id": "connectx-75.1-46030-dc4a9f0d24e7b76f",
+      "version": "75.1-46030",
+      "sha256": "dc4a9f0d24e7b76f3b0ea24ee704e43fd5de5ccaa7a8a10c71181a47da54d2ec",
+      "bytes": 18670924,
+      "complete": true,
+      "manifest": "raw/connectx-75.1-46030-dc4a9f0d24e7b76f.json",
+      "extraction_asset": "connectx-75.1-46030-dc4a9f0d24e7b76f-extracted.tar.xz",
+      "extraction_sha256": "ece4187bac155b88397557cf72085d7799ac9f6e8fac91c90b9cefaf6708f78b"
+    },
+    {
+      "id": "connectx-76.2-47270-856a9cafa3b46b23",
+      "version": "76.2-47270",
+      "sha256": "856a9cafa3b46b236d76177a273378e03597e4070437c1037a4f6ce4fce25d73",
+      "bytes": 19322684,
+      "complete": true,
+      "manifest": "raw/connectx-76.2-47270-856a9cafa3b46b23.json",
+      "extraction_asset": "connectx-76.2-47270-856a9cafa3b46b23-extracted.tar.xz",
+      "extraction_sha256": "cd6f72392d02dfd1f6a28849426691b3cbb37cfbabec773b43a658f2081315e3"
+    },
+    {
+      "id": "connectx-77.4-49290-d1fe5bc1df093575",
+      "version": "77.4-49290",
+      "sha256": "d1fe5bc1df093575f6ab2311cefbece2954917c7f321836f588bd6e336b6c862",
+      "bytes": 17576456,
+      "complete": true,
+      "manifest": "raw/connectx-77.4-49290-d1fe5bc1df093575.json",
+      "extraction_asset": "connectx-77.4-49290-d1fe5bc1df093575-extracted.tar.xz",
+      "extraction_sha256": "a3edaa75c3b668f8aaf4aa2b6da50020f3b6d7d222e4d0099ca9e4dbc6d492d2"
+    },
+    {
+      "id": "connectx-78.1-51030-f9b2af4c8f45d9f5",
+      "version": "78.1-51030",
+      "sha256": "f9b2af4c8f45d9f50964bde10bbfa8da602c72561f9108c092c8581129fbc870",
+      "bytes": 17889816,
+      "complete": true,
+      "manifest": "raw/connectx-78.1-51030-f9b2af4c8f45d9f5.json",
+      "extraction_asset": "connectx-78.1-51030-f9b2af4c8f45d9f5-extracted.tar.xz",
+      "extraction_sha256": "034a33bac28e0ec2b21adbdc2e0cc3cc1cd5bd103323cfd2226f49584a6bdebc"
+    },
+    {
+      "id": "connectx-78.1-51070-3dedd0b7756f0a4d",
+      "version": "78.1-51070",
+      "sha256": "3dedd0b7756f0a4dd1a820fe91622bbf2a215e2e0f2611b84e7a9c0857c868f7",
+      "bytes": 17889816,
+      "complete": true,
+      "manifest": "raw/connectx-78.1-51070-3dedd0b7756f0a4d.json",
+      "extraction_asset": "connectx-78.1-51070-3dedd0b7756f0a4d-extracted.tar.xz",
+      "extraction_sha256": "4deae119acd5fed16465b9b724e22542a6e09d3e1e3e3d32d6530e0b3a0e0801"
+    },
+    {
+      "id": "connectx-79.0-52294-2a6f4e937fdf5e57",
+      "version": "79.0-52294",
+      "sha256": "2a6f4e937fdf5e57191f1017ee0d371d2b496acf08ffb46e42c5fc4f8cf90502",
+      "bytes": 18164312,
+      "complete": true,
+      "manifest": "raw/connectx-79.0-52294-2a6f4e937fdf5e57.json",
+      "extraction_asset": "connectx-79.0-52294-2a6f4e937fdf5e57-extracted.tar.xz",
+      "extraction_sha256": "da9c6a3c52fa11cbd572862fceaaf519d438c4dfdd590db2e863f7d96af235d5"
+    },
+    {
+      "id": "connectx-79.1-53290-241527e68f77f299",
+      "version": "79.1-53290",
+      "sha256": "241527e68f77f2995d4f4d7e564eac7bb42745d8ba55476405cda65cd3526586",
+      "bytes": 18164312,
+      "complete": true,
+      "manifest": "raw/connectx-79.1-53290-241527e68f77f299.json",
+      "extraction_asset": "connectx-79.1-53290-241527e68f77f299-extracted.tar.xz",
+      "extraction_sha256": "6daac96166945e9d28f94faab6eafbef909ed96e50f3ca1193e628115e64dc21"
+    },
+    {
+      "id": "connectx-80.1-55014-1e6f6999e3c9630b",
+      "version": "80.1-55014",
+      "sha256": "1e6f6999e3c9630b3f5af851c5d0aa819bbeafb717c4afeade0f36ab4592cfc8",
+      "bytes": 18686552,
+      "complete": true,
+      "manifest": "raw/connectx-80.1-55014-1e6f6999e3c9630b.json",
+      "extraction_asset": "connectx-80.1-55014-1e6f6999e3c9630b-extracted.tar.xz",
+      "extraction_sha256": "420335d9978fb7e81c57b30db85c2d8334443b5207a2714ddcb5db385e2834cb"
+    },
+    {
+      "id": "connectx-80.1-55240-2d2a0dce7371d48b",
+      "version": "80.1-55240",
+      "sha256": "2d2a0dce7371d48b87b91f72c76cd1a15e028a39f68d776f92a4719af2c84683",
+      "bytes": 18758264,
+      "complete": true,
+      "manifest": "raw/connectx-80.1-55240-2d2a0dce7371d48b.json",
+      "extraction_asset": "connectx-80.1-55240-2d2a0dce7371d48b-extracted.tar.xz",
+      "extraction_sha256": "f35a754e0780290530040342176916f95401a994c45e786ef703465c073793ff"
+    },
+    {
+      "id": "connectx-80.1-56190-827fd85730ce2945",
+      "version": "80.1-56190",
+      "sha256": "827fd85730ce29458adb6d7473e1681231c433559f2f79302e9ca79f450ec9d6",
+      "bytes": 18758264,
+      "complete": true,
+      "manifest": "raw/connectx-80.1-56190-827fd85730ce2945.json",
+      "extraction_asset": "connectx-80.1-56190-827fd85730ce2945-extracted.tar.xz",
+      "extraction_sha256": "4785ec2398b178f0fb18ca24a4dd7b0adc868d83975984f899fc11be9b210437"
+    },
+    {
+      "id": "connectx-81.1-58074-7d4f38b2284886af",
+      "version": "81.1-58074",
+      "sha256": "7d4f38b2284886af88bd75a25bf7bc2bb9ed228a16c1caa85cf07acd4f21d1ae",
+      "bytes": 19026536,
+      "complete": true,
+      "manifest": "raw/connectx-81.1-58074-7d4f38b2284886af.json",
+      "extraction_asset": "connectx-81.1-58074-7d4f38b2284886af-extracted.tar.xz",
+      "extraction_sha256": "a5bd933beea7efd8c4c0a2014154c52b1b96442942009abb5cc7a9f23b30a4e9"
+    },
+    {
+      "id": "connectx-81.1-58210-2aedaa152a0a3997",
+      "version": "81.1-58210",
+      "sha256": "2aedaa152a0a399754659851d8dce3e725c49153e91fe898f77751120a91ace5",
+      "bytes": 19026536,
+      "complete": true,
+      "manifest": "raw/connectx-81.1-58210-2aedaa152a0a3997.json",
+      "extraction_asset": "connectx-81.1-58210-2aedaa152a0a3997-extracted.tar.xz",
+      "extraction_sha256": "60d4eb93bf1427429e37556fd337909dea3bf78559471edffcf4164e52688835"
+    },
+    {
+      "id": "connectx-82.2-59204-368df5f08fd7e2d3",
+      "version": "82.2-59204",
+      "sha256": "368df5f08fd7e2d37f3f0595d19d288e5b3fa081b25a4eefa55017eef7ab96c0",
+      "bytes": 19022424,
+      "complete": true,
+      "manifest": "raw/connectx-82.2-59204-368df5f08fd7e2d3.json",
+      "extraction_asset": "connectx-82.2-59204-368df5f08fd7e2d3-extracted.tar.xz",
+      "extraction_sha256": "8e47bf8a463071be4b0a0ef52161da1fa36553c4e64905268bbd221d7fee0a35"
+    },
+    {
+      "id": "connectx-82.3-60160-5f2c6aa7d74a0dfb",
+      "version": "82.3-60160",
+      "sha256": "5f2c6aa7d74a0dfb5d6ea87fd79c4b70e91011f0ada789851e4dab962512b18a",
+      "bytes": 19022440,
+      "complete": true,
+      "manifest": "raw/connectx-82.3-60160-5f2c6aa7d74a0dfb.json",
+      "extraction_asset": "connectx-82.3-60160-5f2c6aa7d74a0dfb-extracted.tar.xz",
+      "extraction_sha256": "0ac10cd0c6522f82fbf4e209e24e50b2b58e5cbf2411999d55372b37fd969d75"
+    },
+    {
+      "id": "connectx-83.1-61210-289f90a704b902a4",
+      "version": "83.1-61210",
+      "sha256": "289f90a704b902a44c56846fceae00e27e41fd7c24eaf48e4b28cb01dceb7240",
+      "bytes": 19354200,
+      "complete": true,
+      "manifest": "raw/connectx-83.1-61210-289f90a704b902a4.json",
+      "extraction_asset": "connectx-83.1-61210-289f90a704b902a4-extracted.tar.xz",
+      "extraction_sha256": "61424a7cc3e607f8471db848a62419ceb2e0a9a6fe50db54776c9fb528a5b3fa"
+    },
+    {
+      "id": "connectx-84.1-63110-062d66ce10565f79",
+      "version": "84.1-63110",
+      "sha256": "062d66ce10565f79afe4c98d9a77e35415559dd1e8eb5e6cd69c146d8cc6b7b9",
+      "bytes": 19624553,
+      "complete": true,
+      "manifest": "raw/connectx-84.1-63110-062d66ce10565f79.json",
+      "extraction_asset": "connectx-84.1-63110-062d66ce10565f79-extracted.tar.xz",
+      "extraction_sha256": "712c19501b9e4f31b52019de2c2443451034aa73f5e17e29256cf693bdbba014"
+    },
+    {
+      "id": "connectx-85.0-64200-35043877565d6e1d",
+      "version": "85.0-64200",
+      "sha256": "35043877565d6e1ddcd0b661a3c9b35a8c7810a68f27a61b5b4f7335da48a630",
+      "bytes": 19753593,
+      "complete": true,
+      "manifest": "raw/connectx-85.0-64200-35043877565d6e1d.json",
+      "extraction_asset": "connectx-85.0-64200-35043877565d6e1d-extracted.tar.xz",
+      "extraction_sha256": "16384ec2dfdda22ae2d5437922110d87abe6f69f698f75024fd1fac0bda1469e"
+    },
+    {
+      "id": "connectx-86.1-68260-b42b1f5f9445c126",
+      "version": "86.1-68260",
+      "sha256": "b42b1f5f9445c12658fc0187dc01621cc6b994208c793e4a8bd1ecf9ccbdb99b",
+      "bytes": 19121881,
+      "complete": true,
+      "manifest": "raw/connectx-86.1-68260-b42b1f5f9445c126.json",
+      "extraction_asset": "connectx-86.1-68260-b42b1f5f9445c126-extracted.tar.xz",
+      "extraction_sha256": "ddc8a548331abdc21bc7204f37ab16b608c853ab74565d1792c2aa298314ed0b"
+    },
+    {
+      "id": "connectx-86.10-80260-f89815256d311abb",
+      "version": "86.10-80260",
+      "sha256": "f89815256d311abb6d4f87a1663309fb857342772a63ac62192cb1f4734b29b5",
+      "bytes": 20705129,
+      "complete": true,
+      "manifest": "raw/connectx-86.10-80260-f89815256d311abb.json",
+      "extraction_asset": "connectx-86.10-80260-f89815256d311abb-extracted.tar.xz",
+      "extraction_sha256": "d460d4aeb90860dd60ded0ab75a84f9e8a79bab61c976d9fe87ce876b55e16f6"
+    },
+    {
+      "id": "connectx-86.10-81100-ce3733fa8174d948",
+      "version": "86.10-81100",
+      "sha256": "ce3733fa8174d948d1e8b05a5680e9d93784c640349d81069b6c8586209fd75f",
+      "bytes": 20705129,
+      "complete": true,
+      "manifest": "raw/connectx-86.10-81100-ce3733fa8174d948.json",
+      "extraction_asset": "connectx-86.10-81100-ce3733fa8174d948-extracted.tar.xz",
+      "extraction_sha256": "51ec5bec1533493befbc6b7da0b781f96178a689231bef8be11b8dd4b9a3fa33"
+    },
+    {
+      "id": "connectx-86.11-82170-2808a492a6758010",
+      "version": "86.11-82170",
+      "sha256": "2808a492a67580101cc3521f051cd4de29652c3c1c4f2781a2463edd4265f5a8",
+      "bytes": 20897305,
+      "complete": true,
+      "manifest": "raw/connectx-86.11-82170-2808a492a6758010.json",
+      "extraction_asset": "connectx-86.11-82170-2808a492a6758010-extracted.tar.xz",
+      "extraction_sha256": "587f2a7e1233483415fb991b238fa1c239c6e2a54fea425cc59700c6f1b77844"
+    },
+    {
+      "id": "connectx-86.2-70230-ebfa48246b64c913",
+      "version": "86.2-70230",
+      "sha256": "ebfa48246b64c913b2cf16ccc564f4a6a82eae6db0bd0936e7aba976535ae748",
+      "bytes": 19121849,
+      "complete": true,
+      "manifest": "raw/connectx-86.2-70230-ebfa48246b64c913.json",
+      "extraction_asset": "connectx-86.2-70230-ebfa48246b64c913-extracted.tar.xz",
+      "extraction_sha256": "670ca97a38250d02ea2d1b0547a05a2b7868b8423941980814e02089fcdc3a6c"
+    },
+    {
+      "id": "connectx-86.4-73207-5e4c5bf49d02a9c6",
+      "version": "86.4-73207",
+      "sha256": "5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a",
+      "bytes": 19697417,
+      "complete": true,
+      "manifest": "raw/connectx-86.4-73207-5e4c5bf49d02a9c6.json",
+      "extraction_asset": "connectx-86.4-73207-5e4c5bf49d02a9c6-extracted.tar.xz",
+      "extraction_sha256": "10d2f7b8bc665db0885eb3c841d65b42472396a7e447f2a02f41aae868a9fed0"
+    },
+    {
+      "id": "connectx-86.6-75110-bf8cab3409e6c85a",
+      "version": "86.6-75110",
+      "sha256": "bf8cab3409e6c85ae1c4e98e3d707dd2f7952a55803bdf7c8dbaad99889a64ae",
+      "bytes": 20369145,
+      "complete": true,
+      "manifest": "raw/connectx-86.6-75110-bf8cab3409e6c85a.json",
+      "extraction_asset": "connectx-86.6-75110-bf8cab3409e6c85a-extracted.tar.xz",
+      "extraction_sha256": "97948cc30c8c1970e07de9b72d2b6d3c1674bed734dbf2aeb6f07423fca2d9f1"
+    },
+    {
+      "id": "connectx-86.7-77050-3f57dff7df0acdba",
+      "version": "86.7-77050",
+      "sha256": "3f57dff7df0acdba9f7c9936037a5e216ba58d67a95c999b1bf8bc5ff443a851",
+      "bytes": 20429577,
+      "complete": true,
+      "manifest": "raw/connectx-86.7-77050-3f57dff7df0acdba.json",
+      "extraction_asset": "connectx-86.7-77050-3f57dff7df0acdba-extracted.tar.xz",
+      "extraction_sha256": "cbbfbca103bd55c766cbedae23b0e1b7acdfbfb673a2410b578d3daa68d78951"
+    },
+    {
+      "id": "connectx-86.8-78270-48ea99b5528d1dea",
+      "version": "86.8-78270",
+      "sha256": "48ea99b5528d1dead3ba7f87dcabb93237ac29650f3a2b50207ff990030a5a79",
+      "bytes": 20705129,
+      "complete": true,
+      "manifest": "raw/connectx-86.8-78270-48ea99b5528d1dea.json",
+      "extraction_asset": "connectx-86.8-78270-48ea99b5528d1dea-extracted.tar.xz",
+      "extraction_sha256": "005f8b1eddaea33854f7caac0e000fdcf974cb8f8d839b37824cbe591fee6a7a"
+    }
+  ],
+  "sources": {
+    "https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd": {
+      "version": "86.4-73207",
+      "sha256": "5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a"
+    },
+    "https://update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83040-1-17.upd": {
+      "version": "28.1-83040",
+      "sha256": "277b1e97298a19449800498d9d7cdac6f7b5a6a86f26390a7cb104049011c6aa"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd": {
+      "version": "34.16-37101",
+      "sha256": "ccbb884d22a6dccae2c7dcdf9ecacb6a9217a5439a5f9b74a10e2598eb719e42"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-17.upd": {
+      "version": "55.1-74250",
+      "sha256": "d9e593b1535dcf12e63bf816c78a476953a1c24004c0f9076dd0f7ec4b1c0975"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.14-37030-v11.7-oxmdyztc-GA-1/57.14-37030-1-17.upd": {
+      "version": "57.14-37030",
+      "sha256": "ac45e96627c1febff9b980de21689b6eb52847fe4a6f01244276fd7a30f2285a"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.15-39070-v11.8-vghahcgk-GA-1/57.15-39070-1-17.upd": {
+      "version": "57.15-39070",
+      "sha256": "6437f387a6f38606366b858eb74ec66488bcd708954719250adf1c444c72a95e"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-17.upd": {
+      "version": "57.19-46310",
+      "sha256": "2d7bfe64d6a0bda015600fbd537e55b5ccab543e07445173b4952e3fa809fd45"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.22-59130-v11.15-72ynP0v9lu-GA-2/57.22-59130-1-17.upd": {
+      "version": "57.22-59130",
+      "sha256": "590548cdc2dbea0c300b8f0877b97b5ec61d65a75a8c2e2f61a3ee29961d12a3"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.22-63071-v11.15.3-pkAzZSYXYB-SP-4/57.22-63071-1-17.upd": {
+      "version": "57.22-63071",
+      "sha256": "414dacc2f1999e024d3e2e20fe510e19c7c32ad1c7f44bd2bea0038f15226905"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-17.upd": {
+      "version": "57.22-65130",
+      "sha256": "3701eb66136ee1b9150daa3eed1cc62642981ab0736a92f9ba71db52d96158ab"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-17.upd": {
+      "version": "57.22-67080",
+      "sha256": "aca4ba9a3b9847cc4c7a845d801b59abe0b88eba211883409cfb69a6a65e9192"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/57.23-74170-1-17.upd": {
+      "version": "57.23-74170",
+      "sha256": "aad8981038e71e868bf71c78e26a88493e443cd1bec2d80066412738d4631830"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-17.upd": {
+      "version": "57.5-87010",
+      "sha256": "aee5fdd3f52393d6eb19edcc747a2f028ffc0a89bce2364a41202d856545040e"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-17.upd": {
+      "version": "57.9-23010",
+      "sha256": "7a46272c17dd5e895f374c180f52633248da7f082a037ace922ea7b6344efbf2"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/62.1-86220-v13.0-mtbvge-GA-1/62.1-86220-1-17.upd": {
+      "version": "62.1-86220",
+      "sha256": "fd0ebfada4541f745df1d2c6d511a3e397be2cbd79bf02250dff7e749d2922fb"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/64.3-19080-1-17.upd": {
+      "version": "64.3-19080",
+      "sha256": "cf8432ad4062fd0f7704efe2cc12e111294901503639fa78600922b7737a6b86"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/65.1-21040-v13.3-maswnk-GA-1/65.1-21040-1-17.upd": {
+      "version": "65.1-21040",
+      "sha256": "b0f8e1fc887ada8b88384e981b7446b371c7811c74383de957f128b105304c58"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/66.4-23090-v13.4-xgqmdq-GA-1/66.4-23090-1-17.upd": {
+      "version": "66.4-23090",
+      "sha256": "931535498363a7503c04b06e0ab84a03991cd8cade59f64d0fbb9921946661e1"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/67.1-27100-v14.4-bjaiyg-GA-1/67.1-27100-1-17.upd": {
+      "version": "67.1-27100",
+      "sha256": "e2d41a1767be384671cc417c659633cb9914805f3cfd393fa4ec1f3bd01f07e1"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-17.upd": {
+      "version": "73.0-42060",
+      "sha256": "c6f85eedb24ab648875ff5235797e907064db7aa5193ed4e9577cab3e4a0b751"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-17.upd": {
+      "version": "76.2-47270",
+      "sha256": "856a9cafa3b46b236d76177a273378e03597e4070437c1037a4f6ce4fce25d73"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-17.upd": {
+      "version": "80.1-55014",
+      "sha256": "1e6f6999e3c9630b3f5af851c5d0aa819bbeafb717c4afeade0f36ab4592cfc8"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-17.upd": {
+      "version": "80.1-56190",
+      "sha256": "827fd85730ce29458adb6d7473e1681231c433559f2f79302e9ca79f450ec9d6"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/81.1-58074-v16.4.2-R3MV5bKh64-GA-1/81.1-58074-1-17.upd": {
+      "version": "81.1-58074",
+      "sha256": "7d4f38b2284886af88bd75a25bf7bc2bb9ed228a16c1caa85cf07acd4f21d1ae"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-17.upd": {
+      "version": "81.1-58210",
+      "sha256": "2aedaa152a0a399754659851d8dce3e725c49153e91fe898f77751120a91ace5"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-17.upd": {
+      "version": "82.2-59204",
+      "sha256": "368df5f08fd7e2d37f3f0595d19d288e5b3fa081b25a4eefa55017eef7ab96c0"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-17.upd": {
+      "version": "82.3-60160",
+      "sha256": "5f2c6aa7d74a0dfb5d6ea87fd79c4b70e91011f0ada789851e4dab962512b18a"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.1-68260-v17.2.1-8G439LJJPb-RC-1/86.1-68260-1-17.upd": {
+      "version": "86.1-68260",
+      "sha256": "b42b1f5f9445c12658fc0187dc01621cc6b994208c793e4a8bd1ecf9ccbdb99b"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.10-80260-v17.2.7-WghpQDvg5l-RC-2/86.10-80260-1-17.upd": {
+      "version": "86.10-80260",
+      "sha256": "f89815256d311abb6d4f87a1663309fb857342772a63ac62192cb1f4734b29b5"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.11-82170-v27.3-CsuS1t5Ahk-RC-1/86.11-82170-1-17.upd": {
+      "version": "86.11-82170",
+      "sha256": "2808a492a67580101cc3521f051cd4de29652c3c1c4f2781a2463edd4265f5a8"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.8-78270-v17.2.6-HlGdHczqmy-RC-1/86.8-78270-1-17.upd": {
+      "version": "86.8-78270",
+      "sha256": "48ea99b5528d1dead3ba7f87dcabb93237ac29650f3a2b50207ff990030a5a79"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/91.0-68261-v17.4-uG1Czb1YW1-RC-1/91.0-68261-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/96.0-78270-v18.6-xhPUjlijVZ-RC-1/96.0-78270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/97.1-80312-v18.8-jZ0oXJNpeN-RC-6/97.1-80312-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update.sonos.com/firmware/Prod/25.2-50130-v4.3.2-gvenes-LR-5/25.2-50130-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/36.4-43070-v7.4-nbsomb-LR-1/36.4-43070-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/36.4-77130-v7.5-tzyeup-LR-2/36.4-77130-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/36.5-50160-v7.6-ufbIK2C8YZ-LR-3/36.5-50160-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/45.1-56150-v9.1-vfpies-LR-1/45.1-56150-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/62.1-87200-v13.0.2-vqwxip-GA-1/62.1-87080-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/62.1-87200-v13.0.2-vqwxip-GA-1/62.1-87130-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/66.4-23130-v13.4-ezhbor-GA-2/66.4-23130-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/91.0-69300-v17.4-cCClQUh55Z-RC-2/91.0-69300-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/98.0-82170-v27.3-p6xYFYVxwZ-RC-1/98.0-82170-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd?model=17": {
+      "version": "34.16-37101",
+      "sha256": "ccbb884d22a6dccae2c7dcdf9ecacb6a9217a5439a5f9b74a10e2598eb719e42"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/50.1-63230-v10.2-fkolfu-Beta-1/50.1-63230-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.22-68080-v11.15.6-NUPz7mPXln-SP-8/57.22-68080-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/57.23-80060-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/58.1-77280-v12.0-jajuoi-GA-1/58.1-77280-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-qelzft-LR-1/64.3-19080-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/81.1-58210-1-17.upd": {
+      "version": "81.1-58210",
+      "sha256": "2aedaa152a0a399754659851d8dce3e725c49153e91fe898f77751120a91ace5"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/90.0-67300-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-77070-v17.2.3-rT0797IawE-RC-6/90.0-77070-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/90.0-79210-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update.sonos.com/firmware/Prod/90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update.sonos.com/firmware/Prod/91.0-68261-v17.4-uG1Czb1YW1-RC-1/91.0-68261-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update.sonos.com/firmware/Prod/96.0-78270-v18.6-xhPUjlijVZ-RC-1/96.0-78270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/90.0-68190-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/91.0-68261-v17.4-uG1Czb1YW1-RC-1/91.0-68261-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/97.1-80312-v18.8-jZ0oXJNpeN-RC-6/97.1-80312-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.18-44230-v11.11-rdiahrpn-GA-1/57.18-44230-1-17.upd": {
+      "version": "57.18-44230",
+      "sha256": "f719b3ac6d1499ea28b5831ab4d34274169bc063aedcca16413dad4175f55766"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.18-45134-v11.11.1-pkwqymkl-SP-1/57.18-45134-1-17.upd": {
+      "version": "57.18-45134",
+      "sha256": "f22efab5658ffbe575f9f62cfae9ea6fa613f3882168c56d16e48a944ea3b660"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.21-50280-v11.14-LGeb8h0Gma-GA-1/57.21-50280-1-17.upd": {
+      "version": "57.21-50280",
+      "sha256": "5cb98969f2663a4a48667049aee41d00f20374a527a757e5a49a3edcab6178fc"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.21-51190-v11.14-2mY9F37L7R-SP-1/57.21-51190-1-17.upd": {
+      "version": "57.21-51190",
+      "sha256": "3515340c566569d7f6b73985aec1a5cba0aba01088e27aa3764e99bd4d095c2b"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/57.3-79200-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/63.2-90210-v13.1.4-jaffit-GA-1/63.2-90210-1-17.upd": {
+      "version": "63.2-90210",
+      "sha256": "f3941376658fb55eebc934935466bc08c37ac67954dfaf972c1572e6e41b568b"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/68.2-28040-v14.6-tksirh-GA-1/68.2-28040-1-17.upd": {
+      "version": "68.2-28040",
+      "sha256": "00600526018d2e13329f720b2e4dbc41d8e5ab825515f057e54e0f0018575fdd"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/70.1-34112-v14.18-imaqiycw-GA-1/70.1-34112-1-17.upd": {
+      "version": "70.1-34112",
+      "sha256": "1f4be4c0fec2c130ea9e5915c94b9acdaca5f83f59b16a5e39585030a0b72ce4"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/70.3-35070-v14.19-epqbkaso-GA-1/70.3-35070-1-17.upd": {
+      "version": "70.3-35070",
+      "sha256": "e48c8676974d69131b7b44158e44266f8625d45d5bee21a9de8a3a4391a28335"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/73.0-41050-v15.4-iwkvpnqy-GA-1/73.0-41050-1-17.upd": {
+      "version": "73.0-41050",
+      "sha256": "236d273d543b97c0cef396bfe8c0600ac40a43d8574d409eea4d1befea34ce98"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/74.0-43110-v15.6-srahdpcj-GA-1/74.0-43110-1-17.upd": {
+      "version": "74.0-43110",
+      "sha256": "10dd27ec816f1cb11fab71fe9fefce451b00dc8587816527753c42ac82c4c038"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/75.1-46030-v15.9-irbxsaud-GA-1/75.1-46030-1-17.upd": {
+      "version": "75.1-46030",
+      "sha256": "dc4a9f0d24e7b76f3b0ea24ee704e43fd5de5ccaa7a8a10c71181a47da54d2ec"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/77.4-49290-v16.0-IkQJJWUcVE-GA-1/77.4-49290-1-17.upd": {
+      "version": "77.4-49290",
+      "sha256": "d1fe5bc1df093575f6ab2311cefbece2954917c7f321836f588bd6e336b6c862"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/78.1-51030-v16.1-nvasc21FQF-GA-1/78.1-51030-1-17.upd": {
+      "version": "78.1-51030",
+      "sha256": "f9b2af4c8f45d9f50964bde10bbfa8da602c72561f9108c092c8581129fbc870"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/78.1-51070-v16.1-ky0VGxvZsT-GA-3/78.1-51070-1-17.upd": {
+      "version": "78.1-51070",
+      "sha256": "3dedd0b7756f0a4dd1a820fe91622bbf2a215e2e0f2611b84e7a9c0857c868f7"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/79.0-52294-v16.2-nAtvycichO-GA-1/79.0-52294-1-17.upd": {
+      "version": "79.0-52294",
+      "sha256": "2a6f4e937fdf5e57191f1017ee0d371d2b496acf08ffb46e42c5fc4f8cf90502"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/79.1-53290-v16.2-6T0nrTOYJg-SP-1/79.1-53290-1-17.upd": {
+      "version": "79.1-53290",
+      "sha256": "241527e68f77f2995d4f4d7e564eac7bb42745d8ba55476405cda65cd3526586"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/80.1-55240-v16.3.1-QHrz8Gg8NE-SP-1/80.1-55240-1-17.upd": {
+      "version": "80.1-55240",
+      "sha256": "2d2a0dce7371d48b87b91f72c76cd1a15e028a39f68d776f92a4719af2c84683"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/80.1-56190-v16.3.3-2rZ4DF8eqv-RC-2/80.1-56190-1-17.upd": {
+      "version": "80.1-56190",
+      "sha256": "827fd85730ce29458adb6d7473e1681231c433559f2f79302e9ca79f450ec9d6"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/83.1-61210-v16.6-m4BvN2Mx7s-GA-1/83.1-61210-1-17.upd": {
+      "version": "83.1-61210",
+      "sha256": "289f90a704b902a44c56846fceae00e27e41fd7c24eaf48e4b28cb01dceb7240"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/84.1-63110-v16.7-20BaICzCKO-GA-1/84.1-63110-1-17.upd": {
+      "version": "84.1-63110",
+      "sha256": "062d66ce10565f79afe4c98d9a77e35415559dd1e8eb5e6cd69c146d8cc6b7b9"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/85.0-64200-v17.0-2dVdiIkMSm-RC-1/85.0-64200-1-17.upd": {
+      "version": "85.0-64200",
+      "sha256": "35043877565d6e1ddcd0b661a3c9b35a8c7810a68f27a61b5b4f7335da48a630"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/85.0-64200-v17.0-6aE5Z4LEEK-GA-1/85.0-64200-1-17.upd": {
+      "version": "85.0-64200",
+      "sha256": "35043877565d6e1ddcd0b661a3c9b35a8c7810a68f27a61b5b4f7335da48a630"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/86.1-68260-v17.2.1-8G439LJJPb-RC-1/86.1-68260-1-17.upd": {
+      "version": "86.1-68260",
+      "sha256": "b42b1f5f9445c12658fc0187dc01621cc6b994208c793e4a8bd1ecf9ccbdb99b"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/86.10-80260-v17.2.7-WghpQDvg5l-RC-2/86.10-80260-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.10-81100-v17.2.7-q1e6TdHTIb-RC-2-SP1/86.10-81100-1-17.upd": {
+      "version": "86.10-81100",
+      "sha256": "ce3733fa8174d948d1e8b05a5680e9d93784c640349d81069b6c8586209fd75f"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/86.2-70230-v17.2.2-nFBqfI1Y2j-RC-2/86.2-70230-1-17.upd": {
+      "version": "86.2-70230",
+      "sha256": "ebfa48246b64c913b2cf16ccc564f4a6a82eae6db0bd0936e7aba976535ae748"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.2-70230-v17.2.2-nFBqfI1Y2j-RC-2/86.2-70230-1-17.upd": {
+      "version": "86.2-70230",
+      "sha256": "ebfa48246b64c913b2cf16ccc564f4a6a82eae6db0bd0936e7aba976535ae748"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/86.6-75110-v17.2.4-MviYTXA4Bo-RC-2/86.6-75110-1-17.upd": {
+      "version": "86.6-75110",
+      "sha256": "bf8cab3409e6c85ae1c4e98e3d707dd2f7952a55803bdf7c8dbaad99889a64ae"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.6-75110-v17.2.4-MviYTXA4Bo-RC-2/86.6-75110-1-17.upd": {
+      "version": "86.6-75110",
+      "sha256": "bf8cab3409e6c85ae1c4e98e3d707dd2f7952a55803bdf7c8dbaad99889a64ae"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/86.7-77050-v17.2.5-S9jhM5W7xD-RC-2/86.7-77050-1-17.upd": {
+      "version": "86.7-77050",
+      "sha256": "3f57dff7df0acdba9f7c9936037a5e216ba58d67a95c999b1bf8bc5ff443a851"
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/86.7-77050-v17.2.5-S9jhM5W7xD-RC-2/86.7-77050-1-17.upd": {
+      "version": "86.7-77050",
+      "sha256": "3f57dff7df0acdba9f7c9936037a5e216ba58d67a95c999b1bf8bc5ff443a851"
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/92.0-70230-v17.6-1hBqrv6Z5h-RC-2/92.0-70230-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/92.0-70280-v17.6-vfSvLjPbJL-RC-3/92.0-70280-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/92.0-71170-v17.7-0E1Z3KXGpW-RC-1/92.0-71170-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/92.0-72090-v17.7-WVKe8SuGri-RC-2-SP_1/92.0-72090-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/94.1-75110-v18.2-ok6eKTaD5R-RC-2/94.1-75110-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/94.1-75140-v18.2-RM5FXh2ME8-RC-3/94.1-75140-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/94.1-75140-v18.2-RM5FXh2ME8-RC-3/94.1-75140-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/94.1-75260-v18.2-CLkunW3taD-RC-6/94.1-75260-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/94.1-75261-v18.2-nR10HY9KcF-RC-7/94.1-75261-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/94.1-76070-v18.3-V6g2J7ysVZ-RC-2/94.1-76070-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/94.1-76220-v18.3-sRdooLZCvj-RC-3/94.1-76220-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/95.0-77060-v18.4-HwYJSN97Ae-RC-2/95.0-77060-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/95.0-77060-v18.4-HwYJSN97Ae-RC-2/95.0-77060-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/96.0-78270-v18.6-xhPUjlijVZ-RC-1/96.0-78270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/96.0-79160-v18.6-s8e6fwRJ0F-RC-3-SP1/96.0-79160-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/96.0-79160-v18.6-s8e6fwRJ0F-RC-3-SP1/96.0-79160-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Dev/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/products/players/cep25/dev/96.1-79270-v18.7-3A720BFE13EAB9EA-RC-2/96.1-79270-1-17.upd": {
+      "http_status": 404
+    },
+    "https://update-firmware.sonos.com/firmware/Prod/97.2-81220-v27.1-eX9W4Ux6xI-RC-3/97.2-81220-1-17.upd": {
+      "http_status": 404
+    }
+  }
+}

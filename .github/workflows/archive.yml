@@ -1,0 +1,141 @@
+name: discover and archive
+
+on:
+  schedule:
+    - cron: '13 * * * *'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target name from config/targets.json, or all scheduled targets'
+        type: string
+        default: all
+
+permissions:
+  contents: write
+
+jobs:
+  select:
+    name: Select targets
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e .
+      - id: targets
+        env:
+          REQUESTED_TARGET: ${{ inputs.target || 'all' }}
+          EVENT: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--matrix --select "$REQUESTED_TARGET")
+          if [[ "$EVENT" == schedule || "$REQUESTED_TARGET" == all ]]; then args+=(--due); fi
+          matrix=$(sonos-archive targets "${args[@]}")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  archive:
+    name: Archive ${{ matrix.target }}
+    needs: select
+    if: ${{ toJSON(fromJSON(needs.select.outputs.matrix).include) != '[]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
+    concurrency:
+      group: archive-${{ matrix.lock }}
+      queue: max
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e .
+      - uses: actions/setup-java@v5
+        if: matrix.java
+        continue-on-error: ${{ matrix.java_optional }}
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install filesystem extraction tools
+        if: matrix.provider == 'firmware'
+        run: sudo apt-get update && sudo apt-get install -y squashfs-tools
+      - name: Install pinned APKPure acquisition binary
+        if: matrix.apkeep
+        continue-on-error: ${{ matrix.apkeep_optional }}
+        run: |
+          bash tools/install-apkeep "$RUNNER_TEMP/acquisition-tools"
+          echo "$RUNNER_TEMP/acquisition-tools" >> "$GITHUB_PATH"
+      - name: Verify pinned APK inspection tools
+        if: matrix.java
+        working-directory: tools/vendor
+        run: sha256sum --check SHA256SUMS
+      - name: Install pinned Google Play client
+        if: matrix.goopdl
+        continue-on-error: ${{ matrix.goopdl_optional }}
+        run: python -m pip install '.[google-play]'
+      - name: Restore small discovery observations
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
+          key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: observations-${{ matrix.target }}-
+      - name: Discover, acquire, verify and publish
+        id: run
+        continue-on-error: true
+        env:
+          TARGET: ${{ matrix.target }}
+          EVENT: ${{ github.event_name }}
+          SONOS_MODEL_1_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_1_PRIVATE_KEY }}
+          SONOS_MODEL_8_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_8_PRIVATE_KEY }}
+          SONOS_MODEL_9_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_9_PRIVATE_KEY }}
+          SONOS_MODEL_12_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_12_PRIVATE_KEY }}
+          SONOS_MODEL_16_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_16_PRIVATE_KEY }}
+          SONOS_MODEL_17_PRIVATE_KEY: ${{ secrets.SONOS_MODEL_17_PRIVATE_KEY }}
+          SONOS_PRIVATE_KEYS: ${{ secrets.SONOS_PRIVATE_KEYS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          args=(--execute --repository "$GITHUB_REPOSITORY" --report "$RUNNER_TEMP/archive-report.json")
+          if [[ "$EVENT" == schedule ]]; then args+=(--if-due); fi
+          sonos-archive run "$TARGET" "${args[@]}"
+      - name: Retain discovery observations
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
+          key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Commit validated target progress
+        if: always() && steps.run.outcome != 'skipped'
+        id: commit
+        continue-on-error: true
+        env:
+          TARGET: ${{ matrix.target }}
+        run: sonos-archive commit "$TARGET"
+      - name: Retain run report and metadata checkpoint
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: archive-${{ matrix.target }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/archive-report.json
+            ${{ runner.temp }}/metadata-checkpoint.patch
+            data/
+          retention-days: 30
+      - name: Report incomplete work
+        if: always() && (steps.run.outcome == 'failure' || steps.commit.outcome == 'failure')
+        run: exit 1

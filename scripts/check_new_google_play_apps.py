@@ -26,7 +26,7 @@ def main() -> int:
             "--output", str(args.discovery_output),
         ], cwd=ROOT, check=True)
         current = json.loads(args.discovery_output.read_text())
-        baseline = json.loads(args.baseline.read_text())
+        baseline = json.loads(args.baseline.read_text()) if args.baseline.exists() else {'listings': []}
         known = {x["package"]: x.get("updated_on") for x in baseline["listings"]}
         changed = [x for x in current["listings"] if known.get(x["package"]) != x.get("updated_on")]
         report = {
@@ -41,6 +41,7 @@ def main() -> int:
     except Exception as error:
         report = {"schema_version": 1, "status": "error", "error": str(error)}
         code = 1
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     print(f"Google Play listings: status={report['status']}")
     return code

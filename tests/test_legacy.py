@@ -1,3 +1,7 @@
+import unittest
+import tempfile
+from pathlib import Path
+
 import hashlib
 
 from cryptography.hazmat.primitives import serialization
@@ -79,99 +83,94 @@ def _synthetic_updater_from_seed(seed: bytes, private_key: rsa.RSAPrivateKey) ->
     return bytes(37) + UPDATER_MARKER + ciphertext + bytes(19)
 
 
-def test_model9_derivation_vector():
-    key, iv, password = _legacy_random_material(9, SYSTEM_WORD)
-    assert legacy_seed(9).hex() == "3230ca989b4a0000ce10e47d00000009436f7079726967687420961900010001"
-    assert key.hex() == "b3c8fea138eb958c5b8258bf7f1c39f8"
-    assert iv.hex() == "2ec62422288491671f8d8f26bf204a72"
-    assert password.hex() == "8ce8fdc46b0156aea374a7f3aec88b86a8fd97bdd522257df2f94c4226177a"
+class LegacyTests(unittest.TestCase):
+    def test_model9_derivation_vector(self):
+        key, iv, password = _legacy_random_material(9, SYSTEM_WORD)
+        assert legacy_seed(9).hex() == "3230ca989b4a0000ce10e47d00000009436f7079726967687420961900010001"
+        assert key.hex() == "b3c8fea138eb958c5b8258bf7f1c39f8"
+        assert iv.hex() == "2ec62422288491671f8d8f26bf204a72"
+        assert password.hex() == "8ce8fdc46b0156aea374a7f3aec88b86a8fd97bdd522257df2f94c4226177a"
 
+    def test_model1_little_endian_derivation_vector(self):
+        assert legacy_seed(1, 0, byte_order="little").hex() == (
+            "32304a9b98ca00007de410ce01000000"
+            "436f7079726967687420000000010001"
+        )
 
-def test_model1_little_endian_derivation_vector():
-    assert legacy_seed(1, 0, byte_order="little").hex() == (
-        "32304a9b98ca00007de410ce01000000"
-        "436f7079726967687420000000010001"
-    )
+    def test_recovers_little_endian_wrapper(self):
+        expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        updater = _synthetic_updater(1, expected, byte_order="little")
+        recovered = recover_legacy_updater_key(updater, 1, byte_order="little")
+        assert recovered.byte_order == "little"
+        assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
+    def test_recovers_key_from_complete_synthetic_updater(self):
+        expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        recovered = recover_legacy_updater_key(_synthetic_updater(17, expected), 17)
+        assert recovered.wrapper_offset == 37 + len(UPDATER_MARKER)
+        assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
-def test_recovers_little_endian_wrapper():
-    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    updater = _synthetic_updater(1, expected, byte_order="little")
-    recovered = recover_legacy_updater_key(updater, 1, byte_order="little")
-    assert recovered.byte_order == "little"
-    assert key_recipient_id(recovered.key) == key_recipient_id(expected)
+    def test_model5_flash_seed_overlay_and_recovery(self):
+        mtd_prefix = bytes(range(256)) * 64
+        digest = hashlib.sha256(mtd_prefix).digest()
+        seed = legacy_flash_seed(mtd_prefix, 5)
+        assert seed[0:2] == b"20"
+        assert seed[2:8] == digest[2:8]
+        assert seed[8:16] == bytes.fromhex("ce10e47d00000005")
+        assert seed[16:26] == b"Copyright "
+        assert seed[26:32] == digest[26:32]
 
+        expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        updater = _synthetic_updater_from_seed(seed, expected)
+        recovered = recover_legacy_flash_updater_key(updater, mtd_prefix, 5)
+        assert recovered.seed_source == "mtd-prefix-sha256"
+        assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
-def test_recovers_key_from_complete_synthetic_updater():
-    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    recovered = recover_legacy_updater_key(_synthetic_updater(17, expected), 17)
-    assert recovered.wrapper_offset == 37 + len(UPDATER_MARKER)
-    assert key_recipient_id(recovered.key) == key_recipient_id(expected)
+    def test_flash_seed_requires_exact_16k_prefix(self):
+        for size in (0x3FFF, 0x4001):
+            try:
+                legacy_flash_seed(bytes(size), 5)
+            except ValueError as error:
+                assert "16 KiB" in str(error)
+            else:
+                raise AssertionError(f"accepted invalid MTD prefix size {size}")
 
-
-def test_model5_flash_seed_overlay_and_recovery():
-    mtd_prefix = bytes(range(256)) * 64
-    digest = hashlib.sha256(mtd_prefix).digest()
-    seed = legacy_flash_seed(mtd_prefix, 5)
-    assert seed[0:2] == b"20"
-    assert seed[2:8] == digest[2:8]
-    assert seed[8:16] == bytes.fromhex("ce10e47d00000005")
-    assert seed[16:26] == b"Copyright "
-    assert seed[26:32] == digest[26:32]
-
-    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    updater = _synthetic_updater_from_seed(seed, expected)
-    recovered = recover_legacy_flash_updater_key(updater, mtd_prefix, 5)
-    assert recovered.seed_source == "mtd-prefix-sha256"
-    assert key_recipient_id(recovered.key) == key_recipient_id(expected)
-
-
-def test_flash_seed_requires_exact_16k_prefix():
-    for size in (0x3FFF, 0x4001):
+    def test_rejects_missing_marker(self):
         try:
-            legacy_flash_seed(bytes(size), 5)
+            recover_legacy_updater_key(bytes(4096), 9)
         except ValueError as error:
-            assert "16 KiB" in str(error)
+            assert "marker" in str(error)
         else:
-            raise AssertionError(f"accepted invalid MTD prefix size {size}")
+            raise AssertionError("missing marker was accepted")
 
+    def test_recovers_key_from_explicit_wrapper_offset(self):
+        expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        updater = _synthetic_updater(12, expected)
+        wrapper_offset = 37 + len(UPDATER_MARKER)
+        recovered = recover_legacy_updater_key(
+            updater,
+            12,
+            system_word=SYSTEM_WORD,
+            wrapper_offset=wrapper_offset,
+        )
+        assert recovered.wrapper_offset == wrapper_offset
+        assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
-def test_rejects_missing_marker():
-    try:
-        recover_legacy_updater_key(bytes(4096), 9)
-    except ValueError as error:
-        assert "marker" in str(error)
-    else:
-        raise AssertionError("missing marker was accepted")
-
-
-def test_recovers_key_from_explicit_wrapper_offset():
-    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    updater = _synthetic_updater(12, expected)
-    wrapper_offset = 37 + len(UPDATER_MARKER)
-    recovered = recover_legacy_updater_key(
-        updater,
-        12,
-        system_word=SYSTEM_WORD,
-        wrapper_offset=wrapper_offset,
-    )
-    assert recovered.wrapper_offset == wrapper_offset
-    assert key_recipient_id(recovered.key) == key_recipient_id(expected)
-
-
-def test_writes_secure_recovery_evidence(tmp_path):
-    expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    recovered = recover_legacy_updater_key(_synthetic_updater(16, expected), 16)
-    destination = tmp_path / "evidence"
-    write_recovery_evidence_exclusive(destination, recovered)
-    assert {path.name for path in destination.iterdir()} == {
-        "aes-key.bin",
-        "iv.bin",
-        "metadata.json",
-        "password.bin",
-        "seed.bin",
-        "wrapper.ct",
-        "wrapper.der",
-    }
-    assert destination.stat().st_mode & 0o077 == 0
-    assert all(path.stat().st_mode & 0o077 == 0 for path in destination.iterdir())
+    def test_writes_secure_recovery_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            tmp_path = Path(temporary)
+            expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+            recovered = recover_legacy_updater_key(_synthetic_updater(16, expected), 16)
+            destination = tmp_path / "evidence"
+            write_recovery_evidence_exclusive(destination, recovered)
+            assert {path.name for path in destination.iterdir()} == {
+                "aes-key.bin",
+                "iv.bin",
+                "metadata.json",
+                "password.bin",
+                "seed.bin",
+                "wrapper.ct",
+                "wrapper.der",
+            }
+            assert destination.stat().st_mode & 0o077 == 0
+            assert all(path.stat().st_mode & 0o077 == 0 for path in destination.iterdir())

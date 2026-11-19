@@ -19,9 +19,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("receipts", type=Path, nargs="+")
     parser.add_argument("--upd-manifest-directory", type=Path, default=ROOT / "data/upd")
+    parser.add_argument('--catalog', type=Path, default=ROOT / 'data/catalog.json')
     args = parser.parse_args()
 
-    catalog_path = ROOT / "data/catalog.json"
+    catalog_path = args.catalog
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     packages = {item["id"]: item for item in catalog["packages"]}
     raw = {
@@ -48,6 +49,7 @@ def main() -> int:
                     if not (
                         value.get("package_id") == package_id
                         and value.get("kind") in {"fpga", "device-payload"}
+                        and value.get("section_index") is None
                     )
                 }
             item = {
@@ -60,30 +62,27 @@ def main() -> int:
             imported += 1
 
     for package_id in affected:
-        # "complete" must mean every extractable section has a component.
-        # A partial import (e.g. only the plaintext sections of a package
-        # whose rootfs still awaits a key) must not flip the status: the
-        # catalog validator reads "complete" as "encrypted sections have
-        # extracted assets too" and would demand components no key can
-        # produce yet.
+        # Derive completion from coverage, including previously complete rows.
         package = packages[package_id]
         manifest_path = args.upd_manifest_directory / f"{package_id}.json"
         if not manifest_path.is_file():
-            package["raw_status"] = "complete"
+            package["raw_status"] = "pending"
             continue
         sections = json.loads(manifest_path.read_text(encoding="utf-8")).get("sections", [])
         def covered(section):
             if any(item.get("section_index") == section.get("index")
                    for (pid, _), item in raw.items() if pid == package_id):
                 return True
+            if package.get('extraction_policy') == 'all-sections':
+                return False
             kind = SECTION_KIND.get(section.get("section_type"))
             return any(
                 pid == package_id and item.get("section_index") is None and item.get("kind") == kind
                 for (pid, _), item in raw.items()
             )
-        needed = [s for s in sections if s.get("section_type") in EXTRACTABLE_SECTION_TYPES]
-        if needed and all(covered(s) for s in needed):
-            package["raw_status"] = "complete"
+        needed = [s for s in sections if package.get("extraction_policy") == "all-sections" or
+                  s.get("section_type") in EXTRACTABLE_SECTION_TYPES]
+        package["raw_status"] = "complete" if needed and all(covered(s) for s in needed) else "pending"
 
     catalog["raw_images"] = sorted(
         raw.values(),

@@ -150,7 +150,7 @@ class PublicCapturedReplayTests(unittest.TestCase):
             if url in cache:
                 return cache[url]
             raise urllib.error.HTTPError(url,404,'offline fixture only, not a live404',{},None)
-        seeds=json.loads((root/'config/discovery-seeds.json').read_text())
+        seeds=json.loads((fixture/'observed-seeds.json').read_text())
         with tempfile.TemporaryDirectory() as d:
             graph=crawl_manifests({},[],seeds,Path(d),fetch=fetch,delay=0)
         reached={c.url for c in graph['candidates']}
@@ -162,20 +162,22 @@ class PublicCapturedReplayTests(unittest.TestCase):
         self.assertFalse(graph['limits_reached'])
 
 class OutOfScopeClassificationTests(unittest.TestCase):
-    def test_non_archivable_link_is_out_of_scope_not_unsupported(self):
+    def test_image_page_needs_link_discovery_and_remains_a_coverage_gap(self):
         body = (b'<update_manifest version="1.1">'
                 b'<image model="16" version="28.1-83040">28.1-83040-1-16.upd</image>'
                 b'<image model="21" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/ios.html</image>'
                 b'<image model="22" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/android.html</image>'
                 b'</update_manifest>')
         with tempfile.TemporaryDirectory() as d:
-            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
+            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d),
+                                fetch=lambda url: b'<html>No advertised download</html>', delay=0)
         kinds = {f['kind'] for f in r['failures']}
-        self.assertEqual(kinds, {'out-of-scope'})
+        self.assertEqual(kinds, {'unsupported'})
+        self.assertEqual(len(r['candidates']), 1)
 
-    def test_artifact_shaped_unknown_host_stays_fail_closed(self):
+    def test_private_manifest_host_stays_fail_closed(self):
         body = (b'<update_manifest version="1.1">'
-                b'<link>https://firmware-cdn.example.com/Prod/99.0-1/update.upm</link>'
+                b'<link>https://127.0.0.1/Prod/99.0-1/update.upm</link>'
                 b'</update_manifest>')
         with tempfile.TemporaryDirectory() as d:
             r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
@@ -185,7 +187,7 @@ class OutOfScopeClassificationTests(unittest.TestCase):
 
 class DiscoveryIncompleteTests(unittest.TestCase):
     def _call(self, failures, challenged=False, blocked=False, limits=False, warnings=()):
-        from sonos_firmware.monitor import discovery_incomplete
+        from sonos_firmware.crawl import discovery_incomplete
         graph = {'failures': failures, 'blocked': blocked, 'limits_reached': limits}
         manifests = [{'metadata': {'warnings': list(warnings)}}]
         return discovery_incomplete(graph, manifests, challenged)

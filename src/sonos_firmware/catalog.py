@@ -106,23 +106,43 @@ def validate_catalog(root: str | Path) -> list[str]:
             errors.append(f"{package_id}: invalid sha256")
         if package.get("artifact_status") == "preserved" and not package.get("release_asset"):
             errors.append(f"{package_id}: preserved package has no release_asset")
+        inventory = package.get('inventory')
+        if inventory:
+            if package.get('artifact_status') != 'preserved' or inventory.get('source_sha256') != sha:
+                errors.append(f'{package_id}: inventory belongs to another or unpreserved source')
+            if not isinstance(inventory.get('complete'), bool):
+                errors.append(f'{package_id}: inventory has no explicit completeness state')
+            for name in ('manifest', 'bundle'):
+                publication = inventory.get('publications', {}).get(name, {})
+                digest = publication.get('sha256', '')
+                if (publication.get('status') != 'verified' or len(digest) != 64 or
+                    any(c not in '0123456789abcdef' for c in digest) or
+                    not isinstance(publication.get('bytes'), int) or publication['bytes'] <= 0 or
+                    not all(publication.get(key) for key in ('repository', 'release_tag', 'release_asset', 'release_url'))):
+                    errors.append(f'{package_id}: inventory {name} has no verified publication receipt')
         if package.get("artifact_status") == "preserved" and package.get("artifact_type") == "upd":
             manifest = root / "data/upd" / f"{package_id}.json"
             if not manifest.exists():
                 errors.append(f"{package_id}: preserved UPD has no section manifest")
             else:
-                for section in load_json(manifest).get("sections", []):
-                    if section.get("section_type") not in EXTRACTABLE_SECTION_TYPES:
+                inventory = load_json(manifest)
+                if inventory.get('inventory_error') and package.get('raw_status') == 'complete':
+                    errors.append(f'{package_id}: complete extraction has an unresolved container inventory')
+                for section in inventory.get("sections", []):
+                    if package.get('extraction_policy') != 'all-sections' and section.get("section_type") not in EXTRACTABLE_SECTION_TYPES:
                         continue
                     if section.get("encrypted") and package.get("raw_status") != "complete":
                         continue
                     matches = raw_by_package_and_section.get((package_id, section.get("index")), [])
-                    if not matches:
+                    if not matches and package.get('extraction_policy') != 'all-sections':
                         # A handful of seed-era raw records predate section-index
                         # provenance but are still unambiguous by package and kind.
                         matches = raw_by_package_and_kind.get(
-                            (package_id, SECTION_KIND[section["section_type"]]), []
+                            (package_id, SECTION_KIND.get(section["section_type"])), []
                         )
+                    if not matches and package.get('raw_status') == 'pending':
+                        # The exact source is preserved; derivation remains queued.
+                        continue
                     if not matches:
                         errors.append(
                             f"{package_id}: complete UPD section {section.get('index')} "
@@ -142,7 +162,7 @@ def validate_catalog(root: str | Path) -> list[str]:
                                 f"{package_id}: extracted section {section.get('index')} "
                                 "has no release location"
                             )
-    for manifest in catalog.get("source_manifests", []):
+    for manifest in [*catalog.get("source_manifests", []), *catalog.get('source_documents', [])]:
         if not manifest.get("release_tag") or not manifest.get("release_asset"):
             errors.append(f"source manifest {manifest.get('filename')}: missing release location")
     evidence_ids: set[str] = set()

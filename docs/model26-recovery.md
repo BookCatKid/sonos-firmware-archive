@@ -93,11 +93,20 @@ SquashFS 4.0 (gzip in 57.14; LZ4 in 97.1). Component sizes and SHA-256
 values are preserved in
 [`data/decryption-runs/2026-11-05-model26-local-validation.json`](../data/decryption-runs/2026-11-05-model26-local-validation.json).
 
-**Status:** Two packages have been locally decrypted and verified; 27 have
-not yet been processed. No decrypted model-26 assets have been uploaded to
-GitHub Releases, so the catalog correctly continues to mark their raw
-artifacts as unpublished. Recovering one recipient key does not imply all
-29 plaintext packages have been archived.
+The original 2026-11-05 check covered two packages locally. The subsequent
+[2026-11-18 isolated CI validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44348573166)
+recovered the same recipient from the tracked public inputs and published
+complete raw components and inventories for all four model-26 sources in that
+archive: `57.22-63071-1-26`, `57.22-65130-1-26`, `57.23-74170-1-26`, and
+`98.0-82170-1-26`. All 44 raw components and eight inventory assets match their
+GitHub Release sizes and SHA-256 receipts. Private keys stayed ephemeral in CI.
+
+The isolated validation source had initially omitted the two public inputs;
+they are now restored there as well as tracked in this project. The original
+archive's production rollout remains acceptance item 21 in the
+[follow-up checklist](archive-followup-checklist.md). Four completed isolated
+sources do not establish completion of the production archive's historical
+model-26 backlog.
 
 See [model-key handling](key-material.md) for the comparable recovery notes
 for models 1, 8, 9, 12, 16, and 17.

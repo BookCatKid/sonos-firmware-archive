@@ -19,6 +19,8 @@ from sonos_firmware.gpl_archive import (
     atomic_json, download_artifact, load_json, pause, timestamp, valid_version,
 )
 
+from sonos_firmware.retry import checkpoint, select
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data/gpl/live"
 
@@ -47,7 +49,7 @@ def strong_proofs(receipts: dict) -> dict[str, dict]:
     return strong
 
 
-def pending(receipts: dict, *, versions: set[str] | None, retry_failed: bool) -> list[tuple[str, str, dict]]:
+def pending(receipts: dict, *, versions: set[str] | None) -> list[tuple[str, str, dict]]:
     result = []
     anchored = strong_proofs(receipts)
     for version, entries in sorted(receipts.get("artifacts", {}).items(), key=lambda kv: tuple(map(int, kv[0].split('.')))):
@@ -60,12 +62,6 @@ def pending(receipts: dict, *, versions: set[str] | None, retry_failed: bool) ->
             if (prior.get("state") == "verified" and prior.get("expected_sha256") == item.get("sha256")
                     and item.get("sha256") in anchored):
                 continue
-            if prior and not retry_failed:
-                state = prior.get("state")
-                if state in {"content-mismatch", "invalid-source", "invalid-artifact", "unexpected-content-type"}:
-                    continue
-                if state == "http-error" and prior.get("error", {}).get("http_status") in {403, 404}:
-                    continue
             result.append((version, name, item))
     return result
 
@@ -78,13 +74,17 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
     records = load_json(args.output / "artifacts.json", {"schema_version": 1, "artifacts": {}})
     # Limit by *published source records*, including zero-byte/network-free dedup
     # records, to keep metadata commits bounded and deterministic.
-    queue = pending(records, versions=set(args.version) if args.version else None,
-                    retry_failed=args.retry_failed)
+    queue = pending(records, versions=set(args.version) if args.version else None)
+    identity = lambda row: json.dumps(row[:2])
+    observations = {identity(row): row[2].get('stream_integrity', {}) for row in queue}
+    selected = select(queue, observations, key=identity, limit=args.limit, force=args.retry_failed,
+                      state=records, queue='compressed-stream-audits')
     proofs = strong_proofs(records)
-    stats = {"selected": min(len(queue), args.limit), "downloaded": 0, "verified": 0,
+    stats = {"selected": len(selected), "downloaded": 0, "verified": 0,
              "reused": 0, "mismatched": 0, "failed": 0, "bytes_downloaded": 0,
              "remaining_before": len(queue)}
-    for version, name, item in queue[:args.limit]:
+    for version, name, item in selected:
+        previous = item.get('stream_integrity', {})
         valid_version(version)
         digest = item["sha256"]
         if digest in proofs:
@@ -98,7 +98,7 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
             stats["reused"] += 1
             stats["verified"] += 1
         else:
-            link = {"filename": name, "kind": "source", "origin": item.get("origin") or
+            link = {"filename": item.get("filename", name), "kind": "source", "origin": item.get("origin") or
                     ("sonos" if "sonos.com" in (item.get("fetch_url") or "") else "upstream"),
                     "url": item.get("source_url") or item.get("fetch_url"),
                     "fetch_url": item.get("fetch_url")}
@@ -137,6 +137,8 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
                         k: v for k, v in outcome.items() if k in
                         {"http_status", "content_type", "verification", "partial_bytes", "need_bytes", "error_type"}}}
                 stats["failed"] += 1
+        item['stream_integrity'].update(checkpoint(previous,
+            success=item['stream_integrity']['state'] == 'verified'))
         records["updated"] = timestamp()
         atomic_json(args.output / "artifacts.json", records)
         print(f"{version}/{name}: {item['stream_integrity']['state']} "
@@ -148,8 +150,11 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
             break
         if stats["downloaded"] and item["stream_integrity"]["method"] != "sha256-equality-with-fully-verified-original-source":
             wait(args.delay)
-    stats["remaining_after"] = len(pending(records, versions=set(args.version) if args.version else None,
-                                         retry_failed=args.retry_failed))
+    stats["remaining_after"] = len(pending(records, versions=set(args.version) if args.version else None))
+    stats['status'] = 'partial' if stats['remaining_after'] else 'ok'
+    # Queue rotation must survive even a worker with no currently due sources.
+    atomic_json(args.output / 'artifacts.json', records)
+    atomic_json(args.output / 'stream-audit.json', stats)
     print(json.dumps(stats, indent=2), flush=True)
     return stats
 
@@ -162,7 +167,8 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--reserve-bytes", type=int, default=2_000_000_000)
     parser.add_argument("--delay", type=float, default=2.5)
-    parser.add_argument("--retry-failed", action="store_true")
+    parser.add_argument("--retry-failed", action="store_true",
+                        help="retry eligible failures immediately, bypassing their saved cooldown")
     args = parser.parse_args()
     try:
         run(args)

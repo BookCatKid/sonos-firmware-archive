@@ -15,6 +15,11 @@ SPEC.loader.exec_module(MODULE)
 
 
 class SitemapTests(unittest.TestCase):
+    def test_observed_versions_are_not_limited_to_old_numeric_widths(self):
+        url = 'https://www.sonos.com/documents/gpl/1000.1000/gpl.html'
+        versions, _ = MODULE.extract_leads([url])
+        self.assertEqual(versions, {'1000.1000': [url]})
+
     def test_sitemap_scopes_and_schema(self):
         self.assertTrue(MODULE.allowed_sitemap('https://www.sonos.com/en-us/sitemap.xml'))
         self.assertTrue(MODULE.allowed_sitemap('https://support.sonos.com/sitemap-index.xml'))
@@ -71,14 +76,13 @@ class SitemapPrioritizationTests(unittest.TestCase):
                 'version_evidence': {'22.13': ['https://www.sonos.com/documents/gpl/22.13/gpl.html']},
                 'sitemaps': {}, 'related_pages': [],
             }))
-            args = Namespace(output=root, recheck=False, major_max=25, minor_max=20,
+            args = Namespace(output=root, recheck=False, discovery_window=1,
                              limit=1, delay=2.5, binary=[])
             requested = []
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', url)
-            with patch.object(archive, 'seed_versions', return_value=set()), \
-                 patch.object(archive, 'offline_candidates', return_value={}), \
+            with patch.object(archive, 'offline_candidates', return_value={}), \
                  patch.object(archive, 'get_page', side_effect=fake_get_page), \
                  patch.object(archive, 'pause'):
                 self.assertEqual(archive.discover(args), 0)

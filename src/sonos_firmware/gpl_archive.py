@@ -10,6 +10,7 @@ import html.parser
 import json
 import os
 import re
+import math
 import shutil
 import tarfile
 import time
@@ -21,9 +22,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
+from .storage import atomic_json as write_json
+
 BASE = "https://www.sonos.com/documents/gpl/"
-VERSION_RE = re.compile(r"^[1-9][0-9]{0,2}\.[0-9]{1,2}$")
-VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([1-9][0-9]{0,2}\.[0-9]{1,2})/", re.I)
+VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+$")
+VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([0-9]+\.[0-9]+)/", re.I)
 USER_AGENT = "Mozilla/5.0 (compatible; Sonos-GPL-Preservation/1.0)"
 MIN_DELAY = 2.0
 MAX_INDEX_BYTES = 512 * 1024
@@ -36,14 +39,35 @@ def timestamp() -> str:
 
 
 def atomic_json(path: Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    write_json(path, value, sort_keys=True)
 
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def source_receipt_key(link: dict, entries: dict) -> str:
+    """Keep legacy keys while separating distinct source URLs with one filename."""
+    url = link.get('url') or link['fetch_url']
+    for key, record in entries.items():
+        if record.get('filename') == link['filename'] and (record.get('source_url') or record.get('fetch_url')) == url:
+            return key
+    name = link['filename']
+    if name not in entries:
+        return name
+    return name + '--source-' + sha256_bytes(url.encode())
+
+
+def source_receipt_keys(links: list[dict], entries: dict) -> dict[str, str]:
+    """Allocate distinct identities before any of the batch has been acquired."""
+    reserved = dict(entries)
+    result = {}
+    for link in links:
+        url = link.get('url') or link['fetch_url']
+        key = source_receipt_key(link, reserved)
+        reserved.setdefault(key, {'filename': link['filename'], 'source_url': url})
+        result[url] = key
+    return result
 
 
 def file_sha256(path: Path) -> str:
@@ -226,40 +250,31 @@ def offline_candidates(root: Path) -> dict[str, set[str]]:
     return found
 
 
-def candidates(known: set[str], *, major_max: int = 120, minor_max: int = 99, evidence: dict[str, set[str]] | None = None) -> list[dict]:
-    """Enumerate entire version grammar, prioritizing observed and adjacent versions."""
-    if not (1 <= major_max <= 999 and 0 <= minor_max <= 99):
-        raise ValueError("invalid sweep bounds")
+def version_at(index):
+    """Enumerate every nonnegative major/minor pair without a bounded grid."""
+    if not isinstance(index, int) or isinstance(index, bool) or index < 0:
+        raise ValueError('GPL exploration ordinal must be a nonnegative integer')
+    diagonal = (math.isqrt(8*index+1)-1)//2
+    minor = index-diagonal*(diagonal+1)//2
+    return f'{diagonal-minor}.{minor}'
+
+
+def candidates(known: set[str], *, evidence: dict[str, set[str]] | None = None) -> list[dict]:
+    """Prioritize observed releases and neighbors; stream speculative work separately."""
     evidence = evidence or {}
     adjacent = set()
     for version in known:
         major, minor = version_key(valid_version(version))
-        for n in (minor - 1, minor + 1):
-            if 0 <= n <= minor_max:
-                adjacent.add(f"{major}.{n}")
-    known_majors = {version_key(version)[0] for version in known}
-    records = []
-    for major in range(1, major_max + 1):
-        for minor in range(minor_max + 1):
-            version = f"{major}.{minor}"
-            if version in known:
-                continue
-            if version in evidence:
-                priority = 0
-            elif version in adjacent:
-                priority = 1
-            elif major in known_majors and minor <= 40:
-                priority = 2
-            elif major <= 30 and minor <= 40:
-                priority = 3
-            elif major in known_majors:
-                priority = 4
-            elif major <= 30:
-                priority = 5
-            else:
-                priority = 6
-            records.append({"version": version, "priority": priority, "evidence": sorted(evidence.get(version, ()))})
-    return sorted(records, key=lambda item: (item["priority"], version_key(item["version"])))
+        for pair in ((major, minor-1), (major, minor+1), (major-1, minor), (major+1, minor)):
+            if min(pair) >= 0:
+                adjacent.add(f'{pair[0]}.{pair[1]}')
+    records = {version: {'version': version, 'priority': 1, 'evidence': []}
+               for version in adjacent if version not in known}
+    for version, sources in evidence.items():
+        valid_version(version)
+        if version not in known:
+            records[version] = {'version': version, 'priority': 0, 'evidence': sorted(sources)}
+    return sorted(records.values(), key=lambda item: (item["priority"], version_key(item["version"])))
 
 
 def capture_response(version: str, response: HttpResult, output: Path) -> dict:
