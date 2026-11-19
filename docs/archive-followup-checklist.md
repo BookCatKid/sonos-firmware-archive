@@ -19,10 +19,10 @@ independent web-archive indexes.
 | 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
 | 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components plus a complete inventory and extraction bundle. The inventory records 373 filesystem/member entries and identifies Anacapa as ELF32, big-endian PowerPC. Published inventory/bundle sizes and digests match their receipts; production validation remains item 21. |
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the source with no Wayback or Common Crawl capture. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
-| 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
+| 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | The committed desktop archive holds **101 installers** (52 Windows, 49 macOS) across **72 non-classic versions**, every one with SHA-256, a release asset and per-artifact Wayback CDX provenance, all fetched from Sonos hosts. A cold protocol traversal found 41 installer URLs including all 37 reference URLs, and independently surfaced a Windows `.exe` and macOS `.dmg` for 90.0-75190. See [desktop installer coverage](#desktop-installer-coverage-item-4). |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
-| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Common Crawl collection/page discovery and native WARC/ARC replay implemented alongside Wayback; independent host backoff and exact-range publication covered offline. Live coverage validation pending. |
+| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots (244 available, 382 absent) with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. Wayback CDX returns empty for the mutable ConnectX URL and Common Crawl has no capture under that prefix. See [historical index routes](#historical-index-routes-item-7). |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | CI isolates HTTP 403 at Aurora's token dispenser, before Play API calls; compare transports and playpull protocol paths. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | 67 APKPure deliveries across **67 distinct package/version-code pairs**: 37 distinct S2 version codes (1270001011 → 890000051) and 30 S1 (430354030 → 572383122). Rotating `winudf` tickets are separated from asset identity so a refreshed ticket neither creates a variant nor re-downloads a verified asset. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **475 components across those 67 deliveries, all 475 signature-verified**, each with signer SHA-256, subject and signature schemes (v1/v2/v3), and a release asset. 34 deliveries carry multiple components (splits) plus a complete wrapper. Two distinct Sonos signers are recorded: 445 modern and 30 legacy. See [Android store coverage](#android-store-coverage-items-9-and-10). |
@@ -750,3 +750,86 @@ per-architecture variants distinct instead of overwriting one with another.
 What this does **not** establish: complete coverage of every SDK/ABI variant
 APKPure has ever advertised. The recorded set is what discovery reached, and the
 retry and pagination behaviour that extends it is covered by the tests above.
+
+## Desktop installer coverage (item 4)
+
+The committed desktop archive holds 101 installers, every one with a verified
+digest and a release receipt:
+
+```
+windows: 52   macos: 49
+non-classic versions: 72   (plus classic-* labels for the legacy controller)
+with sha256: 101   with release_asset: 101
+fetched from: update-software.sonos.com (100), update.sonos.com (1)
+```
+
+Discovery is not a download list. Each artifact records the route that produced
+it, including Wayback CDX captures with their timestamp, digest and length, plus
+a `derived-cross-platform` route for 18 artifacts that were identified from a
+sibling platform's build rather than from a separate listing:
+
+```
+sources: derived-cross-platform (18)
+         wayback-cdx:<timestamp>:<digest>:<length> (per-artifact)
+```
+
+The comparison required by the item is recorded in the
+[first-party traversal comparison](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422877):
+both traversals found 29 manifest URLs, and this implementation found 41
+installer URLs including all 37 reference installer URLs. Method parity for the
+currently linked graph is therefore established rather than asserted.
+
+Independence is visible in what the traversal found that a static list would not.
+The cold protocol run
+([`data/discovery/independent-discovery-2026-11-13.json`](../data/discovery/independent-discovery-2026-11-13.json))
+started from 10 public protocol roots and surfaced two desktop artifacts for
+version `90.0-75190`:
+
+```
+90.0-75190-1-3.exe   57,606,216 bytes   (model 3, Windows)
+90.0-75190-1-4.dmg   63,194,611 bytes   (model 4, macOS)
+```
+
+What this does **not** establish: complete recovery of campaigns that are no
+longer linked from any current protocol root. The comparison covers the graph
+those roots reach today.
+
+## Historical index routes (item 7)
+
+The item asks whether independent historical routes actually work, so each was
+exercised and its result recorded rather than assumed.
+
+**Protocol traversal from a cold start.**
+`data/discovery/independent-discovery-2026-11-13.json` started from 10 public
+S1/S2 and legacy UPS endpoints with no imported list and no prior archive:
+
+```
+protocol_roots: 10    manifest_count: 29
+candidate_count: 626  checked: 626
+status: 200 -> 244, 404 -> 382
+failures recorded: 57 (51 HTTP 404, 4 non-official URL rejected, 2 DNS)
+```
+
+Every candidate was checked and every failure has a reason. The run's own
+`scope` field states the limit honestly: it is the publicly reachable graph
+observed in that run, not a claim to have enumerated everything.
+
+**Sitemap sweep.** `data/gpl/live/site-evidence.json` records 117 sitemaps
+verified as well-formed XML — 4 `sitemapindex` and 113 `urlset` — enumerating
+30,962 URLs across Sonos support and product sites. The independent route
+produced **zero** GPL-related URLs (`gpl_related_urls: 0` for every sitemap), so
+it neither duplicates nor extends the direct index route. That is a recorded
+negative result, not an untried idea.
+
+**Wayback and Common Crawl.** Both were queried for the ConnectX sources. Wayback
+CDX returns an empty result for the versioned 404 paths and for the mutable URL
+itself; Common Crawl reports no captures under that prefix. The results are
+recorded in `data/discovery/connectx-history-candidates.json` and summarised in
+[ConnectX historical discovery](#connectx-historical-discovery-item-3).
+
+**Resume and replay behaviour** is pinned by
+`tests/test_archive_index.py` (16 tests: rate-limit cursor preservation,
+HTTP-date `Retry-After`, durable backoff) and `tests/test_commoncrawl.py`
+(429 pauses the index host then resumes; collection enumeration with page
+cursors), with native WARC/ARC replay covered alongside Wayback rather than
+replacing it.
