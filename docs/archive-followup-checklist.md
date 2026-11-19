@@ -29,7 +29,7 @@ independent web-archive indexes.
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
-| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI verified all 78 incomplete inventories: 28 recipient groups lacked matching keys, with no decoder errors in available components; model-26 recovery resolved one, leaving 27. Revisit-on-improvement is automatic: the inventory revision includes `ready_recipients` and a hash of the decoder sources, so a new key or a changed decoder re-queues the package. Remaining work needs recipient keys, which exist only as CI secrets. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14). |
+| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so the limitation is key material rather than decoders; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
@@ -1028,3 +1028,58 @@ than only offline.
 The report states its own limit: `completeness_proven: false`, with 148 published
 archives still awaiting full compressed-stream verification. Those are queued for
 the stream auditor, not counted as verified.
+
+### `firmware` — [run 44472258803](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44472258803)
+
+Result: `status: partial`, with `errors: []` and two steps reporting incomplete
+source work. State committed as `Update firmware archive state` (`93ab9d7`,
++6,518 lines in `catalog.json`).
+
+```
+discover_firmware:            partial   manifests=33 candidates=1307 checked=1371 pending=877
+archive-historical-firmware:  ok
+extract-firmware:             partial
+audit_connectx_coverage:      ok        advertised=9 preserved=9 distinct=9 unavailable=0
+```
+
+This run is the item 14 evidence: it is the target that performs extraction,
+inventory and recipient-key work with the repository's CI secrets.
+
+**Recipient-key state after the run** (`data/key-recovery-ledger.json`):
+
+```
+encrypted UPD packages: 129     plaintext packages: 14     unidentified: 0
+unique recipients: 34
+recovered keys: 7
+missing keys: 27
+```
+
+**Extraction and inventory state:**
+
+```
+packages extracted: 143   (all status "extracted", errors [])
+packages with ready recipients: 45
+inventories published: 187   complete 94   incomplete 93
+```
+
+So the limitation is key material, not decoders: 93 inventories remain
+incomplete, and the extraction report names the specific recipient groups and
+section indices it skipped with `"reason": "no matching model key"`, for example
+`0cfddc3f6ac5c485ccc435885c42c52a9338e28b` in `57.5-87010-1-5` sections 3–5 and
+`83fb98ffd324255b26fdab99105a1a02a82bae93` in `57.5-87010-1-25` sections 4–7.
+Those are actionable: each names the recipient that a key would unlock.
+
+The run also published new firmware state rather than only reporting:
+
+```
+new releases: firmware-57.19-46310, firmware-57.5-87010, firmware-64.3-19080,
+              manifest-snapshots-2026-11-19
+raw components registered and verified per release: 4–11 each
+```
+
+ConnectX coverage in that archive is complete for what it advertises: 9
+advertised, 9 preserved, 9 distinct contents, 0 unavailable.
+
+The 877 pending discovery candidates and 93 incomplete inventories are real
+backlog, not silent loss: both are counted, both are queued, and both keep the
+target's status at `partial` so the next run resumes them.
