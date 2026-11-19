@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "advertised_versions": 38,
+  "advertised_components": 38,
+  "preserved_components": 31,
+  "distinct_preserved_contents": 31,
+  "reused_content_across_versions": [],
+  "manifest_attributed": 31,
+  "unavailable": [
+    {
+      "version": "10.20-75300",
+      "id": "10.20-75300-1-17",
+      "filename": "10.20-75300-1-17.upd",
+      "source_url": "https://update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "47.2-59120",
+      "id": "47.2-59120-1-17",
+      "filename": "47.2-59120-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "90.0-67171",
+      "id": "90.0-67171-1-17",
+      "filename": "90.0-67171-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "91.0-68261",
+      "id": "91.0-68261-1-17",
+      "filename": "91.0-68261-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/91.0-68261-v17.4-uG1Czb1YW1-RC-1/91.0-68261-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "96.0-78270",
+      "id": "96.0-78270-1-17",
+      "filename": "96.0-78270-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/96.0-78270-v18.6-xhPUjlijVZ-RC-1/96.0-78270-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "96.1-79270",
+      "id": "96.1-79270-1-17",
+      "filename": "96.1-79270-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd",
+      "state": "missing-cdn"
+    },
+    {
+      "version": "97.1-80312",
+      "id": "97.1-80312-1-17",
+      "filename": "97.1-80312-1-17.upd",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/97.1-80312-v18.8-jZ0oXJNpeN-RC-6/97.1-80312-1-17.upd",
+      "state": "missing-cdn"
+    }
+  ],
+  "errors": [],
+  "historical_index": {
+    "snapshots": 55,
+    "distinct_contents": 55,
+    "versions_only_in_index": [
+      "57.18-44230",
+      "57.18-45134",
+      "57.21-50280",
+      "57.21-51190",
+      "63.2-90210",
+      "68.2-28040",
+      "70.1-34112",
+      "70.3-35070",
+      "73.0-41050",
+      "74.0-43110",
+      "75.1-46030",
+      "77.4-49290",
+      "78.1-51030",
+      "78.1-51070",
+      "79.0-52294",
+      "79.1-53290",
+      "80.1-55240",
+      "83.1-61210",
+      "84.1-63110",
+      "85.0-64200",
+      "86.10-81100",
+      "86.2-70230",
+      "86.4-73207",
+      "86.6-75110",
+      "86.7-77050"
+    ],
+    "versions_only_in_catalog": [
+      "10.20-75300",
+      "47.2-59120",
+      "57.23-83121",
+      "90.0-67171",
+      "91.0-68261",
+      "96.0-78270",
+      "96.1-79270",
+      "97.1-80312"
+    ],
+    "shared_versions": 30,
+    "snapshots_missing_extraction": 0
+  }
+}

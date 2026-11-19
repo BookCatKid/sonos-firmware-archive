@@ -25,6 +25,9 @@ def firmware(c: Context):
                '--inventory-limit', c.options.get('inventory_limit', 24),
                '--inventory-limits', json.dumps(c.options.get('inventory_limits', {})),
                after_failure=True, report=str(c.work / 'extract/extraction.json')),
+        c.script('audit_connectx_coverage.py',
+                 '--output', c.root / 'data/discovery/connectx-coverage.json',
+                 after_failure=True, report=str(c.root / 'data/discovery/connectx-coverage.json')),
     ]
 
 

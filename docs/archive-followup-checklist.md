@@ -18,7 +18,7 @@ independent web-archive indexes.
 | --- | --- | --- |
 | 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
 | 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components plus a complete inventory and extraction bundle. The inventory records 373 filesystem/member entries and identifies Anacapa as ELF32, big-endian PowerPC. Published inventory/bundle sizes and digests match their receipts; production validation remains item 21. |
-| 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | Audit methods and live coverage. |
+| 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the source with no Wayback or Common Crawl capture. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | Comparison found incomplete native coverage. Desktop/mobile workers now consume native manifest observations; traversal now checks channel counterparts even after a failed manifest. Live comparison and preservation validation continue. |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
@@ -431,4 +431,86 @@ explanation instead of a silent retry loop.
 `tests/test_gpl_link_coverage.py` covers the classifier (13 tests, including the
 real committed catalogue) and the validator's empty, truncated, escaping-member
 and complete cases. Two of them were confirmed to fail against deliberately
+broken code.
+
+## ConnectX historical discovery (item 3)
+
+ConnectX (the Anacapa application, package model 17) is the archive's clearest
+reused-URL case: `.../Prod/JFFS_Static_Link/connectx.upd` is mutable, so its
+bytes change as Sonos rolls forward while the URL stays the same. Discovery uses
+two Sonos protocol routes, never an imported download list:
+
+1. **Manifests.** Each firmware manifest advertises its own model-17 component at
+   `<version>-1-17.upd` in that version's directory. Following manifests is what
+   attributes a ConnectX capture to a specific release.
+2. **The protocol root.** The mutable `connectx.upd` is declared as an
+   `artifact_root` in `config/targets.json` with a refresh cadence, so each run
+   re-probes it and captures a new distinct content when it changes.
+
+The coverage audit reports the current live state:
+
+```
+$ PYTHONPATH=src .venv/bin/python scripts/audit_connectx_coverage.py
+advertised_versions=38 components=38 preserved=31 distinct_contents=31 manifest_attributed=31 unavailable=7 errors=0
+historical_index snapshots=55 distinct_contents=55 index_only=25 catalog_only=8
+```
+
+Three facts follow from that output:
+
+* **31 preserved contents are 31 distinct contents.** No content is republished
+  under many version labels, so the count reflects real historical coverage
+  rather than relabelled duplicates.
+* **All 31 are manifest-attributed** (`manifest_attributed=31`), meaning each was
+  reached by walking a Sonos manifest rather than by importing a URL list.
+* **Every preserved record carries a receipt** — `errors=0` means none is
+  missing `sha256`, `bytes`, `release_tag` or `release_asset`, and every tag is a
+  `firmware-*` tag.
+
+The 7 unaccounted-as-preserved versions are named individually by the audit. All
+seven are withdrawn at the source, verified live:
+
+```
+96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd  -> 404 (1264 bytes)
+97.1-80312-v18.8-jZ0oXJNpeN-RC-6/97.1-80312-1-17.upd  -> 404 (1264 bytes)
+90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-17.upd  -> 404 (1264 bytes)
+update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-17.upd -> 404 (1264 bytes)
+```
+
+The independent web-archive routes were checked and do not have them either.
+Wayback's CDX index returns an empty result for the versioned 404 paths *and*
+for the mutable URL itself:
+
+```
+$ curl 'https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd&output=json&fl=timestamp,statuscode,digest,length'
+[]
+
+$ curl 'https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd&output=json&fl=timestamp,statuscode,digest,length'
+[]
+```
+
+Common Crawl likewise has no captures under that path:
+
+```
+$ curl 'https://index.commoncrawl.org/CC-MAIN-2025-38-index?url=update-firmware.sonos.com/firmware/Prod/*&output=json&limit=5'
+{"message": "No Captures found for: update-firmware.sonos.com/firmware/Prod/"}
+```
+
+So these 7 cannot be recovered by a historical-index route today; they are
+recorded as `missing-cdn` with their source URL rather than being counted as
+covered. That is the honest state of live coverage, and the audit re-reports it
+each firmware run.
+
+**Distinct contents behind a reused URL is proven, not asserted.**
+`tests/test_firmware_archive.py::test_static_endpoint_versions_come_from_bytes_and_request_revision_remains_unpinned`
+serves two different payloads from the same mutable URL and asserts that the
+catalog ends up with two distinct records (`86.4-73207` and `87.1-74000`), two
+distinct identities, and no `firmware-unknown` tag. The version comes from the
+bytes, not from the request, so a change at the URL creates new history instead
+of overwriting it.
+`test_size_only_cache_does_not_hide_changed_bytes_at_a_url` proves a
+same-size content change is still re-downloaded and distinguished by SHA-256.
+
+`tests/test_connectx_coverage.py` adds 13 tests for the audit, including the
+committed catalogue, duplicate-content detection, receipt completeness and the
+withdrawn-component listing. One was confirmed to fail against deliberately
 broken code.
