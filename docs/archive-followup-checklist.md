@@ -31,7 +31,7 @@ independent web-archive indexes.
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI classified 78 incomplete inventories: 28 recipient groups lack matching keys; available components report no decoder errors. Recovery can now use verified, previously decrypted rootfs when its receipt binds it to the exact original source and component. Continue recipient-specific recovery and live validation. |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
-| 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root and inventory ordering fixed. Firmware/app downloads and historical manifest replay retain server retry timing across restarts, including new URLs, independent archive hosts and separate publication throttles. Release rollover propagates HTTP throttles instead of treating them as isolated inventory outages. Continue remaining queue audits. |
+| 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh inventories, corruption, outages, registration after earlier failures and interrupted overflow uploads. Historical recovery finds accepted numbered-partition assets without replay or cached bytes; older GitHub assets lacking digest metadata are verified by body hash. Continue other worker acceptance checks. |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
@@ -655,3 +655,43 @@ assert production archive contents, which that checkout does not hold. They are
 unrelated to this work, and the workflow above therefore scopes itself to the
 audits and the data-independent worker tests instead of claiming a full-suite
 pass there.
+
+## Retry progress (item 16)
+
+Each failure class the item names has a regression that pins its behaviour, and
+the shared scheduler guarantees none of them can starve another queue.
+
+| Failure class | Regression |
+| --- | --- |
+| HTTP 429 with numeric and HTTP-date `Retry-After` | `test_429_retains_numeric_and_http_date_retry_after`, `test_429_retry_after_pauses_index_host_and_then_resumes` |
+| Retry timing survives a restart | `test_source_retry_after_survives_restart_and_defers_new_urls_on_the_same_host`, `test_rate_limit_preserves_cursor_and_honors_retry_after_across_runs` |
+| Invalid or malformed `Retry-After` | `test_retry_after_http_date_and_invalid_value_use_durable_backoff` |
+| Expired / rotating download URLs | `test_rotating_winudf_tickets_do_not_create_new_asset_variants`, `test_old_ticket_observations_merge_without_redownloading_a_verified_asset` |
+| Unavailable host or tool | `test_index_429_does_not_block_independent_apkpure_discovery`, `test_unavailable_apkeep_does_not_block_structured_asset_acquisition`, `test_cached_metadata_is_reinterpreted_when_live_source_is_unavailable` |
+| Mixed new/retry queues | `test_queue_reserves_capacity_for_retries_and_new_leads`, `test_source_batch_retries_failures_without_starving_new_sources`, `test_one_request_runs_continue_discovery_while_old_failures_stay_due` |
+| Permanent negatives do not suppress retries | `test_failed_versions_remain_retryable_outside_the_current_numeric_window`, `test_failed_version_recovers_without_recheck_flag` |
+| Publication throttle is separate from source throttle | `test_publication_retry_after_does_not_contact_sources_early`, `test_independent_queues_do_not_change_each_others_turn` |
+
+**Starvation was a real defect, not only a test.** Two scheduler calls omitted
+an explicit rotation lane and therefore shared `default`:
+
+- `src/sonos_firmware/metadata_sweep.py` — now `queue='legacy-ups-profiles'`
+- `scripts/archive_gpl_direct.py` — now `queue='gpl-index-versions'`
+
+With `--limit 1` those two could alternate against another consumer on the same
+state document and hide work indefinitely. `scripts/audit_discovery_ceilings.py`
+now fails if any scheduler call omits `state=` or `queue=`, and reverting either
+fix makes it fail with exactly those entries.
+
+**Silently abandoned work was also real.** An advertised GPL link that failed
+validation left no receipt at all, so neither audit could see it (see
+[GPL index and source coverage](#gpl-index-and-source-coverage-item-6)). The
+link-coverage audit now requires a durable terminal state and fails on
+`unattempted`.
+
+Progress across restarts is visible in the live runs already cited: the
+[rollover validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44340640914)
+reached 143 preserved sources and published 203 documents in one run after an
+earlier run had already hit the asset limit, and the
+[firmware follow-up](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44230244613)
+resumed the same backlog rather than restarting it.
