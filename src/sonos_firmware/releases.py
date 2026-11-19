@@ -16,6 +16,12 @@ from .storage import file_sha256
 
 USER_AGENT = "sonos-firmware-archive/1"
 
+# Anonymous REST reads are throttled separately from authenticated calls. Both
+# the primary allowance (403) and the secondary burst limit (429) mean the
+# anonymous view is unavailable now, while the repository itself may still be
+# readable through the authenticated client.
+AUTHENTICATED_FALLBACK_STATUSES = frozenset({403, 429})
+
 
 def public_release(repository: str, tag: str) -> dict:
     request = urllib.request.Request(
@@ -26,7 +32,7 @@ def public_release(repository: str, tag: str) -> dict:
         with urllib.request.urlopen(request, timeout=60) as response:
             return json.load(response)
     except urllib.error.HTTPError as error:
-        if error.code != 403:
+        if error.code not in AUTHENTICATED_FALLBACK_STATUSES:
             raise
         owner, name = repository.split("/", 1)
         query = """
@@ -102,7 +108,7 @@ def remote_assets(repository: str, tag: str) -> dict[str, dict]:
             with urllib.request.urlopen(request, timeout=60) as response:
                 items = json.load(response)
         except urllib.error.HTTPError as error:
-            if error.code != 403:
+            if error.code not in AUTHENTICATED_FALLBACK_STATUSES:
                 raise
             # A later-page challenge must not turn a partial REST result into
             # a successful inventory. GraphQL enumerates the entire release.

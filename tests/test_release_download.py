@@ -1,8 +1,12 @@
 import hashlib
+import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+
+import urllib.error
 
 from sonos_firmware import releases
 
@@ -68,3 +72,65 @@ class ReleaseDownloadTests(unittest.TestCase):
                     releases.download_verified(self.receipt(b'new bytes'), target, 'owner/repo')
             process.assert_not_called()
             self.assertEqual(target.read_bytes(), b'original')
+
+
+class AnonymousReadThrottleTests(unittest.TestCase):
+    """Anonymous REST throttling must not fail a run that can authenticate.
+
+    GitHub reports the primary allowance as 403 and burst/secondary limits as
+    429. Only a genuinely absent resource may stay an error.
+    """
+
+    GRAPHQL_RELEASE = {'data': {'repository': {'release': {
+        'databaseId': 7, 'url': 'https://github.com/owner/archive/releases/tag/fixture',
+        'tagName': 'fixture'}}}}
+
+    GRAPHQL_ASSETS = {'data': {'repository': {'release': {'releaseAssets': {
+        'nodes': [{'id': 'a1', 'name': 'source.bin', 'size': 10, 'digest': 'sha256:'+'a'*64,
+                   'downloadUrl': 'https://github.com/owner/archive/releases/download/fixture/source.bin'}],
+        'pageInfo': {'hasNextPage': False, 'endCursor': None}}}}}}
+
+    def test_both_anonymous_throttle_statuses_use_the_authenticated_release_lookup(self):
+        for status in (403, 429):
+            with self.subTest(status=status), \
+                 patch.object(releases.urllib.request, 'urlopen',
+                              side_effect=urllib.error.HTTPError('https://api.github.com/fixture',
+                                                                 status, 'throttled', {}, None)), \
+                 patch.object(releases.subprocess, 'check_output',
+                              return_value=json.dumps(self.GRAPHQL_RELEASE)) as client:
+                release = releases.public_release('owner/archive', 'fixture')
+            self.assertEqual(release['id'], 7)
+            self.assertEqual(release['tag_name'], 'fixture')
+            client.assert_called_once()
+
+    def test_a_missing_release_stays_missing_instead_of_being_retried_as_throttling(self):
+        with patch.object(releases.urllib.request, 'urlopen',
+                          side_effect=urllib.error.HTTPError('https://api.github.com/fixture',
+                                                             404, 'missing', {}, None)), \
+             patch.object(releases.subprocess, 'check_output') as client:
+            with self.assertRaises(urllib.error.HTTPError) as raised:
+                releases.public_release('owner/archive', 'fixture')
+        self.assertEqual(raised.exception.code, 404)
+        client.assert_not_called()
+
+    def test_a_throttled_asset_page_falls_back_before_returning_a_partial_inventory(self):
+        first_page = [{'name': f'asset-{i}.bin', 'size': 1, 'digest': 'sha256:'+'a'*64,
+                       'browser_download_url': f'https://github.com/owner/archive/releases/download/fixture/asset-{i}.bin'}
+                      for i in range(100)]
+        responses = [first_page,
+                     urllib.error.HTTPError('https://api.github.com/fixture', 429, 'throttled',
+                                            {'Retry-After': '30'}, None)]
+        def read(request, timeout=None):
+            item = responses.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return io.BytesIO(json.dumps(item).encode())
+        with patch.object(releases, 'public_release', return_value={'id': 7}), \
+             patch.object(releases.urllib.request, 'urlopen', side_effect=read), \
+             patch.object(releases, 'graphql_assets', return_value=[
+                 {'name': 'complete.bin', 'size': 1, 'digest': 'sha256:'+'b'*64,
+                  'browser_download_url': 'https://github.com/owner/archive/releases/download/fixture/complete.bin'}]) as graphql:
+            assets = releases.remote_assets('owner/archive', 'fixture')
+        # A page-2 throttle must not be reported as a full 100-asset inventory.
+        self.assertEqual(set(assets), {'complete.bin'})
+        graphql.assert_called_once_with('owner/archive', 'fixture')
