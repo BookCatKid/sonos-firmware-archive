@@ -263,11 +263,14 @@ def capture(
         "release_tag": config["release_tag"],
         "resources": resources,
         "pending_urls": sorted(set(queue) - seen),
-        # Every publicly readable resource captured; the remainder requires
-        # authentication. This is the completion the archive can actually reach,
-        # but only for a deployment it could identify in the first place.
+        # Two distinct questions. `complete` means an identified deployment was
+        # fully captured. `public_capture_done` means nothing retryable remains,
+        # which is true even when the deployment's own entry point is gated and
+        # its identity can therefore never be established.
         "complete": (identity_complete and not (set(queue) - seen) and
                      all(item["outcome"] == "captured" for item in actionable)),
+        "public_capture_done": (not (set(queue) - seen) and
+                                all(item["outcome"] == "captured" for item in actionable)),
         "boundary": "Public deployment bytes only; no login session or cloud API data.",
     }
     metadata = capture_dir / "capture.json"
@@ -376,8 +379,11 @@ def _register_deployments(existing, deployments):
             deployment['actionable_gap_total'] = sum(
                 row['outcome'] not in terminal and row['outcome'] != 'captured'
                 for row in resources.values())
-            deployment['complete'] = (not deployment['pending_urls'] and
+            deployment['complete'] = (bool(deployment.get('identity_complete')) and
+                                      not deployment['pending_urls'] and
                                       not deployment['actionable_gap_total'])
+            deployment['public_capture_done'] = (not deployment['pending_urls'] and
+                                                 not deployment['actionable_gap_total'])
             bundles = {(row.get('repository'), row.get('release_tag'), row['release_asset'], row['sha256']): row
                        for row in [*prior.get('bundles', []), prior['bundle'], deployment['bundle']]}
             deployment['bundles'] = list(bundles.values())
@@ -415,8 +421,9 @@ def _mark_published(state, document, repository):
     result = next(row for row in state['deployments'] if row.get('repository') == repository
         and row['app'] == document['app'] and row['deployment_fingerprint'] == document['deployment_fingerprint'])
     observations = state.setdefault('observations', {}).setdefault(repository, {})
-    observations[document['app']] = {**checkpoint(observations.get(document['app']), success=result['complete'], success_hours=1),
-                                    'status': 'published' if result['complete'] else 'partial'}
+    done = bool(result.get('public_capture_done', result['complete']))
+    observations[document['app']] = {**checkpoint(observations.get(document['app']), success=done, success_hours=1),
+                                    'status': 'published' if done else 'partial'}
     return result
 
 
@@ -486,7 +493,7 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
             if upload:
                 upload_capture(document, metadata, repository)
                 document = promote(document)
-            complete = document['complete'] and upload
+            complete = document['public_capture_done'] and upload
             observations[app] = {**checkpoint(observations.get(app), success=complete, success_hours=1),
                                  'status': 'published' if complete else 'partial',
                                  'captured_total': document['captured_total'], 'gap_total': document['gap_total'],

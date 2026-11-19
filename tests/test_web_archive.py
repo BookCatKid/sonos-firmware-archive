@@ -103,9 +103,14 @@ class WebArchiveTests(unittest.TestCase):
         self.assertIn(shell['release_asset'], self.uploads)
         self.assertTrue(any(row['requested_url'] == script and row['status'] == 'verified'
                             for row in deployment['resources']))
+        # The deployment itself was never captured: no identity, so not complete.
         self.assertFalse(deployment['complete'])
         self.assertFalse(deployment['identity_complete'])
-        self.assertEqual(result['status'], 'partial')
+        # But nothing retryable remains, so the worker finished what it can do.
+        self.assertEqual(deployment['gated_total'], 1)
+        self.assertEqual(deployment['actionable_gap_total'], 0)
+        self.assertTrue(deployment['public_capture_done'])
+        self.assertEqual(result['status'], 'ok')
 
     def test_login_html_returned_for_a_script_does_not_become_that_script(self):
         entry = web.APPS['pro']['entry_url']
