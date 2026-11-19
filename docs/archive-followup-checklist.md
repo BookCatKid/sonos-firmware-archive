@@ -21,12 +21,12 @@ independent web-archive indexes.
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the source with no Wayback or Common Crawl capture. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | The committed desktop archive holds **101 installers** (52 Windows, 49 macOS) across **72 non-classic versions**, every one with SHA-256, a release asset and per-artifact Wayback CDX provenance, all fetched from Sonos hosts. A cold protocol traversal found 41 installer URLs including all 37 reference URLs, and independently surfaced a Windows `.exe` and macOS `.dmg` for 90.0-75190. See [desktop installer coverage](#desktop-installer-coverage-item-4). |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
-| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6). |
-| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots (244 available, 382 absent) with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. Wayback CDX returns empty for the mutable ConnectX URL and Common Crawl has no capture under that prefix. See [historical index routes](#historical-index-routes-item-7). |
+| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. A live `gpl-archive` run then published 187 of 187 downloads (2.85 GB) across 7 versions, with 148 archives still queued for full stream verification. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Blocked externally.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | 67 APKPure deliveries across **67 distinct package/version-code pairs**: 37 distinct S2 version codes (1270001011 → 890000051) and 30 S1 (430354030 → 572383122). Rotating `winudf` tickets are separated from asset identity so a refreshed ticket neither creates a variant nor re-downloads a verified asset. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **475 components across those 67 deliveries, all 475 signature-verified**, each with signer SHA-256, subject and signature schemes (v1/v2/v3), and a release asset. 34 deliveries carry multiple components (splits) plus a complete wrapper. Two distinct Sonos signers are recorded: 445 modern and 30 legacy. See [Android store coverage](#android-store-coverage-items-9-and-10). |
-| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. Exactly **1 gap** is recorded with its reason: a Wayback body that is not a valid ZIP/APK. Live CI also reinspected both current and native beta APKs against the configured Sonos signer. See [official mobile coverage](#official-mobile-coverage-item-11). |
+| 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI verified all 78 incomplete inventories: 28 recipient groups lacked matching keys, with no decoder errors in available components; model-26 recovery resolved one, leaving 27. Revisit-on-improvement is automatic: the inventory revision includes `ready_recipients` and a hash of the decoder sources, so a new key or a changed decoder re-queues the package. Remaining work needs recipient keys, which exist only as CI secrets. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14). |
@@ -827,6 +827,26 @@ itself; Common Crawl reports no captures under that prefix. The results are
 recorded in `data/discovery/connectx-history-candidates.json` and summarised in
 [ConnectX historical discovery](#connectx-historical-discovery-item-3).
 
+**Timeouts and upstream failures were then observed live, not only in tests.**
+The mobile run
+([44470878436](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44470878436))
+queried Wayback's CDX for APK captures across the `sonos.com` domain and hit a
+read timeout, then a Common Crawl 503:
+
+```
+Wayback CDX:      "The read operation timed out"
+                  consecutive_failures=2, next_attempt_at=2026-11-19T08:17:04Z
+
+Common Crawl:     HTTP Error 503: Service Temporarily Unavailable
+                  consecutive_failures=1, next_attempt_at=2026-11-19T07:17:07Z
+                  collections enumerated=129, pending_queries=129
+```
+
+Both are recorded in `mobile-history-index.json` with their deadlines, so the
+host stays deferred instead of being retried in a tight loop or silently
+abandoned. The task then reported `partial` and exited non-zero, which is why that
+job shows as failed: incomplete work is an error, not a success.
+
 **Resume and replay behaviour** is pinned by
 `tests/test_archive_index.py` (16 tests: rate-limit cursor preservation,
 HTTP-date `Retry-After`, durable backoff) and `tests/test_commoncrawl.py`
@@ -938,3 +958,73 @@ mark its delivery complete.
 The publication audit is the end-to-end check that this holds across the whole
 archive: 135 releases, 4,551 assets, 0 missing, 0 mismatched, and every unrecorded
 extra explained as a duplicate publication.
+
+## Live archive runs: mobile and GPL archive
+
+Two targets were dispatched against the isolated validation archive to extend the
+mobile backlog and GPL publication evidence. Both are recorded here with their
+actual outcome, including the parts that did not finish.
+
+### `mobile` — [run 44470878436](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44470878436)
+
+Result: `status: partial`, reported as a failed job because incomplete work is an
+error by design, not a silent success.
+
+```
+discover_mobile_installers: ok      candidates=4 live=2
+archive_mobile_installers:  failed  hash-verified artifacts=2 signature-checked=2 attempted=1 new=0
+archive-installer-history:  failed  pending captures remain; verified progress retained
+```
+
+The archive state advanced and was committed as
+`Update mobile archive state` (`065a64a`, +24/−7 in `mobile-archive.json` and
++227/−3 in `mobile-history-index.json`). The two preserved installers are both
+Sonos-hosted S2 builds under `apps-fireos-s2`:
+
+```
+85.00.12    Sonos_85.00.12.apk    339,757,559 bytes
+91.01.11    Sonos_91.01.11.apk    259,903,267 bytes
+```
+
+Both were **hash-verified and signature-checked in CI** (`signature-checked=2`),
+so this run extends the signer-verified delivery evidence rather than only the
+file count. `new=0` means discovery found nothing beyond what was already
+preserved; the backlog for the reachable graph is exhausted, which is a result
+rather than a failure.
+
+Two gaps remain and are recorded with their reason rather than dropped:
+
+```
+70.1-12345   HTTP Error 404: Not Found   (advertised twice, both 404)
+```
+
+### `gpl-archive` — [run 44470939384](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44470939384)
+
+Result: `status: ok`. The run committed
+`Update gpl-archive archive state` (`9a1e561`, +1,933 lines in `artifacts.json`).
+
+```
+attempted=90   verified_bytes=1,431,932,151
+```
+
+Its `report.json` records the resulting archive state:
+
+```
+published_downloads: 187          verified_downloads: 187
+published_source_archives: 173    fully_published_releases: 6
+verified_index_total: 26          sonos_download_links: 701
+external_upstream_links: 208
+fully compressed-stream verified source archives: 25
+awaiting full stream verification: 148
+```
+
+Across the 7 versions now in that archive (`6.4`, `7.0`, `7.1`, `7.2`, `7.3`,
+`7.4`, `8.0`) every recorded artifact is `published`: 187 of 187, totalling
+2,854,074,746 bytes. That run published the whole 7.2–8.0 source set, including
+the large kernel archives (`linux-3.10.53.tgz` at 116,446,877 bytes) and the
+upstream glibc tarballs, so "follow their source links" is exercised live rather
+than only offline.
+
+The report states its own limit: `completeness_proven: false`, with 148 published
+archives still awaiting full compressed-stream verification. Those are queued for
+the stream auditor, not counted as verified.
