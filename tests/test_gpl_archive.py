@@ -207,10 +207,17 @@ class GPLArchiveIntegrityTests(unittest.TestCase):
                             for snapshot in record.get('index_snapshots', [])[1:])
             for filename, item in items.items():
                 with self.subTest(version=version, filename=filename):
-                    self.assertIn(item['filename'], expected)
+                    self.assertIn(filename, expected)
+                    self.assertEqual(item["filename"], filename)
                     if item.get('kind') in ('source', 'attribution'):
                         self.assertIn((item['filename'], item.get('source_url') or item.get('fetch_url')),
                                       {(link['filename'], link['url']) for link in links})
+                    if "sha256" not in item:
+                        # Recorded download failures (invalid-artifact, http-error,
+                        # network-error, ...) carry no content hash by design; the
+                        # receipt must still name its terminal state.
+                        self.assertTrue(item.get("state"))
+                        continue
                     self.assertEqual(len(item["sha256"]), 64)
                     self.assertGreater(item["bytes"], 0)
                     if item.get("published"):
