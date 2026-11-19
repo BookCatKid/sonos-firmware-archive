@@ -240,6 +240,12 @@ def capture(
         if item['requested_url'] in [config['entry_url'], *config['seed_urls']]], sort_keys=True).encode())
     successful = {row['requested_url'] for row in resources if row['outcome'] == 'captured'}
     identity_complete = all(url in successful for url in [config['entry_url'], *config['seed_urls']])
+    # A resource the deployment refuses to serve anonymously is terminal, not
+    # pending work: no retry will ever retrieve it without credentials. Counting
+    # it as incomplete kept a permanently red target that could no longer signal
+    # a real regression. Only outcomes a retry could change remain actionable.
+    terminal = {"gated-or-redirected", "gated-or-mislabeled"}
+    actionable = [item for item in resources if item["outcome"] not in terminal]
     document = {
         "schema_version": 1,
         "app": app,
@@ -252,10 +258,16 @@ def capture(
         "resource_total": len(resources),
         "captured_total": sum(item["outcome"] == "captured" for item in resources),
         "gap_total": sum(item["outcome"] != "captured" for item in resources),
+        "gated_total": sum(item["outcome"] in terminal for item in resources),
+        "actionable_gap_total": sum(item["outcome"] != "captured" for item in actionable),
         "release_tag": config["release_tag"],
         "resources": resources,
         "pending_urls": sorted(set(queue) - seen),
-        "complete": not (set(queue) - seen) and all(item['outcome'] == 'captured' for item in resources),
+        # Every publicly readable resource captured; the remainder requires
+        # authentication. This is the completion the archive can actually reach,
+        # but only for a deployment it could identify in the first place.
+        "complete": (identity_complete and not (set(queue) - seen) and
+                     all(item["outcome"] == "captured" for item in actionable)),
         "boundary": "Public deployment bytes only; no login session or cloud API data.",
     }
     metadata = capture_dir / "capture.json"
@@ -357,7 +369,15 @@ def _register_deployments(existing, deployments):
             deployment['resource_total'] = len(resources)
             deployment['captured_total'] = sum(row['outcome'] == 'captured' for row in resources.values())
             deployment['gap_total'] = sum(row['outcome'] != 'captured' for row in resources.values())
-            deployment['complete'] = not deployment['pending_urls'] and not deployment['gap_total']
+            # Merging an earlier capture must not resurrect a gated resource as
+            # pending work; only outcomes a retry could change are actionable.
+            terminal = {'gated-or-redirected', 'gated-or-mislabeled'}
+            deployment['gated_total'] = sum(row['outcome'] in terminal for row in resources.values())
+            deployment['actionable_gap_total'] = sum(
+                row['outcome'] not in terminal and row['outcome'] != 'captured'
+                for row in resources.values())
+            deployment['complete'] = (not deployment['pending_urls'] and
+                                      not deployment['actionable_gap_total'])
             bundles = {(row.get('repository'), row.get('release_tag'), row['release_asset'], row['sha256']): row
                        for row in [*prior.get('bundles', []), prior['bundle'], deployment['bundle']]}
             deployment['bundles'] = list(bundles.values())

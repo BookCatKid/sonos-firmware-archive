@@ -122,7 +122,29 @@ class WebArchiveTests(unittest.TestCase):
         row = next(row for row in deployment['resources'] if row['requested_url'] == script)
         self.assertEqual(row['outcome'], 'gated-or-redirected')
         self.assertNotIn('release_asset', row)
+        # A gated resource is terminal: no retry retrieves it without credentials,
+        # so it must not hold the deployment open as incomplete work.
+        self.assertEqual(deployment['gated_total'], 1)
+        self.assertEqual(deployment['actionable_gap_total'], 0)
+        self.assertTrue(deployment['complete'])
+
+    def test_an_actionable_failure_keeps_the_deployment_incomplete(self):
+        """A network error is retryable, so it must still block completion."""
+        entry = web.APPS['pro']['entry_url']
+        script = entry+'_next/static/app.js'
+        def fetch(url):
+            if url == script:
+                raise OSError('connection reset')
+            return self.fetch(url)
+        with patch.object(web, 'fetch', side_effect=fetch):
+            result = self.run_archive()
+        deployment, = result['deployments']
+        row = next(row for row in deployment['resources'] if row['requested_url'] == script)
+        self.assertEqual(row['outcome'], 'network-error')
+        self.assertEqual(deployment['gated_total'], 0)
+        self.assertEqual(deployment['actionable_gap_total'], 1)
         self.assertFalse(deployment['complete'])
+        self.assertEqual(result['status'], 'partial')
 
     def test_bounded_batches_resume_pending_urls_and_retain_every_prior_capture(self):
         def fetch(url):

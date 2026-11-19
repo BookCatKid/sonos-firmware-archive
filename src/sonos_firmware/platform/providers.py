@@ -142,12 +142,16 @@ def gpl_archive(c: Context):
 
 
 def gpl_audit(c: Context):
-    return [c.script('audit_gpl_link_coverage.py',
-                     '--output', c.root / 'data/gpl/live/link-coverage.json',
-                     report=str(c.root/'data/gpl/live/link-coverage.json')),
-            c.script('audit_gpl_published_streams.py', '--store', c.work / 'audit',
+    # Repair before reporting. The stream auditor is the work that reduces the
+    # pending set; the coverage check is the gate on the result. Ordering the
+    # gate first would let a large unattempted backlog skip the repair entirely.
+    return [c.script('audit_gpl_published_streams.py', '--store', c.work / 'audit',
                      '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 25), '--delay', 2.5,
                      report=str(c.root/'data/gpl/live/stream-audit.json')),
+            c.script('audit_gpl_link_coverage.py',
+                     '--output', c.root / 'data/gpl/live/link-coverage.json',
+                     after_failure=True,
+                     report=str(c.root/'data/gpl/live/link-coverage.json')),
             c.script('archive_gpl_direct.py', 'report', after_failure=True)]
 
 
