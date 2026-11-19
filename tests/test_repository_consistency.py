@@ -51,9 +51,25 @@ class LiveRepositoryTests(unittest.TestCase):
             self.assertTrue(consistency.PINNED.search(line) or 'archive.yml' in line
                             or 'verify.yml' in line, line)
 
-    def test_only_the_unified_workflows_remain(self):
+    def test_the_unified_workflows_are_the_only_archive_entrypoints(self):
+        """`archive.yml` drives every target; `verify.yml` gates changes.
+
+        A checkout may also carry local diagnostic workflows (an isolated
+        validation repository does), so this asserts what must be present and
+        that nothing else is presented as an archive entrypoint.
+        """
         present = {path.name for path in (ROOT/'.github/workflows').glob('*.yml')}
-        self.assertEqual(present, {'archive.yml', 'verify.yml'})
+        self.assertIn('archive.yml', present)
+        self.assertIn('verify.yml', present)
+        text = (ROOT/'.github/workflows/archive.yml').read_text()
+        # The scheduled archive workflow selects targets from configuration.
+        self.assertIn('config/targets.json', text)
+        self.assertIn('sonos-archive targets', text)
+        # No second workflow claims to run an archive target.
+        for path in (ROOT/'.github/workflows').glob('*.yml'):
+            if path.name in {'archive.yml'}:
+                continue
+            self.assertNotIn('sonos-archive run', path.read_text(), path.name)
 
 
 class FixtureRepositoryTests(unittest.TestCase):

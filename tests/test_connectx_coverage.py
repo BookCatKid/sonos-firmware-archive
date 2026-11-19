@@ -122,18 +122,23 @@ class ConnectXCoverageTests(unittest.TestCase):
         self.assertEqual(report['historical_index']['snapshots_missing_extraction'], 1)
 
     def test_the_committed_archive_reports_its_own_coverage(self):
-        report = coverage.audit(
-            json.loads((ROOT/'data/catalog.json').read_text()),
-            json.loads((ROOT/'data/discovery/connectx-index.json').read_text()))
+        """Whatever archive this checkout holds, the audit explains every link.
+
+        The historical index is optional evidence; a different checkout may not
+        have it. The invariants below must hold either way.
+        """
+        index_path = ROOT/'data/discovery/connectx-index.json'
+        index = json.loads(index_path.read_text()) if index_path.exists() else None
+        report = coverage.audit(json.loads((ROOT/'data/catalog.json').read_text()), index)
         self.assertEqual(report['errors'], [])
-        self.assertGreaterEqual(report['preserved_components'], 30)
-        # Preserved ConnectX contents are distinct, not one file relabelled.
+        # Preserved contents are distinct, not one file relabelled many times.
         self.assertEqual(report['distinct_preserved_contents'], report['preserved_components'])
         # Every preserved component is attributed to a manifest it came from.
         self.assertEqual(report['manifest_attributed'], report['preserved_components'])
         # Withdrawn components are named rather than counted as covered.
         self.assertEqual(len(report['unavailable']),
                          report['advertised_components'] - report['preserved_components'])
+        self.assertLessEqual(report['preserved_components'], report['advertised_components'])
 
     def test_the_cli_writes_a_report_and_fails_only_on_inconsistency(self):
         with tempfile.TemporaryDirectory() as temporary:

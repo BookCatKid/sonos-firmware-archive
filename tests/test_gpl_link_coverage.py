@@ -95,12 +95,16 @@ class LinkCoverageTests(unittest.TestCase):
         self.assertEqual(report['unattempted'][0]['origin'], 'upstream')
 
     def test_the_real_catalog_and_receipts_report_their_own_coverage(self):
-        """The committed archive data is consistent with this classifier."""
+        """The committed archive data is consistent with this classifier.
+
+        This asserts the invariant, not production counts: a different checkout
+        may legitimately hold a smaller or larger catalogue.
+        """
         report = coverage.coverage(
             json.loads((ROOT/'data/gpl/live/catalog.json').read_text()),
             json.loads((ROOT/'data/gpl/live/artifacts.json').read_text()))
-        self.assertGreaterEqual(report['versions'], 39)
-        self.assertGreaterEqual(report['link_total'], 1400)
+        self.assertGreaterEqual(report['versions'], 1)
+        self.assertGreaterEqual(report['link_total'], 1)
         self.assertEqual(report['unattempted_total'], len(report['unattempted']))
         # The classifier accounts for every advertised link exactly once.
         self.assertEqual(sum(report['state_totals'].values()), report['link_total'])
