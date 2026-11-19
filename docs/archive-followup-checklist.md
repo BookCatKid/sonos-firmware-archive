@@ -623,3 +623,35 @@ ceiling either.
 fixtures for an unrotated call, a shared default lane, a fully persisted call,
 the stdlib `selector.select` false positive, a model space that stops at its
 bound, and the CLI exit code.
+
+## Cross-checkout validation
+
+The audits and the worker tests they touch were exercised on Python 3.12 in the
+isolated validation archive, which holds a different catalogue than production
+by design. The
+[consistency/ceiling/coverage validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44468577230)
+passed every step: all four audits, the release-audit, consistency, ceiling,
+coverage-recovery, retry/throttle and cold-start test patterns, and catalog
+verification.
+
+Two portability defects were found and fixed by running there rather than only
+against production:
+
+- The committed-archive tests hardcoded production counts (39 GPL versions) and
+  assumed the historical ConnectX index exists. They now assert the invariant —
+  every advertised link classified exactly once, preserved contents distinct,
+  provenance classes summing to the preserved count — against whatever archive is
+  present, and treat the historical index as optional evidence.
+- "Every preserved component is manifest-attributed" is a production-archive
+  property, not a universal one: the isolated checkout preserves 8 model-17
+  components reached at version-pinned URLs with no recorded manifest document.
+  The audit now reports a provenance breakdown (`manifest`, `versioned-url`,
+  `other`) that must sum to the preserved count, and requires a source URL on
+  every preserved record. Production reports 31/31 manifest-attributed; the
+  isolated checkout reports 8/8 versioned-url.
+
+The nine test failures that remain in that repository are pre-existing tests that
+assert production archive contents, which that checkout does not hold. They are
+unrelated to this work, and the workflow above therefore scopes itself to the
+audits and the data-independent worker tests instead of claiming a full-suite
+pass there.
