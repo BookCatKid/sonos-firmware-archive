@@ -20,3 +20,5 @@ jobs:
       - run: sonos-fw verify
       - name: Check repository consistency
         run: python scripts/audit_repository_consistency.py
+      - name: Check discovery ceilings
+        run: python scripts/audit_discovery_ceilings.py

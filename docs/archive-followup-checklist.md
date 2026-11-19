@@ -30,7 +30,7 @@ independent web-archive indexes.
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI classified 78 incomplete inventories: 28 recipient groups lack matching keys; available components report no decoder errors. Recovery can now use verified, previously decrypted rootfs when its receipt binds it to the exact original source and component. Continue recipient-specific recovery and live validation. |
-| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Snapshot publication now rolls full 1,000-asset releases into numbered partitions, with actual-tag receipts, cached inventories and no partition-count ceiling. Continue auditing other source adapters and worker checkpoints. |
+| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root and inventory ordering fixed. Firmware/app downloads and historical manifest replay retain server retry timing across restarts, including new URLs, independent archive hosts and separate publication throttles. Release rollover propagates HTTP throttles instead of treating them as isolated inventory outages. Continue remaining queue audits. |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh inventories, corruption, outages, registration after earlier failures and interrupted overflow uploads. Historical recovery finds accepted numbered-partition assets without replay or cached bytes; older GitHub assets lacking digest metadata are verified by body hash. Continue other worker acceptance checks. |
@@ -568,3 +568,58 @@ Two findings were investigated and deliberately **not** deleted:
 fixtures for orphan scripts, documented scripts, broken documentation paths,
 pinned historical links, retired workflow references, unknown providers and the
 CLI exit code.
+
+## Discovery ceilings (item 15)
+
+Two properties decide whether a per-run budget can become a permanent coverage
+ceiling. Both are now checked mechanically:
+
+```
+$ PYTHONPATH=src .venv/bin/python scripts/audit_discovery_ceilings.py
+scheduler_calls=19 unrotated=0 unnamed_queue=0 model_expands=True budgets=26
+```
+
+**1. Every scheduler call persists its rotation.** `retry.select` reserves part
+of a batch for retries and, when only one slot fits, alternates retry and fresh
+lanes across runs using `state['retry_rotation'][queue]`. A call that omits
+`state=` cannot rotate, so a small `--limit` would permanently hide everything
+after the first batch. All 19 scheduler calls in `src/` and `scripts/` pass it.
+
+A call that omits `queue=` is subtler: it shares the `default` rotation lane
+with any other caller on the same document, so two queues can starve each
+other. The audit found two such calls, both now fixed:
+
+- `src/sonos_firmware/metadata_sweep.py` now uses
+  `queue='legacy-ups-profiles'`.
+- `scripts/archive_gpl_direct.py` now uses `queue='gpl-index-versions'`.
+
+Reverting those two lines makes the audit fail with exactly those two entries,
+so the check is not vacuous.
+
+**2. Bounded spaces widen instead of stopping.** The metadata model space starts
+at `model_max` (default 255) and, when a namespace exhausts its range, raises the
+bound to `2 × bound + 1`, resets the cursor and starts another pass. 255 is
+therefore a starting batch size, not a lifetime limit. This is proven, not
+asserted:
+
+- `test_model_discovery_crosses_the_default_255_boundary_without_configuration_changes`
+  finds model 256 with no configuration change and asserts the namespace bound
+  becomes 511 and the policy is `expanding-passes`.
+- `test_raising_initial_model_range_above_4095_preserves_the_cursor_and_request_budget`
+  shows raising the bound preserves the cursor and the request budget instead of
+  restarting from zero.
+
+**3. Every budget is configurable.** 26 per-run budgets are exposed through
+target options — `limit`, `seconds`, `history_limit`, `extraction_limit`,
+`inventory_limit`, `binary_limit`, `discovery_limit`, `model_max` and others — so
+an operator can raise a batch without a code change. `config/targets.json` can
+also override any of them per target.
+
+Publication capacity is likewise unbounded: a full 1,000-asset Release rolls
+into a numbered partition with the actual tag recorded, so asset count is not a
+ceiling either.
+
+`tests/test_discovery_ceilings.py` adds 10 tests: the live repository plus
+fixtures for an unrotated call, a shared default lane, a fully persisted call,
+the stdlib `selector.select` false positive, a model space that stops at its
+bound, and the CLI exit code.

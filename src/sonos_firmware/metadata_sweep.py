@@ -177,7 +177,7 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
     source_backoff = dict(previous.get('source_backoff', {}))
     paused = bool(source_backoff) and not due(source_backoff)
     queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit,
-                                    state=scheduling)
+                                    state=scheduling, queue='legacy-ups-profiles')
     errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
                'http_status': source_backoff.get('http_status')}] if paused else []
     attempted = 0

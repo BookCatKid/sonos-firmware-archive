@@ -150,7 +150,8 @@ def discover(args: argparse.Namespace) -> int:
     retries = [{'version': version, 'priority': row.get('priority', -1),
                 'evidence': row.get('evidence', [index_url(version)])} for version, row in checked.items()]
     todo = [] if paused else select(fresh+retries, checked, key=lambda item: item['version'],
-                                    limit=args.limit, force=args.recheck, state=state)
+                                    limit=args.limit, force=args.recheck, state=state,
+                                    queue='gpl-index-versions')
     for item in todo:
         version = item["version"]
         if version not in checked:
