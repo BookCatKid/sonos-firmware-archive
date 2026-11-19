@@ -10,7 +10,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from sonos_firmware.platform.registry import targets
-from sonos_firmware.platform.runner import plan
+from sonos_firmware.platform.runner import plan, run
+from sonos_firmware.platform.model import Step
 from sonos_firmware.platform.git_state import validate_metadata
 from sonos_firmware.platform.tasks import extract_firmware
 from sonos_firmware import discovery, frontier, releases, release_series
@@ -109,3 +110,163 @@ class EmptyPlatformTests(unittest.TestCase):
         spec.loader.exec_module(module)
         with tempfile.TemporaryDirectory() as temporary:
             self.assertEqual(module.recorded_assets(Path(temporary)), {})
+
+
+class ColdStartTargetCoverageTests(unittest.TestCase):
+    """Every configured target must accept empty, existing and migrated state.
+
+    Item 19 asks for per-target evidence, not a sample. These tests iterate the
+    real `config/targets.json` so a newly added target is covered automatically.
+    """
+
+    def registry(self, root):
+        (root / 'config').mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / 'config/targets.json', root / 'config/targets.json')
+        return targets(root)
+
+    def test_every_target_plans_from_an_empty_checkout_and_writes_nothing(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = self.registry(root)
+            self.assertGreaterEqual(len(registry), 13)
+            for target in registry.values():
+                with self.subTest(target=target.name):
+                    report = plan(target, root, 'fresh/archive')
+                    self.assertEqual(report['status'], 'planned')
+                    self.assertTrue(report['steps'], 'every target plans at least one step')
+                    self.assertFalse(report['executed'])
+            # Planning is read-only: no archive, cache or metadata directory appears.
+            self.assertFalse((root / 'data').exists())
+            self.assertEqual(sorted(p.name for p in root.iterdir()), ['config'])
+
+    def test_every_target_validates_existing_archive_metadata_without_migration_loss(self):
+        """An established checkout keeps validating after a worker starts cold."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = self.registry(root)
+            for target in registry.values():
+                with self.subTest(target=target.name):
+                    validate_metadata(root, target)
+            # Populate every declared metadata path, including nested directories.
+            for target in registry.values():
+                for relative in target.metadata:
+                    path = root / relative
+                    if relative.endswith('.json'):
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text(json.dumps({'schema_version': 1, 'target': target.name}))
+                    else:
+                        (path / 'nested').mkdir(parents=True, exist_ok=True)
+                        (path / 'nested/record.json').write_text(json.dumps({'schema_version': 1}))
+            for target in registry.values():
+                with self.subTest(target=target.name, phase='populated'):
+                    validate_metadata(root, target)
+                    self.assertEqual(plan(target, root, 'fresh/archive')['status'], 'planned')
+
+    def test_a_corrupt_metadata_document_is_reported_for_the_owning_target_only(self):
+        """One target's damaged state must not silently validate or block others."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = self.registry(root)
+            broken = registry['apple-listings']
+            victim = root / broken.metadata[0]
+            victim.parent.mkdir(parents=True, exist_ok=True)
+            victim.write_text('{"schema_version": 1,')
+            with self.assertRaises(json.JSONDecodeError):
+                validate_metadata(root, broken)
+            for name, target in registry.items():
+                if name == broken.name:
+                    continue
+                with self.subTest(target=name):
+                    validate_metadata(root, target)
+
+    def test_every_target_reports_missing_required_capabilities_without_running(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch('sonos_firmware.platform.runner.shutil.which', return_value=None), \
+             patch('sonos_firmware.platform.runner.importlib.util.find_spec', return_value=None):
+            root = Path(temporary)
+            registry = self.registry(root)
+            seen = set()
+            for target in registry.values():
+                if not target.capabilities:
+                    continue
+                with self.subTest(target=target.name):
+                    def forbidden(c, _name=target.name):
+                        raise AssertionError(f'{_name} must not execute without capabilities')
+                    report = run(target, root, 'fresh/archive',
+                                 environment={'GITHUB_ACTIONS': 'true'},
+                                 provider_map={target.provider: forbidden})
+                    self.assertEqual(report['status'], 'blocked')
+                    self.assertFalse(report['executed'])
+                    self.assertEqual(set(report['pending']), set(target.capabilities))
+                    seen.add(target.name)
+            # The configuration really does exercise required capabilities.
+            self.assertTrue(seen, 'expected at least one target with required capabilities')
+
+    def test_optional_capabilities_never_block_a_target_that_can_still_work(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch('sonos_firmware.platform.runner.shutil.which', return_value=None), \
+             patch('sonos_firmware.platform.runner.importlib.util.find_spec', return_value=None):
+            root = Path(temporary)
+            registry = self.registry(root)
+            optional = [t for t in registry.values() if t.optional_capabilities]
+            self.assertTrue(optional, 'expected a target with optional capabilities')
+            for target in optional:
+                if target.capabilities:
+                    # A target with required capabilities is blocked separately.
+                    continue
+                with self.subTest(target=target.name):
+                    report = run(target, root, 'fresh/archive',
+                                 environment={'GITHUB_ACTIONS': 'true'},
+                                 provider_map={target.provider: lambda c: [Step('metadata', ('fixture',))]},
+                                 execute=lambda *args: (0, 'discovered'))
+                    self.assertTrue(report['executed'])
+                    self.assertEqual(report['status'], 'ok')
+                    self.assertEqual(report['pending'], [])
+
+    def test_every_target_records_a_due_time_so_a_restart_does_not_immediately_rerun(self):
+        from datetime import datetime, timezone
+        from sonos_firmware.platform.runner import is_due
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = self.registry(root)
+            now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+            for target in registry.values():
+                with self.subTest(target=target.name):
+                    if target.manual:
+                        # A manual target is never scheduled, so it is never due.
+                        self.assertFalse(is_due(root, target, now))
+                        continue
+                    # A cold worker has never run this target, so it is due.
+                    self.assertTrue(is_due(root, target, now))
+                    state = root / 'data/platform/targets' / f'{target.name}.json'
+                    state.parent.mkdir(parents=True, exist_ok=True)
+                    state.write_text(json.dumps({
+                        'schema_version': 1, 'target': target.name, 'status': 'ok',
+                        'next_due': (now.replace(year=now.year + 1)).isoformat()}))
+                    # After a completed run, a restarted worker waits for the cadence.
+                    self.assertFalse(is_due(root, target, now))
+
+    def test_a_new_target_needs_only_configuration_and_a_provider(self):
+        """Adding a target requires no downloads, hashes or precomputed inventory."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = self.registry(root)
+            existing = {target.name for target in registry.values()}
+            data = json.loads((root / 'config/targets.json').read_text())
+            data['targets'].append({
+                'name': 'added-source', 'provider': 'addable',
+                'description': 'Target added with configuration only',
+                'interval_hours': 6, 'metadata': ['data/added-source'],
+            })
+            (root / 'config/targets.json').write_text(json.dumps(data))
+            registry = targets(root)
+            added = registry['added-source']
+            self.assertNotIn(added.name, existing)
+            self.assertEqual(added.provider, 'addable')
+            # No payload, hash inventory or prior archive exists in the checkout.
+            self.assertFalse((root / 'data').exists())
+            self.assertEqual(plan(added, root, 'fresh/archive',
+                                  provider_map={'addable': lambda c: [Step('discover', ('addable',))]})['status'],
+                             'planned')

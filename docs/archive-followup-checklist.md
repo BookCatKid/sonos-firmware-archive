@@ -27,14 +27,14 @@ independent web-archive indexes.
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | Extend existing live evidence and audit coverage. |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | Store and official APKs now share signature/manifest inspection; receipt migration and interrupted-upload verification are tested. Audit full SDK coverage and live receipts. |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | Live CI reinspection verified both current and native beta APKs, their actual package/version metadata and configured Sonos signer. Historical backlog and unavailable QA URLs remain. |
-| 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Investigate remaining resources and redirects. |
-| 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Audit metadata and binary acquisition prerequisites. |
+| 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
+| 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | CI classified 78 incomplete inventories: 28 recipient groups lack matching keys; available components report no decoder errors. Recovery can now use verified, previously decrypted rootfs when its receipt binds it to the exact original source and component. Continue recipient-specific recovery and live validation. |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | Snapshot publication now rolls full 1,000-asset releases into numbered partitions, with actual-tag receipts, cached inventories and no partition-count ceiling. Continue auditing other source adapters and worker checkpoints. |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | Mutable-root and inventory ordering fixed. Firmware/app downloads and historical manifest replay retain server retry timing across restarts, including new URLs, independent archive hosts and separate publication throttles. Release rollover propagates HTTP throttles instead of treating them as isolated inventory outages. Continue remaining queue audits. |
-| 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Repair older references and investigate page snapshot. |
+| 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Document reconciliation tests cover fresh inventories, corruption, outages, registration after earlier failures and interrupted overflow uploads. Historical recovery finds accepted numbered-partition assets without replay or cached bytes; older GitHub assets lacking digest metadata are verified by body hash. Continue other worker acceptance checks. |
-| 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | Extend per-target acceptance evidence. |
+| 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
 | 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | ConnectX runtime documentation corrected; continue repository audit. |
 | 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | Requires approved deployment after fixes and validation. |
 | 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Link from PR only; do not comment on or close issues. |
@@ -136,3 +136,221 @@ received HTTP 403 from Aurora's dispenser with both the SDK transport and
 certificate-verified curl. No anonymous token was issued and no APK was fetched.
 The adapter now distinguishes dispenser failures from Play API failures while
 retaining throttle status and retry delays without recording response secrets.
+
+## Public web capture (item 12)
+
+Both Sonos web deployments are captured from public responses only; the
+receipt records `Public deployment bytes only; no login session or cloud API
+data.` for every deployment. Coverage differs by deployment because the two
+sites differ in what they serve anonymously.
+
+`pro.sonos.com` serves its full application anonymously. All seven recorded
+deployments captured every resource they discovered — 82/82 for the two
+earliest and 79/79 for the remaining five — with `gap_total` zero throughout.
+
+`play.sonos.com` is a login-gated controller. Each of its four recorded
+deployments captured exactly 6 resources: the login shell itself, its web app
+manifest and four icons. The other 30–32 discovered static paths are recorded
+with outcome `gated-or-redirected`, not as failures.
+
+That classification is verifiable against the live site, not merely asserted.
+The login shell a capture stores is byte-identical to what the gated static
+paths return:
+
+```
+$ for u in https://play.sonos.com/ \
+           https://play.sonos.com/_next/static/chunks/04wx8juc~3oqa.js \
+           https://play.sonos.com/_next/static/chunks/0-cfl3z8kuhl_.js; do
+    curl -sSL "$u" | shasum -a 256 | cut -c1-16
+  done
+c291adddb7f05779
+c291adddb7f05779
+c291adddb7f05779
+```
+
+All three are the same 17,125-byte HTML login page, and the receipt records
+that same digest (`c291adddb7f05779…`) for its captured `https://play.sonos.com/`
+entry with `content-type: text/html`. Requesting a chunk directly shows the
+gate rather than a missing file:
+
+```
+$ curl -sS -D- -o /dev/null https://play.sonos.com/_next/static/chunks/0-cfl3z8kuhl_.js
+HTTP/2 307
+location: /en-us/static/chunks/0-cfl3z8kuhl_.js
+```
+
+The redirect target is gated as well, so the gate covers the locale-prefixed
+static tree too rather than only the unprefixed path:
+
+```
+$ curl -sS -D- -o /dev/null https://play.sonos.com/en-us/static/chunks/0-cfl3z8kuhl_.js
+HTTP/2 307
+location: /api/auth/signin?callbackUrl=%2Fen-us%2Fstatic%2Fchunks%2F0-cfl3z8kuhl_.js
+```
+
+Following either chain lands on `/en-us/login?callbackUrl=…`. The gate is
+server-side and applies to the whole static tree, so no anonymous request can
+retrieve those bodies. This is why the controller's chunk bodies are absent
+from the archive and why they must not be reported as a discovery defect: the
+resources are discoverable and correctly enumerated, but not publicly readable.
+
+Publicly readable controller assets are captured, not gated: `manifest.webmanifest`
+(564 bytes), `favicon.ico` (7,452 bytes) and the three logo PNGs (7,548 / 738 /
+16,728 bytes) all return HTTP 200 directly. The capture keeps them.
+
+The distinction the item asks for is therefore recorded in the archive rather
+than inferred: content that is publicly served is preserved, and content that
+requires authentication is named as gated with the redirect chain that proves it.
+
+## Apple coverage and IPA scope (item 13)
+
+Listing and history preservation are verified. `data/apps/apple-app-store.json`
+holds the current public iTunes lookup result for both controller families
+(`1488977981` = Sonos S2, `293523031` = Sonos S1 Controller), and
+`data/apps/apple-app-store-history.json` holds 8 dated snapshots from
+2026-10-06 through 2026-11-18 recording every observed version transition:
+
+```
+2026-10-06  s2 89.01      s1 11.16.1
+2026-10-07  s2 90.00      s1 11.16.1
+2026-10-08  s2 90.00.01   s1 11.16.1
+2026-10-15  s2 90.1       s1 11.16.1
+2026-11-03  s2 91.0       s1 11.16.1
+2026-11-09  s2 91.1       s1 11.16.1
+2026-11-12  s2 91.1.1     s1 11.16.1
+2026-11-18  s2 91.1.1     s1 11.16.2
+```
+
+Each snapshot records the version, release date, minimum OS version, reported
+`fileSizeBytes` and release notes, compared field-by-field by
+`scripts/check_new_apple_apps.py` so a change in any of them is detected.
+
+**No IPA acquisition exists, and none is claimed.** The archive's Apple worker
+is a metadata observer. The public lookup response itself contains no binary
+location — a live check of the 44 fields returned per app shows only artwork,
+screenshot, seller and `trackViewUrl` links:
+
+```
+$ curl -sS 'https://itunes.apple.com/lookup?id=1488977981%2C293523031&country=us'
+resultCount 2
+  1488977981 Sonos                91.1.1  com.sonos.SonosController2  216269824
+  293523031  Sonos S1 Controller  11.16.1 com.sonos.SonosController   108355584
+```
+
+`fileSizeBytes` is a reported figure, not a download receipt, and nothing in the
+response exposes an `.ipa`. Acquiring an IPA therefore requires capabilities the
+archive deliberately does not have. The prerequisites, stated explicitly so the
+scope cannot be mistaken for partial preservation:
+
+1. **An authorized Apple ID with a prior purchase or entitlement** for each app,
+   since App Store downloads are account-bound and the storefront will not serve
+   a binary anonymously.
+2. **Apple's authentication and licensing protocol**, including the
+   device/anonymous-credential handshake and the `StoreServices`/fairPlay
+   exchange that yields a signed download URL. This is not a public HTTP API and
+   is not implementable from the archive's public-discovery model.
+3. **A signing/decryption capability for the delivered payload.** App Store IPAs
+   are fairPlay-encrypted; the encrypted binary is not a preserved executable
+   without a device- or credential-bound decryption step.
+4. **Account credential storage**, which the archive's own boundary rules exclude
+   — payload acquisition and any private material stay in CI, and no login
+   session or account data is recorded.
+
+Because all four are absent, the honest scope is: **listing metadata and its
+history are preserved; iOS binaries are not.** The runtime audit already states
+this (`docs/archive-platform-runtime-audit.md`: "Archives listing metadata, not
+IPA binaries. Do not represent this as iOS binary preservation."), and this
+entry records the evidence and the prerequisites behind that statement.
+
+## Archive reconciliation (item 17)
+
+A live audit of the production archive against GitHub Release metadata reports
+every published asset as accounted for:
+
+```
+$ PYTHONPATH=src .venv/bin/python scripts/audit_release_assets.py \
+    --repo BookCatKid/sonos-firmware-archive \
+    --output data/platform/audits/release-assets.json
+releases=135 github=4551 recorded=4534 missing=0 mismatched=0 extras=17 duplicated=17 unexplained=0
+```
+
+Before reconciliation the same audit reported **316 unrecorded extras** against
+the same 0 missing and 0 mismatched. Two independent causes were found, and both
+were repaired by recovering evidence that already existed on the Release — no
+historical evidence was deleted.
+
+**Cause 1 — superseded web captures (276 assets).** A capture of an unchanged
+deployment replaces the earlier capture in the receipt. The earlier capture's
+assets stay on the Release, but nothing in the receipt named them. Nine such
+captures were recovered by `scripts/reconcile_web_release_assets.py`, which reads
+each published bundle's embedded `capture.json` and verifies the capture's
+identity, app, release tag and every resource's size and SHA-256 against Release
+metadata before trusting it. A capture whose bundle, tag or resource set
+disagrees is refused, not guessed at. The recovered captures are recorded in
+`data/apps/web-app-archive.json` under `superseded_captures`, so the audit can
+account for their assets while the current deployment record stays authoritative.
+
+**Cause 2 — lost GPL receipts (61 assets).** Interrupted CI jobs left published
+GPL archives with no receipt. The existing
+`scripts/reconcile_gpl_release_assets.py` recovered 17 assets for `gpl-14.12` and
+44 for `gpl-14.18`; the latter had lost its entire receipt set. Recovery
+reconstructs only receipts the Release can independently prove from size and
+SHA-256, and never overwrites a conflicting recorded hash.
+
+**Remaining 17 extras are duplicates, not gaps.** The audit now classifies each
+unrecorded asset by matching its exact SHA-256 against every recorded asset. All
+17 remaining extras have a byte-identical twin already published under a correct
+`firmware-*` tag, in the seed-era `seed-2026-08-31` (16) and
+`manifest-snapshots-2026-08-31` (1) releases. `duplicated_extra_total` is 17 and
+`unexplained_extra_total` is 0, so no published asset lacks an explanation.
+
+This classification is machine-visible in the persisted report rather than
+prose: each entry in `duplicated_extras` carries a `recorded_as` list naming the
+tag and asset that already holds those bytes. A future unrecorded asset with no
+digest twin appears in `unexplained_extras` and is actionable.
+
+## Cold startup and migration (item 19)
+
+`tests/test_empty_platform.py::ColdStartTargetCoverageTests` iterates the real
+`config/targets.json` rather than a sample, so a target added later is covered
+automatically. Seven tests exercise all 13 targets:
+
+1. **Empty checkout.** Every target plans from a checkout containing only
+   `config/targets.json`, produces at least one step, and reports
+   `executed: false`. Planning creates no `data/`, cache or metadata directory —
+   the test asserts the checkout still holds exactly `['config']` afterwards.
+2. **Established archive.** Every target validates its declared metadata paths,
+   including nested directories, both before and after those paths are
+   populated. Migration from an empty to a populated archive does not invalidate
+   any target's metadata.
+3. **Corrupt metadata isolation.** A malformed document belonging to one target
+   raises for that target and leaves every other target validating cleanly, so
+   one damaged file cannot mask or block the rest.
+4. **Missing required capabilities.** Targets declaring `capabilities` report
+   `status: blocked` with `executed: false` and the missing capability names in
+   `pending`, without invoking the provider. `google-play` (`goopdl`) is the
+   live case.
+5. **Missing optional capabilities.** Targets whose tools are only optional still
+   execute and report `ok` with empty `pending`. `mobile` and `android-history`
+   (`java`, `apkeep`) are the live cases.
+6. **Restart cadence.** A worker that has never run a target treats it as due;
+   after a completed run the recorded `next_due` suppresses an immediate rerun.
+   Manual targets are never due. This is what stops a restarted worker from
+   re-acquiring everything it just published.
+7. **Adding a target.** A target appended to `config/targets.json` with only a
+   name, provider, cadence and metadata path plans successfully with no payload,
+   hash inventory or prior archive present.
+
+Two of these were confirmed to fail against deliberately broken code: making
+`missing_capabilities` ignore required capabilities fails test 4 for
+`google-play`, and making `is_due` ignore the manual flag fails test 6 for
+`gpl-indexes`.
+
+Concurrent metadata updates and interrupted-worker recovery are covered
+separately in `tests/test_platform_runner.py`:
+`test_metadata_commit_preserves_unrelated_local_work_and_retains_patch` refuses
+pre-staged human work, keeps the user's edit intact and still writes a
+recoverable checkpoint patch;
+`test_deleted_tracked_metadata_is_published` proves a removal is committed; and
+`test_captured_manifest_can_resume_after_worker_directory_changes` resumes a
+capture whose previous worker directory no longer exists.
