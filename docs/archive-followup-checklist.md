@@ -21,14 +21,14 @@ independent web-archive indexes.
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the source with no Wayback or Common Crawl capture. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | The committed desktop archive holds **101 installers** (52 Windows, 49 macOS) across **72 non-classic versions**, every one with SHA-256, a release asset and per-artifact Wayback CDX provenance, all fetched from Sonos hosts. A cold protocol traversal found 41 installer URLs including all 37 reference URLs, and independently surfaced a Windows `.exe` and macOS `.dmg` for 90.0-75190. See [desktop installer coverage](#desktop-installer-coverage-item-4). |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
-| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. A live `gpl-archive` run then published 187 of 187 downloads (2.85 GB) across 7 versions, with 148 archives still queued for full stream verification. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. Live runs then published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Blocked externally.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | A live `android-history` sweep archived 66 of 67 attempts with 0 discovery errors, adding 13 distinct versions in one batch; 76 selectors stay queued and 35 SDK levels are indexed. The archive now spans **38 distinct version codes** (13 S2, 25 S1). Rotating `winudf` tickets are separated from asset identity. See [Android store coverage](#android-store-coverage-items-9-and-10) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **All 260 APK components across the store deliveries are signature-verified**, each with signer SHA-256 and subject; 41 additional non-APK components (icons, manifests, one URL shortcut) are hash-verified but carry no APK signature to check. 20 deliveries carry multiple components, and two distinct Sonos signers are recorded. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
-| 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
-| 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
+| 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design, and now reported honestly. Every pro deployment captures all discovered resources (79–82/82, or 77/77 live); the controller captures its public surface and classifies the rest as gated. A live run finished `ok` with `errors: 0` because gated resources are terminal, while `complete: false` and `identity_complete: false` record that the controller deployment itself was never captured. See [public web capture](#public-web-capture-item-12) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified, including a live run that detected the S1 change from 11.16.1 to 11.16.2 and recorded both bundle identifiers and reported sizes. No IPA acquisition capability exists or is claimed; the scope and prerequisites are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so the limitation is key material rather than decoders; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
@@ -1221,3 +1221,147 @@ The two Google Play APKs disappeared from `unexplained` once `android-history`
 committed, confirming they were assets uploaded seconds before the audit read the
 release. One genuine orphan remains in this archive — the page snapshot from
 2026-11-17 — and it stays listed rather than being deleted or ignored.
+
+### `gpl-audit` — [run 44481259358](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44481259358)
+
+Result: `partial`, committed as `Update gpl-audit archive state` (`886ae73`).
+This is the target that reduces the 148 archives awaiting stream verification.
+
+```
+audit_gpl_published_streams:  partial
+audit_gpl_link_coverage:      failed
+archive_gpl_direct report:    ok
+```
+
+The stream auditor's own report shows the pending set shrinking:
+
+```
+selected: 25   verified: 25   downloaded: 19   reused: 6
+mismatched: 0  failed: 0      bytes_downloaded: 345,641,873
+remaining_before: 148  ->  remaining_after: 123
+```
+
+So **148 → 123** archives awaiting full stream verification in one bounded batch,
+with zero mismatches and zero failures. Six of the 25 were verified without
+downloading because their SHA-256 already matched a fully verified original
+source (`sha256-equality-with-fully-verified-original-source`); the other 19 were
+reacquired and drained through `tar-and-compression-integrity`.
+
+The coverage gate then failed, correctly: this archive has **729 unattempted of
+909** advertised links because it has only published 6.4–8.0. That failure is the
+gate doing its job, and it is why the step order was changed — see below.
+
+### `web` — [run 44483017269](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44483017269)
+
+Result: `ok`, committed as `Update web archive state` (`ce67c9d`).
+
+```
+controller: captured=5 gaps=33
+pro:        captured=77 gaps=0
+```
+
+The persisted receipt now distinguishes what the worker could reach from what it
+could identify:
+
+```
+status: ok   errors: 0   pending_total: 0
+
+controller 20261119T075320Z  5/38  gated=33  actionable=0
+                             identity=False  complete=False  public_capture_done=True
+pro        20261119T075343Z  77/77 gated=0   actionable=0
+                             identity=True   complete=True   public_capture_done=True
+```
+
+The controller's entry point is itself gated, so its deployment identity can
+never be established — `complete` stays false and says so. But nothing retryable
+remains, so `public_capture_done` is true and the observation is `published` with
+`consecutive_failures: 0`. That is the honest split: *we captured every public
+byte* is not the same claim as *we identified and captured the deployment*.
+
+### `apple-listings` — [run 44481350003](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44481350003)
+
+Result: `ok`, `status=change-detected`. The listing and its history advanced:
+
+```
+2026-11-17  s2 91.1.1   s1 11.16.1
+2026-11-19  s2 91.1.1   s1 11.16.2
+```
+
+Current listings record both bundle identifiers and reported sizes
+(`com.sonos.SonosController2` 216,269,824 bytes; `com.sonos.SonosController`
+102,397,952 bytes), with scope still `public-apple-itunes-lookup-metadata`. No
+binary is claimed, consistent with item 13.
+
+### `google-play-listings` — [run 44481394062](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44481394062)
+
+Result: `ok`, `status=change-detected`, committed as
+`Update google-play-listings archive state` (`7d32ff1`). Metadata-only discovery
+succeeded for both packages without any token or delivery request:
+
+```
+com.sonos.acr2: updated_on=Nov 11, 2026
+com.sonos.acr:  updated_on=Nov 12, 2026
+```
+
+This is the listing path working anonymously; it does **not** change item 8's
+status, because no signer-verified APK delivery was obtained.
+
+### `gpl` — [run 44481370655](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44481370655)
+
+Result: `partial`, committed as `Update gpl archive state` (`d60b96b`). The
+discovery and binary-scan steps advanced the GPL catalogue:
+
+```
+scan-preserved-binaries:  failed (pending)   8 inputs scanned, 1,117 still pending
+discover_gpl_sitemaps:    ok                16 sitemaps checked, 16 valid XML, 0 GPL versions
+archive_gpl_direct:       ok (discover + report)
+```
+
+The resulting report shows the catalogue growing in that archive:
+
+```
+verified_index_total: 38      (was 26 before this run)
+candidate_checks: 168         candidate_states: access-denied 130, verified 38
+sonos_download_links: 1,075   external_upstream_links: 292
+published_downloads: 187      verified_downloads: 187
+binary_scanned_inputs: 8      binary_executable_text_bytes_scanned: 250,102,549
+completeness_proven: false
+```
+
+Twelve additional indexes were verified in that batch. The sitemap route again
+produced zero GPL versions from 16 valid sitemaps, and 1,117 preserved binaries
+remain queued for scanning — counted, not dropped.
+
+## Two defects found by running the remaining targets
+
+Dispatching the last five targets exposed two real reporting defects that no
+local test had caught.
+
+**1. The coverage gate blocked the repair it was meant to measure.**
+`gpl-audit` ran `audit_gpl_link_coverage.py` first. That script exits non-zero
+while unattempted links exist, and the runner skips later steps after a failure,
+so a large backlog would skip the stream auditor entirely — the very step that
+reduces the backlog. Reordered so the stream auditor runs first and the coverage
+check runs last with `after_failure=True`: repair first, then gate the result.
+Verified on the next run, where the auditor reduced 148 → 123 and the gate still
+reported the remaining 729 unattempted links.
+
+**2. A permanently red web target could not signal a real regression.**
+`archive_apps` counted login-gated resources as gaps, so the controller always
+looked incomplete and the job always exited 1. Gated outcomes are now terminal,
+and completion is split into two questions:
+
+- `complete` — an identified deployment was fully captured;
+- `public_capture_done` — nothing retryable remains, even if the deployment's own
+  entry is gated.
+
+Publication status and the exit code follow `public_capture_done`, while a
+`network-error` or `http-error` still reports `partial`. `gated_total` and
+`actionable_gap_total` are recorded alongside `gap_total` so the distinction is
+in the receipt rather than inferred. The web target went from permanently failing
+to `ok` with `errors: 0`, and the controller's `complete: false` still states
+plainly that the deployment itself was never captured.
+
+Both fixes are covered by tests: 15 web tests including a new
+`test_an_actionable_failure_keeps_the_deployment_incomplete`, and the full suite
+at 773 passing tests.
