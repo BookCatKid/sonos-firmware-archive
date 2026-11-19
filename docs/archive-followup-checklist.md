@@ -24,15 +24,15 @@ independent web-archive indexes.
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. A live `gpl-archive` run then published 187 of 187 downloads (2.85 GB) across 7 versions, with 148 archives still queued for full stream verification. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Blocked externally.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
-| 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | 67 APKPure deliveries across **67 distinct package/version-code pairs**: 37 distinct S2 version codes (1270001011 → 890000051) and 30 S1 (430354030 → 572383122). Rotating `winudf` tickets are separated from asset identity so a refreshed ticket neither creates a variant nor re-downloads a verified asset. See [Android store coverage](#android-store-coverage-items-9-and-10). |
-| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **475 components across those 67 deliveries, all 475 signature-verified**, each with signer SHA-256, subject and signature schemes (v1/v2/v3), and a release asset. 34 deliveries carry multiple components (splits) plus a complete wrapper. Two distinct Sonos signers are recorded: 445 modern and 30 legacy. See [Android store coverage](#android-store-coverage-items-9-and-10). |
+| 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | A live `android-history` sweep archived 66 of 67 attempts with 0 discovery errors, adding 13 distinct versions in one batch; 76 selectors stay queued and 35 SDK levels are indexed. The archive now spans **38 distinct version codes** (13 S2, 25 S1). Rotating `winudf` tickets are separated from asset identity. See [Android store coverage](#android-store-coverage-items-9-and-10) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **All 260 APK components across the store deliveries are signature-verified**, each with signer SHA-256 and subject; 41 additional non-APK components (icons, manifests, one URL shortcut) are hash-verified but carry no APK signature to check. 20 deliveries carry multiple components, and two distinct Sonos signers are recorded. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design. Every pro deployment captures 79–82/82 resources; every controller deployment captures its full 6 public resources and classifies the remaining 30–32 as `gated-or-redirected`, proven live against the deployment itself. See [public web capture](#public-web-capture-item-12). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified. No IPA acquisition capability exists or is claimed; the documented scope and the exact prerequisites for adding it are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so the limitation is key material rather than decoders; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
-| 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded. Unrecorded extras fell 316 → 17 by recovering 9 superseded web captures and 61 GPL receipts; the remaining 17 are proven duplicate publications (same SHA-256 under a correct `firmware-*` tag), so 0 are unexplained. See [archive reconciliation](#archive-reconciliation-item-17). |
+| 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded, 17 extras all proven duplicates, **0 unexplained**. On a second archive the same classifier isolated 3 unexplained, then 1 after a concurrent run committed — two were assets uploaded seconds before the audit read the release, and the survivor is a genuine page orphan that stays listed. See [archive reconciliation](#archive-reconciliation-item-17) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Each named failure mode has a regression: interrupted uploads keep staged records out of the catalog, lost responses reconcile without overwriting, conflicting names get distinct identities, and changed content is re-verified by body hash when a digest is absent. 34 Android deliveries carry multi-component splits plus a complete wrapper, so partial deliveries stay pending rather than completing. See [publication recovery](#publication-recovery-item-18). |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
 | 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | Providers and targets are in exact 1:1 correspondence across all 13 targets; 48 scripts are each wired or documented; no documentation names a missing path or retired workflow. Enforced by `scripts/audit_repository_consistency.py` in `verify.yml`. See [repository consistency](#repository-consistency-item-20). |
@@ -1083,3 +1083,141 @@ advertised, 9 preserved, 9 distinct contents, 0 unavailable.
 The 877 pending discovery candidates and 93 incomplete inventories are real
 backlog, not silent loss: both are counted, both are queued, and both keep the
 target's status at `partial` so the next run resumes them.
+
+### `desktop` — [run 44477307992](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44477307992)
+
+Result: `partial`; the discovery step is `partial` and the two archive steps exit
+non-zero because incomplete work is an error by design. State committed as
+`Update desktop archive state` (`e9fb7f5`, +1,169/−114 in `desktop-archive.json`,
++223/−5 in `desktop-history-index.json`, +686/−19 in `desktop-package-history.json`).
+
+```
+discover_desktop_installers:  partial  candidates=245 available=201
+archive_desktop_installers:   failed   verified artifacts=40 attempted=12 new=7
+archive-installer-history:    failed   pending captures remain; verified progress retained
+```
+
+Seven new desktop installers were published this run. The archive now holds 41
+artifacts across 24 versions:
+
+```
+macos: 23   windows: 18   all with sha256
+release tags: apps-s1-macos 11, apps-s1-windows 11, apps-legacy-macos 7,
+              apps-legacy-windows 7, apps-s2-macos 5
+fetched from: update-software.sonos.com 29, update.sonos.com 12
+```
+
+Discovery sources recorded by that run are three independent routes, not a
+download list:
+
+```
+microsoft/winget-pkgs, Homebrew/homebrew-cask, Sonos CDN HEAD
+```
+
+Per-artifact provenance names the exact commit and path each candidate came from,
+for example `homebrew-history:3fdfc96072ef7b21b24beb519098ae3a7792c077:Casks/sonos.rb`,
+alongside a `derived-cross-platform` route for 18 artifacts identified from a
+sibling platform's build. 4 direct redirects were followed from the Sonos CDN.
+
+### `release-audit` — [run 44477327742](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44477327742)
+
+Result: `ok`. State committed as `Update release-audit archive state` (`97da515`).
+
+```
+releases=49 github=4459 recorded=4375 missing=0 mismatched=0
+extras=84 duplicated=81 unexplained=3
+```
+
+The classifier did its job on a second archive: 81 extras are proven duplicates
+by exact SHA-256, and it isolated 3 that were not. Two of those three are a
+**concurrency artifact, not a defect**, and the timestamps prove it:
+
+```
+apps-google-play-recovery-s1 / com.sonos.acr--11.16.2--base--9a42547d….apk  uploaded 07:09:30Z
+apps-google-play-recovery-s1 / com.sonos.acr--11.2.3--base--d000e43b….apk  uploaded 07:09:48Z
+release-audit committed                                                     07:09:50Z
+android-history run (still in progress)                        created 07:08:13Z
+```
+
+The `android-history` target was mid-run and had uploaded those two APKs 20 and 2
+seconds before the audit committed, so the audit correctly saw assets whose
+metadata commit had not landed yet. That is the audit being strict rather than
+wrong: it observed a publication in flight. A follow-up audit after that run
+commits is the check that they disappear.
+
+The third is a genuine orphan in this archive: a page snapshot published on
+2026-11-17 that no catalog record names.
+
+```
+manifest-snapshots-2026-11-17
+page-14b38cf71a2e49bbb9e5671580e42ffe36ba1602c2737b7ad5b1c95825d0d225-859e67acbddb003742f0b63a26cc3ee2ee26de97499747e4413f22a0ff425396.html
+72,652 bytes, uploaded 2026-11-17T16:23:15Z
+```
+
+Its content hash is absent from all 2,198 `source_documents` entries and from the
+frontier state, so the publication outlived its catalog record. This is the same
+class of evidence loss that `reconcile_web_release_assets.py` repairs for web
+captures, and it is recorded rather than deleted. The production archive has zero
+unexplained extras, so this is specific to the isolated checkout.
+
+### `android-history` — [run 44477286282](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44477286282)
+
+Result: `partial`; the sweep step exits non-zero while selectors remain, which is
+how it reports bounded progress. State committed as
+`Update android-history archive state` (`4d51027`).
+
+```
+sweep_android_store_history: failed (pending)   exit_code=1
+archived: com.sonos.acr 11.16.2, 11.2.3, 11.15.2, 11.15.1, 11.15, 11.14
+          com.sonos.acr2 90.00.43, 89.01.11, 89.00.51, 89.00.49, 88.01.10,
+                         88.00.43, 86.01.5
+```
+
+The sweep's own index records the bounded-progress state:
+
+```
+attempt_total: 67     archived_total: 66     failed_total: 1
+discovery_errors: 0
+observed_variants: 61
+pending_selectors: 76
+sdk levels indexed: 35     sdk_hints: 12
+```
+
+So 66 of 67 attempts archived a delivery, with one failure and no discovery
+errors, and 76 selectors remain queued for later runs. The SDK index covers 35
+levels, which is the SDK/ABI dimension the item asks about.
+
+The store archive now holds 45 deliveries across **38 distinct version codes**:
+
+```
+s2: 13 version codes, 1270001011 .. 890000051
+s1: 25 version codes,  430354030 .. 572383122
+components: 301   multi-component deliveries: 20
+```
+
+Component verification splits cleanly along type, which is the honest reading:
+
+```
+APK components:      260, all 260 signature-verified, all with a signer SHA-256
+non-APK components:   41 (20 icon.png, 20 manifest.json, 1 APKComboInstaller.url)
+                      hash-verified but not signature-applicable
+```
+
+No APK is unverified. The 41 non-APK components are additional delivered
+artifacts that carry no APK signature to check, so "all APKs signature-verified"
+is accurate while "all components signed" would not be.
+
+### `release-audit` follow-up — [run 44479999381](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44479999381)
+
+Result: `ok`. This run is the check that the earlier 3 unexplained extras were a
+concurrency artifact:
+
+```
+before (44477327742): releases=49 github=4459 recorded=4375 extras=84 duplicated=81 unexplained=3
+after  (44479999381): releases=50 github=4580 recorded=4498 extras=82 duplicated=81 unexplained=1
+```
+
+The two Google Play APKs disappeared from `unexplained` once `android-history`
+committed, confirming they were assets uploaded seconds before the audit read the
+release. One genuine orphan remains in this archive — the page snapshot from
+2026-11-17 — and it stays listed rather than being deleted or ignored.
