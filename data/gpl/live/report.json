@@ -3,15 +3,15 @@
   "binary_incomplete_scans": 1,
   "binary_linked_gpl_versions": [],
   "binary_scanned_inputs": 16,
-  "candidate_checks": 1886,
+  "candidate_checks": 1982,
   "candidate_states": {
-    "access-denied": 1886
+    "access-denied": 1982
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
   "full_compressed_stream_verified_source_archives": 209,
   "fully_published_releases": 38,
-  "generated": "2026-11-21T01:40:48+00:00",
+  "generated": "2026-11-21T16:18:43+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
