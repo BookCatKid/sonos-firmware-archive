@@ -48,7 +48,7 @@ the scheduled workflow resumes remaining work using saved retry deadlines.
 Publication receipts in declared metadata paths feed binary inspection
 automatically; a new adapter needs no separate inspection URL list or workflow.
 
-Normal key preparation records a public assessment for each updater
+Normal key preparation records a public assessment for each firmware
 recipient in `data/discovery/key-recovery.json`, including recipients without an
 eligible published source. Assessments distinguish unavailable inputs, deferred
 sources, unsuccessful attempts, interrupted work and exact-recipient recovery.
@@ -58,7 +58,12 @@ waiting for an old source's retry deadline; private material stays ephemeral.
 HTTP failures retain server Retry-After timing, close their responses, and pause
 other key-source downloads through a repository-scoped durable cooldown.
 The same worker checks published updater binaries for unencrypted PEM and DER
-PKCS#1/PKCS#8 RSA private keys before trying legacy wrapped-key derivations.
+PKCS#1/PKCS#8 RSA private keys before trying legacy wrapped-key derivations. It
+also scans other plaintext UPD sections, including unknown section types, from
+published components or the verified original package. Previously decrypted
+components require a matching extraction receipt binding them to the parent,
+section and transport recipient. Component proofs name the component hash rather
+than claiming the bytes came from an updater executable.
 Only a key matching the requested recipient fingerprint is accepted; the
 public proof records its encoding, offset and size, never private bytes.
 Recovery-method revisions revisit failed candidates immediately while retaining

@@ -1,4 +1,4 @@
-"""Recover exact recipient keys from verified, independently cataloged updaters."""
+"""Recover exact recipient keys from verified, independently cataloged components."""
 from __future__ import annotations
 
 import hashlib
@@ -27,7 +27,7 @@ from .extract import key_recipient_id
 
 MAX_SOURCE_BYTES = 128 * 1024 * 1024
 MAX_UPDATER_BYTES = 8 * 1024 * 1024
-RECOVERY_REVISION = 2
+RECOVERY_REVISION = 3
 
 
 def embedded_private_key(data, expected_recipient, *, max_bytes=MAX_UPDATER_BYTES):
@@ -74,6 +74,11 @@ def embedded_private_key(data, expected_recipient, *, max_bytes=MAX_UPDATER_BYTE
 
 def select_updater_sources(root, catalog, model):
     """Select plaintext or previously decrypted rootfs with source provenance."""
+    return _select_sources(root, catalog, model, rootfs_only=True)
+
+
+def _select_sources(root, catalog, model, *, rootfs_only=False):
+    """Bind plaintext components to preserved parents and extraction receipts."""
     rows = []
     seen = set()
     for package in catalog.get('packages', []):
@@ -96,7 +101,8 @@ def select_updater_sources(root, catalog, model):
                 any(not isinstance(component, dict) for component in receipt['components'])):
             receipt = {}
         for section in inventory.get('sections', []):
-            if section.get('section_type') != 4:
+            section_type = section.get('section_type')
+            if rootfs_only and section_type != 4:
                 continue
             references = []
             encrypted = bool(section.get('encrypted'))
@@ -110,15 +116,16 @@ def select_updater_sources(root, catalog, model):
                     fields = ('package_id', 'section_index', 'section_type', 'bytes', 'sha256',
                               'source_encrypted', 'recipient_id')
                     if (receipt.get('source_sha256') != package['sha256'] or
-                            raw.get('section_index') != section['index'] or raw.get('section_type') != 4 or
+                            raw.get('section_index') != section['index'] or raw.get('section_type') != section_type or
                             raw.get('source_encrypted') is not True or not section.get('recipient_id') or
                             raw.get('recipient_id') != section['recipient_id'] or
                             not any(all(proof.get(field) == raw.get(field) for field in fields)
                                     for proof in receipt.get('components', []))):
                         continue
                 elif (raw.get('sha256') != section['sha256'] or raw.get('bytes') != section['payload_length'] or
+                      raw.get('section_type', section_type) != section_type or
                       not (raw.get('section_index') == section['index'] or
-                           raw.get('section_index') is None and raw.get('kind') == 'rootfs')):
+                           section_type == 4 and raw.get('section_index') is None and raw.get('kind') == 'rootfs')):
                     continue
                 references.append(('raw', raw))
             if not encrypted:
@@ -134,6 +141,8 @@ def select_updater_sources(root, catalog, model):
                 source = {key: reference[key] for key in ('sha256', 'bytes', 'release_tag', 'release_asset')}
                 source.update(kind=kind, package_id=identity, model=model, section_index=section['index'],
                               section_sha256=section['sha256'], section_bytes=section['payload_length'])
+                if section_type != 4:
+                    source.update(kind=kind+'-section', section_type=section_type)
                 if encrypted:
                     source.update(source_sha256=package['sha256'], section_encrypted=True,
                                   source_recipient_id=section['recipient_id'])
@@ -141,7 +150,7 @@ def select_updater_sources(root, catalog, model):
                 if key not in seen:
                     seen.add(key)
                     rows.append(source)
-    return sorted(rows, key=lambda row: (row['kind'] != 'raw', row['package_id'], row['section_index']))
+    return sorted(rows, key=lambda row: (not row['kind'].startswith('raw'), row['package_id'], row['section_index']))
 
 
 def bounded_output(command, *, max_bytes, timeout=60):
@@ -197,7 +206,7 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     read_member = read_member or read_updater_member
     if max_sources <= 0:
         raise ValueError('max_sources must be positive')
-    sources = select_updater_sources(root, catalog, model)
+    sources = _select_sources(root, catalog, model)
     state_path = root / 'data/discovery/key-recovery.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'schema_version': 1, 'repositories': {}}
     records = state['repositories'].setdefault(repository, {}).setdefault(expected_recipient, {})
@@ -215,7 +224,8 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                                state=state, queue=f'{repository}/{expected_recipient}')
     if backoff.paused('key-source-downloads'):
         queue = []
-    assessment = {'method': 'catalog-updater', 'methods': ['embedded-updater-private-key', 'legacy-updater'],
+    assessment = {'method': 'catalog-components', 'methods': ['embedded-updater-private-key', 'legacy-updater',
+                                                       'embedded-component-private-key'],
                   'recovery_revision': RECOVERY_REVISION, 'model': model,
                   'checked_at': datetime.now(timezone.utc).isoformat(),
                   'eligible_sources': len(sources), 'selected_sources': len(queue),
@@ -238,19 +248,25 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                 if body.stat().st_size != source['bytes'] or file_sha256(body) != source['sha256']:
                     raise ValueError('key source does not match its publication receipt')
                 rootfs = body
-                if source['kind'] == 'upd':
+                if source['kind'] in {'upd', 'upd-section'}:
                     section = next((row for row in parse_file(body) if row.index == source['section_index']), None)
-                    if (section is None or section.section_type != 4 or section.encrypted or
+                    if (section is None or section.section_type != source.get('section_type', 4) or section.encrypted or
                         section.sha256 != source['section_sha256'] or section.payload_length != source['section_bytes']):
                         raise ValueError('plaintext key source section does not match its inventory')
                     rootfs = Path(temporary) / 'rootfs'
                     with body.open('rb') as stream:
                         stream.seek(section.offset + 16)
                         rootfs.write_bytes(stream.read(section.payload_length))
-                updater = read_member(rootfs)
-                embedded = embedded_private_key(updater, expected_recipient)
+                component = 'section_type' in source
+                updater = rootfs.read_bytes() if component else read_member(rootfs)
+                embedded = embedded_private_key(updater, expected_recipient,
+                    **({'max_bytes': MAX_SOURCE_BYTES} if component else {}))
                 if embedded is not None:
                     key, details = embedded
+                    if component:
+                        details = {**details, 'method': 'embedded-component-private-key'}
+                elif component:
+                    raise ValueError('no matching private key in component')
                 else:
                     recovered = discover_legacy_updater_key(updater, model, expected_recipient)
                     key = recovered.key
@@ -259,7 +275,8 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                 write_private_key_exclusive(output, key)
                 proof = {**details, 'model': model, 'recipient_id': expected_recipient,
                         'repository': repository,
-                        'source': source, 'updater_sha256': hashlib.sha256(updater).hexdigest()}
+                        'source': source,
+                        'component_sha256' if component else 'updater_sha256': hashlib.sha256(updater).hexdigest()}
                 records[identity(source)] = {**checkpoint(success=True, success_hours=168),
                                               'status': 'recovered', 'proof': proof}
                 assessment.update(status='recovered', pending_sources=0)
@@ -281,5 +298,5 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     if failures:
         assessment.update(status='attempts-failed')
         atomic_json(state_path, state)
-    raise ValueError(f'no matching updater key in {len(failures)} attempted sources; '
+    raise ValueError(f'no matching component key in {len(failures)} attempted sources; '
                      f'{max(0, len(sources) - len(failures))} sources deferred')

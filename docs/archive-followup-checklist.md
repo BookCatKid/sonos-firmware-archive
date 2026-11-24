@@ -1073,8 +1073,10 @@ receipts.
 tries exact-recipient PEM/DER keys embedded in eligible updaters as well as legacy
 wrapped keys. Its latest assessment tried both eligible model-5 sources without a
 match; 26 other missing groups had no eligible updater source. These results do
-not establish that every recovery method is exhausted: other plaintext
-components and platform-specific methods still need investigation. Private keys
+not establish that every recovery method is exhausted. Recovery now also scans
+other verified plaintext or previously decrypted UPD components, with live
+assessment of that new method still pending. Platform-specific methods still
+need investigation. Private keys
 remain ephemeral in CI; they are not committed.
 
 ## Publication recovery (item 18)

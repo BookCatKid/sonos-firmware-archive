@@ -207,6 +207,81 @@ class RecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'size limit'):
             recovery.embedded_private_key(bytes(100), self.recipient, max_bytes=99)
 
+    def component_catalog(self, root, payload, *, section_type=6, raw=True, encrypted=False):
+        catalog, _ = source_catalog(root, 27, payload, raw=False)
+        body = section(section_type, 4 if encrypted else 0,
+                       envelope(payload, self.transport_key) if encrypted else payload)
+        package = catalog['packages'][0]
+        package.update(bytes=len(body), sha256=digest(body))
+        inventory = {'sha256': digest(body), 'sections': [s.to_dict() for s in parse_bytes(body)]}
+        atomic_json(root/'data/upd/arbitrary-source.json', inventory)
+        if raw:
+            component = {'package_id': package['id'], 'section_index': 0, 'section_type': section_type,
+                         'bytes': len(payload), 'sha256': digest(payload),
+                         'release_tag': 'fixture-source', 'release_asset': 'component.bin'}
+            if encrypted:
+                component.update(source_encrypted=True, recipient_id=key_recipient_id(self.transport_key))
+            catalog['raw_images'].append(component)
+            atomic_json(root/'data/raw/arbitrary-source.json',
+                        {'source_sha256': digest(body), 'components': [dict(component)]})
+        return catalog, body
+
+    def test_plain_non_updater_components_recover_exact_keys_from_raw_or_upd(self):
+        for raw in (True, False):
+            for section_type in (6, 22, 999):
+                with self.subTest(raw=raw, section_type=section_type), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    private = self.key.private_bytes(serialization.Encoding.DER,
+                        serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+                    payload = b'component prefix'+private+b'component suffix'
+                    catalog, body = self.component_catalog(root, payload, raw=raw, section_type=section_type)
+                    output = root/'keys/recipient.pem'
+                    with patch.object(recovery, 'read_updater_member', side_effect=AssertionError('not a filesystem')):
+                        proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                            read_artifact=lambda source, path, repo: path.write_bytes(payload if raw else body))
+                    self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
+                    self.assertEqual(proof['method'], 'embedded-component-private-key')
+                    self.assertEqual(proof['component_sha256'], digest(payload))
+                    self.assertEqual(proof['source']['section_type'], section_type)
+                    self.assertNotIn('updater_sha256', proof)
+
+    def test_decrypted_non_updater_component_requires_exact_extraction_proof(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload = self.key.private_bytes(serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, _ = self.component_catalog(root, payload, encrypted=True)
+            receipt_path = root/'data/raw/arbitrary-source.json'
+            receipt = json.loads(receipt_path.read_text())
+            for bad in ({**receipt, 'source_sha256': '0'*64},
+                        {**receipt, 'components': [{**receipt['components'][0], 'section_type': 4}]},
+                        {**receipt, 'components': [{**receipt['components'][0], 'recipient_id': '0'*40}]}):
+                atomic_json(receipt_path, bad)
+                fetch = unittest.mock.Mock(side_effect=AssertionError('unproven source'))
+                with self.assertRaises(ValueError):
+                    recovery.recover_catalog_key(root, catalog, 27, self.recipient, root/'keys/key.pem',
+                        'owner/repo', read_artifact=fetch)
+                fetch.assert_not_called()
+            atomic_json(receipt_path, receipt)
+            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, root/'keys/key.pem',
+                'owner/repo', read_artifact=lambda source, path, repo: path.write_bytes(payload))
+            self.assertEqual(proof['method'], 'embedded-component-private-key')
+            self.assertTrue(proof['source']['section_encrypted'])
+
+    def test_non_updater_capture_must_match_verified_section_before_scanning(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload = b'no key'
+            catalog, body = self.component_catalog(root, payload, raw=False)
+            inventory_path = root/'data/upd/arbitrary-source.json'
+            inventory = json.loads(inventory_path.read_text())
+            inventory['sections'][0]['section_type'] = 22
+            atomic_json(inventory_path, inventory)
+            with patch.object(recovery, 'embedded_private_key') as scan, self.assertRaises(ValueError):
+                recovery.recover_catalog_key(root, catalog, 27, self.recipient, root/'keys/key.pem', 'owner/repo',
+                    read_artifact=lambda source, path, repo: path.write_bytes(body))
+            scan.assert_not_called()
+
     def test_new_recovery_method_revision_revisits_a_previously_failed_source(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -312,7 +387,7 @@ class RecoveryTests(unittest.TestCase):
                     root/'keys/recipient.pem', 'owner/repo', read_artifact=lambda *args: self.fail('no source'))
             state = json.loads((root/'data/discovery/key-recovery.json').read_text())
             assessment = state['assessments']['owner/repo'][self.recipient]
-            self.assertEqual(assessment['method'], 'catalog-updater')
+            self.assertEqual(assessment['method'], 'catalog-components')
             self.assertIn('embedded-updater-private-key', assessment['methods'])
             self.assertEqual(assessment['model'], 13)
             self.assertEqual(assessment['eligible_sources'], 0)
