@@ -10,7 +10,7 @@ from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit, parse_qs
 
 from .crawl import official, PACKAGE
 from .discovery import USER_AGENT, Candidate
-from .retry import error_checkpoint, due
+from .retry import error_checkpoint, due, retry_after_seconds
 
 def fetch_index(url):
     try:
@@ -108,41 +108,86 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     """Combine independent indexes behind one capture/publication contract."""
     from .commoncrawl import discover
     from .source_urls import sonos_url
+    if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
+        raise ValueError('archive index page budget must be positive')
+    urls = [*seed_urls, *previous.get('query_seeds', []),
+            *previous.get('entries', {}), *previous.get('artifacts', {}),
+            *previous.get('wayback_exact', {}).get('query_roots', {})]
     roots = options.get('roots')
     if roots is None:
         # Keep the domain-wide search while learning narrower host searches
         # from our own first-party observations. No version URL list is used.
         roots = {'sonos.com': 'sonos.com/'}
-        urls = [*seed_urls, *previous.get('query_seeds', []),
-                *previous.get('entries', {}), *previous.get('artifacts', {}),
-                *('https://'+root for root in previous.get('query_roots', {}).values())]
-        for url in urls:
+        for url in [*urls, *('https://'+root for root in previous.get('query_roots', {}).values())]:
             if isinstance(url, str) and url.startswith('http://'):
                 url = 'https://'+url[7:]
             if sonos_url(url):
                 host = urlsplit(url).hostname
                 roots.setdefault(host, host+'/')
         options = {**options, 'roots': roots, 'match_type': options.get('match_type') or 'domain'}
-    def provider_state(name):
+    exact_roots = {}
+    extensions = options.get('extensions', ('upm', 'upd'))
+    for url in [*previous.get('wayback_exact', {}).get('query_roots', {}), *urls]:
+        if isinstance(url, str) and url.startswith('http://'):
+            url = 'https://'+url[7:]
+        if (isinstance(url, str) and sonos_url(url) and
+                urlsplit(url).path.lower().endswith(tuple('.'+extension for extension in extensions))):
+            parsed = urlsplit(url)
+            source = urlunsplit(('https', parsed.hostname, parsed.path, parsed.query, ''))
+            exact_roots.setdefault(source, source.removeprefix('https://'))
+    def provider_state(name, provider):
         state = dict(previous.get(name, previous if name == 'wayback' else {}))
         for field in ('entries', 'artifacts'):
             records = {}
             for url, row in _observations(previous.get(field, {})).items():
                 captures = {identity: capture for identity, capture in row.get('captures', {}).items()
-                            if capture.get('provider', 'wayback') == name}
-                if captures or (name == 'wayback' and not row.get('captures')):
+                            if capture.get('provider', 'wayback') == provider}
+                if captures or (provider == 'wayback' and not row.get('captures')):
                     records[url] = {**row, 'captures': captures}
             state[field] = records
         return state
-    wayback = discover_sources(provider_state('wayback'), fetch=fetch, pages=pages, **options)
-    commoncrawl = discover(provider_state('commoncrawl'), fetch, pages=pages,
-        roots=options.get('roots') or {'sonos.com': 'sonos.com/'},
-        extensions=options.get('extensions', ('upm', 'upd')), allowed=options.get('allowed', official),
-        match_type=options.get('match_type') or ('domain' if options.get('roots') is None else 'prefix'))
+    # Divide each provider's existing page budget fairly between broad traversal
+    # and exact sources. A one-page budget alternates across worker restarts.
+    lane = previous.get('index_query_lane', 0) % 2
+    budgets = [pages, 0] if not exact_roots else [pages//2, pages//2]
+    if exact_roots and pages % 2:
+        budgets[lane] += 1
+    configuration = {'extensions': list(extensions), 'match_type': options.get('match_type') or 'prefix'}
+    def traverse(provider, implementation, cooldown, **arguments):
+        states = [provider_state(provider, provider), provider_state(provider+'_exact', provider)]
+        for index, budget in enumerate(budgets):
+            shared = max((state.get(cooldown, {}) for state in states),
+                         key=lambda row: row.get('next_attempt_at', ''))
+            if shared:
+                for state in states:
+                    state[cooldown] = shared
+            if provider == 'commoncrawl':
+                collections = {key: value for state in states for key, value in state.get('collections', {}).items()}
+                registry = max((state.get('registry', {}) for state in states),
+                               key=lambda row: row.get('checked_at', ''))
+                for state in states:
+                    state.update(collections=collections, registry=registry)
+            if budget:
+                settings = {**arguments, 'roots': exact_roots, 'match_type': 'exact'} if index else arguments
+                states[index] = implementation(states[index], pages=budget, **settings)
+            else:
+                pending = (states[index].get('query_roots') != (exact_roots if index else roots) or
+                           previous.get('query_configuration') != configuration)
+                states[index] = {**states[index], 'observations': [],
+                    'errors': states[index].get('errors', []),
+                    'status': 'partial' if pending else states[index].get('status', 'partial')}
+                states[index]['query_roots'] = exact_roots if index else roots
+        return states
+    wayback, wayback_exact = traverse('wayback', lambda state, **kw: discover_sources(state, fetch=fetch, **kw),
+                                     'index_retry', **options)
+    commoncrawl, commoncrawl_exact = traverse('commoncrawl', lambda state, **kw: discover(state, fetch, **kw),
+        'host_retry', roots=roots, extensions=extensions, allowed=options.get('allowed', official),
+        match_type=options.get('match_type') or 'prefix')
+    results = (wayback, wayback_exact, commoncrawl, commoncrawl_exact)
     merged = {}
     for field in ('entries', 'artifacts'):
         records = _observations(previous.get(field, {}))
-        for provider in (wayback, commoncrawl):
+        for provider in results:
             for url, row in provider.get(field, {}).items():
                 prior = records.get(url, {})
                 records[url] = {**prior, **row, 'captures': {**prior.get('captures', {}), **row.get('captures', {})}}
@@ -150,9 +195,13 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     cursors = lambda state: {key: value for key, value in state.items() if key not in {'entries', 'artifacts'}}
     return {**wayback, **merged, 'query_roots': roots,
             'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
-            'observations': wayback['observations']+commoncrawl['observations'],
-            'errors': wayback['errors']+commoncrawl['errors'],
-            'status': 'ok' if wayback['status'] == commoncrawl['status'] == 'ok' else 'partial'}
+            'wayback_exact': cursors(wayback_exact), 'commoncrawl_exact': cursors(commoncrawl_exact),
+            'index_query_lane': (lane+pages) % 2 if exact_roots else lane,
+            'query_configuration': configuration,
+            'observations': [row for result in results for row in result['observations']],
+            'errors': [row for result in results for row in result['errors']],
+            'status': 'ok' if all(result['status'] == 'ok' for result in
+                                (results if exact_roots else (wayback, commoncrawl))) else 'partial'}
 
 
 def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
@@ -268,7 +317,7 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                              **error_checkpoint(error, retries.get(host))}
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
-            if getattr(error, 'code', None) in (403, 429):
+            if getattr(error, 'code', None) in (403, 429) or retry_after_seconds(error) is not None:
                 index_retry = retries[host]
                 break
     errors.extend(retries.values())

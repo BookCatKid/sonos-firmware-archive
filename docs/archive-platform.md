@@ -98,6 +98,14 @@ continuations while retaining captured observations and retry deadlines.
 Malformed pages keep valid observations but retain their previous cursor for
 retry, matching Common Crawl's page handling. Request and page budgets still
 apply per run; they do not truncate the durable traversal.
+Both providers also query exact first-party URLs learned from normal protocol,
+manifest and installer discovery, including mutable firmware roots. Broad and
+exact searches share each provider's configured page budget; a one-page budget
+alternates between them across workers. Broad cursors and collection-page
+checkpoints survive the addition of exact searches. Provider rate limits and
+explicit Retry-After deadlines apply to both searches, while unrelated providers
+continue independently. Exact search inputs are observations, never an imported
+firmware-version list.
 
 Desktop package history walks WinGet commit pages and both changed and parent
 snapshots. Removed manifests and pre-alphabetical vendor layouts therefore

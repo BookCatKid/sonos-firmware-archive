@@ -45,9 +45,13 @@ class FrontierTests(unittest.TestCase):
                          {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'})
         wayback = [parse_qs(urlsplit(url).query)['url'][0] for url in requested
                    if urlsplit(url).hostname == 'web.archive.org']
-        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/'])
-        self.assertIn('update.sonos.com', state['archive_index']['completed_hosts'])
-        self.assertEqual(state['archive_index']['pending_hosts'], ['sonos.com'])
+        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/update.upm'])
+        # The same budget now covers exact observations too; host traversal
+        # keeps its position and continues in the next normal worker.
+        requested.clear()
+        following = archive_index.discover_archives(state['archive_index'], fetch=index, pages=2)
+        self.assertIn('update.sonos.com', following['completed_hosts'])
+        self.assertEqual(following['pending_hosts'], ['sonos.com'])
 
     def test_missing_prod_sibling_still_discovers_dev_history(self):
         root = HOST + '/firmware/latest/update.upm'

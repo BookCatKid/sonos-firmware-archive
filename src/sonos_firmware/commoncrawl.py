@@ -13,7 +13,7 @@ from urllib.parse import urlencode, urlsplit
 from urllib.response import addinfourl
 
 from .discovery import USER_AGENT
-from .retry import checkpoint, due, error_checkpoint
+from .retry import checkpoint, due, error_checkpoint, retry_after_seconds
 
 REGISTRY = 'https://index.commoncrawl.org/collinfo.json'
 
@@ -155,7 +155,9 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
         except Exception as error:
             state['registry'] = {**error_checkpoint(error, registry), 'error': str(error), 'url': REGISTRY,
                                  'http_status': getattr(error, 'code', None)}
-            if getattr(error, 'code', None) in {403, 429}:
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            if getattr(error, 'code', None) in {403, 429} or retry_after_seconds(error) is not None:
                 state['host_retry'] = error_checkpoint(error, state.get('host_retry'))
     entries, artifacts = _observations(previous.get('entries', {})), _observations(previous.get('artifacts', {}))
     revision = hashlib.sha256(json.dumps([list(roots.items()), list(extensions), match_type]).encode()).hexdigest()
@@ -238,7 +240,9 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
         except Exception as error:
             state['queries'][identity] = {**prior, **error_checkpoint(error, prior), 'status': 'failed',
                 'error': str(error), 'url': endpoint, 'http_status': getattr(error, 'code', None)}
-            if getattr(error, 'code', None) in {403, 429}:
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            if getattr(error, 'code', None) in {403, 429} or retry_after_seconds(error) is not None:
                 state['host_retry'] = error_checkpoint(error, state.get('host_retry'))
                 break
     state.update(query_revision=revision, query_specs=query_specs, query_roots=dict(roots),
