@@ -371,6 +371,30 @@ def remote_assets(repository: str, tag: str) -> dict[str, dict]:
     return assets
 
 
+# Loose per-file bodies are named "<utc>--<resource>--<hash>.<ext>"; the
+# complete.tar.gz bundles already preserve their bytes for every capture.
+LOOSE_ASSET_RE = re.compile(r"^\d{8}T\d{6}Z--")
+
+
+def delete_asset(repository: str, asset_id: int) -> None:
+    token = subprocess.check_output(["gh", "auth", "token"], text=True).strip()
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{repository}/releases/assets/{asset_id}",
+        method="DELETE",
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        if response.status != 204:
+            raise RuntimeError(
+                f"GitHub asset delete failed for {asset_id}: HTTP {response.status}"
+            )
+
+
 def upload_asset(repository: str, release_id: int, name: str, path: Path) -> None:
     token = subprocess.check_output(["gh", "auth", "token"], text=True).strip()
     query = urllib.parse.urlencode({"name": name})
@@ -441,6 +465,17 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
         raise RuntimeError(
             f"GitHub asset verification failed: {config['release_tag']}/{failures[0]}"
         )
+    # GitHub caps a release at 1000 assets; the pro app hit it on 2026-11-24
+    # and every upload started failing with HTTP 422. The complete.tar.gz
+    # bundle preserves each capture's bodies, so prune the redundant loose
+    # bodies from older captures once the new capture is verified. Bundles
+    # and the current capture's bodies are never pruned.
+    observed = remote_assets(repository, config["release_tag"])
+    for name, remote in observed.items():
+        if name in expected or not LOOSE_ASSET_RE.match(name):
+            continue
+        delete_asset(repository, remote["id"])
+        time.sleep(1.1)
     base = f"https://github.com/{repository}/releases/download/{config['release_tag']}"
     for item in document["resources"]:
         if item.get("release_asset"):
