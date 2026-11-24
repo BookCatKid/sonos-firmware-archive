@@ -23,7 +23,7 @@ independent web-archive indexes.
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
 | 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published. At the `7817b02` baseline, the strict published-stream auditor still queues 1,083 source receipts; publication alone does not establish full compressed-stream verification. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). The normal acquisition worker must record the source-bound rejection for the 108-byte empty libusb archive. One link remains unattempted until that scheduled worker acquires it; no manually imported receipt is required. Separate isolated-archive runs published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
-| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Not demonstrated.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
+| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Demonstrated in the normal worker on 2026-11-24.** Direct anonymous device sessions and the pinned goopdl downloader produced four committed S1/S2 delivery receipts. Every APK matches the Sonos signer pin; all 11 distinct assets match GitHub sizes and SHA-256 digests. Historical selectors substituted by Google remain pending. See the current evidence below. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | A live `android-history` sweep archived 66 of 67 attempts with 0 discovery errors, adding 13 distinct versions in one batch; 76 selectors stay queued and 35 SDK levels are indexed. The archive now spans **38 distinct version codes** (13 S2, 25 S1). Rotating `winudf` tickets are separated from asset identity. See [Android store coverage](#android-store-coverage-items-9-and-10) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **All 260 APK components across the store deliveries are signature-verified**, each with signer SHA-256 and subject; 41 additional non-APK components (icons, manifests, one URL shortcut) are hash-verified but carry no APK signature to check. 20 deliveries carry multiple components, and two distinct Sonos signers are recorded. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
@@ -136,6 +136,28 @@ received HTTP 403 from Aurora's dispenser with both the SDK transport and
 certificate-verified curl. No anonymous token was issued and no APK was fetched.
 The adapter now distinguishes dispenser failures from Play API failures while
 retaining throttle status and retry delays without recording response secrets.
+
+## Anonymous Google Play delivery (item 8)
+
+The [normal worker run](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/45481774272)
+committed four direct delivery receipts on 2026-11-24 for S1 `11.16.2`
+(version code `572383122`) and S2 `91.01.11` (`1270401011`), with device/dex
+variants. Every APK is signature-verified against its configured Sonos pin;
+all 11 distinct published assets match canonical receipt sizes and SHA-256.
+The same worker acquired, inspected, published and committed them.
+
+When Aurora's dispenser is unavailable, the adapter registers an anonymous
+device directly with Google and uses `getItems` and delivery. It preserves the
+selected device profile, keeps session identifiers private, and uses goopdl's
+hash-checked downloader plus the shared APK inspectors. Receipts identify the
+actual delivery protocol and downloader. CI retains the editable source install
+so inspectors find their pinned tools, and verifies that root before acquisition.
+No personal account, prepared APK, token import or separate workflow was used.
+
+The worker remains incomplete while historical requests are pending. Google
+sometimes offers a different version; that advertised code becomes a new lead
+and does not fulfill the original request. Successful acquisition of these two
+versions does not establish availability of every historical Play version.
 
 ## Public web capture (item 12)
 
@@ -1420,8 +1442,8 @@ com.sonos.acr2: updated_on=Nov 11, 2026
 com.sonos.acr:  updated_on=Nov 12, 2026
 ```
 
-This is the listing path working anonymously; it does **not** change item 8's
-status, because no signer-verified APK delivery was obtained.
+This listing-only run did not establish APK delivery. Item 8's later normal-worker
+evidence above establishes signer-verified acquisition independently.
 
 ### `gpl` — [run 44481370655](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44481370655)
 
