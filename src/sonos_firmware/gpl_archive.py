@@ -190,6 +190,7 @@ class HttpResult:
     data: bytes
     content_type: str
     final_url: str
+    retry_after: float | None = None
 
 
 def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -> HttpResult:
@@ -200,8 +201,9 @@ def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -
             response = urllib.request.urlopen(req, timeout=timeout)
         except urllib.error.HTTPError as error:
             with error:
-                response_info = HttpResult(error.code, error.read(4096), error.headers.get("Content-Type", ""), error.url)
-            if error.code not in {500, 502, 503, 504} or attempt == 2:
+                response_info = HttpResult(error.code, error.read(4096), error.headers.get("Content-Type", ""),
+                                           error.url, retry_after_seconds(error))
+            if response_info.retry_after is not None or error.code not in {500, 502, 503, 504} or attempt == 2:
                 return response_info
         except (urllib.error.URLError, OSError, TimeoutError):
             if attempt == 2:
@@ -219,6 +221,8 @@ def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -
 def classify_index(version: str, response: HttpResult) -> dict:
     result = {"version": version, "url": index_url(version), "http_status": response.status,
               "checked_at": timestamp(), "state": "inconclusive"}
+    if response.retry_after is not None:
+        result['retry_after'] = response.retry_after
     if response.status == 200:
         try:
             links = parse_index(version, response.data)
@@ -330,10 +334,10 @@ def verify_artifact(path: Path, kind: str) -> tuple[bool, str, int]:
         return False, f"invalid-archive:{type(error).__name__}", 0
 
 
-def artifact_checkpoint(result: dict, prior: dict | None = None) -> dict:
+def artifact_checkpoint(result: dict, prior: dict | None = None, *, success_hours=24) -> dict:
     """Keep HTTP retry timing when a download crosses the JSON receipt seam."""
     if result.get('published') or result.get('state') == 'verified':
-        return checkpoint(prior, success=True)
+        return checkpoint(prior, success=True, success_hours=success_hours)
     return error_checkpoint(SimpleNamespace(retry_after=result.get('retry_after')), prior,
                             negative=result.get('http_status') == 404)
 

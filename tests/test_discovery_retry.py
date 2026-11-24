@@ -118,6 +118,32 @@ class RetryPolicyTests(unittest.TestCase):
 
 
 class GPLRetryTests(unittest.TestCase):
+    def test_metadata_retry_after_survives_restarts_and_pauses_fresh_versions(self):
+        for status in (429, 503):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temporary:
+                module = load('archive_gpl_direct')
+                root = Path(temporary)
+                args = self.args(root)
+                args.limit = 3
+                response = HttpResult(status, b'temporary', 'text/plain', index_url('0.0'), retry_after=7200)
+                with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                     patch.object(module, 'get_page', return_value=response) as fetch:
+                    with patch.object(retry, '_now', return_value=NOW):
+                        module.discover(args)
+                    with patch.object(retry, '_now', return_value=NOW+timedelta(minutes=90)):
+                        module.discover(args)
+                    self.assertEqual(fetch.call_count, 1)
+                state = json.loads((args.output/'discovery.json').read_text())
+                deadline = (NOW+timedelta(hours=2)).isoformat()
+                self.assertEqual(state['source_backoff']['next_attempt_at'], deadline)
+                self.assertEqual(state['candidates']['0.0']['next_attempt_at'], deadline)
+                args.limit = 1
+                with patch.object(module, 'ROOT', root), patch.object(module, 'pause'), \
+                     patch.object(module, 'get_page', return_value=page()) as fetch, \
+                     patch.object(retry, '_now', return_value=NOW+timedelta(hours=3)):
+                    module.discover(args)
+                    self.assertEqual(fetch.call_count, 1)
+
     def args(self, root, **extra):
         return Namespace(output=root / 'live', recheck=False, binary=[], discovery_window=1,
                          limit=1, delay=0, **extra)

@@ -162,6 +162,10 @@ on a throttled host wait across worker restarts; independent source hosts keep
 progressing. A publication throttle defers additional acquisition and retries
 the saved publication metadata after the deadline. Valid numeric and HTTP-date
 deadlines are honored in full; malformed values use the ordinary backoff policy.
+GPL index metadata carries the same server timing into version observations and
+the source-host cooldown. A maintenance response with Retry-After returns to the
+scheduler without immediate transport retries, and a failed index service pauses
+fresh version probes as well as retries.
 
 Historical index discovery queries both manifests and `.upd` payloads across
 `sonos.com` and all its subdomains, using the CDX

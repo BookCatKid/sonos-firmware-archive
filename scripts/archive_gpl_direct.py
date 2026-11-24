@@ -162,8 +162,7 @@ def discover(args: argparse.Namespace) -> int:
         except (OSError, ValueError) as error:
             record = {"version": version, "url": index_url(version), "checked_at": timestamp(),
                       "state": "network-error", "reason": str(error)}
-        record.update(checkpoint(checked.get(version), success=record['state'] == 'verified',
-                                 negative=record['state'] == 'not-served', success_hours=168))
+        record.update(artifact_checkpoint(record, checked.get(version), success_hours=168))
         if record['state'] not in {'verified', 'not-served', 'access-denied'} or (
             record['state'] == 'access-denied' and record.get('reason') != 'AccessDenied XML'
         ):
@@ -178,10 +177,10 @@ def discover(args: argparse.Namespace) -> int:
             print(f"NEW verified GPL release: {version} ({len(record['links'])} links)", flush=True)
         # An object-store AccessDenied response can indicate an absent key; don't
         # interpret it as positive absence or an Akamai ban. Stop on challenges.
-        if record["state"] in {"rate-limited", "network-error"} or (
+        if record["state"] in {"rate-limited", "network-error"} or record.get('http_status') in {500, 502, 503, 504} or (
             record["state"] == "access-denied" and record.get("reason") != "AccessDenied XML"
         ):
-            backoff = {**checkpoint(backoff), 'reason': record.get('reason'),
+            backoff = {**artifact_checkpoint(record, backoff), 'reason': record.get('reason'),
                        'http_status': record.get('http_status')}
             save()
             print("stopping sweep on access challenge or network failure", flush=True)
