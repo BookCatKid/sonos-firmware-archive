@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 import selectors
 import subprocess
+import tarfile
 import tempfile
 import time
 import urllib.error
@@ -24,10 +25,11 @@ from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .upd import parse_file
 from .releases import download_verified
 from .extract import key_recipient_id
+from .firmware_inventory import InventoryLimits
 
 MAX_SOURCE_BYTES = 128 * 1024 * 1024
 MAX_UPDATER_BYTES = 8 * 1024 * 1024
-RECOVERY_REVISION = 3
+RECOVERY_REVISION = 4
 
 
 def embedded_private_key(data, expected_recipient, *, max_bytes=MAX_UPDATER_BYTES):
@@ -77,6 +79,57 @@ def select_updater_sources(root, catalog, model):
     return _select_sources(root, catalog, model, rootfs_only=True)
 
 
+def _source_receipt(reference):
+    fields = ('sha256', 'bytes', 'release_tag', 'release_asset')
+    if not isinstance(reference, dict) or not all(reference.get(key) for key in fields):
+        return None
+    digest, size = reference['sha256'], reference['bytes']
+    if (not isinstance(digest, str) or not re.fullmatch('[0-9a-f]{64}', digest) or
+            not isinstance(size, int) or isinstance(size, bool) or not 0 < size <= MAX_SOURCE_BYTES):
+        return None
+    return {key: reference[key] for key in fields}
+
+
+def inventory_private_key(path, expected_recipient, source_sha256, *, max_bytes=None,
+                          max_files=None, seconds=None):
+    """Scan decoded regular files in a verified bundle without extracting paths."""
+    limits = InventoryLimits()
+    max_bytes = limits.expanded_bytes if max_bytes is None else max_bytes
+    max_files = limits.files if max_files is None else max_files
+    seconds = limits.decoder_seconds if seconds is None else seconds
+    deadline, expanded, count = time.monotonic()+seconds, 0, 0
+    found, manifest_seen = None, False
+    with tarfile.open(path, 'r|xz') as archive:
+        for member in archive:
+            count += 1
+            if time.monotonic() >= deadline or count > max_files:
+                raise ValueError('inventory key scan exceeds its resource budget')
+            # Links and device nodes never supply key bytes or touch the host.
+            if not member.isfile():
+                continue
+            expanded += member.size
+            if member.size < 0 or expanded > max_bytes:
+                raise ValueError('inventory key scan exceeds its expansion budget')
+            with archive.extractfile(member) as stream:
+                data = stream.read(member.size+1)
+            if len(data) != member.size:
+                raise ValueError('truncated inventory member')
+            if member.name == 'inventory.json':
+                manifest = json.loads(data)
+                if manifest_seen or not isinstance(manifest, dict) or manifest.get('sha256') != source_sha256:
+                    raise ValueError('inventory manifest does not match its parent source')
+                manifest_seen = True
+            elif found is None:
+                candidate = embedded_private_key(data, expected_recipient, max_bytes=max_bytes)
+                if candidate is not None:
+                    key, details = candidate
+                    found = key, {**details, 'method': 'embedded-inventory-private-key',
+                                  'member': member.name, 'member_sha256': hashlib.sha256(data).hexdigest()}
+    if not manifest_seen:
+        raise ValueError('inventory manifest is missing')
+    return found
+
+
 def _select_sources(root, catalog, model, *, rootfs_only=False):
     """Bind plaintext components to preserved parents and extraction receipts."""
     rows = []
@@ -92,6 +145,18 @@ def _select_sources(root, catalog, model, *, rootfs_only=False):
         inventory = json.loads(manifest.read_text())
         if inventory.get('sha256') != package.get('sha256'):
             continue
+        prior = package.get('inventory', {})
+        if not rootfs_only and isinstance(prior, dict):
+            revision = prior.get('revision', {})
+            publications = prior.get('publications', {})
+            bundle = publications.get('bundle', {}) if isinstance(publications, dict) else {}
+            source = _source_receipt(bundle)
+            if (source and bundle.get('status') == 'verified' and
+                    prior.get('source_sha256') == package['sha256'] and isinstance(revision, dict) and
+                    revision.get('source_sha256') == package['sha256']):
+                rows.append({**source, 'kind': 'inventory-bundle', 'package_id': identity, 'model': model,
+                             'source_sha256': package['sha256'], 'repository': bundle.get('repository'),
+                             'inventory_limits': revision.get('limits', {})})
         receipt_path = root / 'data/raw' / (identity + '.json')
         try:
             receipt = json.loads(receipt_path.read_text()) if receipt_path.is_file() else {}
@@ -131,14 +196,9 @@ def _select_sources(root, catalog, model, *, rootfs_only=False):
             if not encrypted:
                 references.append(('upd', package))
             for kind, reference in references:
-                if not all(reference.get(key) for key in ('sha256', 'bytes', 'release_tag', 'release_asset')):
+                source = _source_receipt(reference)
+                if source is None:
                     continue
-                digest = reference['sha256']
-                if (not isinstance(digest, str) or len(digest) != 64 or
-                    any(c not in '0123456789abcdef' for c in digest) or
-                    not 0 < reference['bytes'] <= MAX_SOURCE_BYTES):
-                    continue
-                source = {key: reference[key] for key in ('sha256', 'bytes', 'release_tag', 'release_asset')}
                 source.update(kind=kind, package_id=identity, model=model, section_index=section['index'],
                               section_sha256=section['sha256'], section_bytes=section['payload_length'])
                 if section_type != 4:
@@ -150,7 +210,9 @@ def _select_sources(root, catalog, model, *, rootfs_only=False):
                 if key not in seen:
                     seen.add(key)
                     rows.append(source)
-    return sorted(rows, key=lambda row: (not row['kind'].startswith('raw'), row['package_id'], row['section_index']))
+    return sorted(rows, key=lambda row: (0 if row['kind'] == 'inventory-bundle' else
+                                        1 if row['kind'].startswith('raw') else 2,
+                                        row['package_id'], row.get('section_index', -1)))
 
 
 def bounded_output(command, *, max_bytes, timeout=60):
@@ -195,6 +257,42 @@ def fetch_release_source(source, destination, repository):
     download_verified(source, destination, repository)
 
 
+def _source_key(body, source, model, expected_recipient, read_member):
+    if source['kind'] == 'inventory-bundle':
+        limits = InventoryLimits(**source['inventory_limits'])
+        result = inventory_private_key(body, expected_recipient, source['source_sha256'],
+            max_bytes=limits.expanded_bytes, max_files=limits.files, seconds=limits.decoder_seconds)
+        if result is None:
+            raise ValueError('no matching private key in decoded inventory')
+        return result
+    component_path = body
+    if source['kind'] in {'upd', 'upd-section'}:
+        section = next((row for row in parse_file(body) if row.index == source['section_index']), None)
+        if (section is None or section.section_type != source.get('section_type', 4) or section.encrypted or
+                section.sha256 != source['section_sha256'] or section.payload_length != source['section_bytes']):
+            raise ValueError('plaintext key source section does not match its inventory')
+        component_path = body.with_name('section')
+        with body.open('rb') as stream:
+            stream.seek(section.offset+16)
+            component_path.write_bytes(stream.read(section.payload_length))
+    component = 'section_type' in source
+    data = component_path.read_bytes() if component else read_member(component_path)
+    embedded = embedded_private_key(data, expected_recipient,
+        **({'max_bytes': MAX_SOURCE_BYTES} if component else {}))
+    if embedded is not None:
+        key, details = embedded
+        if component:
+            details = {**details, 'method': 'embedded-component-private-key'}
+    elif component:
+        raise ValueError('no matching private key in component')
+    else:
+        recovered = discover_legacy_updater_key(data, model, expected_recipient)
+        key = recovered.key
+        details = {'method': 'legacy-updater', 'wrapper_offset': recovered.wrapper_offset,
+                   'byte_order': recovered.byte_order}
+    return key, {**details, 'component_sha256' if component else 'updater_sha256': hashlib.sha256(data).hexdigest()}
+
+
 def recover_catalog_key(root, catalog, model, expected_recipient, output, repository, *,
                         read_artifact=None, read_member=None, max_sources=8):
     """Try bounded verified sources and write only an exact matching key.
@@ -206,7 +304,8 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     read_member = read_member or read_updater_member
     if max_sources <= 0:
         raise ValueError('max_sources must be positive')
-    sources = _select_sources(root, catalog, model)
+    sources = [row for row in _select_sources(root, catalog, model)
+               if row['kind'] != 'inventory-bundle' or row['repository'] == repository]
     state_path = root / 'data/discovery/key-recovery.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'schema_version': 1, 'repositories': {}}
     records = state['repositories'].setdefault(repository, {}).setdefault(expected_recipient, {})
@@ -225,7 +324,7 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     if backoff.paused('key-source-downloads'):
         queue = []
     assessment = {'method': 'catalog-components', 'methods': ['embedded-updater-private-key', 'legacy-updater',
-                                                       'embedded-component-private-key'],
+                                                       'embedded-component-private-key', 'embedded-inventory-private-key'],
                   'recovery_revision': RECOVERY_REVISION, 'model': model,
                   'checked_at': datetime.now(timezone.utc).isoformat(),
                   'eligible_sources': len(sources), 'selected_sources': len(queue),
@@ -247,36 +346,10 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                 backoff.clear('key-source-downloads')
                 if body.stat().st_size != source['bytes'] or file_sha256(body) != source['sha256']:
                     raise ValueError('key source does not match its publication receipt')
-                rootfs = body
-                if source['kind'] in {'upd', 'upd-section'}:
-                    section = next((row for row in parse_file(body) if row.index == source['section_index']), None)
-                    if (section is None or section.section_type != source.get('section_type', 4) or section.encrypted or
-                        section.sha256 != source['section_sha256'] or section.payload_length != source['section_bytes']):
-                        raise ValueError('plaintext key source section does not match its inventory')
-                    rootfs = Path(temporary) / 'rootfs'
-                    with body.open('rb') as stream:
-                        stream.seek(section.offset + 16)
-                        rootfs.write_bytes(stream.read(section.payload_length))
-                component = 'section_type' in source
-                updater = rootfs.read_bytes() if component else read_member(rootfs)
-                embedded = embedded_private_key(updater, expected_recipient,
-                    **({'max_bytes': MAX_SOURCE_BYTES} if component else {}))
-                if embedded is not None:
-                    key, details = embedded
-                    if component:
-                        details = {**details, 'method': 'embedded-component-private-key'}
-                elif component:
-                    raise ValueError('no matching private key in component')
-                else:
-                    recovered = discover_legacy_updater_key(updater, model, expected_recipient)
-                    key = recovered.key
-                    details = {'method': 'legacy-updater', 'wrapper_offset': recovered.wrapper_offset,
-                               'byte_order': recovered.byte_order}
+                key, details = _source_key(body, source, model, expected_recipient, read_member)
                 write_private_key_exclusive(output, key)
                 proof = {**details, 'model': model, 'recipient_id': expected_recipient,
-                        'repository': repository,
-                        'source': source,
-                        'component_sha256' if component else 'updater_sha256': hashlib.sha256(updater).hexdigest()}
+                         'repository': repository, 'source': source}
                 records[identity(source)] = {**checkpoint(success=True, success_hours=168),
                                               'status': 'recovered', 'proof': proof}
                 assessment.update(status='recovered', pending_sources=0)

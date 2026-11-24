@@ -4,6 +4,7 @@ import json
 import struct
 import sys
 import tempfile
+import tarfile
 import os
 import unittest
 import zlib
@@ -281,6 +282,134 @@ class RecoveryTests(unittest.TestCase):
                 recovery.recover_catalog_key(root, catalog, 27, self.recipient, root/'keys/key.pem', 'owner/repo',
                     read_artifact=lambda source, path, repo: path.write_bytes(body))
             scan.assert_not_called()
+
+    def inventory_catalog(self, root, members):
+        catalog, _ = source_catalog(root, 27, b'fixture', raw=False)
+        package = catalog['packages'][0]
+        members = [*members, ('inventory.json', json.dumps({'sha256': package['sha256']}).encode())]
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode='w:xz') as archive:
+            for name, body in members:
+                entry = tarfile.TarInfo(name)
+                if body is None:
+                    entry.type, entry.linkname = tarfile.SYMTYPE, '/outside/private-key.pem'
+                    archive.addfile(entry)
+                else:
+                    entry.size = len(body)
+                    archive.addfile(entry, io.BytesIO(body))
+        body = stream.getvalue()
+        package['inventory'] = {'source_sha256': package['sha256'],
+            'revision': {'source_sha256': package['sha256']}, 'publications': {'bundle': {
+                'status': 'verified', 'repository': 'owner/repo', 'sha256': digest(body), 'bytes': len(body),
+                'release_tag': 'fixture-source', 'release_asset': 'inventory.tar.xz'}}}
+        return catalog, body
+
+    def test_inventory_recovery_scans_decoded_files_without_unpacking_paths(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            private = self.key.private_bytes(serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, body = self.inventory_catalog(root, [('etc/link.pem', None),
+                ('decoded-kernel', b'kernel without key'), ('rootfs/etc/arbitrary-name', private)])
+            visited = []
+            def fetch(source, path, repo):
+                visited.append(source)
+                self.assertEqual(source['kind'], 'inventory-bundle')
+                path.write_bytes(body)
+            output = root/'keys/key.pem'
+            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                read_artifact=fetch, max_sources=1)
+            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
+            self.assertEqual(proof['method'], 'embedded-inventory-private-key')
+            self.assertEqual(proof['member'], 'rootfs/etc/arbitrary-name')
+            self.assertEqual(proof['member_sha256'], digest(private))
+            self.assertEqual(visited[0]['source_sha256'], catalog['packages'][0]['sha256'])
+            self.assertEqual(sorted(path.name for path in root.iterdir()), ['data', 'keys'])
+
+    def test_inventory_sources_require_verified_matching_parent_receipts(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, body = self.inventory_catalog(root, [('file', b'no key')])
+            inventory = catalog['packages'][0]['inventory']
+            for field, value in [('source_sha256', '0'*64), ('revision', {'source_sha256': '0'*64}),
+                                 ('publications', {'bundle': {**inventory['publications']['bundle'], 'status': 'pending'}})]:
+                bad = {**inventory, field: value}
+                catalog['packages'][0]['inventory'] = bad
+                sources = recovery._select_sources(root, catalog, 27)
+                self.assertFalse(any(row['kind'] == 'inventory-bundle' for row in sources))
+            catalog['packages'][0]['inventory'] = inventory
+            self.assertTrue(any(row['kind'] == 'inventory-bundle'
+                                for row in recovery._select_sources(root, catalog, 27)))
+
+    def test_inventory_scan_rejects_wrong_recipient_links_and_expansion_overruns(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            wrong = self.transport_key.private_bytes(serialization.Encoding.DER,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, body = self.inventory_catalog(root, [('link.pem', None), ('file', wrong)])
+            path = root/'inventory.tar.xz'
+            path.write_bytes(body)
+            self.assertIsNone(recovery.inventory_private_key(path, self.recipient, catalog['packages'][0]['sha256']))
+            with self.assertRaisesRegex(ValueError, 'budget'):
+                recovery.inventory_private_key(path, self.recipient, catalog['packages'][0]['sha256'], max_bytes=1)
+            with self.assertRaisesRegex(ValueError, 'parent source'):
+                recovery.inventory_private_key(path, self.recipient, '0'*64)
+
+    def test_inventory_candidate_key_is_not_written_before_manifest_validation(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            private = self.key.private_bytes(serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, body = self.inventory_catalog(root, [('etc/private.pem', private),
+                ('inventory.json', json.dumps({'sha256': '0'*64}).encode())])
+            output = root/'keys/key.pem'
+            with self.assertRaises(ValueError):
+                recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                    read_artifact=lambda source, path, repo: path.write_bytes(body), max_sources=1)
+            self.assertFalse(output.exists())
+
+    def test_normal_inventory_publication_becomes_a_verified_key_recovery_source(self):
+        from sonos_firmware import inventory_archive
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            private = self.key.private_bytes(serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, original = source_catalog(root, 27, cramfs_image(private))
+            atomic_json(root/'data/catalog.json', catalog)
+            assets = {}
+            def publish(repo, tag, path, size, sha256):
+                assets[path.name] = path.read_bytes()
+                return {'url': 'https://github.com/owner/repo/releases/download/'+tag+'/'+path.name}
+            with patch.object(inventory_archive, 'publish_verified', side_effect=publish):
+                result = inventory_archive.inventory_preserved(root, root/'inventory-work', 'owner/repo', root/'keys',
+                    acquire=lambda package, path, repo: path.write_bytes(original), limit=1)
+            self.assertEqual(result['published'], 1)
+            catalog = json.loads((root/'data/catalog.json').read_text())
+            output = root/'keys/recovered.pem'
+            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                read_artifact=lambda source, path, repo: path.write_bytes(assets[source['release_asset']]), max_sources=1)
+            self.assertEqual(proof['method'], 'embedded-inventory-private-key')
+            self.assertTrue(proof['member'].endswith('/bin/upgrade'))
+            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
+
+    def test_changed_inventory_limits_retry_a_previously_exhausted_scan(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            private = self.key.private_bytes(serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+            catalog, body = self.inventory_catalog(root, [('private.pem', private)])
+            revision = catalog['packages'][0]['inventory']['revision']
+            revision['limits'] = {'files': 1}
+            output = root/'keys/key.pem'
+            fetch = lambda source, path, repo: path.write_bytes(body)
+            with self.assertRaises(ValueError):
+                recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                    read_artifact=fetch, max_sources=1)
+            self.assertFalse(output.exists())
+            revision['limits'] = {'files': 2}
+            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                read_artifact=fetch, max_sources=1)
+            self.assertEqual(proof['method'], 'embedded-inventory-private-key')
 
     def test_new_recovery_method_revision_revisits_a_previously_failed_source(self):
         with tempfile.TemporaryDirectory() as temporary:

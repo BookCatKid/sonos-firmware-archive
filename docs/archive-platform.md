@@ -64,6 +64,12 @@ published components or the verified original package. Previously decrypted
 components require a matching extraction receipt binding them to the parent,
 section and transport recipient. Component proofs name the component hash rather
 than claiming the bytes came from an updater executable.
+Verified inventory bundles join the same recovery queue, allowing scans of
+decoded filesystem files and kernel contents without another unpacking workflow.
+Recovery verifies the bundle receipt and its internal manifest's parent UPD hash,
+reads only regular members, and never follows archive links or writes member paths.
+The scan inherits the inventory's recorded resource limits. Proofs identify the
+member name, member hash and private-key location; they contain no private bytes.
 Only a key matching the requested recipient fingerprint is accepted; the
 public proof records its encoding, offset and size, never private bytes.
 Recovery-method revisions revisit failed candidates immediately while retaining
