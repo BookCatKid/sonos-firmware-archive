@@ -2,6 +2,7 @@
 import importlib.util
 import importlib.metadata
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -11,6 +12,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
+from contextlib import closing
 
 from sonos_firmware import android_store, retry
 from sonos_firmware.android_store import StoreError
@@ -259,6 +261,123 @@ class ProcessBudgetTests(unittest.TestCase):
 
 @unittest.skipUnless(importlib.util.find_spec('goopdl') is not None, 'install the google-play extra for SDK contract tests')
 class PinnedGoopdlContractTests(unittest.TestCase):
+    def session_fixture(self, root, *, status=200, headers=None, body=None):
+        from goopdl.client import Config
+        from goopdl.profiles import get_priority_profiles
+        config = Config(config_dir=root/'auth', arch='armv7',
+                        profile=get_priority_profiles('armv7')[0][0])
+        response = Mock(status_code=status, headers=headers or {})
+        response.iter_content.return_value = [body if body is not None else json.dumps({
+            'authToken': 'synthetic-session', 'gsfId': '1234',
+            'deviceInfoProvider': {'userAgentString': 'fixture-device'}}).encode()]
+        request = Mock(side_effect=lambda *args, **kwargs: closing(response))
+        return config, response, request
+
+    def test_fallback_preserves_device_profile_and_scoped_private_sdk_cache(self):
+        from goopdl import auth
+        from goopdl.profiles import find_profile
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, response, request = self.session_fixture(root)
+            android_store.refresh_anonymous_session(config, request=request)
+            self.assertEqual(request.call_args.args, (auth.DEFAULT_DISPENSER_URL,))
+            options = request.call_args.kwargs
+            self.assertEqual(options['json'], find_profile(config.profile, config.arch)[1])
+            self.assertFalse(options['allow_redirects'])
+            response.close.assert_called_once()
+            with auth._use_scope(auth._Scope(config_dir=config.config_dir, credentials=None,
+                                             explicit_credentials=True)):
+                tokens = auth.ensure_pool(arch=config.arch, profile=config.profile, size=1,
+                                          raise_on_error=True)
+                self.assertEqual(len(tokens), 1)
+                self.assertEqual(tokens[0]['gsfId'], '1234')
+                self.assertEqual(tokens[0]['_device_profile'], options['json']['UserReadableName'])
+                with patch.object(auth, 'fetch_token', side_effect=auth.DispenserUnavailableError(403)):
+                    usable = auth.ensure_pool(arch=config.arch, profile=config.profile,
+                                              raise_on_error=True)
+                self.assertEqual(usable, tokens)
+            self.assertEqual(config.config_dir.stat().st_mode & 0o777, 0o700)
+            for path in config.config_dir.glob('*.json'):
+                self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+            other = config.replace(config_dir=root/'other')
+            with auth._use_scope(auth._Scope(config_dir=other.config_dir, credentials=None,
+                                             explicit_credentials=True)):
+                self.assertEqual(auth._load_pool_unlocked(config.arch, None, config.profile), [])
+
+    def test_fallback_retains_server_timing_and_does_not_cache_failure(self):
+        for status in (429, 503, 403):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                config, response, request = self.session_fixture(root, status=status,
+                                                                headers={'Retry-After': '7300'})
+                with self.assertRaises(StoreError) as caught:
+                    android_store.refresh_anonymous_session(config, request=request)
+                self.assertEqual(caught.exception.status_code, status)
+                self.assertEqual(caught.exception.retry_after, 7300)
+                self.assertFalse(config.config_dir.exists())
+                response.iter_content.assert_not_called()
+                response.close.assert_called_once()
+
+    def test_fallback_rejects_malformed_missing_device_or_unbounded_session(self):
+        for body in (b'{}', b'[]', b'{"authToken":"synthetic"}', b'x'*131073):
+            with self.subTest(size=len(body)), tempfile.TemporaryDirectory() as temporary:
+                config, response, request = self.session_fixture(Path(temporary), body=body)
+                with self.assertRaises(StoreError):
+                    android_store.refresh_anonymous_session(config, request=request)
+                self.assertFalse(config.config_dir.exists())
+                response.close.assert_called_once()
+
+    def test_real_anonymous_session_acquisition_is_rejected_locally(self):
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            self.skipTest('local-only acquisition guard')
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _, _ = self.session_fixture(Path(temporary))
+            with patch.object(android_store, '_request_aurora_session') as request:
+                with self.assertRaisesRegex(StoreError, 'RequiresCI'):
+                    android_store.refresh_anonymous_session(config)
+            request.assert_not_called()
+
+    def test_streaming_transport_closes_response_and_session_on_reader_failure(self):
+        from curl_cffi import requests
+        session = Mock()
+        response = Mock()
+        session.post.return_value = response
+        manager = Mock()
+        manager.__enter__ = Mock(return_value=session)
+        manager.__exit__ = Mock(return_value=False)
+        with patch.object(requests, 'Session', return_value=manager) as create:
+            with self.assertRaisesRegex(ValueError, 'synthetic read failure'):
+                with android_store._request_aurora_session('https://fixture.invalid', stream=True) as received:
+                    self.assertIs(received, response)
+                    raise ValueError('synthetic read failure')
+        create.assert_called_once_with(impersonate='chrome_android', default_headers=False)
+        response.close.assert_called_once()
+        manager.__exit__.assert_called_once()
+
+    def test_only_dispenser_403_earns_one_automatic_fallback(self):
+        from goopdl.api import PlayAPIError, RateLimitedError
+        from goopdl.auth import DispenserUnavailableError
+        refused = PlayAPIError('private', status_code=403)
+        refused.__cause__ = DispenserUnavailableError(403)
+        client = Mock()
+        client.details.side_effect = [refused, 'listing']
+        with patch.object(android_store, 'refresh_anonymous_session') as refresh:
+            self.assertEqual(android_store._anonymous_call(client, 'details', 'com.sonos.acr2'), 'listing')
+            refresh.assert_called_once_with(client.config)
+        for error in (PlayAPIError('private', status_code=403), RateLimitedError('private', retry_after=30)):
+            client.details.reset_mock()
+            client.details.side_effect = error
+            with patch.object(android_store, 'refresh_anonymous_session') as refresh:
+                with self.assertRaises(type(error)):
+                    android_store._anonymous_call(client, 'details', 'com.sonos.acr2')
+                refresh.assert_not_called()
+                self.assertEqual(client.details.call_count, 1)
+        client.details.side_effect = refused
+        with patch.object(android_store, 'refresh_anonymous_session') as refresh:
+            with self.assertRaises(PlayAPIError):
+                android_store._anonymous_call(client, 'details', 'com.sonos.acr2')
+            refresh.assert_called_once()
+
     def test_dispenser_refusal_is_distinguished_from_a_play_api_refusal(self):
         from goopdl.api import PlayAPIError, RateLimitedError
         from goopdl.auth import DispenserUnavailableError, DispenserRateLimitedError

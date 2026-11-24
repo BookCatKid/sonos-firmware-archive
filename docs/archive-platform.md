@@ -412,7 +412,13 @@ precomputed hashes are required to add or plan a target.
 `google-play` runs on the normal schedule using the pinned goopdl Python extra
 and Aurora's anonymous token dispenser. Personal accounts and repository Google
 credentials are unnecessary. Its complete upstream device profile inventory
-rotates across runs, interleaving architectures. Each observed numeric version
+is retained when authentication changes transports: a dispenser-specific HTTP
+403 earns one CI-only retry using the shared TLS client, the same POST device
+properties and Aurora's application headers. A successful anonymous session is
+stored in goopdl's private, profile-scoped cache. Play API refusals and 429s do
+not trigger this fallback; server retry timing remains authoritative. This
+transport path requires live delivery validation before claiming Play coverage.
+The device inventory rotates across runs, interleaving architectures. Each observed numeric version
 becomes a retained acquisition lead. Discovered APKPure metadata and existing
 receipts contribute historical numeric codes. An empty archive starts from
 live discovery; APKPure metadata can supply codes without acquiring any APKs.
