@@ -100,7 +100,9 @@ jobs:
       - name: Install pinned Google Play client
         if: matrix.goopdl
         continue-on-error: ${{ matrix.goopdl_optional }}
-        run: python -m pip install '.[google-play]'
+        run: |
+          python -m pip install -e '.[google-play]'
+          python -c "from pathlib import Path; from sonos_firmware.apk import ROOT; assert ROOT.resolve() == Path.cwd().resolve(), 'APK tools must resolve from the source checkout'"
       - name: Restore small discovery observations
         uses: actions/cache/restore@v4
         with:

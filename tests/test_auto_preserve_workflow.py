@@ -65,6 +65,7 @@ class PlatformWorkflowTests(unittest.TestCase):
         self.assertNotIn('cargo', str(self.job))
         self.assertEqual(self.steps['Install pinned Google Play client']['if'], 'matrix.goopdl')
         self.assertIn("'.[google-play]'", self.steps['Install pinned Google Play client']['run'])
+        self.assertIn("pip install -e '.[google-play]'", self.steps['Install pinned Google Play client']['run'])
 
     def test_google_play_is_scheduled_without_personal_credentials(self):
         from sonos_firmware.platform.registry import targets
