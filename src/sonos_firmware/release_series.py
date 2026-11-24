@@ -122,3 +122,32 @@ class ReleaseSeries:
             proof = self._proof(tag, path, capture, remote)
             self._assets[tag][path.name] = remote
             return proof
+
+    def publish_collection(self, files):
+        """Preflight every immutable capture, then return its actual location.
+
+        Known publications need no retained local bytes. A full partition can
+        split a capture batch, including recovery after interrupted uploads.
+        """
+        expected, proofs = {}, {}
+        for path, capture in files:
+            name = capture['release_asset']
+            if Path(name).name != name or name in {'', '.', '..'}:
+                raise ValueError('release asset name must be a basename')
+            if name in expected and any(expected[name][1][key] != capture[key] for key in ('bytes', 'sha256')):
+                raise ValueError('conflicting capture identities for release asset: '+name)
+            expected[name] = (path, capture)
+        # A collision late in the batch must not publish earlier new files.
+        for name, (path, capture) in expected.items():
+            proof = self.reconcile(name, capture)
+            if proof:
+                proofs[name] = proof
+            elif (path.name != name or not path.is_file() or path.stat().st_size != capture['bytes'] or
+                  file_sha256(path) != capture['sha256']):
+                raise ValueError('capture missing or does not match its receipt: '+name)
+        for name, (path, capture) in expected.items():
+            if name not in proofs:
+                proofs[name] = self.publish(path, capture)
+                # Retain collection pacing between GitHub content creations.
+                releases.time.sleep(1.1)
+        return proofs

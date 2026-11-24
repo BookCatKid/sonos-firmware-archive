@@ -4,10 +4,12 @@ import json
 import tempfile
 import unittest
 import sys
+import subprocess
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
-from sonos_firmware import releases, web_archive as web
+from sonos_firmware import releases, release_series, web_archive as web
 from test_app_archive import FakeGitHub
 
 
@@ -25,6 +27,7 @@ class WebArchiveTests(unittest.TestCase):
             patch.object(releases.subprocess, 'run', side_effect=self.github.command),
             patch.object(releases, 'public_release', side_effect=lambda repo, tag: {'id': tag}),
             patch.object(releases, 'upload_streaming', side_effect=self.upload),
+            patch.object(release_series, 'matching_tags', side_effect=self.github.matching_tags),
             patch.object(releases.time, 'sleep'),
             patch.object(web, 'fetch', side_effect=self.fetch),
         ):
@@ -37,6 +40,8 @@ class WebArchiveTests(unittest.TestCase):
                 'headers': {'content-type': 'text/html' if url.endswith('/') else 'application/javascript'}, 'body': body}
 
     def upload(self, repository, tag, name, path):
+        if len(self.github.releases[(repository, tag)]) >= 1000:
+            raise subprocess.CalledProcessError(1, 'upload', stderr='file_count limited to 1000 assets per release')
         body = path.read_bytes()
         self.github.releases[(repository, tag)][name] = {
             'size': len(body), 'digest': 'sha256:'+hashlib.sha256(body).hexdigest(),
@@ -44,7 +49,54 @@ class WebArchiveTests(unittest.TestCase):
         self.uploads.append(name)
         if self.lose_response and name.endswith('complete.tar.gz'):
             self.lose_response = False
+            self.github.inventory_failure = urllib.error.URLError('inventory unavailable after lost upload response')
             raise TimeoutError('response lost after publication')
+        return self.github.releases[(repository, tag)][name]
+
+    def test_full_release_continues_without_deleting_earlier_capture_assets(self):
+        tag = web.APPS['pro']['release_tag']
+        old = {f'20200101T000000Z--old-{i}.js': {'size': 1} for i in range(1000)}
+        self.github.releases[('fresh/archive', tag)] = dict(old)
+        result = self.run_archive()
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(self.github.releases[('fresh/archive', tag)], old)
+        captures = [*result['deployments'][0]['resources'], result['deployments'][0]['bundle']]
+        self.assertTrue(all(row['release_tag'] == tag+'-part-2' for row in captures))
+
+    def test_capture_crossing_remaining_capacity_records_each_actual_release(self):
+        tag = web.APPS['pro']['release_tag']
+        self.github.releases[('fresh/archive', tag)] = {f'old-{i}': {'size': 1} for i in range(999)}
+        result = self.run_archive()
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(len(self.github.releases[('fresh/archive', tag)]), 1000)
+        deployment = result['deployments'][0]
+        captures = [*deployment['resources'], deployment['bundle']]
+        self.assertEqual({row['release_tag'] for row in captures}, {tag, tag+'-part-2'})
+
+    def test_overflow_recovery_needs_neither_cached_bytes_nor_a_working_site(self):
+        tag = web.APPS['pro']['release_tag']
+        self.github.releases[('fresh/archive', tag)] = {f'old-{i}': {'size': 1} for i in range(1000)}
+        self.lose_response = True
+        self.assertEqual(self.run_archive()['status'], 'partial')
+        uploads = list(self.uploads)
+        with patch.object(web, 'capture', side_effect=OSError('site unavailable')):
+            result = web.archive_apps(('pro',), self.root/'empty-worker', self.receipt, 'fresh/archive',
+                                      capture_id='fixture', upload=True)
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(self.uploads, uploads)
+        self.assertTrue(all(row['release_tag'] == tag+'-part-2'
+            for row in [*result['deployments'][0]['resources'], result['deployments'][0]['bundle']]))
+
+    def test_overflow_preflight_rejects_a_late_collision_before_uploading_anything(self):
+        document, metadata = web.capture('pro', self.root/'worker', capture_id='fixture')
+        tag = web.APPS['pro']['release_tag']
+        self.github.releases[('fresh/archive', tag)] = {f'old-{i}': {'size': 1} for i in range(1000)}
+        self.github.releases[('fresh/archive', tag+'-part-2')] = {
+            document['bundle']['release_asset']: {'size': document['bundle']['bytes'],
+                'digest': 'sha256:'+'0'*64, 'browser_download_url': 'https://github.com/fixture/collision'}}
+        with self.assertRaisesRegex(RuntimeError, 'asset mismatch'):
+            web.upload_capture(document, metadata, 'fresh/archive')
+        self.assertEqual(self.uploads, [])
 
     def run_archive(self, apps=('pro',), **kwargs):
         return web.archive_apps(apps, self.root/'worker', self.receipt, 'fresh/archive',
@@ -205,7 +257,7 @@ class WebArchiveTests(unittest.TestCase):
         def fail_bundle(repository, tag, name, path):
             if name.endswith('complete.tar.gz'):
                 raise OSError('upload failed before storing bundle')
-            self.upload(repository, tag, name, path)
+            return self.upload(repository, tag, name, path)
         with patch.object(releases, 'upload_streaming', side_effect=fail_bundle):
             first = self.run_archive()
         self.assertEqual(first['pending_total'], 1)

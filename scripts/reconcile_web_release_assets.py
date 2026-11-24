@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import re
 import subprocess
 import tarfile
 import urllib.request
@@ -31,6 +32,7 @@ from pathlib import Path, PurePosixPath
 
 from sonos_firmware.web_archive import APPS, _register_deployments, receipt_capture
 from sonos_firmware.storage import atomic_json
+from sonos_firmware.release_series import matching_tags
 
 ROOT = Path(__file__).resolve().parents[1]
 USER_AGENT = "sonos-firmware-archive/1"
@@ -126,7 +128,8 @@ def recover_capture(document: dict, assets: dict[str, dict], *, app: str, tag: s
         if remote.get("size") != row.get("bytes") or (remote_digest and remote_digest != row.get("sha256")):
             raise ValueError(f"{capture_id}: resource {name} disagrees with release metadata")
         row.update(
-            status="verified", repository=repository, release_tag=tag, release_url=remote["browser_download_url"],
+            status="verified", repository=repository, release_tag=remote.get('_archive_release_tag', tag),
+            release_url=remote["browser_download_url"],
             receipt_recovered_from=run_url,
         )
         recovered += 1
@@ -137,7 +140,7 @@ def recover_capture(document: dict, assets: dict[str, dict], *, app: str, tag: s
         "release_asset": bundle_name,
         "bytes": observed["size"],
         "sha256": digest or embedded.get("sha256"),
-        "status": "verified", "repository": repository, "release_tag": tag,
+        "status": "verified", "repository": repository, "release_tag": observed.get('_archive_release_tag', tag),
         "release_url": observed["browser_download_url"], "receipt_recovered_from": run_url,
     }
     if not document["bundle"]["sha256"]:
@@ -172,8 +175,16 @@ def reconcile(state: dict, *, repository: str, run_url: str, app_names=None, dry
     for app in apps:
         tag = APPS[app]["release_tag"]
         try:
-            assets = {asset["name"]: asset for asset in release_assets(repository, tag)}
-        except subprocess.CalledProcessError as error:
+            tags = {tag, *(candidate for candidate in matching_tags(repository, tag)
+                          if re.fullmatch(re.escape(tag)+r'-part-(?:[2-9]|[1-9][0-9]+)', candidate))}
+            assets = {}
+            for partition in sorted(tags):
+                for asset in release_assets(repository, partition):
+                    prior = assets.get(asset['name'])
+                    if prior and (prior['size'], prior.get('digest')) != (asset['size'], asset.get('digest')):
+                        raise ValueError('conflicting asset identities across web release partitions: '+asset['name'])
+                    assets.setdefault(asset['name'], {**asset, '_archive_release_tag': partition})
+        except (subprocess.CalledProcessError, ValueError) as error:
             report["errors"].append({"app": app, "release_tag": tag, "error": str(error)})
             continue
         documents, older = [], []

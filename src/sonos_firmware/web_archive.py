@@ -20,7 +20,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .releases import ensure_release, publish_collection, publication_receipt
+from .releases import ensure_release
+from .release_series import ReleaseSeries
 from .storage import atomic_json, file_sha256
 from .retry import checkpoint, select
 from .source_links import discover_urls
@@ -314,12 +315,14 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
     }
     paths[document['bundle']['release_asset']] = Path(document['bundle']['file'])
     captures = [item for item in document["resources"] if item.get("release_asset")] + [document["bundle"]]
-    observed = publish_collection(repository, config["release_tag"],
-                                  [(paths[item["release_asset"]], item) for item in captures])
+    series = ReleaseSeries(repository, config['release_tag'], config['title'],
+                           'Account-free deployment snapshots and exact public capture bodies.')
+    proofs = series.publish_collection([(paths[item['release_asset']], item) for item in captures])
     for item in captures:
-        item.update(publication_receipt(repository, config["release_tag"], item["release_asset"],
-                                        item, observed[item["release_asset"]]))
+        item.update(proofs[item['release_asset']])
     metadata.write_text(json.dumps(document, indent=2) + "\n", encoding="utf-8")
+    if series.errors:
+        raise RuntimeError('web publication has unreconciled release inventories: '+str(series.errors))
 
 
 def update_receipt(path: Path, deployments: list[dict]) -> dict:
@@ -463,11 +466,13 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
                     if not path.resolve().is_relative_to(destination.resolve()):
                         raise ValueError('retained web capture escapes its worker directory')
                     return path
-                observed = publish_collection(repository, document['release_tag'],
-                    [(retained_path(item), item) for item in captures])
+                series = ReleaseSeries(repository, config['release_tag'], config['title'],
+                                       'Account-free web deployment capture recovery.')
+                proofs = series.publish_collection([(retained_path(item), item) for item in captures])
                 for item in captures:
-                    item.update(publication_receipt(repository, document['release_tag'], item['release_asset'],
-                                                     item, observed[item['release_asset']]))
+                    item.update(proofs[item['release_asset']])
+                if series.errors:
+                    raise RuntimeError('web publication has unreconciled release inventories: '+str(series.errors))
                 promote(document)
                 if capture_id == document['capture_id']:
                     resolved.add(document['app'])

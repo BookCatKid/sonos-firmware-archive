@@ -88,7 +88,27 @@ def release_assets(doc, *, omit=(), corrupt=(), bundle=None):
 
 
 class WebReceiptRecoveryTests(unittest.TestCase):
+    def test_capture_split_across_release_partitions_recovers_actual_locations(self):
+        overflow = TAG+'-part-2'
+        names = list(self.assets)
+        base_assets = [self.assets[names[0]]]
+        overflow_assets = [dict(self.assets[name], browser_download_url=
+            self.assets[name]['browser_download_url'].replace('/'+TAG+'/', '/'+overflow+'/')) for name in names[1:]]
+        with patch.object(reconcile, 'matching_tags', return_value=[TAG, overflow], create=True), \
+             patch.object(reconcile, 'release_assets', side_effect=lambda repo, tag:
+                 base_assets if tag == TAG else overflow_assets), self.reader:
+            state = {'schema_version': 1, 'deployments': []}
+            report = reconcile.reconcile(state, repository=REPO, run_url=RUN, app_names=['pro'])
+        self.assertEqual(report['errors'], [])
+        self.assertEqual(len(report['recovered']), 1)
+        recovered = state['deployments'][0]
+        self.assertEqual([r['release_tag'] for r in recovered['resources']], [TAG, overflow])
+        self.assertEqual(recovered['bundle']['release_tag'], overflow)
+
     def setUp(self):
+        tags = patch.object(reconcile, 'matching_tags', return_value=[TAG])
+        tags.start()
+        self.addCleanup(tags.stop)
         self.document = document()
         self.assets = release_assets(self.document, bundle=self.document['bundle'])
         self.error = patch.object(reconcile, 'release_assets', side_effect=lambda repo, tag: list(self.assets.values()))
