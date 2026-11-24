@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import importlib.util
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -73,10 +74,30 @@ def _source_incomplete(document):
                  document.get('errors') or document.get('probe_errors') or document.get('skipped')))
 
 
+def _superseded_workflow(root, environment):
+    revision = environment.get('GITHUB_WORKFLOW_SHA', '')
+    if (environment.get('GITHUB_EVENT_NAME') not in {'push', 'schedule'} or
+            not environment.get('GITHUB_WORKFLOW_REF', '').endswith('/.github/workflows/archive.yml@refs/heads/main') or
+            not re.fullmatch(r'(?:[0-9a-f]{40}|[0-9a-f]{64})', revision)):
+        return False
+    path = '.github/workflows/archive.yml'
+    try:
+        blobs = subprocess.check_output(['git', 'rev-parse', revision+':'+path, 'HEAD:'+path],
+            cwd=root, text=True, stderr=subprocess.DEVNULL, timeout=10).splitlines()
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return len(blobs) == 2 and blobs[0] != blobs[1]
+
+
 def run(target, root, repository, *, environment=None, options=None, provider_map=None, execute=None):
     environment = dict(os.environ if environment is None else environment)
     if environment.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('artifact acquisition runs in CI; use --plan for local target development')
+    if _superseded_workflow(root, environment):
+        # The current main push schedules every automatic target. A queued old
+        # definition must not occupy its lock or overwrite newer target state.
+        return {'schema_version': 1, 'target': target.name, 'provider': target.provider,
+                'status': 'skipped', 'executed': False, 'reason': 'workflow definition superseded'}
     options = {**target.options, **(options or {})}
     started = datetime.now(timezone.utc)
     report = {'schema_version': 1, 'target': target.name, 'provider': target.provider,

@@ -1,5 +1,6 @@
 import json
 import tempfile
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -9,6 +10,58 @@ from sonos_firmware.platform.runner import run, plan
 
 
 class RunnerTests(unittest.TestCase):
+    def workflow_repo(self, root):
+        path = root/'.github/workflows/archive.yml'
+        path.parent.mkdir(parents=True)
+        path.write_text('name: old\n')
+        subprocess.run(['git', 'init', '-q', str(root)], check=True, capture_output=True)
+        self.commit_fixture(root)
+        return path, subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+
+    def commit_fixture(self, root):
+        subprocess.run(['git', 'add', '.'], cwd=root, check=True, capture_output=True)
+        subprocess.run(['git', '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
+                        'commit', '-qm', 'fixture'], cwd=root, check=True, capture_output=True)
+
+    def workflow_environment(self, revision, event='push'):
+        return {'GITHUB_ACTIONS': 'true', 'GITHUB_EVENT_NAME': event, 'GITHUB_WORKFLOW_SHA': revision,
+                'GITHUB_WORKFLOW_REF': 'owner/repo/.github/workflows/archive.yml@refs/heads/main'}
+
+    def test_superseded_automatic_workflow_skips_without_overwriting_target_progress(self):
+        from unittest.mock import Mock
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path, old = self.workflow_repo(root)
+            path.write_text('name: corrected\n')
+            self.commit_fixture(root)
+            state = root/'data/platform/targets/new-source.json'
+            state.parent.mkdir(parents=True)
+            state.write_text('{"status":"partial","pending":["retained"]}')
+            before = state.read_bytes()
+            provider = Mock(side_effect=AssertionError('obsolete workflow must not acquire'))
+            report = run(self.target(), root, 'owner/repo', environment=self.workflow_environment(old),
+                         provider_map={'fixture': provider})
+            self.assertEqual(report['status'], 'skipped')
+            self.assertFalse(report['executed'])
+            self.assertEqual(report['reason'], 'workflow definition superseded')
+            self.assertEqual(state.read_bytes(), before)
+            provider.assert_not_called()
+
+    def test_unchanged_workflow_runs_after_metadata_changes_and_explicit_dispatch_is_preserved(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path, old = self.workflow_repo(root)
+            (root/'observations.json').write_text('{}')
+            self.commit_fixture(root)
+            report = run(self.target(), root, 'owner/repo', environment=self.workflow_environment(old),
+                         provider_map={'fixture': lambda c: []})
+            self.assertEqual(report['status'], 'ok')
+            path.write_text('name: corrected\n')
+            self.commit_fixture(root)
+            report = run(self.target(), root, 'owner/repo', environment=self.workflow_environment(old, 'workflow_dispatch'),
+                         provider_map={'fixture': lambda c: []})
+            self.assertEqual(report['status'], 'ok')
+
     def target(self, **extra):
         return Target.from_dict({'name': 'new-source', 'provider': 'fixture', 'description': 'Fixture source',
                                  'interval_hours': 6, 'metadata': ['data/new-source'], **extra})

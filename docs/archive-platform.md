@@ -31,6 +31,11 @@ Source, tooling and target-configuration changes on `main` also start the normal
 workflow automatically. These runs select every automatic target regardless of
 its prior cadence, so a newly added target or changed worker is exercised at
 once. Explicit maintenance targets remain available through manual selection.
+Queued automatic jobs compare their workflow definition with the checked-out
+definition. Superseded definitions skip acquisition and leave canonical target
+progress untouched; the current main update schedules replacement work. Metadata
+commits with an unchanged workflow do not trigger this skip, and explicit manual
+dispatches remain available.
 Backlogs do not require manual dispatches, locally prepared payloads, receipt
 imports, or completion before deployment. The normal `gpl-audit` worker processes
 successive batches within its `seconds` budget (900 by default); `limit` controls
