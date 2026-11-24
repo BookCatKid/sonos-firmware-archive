@@ -170,16 +170,20 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
         raise ValueError('archive index requires roots and literal filename extensions')
     hosts = list(roots)
     suffixes = '(?i:'+'|'.join(re.escape(ext) for ext in extensions)+')'
-    query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes, match_type]).encode()).hexdigest()
+    # Adjacent digest collapsing can erase a different URL with identical
+    # bytes. Keep all index observations; immutable publication identities
+    # handle body reuse after origins and timestamp evidence are retained.
+    query_policy = 'all-origins-and-captures'
+    query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes, match_type, query_policy]).encode()).hexdigest()
     compatible = previous.get('schema_version') == 2 and previous.get('query_revision') == query_revision
-    query_specs = {host: hashlib.sha256(json.dumps([root, suffixes, match_type]).encode()).hexdigest()
+    query_specs = {host: hashlib.sha256(json.dumps([root, suffixes, match_type, query_policy]).encode()).hexdigest()
                    for host, root in roots.items()}
     legacy_hosts = (set(previous.get('cursors', {})) | set(previous.get('completed_hosts', [])) |
                     set(previous.get('pending_hosts', [])))
     legacy_roots = previous.get('query_roots') or {
         host: root for host, root in roots.items() if host in legacy_hosts}
     legacy_compatible = previous.get('schema_version') == 2 and previous.get('query_revision') == hashlib.sha256(
-        json.dumps([list(legacy_roots.items()), suffixes, match_type]).encode()).hexdigest()
+        json.dumps([list(legacy_roots.items()), suffixes, match_type, query_policy]).encode()).hexdigest()
     unchanged = {host for host in roots if compatible or
                  (legacy_compatible and legacy_roots.get(host) == roots[host]) or
                  previous.get('query_specs', {}).get(host) == query_specs[host]}
@@ -189,13 +193,16 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
     entries = _observations(previous.get('entries', {}))
     artifacts = _observations(previous.get('artifacts', {}))
     completed = set(previous.get('completed_hosts', [])) & unchanged
-    retries = {host: value for host, value in previous.get('retries', {}).items() if host in unchanged}
+    # Reset continuation tokens after filter changes, but a retry deadline for
+    # the same literal source query remains binding across those changes.
+    retry_compatible = unchanged | {host for host, root in roots.items() if legacy_roots.get(host) == root}
+    retries = {host: value for host, value in previous.get('retries', {}).items() if host in retry_compatible}
     # Provider throttles apply even when the set of source queries changes.
     index_retry = previous.get('index_retry', {})
     for error in previous.get('errors', []):
         root = parse_qs(urlsplit(error.get('url', '')).query).get('url', [None])[0]
         for host, value in roots.items():
-            if host in unchanged and root == value and error.get('next_attempt_at'):
+            if host in retry_compatible and root == value and error.get('next_attempt_at'):
                 retries.setdefault(host, error)
         if error.get('http_status') in {403, 429} and error.get('next_attempt_at') and not index_retry:
             index_retry = error
@@ -218,7 +225,7 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
         query = {'url': roots[host], 'matchType': match_type, 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
                  'filter': ['statuscode:200', 'original:.*[.]'+suffixes+'([?].*)?$'],
-                 'collapse': 'digest', 'limit': 500, 'showResumeKey': 'true'}
+                 'limit': 500, 'showResumeKey': 'true'}
         if cursors.get(host):
             query['resumeKey'] = unquote_plus(cursors[host])
         url = 'https://web.archive.org/cdx/search/cdx?' + urlencode(query, doseq=True)
@@ -232,16 +239,19 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                 rows = rows[:-2]
             if rows and rows[0] != ['timestamp', 'original', 'digest']:
                 raise ValueError('unexpected archive index fields')
+            invalid = 0
             for row in rows[1:]:
                 try:
                     observed = _capture(row, url, allowed)
-                except (ValueError, TypeError) as error:
-                    errors.append({'url': url, 'error': str(error)})
+                except (ValueError, TypeError):
+                    invalid += 1
                     continue
                 if observed is None:
                     continue
                 original, capture = observed
                 _remember(entries, artifacts, original, capture, extensions)
+            if invalid:
+                raise ValueError(f'archive index page contains {invalid} malformed capture records; page retained for retry')
             cursors[host] = resume
             retries.pop(host, None)
             index_retry = {}
@@ -256,6 +266,8 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
             completed.discard(host)
             retries[host] = {'url': url, 'error': str(error), 'http_status': getattr(error, 'code', None),
                              **error_checkpoint(error, retries.get(host))}
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
             if getattr(error, 'code', None) in (403, 429):
                 index_retry = retries[host]
                 break

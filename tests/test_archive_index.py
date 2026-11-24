@@ -46,6 +46,15 @@ class ArchiveIndexTransportTests(unittest.TestCase):
         fetch.assert_not_called()
         self.assertEqual(second['index_retry'], first['index_retry'])
 
+    def test_changed_filters_preserve_same_source_retry_deadline(self):
+        with patch.object(retry, '_now', return_value=NOW):
+            first = discover_sources({}, pages=1, fetch=Mock(side_effect=urllib.error.HTTPError(
+                'https://web.archive.org/cdx', 503, 'later', {'Retry-After': '7200'}, None)))
+            fetch = Mock(return_value=[])
+            second = discover_sources(first, pages=1, extensions=('upm', 'upd', 'bin'), fetch=fetch)
+        fetch.assert_not_called()
+        self.assertEqual(second['retries'], first['retries'])
+
     def test_certificate_failure_uses_verified_browser_transport(self):
         failure = urllib.error.URLError(ssl.SSLCertVerificationError('fixture certificate chain'))
         response = Mock(status_code=200, headers={})
@@ -77,6 +86,55 @@ class ArchiveIndexTransportTests(unittest.TestCase):
 
 
 class ArchiveIndexTests(unittest.TestCase):
+    def test_identical_bodies_at_different_origins_and_changed_static_contents_survive_index_query(self):
+        from urllib.parse import parse_qs
+        first = 'https://update.sonos.com/firmware/a/update.upm'
+        second = 'https://update.sonos.com/firmware/b/update.upm'
+        third = 'https://update.sonos.com/firmware/c/update.upm'
+        captures = [
+            ['20200101000000', first, 'same-body'],
+            ['20210101000000', second, 'same-body'],
+            ['20220101000000', second, 'changed-body'],
+            ['20220101000000', third, 'changed-body']]
+        def index(url):
+            # Model CDX's adjacent-field collapsing: the second origin is
+            # lost when only the digest participates in the server filter.
+            query = parse_qs(urlsplit(url).query)
+            rows = []
+            for row in captures:
+                if query.get('collapse') == ['digest'] and rows and rows[-1][2] == row[2]:
+                    continue
+                rows.append(row)
+            return [['timestamp', 'original', 'digest'], *rows]
+        result = discover_sources({}, fetch=index, pages=1)
+        self.assertEqual(set(result['entries']), {first, second, third})
+        self.assertEqual(len(result['entries'][second]['captures']), 2)
+
+    def test_collapsed_legacy_cursor_resets_but_observations_and_retry_deadline_survive(self):
+        import hashlib
+        import json
+        roots = {'sonos.com': 'sonos.com/'}
+        suffixes = '(?i:upm|upd)'
+        old = hashlib.sha256(json.dumps([list(roots.items()), suffixes, 'domain']).encode()).hexdigest()
+        old_spec = hashlib.sha256(json.dumps(['sonos.com/', suffixes, 'domain']).encode()).hexdigest()
+        first = 'https://update.sonos.com/firmware/old/update.upm'
+        with patch.object(retry, '_now', return_value=NOW):
+            first_state = discover_sources({}, fetch=lambda url: [
+                ['timestamp', 'original', 'digest'], ['20200101000000', first, 'same'], [], ['legacy-resume']])
+            first_state.update(query_revision=old, query_specs={'sonos.com': old_spec})
+            failure = urllib.error.HTTPError('https://web.archive.org/cdx', 429, 'later',
+                                            {'Retry-After': '7200'}, None)
+            first_state['index_retry'] = retry.error_checkpoint(failure)
+            fetch = Mock(return_value=[])
+            paused = discover_sources(first_state, fetch=fetch)
+            fetch.assert_not_called()
+            self.assertEqual(paused['index_retry'], first_state['index_retry'])
+            self.assertIn(first, paused['entries'])
+        with patch.object(retry, '_now', return_value=NOW+timedelta(hours=3)):
+            resumed = discover_sources(paused, fetch=fetch)
+        self.assertNotIn('resumeKey=', fetch.call_args.args[0])
+        self.assertIn(first, resumed['entries'])
+
     def test_rate_limit_preserves_cursor_and_honors_retry_after_across_runs(self):
         with patch.object(retry, '_now', return_value=NOW):
             first = discover_sources({}, pages=1, fetch=lambda url: [
@@ -155,7 +213,7 @@ class ArchiveIndexTests(unittest.TestCase):
         self.assertEqual(len(static['captures']), 2)
         self.assertEqual({row['original_url'] for row in static['captures'].values()},
                          {'http://update.sonos.com/releases/static.upd'})
-        self.assertIn('collapse=digest', result['observations'][0]['url'])
+        self.assertNotIn('collapse=digest', result['observations'][0]['url'])
         self.assertNotIn('collapse=urlkey', result['observations'][0]['url'])
         repeated = discover_sources(result, fetch=lambda url: rows, pages=1)
         self.assertEqual(len(repeated['artifacts']['https://update.sonos.com/releases/static.upd']['captures']), 2)
@@ -193,6 +251,34 @@ class ArchiveIndexTests(unittest.TestCase):
             ['20200101000000', 'https://update.sonos.com/firmware/latest.upd', 'valid']])
         self.assertIn('https://update.sonos.com/firmware/latest.upd', result['artifacts'])
         self.assertEqual(len(result['errors']), 1)
+
+    def test_malformed_page_retains_its_cursor_until_fixed_without_losing_valid_rows(self):
+        source = 'https://update.sonos.com/firmware/history/update.upm'
+        with patch.object(retry, '_now', return_value=NOW):
+            first = discover_sources({}, pages=1, fetch=lambda url: [
+                ['timestamp', 'original', 'digest'], [], ['first-page']])
+            failed = discover_sources(first, pages=1, fetch=lambda url: [
+                ['timestamp', 'original', 'digest'], ['malformed'],
+                ['20200101000000', source, 'body'], [], ['second-page']])
+        self.assertEqual(failed['cursors'], first['cursors'])
+        self.assertIn(source, failed['entries'])
+        self.assertTrue(failed['pending_hosts'])
+        fetch = Mock(return_value=[])
+        with patch.object(retry, '_now', return_value=NOW+timedelta(hours=2)):
+            resumed = discover_sources(failed, fetch=fetch, pages=1)
+        self.assertIn('resumeKey=first-page', fetch.call_args.args[0])
+        self.assertEqual(resumed['status'], 'ok')
+
+    def test_index_http_error_response_is_closed_after_retry_timing_is_saved(self):
+        import io
+        body = io.BytesIO(b'fixture response')
+        error = urllib.error.HTTPError('https://web.archive.org/cdx', 503, 'later',
+                                       {'Retry-After': '7200'}, body)
+        with patch.object(retry, '_now', return_value=NOW):
+            result = discover_sources({}, pages=1, fetch=Mock(side_effect=error))
+        self.assertTrue(body.closed)
+        self.assertEqual(result['retries']['sonos.com']['next_attempt_at'],
+                         (NOW+timedelta(hours=2)).isoformat())
     def test_discovers_only_official_manifest_paths_and_keeps_resume_keys(self):
         seen = []
         def fetch(url):

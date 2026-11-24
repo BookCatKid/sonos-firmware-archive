@@ -62,6 +62,15 @@ partial. Recovery uses durable retry rotation and server cooldowns; its batch
 size and document-byte budget are target options. Local verification never
 downloads these captures or imports recovery receipts.
 
+Wayback index requests retain every returned origin and capture instead of
+collapsing adjacent records by body digest. Identical manifests at different
+URLs can resolve relative links differently, so content equality alone cannot
+remove a discovery lead. The query-policy upgrade restarts old collapsed
+continuations while retaining captured observations and retry deadlines.
+Malformed pages keep valid observations but retain their previous cursor for
+retry, matching Common Crawl's page handling. Request and page budgets still
+apply per run; they do not truncate the durable traversal.
+
 Desktop package history walks WinGet commit pages and both changed and parent
 snapshots. Removed manifests and pre-alphabetical vendor layouts therefore
 remain discoverable. Page cursors and unattempted Git objects persist in
