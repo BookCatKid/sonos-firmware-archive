@@ -438,6 +438,7 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
     )
     release = public_release(repository, config["release_tag"])
     observed = remote_assets(repository, config["release_tag"])
+    missing = []
     for name, path in paths.items():
         size, digest = expected[name]
         remote = observed.get(name)
@@ -446,7 +447,20 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
             continue
         if remote is not None:
             raise RuntimeError(f"refusing to overwrite mismatched GitHub asset: {name}")
-        upload_asset(repository, release["id"], name, path)
+        missing.append(name)
+    # GitHub caps a release at 1000 assets; the pro app hit it on 2026-11-24
+    # and every upload started failing with HTTP 422. The complete.tar.gz
+    # bundle preserves each capture's bodies, so when new uploads would pass
+    # the cap, prune the redundant loose bodies from older captures first.
+    # Bundles and the current capture's bodies are never pruned.
+    if len(observed) + len(missing) > 1000:
+        for name, remote in observed.items():
+            if name in expected or not LOOSE_ASSET_RE.match(name):
+                continue
+            delete_asset(repository, remote["id"])
+            time.sleep(1.1)
+    for name in missing:
+        upload_asset(repository, release["id"], name, paths[name])
         # GitHub's secondary limit permits about 80 content creations/minute.
         time.sleep(1.1)
     failures = []
@@ -465,17 +479,6 @@ def upload_capture(document: dict, metadata: Path, repository: str) -> None:
         raise RuntimeError(
             f"GitHub asset verification failed: {config['release_tag']}/{failures[0]}"
         )
-    # GitHub caps a release at 1000 assets; the pro app hit it on 2026-11-24
-    # and every upload started failing with HTTP 422. The complete.tar.gz
-    # bundle preserves each capture's bodies, so prune the redundant loose
-    # bodies from older captures once the new capture is verified. Bundles
-    # and the current capture's bodies are never pruned.
-    observed = remote_assets(repository, config["release_tag"])
-    for name, remote in observed.items():
-        if name in expected or not LOOSE_ASSET_RE.match(name):
-            continue
-        delete_asset(repository, remote["id"])
-        time.sleep(1.1)
     base = f"https://github.com/{repository}/releases/download/{config['release_tag']}"
     for item in document["resources"]:
         if item.get("release_asset"):
