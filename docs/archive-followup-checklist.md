@@ -18,26 +18,26 @@ independent web-archive indexes.
 | --- | --- | --- |
 | 1 | CI publishes the mutable ConnectX source and verifies its catalog asset. | Isolated CI published 86.4-73207; Release metadata matches the catalog's size and SHA-256. Production validation remains item 21. |
 | 2 | Published Anacapa, other extractable components and an architecture/version/provenance inventory, without fixed offsets. | CI published all 11 raw ConnectX components plus a complete inventory and extraction bundle. The inventory records 373 filesystem/member entries and identifies Anacapa as ELF32, big-endian PowerPC. Published inventory/bundle sizes and digests match their receipts; production validation remains item 21. |
-| 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the source with no Wayback or Common Crawl capture. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
+| 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the recorded source URLs. Recorded index queries have not recovered them; traversal across the remaining collections is incomplete. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | The committed desktop archive holds **101 installers** (52 Windows, 49 macOS) across **72 non-classic versions**, every one with SHA-256, a release asset and per-artifact Wayback CDX provenance, all fetched from Sonos hosts. A cold protocol traversal found 41 installer URLs including all 37 reference URLs, and independently surfaced a Windows `.exe` and macOS `.dmg` for 90.0-75190. See [desktop installer coverage](#desktop-installer-coverage-item-4). |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
-| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published and stream-verified. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. Live runs then published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published. At the `7817b02` baseline, the strict published-stream auditor still queues 1,083 source receipts; publication alone does not establish full compressed-stream verification. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). A new coverage audit found the one remaining link: a valid xz stream containing zero members, correctly rejected as `empty-tar`. Separate isolated-archive runs published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
-| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Blocked externally.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
+| 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Not demonstrated.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | A live `android-history` sweep archived 66 of 67 attempts with 0 discovery errors, adding 13 distinct versions in one batch; 76 selectors stay queued and 35 SDK levels are indexed. The archive now spans **38 distinct version codes** (13 S2, 25 S1). Rotating `winudf` tickets are separated from asset identity. See [Android store coverage](#android-store-coverage-items-9-and-10) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 10 | All advertised Android delivery components are preserved, with signatures, version checks and upload recovery. | **All 260 APK components across the store deliveries are signature-verified**, each with signer SHA-256 and subject; 41 additional non-APK components (icons, manifests, one URL shortcut) are hash-verified but carry no APK signature to check. 20 deliveries carry multiple components, and two distinct Sonos signers are recorded. See [Android store coverage](#android-store-coverage-items-9-and-10). |
 | 11 | Current and historical official mobile captures, including reused URLs, are independently discovered and preserved. | **40 official installers across 40 distinct versions** (26 S2, 11 legacy, 3 S1), 32 recovered through Wayback CDX and all 40 carrying a release asset. A live mobile run then preserved two more S2 builds (`85.00.12`, `91.01.11`) with `signature-checked=2` in CI, and recorded its remaining 404 gaps with their reason. See [official mobile coverage](#official-mobile-coverage-item-11) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design, and now reported honestly. Every pro deployment captures all discovered resources (79–82/82, or 77/77 live); the controller captures its public surface and classifies the rest as gated. A live run finished `ok` with `errors: 0` because gated resources are terminal, while `complete: false` and `identity_complete: false` record that the controller deployment itself was never captured. See [public web capture](#public-web-capture-item-12) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified, including a live run that detected the S1 change from 11.16.1 to 11.16.2 and recorded both bundle identifiers and reported sizes. No IPA acquisition capability exists or is claimed; the scope and prerequisites are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
-| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so the limitation is key material rather than decoders; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so available-component analysis identifies missing key material as the immediate obstacle; formats inside encrypted sections remain unverified; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded, 17 extras all proven duplicates, **0 unexplained**. On a second archive the same classifier isolated 3 unexplained, then 1 after a concurrent run committed — two were assets uploaded seconds before the audit read the release, and the survivor is a genuine page orphan that stays listed. See [archive reconciliation](#archive-reconciliation-item-17) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Each named failure mode has a regression: interrupted uploads keep staged records out of the catalog, lost responses reconcile without overwriting, conflicting names get distinct identities, and changed content is re-verified by body hash when a digest is absent. 34 Android deliveries carry multi-component splits plus a complete wrapper, so partial deliveries stay pending rather than completing. See [publication recovery](#publication-recovery-item-18). |
 | 19 | Every target supports cold startup and migration, missing caches/tools, concurrent updates and worker restarts. | All 13 configured targets are exercised from an empty checkout, an established archive and a migrated one, including missing required vs optional capabilities, corrupt-metadata isolation and restart cadence. See [cold startup and migration](#cold-startup-and-migration-item-19). |
-| 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | Providers and targets are in exact 1:1 correspondence across all 13 targets; 48 scripts are each wired or documented; no documentation names a missing path or retired workflow. Enforced by `scripts/audit_repository_consistency.py` in `verify.yml`. See [repository consistency](#repository-consistency-item-20). |
+| 20 | Obsolete entrypoints, duplicated logic and stale docs are reconciled; target registration requires no payloads or hashes. | Providers and targets are in exact 1:1 correspondence across all 13 targets; 49 scripts are each wired or documented; no documentation names a missing path or retired workflow. Enforced by `scripts/audit_repository_consistency.py` in `verify.yml`. See [repository consistency](#repository-consistency-item-20). |
 | 21 | After merge approval, the unified workflow runs successfully against the existing production archive. | **Blocked on merge approval.** The workflow has not been dispatched against the production archive. Every item above is evidenced in the isolated archive or from committed data; this is the only item that requires the production deployment. |
-| 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Checked against evidence and linked from PR #26 with a per-issue section. Issues #23, #24 and #25 remain open with no comments added and no closure. |
+| 22 | Requirements in the three reported issues and automated reports are checked against published evidence. | Linked from PR #26 with per-issue evidence. Complete historical installer comparison and remaining GPL verification are still outstanding. Issues #23, #24 and #25 remain open with no comments added and no closure. |
 
 Live validation of mutable-root acquisition:
 [run 44198556575](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44198556575).
@@ -476,9 +476,10 @@ seven are withdrawn at the source, verified live:
 update.sonos.com/firmware/Gold/Kanye-v2.8/10.20-75300-1-17.upd -> 404 (1264 bytes)
 ```
 
-The independent web-archive routes were checked and do not have them either.
-Wayback's CDX index returns an empty result for the versioned 404 paths *and*
-for the mutable URL itself:
+Recorded independent web-archive queries returned no rows for the paths shown
+below. These query results do not establish absence from every archive or
+collection. The recorded Wayback CDX examples cover one versioned path and the
+mutable URL:
 
 ```
 $ curl 'https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/firmware/Prod/96.1-79270-v18.7-4b07MiHfnw-RC-2/96.1-79270-1-17.upd&output=json&fl=timestamp,statuscode,digest,length'
@@ -488,17 +489,17 @@ $ curl 'https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com/fir
 []
 ```
 
-Common Crawl likewise has no captures under that path:
+One Common Crawl collection returned no captures under that prefix:
 
 ```
 $ curl 'https://index.commoncrawl.org/CC-MAIN-2025-38-index?url=update-firmware.sonos.com/firmware/Prod/*&output=json&limit=5'
 {"message": "No Captures found for: update-firmware.sonos.com/firmware/Prod/"}
 ```
 
-So these 7 cannot be recovered by a historical-index route today; they are
-recorded as `missing-cdn` with their source URL rather than being counted as
-covered. That is the honest state of live coverage, and the audit re-reports it
-each firmware run.
+These results have not recovered the seven versions. They do not rule out
+other collections, aliases or independently discovered paths. The versions
+remain `missing-cdn` at their recorded source URLs, and index traversal remains
+open work. The audit re-reports the missing preservation receipts each run.
 
 **Distinct contents behind a reused URL is proven, not asserted.**
 `tests/test_firmware_archive.py::test_static_endpoint_versions_come_from_bytes_and_request_revision_remains_unpinned`
@@ -533,7 +534,7 @@ Five invariants, all currently satisfied:
 2. **Every target is reachable.** Each of the 13 plans from a checkout with no
    archive state and produces at least one step. This is the same guarantee item
    19 exercises in depth.
-3. **No orphan scripts.** All 48 scripts under `scripts/` are wired into a
+3. **No orphan scripts.** All 49 scripts under `scripts/` are wired into a
    provider, a workflow or another module, or documented as a manual tool. The
    one genuine orphan found, `import_manifest.py`, is now documented in
    [maintenance tools](maintenance-tools.md) along with the other manual
@@ -773,7 +774,7 @@ sources: derived-cross-platform (18)
          wayback-cdx:<timestamp>:<digest>:<length> (per-artifact)
 ```
 
-The comparison required by the item is recorded in the
+A comparison of the currently linked protocol graph is recorded in the
 [first-party traversal comparison](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44229422877):
 both traversals found 29 manifest URLs, and this implementation found 41
 installer URLs including all 37 reference installer URLs. Method parity for the
@@ -790,9 +791,9 @@ version `90.0-75190`:
 90.0-75190-1-4.dmg   63,194,611 bytes   (model 4, macOS)
 ```
 
-What this does **not** establish: complete recovery of campaigns that are no
-longer linked from any current protocol root. The comparison covers the graph
-those roots reach today.
+The installer-by-installer comparison against every historical installer
+reported in #25 is still incomplete. Current-graph parity does not establish
+recovery of campaigns no longer linked from current protocol roots.
 
 ## Historical index routes (item 7)
 
@@ -822,8 +823,9 @@ it neither duplicates nor extends the direct index route. That is a recorded
 negative result, not an untried idea.
 
 **Wayback and Common Crawl.** Both were queried for the ConnectX sources. Wayback
-CDX returns an empty result for the versioned 404 paths and for the mutable URL
-itself; Common Crawl reports no captures under that prefix. The results are
+recorded CDX examples return no rows for a versioned path and the mutable URL;
+one Common Crawl collection returns no captures under the tested prefix.
+Traversal of the remaining collections is incomplete. The results are
 recorded in `data/discovery/connectx-history-candidates.json` and summarised in
 [ConnectX historical discovery](#connectx-historical-discovery-item-3).
 
@@ -1062,7 +1064,8 @@ packages with ready recipients: 45
 inventories published: 187   complete 94   incomplete 93
 ```
 
-So the limitation is key material, not decoders: 93 inventories remain
+Missing keys are the observed obstacle in available-component analysis; the
+formats inside encrypted sections cannot yet be assessed. In that run, 93 inventories remain
 incomplete, and the extraction report names the specific recipient groups and
 section indices it skipped with `"reason": "no matching model key"`, for example
 `0cfddc3f6ac5c485ccc435885c42c52a9338e28b` in `57.5-87010-1-5` sections 3–5 and
