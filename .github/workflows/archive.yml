@@ -1,6 +1,16 @@
 name: discover and archive
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/archive.yml'
+      - 'config/**'
+      - 'data/key-material/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'tools/**'
+      - 'pyproject.toml'
   schedule:
     - cron: '13 * * * *'
   workflow_dispatch:
@@ -35,7 +45,11 @@ jobs:
         run: |
           set -euo pipefail
           args=(--matrix --select "$REQUESTED_TARGET")
-          if [[ "$EVENT" == schedule || "$REQUESTED_TARGET" == all ]]; then args+=(--due); fi
+          if [[ "$EVENT" == push ]]; then
+            args+=(--scheduled)
+          elif [[ "$EVENT" == schedule || "$REQUESTED_TARGET" == all ]]; then
+            args+=(--due)
+          fi
           matrix=$(sonos-archive targets "${args[@]}")
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 

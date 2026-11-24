@@ -141,6 +141,25 @@ class RunnerTests(unittest.TestCase):
                 self.target(metadata=[path])
 
 class TargetRegistrationTests(unittest.TestCase):
+    def test_source_updates_select_automatic_targets_even_before_their_next_due_time(self):
+        import contextlib
+        import io
+        from sonos_firmware.platform.cli import main
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            automatic = {'name': 'source', 'provider': 'fixture', 'description': 'Automatic',
+                         'interval_hours': 24, 'metadata': ['data/source']}
+            manual = {**automatic, 'name': 'maintenance', 'manual': True}
+            (root/'config').mkdir()
+            (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [automatic, manual]}))
+            state = root/'data/platform/targets'
+            state.mkdir(parents=True)
+            (state/'source.json').write_text(json.dumps({'next_due': '2999-01-01T00:00:00+00:00'}))
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(main(['--root', str(root), 'targets', '--matrix', '--scheduled']), 0)
+            self.assertEqual([row['target'] for row in json.loads(output.getvalue())['include']], ['source'])
+
     def test_scheduled_cli_retains_explicit_target_options(self):
         import contextlib
         import io

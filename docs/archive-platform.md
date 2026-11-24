@@ -27,6 +27,10 @@ parsing and validation remain in their adapters; scheduling, temporary storage,
 reporting, and metadata commits use the shared runner.
 The hourly workflow selects due targets from persisted state. Incomplete runs
 become due again within an hour; successful runs use their configured cadence.
+Source, tooling and target-configuration changes on `main` also start the normal
+workflow automatically. These runs select every automatic target regardless of
+its prior cadence, so a newly added target or changed worker is exercised at
+once. Explicit maintenance targets remain available through manual selection.
 Backlogs do not require manual dispatches, locally prepared payloads, receipt
 imports, or completion before deployment. The normal `gpl-audit` worker processes
 successive batches within its `seconds` budget (900 by default); `limit` controls

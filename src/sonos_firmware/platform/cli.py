@@ -16,6 +16,7 @@ def main(argv=None):
     listing.add_argument('--json', action='store_true')
     listing.add_argument('--matrix', action='store_true')
     listing.add_argument('--due', action='store_true')
+    listing.add_argument('--scheduled', action='store_true', help='select automatic targets regardless of cadence')
     listing.add_argument('--select', default='all')
     execution = sub.add_parser('run', help='plan locally or execute an archive target in CI')
     execution.add_argument('target')
@@ -33,6 +34,7 @@ def main(argv=None):
         registry = targets(root)
         if args.command == 'targets':
             selected = list(registry.values()) if args.select == 'all' else [registry[args.select]]
+            selected = [t for t in selected if not args.scheduled or not t.manual]
             selected = [t for t in selected if not args.due or is_due(root, t)]
             if args.matrix:
                 print(json.dumps({'include': [{'target': t.name, 'provider': t.provider, 'lock': t.lock or t.name,

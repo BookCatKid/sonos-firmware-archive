@@ -26,6 +26,17 @@ class PlatformWorkflowTests(unittest.TestCase):
         self.assertEqual(registry['android-history'].lock, registry['google-play'].lock)
         self.assertEqual(set(p.name for p in (ROOT / '.github/workflows').glob('*.yml')), {'archive.yml', 'verify.yml'})
 
+    def test_main_source_changes_automatically_start_the_normal_pipeline(self):
+        events = self.workflow.get('on', self.workflow.get(True))
+        self.assertEqual(events['push']['branches'], ['main'])
+        for path in ('config/**', 'data/key-material/**', 'src/**', 'scripts/**', 'tools/**', 'pyproject.toml'):
+            self.assertIn(path, events['push']['paths'])
+        self.assertNotIn('data/**', events['push']['paths'])
+        self.assertNotIn('pull_request', events)
+        selection = next(step for step in self.workflow['jobs']['select']['steps'] if step.get('id') == 'targets')
+        self.assertIn('args+=(--scheduled)', selection['run'])
+        self.assertIn('args+=(--due)', selection['run'])
+
     def test_worker_failure_still_checkpoints_verified_progress_and_reports_failure(self):
         self.assertTrue(self.steps['run']['continue-on-error'])
         self.assertIn('always()', self.steps['commit']['if'])
