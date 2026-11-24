@@ -436,14 +436,16 @@ whole source, so a new version cannot bypass them. No downloaded files or
 precomputed hashes are required to add or plan a target.
 
 `google-play` runs on the normal schedule using the pinned goopdl Python extra
-and Aurora's anonymous token dispenser. Personal accounts and repository Google
-credentials are unnecessary. Its complete upstream device profile inventory
-is retained when authentication changes transports: a dispenser-specific HTTP
-403 earns one CI-only retry using the shared TLS client, the same POST device
-properties and Aurora's application headers. A successful anonymous session is
-stored in goopdl's private, profile-scoped cache. Play API refusals and 429s do
-not trigger this fallback; server retry timing remains authoritative. This
-transport path requires live delivery validation before claiming Play coverage.
+and Aurora's anonymous token dispenser. A dispenser failure, including HTTP 403, falls back
+to direct anonymous checkin, `getItems` and delivery at Google's API, following
+[Aurora GPlayApi's device-only protocol](https://gitlab.com/AuroraOSS/gplayapi/-/blob/2f03e8babee8adf791d4f3a3b17c268a704be76c/README.md).
+The selected device profile is preserved; session identifiers stay in a private
+worker cache. Personal credentials, bearer tokens and a dispenser are unnecessary
+for that fallback. goopdl still verifies download hashes, and the common APK
+inspector still checks Sonos signatures and package/version identities. Receipts
+identify the actual delivery protocol and downloader. Play API refusals and 429s
+do not initiate another authentication path; server retry timing pauses the whole
+source. Live signer-verified delivery remains required before claiming coverage.
 The device inventory rotates across runs, interleaving architectures. Each observed numeric version
 becomes a retained acquisition lead. Discovered APKPure metadata and existing
 receipts contribute historical numeric codes. An empty archive starts from

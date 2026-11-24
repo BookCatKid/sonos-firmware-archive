@@ -68,9 +68,9 @@ def profile_identity(row):
 
 
 def cooldown(state, error):
-    """Pause a whole source on 429; switching jobs must not bypass throttling."""
+    """Pause a source on 429 or server timing; changing jobs cannot bypass it."""
     status = error.get('status_code')
-    if status != 429:
+    if status != 429 and error.get('retry_after') is None:
         return False
     failures = int(state.get('cooldown_failures', 0)) + 1
     fallback = 60 * 2 ** min(failures - 1, 5)
@@ -394,7 +394,8 @@ def main() -> int:
                             lead.pop('version_name', None)
                             lead.pop('version_code', None)
                             queue.setdefault(identity(lead), {}).update(lead)
-                throttled = next((error for error in source_errors if error.get('status_code') == 429), None)
+                throttled = next((error for error in source_errors if error.get('status_code') == 429
+                                  or error.get('retry_after') is not None), None)
                 if completed.returncode:
                     record['error'] = ('; '.join(error['error'] for error in source_errors) if source_errors else
                                        ('GooglePlayAcquisitionFailed' if args.source == 'google-play-direct' else completed.stdout[-4000:]))

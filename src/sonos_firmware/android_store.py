@@ -11,7 +11,6 @@ import json
 import math
 import os
 import signal
-from contextlib import contextmanager, closing
 
 GOOPDL_REVISION = 'b66bf60d686fd93724b7c9f1963fe8bf4070b89d'
 
@@ -105,78 +104,19 @@ def play_client(auth_dir, arch, profile=None):
     return Client(Config(config_dir=directory, credentials=None, arch=arch, profile=profile))
 
 
-def refresh_anonymous_session(config, *, request=None):
-    """Retry a dispenser refusal with our TLS transport and the same device.
-
-    Keep goopdl's scoped, private token cache; no global transport replacement,
-    personal account, alternate dispenser or default-device GET is involved.
-    The private cache helpers are covered by the pinned SDK contract tests.
-    """
-    from goopdl import auth
-    from goopdl.profiles import find_profile, get_priority_profiles, patch_profile_country
-    from .retry import retry_after_seconds
-    if (config.credentials is not None or config.proxy or config.dispenser_url or
-            config.config_dir is None or not config.config_dir.is_absolute()):
-        raise StoreError('UnsupportedAnonymousSessionConfiguration')
-    if request is None and os.environ.get('GITHUB_ACTIONS') != 'true':
-        raise StoreError('AnonymousSessionAcquisitionRequiresCI')
-    selected = find_profile(config.profile, config.arch) if config.profile else next(
-        iter(get_priority_profiles(config.arch)), None)
-    if selected is None:
-        raise StoreError('UnknownGooglePlayProfile')
-    name, profile = selected
-    payload = patch_profile_country(profile, config.country) if config.country else profile
-    if request is None:
-        request = _request_aurora_session
-    with request(auth.DEFAULT_DISPENSER_URL, json=payload, headers={
-        # Aurora AuthProvider posts the active device properties with its app UA.
-        # https://gitlab.com/AuroraOSS/AuroraStore/-/blob/master/app/src/main/java/com/aurora/store/data/providers/AuthProvider.kt
-        'User-Agent': 'com.aurora.store-4.8.4-76', 'Content-Type': 'application/json'},
-        timeout=30, allow_redirects=False, stream=True) as response:
-        status = response.status_code
-        if status != 200:
-            raise StoreError('GooglePlayTokenDispenserRateLimited' if status == 429 else
-                             'GooglePlayTokenDispenserUnavailable', status_code=status,
-                             retry_after=retry_after_seconds(response))
-        body = bytearray()
-        for chunk in response.iter_content(chunk_size=8192):
-            body.extend(chunk)
-            if len(body) > 131072:
-                raise StoreError('InvalidGooglePlayAnonymousSession')
-        data = json.loads(body)
-        if (not isinstance(data, dict) or
-                any(not isinstance(data.get(field), str) or not data[field].strip()
-                    for field in ('authToken', 'gsfId'))):
-            raise StoreError('InvalidGooglePlayAnonymousSession')
-    data['_device_profile'] = profile.get('UserReadableName', name)
-    with auth._use_scope(auth._Scope(config_dir=config.config_dir, credentials=None,
-                                     explicit_credentials=True)):
-        with auth._pool_lock(config.arch, config.country, config.profile, raise_on_error=True) as acquired:
-            if not acquired:
-                raise StoreError('GooglePlayAnonymousCacheBusy')
-            auth.save_auth(data, config.arch, config.country, config.profile)
-            pool = auth._load_pool_unlocked(config.arch, config.country, config.profile)
-            # The just-minted device/session stays in this profile's pool only.
-            auth._save_pool([data, *pool], config.arch, config.country, config.profile)
-
-
-@contextmanager
-def _request_aurora_session(url, **options):
-    from curl_cffi import requests
-    with requests.Session(impersonate='chrome_android', default_headers=False) as session:
-        with closing(session.post(url, **options)) as response:
-            yield response
-
-
-def _anonymous_call(client, method, *args):
+def _anonymous_call(client, method, *args, provenance=None):
     try:
         return getattr(client, method)(*args)
     except Exception as error:
         failure = safe_error(error)
-        if str(failure) != 'GooglePlayTokenDispenserUnavailable' or failure.status_code != 403:
+        if (str(failure) != 'GooglePlayTokenDispenserUnavailable' or failure.status_code == 429
+                or failure.retry_after is not None):
             raise
-    refresh_anonymous_session(client.config)
-    return getattr(client, method)(*args)
+    from .google_play import AnonymousPlay, PROTOCOL_REVISION
+    result = getattr(AnonymousPlay(client.config), method)(*args)
+    if provenance is not None:
+        provenance[method] = {"backend": "google-play-device-anonymous", "protocol_revision": PROTOCOL_REVISION}
+    return result
 
 
 def play_version(package, auth_dir, arch, profile=None):
@@ -189,13 +129,13 @@ def play_version(package, auth_dir, arch, profile=None):
         raise safe_error(error) from None
 
 
-def acquire_play(package, output, auth_dir, arch='arm64', profile=None, version_code=None):
+def acquire_play(package, output, auth_dir, arch='arm64', profile=None, version_code=None, *, provenance=None):
     from goopdl.api import _build_specs
     from goopdl.download import DownloadSpec, download_batch
     try:
         client = play_client(auth_dir, arch, profile)
-        code = int(version_code) if version_code else _anonymous_call(client, 'details', package).version_code
-        delivery = _anonymous_call(client, 'delivery', package, code)
+        code = int(version_code) if version_code else _anonymous_call(client, 'details', package, provenance=provenance).version_code
+        delivery = _anonymous_call(client, 'delivery', package, code, provenance=provenance)
         if delivery.version_code != code:
             raise StoreError(f'GooglePlayVersionMismatch: requested {code}, returned {delivery.version_code}',
                              observed_version_code=delivery.version_code)

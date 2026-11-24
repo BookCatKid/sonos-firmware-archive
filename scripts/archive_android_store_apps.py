@@ -101,13 +101,14 @@ def preserve_package(args, package, index, scratch):
     delivery_dir = scratch / package
     delivery_dir.mkdir()
     expected_code = args.version_code
+    play_provenance = {}
     if not args.input and any(shutil.which(tool) is None for tool in ('java', 'javac')):
         raise StoreError('APKInspectionUnavailable')
     if args.input:
         source = args.input[index]
     elif args.source == 'google-play-direct':
         source, expected_code = acquire_play(package, delivery_dir / 'delivery', args.auth_dir,
-            args.play_arch, args.play_profile, args.version_code)
+            args.play_arch, args.play_profile, args.version_code, provenance=play_provenance)
     elif args.asset_url:
         source = acquire_variant(args.asset_url, args.asset_type, delivery_dir)
     else:
@@ -134,7 +135,7 @@ def preserve_package(args, package, index, scratch):
     prefix = 'apps-google-play-' if args.source == 'google-play-direct' else 'apps-google-play-recovery-'
     tag = prefix + info['family']
     provenance = (
-        'Packages acquired directly from Google Play using anonymous goopdl authentication.'
+        'Packages acquired directly from Google Play using anonymous device sessions.'
         if args.source == 'google-play-direct' else
         'Third-party APKPure recovery copies; not direct-Play provenance.'
     )
@@ -158,16 +159,22 @@ def preserve_package(args, package, index, scratch):
         wrapper = {"bytes": size, "sha256": sha256, "release_tag": tag,
                    "release_asset": name}
         uploads.append((source, wrapper))
+    if args.source == 'google-play-direct':
+        tool = {'name': 'goopdl', 'revision': GOOPDL_REVISION, 'backend': 'google-play'}
+        if play_provenance.get('delivery'):
+            tool = {'name': 'sonos-firmware-archive', **play_provenance['delivery'],
+                    'download_tool': {'name': 'goopdl', 'revision': GOOPDL_REVISION}}
+    elif args.asset_url:
+        tool = {'name': 'sonos-firmware-archive', 'backend': 'apkpure-api'}
+    else:
+        tool = {'name': 'apkeep', 'version': '1.0.0', 'backend': 'apk-pure'}
     artifact = {
         "source_kind": args.source,
         "source_version_selector": args.version_selector or args.version_code,
         "source_url": (f"https://play.google.com/store/apps/details?id={package}"
                        if args.source == "google-play-direct" else args.asset_url or info["apkpure_url"]),
         "acquired_at": datetime.now(timezone.utc).isoformat(),
-        "acquisition_tool": ({"name": "goopdl", "revision": GOOPDL_REVISION, "backend": "google-play"}
-                             if args.source == 'google-play-direct' else
-                             {"name": "sonos-firmware-archive", "backend": "apkpure-api"} if args.asset_url else
-                             {"name": "apkeep", "version": "1.0.0", "backend": "apk-pure"}),
+        "acquisition_tool": tool,
         "delivery_profile": requested_profile(args),
         "family": info["family"], "package": package,
         "version_code": str(metadata["version_code"]),
