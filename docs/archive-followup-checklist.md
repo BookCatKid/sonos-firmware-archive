@@ -1069,9 +1069,13 @@ requested public recipient fingerprint; tests recover a new synthetic key from a
 filesystem encrypted with an older key and reject stale, malformed or conflicting
 receipts.
 
-**What remains needs keys, not code.** The 27 unmatched recipient groups cannot
-be progressed without private key material, which exists only as CI secrets. No
-key was read, generated or committed during this work.
+**Recovery remains incomplete for 27 recipient groups.** The normal worker now
+tries exact-recipient PEM/DER keys embedded in eligible updaters as well as legacy
+wrapped keys. Its latest assessment tried both eligible model-5 sources without a
+match; 26 other missing groups had no eligible updater source. These results do
+not establish that every recovery method is exhausted: other plaintext
+components and platform-specific methods still need investigation. Private keys
+remain ephemeral in CI; they are not committed.
 
 ## Publication recovery (item 18)
 
