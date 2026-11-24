@@ -30,7 +30,7 @@ independent web-archive indexes.
 | 12 | Public web resources are preserved; redirects and authentication requirements are classified accurately. | Resolved by design, and now reported honestly. Every pro deployment captures all discovered resources (79–82/82, or 77/77 live); the controller captures its public surface and classifies the rest as gated. A live run finished `ok` with `errors: 0` because gated resources are terminal, while `complete: false` and `identity_complete: false` record that the controller deployment itself was never captured. See [public web capture](#public-web-capture-item-12) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 13 | Apple listing/history coverage is verified; IPA scope and authorization prerequisites are explicit. | Listing metadata and history verified, including a live run that detected the S1 change from 11.16.1 to 11.16.2 and recorded both bundle identifiers and reported sizes. No IPA acquisition capability exists or is claimed; the scope and prerequisites are stated in [Apple coverage and IPA scope](#apple-coverage-and-ipa-scope-item-13). |
 | 14 | Unsupported firmware and missing-key cases are investigated; decoder/key improvements automatically trigger revisits. | A live firmware run extracted **143 packages** and published **187 inventories (94 complete, 93 incomplete)**, with `errors: []`. The key ledger records **34 unique recipients, 7 recovered keys, 27 missing** and 0 unidentified encrypted packages, so available-component analysis identifies missing key material as the immediate obstacle; formats inside encrypted sections remain unverified; each skipped section names its recipient ID and section index. Revisit-on-improvement is automatic because the inventory revision includes `ready_recipients` and a hash of the decoder sources. See [firmware revisit and missing keys](#firmware-revisit-and-missing-keys-item-14) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
-| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 19 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
+| 15 | Ranges, pagination, parsers, traversal and budgets impose no unintended lifetime discovery ceilings. | All 20 scheduler calls persist their rotation lane, so no `--limit` can become a lifetime ceiling; the metadata model space widens (`2×bound+1`) instead of stopping at 255, proven to reach model 256 and 511 in tests. Two calls that shared the default lane were found and given explicit queue names. Enforced by `scripts/audit_discovery_ceilings.py`. See [discovery ceilings](#discovery-ceilings-item-15). |
 | 16 | 429/backoff, expired URLs, host failures and mixed retry/fresh queues preserve progress without starvation. | 429 and Retry-After (numeric and HTTP-date), rotating download tickets, unavailable hosts and mixed queues are covered by the retry suites; two starvation hazards in shared rotation lanes were found and fixed. Live runs show progress across restarts: 143 preserved sources and 203 rollover documents in one run. See [retry progress](#retry-progress-item-16). |
 | 17 | Existing publication references are reconciled; unrecorded assets and inconsistent metadata are investigated without deleting evidence. | Production audit reconciles 135 releases / 4,551 assets: 0 missing, 0 mismatched, 4,534 recorded, 17 extras all proven duplicates, **0 unexplained**. On a second archive the same classifier isolated 3 unexplained, then 1 after a concurrent run committed — two were assets uploaded seconds before the audit read the release, and the survivor is a genuine page orphan that stays listed. See [archive reconciliation](#archive-reconciliation-item-17) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 18 | Interrupted publication, lost responses, conflicting names and changed content preserve successful work. | Each named failure mode has a regression: interrupted uploads keep staged records out of the catalog, lost responses reconcile without overwriting, conflicting names get distinct identities, and changed content is re-verified by body hash when a digest is absent. 34 Android deliveries carry multi-component splits plus a complete wrapper, so partial deliveries stay pending rather than completing. See [publication recovery](#publication-recovery-item-18). |
@@ -581,14 +581,14 @@ ceiling. Both are now checked mechanically:
 
 ```
 $ PYTHONPATH=src .venv/bin/python scripts/audit_discovery_ceilings.py
-scheduler_calls=19 unrotated=0 unnamed_queue=0 model_expands=True budgets=26
+scheduler_calls=20 unrotated=0 unnamed_queue=0 model_expands=True budgets=28
 ```
 
 **1. Every scheduler call persists its rotation.** `retry.select` reserves part
 of a batch for retries and, when only one slot fits, alternates retry and fresh
 lanes across runs using `state['retry_rotation'][queue]`. A call that omits
 `state=` cannot rotate, so a small `--limit` would permanently hide everything
-after the first batch. All 19 scheduler calls in `src/` and `scripts/` pass it.
+after the first batch. All 20 scheduler calls in `src/` and `scripts/` pass it.
 
 A call that omits `queue=` is subtler: it shares the `default` rotation lane
 with any other caller on the same document, so two queues can starve each
@@ -614,7 +614,7 @@ asserted:
   shows raising the bound preserves the cursor and the request budget instead of
   restarting from zero.
 
-**3. Every budget is configurable.** 26 per-run budgets are exposed through
+**3. Every budget is configurable.** 28 per-run budgets are exposed through
 target options — `limit`, `seconds`, `history_limit`, `extraction_limit`,
 `inventory_limit`, `binary_limit`, `discovery_limit`, `model_max` and others — so
 an operator can raise a batch without a code change. `config/targets.json` can

@@ -3,14 +3,16 @@ from __future__ import annotations
 
 import json
 import hashlib
+import re
+import os
 import struct
 import tempfile
 import urllib.error
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urljoin
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .discovery import download, DownloadFailure
+from .discovery import download, DownloadFailure, parse_manifest
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
 from .retry import checkpoint, select, due, error_checkpoint, RequestBackoff
 from .storage import atomic_json, file_sha256
@@ -60,6 +62,40 @@ def register_document(path, manifest, publication):
     if record is None:
         record = {'sha256': manifest['sha256'], 'bytes': manifest['bytes'], 'source_url': manifest['url']}
         rows.append(record)
+    prior_locations = [record.get('publication', {}),
+                       record.get('publications', {}).get(publication['repository'], {})]
+    if record.get('release_tag') and record.get('release_asset'):
+        legacy = {key: record[key] for key in ('release_tag', 'release_asset', 'release_url',
+            'sha256', 'bytes', 'published', 'artifact_status') if key in record}
+        owner = record.get('publication', {}).get('repository') or record.get('repository')
+        if not owner and (legacy.get('release_url') or '').startswith('https://github.com/'):
+            owner = '/'.join(legacy['release_url'].split('/')[3:5])
+        legacy['repository'] = owner or publication['repository']
+        if (collection == 'source_manifests' and legacy.get('published') is not False and
+                legacy.get('artifact_status') in {None, 'preserved'}):
+            # Preserve the existing legacy claim without upgrading it to a
+            # newly verified publication receipt.
+            legacy['published'] = True
+        prior_locations.append(legacy)
+    def location(proof):
+        return ((proof.get('repository') or publication['repository']).lower(),
+                proof.get('release_tag'), proof.get('release_asset'))
+    alternatives = record.get('alternate_publications', [])
+    for prior in prior_locations:
+        if (prior.get('release_tag') and prior.get('release_asset') and
+            prior.get('sha256') == record['sha256'] and prior.get('bytes') == record['bytes'] and
+            location(prior) != location(publication) and
+                not any(location(item) == location(prior) for item in alternatives)):
+            alternatives.append(prior)
+    if alternatives:
+        record['alternate_publications'] = alternatives
+    if 'published' in record:
+        record['published'] = True
+    if 'artifact_status' in record:
+        record['artifact_status'] = 'preserved'
+    for field in ('repository', 'release_url'):
+        if field in record:
+            record[field] = publication[field]
     if manifest.get('advertised_by'):
         record['advertised_by'] = manifest['advertised_by']
     meta = manifest.get('metadata', {})
@@ -82,6 +118,131 @@ def register_document(path, manifest, publication):
             record['retrievals'].append(retrieval)
     atomic_json(path, catalog)
     return record
+
+
+def reconcile_documents(root, repository, assets, work, *, previous=None, limit=8,
+                        max_bytes=2_000_000, fetch=None):
+    """Restore interrupted source receipts using publication and origin digests.
+
+    Unattributed captures remain pending. Release filenames alone never become
+    first-party discovery evidence. The caller supplies unrecorded publications;
+    acquisition uses the normal verified downloader in an ephemeral CI directory.
+    """
+    from .releases import download_verified
+    from .source_links import discover_urls
+    from .source_urls import sonos_url
+    if limit < 1 or max_bytes < 1:
+        raise ValueError('document recovery budgets must be positive')
+    if fetch is None and os.environ.get('GITHUB_ACTIONS') != 'true':
+        raise ValueError('source document recovery runs in CI; local tests must supply fixture acquisition')
+    fetch = fetch or download_verified
+    state = {**(previous or {}), 'observations': dict((previous or {}).get('observations', {}))}
+    backoff = RequestBackoff(state, repository)
+    urls, origin_hosts = {}, {}
+    def remember(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                remember(key)
+                remember(child)
+        elif isinstance(value, list):
+            for child in value:
+                remember(child)
+        elif isinstance(value, str):
+            secure = 'https://'+value[7:] if value.startswith('http://') else value
+            if value.startswith(('https://', 'http://')):
+                try:
+                    host = urlsplit(value).hostname
+                except ValueError:
+                    return
+                for origin in {value, secure, value.split('#', 1)[0], secure.split('#', 1)[0]}:
+                    identity = hashlib.sha256(origin.encode()).hexdigest()
+                    if host:
+                        origin_hosts[identity] = host
+                    if sonos_url(secure):
+                        urls[identity] = origin
+    for path in (root/'data/catalog.json', root/'data/discovery/firmware-frontier.json',
+                 *(root/'data/apps').glob('*.json')):
+        if path.exists():
+            remember(json.loads(path.read_text()))
+    candidates = []
+    for (tag, name), asset in sorted(assets.items()):
+        if not re.fullmatch(r'manifest-snapshots-\d{4}-\d{2}-\d{2}(?:-part-\d+)?', tag):
+            continue
+        match = re.fullmatch(r'(page|manifest)-([0-9a-f]{64})-([0-9a-f]{64})\.(html|js|mjs|json|upm)', name)
+        if not match or (match[1] == 'manifest') != (match[4] == 'upm'):
+            continue
+        identity = json.dumps([tag, name, asset.get('sha256'), asset.get('bytes')])
+        candidates.append({'identity': identity, 'tag': tag, 'name': name, 'asset': asset,
+                           'digest': match[2], 'origin': match[3], 'kind': match[1], 'format': match[4]})
+    result = {**state, 'recovered': [], 'verified': [], 'errors': [], 'pending': len(candidates)}
+    if backoff.paused('document-downloads'):
+        result['status'] = 'partial' if candidates else 'ok'
+        return result
+    chosen = select(candidates, state['observations'], key=lambda row: row['identity'],
+                    limit=limit, state=result, queue='orphan-source-documents')
+    for row in chosen:
+        prior = state['observations'].get(row['identity'], {})
+        asset, digest = row['asset'], row['digest']
+        capture = {'release_tag': row['tag'], 'release_asset': row['name'],
+                   'sha256': digest, 'bytes': asset['bytes']}
+        observation = {'release_tag': row['tag'], 'release_asset': row['name'],
+                       'origin_sha256': row['origin'], 'state': 'origin-unresolved'}
+        try:
+            if asset.get('sha256') and asset['sha256'] != digest:
+                raise ValueError('capture filename conflicts with the published digest')
+            if not isinstance(asset['bytes'], int) or isinstance(asset['bytes'], bool) or not 0 < asset['bytes'] <= max_bytes:
+                observation['state'] = 'resource-deferred'
+            else:
+                origin = urls.get(row['origin'])
+                work.mkdir(parents=True, exist_ok=True)
+                destination = work/digest
+                fetch(capture, destination, repository)
+                with destination.open('rb') as stream:
+                    body = stream.read(max_bytes+1)
+                if len(body) != asset['bytes'] or hashlib.sha256(body).hexdigest() != digest:
+                    raise ValueError('source document body conflicts with its capture identity')
+                for url in discover_urls('', body):
+                    remember(url)
+                metadata = {'format': row['format']}
+                if row['kind'] == 'manifest':
+                    metadata, parsed = parse_manifest(destination, origin)
+                    remember(metadata)
+                    for candidate in parsed:
+                        remember(urljoin(candidate.url, 'update.upm'))
+                    if metadata.get('base_url'):
+                        remember(urljoin(metadata['base_url'], 'update.upm'))
+                origin = urls.get(row['origin'])
+                if row['kind'] == 'manifest' and origin is not None:
+                    metadata, _ = parse_manifest(destination, origin)
+                backoff.clear('document-downloads')
+                result['verified'].append(capture)
+                if origin is not None:
+                    publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
+                    manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
+                                'provenance': 'recovered-publication-with-matching-content-and-origin-digests'}
+                    if row['kind'] == 'page':
+                        manifest.update(document_type='landing-page')
+                    register_document(root/'data/catalog.json', manifest, publication)
+                    result['recovered'].append({**capture, 'source_url': origin})
+                    observation.update(state='recovered', source_url=origin)
+                elif row['origin'] in origin_hosts:
+                    observation.update(state='external-origin',
+                                       origin_host=origin_hosts[row['origin']])
+        except Exception as error:
+            observation.update(state='recovery-error', error_type=type(error).__name__,
+                               **error_checkpoint(error, prior))
+            result['errors'].append({**observation})
+            backoff.failed('document-downloads', error)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+        else:
+            observation.update(checkpoint(prior, success=observation['state'] == 'recovered'))
+        state['observations'][row['identity']] = observation
+        if backoff.paused('document-downloads'):
+            break
+    result.update(pending=len(candidates)-len(result['recovered']),
+                  status='partial' if len(candidates) > len(result['recovered']) else 'ok')
+    return result
 
 
 def acquisition_path(root):

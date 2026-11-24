@@ -40,6 +40,18 @@ the scheduled workflow resumes remaining work using saved retry deadlines.
 Publication receipts in declared metadata paths feed binary inspection
 automatically; a new adapter needs no separate inspection URL list or workflow.
 
+The normal `release-audit` target also reconciles interrupted source-document
+publications under the firmware metadata lock. It verifies the owned asset's
+bytes, matches both content and origin digests in its filename, and restores a
+receipt in the common catalog only when a first-party origin is established.
+Separate origins and alternate publication locations retain separate receipts,
+even when their contents are identical.
+Origins come from existing observations or the verified capture's own links and
+native manifest references. Unknown origins stay unrecorded and make the audit
+partial. Recovery uses durable retry rotation and server cooldowns; its batch
+size and document-byte budget are target options. Local verification never
+downloads these captures or imports recovery receipts.
+
 Desktop package history walks WinGet commit pages and both changed and parent
 snapshots. Removed manifests and pre-alphabetical vendor layouts therefore
 remain discoverable. Page cursors and unattempted Git objects persist in

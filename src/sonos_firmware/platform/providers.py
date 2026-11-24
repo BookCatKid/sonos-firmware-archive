@@ -110,7 +110,9 @@ def google_play_listings(c: Context):
 
 def release_audit(c: Context):
     report = c.root / 'data/platform/audits/release-assets.json'
-    return [c.script('audit_release_assets.py', '--repo', c.repository, '--output', report, report=str(report))]
+    return [c.script('audit_release_assets.py', '--repo', c.repository, '--output', report,
+                     '--recover-documents', '--recovery-limit', c.options.get('recovery_limit', 8),
+                     '--max-document-bytes', c.options.get('max_document_bytes', 2_000_000), report=str(report))]
 
 
 def gpl_indexes(c: Context):

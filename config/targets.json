@@ -144,6 +144,7 @@
       "description": "Reconcile recorded publication sizes and hashes against GitHub Releases",
       "interval_hours": 168,
       "metadata": [
+        "data/catalog.json",
         "data/platform/audits/release-assets.json"
       ],
       "lock": "firmware"
