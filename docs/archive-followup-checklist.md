@@ -21,7 +21,7 @@ independent web-archive indexes.
 | 3 | Independent historical ConnectX discovery, including distinct captures at reused URLs. | 38 firmware versions advertise a model-17 (ConnectX) component; 31 are preserved as 31 distinct contents, every one manifest-attributed, with 0 coverage inconsistencies. The 7 remaining are 404 at the recorded source URLs. Recorded index queries have not recovered them; traversal across the remaining collections is incomplete. Reused-URL capture is proven by a test where one mutable URL yields two distinct preserved versions. See [ConnectX historical discovery](#connectx-historical-discovery-item-3). |
 | 4 | Every installer reported in #25 is compared with independently discovered candidates; omissions have discovery fixes. | The committed desktop archive holds **101 installers** (52 Windows, 49 macOS) across **72 non-classic versions**, every one with SHA-256, a release asset and per-artifact Wayback CDX provenance, all fetched from Sonos hosts. A cold protocol traversal found 41 installer URLs including all 37 reference URLs, and independently surfaced a Windows `.exe` and macOS `.dmg` for 90.0-75190. See [desktop installer coverage](#desktop-installer-coverage-item-4). |
 | 5 | Reproduced TLS failure has a working verified transport; CLI clearly identifies a JSON output file. | CLI and certificate-verified TLS fallback fixed; offline and PR CI checks pass. |
-| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published. At the `7817b02` baseline, the strict published-stream auditor still queues 1,083 source receipts; publication alone does not establish full compressed-stream verification. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). CI has now recorded the remaining link as `invalid-artifact` / `empty-tar` (108 bytes), with source identity and retry timing. The link audit passes with 0 unattempted links; full-stream verification remains separate. Separate isolated-archive runs published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
+| 6 | Independently found GPL indexes and retrievable sources are published and stream-verified, including encoded plus signs. | 39 verified indexes, 1,409 advertised links: 1,408 published. At the `7817b02` baseline, the strict published-stream auditor still queues 1,083 source receipts; publication alone does not establish full compressed-stream verification. The `+`→`%2B` failure is reproduced and proven live (literal `+` → 403, `%2B` → 200 with bytes matching the published receipt). The normal acquisition worker must record the source-bound rejection for the 108-byte empty libusb archive. One link remains unattempted until that scheduled worker acquires it; no manually imported receipt is required. Separate isolated-archive runs published 187 of 187 downloads (2.85 GB) and reduced the stream-verification backlog **148 → 123** with 0 mismatches. See [GPL index and source coverage](#gpl-index-and-source-coverage-item-6) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
 | 7 | Historical index TLS, pagination, timeout, query-resume and replay behavior is verified; independent alternatives investigated. | Independent routes were exercised, not assumed: a cold protocol traversal checked 626 of 626 candidates from 10 roots with all 57 failures recorded, and a sitemap sweep verified 117 sitemaps / 30,962 URLs and found no GPL pages. A live mobile run then hit a **Wayback CDX read timeout** (2 consecutive failures, retry deferred 2 h) and a **Common Crawl HTTP 503** (129 collections enumerated, 129 queries still pending); both were recorded with durable deadlines instead of being dropped. See [historical index routes](#historical-index-routes-item-7). |
 | 8 | Anonymous Google Play acquisition yields a signer-verified delivery through goopdl. | **Not demonstrated.** Aurora's dispenser returns HTTP 403 before any token is issued, with both the SDK transport and certificate-verified curl, so no anonymous session exists to acquire through. The adapter now separates dispenser failure from Play API failure and retains throttle status and retry delays. No signer-verified goopdl delivery is claimed. |
 | 9 | APKPure pagination, SDK/ABI variants, refreshed tickets and expired links continue making historical progress. | A live `android-history` sweep archived 66 of 67 attempts with 0 discovery errors, adding 13 distinct versions in one batch; 76 selectors stay queued and 35 SDK levels are indexed. The archive now spans **38 distinct version codes** (13 S2, 25 S1). Rotating `winudf` tickets are separated from asset identity. See [Android store coverage](#android-store-coverage-items-9-and-10) and [live archive runs](#live-archive-runs-mobile-and-gpl-archive). |
@@ -363,7 +363,8 @@ completely:
 
 ```
 $ PYTHONPATH=src .venv/bin/python scripts/audit_gpl_link_coverage.py
-versions=39 links=1409 unattempted=0 (published=1408, recorded:invalid-artifact=1)
+versions=39 links=1409 unattempted=1 (published=1408, unattempted=1)
+  unattempted 14.12/libusb-1.0.23.txz (sonos)
 ```
 
 The 1,409 links comprise 1,112 Sonos-hosted sources and 297 upstream sources
@@ -424,12 +425,12 @@ became, and the compressed-stream audit only revalidates *published* receipts.
 advertised link to end in exactly one accounted state — `published`, or
 `recorded:<terminal-state>` — and failing the job on `unattempted`. It is wired
 into the `gpl-audit` target after the stream audit, including after a stream
-audit failure. The [2026-11-24 isolated CI acquisition](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/45354092362)
-recorded a source-bound `invalid-artifact` receipt with `verification: empty-tar`,
-108 downloaded bytes and a saved retry deadline. That receipt is now retained in
-the PR, and the link-coverage gate passes with zero unattempted links. The
-compressed-stream verification backlog is a separate acceptance requirement;
-this result does not make that backlog complete.
+audit failure. The normal acquisition worker records this source-bound rejection
+when it processes the advertised link. A manually run diagnostic or imported
+receipt is not a prerequisite for enabling the archive. The separate
+compressed-stream verifier uses canonical receipts and continues through batches
+within its configured time budget; incomplete targets become due again within
+an hour. Neither verification nor acquisition requires a prepared payload store.
 
 `tests/test_gpl_link_coverage.py` covers the classifier (13 tests, including the
 real committed catalogue) and the validator's empty, truncated, escaping-member

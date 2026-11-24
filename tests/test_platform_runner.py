@@ -72,6 +72,40 @@ class RunnerTests(unittest.TestCase):
                              provider_map={'fixture': provider}, execute=execute)
                 self.assertEqual(report['status'], 'partial')
 
+    def test_scheduled_backlog_resumes_hourly_then_returns_to_its_success_cadence(self):
+        from datetime import datetime, timedelta
+        from sonos_firmware.platform.runner import is_due
+        def provider(c):
+            return [Step('audit', ('fixture',), report=str(c.work/'native.json'))]
+        def execute(step, context, environment):
+            Path(step.report).write_text(json.dumps({'status': status}))
+            return 0, 'normal scheduled worker'
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            target = self.target(interval_hours=24)
+            self.assertTrue(is_due(root, target))
+            status = 'partial'
+            first = run(target, root, 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
+                        provider_map={'fixture': provider}, execute=execute)
+            finished = datetime.fromisoformat(first['finished_at'])
+            self.assertFalse(is_due(root, target, now=finished+timedelta(minutes=59)))
+            self.assertTrue(is_due(root, target, now=finished+timedelta(hours=1)))
+            status = 'ok'
+            second = run(target, root, 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
+                         provider_map={'fixture': provider}, execute=execute)
+            finished = datetime.fromisoformat(second['finished_at'])
+            self.assertFalse(is_due(root, target, now=finished+timedelta(hours=23)))
+            self.assertTrue(is_due(root, target, now=finished+timedelta(hours=24)))
+
+    def test_normal_gpl_target_configures_batch_size_and_time_budget(self):
+        root = Path(__file__).resolve().parents[1]
+        target = targets(root)['gpl-audit']
+        report = plan(target, root, 'owner/repo', options={'limit': 3, 'seconds': 120})
+        command = report['steps'][0]['command']
+        self.assertEqual(command[command.index('--limit')+1], '3')
+        self.assertEqual(command[command.index('--seconds')+1], '120')
+        self.assertEqual(report['steps'][0]['report'], str(root/'data/gpl/live/stream-audit.json'))
+
     def test_credentials_are_not_written_into_run_reports(self):
         token = 'secret-value-must-never-be-in-the-report'
         with tempfile.TemporaryDirectory() as temporary:

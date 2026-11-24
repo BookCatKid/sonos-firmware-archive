@@ -147,6 +147,7 @@ def gpl_audit(c: Context):
     # gate first would let a large unattempted backlog skip the repair entirely.
     return [c.script('audit_gpl_published_streams.py', '--store', c.work / 'audit',
                      '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 25), '--delay', 2.5,
+                     '--seconds', c.options.get('seconds', 900),
                      report=str(c.root/'data/gpl/live/stream-audit.json')),
             c.script('audit_gpl_link_coverage.py',
                      '--output', c.root / 'data/gpl/live/link-coverage.json',

@@ -25,6 +25,14 @@ The workflow creates its matrix from these declarations. A new target does
 not require a workflow, release URL list, or local archive. Source-specific
 parsing and validation remain in their adapters; scheduling, temporary storage,
 reporting, and metadata commits use the shared runner.
+The hourly workflow selects due targets from persisted state. Incomplete runs
+become due again within an hour; successful runs use their configured cadence.
+Backlogs do not require manual dispatches, locally prepared payloads, receipt
+imports, or completion before deployment. The normal `gpl-audit` worker processes
+successive batches within its `seconds` budget (900 by default); `limit` controls
+batch size. Each receipt is checkpointed as work completes. The worker stops
+when its budget expires, a source/storage failure occurs, or no work is due, and
+the scheduled workflow resumes remaining work using saved retry deadlines.
 Publication receipts in declared metadata paths feed binary inspection
 automatically; a new adapter needs no separate inspection URL list or workflow.
 

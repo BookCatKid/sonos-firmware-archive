@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import time
 import urllib.error
 import sys
 from pathlib import Path
@@ -66,7 +68,8 @@ def pending(receipts: dict, *, versions: set[str] | None) -> list[tuple[str, str
     return result
 
 
-def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> dict:
+def run(args: argparse.Namespace, *, download=download_artifact, wait=pause,
+        deadline=None, clock=time.monotonic) -> dict:
     if args.limit < 1:
         raise ValueError("audit --limit must be positive")
     for version in args.version:
@@ -82,8 +85,11 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
     proofs = strong_proofs(records)
     stats = {"selected": len(selected), "downloaded": 0, "verified": 0,
              "reused": 0, "mismatched": 0, "failed": 0, "bytes_downloaded": 0,
-             "remaining_before": len(queue)}
+             "remaining_before": len(queue), "processed": 0}
     for version, name, item in selected:
+        if deadline is not None and clock() >= deadline:
+            break
+        stats['processed'] += 1
         previous = item.get('stream_integrity', {})
         valid_version(version)
         digest = item["sha256"]
@@ -159,19 +165,52 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
     return stats
 
 
+def drain(args: argparse.Namespace, *, download=download_artifact, wait=pause,
+          clock=time.monotonic) -> dict:
+    """Continue the normal worker's queue within its configured CI time budget.
+
+    Every batch uses the same canonical receipts and retry scheduler. No extra
+    checkout, proof import, pre-existing payload store or release is required.
+    """
+    if not math.isfinite(args.seconds) or args.seconds <= 0:
+        raise ValueError('audit --seconds must be positive and finite')
+    deadline = clock() + args.seconds
+    total = None
+    while True:
+        batch = run(args, download=download, wait=wait, deadline=deadline, clock=clock)
+        if total is None:
+            total = {key: 0 for key in ('selected', 'processed', 'downloaded', 'verified',
+                                       'reused', 'mismatched', 'failed', 'bytes_downloaded')}
+            total.update(remaining_before=batch['remaining_before'], batches=0)
+        for key in ('selected', 'processed', 'downloaded', 'verified', 'reused',
+                    'mismatched', 'failed', 'bytes_downloaded'):
+            total[key] += batch[key]
+        total.update(batches=total['batches']+1, remaining_after=batch['remaining_after'],
+                     status=batch['status'])
+        atomic_json(args.output / 'stream-audit.json', total)
+        # Never busy-loop waiting for retries, or launch another batch after
+        # a source/storage failure. Scheduled runs resume the saved queue.
+        if (not batch['remaining_after'] or not batch['processed'] or batch['failed'] or
+                batch['mismatched'] or clock() >= deadline):
+            print(json.dumps(total, indent=2), flush=True)
+            return total
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DATA)
     parser.add_argument("--store", type=Path, default=ROOT / "artifacts/gpl-stream-audit")
     parser.add_argument("--version", action="append", default=[])
     parser.add_argument("--limit", type=int, default=20)
+    parser.add_argument('--seconds', type=float, default=900,
+                        help='CI work budget; --limit bounds each resumable batch, not the whole run')
     parser.add_argument("--reserve-bytes", type=int, default=2_000_000_000)
     parser.add_argument("--delay", type=float, default=2.5)
     parser.add_argument("--retry-failed", action="store_true",
                         help="retry eligible failures immediately, bypassing their saved cooldown")
     args = parser.parse_args()
     try:
-        run(args)
+        drain(args)
         return 0
     except (OSError, ValueError, KeyError, RuntimeError) as error:
         print(f"GPL stream audit: {error}", file=sys.stderr)
