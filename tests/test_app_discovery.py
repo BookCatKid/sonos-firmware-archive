@@ -62,12 +62,12 @@ class AppDiscoveryTests(unittest.TestCase):
             key: value for key, value in assets.items()
             if key[0].startswith("apps-google-play-recovery-")
         }
-        expected = sum(
-            len(item["components"]) + (1 if item.get("complete_wrapper") else 0)
-            for item in receipt["artifacts"]
-            if item["release_tag"].startswith("apps-google-play-recovery-")
-        )
-        assert len(android) == expected
+        expected = {
+            (component.get('release_tag') or item['release_tag'], component.get('release_asset') or component['filename'])
+            for item in receipt['artifacts'] if item['release_tag'].startswith('apps-google-play-recovery-')
+            for component in [*item['components'], *([item['complete_wrapper']] if item.get('complete_wrapper') else [])]
+        }
+        assert set(android) == expected
         assert all(record["bytes"] > 0 and len(record["sha256"]) == 64
                    for record in android.values())
 
