@@ -8286,7 +8286,10 @@
       },
       "complete": false,
       "identity_complete": false,
-      "bundle_scope": "capture-batch"
+      "bundle_scope": "capture-batch",
+      "public_capture_done": true,
+      "gated_total": 32,
+      "actionable_gap_total": 0
     },
     {
       "schema_version": 1,
@@ -9951,7 +9954,10 @@
       },
       "complete": false,
       "identity_complete": false,
-      "bundle_scope": "capture-batch"
+      "bundle_scope": "capture-batch",
+      "public_capture_done": true,
+      "gated_total": 32,
+      "actionable_gap_total": 0
     },
     {
       "schema_version": 1,
@@ -12533,8 +12539,8 @@
           "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20260921T010656Z--complete.tar.gz"
         }
       ],
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -15120,8 +15126,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261006T012804Z--16538f9fd8fc--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -17614,8 +17620,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261006T210542Z--3a4f5bd653d3--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -20108,8 +20114,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261015T195705Z--471bbbfe109d--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -22602,8 +22608,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261023T044732Z--ed5d9bfcf66e--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -25096,8 +25102,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261102T233458Z--5ca57f5ad776--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -27590,8 +27596,8 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261118T215525Z--7974f8a83b39--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
+      "complete": true,
+      "identity_complete": true,
       "pending_urls": [],
       "gated_total": 0,
       "actionable_gap_total": 0,
@@ -30084,9 +30090,12 @@
         "release_tag": "apps-web-pro",
         "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-web-pro/sonos-pro-20261121T021239Z--0b02f67dd7af--complete.tar.gz"
       },
-      "complete": false,
-      "identity_complete": false,
-      "bundle_scope": "capture-batch"
+      "complete": true,
+      "identity_complete": true,
+      "bundle_scope": "capture-batch",
+      "public_capture_done": true,
+      "gated_total": 0,
+      "actionable_gap_total": 0
     }
   ],
   "updated": "2026-11-24T07:18:23.902829+00:00",

@@ -12,6 +12,7 @@ import json
 import tarfile
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
@@ -88,6 +89,44 @@ def release_assets(doc, *, omit=(), corrupt=(), bundle=None):
 
 
 class WebReceiptRecoveryTests(unittest.TestCase):
+    def test_duplicate_publications_keep_both_release_locations(self):
+        overflow = TAG+'-part-2'
+        second = [dict(asset, browser_download_url=asset['browser_download_url'].replace(
+            '/'+TAG+'/', '/'+overflow+'/')) for asset in self.assets.values()]
+        with patch.object(reconcile, 'matching_tags', return_value=[TAG, overflow]), \
+             patch.object(reconcile, 'release_assets', side_effect=lambda repo, tag:
+                 list(self.assets.values()) if tag == TAG else second), self.reader:
+            state = {'schema_version': 1, 'deployments': []}
+            report = reconcile.reconcile(state, repository=REPO, run_url=RUN, app_names=['pro'])
+        self.assertEqual(report['errors'], [])
+        captured = state['deployments'][0]
+        for item in [*captured['resources'], captured['bundle']]:
+            self.assertEqual({row['release_tag'] for row in item['publications']}, {TAG, overflow})
+
+    def test_tag_without_release_is_skipped_but_inventory_failures_are_not(self):
+        with patch.object(reconcile, 'public_release', create=True,
+                side_effect=urllib.error.HTTPError('https://api.github.com/fixture', 404, 'missing', {}, None)), \
+             patch.object(reconcile.subprocess, 'check_output') as listing:
+            self.assertEqual(reconcile.release_assets(REPO, TAG+'-part-2'), [])
+            listing.assert_not_called()
+        with patch.object(reconcile, 'public_release', create=True,
+                side_effect=urllib.error.HTTPError('https://api.github.com/fixture', 503, 'unavailable', {}, None)):
+            with self.assertRaises(urllib.error.HTTPError):
+                reconcile.release_assets(REPO, TAG)
+
+    def test_unavailable_partition_is_reported_without_claiming_a_complete_inventory(self):
+        def inventory(repo, tag):
+            if tag != TAG:
+                raise urllib.error.URLError('inventory unavailable')
+            return list(self.assets.values())
+        with patch.object(reconcile, 'matching_tags', return_value=[TAG, TAG+'-part-2']), \
+             patch.object(reconcile, 'release_assets', side_effect=inventory), self.reader:
+            state = {'schema_version': 1, 'deployments': []}
+            report = reconcile.reconcile(state, repository=REPO, run_url=RUN, app_names=['pro'])
+        self.assertEqual(len(report['errors']), 1)
+        self.assertEqual(report['recovered'], [])
+        self.assertEqual(state['deployments'], [])
+
     def test_capture_split_across_release_partitions_recovers_actual_locations(self):
         overflow = TAG+'-part-2'
         names = list(self.assets)

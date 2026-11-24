@@ -26,6 +26,7 @@ import json
 import re
 import subprocess
 import tarfile
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
@@ -33,6 +34,7 @@ from pathlib import Path, PurePosixPath
 from sonos_firmware.web_archive import APPS, _register_deployments, receipt_capture
 from sonos_firmware.storage import atomic_json
 from sonos_firmware.release_series import matching_tags
+from sonos_firmware.releases import public_release
 
 ROOT = Path(__file__).resolve().parents[1]
 USER_AGENT = "sonos-firmware-archive/1"
@@ -44,8 +46,13 @@ BUNDLE_SUFFIX = "--complete.tar.gz"
 
 def release_assets(repository: str, tag: str) -> list[dict]:
     """List a release's assets by ID; `releases/tags/.../assets` is not a route."""
-    release = json.loads(subprocess.check_output(
-        ["gh", "api", f"repos/{repository}/releases/tags/{tag}"], text=True))
+    try:
+        release = public_release(repository, tag)
+    except urllib.error.HTTPError as error:
+        if error.code != 404:
+            raise
+        error.close()
+        return []
     output = subprocess.check_output(
         ["gh", "api", "--paginate", "--slurp",
          f"repos/{repository}/releases/{release['id']}/assets?per_page=100"],
@@ -132,6 +139,8 @@ def recover_capture(document: dict, assets: dict[str, dict], *, app: str, tag: s
             release_url=remote["browser_download_url"],
             receipt_recovered_from=run_url,
         )
+        if len(remote.get('_archive_locations', [])) > 1:
+            row['publications'] = remote['_archive_locations']
         recovered += 1
     if not recovered:
         raise ValueError(f"{capture_id}: capture document lists no published resources")
@@ -143,6 +152,8 @@ def recover_capture(document: dict, assets: dict[str, dict], *, app: str, tag: s
         "status": "verified", "repository": repository, "release_tag": observed.get('_archive_release_tag', tag),
         "release_url": observed["browser_download_url"], "receipt_recovered_from": run_url,
     }
+    if len(observed.get('_archive_locations', [])) > 1:
+        document['bundle']['publications'] = observed['_archive_locations']
     if not document["bundle"]["sha256"]:
         raise ValueError(f"{capture_id}: Release metadata exposes no bundle digest")
     document["repository"] = repository
@@ -181,10 +192,16 @@ def reconcile(state: dict, *, repository: str, run_url: str, app_names=None, dry
             for partition in sorted(tags):
                 for asset in release_assets(repository, partition):
                     prior = assets.get(asset['name'])
-                    if prior and (prior['size'], prior.get('digest')) != (asset['size'], asset.get('digest')):
+                    if prior and (not asset.get('digest') or
+                            (prior['size'], prior.get('digest')) != (asset['size'], asset.get('digest'))):
                         raise ValueError('conflicting asset identities across web release partitions: '+asset['name'])
-                    assets.setdefault(asset['name'], {**asset, '_archive_release_tag': partition})
-        except (subprocess.CalledProcessError, ValueError) as error:
+                    selected = assets.setdefault(asset['name'], {**asset, '_archive_release_tag': partition,
+                                                                 '_archive_locations': []})
+                    selected['_archive_locations'].append({
+                        'status': 'verified', 'repository': repository, 'release_tag': partition,
+                        'release_asset': asset['name'], 'release_url': asset['browser_download_url'],
+                        'bytes': asset['size'], 'sha256': (asset.get('digest') or '').removeprefix('sha256:')})
+        except (subprocess.CalledProcessError, ValueError, OSError) as error:
             report["errors"].append({"app": app, "release_tag": tag, "error": str(error)})
             continue
         documents, older = [], []
