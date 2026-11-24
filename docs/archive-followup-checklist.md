@@ -798,6 +798,116 @@ The installer-by-installer comparison against every historical installer
 reported in #25 is still incomplete. Current-graph parity does not establish
 recovery of campaigns no longer linked from current protocol roots.
 
+### Installer-by-installer comparison (2026-11-24)
+
+Compared the 99 installer URLs in reference commit `f77eea71379feaeb72bfa775bed32e8ca5a53618` against production metadata at `3190ae9e49be98a762717a60097cee42e2cf50a5`. This is comparison evidence only; none of these reference URLs is an acquisition or discovery input.
+
+60 URLs have exact catalog records. **57 have publication receipts** with a digest, size, release tag and asset; three records are metadata only. The remaining 39 URLs have no exact catalog record. Across the 42 URLs without exact preservation receipts, 11 have a preserved installer with the same version and platform at another URL. Matching a version does not prove matching bytes. These counts describe committed receipts, rather than a fresh live asset audit.
+
+The table names every reference installer and records its exact receipt digest, or the absence of one. Alternate-publication counts do not count as exact preservation.
+
+| Reference installer | Exact receipt SHA-256 prefix | Same-version/platform publications |
+| --- | --- | --- |
+| https://update-firmware.sonos.com/firmware/Dev/80.1-56190-v16.3.3-2rZ4DF8eqv-RC-2/80.1-56190-1-3.exe | 4cf9ba02ae833024 | 1 |
+| https://update-firmware.sonos.com/firmware/Dev/80.1-56190-v16.3.3-2rZ4DF8eqv-RC-2/80.1-56190-1-4.dmg | 3998a7cf9fc1ec82 | 1 |
+| https://update-firmware.sonos.com/firmware/Dev/85.0-64200-v17.0-2dVdiIkMSm-RC-1/85.0-64200-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Dev/85.0-64200-v17.0-2dVdiIkMSm-RC-1/85.0-64200-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/90.0-65110-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/90.0-65110-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg | 69f34c9e98bd6ffb | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-3.exe | metadata only | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg | metadata only | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg | metadata only | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg | 798a0c554814926c | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.14-37030-v11.7-oxmdyztc-GA-1/57.14-37030-1-3.exe | 5be23b09a5d00ae3 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.14-37030-v11.7-oxmdyztc-GA-1/57.14-37030-1-4.dmg | 23bfafa620393fa9 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.15-39070-v11.8-vghahcgk-GA-1/57.15-39070-1-3.exe | f520786e11098446 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.15-39070-v11.8-vghahcgk-GA-1/57.15-39070-1-4.dmg | ac2bec77c3769a40 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.18-44230-v11.11-rdiahrpn-GA-1/57.18-44230-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/57.18-44230-v11.11-rdiahrpn-GA-1/57.18-44230-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-3.exe | a66567aa4820d721 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-4.dmg | fab37ffd1c8a8183 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.21-50280-v11.14-LGeb8h0Gma-GA-1/57.21-50280-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/57.21-50280-v11.14-LGeb8h0Gma-GA-1/57.21-50280-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-59130-v11.15-72ynP0v9lu-GA-2/57.22-59130-1-3.exe | dd26a2fd6cb3084f | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-59130-v11.15-72ynP0v9lu-GA-2/57.22-59130-1-4.dmg | 18d8e7f79db9ab09 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-65130-v11.15.3-2TxNp6BQia-SP-5/57.22-65130-1-4.dmg | 37562052945763ef | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-3.exe | 1b6df7a87a8b299d | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-67080-v11.15.4-yNhAXS5QQR-SP-6/57.22-67080-1-4.dmg | 7bbcb1bb2c6f6b14 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/57.22-68080-v11.15.6-NUPz7mPXln-SP-8/57.22-68080-1-3.exe | 8e5c5929b23acdf7 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/57.23-74170-1-3.exe | 3f055bfb19440389 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.23-74170-v11.16.1-DILU1Q33hC-GA-1/57.23-74170-1-4.dmg | 3f3495441881b776 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/57.23-80060-v11.16.2-9tmT45qD4t-SP-1/57.23-80060-1-4.dmg | 642281b4d914a885 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/57.3-79060-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/57.3-79200-v11.2.2-vjulqe-GA-1/57.3-79060-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-3.exe | 614ca005275ca989 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-4.dmg | e7a196c98a7ba65e | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-3.exe | 1d59d04d044fe705 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/57.9-23010-v11.2.13-ykeqad-GA-1/57.9-23010-1-4.dmg | 9cdb5a758be05923 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/62.1-86220-v13.0-mtbvge-GA-1/62.1-86220-1-3.exe | 69890655251b1c3a | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/62.1-86220-v13.0-mtbvge-GA-1/62.1-86220-1-4.dmg | f4a0112cbd5b8340 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/63.2-90210-v13.1.4-jaffit-GA-1/63.2-90210-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/63.2-90210-v13.1.4-jaffit-GA-1/63.2-90210-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-qelzft-LR-1/64.3-19080-1-3.exe | 1e0f6a6e9371272b | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/64.3-19080-1-4.dmg | 68867497849ea49a | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe | 43d38fa25fce70bf | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/65.1-21040-v13.3-maswnk-GA-1/65.1-21040-1-3.exe | ce54a102d6ebcc1b | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/65.1-21040-v13.3-maswnk-GA-1/65.1-21040-1-4.dmg | d9a6a712675a03cc | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/66.4-23090-v13.4-xgqmdq-GA-1/66.4-23090-1-3.exe | 14042173c00194c8 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/66.4-23090-v13.4-xgqmdq-GA-1/66.4-23090-1-4.dmg | 6120ed123f010538 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/67.1-27100-v14.4-bjaiyg-GA-1/67.1-27100-1-3.exe | 0ed90b28a2dc7ce2 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/67.1-27100-v14.4-bjaiyg-GA-1/67.1-27100-1-4.dmg | b8049c78a859f911 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/68.2-28040-v14.6-tksirh-GA-1/68.2-28040-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/68.2-28040-v14.6-tksirh-GA-1/68.2-28040-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/70.1-34112-v14.18-imaqiycw-GA-1/70.1-34112-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/70.1-34112-v14.18-imaqiycw-GA-1/70.1-34112-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/70.3-35070-v14.19-epqbkaso-GA-1/70.3-35070-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/70.3-35070-v14.19-epqbkaso-GA-1/70.3-35070-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/73.0-41050-v15.4-iwkvpnqy-GA-1/73.0-41050-1-3.exe | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/73.0-41050-v15.4-iwkvpnqy-GA-1/73.0-41050-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-3.exe | 4d8d2eb4aa0c3f52 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-4.dmg | 5ac0feeeb40b4241 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/74.0-43110-v15.6-srahdpcj-GA-1/74.0-43110-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/74.0-43110-v15.6-srahdpcj-GA-1/74.0-43110-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/75.1-46030-v15.9-irbxsaud-GA-1/75.1-46030-1-3.exe | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/75.1-46030-v15.9-irbxsaud-GA-1/75.1-46030-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-3.exe | c0dd5f4f060edda0 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/76.2-47270-v15.11-zypefwbr-GA-1/76.2-47270-1-4.dmg | 62f6f978660c4a55 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/77.4-49290-v16.0-IkQJJWUcVE-GA-1/77.4-49290-1-3.exe | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/77.4-49290-v16.0-IkQJJWUcVE-GA-1/77.4-49290-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/78.1-51030-v16.1-nvasc21FQF-GA-1/78.1-51030-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/78.1-51030-v16.1-nvasc21FQF-GA-1/78.1-51030-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/79.0-52294-v16.2-nAtvycichO-GA-1/79.0-52294-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/79.0-52294-v16.2-nAtvycichO-GA-1/79.0-52294-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/79.1-53290-v16.2-6T0nrTOYJg-SP-1/79.1-53290-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/79.1-53290-v16.2-6T0nrTOYJg-SP-1/79.1-53290-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-3.exe | 9f9385e54ef9eaf6 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/80.1-55014-v16.3-xqkmivn9QB-GA-1/80.1-55014-1-4.dmg | cac8a5f9e13c2959 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/81.1-58074-v16.4.2-R3MV5bKh64-GA-1/81.1-58074-1-3.exe | 2777c625b27a7eb9 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/81.1-58074-v16.4.2-R3MV5bKh64-GA-1/81.1-58074-1-4.dmg | 9eac889a38810a32 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-3.exe | a6b545b3087105e7 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-4.dmg | 703964ca12689225 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-3.exe | 9a24ca3d0917f9d3 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-4.dmg | ae795723d93e4325 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-3.exe | ad0bbc069e992d0b | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/82.3-60160-v16.5.1-BMh6lQokUO-GA-1/82.3-60160-1-4.dmg | 48465557d4432517 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/83.1-61210-v16.6-m4BvN2Mx7s-GA-1/83.1-61210-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/83.1-61210-v16.6-m4BvN2Mx7s-GA-1/83.1-61210-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/84.1-63110-v16.7-20BaICzCKO-GA-1/84.1-63110-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/84.1-63110-v16.7-20BaICzCKO-GA-1/84.1-63110-1-4.dmg | none | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-3.exe | c10067768acbd78e | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-67171-v17.2-ZethjbGivZ-GA-1/90.0-67171-1-4.dmg | 248703bb6ec9ad47 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/90.0-67300-1-3.exe | 1a90fb565d9a2d07 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/90.0-68190-1-3.exe | a5876796498a2424 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-4/90.0-75190-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-3.exe | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-4.dmg | none | 0 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-77070-v17.2.3-rT0797IawE-RC-6/90.0-77070-1-3.exe | 041d3a74d60f94d2 | 1 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-77070-v17.2.3-rT0797IawE-RC-6/90.0-77070-1-4.dmg | 3a3cc74fa35e79e0 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/90.0-79210-1-4.dmg | f088496273b6c524 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-4.dmg | f4c49635cb06cf61 | 2 |
+| https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg | 5da3db3feec9f2b4 | 2 |
+
 ## Historical index routes (item 7)
 
 The item asks whether independent historical routes actually work, so each was
