@@ -16,6 +16,9 @@ class PlatformWorkflowTests(unittest.TestCase):
     def test_targets_drive_one_matrix_and_shared_metadata_locks(self):
         self.assertIn('fromJSON(needs.select.outputs.matrix)', self.job['strategy']['matrix'])
         self.assertFalse(self.job['strategy']['fail-fast'])
+        # Per-family locks serialize shared metadata. A global matrix cap lets
+        # waiting firmware/GPL jobs block unrelated targets from being queued.
+        self.assertNotIn('max-parallel', self.job['strategy'])
         concurrency = self.job['concurrency']
         self.assertIn('matrix.lock', concurrency['group'])
         self.assertEqual(concurrency['queue'], 'max')

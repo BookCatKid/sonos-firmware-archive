@@ -36,6 +36,9 @@ definition. Superseded definitions skip acquisition and leave canonical target
 progress untouched; the current main update schedules replacement work. Metadata
 commits with an unchanged workflow do not trigger this skip, and explicit manual
 dispatches remain available.
+Every selected target can queue independently. Shared metadata locks and GitHub's
+runner capacity control concurrency; jobs waiting on a family lock do not consume
+a separate matrix-wide slot that could prevent unrelated targets from queuing.
 Backlogs do not require manual dispatches, locally prepared payloads, receipt
 imports, or completion before deployment. The normal `gpl-audit` worker processes
 successive batches within its `seconds` budget (900 by default); `limit` controls
