@@ -254,6 +254,19 @@ class DocumentRecoveryTests(unittest.TestCase):
             self.assertEqual(result['status'], 'ok')
             self.assertEqual(result['pending'], 0)
 
+    def test_recovery_uses_observations_from_every_declared_target_metadata_path(self):
+        body = b'<html>fixture capture with no self link</html>'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            atomic_json(root/'config/targets.json', {'schema_version': 1, 'targets': [
+                {'name': 'another-source', 'provider': 'fixture', 'description': 'Fixture',
+                 'interval_hours': 6, 'metadata': ['data/other-source']}]})
+            atomic_json(root/'data/other-source/observations.json', {'observed_url': self.source})
+            result = self.recover(root, self.publication(body), lambda capture, path, repo: path.write_bytes(body))
+            self.assertEqual(result['status'], 'ok')
+            record = json.loads((root/'data/catalog.json').read_text())['source_documents'][0]
+            self.assertEqual(record['source_url'], self.source)
+
     def test_real_recovery_is_rejected_locally_before_acquisition(self):
         with tempfile.TemporaryDirectory() as directory, patch.dict('os.environ', {'GITHUB_ACTIONS': 'false'}):
             root = Path(directory)

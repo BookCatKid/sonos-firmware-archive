@@ -72,7 +72,9 @@ receipt in the common catalog only when a first-party origin is established.
 Separate origins and alternate publication locations retain separate receipts,
 even when their contents are identical.
 Origins come from existing observations or the verified capture's own links and
-native manifest references. Unknown origins stay unrecorded and make the audit
+native manifest references. Observations include JSON metadata declared by every
+configured target, so another worker's evidence can restore a lost origin without
+an adapter-specific filename list. Unknown origins stay unrecorded and make the audit
 partial. Recovery uses durable retry rotation and server cooldowns; its batch
 size and document-byte budget are target options. Local verification never
 downloads these captures or imports recovery receipts.

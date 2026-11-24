@@ -160,9 +160,16 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
                         origin_hosts[identity] = host
                     if sonos_url(secure):
                         urls[identity] = origin
-    for path in (root/'data/catalog.json', root/'data/discovery/firmware-frontier.json',
-                 *(root/'data/apps').glob('*.json')):
-        if path.exists():
+    paths = {root/'data/catalog.json', root/'data/discovery/firmware-frontier.json',
+             *(root/'data/apps').glob('*.json')}
+    if (root/'config/targets.json').exists():
+        from .platform.registry import targets
+        for target in targets(root).values():
+            for relative in target.metadata:
+                location = root/relative
+                paths.update(location.rglob('*.json') if location.is_dir() else [location])
+    for path in sorted(paths):
+        if path.is_file() and path.suffix == '.json':
             remember(json.loads(path.read_text()))
     candidates = []
     for (tag, name), asset in sorted(assets.items()):
