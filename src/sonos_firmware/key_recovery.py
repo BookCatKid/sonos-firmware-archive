@@ -9,12 +9,14 @@ import selectors
 import subprocess
 import tempfile
 import time
+import urllib.error
+from datetime import datetime, timezone
 
 from . import cramfs
 from .legacy import discover_legacy_updater_key
 from .mdp import write_private_key_exclusive
 from .storage import file_sha256, atomic_json
-from .retry import checkpoint, select
+from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .upd import parse_file
 from .releases import download_verified
 
@@ -151,6 +153,7 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     state_path = root / 'data/discovery/key-recovery.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'schema_version': 1, 'repositories': {}}
     records = state['repositories'].setdefault(repository, {}).setdefault(expected_recipient, {})
+    backoff = RequestBackoff(state, repository)
     def identity(source):
         return hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
     # Keys are ephemeral: replay a successful, unchanged source in each worker.
@@ -159,13 +162,27 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     other = [row for row in sources if row not in preferred]
     queue = preferred + select(other, records, key=identity, limit=max_sources - len(preferred),
                                state=state, queue=f'{repository}/{expected_recipient}')
+    if backoff.paused('key-source-downloads'):
+        queue = []
+    assessment = {'method': 'legacy-updater', 'model': model,
+                  'checked_at': datetime.now(timezone.utc).isoformat(),
+                  'eligible_sources': len(sources), 'selected_sources': len(queue),
+                  'attempted_sources': 0, 'pending_sources': len(sources),
+                  'status': 'in-progress' if queue else 'deferred' if sources else 'no-eligible-source'}
+    state.setdefault('assessments', {}).setdefault(repository, {})[expected_recipient] = assessment
+    # A method with no eligible source is evidence too. Persist it without
+    # imposing a recipient-wide deadline: newly discovered inputs run at once.
+    atomic_json(state_path, state)
     output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     failures = []
     for source in queue:
+        assessment['attempted_sources'] += 1
+        atomic_json(state_path, state)
         try:
             with tempfile.TemporaryDirectory(dir=output.parent, prefix='.recovery-') as temporary:
                 body = Path(temporary) / 'capture'
                 read_artifact(source, body, repository)
+                backoff.clear('key-source-downloads')
                 if body.stat().st_size != source['bytes'] or file_sha256(body) != source['sha256']:
                     raise ValueError('key source does not match its publication receipt')
                 rootfs = body
@@ -187,6 +204,7 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                         'wrapper_offset': recovered.wrapper_offset, 'byte_order': recovered.byte_order}
                 records[identity(source)] = {**checkpoint(success=True, success_hours=168),
                                               'status': 'recovered', 'proof': proof}
+                assessment.update(status='recovered', pending_sources=0)
                 atomic_json(state_path, state)
                 return proof
         except Exception as error:
@@ -194,8 +212,16 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
             # sensitive details. Only public source identity and type survive.
             failures.append({'package_id': source['package_id'], 'kind': source['kind'],
                              'error_type': type(error).__name__})
-            records[identity(source)] = {**checkpoint(records.get(identity(source))), 'status': 'failed',
+            records[identity(source)] = {**error_checkpoint(error, records.get(identity(source))), 'status': 'failed',
                                          'source': source, 'error_type': type(error).__name__}
+            backoff.failed('key-source-downloads', error)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
             atomic_json(state_path, state)
+            if backoff.paused('key-source-downloads'):
+                break
+    if failures:
+        assessment.update(status='attempts-failed')
+        atomic_json(state_path, state)
     raise ValueError(f'no matching legacy key in {len(failures)} attempted sources; '
                      f'{max(0, len(sources) - len(failures))} sources deferred')

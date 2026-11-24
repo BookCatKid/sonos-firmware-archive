@@ -7,6 +7,9 @@ import tempfile
 import os
 import unittest
 import zlib
+import io
+import urllib.error
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -15,6 +18,7 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from sonos_firmware import key_recovery as recovery
+from sonos_firmware.retry import due
 from sonos_firmware.extract import key_recipient_id, load_private_key, extract_available_components
 from sonos_firmware.mdp import write_private_key_exclusive
 from sonos_firmware.legacy import (SYSTEM_WORD, UPDATER_MARKER, WRAPPER_BYTES, legacy_seed,
@@ -239,6 +243,102 @@ class RecoveryTests(unittest.TestCase):
                 read_artifact=fetch, read_member=lambda path: path.read_bytes(), max_sources=1)
             self.assertEqual(visited[-1], 'c')
             self.assertNotIn('PRIVATE KEY', (root / 'data/discovery/key-recovery.json').read_text())
+
+    def test_recipient_without_sources_gets_durable_method_scoped_assessment(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with self.assertRaises(ValueError):
+                recovery.recover_catalog_key(root, {'packages': []}, 13, self.recipient,
+                    root/'keys/recipient.pem', 'owner/repo', read_artifact=lambda *args: self.fail('no source'))
+            state = json.loads((root/'data/discovery/key-recovery.json').read_text())
+            assessment = state['assessments']['owner/repo'][self.recipient]
+            self.assertEqual(assessment['method'], 'legacy-updater')
+            self.assertEqual(assessment['model'], 13)
+            self.assertEqual(assessment['eligible_sources'], 0)
+            self.assertEqual(assessment['attempted_sources'], 0)
+            self.assertEqual(assessment['status'], 'no-eligible-source')
+            self.assertNotIn('PRIVATE KEY', json.dumps(state))
+
+    def test_assessment_changes_when_new_source_arrives_without_waiting_for_old_failure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            output = root/'keys/recipient.pem'
+            with self.assertRaises(ValueError):
+                recovery.recover_catalog_key(root, {'packages': []}, 17, self.recipient,
+                    output, 'owner/repo', read_artifact=lambda *args: self.fail('no source'))
+            updater = self.updater(17)
+            catalog, _ = source_catalog(root, 17, updater)
+            recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
+                read_artifact=lambda source, path, repo: path.write_bytes(updater),
+                read_member=lambda path: path.read_bytes())
+            assessment = json.loads((root/'data/discovery/key-recovery.json').read_text())['assessments']['owner/repo'][self.recipient]
+            self.assertEqual(assessment['status'], 'recovered')
+            self.assertEqual(assessment['eligible_sources'], 2)
+            self.assertEqual(assessment['attempted_sources'], 1)
+
+    def test_failed_and_deferred_attempts_are_distinct_in_recipient_assessments(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, _ = source_catalog(root, 17, b'fixture', raw=False)
+            def fail(*args):
+                raise ValueError('private-input-must-not-be-reported')
+            for expected_status, attempted in [('attempts-failed', 1), ('deferred', 0)]:
+                with self.assertRaises(ValueError):
+                    recovery.recover_catalog_key(root, catalog, 17, self.recipient,
+                        root/'keys/recipient.pem', 'owner/repo', read_artifact=fail)
+                state = json.loads((root/'data/discovery/key-recovery.json').read_text())
+                assessment = state['assessments']['owner/repo'][self.recipient]
+                self.assertEqual(assessment['status'], expected_status)
+                self.assertEqual(assessment['attempted_sources'], attempted)
+                self.assertEqual(assessment['eligible_sources'], 1)
+                self.assertEqual(assessment['pending_sources'], 1)
+                self.assertNotIn('private-input', json.dumps(state))
+
+    def test_interrupted_first_attempt_leaves_assessment_and_retryable_source(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog, _ = source_catalog(root, 17, b'fixture', raw=False)
+            def interrupt(*args):
+                raise KeyboardInterrupt()
+            with self.assertRaises(KeyboardInterrupt):
+                recovery.recover_catalog_key(root, catalog, 17, self.recipient,
+                    root/'keys/recipient.pem', 'owner/repo', read_artifact=interrupt)
+            state = json.loads((root/'data/discovery/key-recovery.json').read_text())
+            assessment = state['assessments']['owner/repo'][self.recipient]
+            self.assertEqual(assessment['status'], 'in-progress')
+            self.assertEqual(assessment['attempted_sources'], 1)
+            self.assertEqual(assessment['pending_sources'], 1)
+            self.assertEqual(state['repositories']['owner/repo'][self.recipient], {})
+
+    def test_server_retry_timing_pauses_other_key_sources_and_survives_restart(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            updater = self.updater(17)
+            catalog, _ = source_catalog(root, 17, updater)
+            body = io.BytesIO(b'fixture throttle')
+            failure = urllib.error.HTTPError('https://fixture.invalid', 429, 'rate limited',
+                                            {'Retry-After': '7200'}, body)
+            calls = []
+            def fetch(source, path, repo):
+                calls.append(source)
+                if len(calls) == 1:
+                    raise failure
+                path.write_bytes(updater)
+            output = root/'keys/recipient.pem'
+            for _ in range(2):
+                with self.assertRaises(ValueError):
+                    recovery.recover_catalog_key(root, catalog, 17, self.recipient, output,
+                        'owner/repo', read_artifact=fetch, read_member=lambda path: path.read_bytes())
+            self.assertEqual(len(calls), 1)
+            self.assertTrue(body.closed)
+            state = json.loads((root/'data/discovery/key-recovery.json').read_text())
+            record = next(iter(state['repositories']['owner/repo'][self.recipient].values()))
+            self.assertFalse(due(record, datetime.now(timezone.utc)+timedelta(hours=1)))
+            with patch('sonos_firmware.retry._now', return_value=datetime.now(timezone.utc)+timedelta(hours=3)):
+                recovery.recover_catalog_key(root, catalog, 17, self.recipient, output,
+                    'owner/repo', read_artifact=fetch, read_member=lambda path: path.read_bytes())
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
 
 
 class MemberReaderTests(unittest.TestCase):
