@@ -40,15 +40,22 @@ the scheduled workflow resumes remaining work using saved retry deadlines.
 Publication receipts in declared metadata paths feed binary inspection
 automatically; a new adapter needs no separate inspection URL list or workflow.
 
-Normal key preparation records a public assessment for each legacy-updater
+Normal key preparation records a public assessment for each updater
 recipient in `data/discovery/key-recovery.json`, including recipients without an
 eligible published source. Assessments distinguish unavailable inputs, deferred
 sources, unsuccessful attempts, interrupted work and exact-recipient recovery.
-They describe this recovery method's evidence, not a claim that every possible
+They describe the implemented recovery methods' evidence, not a claim that every possible
 recovery method has been exhausted. Newly discovered eligible inputs run without
 waiting for an old source's retry deadline; private material stays ephemeral.
 HTTP failures retain server Retry-After timing, close their responses, and pause
 other key-source downloads through a repository-scoped durable cooldown.
+The same worker checks published updater binaries for unencrypted PEM and DER
+PKCS#1/PKCS#8 RSA private keys before trying legacy wrapped-key derivations.
+Only a key matching the requested recipient fingerprint is accepted; the
+public proof records its encoding, offset and size, never private bytes.
+Recovery-method revisions revisit failed candidates immediately while retaining
+repository-wide server cooldowns. This does not recover hardware-bound secrets
+from ciphertext or establish that any missing recipient has been recovered.
 
 The normal `release-audit` target also reconciles interrupted source-document
 publications under the firmware metadata lock. It verifies the owned asset's

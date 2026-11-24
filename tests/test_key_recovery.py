@@ -178,6 +178,54 @@ class RecoveryTests(unittest.TestCase):
                 self.assertEqual([path.name for path in output.parent.iterdir()], ['model1.pem'])
                 self.assertNotIn('PRIVATE KEY', json.dumps(proof))
 
+    def test_embedded_private_keys_are_recovered_only_for_the_exact_recipient(self):
+        for encoding in (serialization.Encoding.PEM, serialization.Encoding.DER):
+            for form in (serialization.PrivateFormat.PKCS8, serialization.PrivateFormat.TraditionalOpenSSL):
+                with self.subTest(encoding=encoding, form=form), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    wrong = self.transport_key.private_bytes(encoding, form, serialization.NoEncryption())
+                    wanted = self.key.private_bytes(encoding, form, serialization.NoEncryption())
+                    updater = b'\x7fELF'+bytes(19)+wrong+b'noise'+wanted+bytes(23)
+                    filesystem = cramfs_image(updater)
+                    catalog, _ = source_catalog(root, 27, filesystem)
+                    output = root/'keys/recipient.pem'
+                    proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                        read_artifact=lambda source, path, repo: path.write_bytes(filesystem))
+                    self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
+                    self.assertEqual(proof['method'], 'embedded-updater-private-key')
+                    self.assertEqual(proof['key_offset'], 23+len(wrong)+5)
+                    self.assertEqual(proof['key_bytes'], len(wanted))
+                    self.assertNotIn('PRIVATE KEY', json.dumps(proof))
+
+    def test_embedded_scan_ignores_public_encrypted_and_malformed_keys(self):
+        public = self.key.public_key().public_bytes(serialization.Encoding.PEM,
+                                                   serialization.PublicFormat.SubjectPublicKeyInfo)
+        encrypted = self.key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                            serialization.BestAvailableEncryption(b'synthetic-password'))
+        malformed = b'-----BEGIN PRIVATE KEY-----\ninvalid\n-----END PRIVATE KEY-----\n'
+        self.assertIsNone(recovery.embedded_private_key(public+encrypted+malformed, self.recipient))
+        with self.assertRaisesRegex(ValueError, 'size limit'):
+            recovery.embedded_private_key(bytes(100), self.recipient, max_bytes=99)
+
+    def test_new_recovery_method_revision_revisits_a_previously_failed_source(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            updater = self.key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                             serialization.NoEncryption())
+            filesystem = cramfs_image(updater)
+            catalog, _ = source_catalog(root, 27, filesystem)
+            output = root/'keys/recipient.pem'
+            def fetch(source, path, repo):
+                path.write_bytes(filesystem)
+            with patch.object(recovery, 'embedded_private_key', return_value=None):
+                with self.assertRaises(ValueError):
+                    recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                        read_artifact=fetch, max_sources=1)
+            with patch.object(recovery, 'RECOVERY_REVISION', recovery.RECOVERY_REVISION+1):
+                proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
+                    read_artifact=fetch, max_sources=1)
+            self.assertEqual(proof['method'], 'embedded-updater-private-key')
+
     def test_bad_raw_capture_falls_back_to_original_upd_before_decoding(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -235,10 +283,22 @@ class RecoveryTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
                         read_artifact=fetch, read_member=lambda path: path.read_bytes(), max_sources=1)
-            recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
+            proof = recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
                 read_artifact=fetch, read_member=lambda path: path.read_bytes(), max_sources=1)
             self.assertEqual(visited, ['a', 'b', 'c'])
             output.unlink()
+            with patch.object(recovery, 'RECOVERY_REVISION', recovery.RECOVERY_REVISION+1):
+                recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
+                    read_artifact=fetch, read_member=lambda path: path.read_bytes(), max_sources=1)
+            self.assertEqual(visited[-1], 'c')
+            output.unlink()
+            state_path = root/'data/discovery/key-recovery.json'
+            state = json.loads(state_path.read_text())
+            records = state['repositories']['owner/repo'][self.recipient]
+            old_identity = digest(json.dumps(proof['source'], sort_keys=True).encode())
+            for key in [key for key, row in records.items() if row.get('status') == 'recovered']:
+                records[old_identity] = records.pop(key)
+            atomic_json(state_path, state)
             recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
                 read_artifact=fetch, read_member=lambda path: path.read_bytes(), max_sources=1)
             self.assertEqual(visited[-1], 'c')
@@ -252,7 +312,8 @@ class RecoveryTests(unittest.TestCase):
                     root/'keys/recipient.pem', 'owner/repo', read_artifact=lambda *args: self.fail('no source'))
             state = json.loads((root/'data/discovery/key-recovery.json').read_text())
             assessment = state['assessments']['owner/repo'][self.recipient]
-            self.assertEqual(assessment['method'], 'legacy-updater')
+            self.assertEqual(assessment['method'], 'catalog-updater')
+            self.assertIn('embedded-updater-private-key', assessment['methods'])
             self.assertEqual(assessment['model'], 13)
             self.assertEqual(assessment['eligible_sources'], 0)
             self.assertEqual(assessment['attempted_sources'], 0)
@@ -325,10 +386,11 @@ class RecoveryTests(unittest.TestCase):
                     raise failure
                 path.write_bytes(updater)
             output = root/'keys/recipient.pem'
-            for _ in range(2):
-                with self.assertRaises(ValueError):
-                    recovery.recover_catalog_key(root, catalog, 17, self.recipient, output,
-                        'owner/repo', read_artifact=fetch, read_member=lambda path: path.read_bytes())
+            for revision in (recovery.RECOVERY_REVISION, recovery.RECOVERY_REVISION+1):
+                with patch.object(recovery, 'RECOVERY_REVISION', revision):
+                    with self.assertRaises(ValueError):
+                        recovery.recover_catalog_key(root, catalog, 17, self.recipient, output,
+                            'owner/repo', read_artifact=fetch, read_member=lambda path: path.read_bytes())
             self.assertEqual(len(calls), 1)
             self.assertTrue(body.closed)
             state = json.loads((root/'data/discovery/key-recovery.json').read_text())

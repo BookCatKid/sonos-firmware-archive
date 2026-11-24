@@ -1,9 +1,10 @@
-"""Reproduce legacy keys from verified, independently cataloged updater sources."""
+"""Recover exact recipient keys from verified, independently cataloged updaters."""
 from __future__ import annotations
 
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import selectors
 import subprocess
@@ -11,6 +12,9 @@ import tempfile
 import time
 import urllib.error
 from datetime import datetime, timezone
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.exceptions import UnsupportedAlgorithm
 
 from . import cramfs
 from .legacy import discover_legacy_updater_key
@@ -19,9 +23,53 @@ from .storage import file_sha256, atomic_json
 from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .upd import parse_file
 from .releases import download_verified
+from .extract import key_recipient_id
 
 MAX_SOURCE_BYTES = 128 * 1024 * 1024
 MAX_UPDATER_BYTES = 8 * 1024 * 1024
+RECOVERY_REVISION = 2
+
+
+def embedded_private_key(data, expected_recipient, *, max_bytes=MAX_UPDATER_BYTES):
+    """Return an exact RSA recipient match and public location evidence, or None.
+
+    Scan PEM and length-framed DER PKCS#1/PKCS#8 private keys without executing
+    updater code. Public keys and encrypted/invalid candidates are not keys.
+    """
+    if len(data) > max_bytes:
+        raise ValueError('updater exceeds the recovery size limit')
+    if not re.fullmatch('[0-9a-f]{40}', expected_recipient):
+        raise ValueError('expected recipient must be a SHA-1 fingerprint')
+    def accept(body, offset, encoding):
+        try:
+            loader = serialization.load_pem_private_key if encoding == 'pem' else serialization.load_der_private_key
+            key = loader(body, password=None)
+            if isinstance(key, rsa.RSAPrivateKey) and key_recipient_id(key) == expected_recipient:
+                return key, {'method': 'embedded-updater-private-key', 'key_encoding': encoding,
+                             'key_offset': offset, 'key_bytes': len(body)}
+        except (ValueError, TypeError, UnsupportedAlgorithm):
+            pass
+        return None
+    pem = re.compile(rb'-----BEGIN (?P<label>(?:RSA )?PRIVATE KEY)-----\r?\n'
+                     rb'[A-Za-z0-9+/=\r\n]+-----END (?P=label)-----(?:\r?\n)?')
+    for match in pem.finditer(data):
+        result = accept(match[0], match.start(), 'pem')
+        if result:
+            return result
+    # Both unencrypted DER private-key forms start with a sequence and version
+    # integer. Frame the whole sequence before passing it to the crypto parser.
+    prefix = re.compile(rb'\x30(?:[\x00-\x7f]|\x81.|\x82..|\x83...|\x84....)\x02\x01[\x00\x01]', re.DOTALL)
+    for match in prefix.finditer(data):
+        start = match.start()
+        first = data[start+1]
+        count = first & 0x7f if first & 0x80 else 0
+        size = int.from_bytes(data[start+2:start+2+count], 'big') if count else first
+        end = start+2+count+size
+        if end <= len(data):
+            result = accept(data[start:end], start, 'der')
+            if result:
+                return result
+    return None
 
 
 def select_updater_sources(root, catalog, model):
@@ -155,16 +203,20 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     records = state['repositories'].setdefault(repository, {}).setdefault(expected_recipient, {})
     backoff = RequestBackoff(state, repository)
     def identity(source):
-        return hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
+        return hashlib.sha256(json.dumps({'source': source, 'recovery_revision': RECOVERY_REVISION},
+                                         sort_keys=True).encode()).hexdigest()
+    successful_sources = {json.dumps(row['proof'].get('source'), sort_keys=True)
+        for row in records.values() if row.get('status') == 'recovered' and isinstance(row.get('proof'), dict)}
     # Keys are ephemeral: replay a successful, unchanged source in each worker.
     # Failed candidates back off while new sources continue through the queue.
-    preferred = [row for row in sources if records.get(identity(row), {}).get('status') == 'recovered'][:max_sources]
+    preferred = [row for row in sources if json.dumps(row, sort_keys=True) in successful_sources][:max_sources]
     other = [row for row in sources if row not in preferred]
     queue = preferred + select(other, records, key=identity, limit=max_sources - len(preferred),
                                state=state, queue=f'{repository}/{expected_recipient}')
     if backoff.paused('key-source-downloads'):
         queue = []
-    assessment = {'method': 'legacy-updater', 'model': model,
+    assessment = {'method': 'catalog-updater', 'methods': ['embedded-updater-private-key', 'legacy-updater'],
+                  'recovery_revision': RECOVERY_REVISION, 'model': model,
                   'checked_at': datetime.now(timezone.utc).isoformat(),
                   'eligible_sources': len(sources), 'selected_sources': len(queue),
                   'attempted_sources': 0, 'pending_sources': len(sources),
@@ -196,12 +248,18 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
                         stream.seek(section.offset + 16)
                         rootfs.write_bytes(stream.read(section.payload_length))
                 updater = read_member(rootfs)
-                recovered = discover_legacy_updater_key(updater, model, expected_recipient)
-                write_private_key_exclusive(output, recovered.key)
-                proof = {'method': 'legacy-updater', 'model': model, 'recipient_id': expected_recipient,
+                embedded = embedded_private_key(updater, expected_recipient)
+                if embedded is not None:
+                    key, details = embedded
+                else:
+                    recovered = discover_legacy_updater_key(updater, model, expected_recipient)
+                    key = recovered.key
+                    details = {'method': 'legacy-updater', 'wrapper_offset': recovered.wrapper_offset,
+                               'byte_order': recovered.byte_order}
+                write_private_key_exclusive(output, key)
+                proof = {**details, 'model': model, 'recipient_id': expected_recipient,
                         'repository': repository,
-                        'source': source, 'updater_sha256': hashlib.sha256(updater).hexdigest(),
-                        'wrapper_offset': recovered.wrapper_offset, 'byte_order': recovered.byte_order}
+                        'source': source, 'updater_sha256': hashlib.sha256(updater).hexdigest()}
                 records[identity(source)] = {**checkpoint(success=True, success_hours=168),
                                               'status': 'recovered', 'proof': proof}
                 assessment.update(status='recovered', pending_sources=0)
@@ -223,5 +281,5 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     if failures:
         assessment.update(status='attempts-failed')
         atomic_json(state_path, state)
-    raise ValueError(f'no matching legacy key in {len(failures)} attempted sources; '
+    raise ValueError(f'no matching updater key in {len(failures)} attempted sources; '
                      f'{max(0, len(sources) - len(failures))} sources deferred')
