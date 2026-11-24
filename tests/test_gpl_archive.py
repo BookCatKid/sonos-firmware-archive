@@ -7,6 +7,10 @@ import tarfile
 import tempfile
 import unittest
 import urllib.request
+import urllib.error
+from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
+from unittest.mock import patch
 from pathlib import Path
 
 from sonos_firmware.gpl_archive import (
@@ -133,6 +137,24 @@ class GPLArchiveTests(unittest.TestCase):
                 path.write_bytes(intact[:-4])
                 self.assertFalse(verify_artifact(path, "source")[0],
                                  "truncated compressed stream must fail even when tar headers remain readable")
+
+    def test_throttled_download_retains_server_timing_and_closes_response(self):
+        from sonos_firmware import retry
+        now = datetime(2026, 11, 24, tzinfo=timezone.utc)
+        url = "https://www.sonos.com/documents/gpl/18.6/source.tar.xz"
+        item = {"filename": "source.tar.xz", "kind": "source", "url": url,
+                "fetch_url": url, "origin": "sonos"}
+        for header in ("7200", format_datetime(now + timedelta(hours=2))):
+            with self.subTest(header=header), tempfile.TemporaryDirectory() as directory:
+                body = io.BytesIO(b"rate limited")
+                error = urllib.error.HTTPError(url, 429, "slow down", {"Retry-After": header}, body)
+                def limited(request):
+                    raise error
+                with patch.object(retry, '_now', return_value=now):
+                    result = download_artifact(item, Path(directory), request=limited)
+                self.assertEqual(result["retry_after"], 7200)
+                self.assertTrue(body.closed)
+                self.assertNotIn("rate limited", json.dumps(result))
 
     def test_partial_resume_sha_dedup_and_integrity(self):
         data = self.tar_bytes()

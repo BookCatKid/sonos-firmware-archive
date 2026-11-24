@@ -21,6 +21,9 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
+from types import SimpleNamespace
+
+from .retry import checkpoint, error_checkpoint, retry_after_seconds
 
 from .storage import atomic_json as write_json
 
@@ -327,6 +330,14 @@ def verify_artifact(path: Path, kind: str) -> tuple[bool, str, int]:
         return False, f"invalid-archive:{type(error).__name__}", 0
 
 
+def artifact_checkpoint(result: dict, prior: dict | None = None) -> dict:
+    """Keep HTTP retry timing when a download crosses the JSON receipt seam."""
+    if result.get('published') or result.get('state') == 'verified':
+        return checkpoint(prior, success=True)
+    return error_checkpoint(SimpleNamespace(retry_after=result.get('retry_after')), prior,
+                            negative=result.get('http_status') == 404)
+
+
 def download_artifact(
     item: dict, destination_root: Path, *, min_free_bytes: int = DEFAULT_FREE_RESERVE,
     request: Callable[[urllib.request.Request], object] | None = None,
@@ -352,7 +363,14 @@ def download_artifact(
     try:
         response = opener(req)
     except urllib.error.HTTPError as error:
-        return {"state": "http-error", "http_status": error.code, "filename": filename, "fetch_url": fetch_url}
+        try:
+            result = {"state": "http-error", "http_status": error.code,
+                      "filename": filename, "fetch_url": fetch_url}
+            if (seconds := retry_after_seconds(error)) is not None:
+                result['retry_after'] = seconds
+            return result
+        finally:
+            error.close()
     with response:
         status = getattr(response, "status", 200)
         content_type = response.headers.get("Content-Type", "")

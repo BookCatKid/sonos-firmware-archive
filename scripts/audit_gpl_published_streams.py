@@ -16,10 +16,10 @@ import sys
 from pathlib import Path
 
 from sonos_firmware.gpl_archive import (
-    atomic_json, download_artifact, load_json, pause, timestamp, valid_version,
+    artifact_checkpoint, atomic_json, download_artifact, load_json, pause, timestamp, valid_version,
 )
 
-from sonos_firmware.retry import checkpoint, select
+from sonos_firmware.retry import select
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data/gpl/live"
@@ -135,10 +135,10 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> 
                     "expected_sha256": digest, "checked_at": timestamp(),
                     "method": "original-source-reacquisition", "error": {
                         k: v for k, v in outcome.items() if k in
-                        {"http_status", "content_type", "verification", "partial_bytes", "need_bytes", "error_type"}}}
+                        {"http_status", "content_type", "verification", "partial_bytes", "need_bytes", "error_type", "retry_after"}}}
                 stats["failed"] += 1
-        item['stream_integrity'].update(checkpoint(previous,
-            success=item['stream_integrity']['state'] == 'verified'))
+        stream = item['stream_integrity']
+        stream.update(artifact_checkpoint({**stream, **stream.get('error', {})}, previous))
         records["updated"] = timestamp()
         atomic_json(args.output / "artifacts.json", records)
         print(f"{version}/{name}: {item['stream_integrity']['state']} "

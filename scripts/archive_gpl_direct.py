@@ -14,7 +14,7 @@ from pathlib import Path
 
 from sonos_firmware.gpl_binary_evidence import scan_binary
 from sonos_firmware.gpl_archive import (
-    HttpResult, atomic_json, candidates, capture_response, download_artifact,
+    HttpResult, artifact_checkpoint, atomic_json, candidates, capture_response, download_artifact,
     get_page, index_url, load_json, offline_candidates, pause,
     timestamp, valid_version, version_at, file_sha256, source_receipt_keys,
 )
@@ -410,8 +410,7 @@ def archive(args: argparse.Namespace) -> int:
                     else:
                         result["publish_conflict"] = receipt
             result.update(source_url=link['url'], fetch_url=link.get('fetch_url'), origin=link['origin'], kind=link['kind'])
-            result.update(checkpoint(old, success=bool(result.get('published')) or result['state'] == 'verified',
-                                     negative=result.get('http_status') == 404))
+            result.update(artifact_checkpoint(result, old))
             version_assets[receipt_key] = result
             records["updated"] = timestamp()
             atomic_json(args.output / "artifacts.json", records)

@@ -110,11 +110,11 @@ class PublishedStreamAuditTests(unittest.TestCase):
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': rows}}))
             args = Namespace(output=root, store=root/'worker', limit=1, version=[], retry_failed=False,
                              reserve_bytes=0, delay=0)
-            for day in range(3):
+            for attempt, day in enumerate((0, 1, 7)):
                 with patch.object(retry, '_now', return_value=now+timedelta(days=day)):
                     result = MOD.run(args, download=download, wait=lambda delay: None)
                 report = json.loads((root/'stream-audit.json').read_text())
-                self.assertEqual(report['status'], 'partial' if day < 2 else 'ok')
+                self.assertEqual(report['status'], 'partial' if attempt < 2 else 'ok')
             self.assertEqual(result['remaining_after'], 0)
         self.assertEqual(calls, [bad, fresh, bad])
 
@@ -134,6 +134,25 @@ class PublishedStreamAuditTests(unittest.TestCase):
             self.assertEqual(first['remaining_after'], 1)
             self.assertEqual(second['selected'], 0)
             self.assertEqual(second['status'], 'partial')
+
+    def test_rate_limit_persists_server_deadline_across_worker_restart(self):
+        now = datetime(2026, 11, 24, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            row = self.published('limited.tgz', 'a'*64, 10)
+            (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': {'limited.tgz': row}}}))
+            args = Namespace(output=root, store=root/'worker', limit=1, version=[], retry_failed=False,
+                             reserve_bytes=0, delay=0)
+            download = Mock(return_value={'state': 'http-error', 'http_status': 429, 'retry_after': 7200})
+            with patch.object(retry, '_now', return_value=now):
+                MOD.run(args, download=download, wait=lambda delay: None)
+            with patch.object(retry, '_now', return_value=now + timedelta(minutes=90)):
+                result = MOD.run(args, download=download, wait=lambda delay: None)
+            self.assertEqual(download.call_count, 1)
+            self.assertEqual(result['selected'], 0)
+            stream = json.loads((root/'artifacts.json').read_text())['artifacts']['7.0']['limited.tgz']['stream_integrity']
+            self.assertEqual(stream['next_attempt_at'], (now + timedelta(hours=2)).isoformat())
+            self.assertEqual(stream['error']['retry_after'], 7200)
 
     def test_genuine_strong_prior_check_already_accepted(self):
         h = 'a' * 64
