@@ -168,6 +168,11 @@ Historical index discovery queries both manifests and `.upd` payloads across
 [domain match scope](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#url-match-scope).
 Installer history uses that same domain scope with its own file types. Newly
 observed Sonos hosts and directories require no host-list or path-prefix changes.
+The normal workers also learn narrower host queries from their own protocol and
+installer observations. Those queries remain alongside the domain-wide search;
+learned hosts persist across runs without importing release URLs or manifest
+repositories. An unsuccessful broad query therefore does not prevent a later
+scheduled run from searching an observed distribution host separately.
 Direct payload leads enter the same acquisition
 queue even when no manifest remains available. Filename metadata can identify
 a version and model; an unrecognized filename stays unclassified and can still
@@ -175,8 +180,13 @@ be preserved and inventoried. Its source evidence remains separate from its
 verified publication receipt.
 
 The index retains timestamped capture variants rather than one row per URL,
-including variants behind static filenames. Query upgrades reset incompatible
-resume tokens while keeping earlier observations. Pending index pages and
+including variants behind static filenames. Adding a host query preserves
+existing pagination and retry deadlines in both providers. Older checkpoints
+migrate when their saved query definition or fingerprint can be verified.
+Changed query semantics reset
+only incompatible cursors; provider throttles survive query changes. Wayback
+counts requests against its page budget, so paused queries do not consume the
+budget for available hosts. Pending index pages and
 unvisited hosts remain explicit discovery work. The [CDX protocol documentation](https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#collapsing)
 describes digest-based collapsing; an index digest is evidence of a capture,
 not a replacement for the SHA-256 computed from acquired bytes.

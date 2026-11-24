@@ -159,9 +159,23 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
                 state['host_retry'] = error_checkpoint(error, state.get('host_retry'))
     entries, artifacts = _observations(previous.get('entries', {})), _observations(previous.get('artifacts', {}))
     revision = hashlib.sha256(json.dumps([list(roots.items()), list(extensions), match_type]).encode()).hexdigest()
+    query_specs = {root: hashlib.sha256(json.dumps([root, list(extensions),
+        match_type or ('domain' if root == 'sonos.com/' else 'prefix')]).encode()).hexdigest()
+        for root in roots.values()}
     if previous.get('query_revision') != revision:
-        state['queries'] = {}
-        state['next_query'] = 0
+        legacy_values = {key.partition('|')[2] for key in state['queries']}
+        legacy_roots = previous.get('query_roots') or {
+            name: root for name, root in roots.items() if root in legacy_values}
+        legacy_values = set(legacy_roots.values())
+        legacy_compatible = previous.get('query_revision') == hashlib.sha256(json.dumps(
+            [list(legacy_roots.items()), list(extensions), match_type]).encode()).hexdigest()
+        unchanged = {root for root in query_specs if
+                     (legacy_compatible and root in legacy_values) or
+                     previous.get('query_specs', {}).get(root) == query_specs[root]}
+        state['queries'] = {key: row for key, row in state['queries'].items()
+                            if key.partition('|')[2] in unchanged}
+        if not unchanged:
+            state['next_query'] = 0
     endpoints = sorted(state['collections'], reverse=True)
     ordered = []
     for index in range((len(endpoints)+1)//2):
@@ -227,7 +241,8 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
             if getattr(error, 'code', None) in {403, 429}:
                 state['host_retry'] = error_checkpoint(error, state.get('host_retry'))
                 break
-    state.update(query_revision=revision, next_query=position % len(jobs) if jobs else 0, entries=entries, artifacts=artifacts)
+    state.update(query_revision=revision, query_specs=query_specs, query_roots=dict(roots),
+                 next_query=position % len(jobs) if jobs else 0, entries=entries, artifacts=artifacts)
     errors.extend(row for row in [state.get('registry', {}), *state['queries'].values()] if row.get('error'))
     pending = sum(state['queries'].get(endpoint+'|'+root, {}).get('status') != 'complete' or
                   due(state['queries'].get(endpoint+'|'+root, {})) for endpoint, root in jobs)

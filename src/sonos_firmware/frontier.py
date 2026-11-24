@@ -197,7 +197,9 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in static)
     archive = state.get('archive_index', {})
     if index_fetch:
-        archive = index_fetch(archive)
+        archive = index_fetch({**archive, 'query_seeds': [*roots, *static,
+            *(row.get('url') for row in [*state.get('manifests', []),
+              *state.get('candidates', []), *saved_documents, *known_artifacts])]})
         roots.extend(archive['entries'])
         roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in archive.get('artifacts', {}) if official(url))
     bootstrap_errors = []

@@ -10,6 +10,42 @@ from sonos_firmware.archive_index import discover_sources, fetch_index
 
 
 class ArchiveIndexTransportTests(unittest.TestCase):
+    def test_adding_a_query_keeps_an_existing_query_resume_key(self):
+        from urllib.parse import parse_qs
+        roots = {'software': 'update-software.sonos.com/software/',
+                 'unvisited': 'update.sonos.com/unvisited/'}
+        first = discover_sources({}, roots=roots, pages=1, extensions=('exe',),
+            fetch=lambda url: [['timestamp', 'original', 'digest'], [], ['resume']])
+        first['next_host'] = 0
+        for checkpoint in (first, {key: value for key, value in first.items() if key != 'query_specs'}):
+            requests = []
+            second = discover_sources(checkpoint, roots={**roots, 'firmware': 'update.sonos.com/firmware/'},
+                pages=1, extensions=('exe',), fetch=lambda url: requests.append(url) or [])
+            self.assertEqual(parse_qs(urlsplit(requests[0]).query)['resumeKey'], ['resume'])
+            self.assertIn('firmware', second['pending_hosts'])
+
+    def test_paused_query_does_not_consume_the_request_budget(self):
+        roots = {'software': 'update-software.sonos.com/software/', 'firmware': 'update.sonos.com/firmware/'}
+        with patch.object(retry, '_now', return_value=NOW):
+            first = discover_sources({}, roots=roots, pages=1,
+                fetch=Mock(side_effect=TimeoutError('temporary')))
+            first['next_host'] = 0
+            requests = []
+            second = discover_sources(first, roots=roots, pages=1,
+                fetch=lambda url: requests.append(url) or [])
+        self.assertEqual(len(requests), 1)
+        self.assertIn('firmware', requests[0])
+        self.assertIn('firmware', second['completed_hosts'])
+
+    def test_query_changes_do_not_bypass_provider_retry_after(self):
+        with patch.object(retry, '_now', return_value=NOW):
+            first = discover_sources({}, pages=1, fetch=Mock(side_effect=urllib.error.HTTPError(
+                'https://web.archive.org/cdx', 429, 'later', {'Retry-After': '7200'}, None)))
+            fetch = Mock(return_value=[])
+            second = discover_sources(first, pages=1, extensions=('upm', 'upd', 'bin'), fetch=fetch)
+        fetch.assert_not_called()
+        self.assertEqual(second['index_retry'], first['index_retry'])
+
     def test_certificate_failure_uses_verified_browser_transport(self):
         failure = urllib.error.URLError(ssl.SSLCertVerificationError('fixture certificate chain'))
         response = Mock(status_code=200, headers={})

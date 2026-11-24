@@ -35,6 +35,70 @@ def discover(previous, fetch, now=NOW, pages=1):
 
 
 class CommonCrawlIndexTests(unittest.TestCase):
+    def test_normal_discovery_learns_host_queries_and_retains_the_broad_search(self):
+        requests = []
+        def fetch(url):
+            requests.append(url)
+            if url == cc.REGISTRY:
+                return [{'cdx-api': A}]
+            return {'pages': 0} if 'showNumPages' in url else []
+        with patch.object(retry, '_now', return_value=NOW):
+            first = archive_index.discover_archives({}, fetch=fetch, pages=4,
+                seed_urls=['https://update.sonos.com/software/nonce/old.exe',
+                           'https://outside.test/other.exe'], extensions=('exe',),
+                allowed=installers.official_source)
+            expected = {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'}
+            self.assertEqual(first['query_roots'], expected)
+            for provider in ('web.archive.org', 'index.commoncrawl.org'):
+                roots = {parse_qs(urlsplit(url).query)['url'][0] for url in requests
+                         if urlsplit(url).hostname == provider and 'url=' in url}
+                self.assertEqual(roots, set(expected.values()))
+            second = archive_index.discover_archives(first, fetch=fetch, pages=1,
+                extensions=('exe',), allowed=installers.official_source)
+            self.assertEqual(second['query_roots'], expected)
+
+    def test_adding_a_root_keeps_existing_page_progress_with_unvisited_roots(self):
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            if url == cc.REGISTRY:
+                return [{'cdx-api': A}]
+            return {'pages': 3} if 'showNumPages' in url else [indexed()]
+        with patch.object(retry, '_now', return_value=NOW):
+            roots = {'software': 'update.sonos.com/software/', 'unvisited': 'update.sonos.com/unvisited/'}
+            first = cc.discover({}, fetch, pages=1, roots=roots,
+                                extensions=('exe',), allowed=installers.official_source)
+            first['next_query'] = 0
+            for checkpoint in (first, {key: value for key, value in first.items() if key != 'query_specs'}):
+                calls.clear()
+                second = cc.discover(checkpoint, fetch, pages=1,
+                    roots={**roots, 'firmware': 'update.sonos.com/firmware/'},
+                    extensions=('exe',), allowed=installers.official_source)
+                self.assertFalse(any('showNumPages' in url for url in calls))
+                self.assertTrue(any(parse_qs(urlsplit(url).query).get('page') == ['1'] for url in calls))
+                self.assertEqual(second['queries'][A+'|update.sonos.com/software/']['next_page'], 2)
+
+    def test_new_host_search_does_not_retry_an_existing_query_before_its_deadline(self):
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            if url == cc.REGISTRY:
+                return [{'cdx-api': A}]
+            if 'software' in url:
+                raise TimeoutError('temporary index failure')
+            return {'pages': 0}
+        with patch.object(retry, '_now', return_value=NOW):
+            first = cc.discover({}, fetch, pages=1, roots={'software': 'update.sonos.com/software/'},
+                                extensions=('exe',), allowed=installers.official_source)
+            prior = first['queries'][A+'|update.sonos.com/software/']
+            calls.clear()
+            second = cc.discover(first, fetch, pages=1,
+                roots={'software': 'update.sonos.com/software/', 'firmware': 'update.sonos.com/firmware/'},
+                extensions=('exe',), allowed=installers.official_source)
+        self.assertEqual(second['queries'][A+'|update.sonos.com/software/'], prior)
+        self.assertEqual(len(calls), 1)
+        self.assertIn('firmware', calls[0])
+
     def test_empty_query_404_is_distinct_from_a_missing_collection(self):
         for message, expected in (('No Captures found for: sonos.com/', 'ok'),
                                   ('No handler for collection', 'partial')):
@@ -168,11 +232,15 @@ class CommonCrawlIndexTests(unittest.TestCase):
             first = archive_index.discover_archives({}, fetch, pages=1, extensions=('exe',), allowed=installers.official_source)
             second = archive_index.discover_archives(json.loads(json.dumps(first)), fetch, pages=1,
                                                      extensions=('exe',), allowed=installers.official_source)
+            third = archive_index.discover_archives(json.loads(json.dumps(second)), fetch, pages=1,
+                                                    extensions=('exe',), allowed=installers.official_source)
         self.assertEqual(len(second['artifacts'][SOURCE]['captures']), 2)
         self.assertEqual(second['artifacts'][SOURCE]['filename'], 'Sonos.exe')
         self.assertNotIn('artifacts', second['commoncrawl'])
         self.assertNotIn('artifacts', second['wayback'])
-        self.assertEqual(second['status'], 'ok')
+        self.assertEqual(second['status'], 'partial')
+        self.assertEqual(third['status'], 'ok')
+        self.assertEqual(len(third['artifacts'][SOURCE]['captures']), 2)
 
 
 def warc(body=b'MZ synthetic installer', source=SOURCE, date='2020-01-01T00:00:00Z', extra=None, encoded=False):

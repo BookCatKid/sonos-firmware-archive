@@ -18,6 +18,37 @@ BASE = HOST + '/firmware/Prod/discovered/'
 
 
 class FrontierTests(unittest.TestCase):
+    def test_cold_start_protocol_hosts_get_independent_index_queries_after_a_broad_timeout(self):
+        from urllib.parse import parse_qs, urlsplit
+        from sonos_firmware import archive_index, commoncrawl
+        root = HOST+'/firmware/latest/update.upm'
+        requested = []
+        def index(url):
+            requested.append(url)
+            if url == commoncrawl.REGISTRY:
+                return [{'cdx-api': 'https://index.commoncrawl.org/CC-MAIN-2020-01-index'}]
+            query = parse_qs(urlsplit(url).query)
+            if urlsplit(url).hostname == 'web.archive.org':
+                if query['url'] == ['sonos.com/']:
+                    raise TimeoutError('broad domain query timed out')
+                return []
+            return {'pages': 0}
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'missing', {}, None)
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(frontier, 'protocol_roots', return_value=[root]), patch.object(frontier.time, 'sleep'):
+            state = frontier.discover({}, Path(temporary), fetch=missing,
+                probe_fn=lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404},
+                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1,
+                index_fetch=lambda previous: archive_index.discover_archives(previous, fetch=index, pages=2))
+        self.assertEqual(state['archive_index']['query_roots'],
+                         {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'})
+        wayback = [parse_qs(urlsplit(url).query)['url'][0] for url in requested
+                   if urlsplit(url).hostname == 'web.archive.org']
+        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/'])
+        self.assertIn('update.sonos.com', state['archive_index']['completed_hosts'])
+        self.assertEqual(state['archive_index']['pending_hosts'], ['sonos.com'])
+
     def test_missing_prod_sibling_still_discovers_dev_history(self):
         root = HOST + '/firmware/latest/update.upm'
         prod = HOST + '/firmware/Prod/history/update.upm'

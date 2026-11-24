@@ -39,6 +39,13 @@ def apk(body):
 
 
 class InstallerHistoryTests(unittest.TestCase):
+    def test_current_discovery_seeds_index_search_without_any_prior_publication(self):
+        atomic_json(self.root/'data/apps/desktop-discovery.json', {'candidates': [{'url': URL}]})
+        with patch.object(installers, 'discover_sources', return_value={
+                'status': 'ok', 'errors': [], 'artifacts': {}}) as index:
+            self.run_history()
+        self.assertIn(URL, index.call_args.kwargs['seed_urls'])
+
     def test_history_receipt_references_durable_index_instead_of_worker_discovery_file(self):
         self.add('20200101000000', b'MZ historical fixture')
         self.run_history()
@@ -68,7 +75,8 @@ class InstallerHistoryTests(unittest.TestCase):
         patch.object(archive_replay.urllib.request, 'build_opener', return_value=self).start()
         patch.object(installers, 'open_advertised', side_effect=self.live).start()
         patch.object(installers, 'discover_sources', side_effect=lambda previous, **kwargs:
-            archive_index.discover_sources(previous, fetch=self.index, **kwargs)).start()
+            archive_index.discover_sources(previous, fetch=self.index,
+                **{key: value for key, value in kwargs.items() if key != 'seed_urls'})).start()
 
     def index(self, url):
         self.index_requests.append(url)

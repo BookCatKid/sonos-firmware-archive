@@ -104,9 +104,25 @@ def paused_index_hosts(index):
         and urlsplit(row.get('url') or 'https://web.archive.org').hostname == 'web.archive.org' for row in index.get('errors', [])) else set()
 
 
-def discover_archives(previous, fetch=fetch_index, pages=2, **options):
+def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **options):
     """Combine independent indexes behind one capture/publication contract."""
     from .commoncrawl import discover
+    from .source_urls import sonos_url
+    roots = options.get('roots')
+    if roots is None:
+        # Keep the domain-wide search while learning narrower host searches
+        # from our own first-party observations. No version URL list is used.
+        roots = {'sonos.com': 'sonos.com/'}
+        urls = [*seed_urls, *previous.get('query_seeds', []),
+                *previous.get('entries', {}), *previous.get('artifacts', {}),
+                *('https://'+root for root in previous.get('query_roots', {}).values())]
+        for url in urls:
+            if isinstance(url, str) and url.startswith('http://'):
+                url = 'https://'+url[7:]
+            if sonos_url(url):
+                host = urlsplit(url).hostname
+                roots.setdefault(host, host+'/')
+        options = {**options, 'roots': roots, 'match_type': options.get('match_type') or 'domain'}
     def provider_state(name):
         state = dict(previous.get(name, previous if name == 'wayback' else {}))
         for field in ('entries', 'artifacts'):
@@ -132,7 +148,8 @@ def discover_archives(previous, fetch=fetch_index, pages=2, **options):
                 records[url] = {**prior, **row, 'captures': {**prior.get('captures', {}), **row.get('captures', {})}}
         merged[field] = records
     cursors = lambda state: {key: value for key, value in state.items() if key not in {'entries', 'artifacts'}}
-    return {**wayback, **merged, 'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
+    return {**wayback, **merged, 'query_roots': roots,
+            'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
             'observations': wayback['observations']+commoncrawl['observations'],
             'errors': wayback['errors']+commoncrawl['errors'],
             'status': 'ok' if wayback['status'] == commoncrawl['status'] == 'ok' else 'partial'}
@@ -155,27 +172,40 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
     suffixes = '(?i:'+'|'.join(re.escape(ext) for ext in extensions)+')'
     query_revision = hashlib.sha256(json.dumps([list(roots.items()), suffixes, match_type]).encode()).hexdigest()
     compatible = previous.get('schema_version') == 2 and previous.get('query_revision') == query_revision
-    # Query upgrades retain observations without reusing incompatible cursors.
-    cursors = dict(previous.get('cursors', {})) if compatible else {}
+    query_specs = {host: hashlib.sha256(json.dumps([root, suffixes, match_type]).encode()).hexdigest()
+                   for host, root in roots.items()}
+    legacy_hosts = (set(previous.get('cursors', {})) | set(previous.get('completed_hosts', [])) |
+                    set(previous.get('pending_hosts', [])))
+    legacy_roots = previous.get('query_roots') or {
+        host: root for host, root in roots.items() if host in legacy_hosts}
+    legacy_compatible = previous.get('schema_version') == 2 and previous.get('query_revision') == hashlib.sha256(
+        json.dumps([list(legacy_roots.items()), suffixes, match_type]).encode()).hexdigest()
+    unchanged = {host for host in roots if compatible or
+                 (legacy_compatible and legacy_roots.get(host) == roots[host]) or
+                 previous.get('query_specs', {}).get(host) == query_specs[host]}
+    # New roots must not restart unrelated pagination. Changed query semantics
+    # invalidate only the affected cursor; observations remain available.
+    cursors = {host: value for host, value in previous.get('cursors', {}).items() if host in unchanged}
     entries = _observations(previous.get('entries', {}))
     artifacts = _observations(previous.get('artifacts', {}))
-    completed = set(previous.get('completed_hosts', [])) if compatible else set()
-    retries = dict(previous.get('retries', {})) if compatible else {}
-    index_retry = previous.get('index_retry', {}) if compatible else {}
-    if compatible:
-        for error in previous.get('errors', []):
-            root = parse_qs(urlsplit(error.get('url', '')).query).get('url', [None])[0]
-            for host, value in roots.items():
-                if root == value and error.get('next_attempt_at'):
-                    retries.setdefault(host, error)
-            if error.get('http_status') in {403, 429} and error.get('next_attempt_at') and not index_retry:
-                index_retry = error
+    completed = set(previous.get('completed_hosts', [])) & unchanged
+    retries = {host: value for host, value in previous.get('retries', {}).items() if host in unchanged}
+    # Provider throttles apply even when the set of source queries changes.
+    index_retry = previous.get('index_retry', {})
+    for error in previous.get('errors', []):
+        root = parse_qs(urlsplit(error.get('url', '')).query).get('url', [None])[0]
+        for host, value in roots.items():
+            if host in unchanged and root == value and error.get('next_attempt_at'):
+                retries.setdefault(host, error)
+        if error.get('http_status') in {403, 429} and error.get('next_attempt_at') and not index_retry:
+            index_retry = error
     observations = []
     errors = []
     position = previous.get('next_host', 0)
     finished_this_run = set()
-    for _ in range(pages):
-        if not due(index_retry):
+    attempted = 0
+    for _ in range(pages * len(hosts)):
+        if attempted >= pages or not due(index_retry) or len(finished_this_run) == len(hosts):
             break
         host = hosts[position % len(hosts)]
         position += 1
@@ -184,6 +214,7 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
         if not due(retries.get(host)):
             finished_this_run.add(host)
             continue
+        attempted += 1
         query = {'url': roots[host], 'matchType': match_type, 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
                  'filter': ['statuscode:200', 'original:.*[.]'+suffixes+'([?].*)?$'],
@@ -230,7 +261,8 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                 break
     errors.extend(retries.values())
     pending_hosts = sorted(set(hosts) - completed)
-    return {'schema_version': 2, 'query_revision': query_revision,
+    return {'schema_version': 2, 'query_revision': query_revision, 'query_specs': query_specs,
+            'query_roots': dict(roots),
             'entries': entries, 'artifacts': artifacts, 'cursors': cursors, 'next_host': position % len(hosts),
             'retries': retries, 'index_retry': index_retry,
             'completed_hosts': sorted(completed), 'pending_hosts': pending_hosts,

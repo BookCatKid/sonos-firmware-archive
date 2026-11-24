@@ -219,9 +219,21 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
     path = root/'data/apps'/f'{kind}-history-index.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
     extensions = ('exe', 'dmg') if kind == 'desktop' else ('apk',)
-    index = discover_sources(previous, pages=pages, extensions=extensions, allowed=official_source)
+    native = manifest_candidates(root, kind)
+    seeds = [row['url'] for row in native['candidates']]
+    discovery = root/'data/apps'/f'{kind}-discovery.json'
+    if discovery.exists():
+        try:
+            rows = json.loads(discovery.read_text()).get('candidates', [])
+            if not isinstance(rows, list):
+                raise ValueError('invalid installer discovery candidates')
+            seeds.extend(row.get('url') for row in rows if isinstance(row, dict))
+        except (OSError, ValueError, AttributeError) as error:
+            native['errors'].append({'source': str(discovery), 'error': str(error)})
+    index = discover_sources(previous, pages=pages, extensions=extensions, allowed=official_source,
+                             seed_urls=seeds)
     atomic_json(path, index)
-    candidates, errors = [], list(index['errors'])
+    candidates, errors = [], [*native['errors'], *index['errors']]
     for url, row in index['artifacts'].items():
         try:
             candidate = _candidate(url, kind)
