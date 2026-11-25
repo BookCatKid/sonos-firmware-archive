@@ -9,9 +9,9 @@
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
-  "full_compressed_stream_verified_source_archives": 309,
+  "full_compressed_stream_verified_source_archives": 334,
   "fully_published_releases": 38,
-  "generated": "2026-11-25T18:46:35+00:00",
+  "generated": "2026-11-25T22:37:42+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
@@ -19,7 +19,7 @@
   ],
   "published_downloads": 1447,
   "published_source_archives": 1367,
-  "published_source_archives_awaiting_full_stream_verification": 1058,
+  "published_source_archives_awaiting_full_stream_verification": 1033,
   "release_coverage": {
     "10.0": {
       "complete_publication": true,
@@ -321,7 +321,7 @@
     "8.5": {
       "complete_publication": true,
       "expected_assets": 29,
-      "full_compressed_stream_verified": 10,
+      "full_compressed_stream_verified": 27,
       "published_assets": 29,
       "published_source_archives": 27,
       "remaining_assets": 0,
@@ -330,7 +330,7 @@
     "8.6": {
       "complete_publication": true,
       "expected_assets": 29,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 8,
       "published_assets": 29,
       "published_source_archives": 27,
       "remaining_assets": 0,
