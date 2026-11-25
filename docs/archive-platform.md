@@ -67,6 +67,11 @@ Provider options can be set in the target's `options`, or overridden for a plan:
 sonos-archive run firmware --plan --set limit=8 --set index_pages=2
 ```
 
+Budgets exist to bound a single run, not to limit lifetime coverage: every
+queue resumes from saved cursors, and interrupted acquisition or publication
+reconciles on the next run. Raise a batch or a time budget whenever a worker
+spends a run draining a backlog it could process faster.
+
 See [`providers.py`](../src/sonos_firmware/platform/providers.py) for the options
 each provider accepts. Credentials belong in the worker environment, not options.
 
@@ -74,7 +79,7 @@ each provider accepts. Credentials belong in the worker environment, not options
 
 | Category | Discovery |
 | --- | --- |
-| Firmware | Public UPS protocols, manifest links and redirects, observed namespaces, release-note hints, and historical indexes |
+| Firmware | Public UPS protocols, manifest links and redirects, observed namespaces, release-note hints, community forum posts, public client diagnostics, and historical indexes |
 | Desktop | Official redirects, WinGet and Homebrew metadata/history, firmware observations, and historical indexes |
 | Official Android | Sonos-hosted APK redirects and historical captures |
 | Android stores | APKPure asset/version/SDK metadata and apkeep selectors; anonymous Play device/profile discovery with goopdl acquisition |
@@ -97,10 +102,23 @@ completed pass; synthetic protocol profiles advance a saved exploration cursor.
 WinGet history follows changed and parent snapshots, including removed metadata.
 Desktop acquisition reads application versions from captured DMG and Windows
 metadata; build/token/version observations feed native campaign exploration.
+Only campaign-shaped installer URLs are inspected, because a classic installer
+carries no campaign token to pivot from. The desktop worker installs a pinned
+upstream 7-Zip so that application plists inside the HFS or APFS filesystem
+images nested in disk images are selected recursively instead of extracted in
+full.
 Release shapes are learned from our own Sonos observations and their numeric
-fields continue across runs, including compound release labels. Public client
-diagnostics supply additional native manifest leads without importing another
-archive's manifest collection or retaining raw logs.
+fields continue across runs, including compound release labels. Public client diagnostics supply additional native manifest leads without importing another
+archive's manifest collection or retaining raw logs. The same extraction covers
+issue bodies and comment threads; comment scans keep durable per-thread cursors
+and requeue a thread when its activity changes. Timestamp windows subdivide
+before GitHub's result cap, and a one-second window that still overflows drains
+through a bounded identity-deduplicated page scan. The community forum archive
+is a separate cumulative source: the worker verifies each published snapshot
+against its manifest digest and extracts native update URLs from post text,
+keeping only post identifiers and content digests as provenance. Device-local
+links in those posts expose the server directory layout and become candidate
+roots on the native update hosts.
 The firmware worker also replays its own hash-verified preserved XML snapshots,
 so a changed or dead origin cannot hide links in an older revision. Parsed
 payload leads queue sibling manifests even when the payload is unavailable.
