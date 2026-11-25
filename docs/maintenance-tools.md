@@ -35,7 +35,6 @@ it alone does not prove that its assets have been published.
 | `scripts/firmware/diff_firmware_trees.py` | Compare extracted file trees by content |
 | `scripts/firmware/diff_upd_manifests.py` | Compare UPD section manifests |
 | `scripts/firmware/extract_cramfs_little.py` | Extract supported CramFS images |
-| `scripts/apps/diagnose_smapi_playback.py` | Diagnose SMAPI playback |
 | `scripts/recovery/find_legacy_system_word.py` | Search legacy wrapper parameters |
 | `scripts/recovery/test_legacy_flash_prefixes.py` | Test candidate legacy flash prefixes |
 | `scripts/recovery/register_recovered_keys.py` | Record recovered-key provenance |
