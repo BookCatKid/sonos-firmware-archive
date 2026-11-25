@@ -97,10 +97,10 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
             last_error = ValueError('installer source host is paused for this run')
             continue
         try:
-            response = (open_capture(url, replay, allowed=allowed, timeout=180) if replay is not None else
+            response = (open_capture(url, replay, allowed=allowed, timeout=900) if replay is not None else
                         open_advertised(urllib.request.Request(canonical_source(url, allowed),
                             headers={'User-Agent': 'sonos-firmware-archive/1'}),
-                            advertised_by=candidate.get('advertised_by'), timeout=180))
+                            advertised_by=candidate.get('advertised_by'), timeout=900))
             with response, destination.open('wb') as output:
                 if getattr(response, 'status', 200) != 200:
                     raise ValueError('installer source did not return a complete HTTP 200 response')
@@ -127,7 +127,7 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     raise last_error
 
 
-def _archive_output(command, destination, *, limit, seconds=120):
+def _archive_output(command, destination, *, limit, seconds=600):
     """Read an archive through stdout; never execute or extract its member paths."""
     with destination.open('wb') as stream, subprocess.Popen(
             command, stdout=stream, stderr=subprocess.DEVNULL) as process:
@@ -258,6 +258,13 @@ def installer_pivot_contexts(record):
     return result
 
 
+def pivotable(record):
+    """Only campaign installers can yield a native manifest URL."""
+    return any(isinstance(url, str) and re.fullmatch(
+        r'/software/[A-Za-z0-9_-]+/Sonos_\d+[.]\d+-\d+[.](?:dmg|exe)', urlsplit(url).path, re.I)
+        for url in record.get('source_urls') or [])
+
+
 def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', paused_hosts=()):
     from .apk import inspect_official, inspection_revision
     mobile = default_platform == 'fireos-android-apk'
@@ -266,7 +273,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
                      inspection_revision=inspection_revision() if mobile else 'desktop-metadata-3',
-                     inspect_if=None if mobile else lambda row: row.get('platform') in {'macos', 'windows'},
+                     inspect_if=None if mobile else pivotable,
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)
 

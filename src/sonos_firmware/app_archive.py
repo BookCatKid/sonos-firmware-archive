@@ -225,10 +225,12 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     metadata_records = {}
     if source.inspect and not source.inspection_blocks_publication:
         ordered = sorted(by_digest.values(), key=source.inspection_priority) if source.inspection_priority else by_digest.values()
+        required = set()
         for row in ordered:
             if not needs_inspection(row):
                 continue
             digest = row['sha256']
+            required.add(digest)
             if inspected(row):
                 metadata_state[digest] = {'status': 'inspected', 'inspection_revision': source.inspection_revision}
                 continue
@@ -236,6 +238,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             if prior.get('inspection_revision') != source.inspection_revision:
                 metadata_state[digest] = {'status': 'pending', 'inspection_revision': source.inspection_revision}
             metadata_records[digest] = row
+        for digest in set(metadata_state)-required:
+            metadata_state.pop(digest)
     metadata_jobs = [{'kind': 'metadata', 'row': row, 'key': ('metadata', digest)}
                      for digest, row in metadata_records.items()]
     jobs.extend(job for pair in zip_longest(source_jobs, metadata_jobs) for job in pair if job)
