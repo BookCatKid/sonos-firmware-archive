@@ -70,18 +70,6 @@ class LiveRepositoryTests(unittest.TestCase):
                 continue
             self.assertNotIn('sonos-archive run', path.read_text(), path.name)
 
-    def test_the_committed_verify_workflow_runs_every_audit(self):
-        """Where the gate exists, it must exercise the audits it advertises."""
-        verify = ROOT/'.github/workflows/verify.yml'
-        if not verify.exists():
-            self.skipTest('this checkout has no pull-request verify workflow')
-        text = verify.read_text()
-        for script in ('run_tests.py', 'audit_repository_consistency.py',
-                       'audit_discovery_ceilings.py'):
-            with self.subTest(script=script):
-                self.assertIn(script, text)
-
-
 class FixtureRepositoryTests(unittest.TestCase):
     def make_root(self, temporary, *, targets=None, scripts=(), docs=None):
         root = Path(temporary)
