@@ -284,15 +284,51 @@ def client_manifest_urls(body):
     return sorted(roots)
 
 
-def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
+def fetch_issue_comments(url, page):
+    """Read public issue comments, retaining no bodies or household IDs."""
+    import json
+    import os
+    headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
+    token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
+    if token:
+        headers['Authorization'] = 'Bearer '+token
+    separator = '&' if '?' in url else '?'
+    try:
+        with urllib.request.urlopen(urllib.request.Request(
+                url+separator+'per_page=100&page='+str(page), headers=headers), timeout=30) as response:
+            body = response.read(16*1024*1024+1)
+    except urllib.error.HTTPError as error:
+        if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
+            try:
+                error.headers['Retry-After'] = str(max(0, int(error.headers['X-RateLimit-Reset'])-int(time.time())))
+            except (ValueError, KeyError, TypeError):
+                pass
+        raise
+    if len(body) > 16*1024*1024:
+        raise ValueError('public issue comment page exceeds the metadata budget')
+    document = json.loads(body)
+    if not isinstance(document, list):
+        raise ValueError('invalid public issue comment response')
+    return document
+
+
+def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client_reports,
+                            fetch_comments=fetch_issue_comments):
     """Search primary client reports, subdividing windows before GitHub's cap."""
     from datetime import datetime, timedelta, timezone
     state = deepcopy(previous)
-    queries = ('"manifestURL" sonos in:body is:issue is:public',
-               '"manifestRevision" sonos in:body is:issue is:public',
-               '"update-firmware.sonos.com" sonos in:body is:issue is:public')
+    queries = ('"manifestURL" sonos in:body,comments is:issue is:public',
+               '"manifestRevision" sonos in:body,comments is:issue is:public',
+               '"update-firmware.sonos.com" sonos in:body,comments is:issue is:public')
     contexts = state.setdefault('queries', {})
+    for query in queries:
+        legacy = contexts.pop(query.replace('in:body,comments', 'in:body'), None)
+        if query not in contexts and legacy:
+            contexts[query] = legacy
+    contexts = state['queries']
     roots = state.setdefault('roots', {})
+    comment_queue = state.setdefault('comment_queue', {})
+    comment_scans = state.setdefault('comment_scans', {})
     now = datetime.now(timezone.utc).replace(microsecond=0)
     end = now.isoformat().replace('+00:00', 'Z')
     for query in queries:
@@ -318,15 +354,21 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
             scoped += ' created:'+created_span
         def absorb(items):
             for item in items:
-                repository = item.get('repository_url', '').rsplit('/', 1)[-1].lower()
-                if 'manifest' in repository:
-                    continue  # Reference manifest collections are not runtime sources.
                 body = item.get('body') or ''
                 for url in client_manifest_urls(body):
                     proof = {'report_url': item['html_url'], 'updated_at': item.get('updated_at'),
                              'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
                     if proof not in roots.setdefault(url, []):
                         roots[url].append(proof)
+                if item.get('comments') and item.get('comments_url') and item.get('html_url'):
+                    key = str(item.get('id') or item['html_url'])
+                    entry = comment_queue.get(key)
+                    scanned = comment_scans.get(key, {})
+                    if (not entry or entry.get('updated_at') != item.get('updated_at')) and \
+                            scanned.get('updated_at') != item.get('updated_at'):
+                        comment_queue[key] = {'comments_url': item['comments_url'],
+                                              'issue_url': item['html_url'],
+                                              'updated_at': item.get('updated_at'), 'next_page': 1}
         try:
             document = fetch(scoped, 1)
             items, total = document.get('items'), document.get('total_count')
@@ -336,10 +378,6 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
             if document.get('incomplete_results'):
                 raise ValueError('public client search returned incomplete results; page retained')
             if total > 20:
-                # Never resume by page offset: edited reports can move out of
-                # earlier pages. Subdivide overlapping time windows until one
-                # response contains the complete bucket. Deduplication above
-                # makes inclusive boundaries safe.
                 epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
                 start_dt = (datetime.fromisoformat(window['start'].replace('Z', '+00:00'))
                             if window['start'] else epoch)
@@ -350,18 +388,11 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
                     record['windows'][:1] = [{'start': window['start'], 'end': stamp, 'page': 1},
                                             {'start': stamp, 'end': window['end'], 'page': 1}]
                 else:
-                    # Same-updated-time ties are separated by immutable creation
-                    # time, rather than dropping everything after the first page.
                     created_start = window.get('created_start')
                     left = datetime.fromisoformat(created_start.replace('Z', '+00:00')) if created_start else epoch
                     right_text = window.get('created_end', window['end'])
                     right = datetime.fromisoformat(right_text.replace('Z', '+00:00'))
                     if right-left <= timedelta(seconds=1):
-                        # No further time split is possible. Fall back to a
-                        # bounded, identity-deduplicated page scan of this
-                        # single bucket only; this is not the general resume
-                        # algorithm and never carries mutable offsets across
-                        # runs. Proof deduplication makes overlap harmless.
                         seen = {item.get('id') or item.get('html_url') for item in items}
                         complete = len(items) < 20
                         scanned = 1
@@ -381,9 +412,6 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
                             record['windows'].pop(0)
                             record['through'] = window['end']
                         else:
-                            # The saturated bucket stays retryable and visible,
-                            # but rotates behind later windows so one dense
-                            # second cannot starve the rest of the query.
                             record['windows'].append({**record['windows'].pop(0), 'saturated': True})
                             errors.append({'source': 'public-client-reports',
                                            'error': 'indivisible timestamp bucket exceeds the bounded page scan; retained for retry'})
@@ -407,6 +435,51 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
                 state['source_backoff'] = {**record, 'windows': []}
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
+    keys = sorted(comment_queue)
+    comment_cursor = state.get('comment_cursor', 0)
+    attempted = 0
+    for offset in range(len(keys)):
+        if attempted >= comments:
+            break
+        if state.get('source_backoff') and not due(state['source_backoff']):
+            break
+        key = keys[(comment_cursor+offset) % len(keys)]
+        entry = comment_queue.get(key)
+        if not entry:
+            continue
+        attempted += 1
+        try:
+            page = entry.get('next_page', 1)
+            document = fetch_comments(entry['comments_url'], page)
+            for comment in document:
+                body = comment.get('body') or ''
+                for url in client_manifest_urls(body):
+                    proof = {'report_url': comment.get('html_url', entry['issue_url']),
+                             'updated_at': comment.get('updated_at'),
+                             'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
+                    if proof not in roots.setdefault(url, []):
+                        roots[url].append(proof)
+            if len(document) >= 100:
+                entry['next_page'] = page+1
+            else:
+                comment_scans[key] = {'updated_at': entry.get('updated_at'), 'status': 'scanned',
+                                      'issue_url': entry['issue_url']}
+                comment_queue.pop(key, None)
+            state.pop('source_backoff', None)
+        except Exception as error:
+            errors.append({'source': 'public-client-comments', 'error': str(error),
+                           'issue_url': entry.get('issue_url')})
+            if getattr(error, 'code', None) in {403, 429}:
+                state['source_backoff'] = {**error_checkpoint(error, {}), 'http_status': error.code,
+                                           'error': str(error), 'windows': []}
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+                break
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            entry['error'] = str(error)
+    state['comment_cursor'] = comment_cursor+attempted
     state.update(cursor=cursor, errors=errors,
-                 status='partial' if errors or any(r.get('windows') for r in contexts.values()) else 'ok')
+                 status='partial' if errors or comment_queue or
+                 any(r.get('windows') for r in contexts.values()) else 'ok')
     return state

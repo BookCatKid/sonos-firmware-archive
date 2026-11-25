@@ -268,7 +268,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
-                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-1',
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-2',
                      inspect_if=None if mobile else lambda row: row.get('platform') in {'macos', 'windows'},
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)
