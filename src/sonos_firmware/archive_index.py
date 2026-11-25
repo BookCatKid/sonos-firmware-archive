@@ -14,7 +14,7 @@ from .retry import error_checkpoint, due, retry_after_seconds
 
 def fetch_index(url):
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=15) as response:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=45) as response:
             body = response.read(2_000_001)
     except (urllib.error.URLError, ssl.SSLError) as error:
         # A different TLS implementation/trust store can serve metadata when
@@ -23,7 +23,7 @@ def fetch_index(url):
         if not isinstance(getattr(error, 'reason', error), ssl.SSLError):
             raise
         from curl_cffi import requests
-        response = requests.get(url, impersonate='chrome', timeout=15, stream=True)
+        response = requests.get(url, impersonate='chrome', timeout=45, stream=True)
         try:
             if response.status_code != 200:
                 raise urllib.error.HTTPError(url, response.status_code, 'archive index request failed',
@@ -191,7 +191,24 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     commoncrawl, commoncrawl_directories = traverse('commoncrawl', lambda state, **kw: discover(state, fetch, **kw),
         'host_retry', roots=roots, extensions=extensions, allowed=options.get('allowed', official),
         match_type=options.get('match_type') or 'prefix')
-    results = (wayback, wayback_directories, commoncrawl, commoncrawl_directories)
+    # Directory discovery can time out while an exact URL query still works.
+    # Retain that independent route over our own observations, with its own
+    # continuation and retry state. A server cooldown still applies to both.
+    normalized = [url.replace('http://', 'https://', 1) for url in urls if isinstance(url, str)]
+    exact_roots = {url: url.removeprefix('https://') for url in normalized
+                   if sonos_url(url) and
+                   urlsplit(url).path.lower().endswith(tuple('.'+ext for ext in extensions))}
+    exact = provider_state('wayback_exact', 'wayback')
+    cooldown = max((s.get('index_retry', {}) for s in (wayback, wayback_directories)),
+                   key=lambda row: row.get('next_attempt_at', ''))
+    if cooldown:
+        exact['index_retry'] = cooldown
+    if exact_roots and (wayback.get('errors') or wayback_directories.get('errors')):
+        exact = discover_sources(exact, fetch=fetch, pages=1, roots=exact_roots,
+                                 extensions=extensions, allowed=options.get('allowed', official), match_type='exact')
+    else:
+        exact = {**exact, 'observations': [], 'errors': [], 'status': 'ok'}
+    results = (wayback, wayback_directories, commoncrawl, commoncrawl_directories, exact)
     merged = {}
     for field in ('entries', 'artifacts'):
         records = _observations(previous.get(field, {}))
@@ -204,6 +221,7 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     return {**wayback, **merged, 'query_roots': roots,
             'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
             'wayback_directories': cursors(wayback_directories), 'commoncrawl_directories': cursors(commoncrawl_directories),
+            'wayback_exact': cursors(exact),
             'index_query_lane': (lane+pages) % 2 if directory_roots else lane,
             'query_configuration': configuration,
             'observations': [row for result in results for row in result['observations']],

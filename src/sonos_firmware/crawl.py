@@ -267,6 +267,16 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
                 candidates[c.url] = replace(c, advertised_by=authority(canonical))
                 edges.append({'url': c.url, 'parent': url, 'reason': c.source})
                 directory(c.url, c.version)
+                # A staging manifest can advertise a production URL whose bytes
+                # survive only on the host serving the manifest. Treat that
+                # observed host as a lead, never as proof of availability.
+                source, document = urlsplit(c.url), urlsplit(canonical)
+                if official(c.url) and official(canonical) and source.netloc != document.netloc:
+                    alternate = source._replace(netloc=document.netloc).geturl()
+                    candidates.setdefault(alternate, replace(c, url=alternate,
+                        source='manifest-host-counterpart', advertised_by=canonical))
+                    edges.append({'url': alternate, 'parent': canonical, 'reason': 'manifest-host-counterpart'})
+                    directory(alternate, c.version)
             for link in (metadata.get('manifest_links', []) if include_history else []):
                 add(link, url, 'manifest-link')
             for link in metadata.get('landing_links', []):

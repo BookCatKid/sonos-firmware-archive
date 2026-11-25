@@ -24,20 +24,20 @@ sizes and SHA-256 hashes verified before committing them.
 With those exact files, and the archive installed (`pip install -e .`):
 
 ```bash
-python scripts/recovery/recover_model26_key.py --output /secure/model26-private.pem
+sonos-fw recover-amlogic-mdp-key data/key-material/model26/mdp3-model-key.bin --field-only --otp data/key-material/model26/otp.bin --expect-recipient b271039ff7ab0f3d395039f1f079ff71af9dea71 --output /secure/model26-private.pem
 sonos-fw key-id /secure/model26-private.pem
 ```
 
 The result must be `b271039ff7ab0f3d395039f1f079ff71af9dea71`.
-The script verifies input sizes and hashes, checks RSA DER and the public
-recipient fingerprint *before* writing the private key, and writes the PEM
-exclusively with owner-only permissions. Alternative input paths are supported
-through `--field` and `--otp`.
+The automatic worker verifies the published input sizes and hashes. The shared
+CLI validates the field construction and expected recipient before writing a PEM
+exclusively with owner-only permissions. The positional input and `--otp` select
+the two evidence files.
 
 Existing `sonos-fw recover-amlogic-mdp-key` accepts a complete 16-KiB MDP3
 page or a larger manufacturing-data capture, optionally validating a model
 identity in MDP1. Blasty provided only the 2,048-byte model-key **field** at
-MDP3 offset `0x780`; the dedicated script accepts this field directly and
+MDP3 offset `0x780`; the shared CLI accepts this field with `--field-only` and
 identifies the model through the independently observed UPD recipient. No
 synthetic manufacturing page or fabricated model identity is required.
 

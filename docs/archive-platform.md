@@ -84,7 +84,9 @@ each provider accepts. Credentials belong in the worker environment, not options
 
 Wayback and Common Crawl searches cover Sonos domains and directories learned
 from our own observations. They retain original capture URLs, query variants,
-and provider-specific continuation state. Common Crawl collections come from
+and provider-specific continuation state. When broader Wayback queries fail,
+exact queries over our own observed URLs retain a separate continuation and retry
+state. Index requests allow 45 seconds for slower successful queries. Common Crawl collections come from
 its public registry; replay uses recorded WARC/ARC byte ranges. Malformed pages
 retain valid leads and remain retryable.
 
@@ -93,6 +95,11 @@ the original vendor URL. Historical manifests and direct payload captures enter
 the same queues as live discoveries. Namespace model ranges expand after each
 completed pass; synthetic protocol profiles advance a saved exploration cursor.
 WinGet history follows changed and parent snapshots, including removed metadata.
+The firmware worker also replays its own hash-verified preserved XML snapshots,
+so a changed or dead origin cannot hide links in an older revision. Parsed
+payload leads queue sibling manifests even when the payload is unavailable.
+Staging/test manifests also supply payload leads on the host that served them.
+Synthetic profiles are explored against both manifest generations as well as UPS.
 
 External firmware collections are research references, not runtime release lists.
 See [discovery methods](sonos-discovery-methods-research.md) for the protocol

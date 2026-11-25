@@ -14,7 +14,7 @@ from .crawl import crawl_manifests, official, discovery_incomplete, landing_url,
 from .discovery import Candidate, probe, expand_metadata_base, host_counterpart, parse_manifest
 from .firmware_archive import capture_due, candidate_is_preserved
 from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
-from .metadata_sweep import discover_profiles, capture_response
+from .metadata_sweep import discover_profiles, capture_response, _profile_at, _version_profiles
 from .source_urls import advertised_url
 from .source_links import distribution_url, distribution_urls
 from .retry import checkpoint, select, due
@@ -146,11 +146,12 @@ def _advance_namespace(namespaces, row, result):
                       error=result.get('error') or f"HTTP {result.get('http_status')}")
 
 
-def protocol_roots():
+def protocol_roots(profile=None):
     # Public anonymous controller requests, not release/campaign URLs.
     profiles = ((1, 25, 34), (2, 81, 52))
     return [f'https://{host}/firmware/swgen/{generation}/latest/update.upm?' + urlencode({
-        'sonosid': 'Anonymous', 'householdid': 'nohhid', 'cmaj': major, 'cmin': 0, 'cbld': build,
+        'sonosid': 'Anonymous', 'householdid': 'nohhid',
+        **(profile if profile is not None else {'cmaj': major, 'cmin': 0, 'cbld': build}),
     }) for host in ('update.sonos.com', 'update-stage.sonos.com', 'update-perf.sonos.com', 'update-test.sonos.com')
         for generation, major, build in profiles]
 
@@ -186,6 +187,17 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                        'source': 'protocol-static', 'refresh_hours': hours}
     live_roots = protocol_roots()
     roots = list(live_roots)
+    # Profile exploration must reach the modern manifest routers too, rather
+    # than repeatedly varying only the legacy UPS endpoint. Alternate observed
+    # version hints with the same continuing synthetic profile space.
+    profile_cursor = state.get('protocol_profile_cursor', 0)
+    if profile_limit:
+        hints = _version_profiles({'packages': known_artifacts,
+                                  'evidence': [{'version': v} for v in version_hints]})
+        profile = (hints[(profile_cursor//2) % len(hints)] if profile_cursor % 2 == 0
+                   else _profile_at(profile_cursor//2))
+        roots.extend(protocol_roots(profile))
+        profile_cursor += 1
     scoped_urls = _distribution_scope(state, evidence)
     saved_documents = [row for row in state.get('documents', []) if row['url'] in scoped_urls]
     authorities = {url: witness for url, witness in state.get('advertised_sources', {}).items() if url in scoped_urls}
@@ -342,6 +354,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
               'checked_urls': list(checks),
               'probe_sequence': sequence,
               'protocol_cursor': cursor,
+              'protocol_profile_cursor': profile_cursor,
               'scope_exclusions': {'documents': len(state.get('documents', []))-len(saved_documents),
                                    'queued_urls': excluded_pending},
               'blocked_hosts': sorted(blocked)}

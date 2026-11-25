@@ -208,7 +208,7 @@ published input files and uses the same shared `mdp.py` decryptor as the
 existing CLI. It requires no manufactured MDP3 header or fake model identity:
 
 ```bash
-python scripts/recovery/recover_model26_key.py --output /secure/model26-private.pem
+sonos-fw recover-amlogic-mdp-key data/key-material/model26/mdp3-model-key.bin --field-only --otp data/key-material/model26/otp.bin --expect-recipient b271039ff7ab0f3d395039f1f079ff71af9dea71 --output /secure/model26-private.pem
 ```
 
 The original input sources, binary SHA-256 values, complete derivation, and

@@ -22,6 +22,7 @@ from sonos_firmware.firmware_archive import (
 from sonos_firmware.releases import verified_asset
 from sonos_firmware.release_series import ReleaseSeries
 from sonos_firmware.metadata_sweep import discover_version_hints
+from sonos_firmware.historical_firmware import replay_preserved_manifests
 
 
 def preserve(result, catalog_path, state_path, evidence, work, repository, max_packages=24):
@@ -121,6 +122,8 @@ def main():
     parser.add_argument('--no-history-index', action='store_true', help='restrict discovery to live Sonos protocol roots and saved observations')
     parser.add_argument('--index-pages', type=int, default=2,
                         help='per-provider index page budget; collection and page cursors resume across runs')
+    parser.add_argument('--saved-manifest-limit', type=int, default=8,
+                        help='preserved manifest snapshots to reparse per worker')
     args = parser.parse_args()
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
@@ -131,6 +134,12 @@ def main():
     if not args.no_release_notes:
         hints = discover_version_hints(hints)
     catalog = json.loads(args.catalog.read_text()) if args.catalog.exists() else {}
+    replay = None
+    if args.publish and not args.cold_start:
+        archive_root = args.catalog.parent.parent if args.catalog.parent.name == 'data' else args.catalog.parent
+        args.evidence_dir.mkdir(parents=True, exist_ok=True)
+        replay = replay_preserved_manifests(archive_root, args.evidence_dir, args.repository, old,
+                                           limit=args.saved_manifest_limit)
     known = []
     if not args.cold_start:
         for package in catalog.get('packages', []):
@@ -146,6 +155,11 @@ def main():
                       model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
                       inference_limit=args.inference_limit)
     result['release_notes'] = hints
+    if replay is not None:
+        result['manifest_replay'] = old['manifest_replay']
+        result['saved_manifest_replay'] = replay
+        if replay['pending']:
+            result['status'] = 'partial'
     if not args.no_release_notes and hints.get('status') == 'failed':
         result['status'] = 'partial'
     write_json(args.state, result)

@@ -30,7 +30,8 @@ class HistoricalLandingPageTests(unittest.TestCase):
     def test_replayed_pages_become_pending_documents_and_keep_payload_leads(self):
         state = {'candidates': [candidate(PAGE, 'start.html')]}
         history.remember_manifest(state, self.manifest())
-        self.assertEqual(state['pending_manifest_urls'], [PAGE])
+        self.assertEqual(set(state['pending_manifest_urls']),
+                         {PAGE, MANIFEST, PAYLOAD.rsplit('/', 1)[0]+'/update.upm'})
         self.assertEqual([row['url'] for row in state['candidates']], [PAYLOAD])
         self.assertEqual(state['candidates'][0]['historical_manifests'][0]['manifest_url'], MANIFEST)
 
@@ -48,7 +49,8 @@ class HistoricalLandingPageTests(unittest.TestCase):
             result = history.archive_manifests(root, root/'worker', 'fresh/archive', state, limit=1, paused=True)
             saved = json.loads(path.read_text())
         self.assertEqual(result['attempted'], 0)
-        self.assertEqual(state['pending_manifest_urls'], [PAGE])
+        self.assertEqual(set(state['pending_manifest_urls']),
+                         {PAGE, MANIFEST, PAYLOAD.rsplit('/', 1)[0]+'/update.upm'})
         self.assertEqual([row['url'] for row in result['errors']], [outside])
         metadata = saved['sources']['fresh/archive']['capture']['manifest']['metadata']
         self.assertEqual([row['url'] for row in metadata['unresolved_links']], [outside])

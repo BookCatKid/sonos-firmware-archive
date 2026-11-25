@@ -19,6 +19,7 @@ from .mdp import (
     key_recipient_id,
     recipient_id_for_key_file,
     recover_amlogic_model_key,
+    recover_amlogic_model_key_field,
     write_private_key_exclusive,
 )
 from .upd import parse_file
@@ -107,6 +108,8 @@ def main() -> int:
     recover.add_argument("--output", type=Path, required=True)
     recover.add_argument("--expect-model", type=int)
     recover.add_argument("--expect-recipient")
+    recover.add_argument('--field-only', action='store_true',
+                         help='input is the 2-KiB MDP3 model-key field rather than a complete page')
     key_id = sub.add_parser("key-id", help="print a model private key's UPD recipient fingerprint")
     key_id.add_argument("private_key", type=Path)
     legacy = sub.add_parser(
@@ -193,11 +196,13 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 0
     if args.command == "recover-amlogic-mdp-key":
-        key = recover_amlogic_model_key(
-            args.mdp.read_bytes(),
-            args.otp.read_bytes(),
-            expected_model=args.expect_model,
-        )
+        if args.field_only:
+            if args.expect_model is not None:
+                raise ValueError('a model-key field has no MDP1 identity; verify --expect-recipient instead')
+            key = recover_amlogic_model_key_field(args.mdp.read_bytes(), args.otp.read_bytes())
+        else:
+            key = recover_amlogic_model_key(
+                args.mdp.read_bytes(), args.otp.read_bytes(), expected_model=args.expect_model)
         recipient = key_recipient_id(key)
         if args.expect_recipient:
             expected = args.expect_recipient.lower()

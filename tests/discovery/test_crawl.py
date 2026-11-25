@@ -19,6 +19,22 @@ class CrawlTests(unittest.TestCase):
         self.assertIn(BASE+'55.1-74250-1-4.dmg',{c.url for c in cs})
         self.assertTrue(m['warnings'])
 
+    def test_manifest_serving_host_supplies_an_independent_payload_lead(self):
+        root = 'https://update-stage.sonos.com/firmware/Prod/fixture/update.upm'
+        production = 'https://update-firmware.sonos.com/firmware/Prod/fixture/1.0-1-1-3.exe'
+        body = ('<update_manifest version="1.1"><image model="3" version="1.0-1">'
+                + production + '</image></update_manifest>').encode()
+        def missing(url):
+            raise urllib.error.HTTPError(url, 404, 'missing', {}, None)
+        with tempfile.TemporaryDirectory() as temporary:
+            graph = crawl_manifests({}, [{'url': root, 'body': body}], [], Path(temporary),
+                                    fetch=missing, delay=0)
+        candidates = {row.url: row for row in graph['candidates']}
+        alternate = production.replace('update-firmware.', 'update-stage.')
+        self.assertIn(production, candidates)
+        self.assertIn(alternate, candidates)
+        self.assertEqual(candidates[alternate].advertised_by, root)
+
     def test_unrecognized_version_visible(self):
         m,cs=self.parse('<update_manifest version="99"></update_manifest>')
         self.assertTrue(any('unrecognized' in w for w in m['warnings']))

@@ -45,7 +45,8 @@ class FrontierTests(unittest.TestCase):
                          {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'})
         wayback = [parse_qs(urlsplit(url).query)['url'][0] for url in requested
                    if urlsplit(url).hostname == 'web.archive.org']
-        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/'])
+        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/',
+                                   'update.sonos.com/firmware/latest/update.upm'])
         # The same budget now covers directory searches too; host traversal
         # keeps its position and continues in the next normal worker.
         requested.clear()

@@ -10,8 +10,8 @@ from .archive_replay import replay_url, open_capture, canonical_source, capture_
 from .archive_index import paused_index_hosts
 from .crawl import PACKAGE, landing_url
 from .discovery import Candidate, official_firmware_url, parse_manifest
-from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document
-from .releases import verified_asset, publication_receipt
+from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document, document_publication
+from .releases import verified_asset, publication_receipt, download_verified
 from .release_series import ReleaseSeries
 from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .storage import atomic_json
@@ -29,6 +29,13 @@ def remember_manifest(frontier, manifest):
             rows[row['url']] = row
     unresolved = []
     metadata = manifest.setdefault('metadata', {})
+    origins = [manifest['url']]
+    if metadata.get('base_url'):
+        base = metadata['base_url']
+        origins.append(base.split('^', 1)[0].rstrip('/')+'/update.upm' if '^' in base else base)
+    for origin in origins:
+        if official_firmware_url(origin) and origin.split('?', 1)[0].endswith('.upm') and origin not in pending:
+            pending.append(origin)
 
     def accepted(url):
         try:
@@ -54,9 +61,17 @@ def remember_manifest(frontier, manifest):
         if row.get('package_model') is None:
             row['package_model'] = candidate['package_model']
         evidence = {'manifest_url': manifest['url'], 'sha256': manifest['sha256'],
-                    'archive_capture': manifest['archive_capture'], 'advertised_version': candidate['version']}
+                    'advertised_version': candidate['version']}
+        if manifest.get('archive_capture'):
+            evidence['archive_capture'] = manifest['archive_capture']
         if evidence not in row.setdefault('historical_manifests', []):
             row['historical_manifests'].append(evidence)
+        # A dead payload can still identify a live sibling manifest. Do not
+        # require successful payload acquisition before expanding its graph.
+        if official_firmware_url(url):
+            sibling = url.rsplit('/', 1)[0]+'/update.upm'
+            if sibling not in pending:
+                pending.append(sibling)
     frontier['candidates'] = list(rows.values())
     for link in [*metadata.get('manifest_links', []), *metadata.get('landing_links', [])]:
         url = accepted(link)
@@ -65,6 +80,66 @@ def remember_manifest(frontier, manifest):
         if url not in pending:
             pending.append(url)
     metadata['unresolved_links'] = unresolved
+
+
+def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8, acquire=None):
+    """Reparse our own immutable XML even when its original URL has changed."""
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
+        raise ValueError('saved manifest batch limit must be positive')
+    from . import discovery
+    acquire = acquire or download_verified
+    catalog_path = root/'data/catalog.json'
+    catalog = json.loads(catalog_path.read_text()) if catalog_path.exists() else {}
+    state = frontier.setdefault('manifest_replay', {'observations': {}})
+    observations = state.setdefault('observations', {})
+    revision = hashlib.sha256(Path(discovery.__file__).read_bytes()+Path(__file__).read_bytes()).hexdigest()
+    sources = {}
+    for row in catalog.get('source_manifests', []):
+        if not all(row.get(k) for k in ('source_url', 'sha256', 'bytes', 'release_tag', 'release_asset')):
+            continue
+        identity = hashlib.sha256((row['source_url']+'\n'+row['sha256']).encode()).hexdigest()
+        sources[identity] = row
+        if observations.get(identity, {}).get('parser_revision') != revision:
+            observations[identity] = {'status': 'pending'}
+    pending = [key for key in sources if observations.get(key, {}).get('status') != 'parsed']
+    queue = select(pending, observations, key=str, limit=limit, state=state, queue='saved-manifests')
+    errors = []
+    attempted = 0
+    for identity in queue:
+        row = sources[identity]
+        attempted += 1
+        try:
+            if (not isinstance(row['bytes'], int) or isinstance(row['bytes'], bool) or
+                    not 0 < row['bytes'] <= 2_000_000 or
+                    not isinstance(row['sha256'], str) or len(row['sha256']) != 64 or
+                    any(c not in '0123456789abcdef' for c in row['sha256'])):
+                raise ValueError('saved manifest requires a bounded size and SHA-256 receipt')
+            path = evidence/(row['sha256']+'.upm')
+            evidence.mkdir(parents=True, exist_ok=True)
+            if path.exists() and (path.stat().st_size != row['bytes'] or
+                                 hashlib.sha256(path.read_bytes()).hexdigest() != row['sha256']):
+                path.unlink()
+            proof = document_publication(row, repository) or row
+            acquire(proof, path, repository)
+            # Keep the validation here as well for cached or injected readers.
+            data = path.read_bytes()
+            if len(data) != row['bytes'] or hashlib.sha256(data).hexdigest() != row['sha256']:
+                raise ValueError('saved manifest does not match its preservation receipt')
+            metadata, candidates = parse_manifest(path, source_url=row['source_url'])
+            remember_manifest(frontier, {'url': row['source_url'], 'sha256': row['sha256'],
+                'metadata': metadata, 'candidates': [asdict(c) for c in candidates]})
+            observations[identity] = {**checkpoint(observations.get(identity), success=True),
+                                     'status': 'parsed', 'parser_revision': revision}
+        except Exception as error:
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            observations[identity] = {**error_checkpoint(error, observations.get(identity)),
+                                     'status': 'failed', 'parser_revision': revision, 'error': str(error)}
+            errors.append({'url': row['source_url'], 'error': str(error)})
+    report = {'attempted': attempted, 'pending': sum(observations[key]['status'] != 'parsed' for key in sources),
+              'errors': errors}
+    state['status'] = 'partial' if report['pending'] else 'ok'
+    return report
 
 
 def archive_manifests(root, work, repository, frontier, *, limit, paused=False):

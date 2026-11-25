@@ -383,3 +383,43 @@ class ReplayIdentityTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PreservedManifestReplayTests(unittest.TestCase):
+    def test_saved_revisions_expand_without_refetching_the_mutated_origin(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bodies = [b'<update_manifest version="1.1"><image model="17" version="1.0-1">../older/1.0-1-1-17.upd</image></update_manifest>',
+                      b'<update_manifest version="1.1"><image model="17" version="2.0-2">../newer/2.0-2-1-17.upd</image></update_manifest>']
+            sources = [{'source_url': MANIFEST, 'sha256': hashlib.sha256(body).hexdigest(),
+                        'bytes': len(body), 'release_tag': 'saved', 'release_asset': str(i)+'.upm'}
+                       for i, body in enumerate(bodies)]
+            atomic_json(root/'data/catalog.json', {'source_manifests': sources})
+            def acquire(source, path, repository):
+                path.write_bytes(bodies[int(Path(source['release_asset']).stem)])
+            frontier = {}
+            first = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            self.assertEqual(first['pending'], 1)
+            second = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            self.assertEqual(second['pending'], 0)
+            self.assertEqual({x['version'] for x in frontier['candidates']}, {'1.0-1', '2.0-2'})
+            self.assertIn(MANIFEST.rsplit('/', 2)[0]+'/older/update.upm', frontier['pending_manifest_urls'])
+            self.assertIn(MANIFEST.rsplit('/', 2)[0]+'/newer/update.upm', frontier['pending_manifest_urls'])
+            third = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            self.assertEqual(third['attempted'], 0)
+
+    def test_mismatched_saved_bytes_cannot_supply_discovery_leads(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            atomic_json(root/'data/catalog.json', {'source_manifests': [{
+                'source_url': MANIFEST, 'sha256': hashlib.sha256(XML).hexdigest(),
+                'bytes': len(XML), 'release_tag': 'saved', 'release_asset': 'old.upm'}]})
+            frontier = {}
+            def corrupt(source, path, repository):
+                path.write_bytes(XML+b'changed')
+            result = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, acquire=corrupt)
+            self.assertEqual(result['pending'], 1)
+            self.assertTrue(result['errors'])
+            self.assertFalse(frontier.get('candidates'))
