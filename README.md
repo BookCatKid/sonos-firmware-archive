@@ -64,11 +64,11 @@ imply possession of IPA binaries.
 ## Records and analysis
 
 - [`data/catalog.json`](data/catalog.json): firmware provenance, hashes, source assets, and extracted components.
-- [`data/discovery/`](data/discovery/): observed manifests, candidate checks, and resumable discovery state.
+- `data/discovery/` (generated): observed manifests, candidate checks, and resumable discovery state.
 - [`data/apps/`](data/apps/), [`data/gpl/`](data/gpl/): application and GPL evidence and publication receipts.
 - [`data/upd/`](data/upd/), [`data/raw/`](data/raw/), [`data/filesystems/`](data/filesystems/): section and filesystem inventories.
 - `data/platform/targets/`: generated worker checkpoints once scheduled runs have executed.
-- [ConnectX extraction](docs/connectx-anacapad.md), [discovery methods](docs/sonos-discovery-methods-research.md), and [dated archive results and specialist commands](docs/archive-reference.md).
+- [ConnectX extraction](docs/connectx-anacapad.md), [discovery methods](docs/sonos-discovery-methods-research.md), and [maintenance commands](docs/maintenance-tools.md).
 
 `sonos-fw` provides offline inspection, extraction, filesystem inventories, and
 catalog validation. Recovered private keys and private device captures stay out

@@ -101,12 +101,5 @@ archive: `57.22-63071-1-26`, `57.22-65130-1-26`, `57.23-74170-1-26`, and
 `98.0-82170-1-26`. All 44 raw components and eight inventory assets match their
 GitHub Release sizes and SHA-256 receipts. Private keys stayed ephemeral in CI.
 
-The isolated validation source had initially omitted the two public inputs;
-they are now restored there as well as tracked in this project. The original
-archive's production rollout remains acceptance item 21 in the
-[follow-up checklist](https://github.com/BookCatKid/sonos-firmware-archive/blob/a81a9ce7e3b29899ac0b52780d999429668a207c/docs/archive-followup-checklist.md). Four completed isolated
-sources do not establish completion of the production archive's historical
-model-26 backlog.
-
 See [model-key handling](key-material.md) for the comparable recovery notes
 for models 1, 8, 9, 12, 16, and 17.

@@ -1,76 +1,49 @@
 # Maintenance tools
 
-Most archive work is automatic: one scheduled workflow reads
-[`config/targets.json`](../config/targets.json) and runs each target's provider.
-The scripts below support the scheduled workers or provide manual recovery
-and analysis commands. The tables identify commands used by scheduled targets.
+Normal acquisition runs through the scheduled targets in
+[`config/targets.json`](../config/targets.json). These commands support those
+workers or provide reusable repair and analysis tools. A fresh archive needs no
+manual imports or pre-collected payloads.
 
-Nothing here is required to add a target, start from an empty archive, or run a
-normal cycle.
+## Worker entrypoints
 
-## Consistency and coverage reporting
+[`scripts/README.md`](../scripts/README.md) describes the folder layout.
+[`providers.py`](../src/sonos_firmware/platform/providers.py) lists the exact
+commands and options used by each target.
 
-| Script | Purpose |
+| Command | Role |
 | --- | --- |
-| `scripts/gpl/audit_gpl_link_coverage.py` | Require every advertised GPL link to be published or to carry a recorded terminal state. Runs after source verification in the `gpl-audit` target. |
-| `scripts/gpl/audit_gpl_published_streams.py` | Reacquire published GPL sources and validate the entire compressed stream against the immutable receipt. |
-| `scripts/gpl/audit_gpl_legacy_provenance.py` | Compare legacy GPL publications with direct-source provenance. |
-| `scripts/archive/audit_release_assets.py` | Reconcile every recorded asset against GitHub Release metadata; splits duplicate from unexplained extras. Also runs as the `release-audit` target. |
-| `scripts/recovery/audit_recovery_vault.py` | Verify hashes, permissions, fingerprints and ignore status of the private recovery vault. |
-| `scripts/firmware/audit_missing_live.py` | Re-probe catalog entries marked `missing-cdn` without downloading them. |
-| `scripts/firmware/audit_missing_wayback.py` | Check the Wayback CDX index for each package marked `missing-cdn`. |
+| `scripts/archive/audit_release_assets.py` | Reconcile Release metadata and recover attributable document publications |
+| `scripts/gpl/audit_gpl_published_streams.py` | Revalidate original GPL source streams |
+| `scripts/gpl/audit_gpl_link_coverage.py` | Report unresolved advertised GPL links after verification |
+| `scripts/recovery/prepare_model_keys.py` | Prepare ephemeral recipient keys from verified evidence |
+| `scripts/recovery/refresh_key_recovery_ledger.py` | Refresh recipient coverage |
+| `scripts/firmware/decrypt_pending_firmware.py` | Extract preserved sources with available keys |
+| `scripts/firmware/import_raw_receipts.py` | Register staged component receipts during verified publication |
+| `scripts/firmware/upload_raw_assets.py` | Publish and verify extracted components |
 
-## Receipt recovery
+The raw-component registration command is part of a worker transaction; running
+it alone does not prove that its assets have been published.
 
-| Script | Purpose |
+## Repair and analysis
+
+| Command | Purpose |
 | --- | --- |
-| `scripts/apps/reconcile_web_release_assets.py` | Rebuild lost web-capture receipts from each published bundle's embedded `capture.json`, verified against Release size and SHA-256. Records superseded captures instead of dropping them. |
-| `scripts/gpl/reconcile_gpl_release_assets.py` | Reconstruct GPL publication receipts from Release-side size and SHA-256 after an interrupted job. Never overwrites a conflicting recorded hash. |
+| `scripts/apps/reconcile_web_release_assets.py` | Recover lost web receipts from verified published bundles |
+| `scripts/gpl/reconcile_gpl_release_assets.py` | Recover GPL publication receipts without replacing conflicting hashes |
+| `scripts/gpl/analyze_gpl_firmware.py` | Compare firmware evidence with published source components |
+| `scripts/firmware/diff_firmware_trees.py` | Compare extracted file trees by content |
+| `scripts/firmware/diff_upd_manifests.py` | Compare UPD section manifests |
+| `scripts/firmware/extract_cramfs_little.py` | Extract supported CramFS images |
+| `scripts/apps/diagnose_smapi_playback.py` | Diagnose SMAPI playback |
+| `scripts/recovery/recover_model26_key.py` | Reproduce recovery from the tracked public model-26 inputs |
+| `scripts/recovery/find_legacy_system_word.py` | Search legacy wrapper parameters |
+| `scripts/recovery/test_legacy_flash_prefixes.py` | Test candidate legacy flash prefixes |
+| `scripts/recovery/register_recovered_keys.py` | Record recovered-key provenance |
+| `scripts/recovery/generate_recovery_vault_inventory.py` | Inventory private recovery storage |
+| `scripts/recovery/audit_recovery_vault.py` | Check private recovery storage integrity and permissions |
+| `scripts/ghidra/` | Firmware decompilation and instruction-analysis helpers |
 
-## Historical imports
-
-These register evidence that was obtained outside a normal run. They are
-explicitly not runtime discovery inputs.
-
-| Script | Purpose |
-| --- | --- |
-| `scripts/firmware/import_manifest.py` | Register one exact update-manifest snapshot with its source URL, provenance and release tag. |
-| `scripts/firmware/import_discovery.py` | Merge a retained discovery receipt into the catalog and regenerate UPD manifests. |
-| `scripts/firmware/import_evidence.py` | Import redacted firmware-evidence records into the catalog. |
-| `scripts/firmware/import_local_artifact.py` | Import one exact artifact with explicit provenance into the catalog. |
-| `scripts/firmware/import_raw_receipts.py` | Import extracted raw component receipts into the catalog. |
-| `scripts/gpl/import_gpl_wayback.py` | Archive Sonos-hosted GPL index and artifact captures from Wayback. Historical importer, not the discovery engine. |
-
-## Key recovery and decryption
-
-| Script | Purpose |
-| --- | --- |
-| `scripts/recovery/prepare_model_keys.py` | Prepare ephemeral recipient keys in CI from tracked public recovery inputs. |
-| `scripts/recovery/recover_model26_key.py` | Recover a model-26 recipient key from preserved public inputs. |
-| `scripts/firmware/decrypt_pending_firmware.py` | Decrypt preserved sources whose recipient keys are now available. |
-| `scripts/firmware/decrypt_recipient_batch.py` | Decrypt a specific recipient batch. |
-| `scripts/recovery/refresh_key_recovery_ledger.py` | Refresh the key-recovery ledger from current preservation state. |
-| `scripts/recovery/register_recovered_keys.py` | Record recovered keys with their provenance. |
-| `scripts/recovery/generate_recovery_vault_inventory.py` | Inventory the private recovery vault. |
-
-## Analysis and diagnosis
-
-| Script | Purpose |
-| --- | --- |
-| `scripts/gpl/analyze_gpl_firmware.py` | Analyze preserved GPL firmware contents. |
-| `scripts/firmware/diff_firmware_trees.py` | Compare two extracted firmware trees. |
-| `scripts/firmware/diff_upd_manifests.py` | Compare two UPD manifests. |
-| `scripts/recovery/find_legacy_system_word.py` | Locate a legacy system word in a preserved image. |
-| `scripts/firmware/extract_cramfs_little.py` | Extract a little-endian cramfs image. |
-| `scripts/apps/diagnose_smapi_playback.py` | Diagnose SMAPI playback behavior. |
-| `scripts/recovery/test_legacy_flash_prefixes.py` | Probe legacy flash prefix handling. |
-| `scripts/firmware/generate_metadata.py` | Regenerate per-package UPD manifests and extracted-rootfs inventories. |
-
-## Publication helpers
-
-| Script | Purpose |
-| --- | --- |
-| `scripts/firmware/upload_firmware_release.py` | Resumably upload a firmware discovery receipt to an existing Release. Built on the shared `verified_asset`/`publish_verified` publisher, so it performs the same size and SHA-256 reconciliation as the workers. |
-| `scripts/firmware/upload_raw_assets.py` | Upload raw component assets that already have receipts. |
-| `scripts/apps/archive_android_store_apps.py` | Manual Android store acquisition, sharing the workers' signature and manifest inspection. |
-| `scripts/apps/discover_google_play_listings.py` | Metadata-only Google Play listing discovery. |
+Use `--help` for command arguments. Live acquisition belongs in Actions;
+local inspection can use synthetic fixtures and separately available analysis
+inputs. Private keys and device captures stay outside Git.

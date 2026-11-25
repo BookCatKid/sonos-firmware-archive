@@ -31,8 +31,8 @@ The custom recovery workflow is preserved in tracked source:
   discovered the unique model 1 and model 12 parameters;
 - `scripts/ghidra/` preserves the headless reference-following, decompilation,
   and instruction-listing helpers used to recover model 1's SH byte order;
-- `scripts/firmware/decrypt_recipient_batch.py` performs resumable, hash-verified batch
-  extraction while retaining only one downloaded source at a time;
+- `scripts/firmware/decrypt_pending_firmware.py` performs the scheduled,
+  hash-verified extraction of preserved sources with available recipient keys;
 - `scripts/firmware/extract_cramfs_little.py` preserves the dual-endian CramFS
   extractor used to reach model 5's utilities and model 6's updater;
 - `scripts/recovery/test_legacy_flash_prefixes.py` recursively tests candidate model-5

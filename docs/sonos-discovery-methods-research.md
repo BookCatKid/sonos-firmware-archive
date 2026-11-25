@@ -111,7 +111,6 @@ Baseline and successful S2 variants returned **13,841 bytes**, SHA-256 `6da0eec0
 
 These single-request observations demonstrate a presently working anonymous shape and some omission failures. They are **not a universal parameter specification**, do not distinguish independent effects of the jointly added hardware fields, and do not prove that low/old versions or other profiles can never expose a different response. An incomplete request returning 404 does not establish authentication requirements. Keep the full demonstrated profile as a stable probe while recording ablation results separately.
 
-The repository's earlier [1,200-profile research](research-sources.md) reported three distinct legacy UPS responses, including low/invalid-version fallbacks. Its later [channel note](update-channel-enum-2026-09-21.md) reports a sampled byte-identical S1 response and the anonymous S2 correction. These are dated, local measurements of different requests/endpoints, not a published Sonos selection contract. Their apparent breadth must not be converted into an unsupported general rule about how today's S2 router selects historical releases.
 
 ### 5. Traverse the manifest graph, preserving selection semantics
 
