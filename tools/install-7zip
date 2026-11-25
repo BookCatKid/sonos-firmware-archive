@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Install the pinned upstream 7-Zip binary; the distribution package is too
+# old to read filesystem images nested inside DMG installers.
+set -euo pipefail
+destination=${1:?usage: install-7zip DESTINATION_DIRECTORY}
+case "$(uname -s)-$(uname -m)" in
+  Linux-x86_64)
+    arch=x64
+    digest=4ca3b7c6f2f67866b92622818b58233dc70367be2f36b498eb0bdeaaa44b53f4 ;;
+  Linux-aarch64|Linux-arm64)
+    arch=arm64
+    digest=39c5140f02ce4436599303c59a149f654cb1bbc47cdc105a942120d747ae040d ;;
+  *) echo 'No pinned 7-Zip binary for this worker platform' >&2; exit 1 ;;
+esac
+mkdir -p "$destination"
+temporary=$(mktemp -d "$destination/.7zip.XXXXXX")
+trap 'rm -rf "$temporary"' EXIT
+curl --fail --location --retry 5 --retry-all-errors \
+  "https://www.7-zip.org/a/7z2501-linux-$arch.tar.xz" \
+  --output "$temporary/7zip.tar.xz"
+echo "$digest  $temporary/7zip.tar.xz" | sha256sum --check --status
+tar -xJf "$temporary/7zip.tar.xz" -C "$temporary" 7zz
+chmod 755 "$temporary/7zz"
+mv "$temporary/7zz" "$destination/7zz"

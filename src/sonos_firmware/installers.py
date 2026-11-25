@@ -162,60 +162,57 @@ def _inspect_desktop(candidate, path):
                 'plist_sha256': hashlib.sha256(data).hexdigest()}}
     with tempfile.TemporaryDirectory(dir=path.parent, prefix='desktop-metadata-') as temporary:
         work = Path(temporary)
-        archive = path
-        for depth in range(3):
-            if path.suffix.lower() != '.exe' and zipfile.is_zipfile(archive):
-                with zipfile.ZipFile(archive) as bundle:
-                    members = sorted((m for m in bundle.infolist() if
-                        m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
-                    for member in members:
-                        if member.file_size > 1_000_000:
-                            raise ValueError('installer plist exceeds its metadata budget')
-                        try:
-                            return parse(bundle.read(member), member.filename)
-                        except ValueError:
-                            continue
-                raise ValueError('installer archive has no Sonos Info.plist')
-            tool = shutil.which('7zz') or shutil.which('7z')
-            if not tool:
-                raise ValueError('7zip is required to read DMG application metadata')
-            listing = work/'listing.txt'
-            archive_type = ['-tPE'] if path.suffix.lower() == '.exe' else []
-            _archive_output([tool, 'l', '-slt', *archive_type, '--', str(archive)], listing, limit=4*1024*1024)
-            entries = []
-            for block in listing.read_text(errors='replace').split('\n\n'):
-                entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
-            if archive_type:
-                resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:[.]txt|/|$)', e.get('Path', ''))]
-                for member in resources:
-                    output = work/'version-resource'
-                    _archive_output([tool, 'x', '-so', *archive_type, '--', str(archive), member['Path']], output, limit=1_000_000)
-                    data = output.read_bytes()
-                    for text in (data.decode('utf-16le', errors='ignore'), data.decode('utf-8', errors='ignore')):
-                        pattern = r'ProductVersion[\s\x00\",:=]+([0-9]+(?:[.,][ ]*[0-9]+)+)'
-                        # Prefer the application's StringFileInfo value over
-                        # 7zip's uppercase PRODUCTVERSION fixed-header summary.
-                        version = re.search(pattern, text) or re.search(pattern, text, re.I)
-                        if version and 'sonos' in text.lower():
-                            return {'desktop_metadata': {'app_version': re.sub(r',\s*', '.', version[1]),
-                                    'member': member['Path'], 'version_resource_sha256': hashlib.sha256(data).hexdigest()}}
-                raise ValueError('installer has no readable Sonos ProductVersion resource')
-            plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
-                            key=lambda e: e['Path'].count('/'))
-            for member in plists:
-                output = work/'Info.plist'
-                _archive_output([tool, 'x', '-so', '--', str(archive), member['Path']], output, limit=1_000_000)
-                try:
-                    return parse(output.read_bytes(), member['Path'])
-                except ValueError:
-                    continue
-            nested = [e for e in entries if re.search(r'(?i)([.]hfs[x]?|[.]apfs|[.]img|Apple_HFS)$', e.get('Path', ''))]
-            if not nested:
-                raise ValueError('installer disk image has no readable application plist')
-            output = work/('filesystem-'+str(depth))
-            _archive_output([tool, 'x', '-so', '--', str(archive), nested[0]['Path']], output, limit=2*1024**3)
-            archive = output
-    raise ValueError('installer metadata requires an unsupported container depth')
+        if path.suffix.lower() != '.exe' and zipfile.is_zipfile(path):
+            with zipfile.ZipFile(path) as bundle:
+                members = sorted((m for m in bundle.infolist() if
+                    m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
+                for member in members:
+                    if member.file_size > 1_000_000:
+                        raise ValueError('installer plist exceeds its metadata budget')
+                    try:
+                        return parse(bundle.read(member), member.filename)
+                    except ValueError:
+                        continue
+            raise ValueError('installer archive has no Sonos Info.plist')
+        tool = shutil.which('7zz') or shutil.which('7z')
+        if not tool:
+            raise ValueError('7zip is required to read installer metadata')
+        executable = path.suffix.lower() == '.exe'
+        archive_type = ['-tPE'] if executable else []
+        # A recursive wildcard listing keeps the output small even when the
+        # decoder expands filesystem images nested inside the container.
+        selection = '*.app/Contents/Info.plist' if not executable else None
+        listing = work/'listing.txt'
+        _archive_output([tool, 'l', '-slt', *(('-r',) if selection else ()), *archive_type, '--', str(path),
+                         *([selection] if selection else [])], listing, limit=4*1024*1024)
+        entries = []
+        for block in listing.read_text(errors='replace').split('\n\n'):
+            entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
+        if executable:
+            resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:[.]txt|/|$)', e.get('Path', ''))]
+            for member in resources:
+                output = work/'version-resource'
+                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output, limit=1_000_000)
+                data = output.read_bytes()
+                for text in (data.decode('utf-16le', errors='ignore'), data.decode('utf-8', errors='ignore')):
+                    pattern = r'ProductVersion[\s\x00\",:=]+([0-9]+(?:[.,][ ]*[0-9]+)+)'
+                    # Prefer the application's StringFileInfo value over
+                    # 7zip's uppercase PRODUCTVERSION fixed-header summary.
+                    version = re.search(pattern, text) or re.search(pattern, text, re.I)
+                    if version and 'sonos' in text.lower():
+                        return {'desktop_metadata': {'app_version': re.sub(r',\s*', '.', version[1]),
+                                'member': member['Path'], 'version_resource_sha256': hashlib.sha256(data).hexdigest()}}
+            raise ValueError('installer has no readable Sonos ProductVersion resource')
+        plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
+                        key=lambda e: e['Path'].count('/'))
+        for member in plists:
+            output = work/'Info.plist'
+            _archive_output([tool, 'x', '-so', '--', str(path), member['Path']], output, limit=1_000_000)
+            try:
+                return parse(output.read_bytes(), member['Path'])
+            except ValueError:
+                continue
+        raise ValueError('installer disk image has no readable application plist')
 
 
 def inspect_desktop(candidate, path):
@@ -268,7 +265,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
-                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-2',
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-3',
                      inspect_if=None if mobile else lambda row: row.get('platform') in {'macos', 'windows'},
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)
