@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25T00:48:56.689148+00:00",
+  "method": "automated preservation of live official monitor candidates",
+  "system_version": "98.0-83230",
+  "candidates": [
+    {
+      "version": "98.0-83230",
+      "package_model": 49,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/98.0-83230-1-49.upd",
+      "source": "default-base",
+      "filename": "98.0-83230-1-49.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 97789408,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/98.0-83230-1-49.upd",
+      "etag": null,
+      "last_modified": null
+    }
+  ]
+}

@@ -543,6 +543,12 @@
           "package_id": "98.0-82170-1-49",
           "package_model": 49,
           "version": "98.0-82170"
+        },
+        {
+          "artifact_status": "preserved",
+          "package_id": "98.0-83230-1-49",
+          "package_model": 49,
+          "version": "98.0-83230"
         }
       ],
       "recipient_id": "4469cb77823252824904a09879af356617271f79"
@@ -4668,7 +4674,7 @@
   },
   "schema_version": 1,
   "summary": {
-    "encrypted_upd_packages": 721,
+    "encrypted_upd_packages": 722,
     "missing_upd_section_manifests": 0,
     "plaintext_upd_packages": 25,
     "unique_recipients": 34
