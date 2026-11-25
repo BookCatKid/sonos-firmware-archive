@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-11-18",
+  "generated": "2026-11-25",
   "source_manifests": [
     {
       "version": "80.1-56190",
@@ -785,6 +785,30 @@
       "provenance": "official-live-automated-monitor",
       "release_tag": "manifest-snapshots-2026-11-15",
       "release_asset": "98.0-82170--ff81ab965512--25c58a04.upm"
+    },
+    {
+      "version": "98.0-83230",
+      "default_version": "98.0-82170",
+      "revision": "df0b78c9-f218-4ca3-988c-31d3a62af8fe",
+      "filename": "98.0-83230--1d49013f5a6c--77c3092a.upm",
+      "bytes": 13992,
+      "sha256": "1d49013f5a6c40c79e826e4e0b7fba279644f17f6c220fca310888fdb32fa2e2",
+      "source_url": "https://update.sonos.com/firmware/Prod/Sonos-23-vNNWqcR4xJ-SP-1/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-25",
+      "release_asset": "98.0-83230--1d49013f5a6c--77c3092a.upm"
+    },
+    {
+      "version": "98.0-83230",
+      "default_version": "98.0-83230",
+      "revision": "e2a9b599-6ddd-440a-829b-8d0b52c045d2",
+      "filename": "98.0-83230--4f6828604e84--b375a5d5.upm",
+      "bytes": 13207,
+      "sha256": "4f6828604e84c33bb65fbc37e62596b0bba0f61e787096942da9a724515894f6",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/update.upm",
+      "provenance": "official-live-automated-monitor",
+      "release_tag": "manifest-snapshots-2026-11-25",
+      "release_asset": "98.0-83230--4f6828604e84--b375a5d5.upm"
     },
     {
       "version": "81.1-58210",
@@ -23118,6 +23142,23 @@
       "source_manifest": "98.0-82170",
       "release_tag": "firmware-98.0-82170",
       "release_asset": "98.0-82170-1-52.upd"
+    },
+    {
+      "id": "98.0-83230-1-49",
+      "version": "98.0-83230",
+      "package_model": 49,
+      "product": null,
+      "model_number": null,
+      "filename": "98.0-83230-1-49.upd",
+      "artifact_type": "upd",
+      "bytes": 97789408,
+      "sha256": "a1dc68df19ae094879cc5752e8ab7a28757af44fa45346ddf4b3cde87cfe3e06",
+      "artifact_status": "preserved",
+      "raw_status": "encrypted",
+      "source_url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/98.0-83230-1-49.upd",
+      "source_manifest": "98.0-83230",
+      "release_tag": "firmware-98.0-83230",
+      "release_asset": "98.0-83230-1-49.upd"
     }
   ],
   "raw_images": [

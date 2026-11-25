@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source": "data/discovery/auto-98.0-83230-20261125004823Z.json",
+  "artifacts": [
+    {
+      "version": "98.0-83230",
+      "package_model": 49,
+      "url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/98.0-83230-1-49.upd",
+      "source": "default-base",
+      "filename": "98.0-83230-1-49.upd",
+      "available": true,
+      "http_status": 200,
+      "bytes": 97789408,
+      "resolved_url": "https://update-firmware.sonos.com/firmware/Prod/98.0-83230-v27.3-vtUrWjiVM2-RC-3/98.0-83230-1-49.upd",
+      "etag": null,
+      "last_modified": null,
+      "local_file": "98.0-83230-1-49.upd",
+      "sha256": "a1dc68df19ae094879cc5752e8ab7a28757af44fa45346ddf4b3cde87cfe3e06",
+      "downloaded": true
+    }
+  ]
+}
