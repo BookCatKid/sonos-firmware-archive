@@ -158,7 +158,7 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
 ```
 
 For collections of possible bootloader or whole-flash images,
-`scripts/test_legacy_flash_prefixes.py` recursively tests the first and last
+`scripts/recovery/test_legacy_flash_prefixes.py` recursively tests the first and last
 16 KiB of every eligible file, or every 16-KiB-aligned block with
 `--all-aligned`. It deduplicates identical blocks, prints only successful
 recipient IDs, and never writes recovered private-key material.
@@ -208,7 +208,7 @@ published input files and uses the same shared `mdp.py` decryptor as the
 existing CLI. It requires no manufactured MDP3 header or fake model identity:
 
 ```bash
-python scripts/recover_model26_key.py --output /secure/model26-private.pem
+python scripts/recovery/recover_model26_key.py --output /secure/model26-private.pem
 ```
 
 The original input sources, binary SHA-256 values, complete derivation, and

@@ -55,7 +55,7 @@ class Context:
 
     def script(self, filename, *args, **kwargs):
         import sys
-        return Step(kwargs.pop('name', filename.removesuffix('.py')),
+        return Step(kwargs.pop('name', Path(filename).stem),
                     (sys.executable, str(self.root / 'scripts' / filename), *(str(a) for a in args)), **kwargs)
 
     def task(self, name, *args, **kwargs):

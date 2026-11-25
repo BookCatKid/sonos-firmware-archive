@@ -24,7 +24,7 @@ sizes and SHA-256 hashes verified before committing them.
 With those exact files, and the archive installed (`pip install -e .`):
 
 ```bash
-python scripts/recover_model26_key.py --output /secure/model26-private.pem
+python scripts/recovery/recover_model26_key.py --output /secure/model26-private.pem
 sonos-fw key-id /secure/model26-private.pem
 ```
 

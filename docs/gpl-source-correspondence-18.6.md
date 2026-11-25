@@ -33,4 +33,4 @@ GNU GPLv2 section 3 includes scripts controlling compilation and installation in
 3. Compare the actual compiled BusyBox applet set, embedded build IDs, and debug/build strings against source configuration and any provided build scripts. Reconstruct the binary's build procedure from evidence; a generic successful build is insufficient.
 4. Try a controlled reproduction of the corresponding binaries, documenting configuration, toolchain, and unavoidable nondeterminism. If source/build materials are missing, request them from Sonos before alleging a confirmed license violation.
 
-`python scripts/analyze_gpl_firmware.py --kernel <uImage> --rootfs <SquashFS>` repeats the ELF and version correlation on locally held binaries. It does not execute target firmware. The machine-readable evidence is `data/gpl/live/binary-analysis.json`.
+`python scripts/gpl/analyze_gpl_firmware.py --kernel <uImage> --rootfs <SquashFS>` repeats the ELF and version correlation on locally held binaries. It does not execute target firmware. The machine-readable evidence is `data/gpl/live/binary-analysis.json`.

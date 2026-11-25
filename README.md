@@ -77,3 +77,6 @@ of Git; see [recovery storage](docs/recovery-vault.md).
 This is an independent archive. Sonos firmware and product names belong to
 their respective owners. The MIT license covers this repository's original
 code and tooling.
+
+Script entrypoints are grouped by purpose under [`scripts/`](scripts/README.md);
+tests follow the same subsystem layout under `tests/`.

@@ -24,7 +24,7 @@ Provenance:
   [blasty/sonos/sonostool/sonostool.py](https://github.com/blasty/sonos/blob/main/sonostool/sonostool.py),
   reproduced in the archive's `src/sonos_firmware/mdp.py`.
 
-The checked-in `scripts/recover_model26_key.py` requires **both** exact sizes
+The checked-in `scripts/recovery/recover_model26_key.py` requires **both** exact sizes
 and hashes above, parses the field header and RSA DER, and rejects a recovered
 key unless its SPKI SHA-1 recipient fingerprint is:
 
@@ -35,7 +35,7 @@ b271039ff7ab0f3d395039f1f079ff71af9dea71
 From the repository root:
 
 ```bash
-python scripts/recover_model26_key.py --output /path/to/model26-private.pem
+python scripts/recovery/recover_model26_key.py --output /path/to/model26-private.pem
 sonos-fw key-id /path/to/model26-private.pem
 ```
 

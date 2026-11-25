@@ -174,10 +174,10 @@ verified upload, making them safe to resume on machines with limited disk
 space:
 
 ```bash
-python scripts/archive_desktop_installers.py
-python scripts/archive_mobile_installers.py
-python scripts/archive_android_store_apps.py --source apkpure-recovery
-python scripts/audit_release_assets.py --output release-asset-audit.json
+python scripts/apps/archive_desktop_installers.py
+python scripts/apps/archive_mobile_installers.py
+python scripts/apps/archive_android_store_apps.py --source apkpure-recovery
+python scripts/archive/audit_release_assets.py --output release-asset-audit.json
 ```
 
 The current [archive platform](archive-platform.md) schedules anonymous Google

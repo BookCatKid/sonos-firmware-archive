@@ -38,9 +38,9 @@ def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inven
         subprocess.run([sys.executable, str(root / 'scripts' / script), *(str(a) for a in args)], cwd=root, check=True)
     try:
         for script, arguments in [
-            ('refresh_key_recovery_ledger.py', ()),
-            ('prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
-            ('decrypt_pending_firmware.py', ('--key-directory', keys, '--staging', work / 'sources',
+            ('recovery/refresh_key_recovery_ledger.py', ()),
+            ('recovery/prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
+            ('firmware/decrypt_pending_firmware.py', ('--key-directory', keys, '--staging', work / 'sources',
              '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts,
              '--summary', report_path, '--max-packages', limit))]:
             try:
@@ -60,8 +60,8 @@ def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inven
                 document = json.loads(receipt.read_text())
                 if any(component.get('package_id') != receipt.stem for component in document['components']):
                     raise ValueError('extraction receipt contains another package')
-                run('import_raw_receipts.py', receipt, '--catalog', staged_catalog)
-                run('upload_raw_assets.py', '--directory', work / 'raw', '--catalog', staged_catalog,
+                run('firmware/import_raw_receipts.py', receipt, '--catalog', staged_catalog)
+                run('firmware/upload_raw_assets.py', '--directory', work / 'raw', '--catalog', staged_catalog,
                     '--package-id', receipt.stem, '--repo', repository)
                 write_json(catalog, json.loads(staged_catalog.read_text()))
                 promoted = True

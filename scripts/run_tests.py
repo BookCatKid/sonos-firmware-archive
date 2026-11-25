@@ -24,7 +24,7 @@ def main():
         os.environ['PYTHONPATH'] = os.pathsep.join([guard, str(ROOT / 'src'), os.environ.get('PYTHONPATH', '')])
         os.environ['GIT_ALLOW_PROTOCOL'] = 'file'
         install()
-        suite = unittest.defaultTestLoader.discover(str(ROOT / 'tests'), pattern=args.pattern)
+        suite = unittest.defaultTestLoader.discover(str(ROOT / 'tests'), pattern=args.pattern, top_level_dir=str(ROOT))
         result = unittest.TextTestRunner(verbosity=2 if args.verbose else 1).run(suite)
         attempts = events.read_text().splitlines() if events.exists() else []
         if attempts:

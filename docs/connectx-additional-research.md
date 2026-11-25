@@ -143,7 +143,7 @@ discovery starts from public Sonos protocol roots and follows the resulting
 manifest graph; it does not download this repository's candidate registry.
 See [discovery methods and limits](sonos-discovery-methods-research.md).
 
-`scripts/discover_firmware.py` handles both generations, legacy UPS references,
+`scripts/firmware/discover_firmware.py` handles both generations, legacy UPS references,
 canonical response locations, manifest base/image links, and inferred Dev/Prod
 counterparts. It also searches the public archive index for historical Sonos
 manifest paths and persists its own frontier between scheduled runs.

@@ -179,7 +179,7 @@ S2 `96.0-78270` manifest. They added 52 live packages across the `57.22` and
   labeled Android store recovery/direct-delivery sets, and public Web
   deployment snapshots.
 - `data/key-recovery-ledger.json` — UPD envelope recipient coverage and exact packages still blocked by missing model keys.
-- `scripts/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
+- `scripts/recovery/refresh_key_recovery_ledger.py` — deterministically rebuild that key ledger after importing new UPDs.
 - The firmware frontier expands exact directories observed in manifests and the archive's own records over the configured package-model range.
 - `src/sonos_firmware/` — read-only UPD parser and catalog tools.
 - `site/` — compact searchable browser; serve the repository root locally.
@@ -191,7 +191,7 @@ and room names are deliberately excluded.
 An optional local `recovery-work/` vault retains private keys, their exact
 historical updater inputs, recovery intermediates, and a hash inventory while
 remaining Git-ignored. See [local recovery vault](../docs/recovery-vault.md) and
-run `python scripts/audit_recovery_vault.py` to verify it without exposing key
+run `python scripts/recovery/audit_recovery_vault.py` to verify it without exposing key
 material.
 
 ## Use the tools
@@ -215,7 +215,7 @@ sonos-fw extract /path/to/encrypted.upd --private-key /secure/model-key.pem \
 sonos-fw extract-anacapad /path/to/connectx.upd \
   --directory /path/to/raw --receipt /path/to/anacapad-receipt.json
 # Discover firmware directly from public Sonos protocols and their manifest graph.
-python scripts/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
+python scripts/firmware/discover_firmware.py --evidence-dir artifacts/discovery/manifests \
   --report artifacts/discovery/report.json
 # Inspect the shared discovery/extraction worker without acquiring artifacts.
 sonos-archive run firmware --plan
@@ -225,7 +225,7 @@ sonos-fw fs-manifest /path/to/rootfs-extracted --output manifest.json
 
 # Capture read-only, privacy-redacted playback/network telemetry. Press Enter
 # whenever an audible dropout occurs; Ctrl-C stops the capture.
-python scripts/diagnose_smapi_playback.py --room Kitchen \
+python scripts/apps/diagnose_smapi_playback.py --room Kitchen \
   --output /path/to/smapi-dropout.jsonl
 
 # Inspect a device manufacturing-page capture (no secrets are printed)
@@ -238,21 +238,21 @@ sonos-fw recover-amlogic-mdp-key /secure/device-mdp.bin \
 sonos-fw key-id /secure/model-key.pem
 
 # Rebuild historical app URL inventories without downloading every binary.
-python scripts/discover_desktop_installers.py \
+python scripts/apps/discover_desktop_installers.py \
   --output data/apps/desktop-discovery.json
-python scripts/discover_mobile_installers.py \
+python scripts/apps/discover_mobile_installers.py \
   --output data/apps/mobile-discovery.json
 
 # Stream newly discovered app binaries into GitHub Releases. Each verified
 # upload is checkpointed, so interrupted runs are safe to resume.
-python scripts/archive_desktop_installers.py
-python scripts/archive_mobile_installers.py
-python scripts/archive_android_store_apps.py --source apkpure-recovery
+python scripts/apps/archive_desktop_installers.py
+python scripts/apps/archive_mobile_installers.py
+python scripts/apps/archive_android_store_apps.py --source apkpure-recovery
 
 # Capture public Web controller/Pro deployment bodies locally. Add --upload to
 # publish every body plus the complete reconstruction bundles to Releases.
-python scripts/archive_web_apps.py
-python scripts/archive_web_apps.py --probe
+python scripts/apps/archive_web_apps.py
+python scripts/apps/archive_web_apps.py --probe
 
 # Recover a documented legacy updater wrapper (models 1/8/9/12/16/17).
 sonos-fw recover-legacy-updater-key /path/to/upgrade \
@@ -273,7 +273,7 @@ sonos-fw recover-legacy-updater-key /path/to/model5/upgrade \
 
 # Model 26/Tupelo uses the public MDP3 field + OTP inputs described in
 # data/key-material/model26/README.md (both public binary inputs included).
-python scripts/recover_model26_key.py --output /secure/model26-private.pem
+python scripts/recovery/recover_model26_key.py --output /secure/model26-private.pem
 sonos-fw key-id /secure/model26-private.pem
 ```
 
@@ -303,7 +303,7 @@ families, alongside the now-recovered Tupelo/model-26 family, see the
 Regenerate checked-in metadata from a local artifact directory:
 
 ```bash
-python scripts/generate_metadata.py /path/to/sonos-firmware-downloads
+python scripts/firmware/generate_metadata.py /path/to/sonos-firmware-downloads
 ```
 
 To browse the current catalog, serve the repository root:
@@ -357,7 +357,7 @@ sonos-fw discover update.upm --output data/discovery/current.json
 sonos-fw fetch data/discovery/current.json \
   --directory artifacts/discovered \
   --receipt data/discovery/current-receipt.json
-python scripts/import_discovery.py \
+python scripts/firmware/import_discovery.py \
   data/discovery/current.json \
   data/discovery/current-receipt.json \
   artifacts/discovered
@@ -369,9 +369,9 @@ Recheck every current miss without downloading firmware, and independently
 check its exact opaque release directory in Wayback CDX:
 
 ```bash
-python scripts/audit_missing_live.py \
+python scripts/firmware/audit_missing_live.py \
   --output data/discovery/missing-live-audit-YYYY-MM-DD.json
-python scripts/audit_missing_wayback.py \
+python scripts/firmware/audit_missing_wayback.py \
   --output data/discovery/missing-wayback-audit-YYYY-MM-DD.json
 ```
 
