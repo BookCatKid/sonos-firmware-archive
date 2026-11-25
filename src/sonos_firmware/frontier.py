@@ -76,7 +76,8 @@ def _distribution_scope(state, evidence):
         manifests[row['url']].append(row)
     reachable = set(state.get('roots', [])) | set(manifests)
     reachable.update(url for url in state.get('pending_manifest_urls', [])
-                     if urlsplit(url).path.lower().endswith('.upm'))
+                     if urlsplit(url).path.lower().endswith('.upm') or
+                     re.fullmatch(r'update_\d+(?:[.]\w+)?', urlsplit(url).path.lower().rsplit('/', 1)[-1]))
     reachable.update(url for url, revisions in documents.items()
                      if any(row.get('metadata', {}).get('link_scope') == 'software-distribution' for row in revisions))
     edges = defaultdict(list)

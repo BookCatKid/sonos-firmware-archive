@@ -273,7 +273,8 @@ def client_manifest_urls(body):
                 path = path.split('^', 1)[0].rstrip('/')+'/update.upm'
             elif path.lower().endswith(('.upd', '.exe', '.dmg', '.bin', '.apk')):
                 path = path.rsplit('/', 1)[0]+'/update.upm'
-            if not path.lower().endswith('.upm') or '/latest/' in path:
+            epoch = re.fullmatch(r'update_\d+(?:[.]\w+)?', path.rsplit('/', 1)[-1])
+            if not epoch and (not path.lower().endswith('.upm') or '/latest/' in path):
                 continue
             # Never copy identifying query parameters out of a device log.
             url = urlunsplit(('https', parsed.hostname, path, '', ''))
