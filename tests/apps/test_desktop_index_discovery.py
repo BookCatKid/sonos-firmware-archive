@@ -207,6 +207,16 @@ url 'https://new-apps.sonos.com/#{version.csv.second}/client_#{version.csv.first
         self.assertEqual(len(errors), 1)
         self.assertIn('cannot interpolate', errors[0]['error'])
 
+    def test_campaign_installer_supplies_its_cross_platform_twin(self):
+        windows = {'url': 'https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.exe',
+                   'platform': 'windows'}
+        self.assertEqual(MODULE.counterpart(windows),
+                         ('macos', 'https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.dmg'))
+        macos = {'url': 'https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.dmg',
+                 'platform': 'macos'}
+        self.assertEqual(MODULE.counterpart(macos),
+                         ('windows', 'https://update-software.sonos.com/software/nAtvycichO/Sonos_79.0-52294.exe'))
+
     def test_source_report_errors_make_the_discovery_document_partial(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'discovery.json'

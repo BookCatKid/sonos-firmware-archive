@@ -339,6 +339,12 @@ def counterpart(candidate: dict) -> tuple[str, str] | None:
             return None
         path = folder+build+'-1-'+model+'.'+suffix
         return platform, parsed._replace(path=path).geturl()
+    campaign = re.fullmatch(r'(.*/)Sonos_(\d+\.\d+-\d+)\.(exe|dmg)', parsed.path, re.I)
+    if campaign:
+        folder, build, suffix = campaign.groups()
+        other = 'dmg' if suffix.lower() == 'exe' else 'exe'
+        return ('macos' if other == 'dmg' else 'windows',
+                parsed._replace(path=f'{folder}Sonos_{build}.{other}').geturl())
     if candidate["platform"] == "windows":
         changed = url.replace("/software/pc/dcr/", "/software/mac/mdcr/")
         if changed.endswith(".exe"):
