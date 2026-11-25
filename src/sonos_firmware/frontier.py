@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import time
 import math
+import json
+import re
 import urllib.error
 from copy import deepcopy
 from dataclasses import asdict
@@ -18,6 +20,46 @@ from .metadata_sweep import discover_profiles, capture_response, _profile_at, _v
 from .source_urls import advertised_url
 from .source_links import distribution_url, distribution_urls
 from .retry import checkpoint, select, due
+
+
+def observed_artifacts(root):
+    """Feed first-party URLs found by other targets back into firmware discovery."""
+    paths = set((root/'data/apps').glob('*.json'))
+    if (root/'config/targets.json').exists():
+        from .platform.registry import targets
+        for target in targets(root).values():
+            if target.provider == 'firmware':
+                continue
+            for relative in target.metadata:
+                path = root/relative
+                paths.update(path.rglob('*.json') if path.is_dir() else [path])
+    candidates, errors = {}, []
+    def visit(value, source):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                visit(key, source)
+                visit(child, source)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child, source)
+        elif isinstance(value, str):
+            url = normalize(value)
+            if not official(url) or not urlsplit(url).path.lower().endswith(('.upd', '.exe', '.dmg', '.apk', '.bin')):
+                return
+            name = PurePosixPath(urlsplit(url).path).name
+            match = re.fullmatch(r'(?:Sonos_)?(\d+\.\d+-\d+)(?:-1-(\d+))?\.(?:upd|exe|dmg|apk|bin)', name, re.I)
+            candidates.setdefault(url, {'url': url, 'filename': name,
+                'version': match[1] if match else 'unknown',
+                'package_model': int(match[2]) if match and match[2] else None,
+                'source': 'archive-observation:'+source})
+    for path in sorted(paths):
+        if not path.is_file() or path.suffix != '.json':
+            continue
+        try:
+            visit(json.loads(path.read_text()), str(path.relative_to(root)))
+        except (OSError, ValueError) as error:
+            errors.append({'source': str(path.relative_to(root)), 'error': str(error)})
+    return {'candidates': list(candidates.values()), 'errors': errors}
 
 
 def _distribution_scope(state, evidence):

@@ -100,6 +100,8 @@ so a changed or dead origin cannot hide links in an older revision. Parsed
 payload leads queue sibling manifests even when the payload is unavailable.
 Staging/test manifests also supply payload leads on the host that served them.
 Synthetic profiles are explored against both manifest generations as well as UPS.
+First-party payload URLs in other targets' declared metadata feed firmware
+discovery too, including app-worker discoveries that are not yet downloaded.
 
 External firmware collections are research references, not runtime release lists.
 See [discovery methods](sonos-discovery-methods-research.md) for the protocol

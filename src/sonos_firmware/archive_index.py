@@ -164,7 +164,10 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     def traverse(provider, implementation, cooldown, **arguments):
         states = [provider_state(provider, provider), provider_state(provider+'_directories', provider)]
         for index, budget in enumerate(budgets):
-            shared = max((state.get(cooldown, {}) for state in states),
+            deadlines = [state.get(cooldown, {}) for state in states]
+            if provider == 'wayback':
+                deadlines.append(previous.get('wayback_exact', {}).get('index_retry', {}))
+            shared = max(deadlines,
                          key=lambda row: row.get('next_attempt_at', ''))
             if shared:
                 for state in states:

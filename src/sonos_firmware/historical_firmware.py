@@ -94,8 +94,16 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
     observations = state.setdefault('observations', {})
     revision = hashlib.sha256(Path(discovery.__file__).read_bytes()+Path(__file__).read_bytes()).hexdigest()
     sources = {}
+    errors = []
     for row in catalog.get('source_manifests', []):
+        if not isinstance(row, dict):
+            errors.append({'error': 'saved manifest receipt must be an object'})
+            continue
         if not all(row.get(k) for k in ('source_url', 'sha256', 'bytes', 'release_tag', 'release_asset')):
+            continue
+        if (not isinstance(row['source_url'], str) or not isinstance(row['sha256'], str) or
+                len(row['sha256']) != 64 or any(c not in '0123456789abcdef' for c in row['sha256'])):
+            errors.append({'url': row['source_url'], 'error': 'saved manifest requires a source URL and SHA-256 receipt'})
             continue
         identity = hashlib.sha256((row['source_url']+'\n'+row['sha256']).encode()).hexdigest()
         sources[identity] = row
@@ -103,7 +111,6 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
             observations[identity] = {'status': 'pending'}
     pending = [key for key in sources if observations.get(key, {}).get('status') != 'parsed']
     queue = select(pending, observations, key=str, limit=limit, state=state, queue='saved-manifests')
-    errors = []
     attempted = 0
     for identity in queue:
         row = sources[identity]
@@ -138,7 +145,7 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
             errors.append({'url': row['source_url'], 'error': str(error)})
     report = {'attempted': attempted, 'pending': sum(observations[key]['status'] != 'parsed' for key in sources),
               'errors': errors}
-    state['status'] = 'partial' if report['pending'] else 'ok'
+    state['status'] = 'partial' if report['pending'] or errors else 'ok'
     return report
 
 

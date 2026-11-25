@@ -395,12 +395,15 @@ class PreservedManifestReplayTests(unittest.TestCase):
             sources = [{'source_url': MANIFEST, 'sha256': hashlib.sha256(body).hexdigest(),
                         'bytes': len(body), 'release_tag': 'saved', 'release_asset': str(i)+'.upm'}
                        for i, body in enumerate(bodies)]
-            atomic_json(root/'data/catalog.json', {'source_manifests': sources})
+            # One malformed receipt must not prevent valid snapshots expanding.
+            invalid = {**sources[0], 'sha256': 12345}
+            atomic_json(root/'data/catalog.json', {'source_manifests': [invalid, *sources]})
             def acquire(source, path, repository):
                 path.write_bytes(bodies[int(Path(source['release_asset']).stem)])
             frontier = {}
             first = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
             self.assertEqual(first['pending'], 1)
+            self.assertTrue(first['errors'])
             second = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
             self.assertEqual(second['pending'], 0)
             self.assertEqual({x['version'] for x in frontier['candidates']}, {'1.0-1', '2.0-2'})

@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
 from sonos_firmware.discovery import write_json
 from sonos_firmware import releases
-from sonos_firmware.frontier import discover, monitor_report
+from sonos_firmware.frontier import discover, monitor_report, observed_artifacts
 from sonos_firmware.archive_index import discover_archives as discover_sources
 from sonos_firmware.firmware_archive import (
     acquisition_state, archive_candidates, document_name, document_publication, register_document,
@@ -141,7 +141,11 @@ def main():
         replay = replay_preserved_manifests(archive_root, args.evidence_dir, args.repository, old,
                                            limit=args.saved_manifest_limit)
     known = []
+    cross_source = {'candidates': [], 'errors': []}
     if not args.cold_start:
+        archive_root = args.catalog.parent.parent if args.catalog.parent.name == 'data' else args.catalog.parent
+        cross_source = observed_artifacts(archive_root)
+        known.extend(cross_source['candidates'])
         for package in catalog.get('packages', []):
             for url in dict.fromkeys([package.get('source_url'), *package.get('source_urls', [])]):
                 if url and urlsplit(url).path.endswith(('.upd', '.exe', '.dmg', '.bin')):
@@ -155,10 +159,13 @@ def main():
                       model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
                       inference_limit=args.inference_limit)
     result['release_notes'] = hints
+    if cross_source['errors']:
+        result['bootstrap_errors'].extend(cross_source['errors'])
+        result['status'] = 'partial'
     if replay is not None:
         result['manifest_replay'] = old['manifest_replay']
         result['saved_manifest_replay'] = replay
-        if replay['pending']:
+        if replay['pending'] or replay['errors']:
             result['status'] = 'partial'
     if not args.no_release_notes and hints.get('status') == 'failed':
         result['status'] = 'partial'
