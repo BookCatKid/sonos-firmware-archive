@@ -108,6 +108,28 @@ class InstallerHistoryTests(unittest.TestCase):
         self.responses[replay] = (body, headers) if headers else body
         return replay
 
+    def test_preserved_campaign_installer_yields_a_pivot_context(self):
+        campaign = 'https://'+HOST+'/software/tok3n/Sonos_90.0-67171.dmg'
+        self.add('20200101000000', b'dmg campaign fixture', campaign)
+        with patch.object(installers, 'inspect_desktop',
+                          return_value={'desktop_metadata': {'app_version': '17.2.0'}}) as inspect:
+            self.run_history()
+        inspect.assert_called()
+        artifact = next(row for row in self.receipt()['artifacts'] if campaign in row['source_urls'])
+        contexts = installers.installer_pivot_contexts(artifact)
+        self.assertEqual(installers.pivotable(artifact), True)
+        self.assertEqual({(context['build'], context['app_version'], context['token']) for context in contexts},
+                         {('90.0-67171', '17.2', 'tok3n'), ('90.0-67171', '17.2.0', 'tok3n')})
+
+    def test_classic_installer_is_preserved_without_inspection(self):
+        classic = 'https://'+HOST+'/software/mac/mdcr/SonosDesktopController131.dmg'
+        self.add('20200101000000', b'classic fixture', classic)
+        with patch.object(installers, 'inspect_desktop') as inspect:
+            self.run_history()
+        inspect.assert_not_called()
+        self.assertEqual(installers.installer_pivot_contexts(
+            next(row for row in self.receipt()['artifacts'] if classic in row['source_urls'])), [])
+
     def run_history(self, kind='desktop', now=NOW, **kwargs):
         with patch.object(retry, '_now', return_value=now):
             return installers.archive_history(self.root, self.root/'worker', 'owner/archive', kind,
