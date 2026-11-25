@@ -74,7 +74,10 @@ class ApkInspectionTests(unittest.TestCase):
         mobile = installers.source(default_platform='fireos-android-apk')
         self.assertIs(mobile.inspect, apk.inspect_official)
         self.assertEqual(mobile.inspection_revision, apk.inspection_revision())
-        self.assertIsNone(installers.source(default_platform='windows').inspect)
+        desktop = installers.source(default_platform='windows')
+        self.assertIs(desktop.inspect, installers.inspect_desktop)
+        self.assertEqual(desktop.inspection_revision, 'desktop-metadata-3')
+        self.assertFalse(desktop.inspection_blocks_publication)
 
     def test_missing_optional_java_defers_acquisition_before_downloading(self):
         source = installers.source(default_platform='fireos-android-apk')
