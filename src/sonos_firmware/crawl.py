@@ -37,16 +37,6 @@ def normalize(url: str) -> str:
     return parsed._replace(scheme='https' if parsed.scheme == 'http' else parsed.scheme, fragment='').geturl()
 
 
-def mirror(url: str) -> bool:
-    p = urlsplit(url)
-    return p.scheme == 'https' and p.hostname == 'raw.githubusercontent.com' and p.path.startswith('/systemcrash/sonos-firmware/')
-
-
-def catalog_manifest_url(url: str) -> str:
-    return url.replace('https://github.com/systemcrash/sonos-firmware/blob/',
-                       'https://raw.githubusercontent.com/systemcrash/sonos-firmware/')
-
-
 
 def rejected_url_kind(url: str) -> str:
     """Classify a rejected non-official URL.
@@ -92,7 +82,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     def add(url, parent, reason, advertised_by=None):
         url = normalize(url)
         witness = advertised_by or authority(parent)
-        if advertised_url(url, witness) or (reason == 'catalog-manifest' and mirror(url)):
+        if advertised_url(url, witness):
             if witness:
                 authorities[url] = witness
             edges.append({'url': url, 'parent': parent, 'reason': reason})
@@ -149,7 +139,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     for item in initial:
         add(item['url'], 'current-feed', 'current-manifest', item.get('advertised_by'))
     for item in (catalog.get('source_manifests', []) if include_history else []):
-        add(catalog_manifest_url(item.get('source_url', '')), 'catalog', 'catalog-manifest', item.get('advertised_by'))
+        add(item.get('source_url', ''), 'catalog', 'catalog-manifest', item.get('advertised_by'))
     for item in (catalog.get('packages', []) if include_history else []):
         directory(item.get('source_url', ''), item.get('version'))
     for seed in (seed_urls if include_history else []):
@@ -162,20 +152,12 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         else:
             directory(url)
 
-    class Guard(urllib.request.HTTPRedirectHandler):
-        def redirect_request(self, req, fp, code, msg, headers, newurl):
-            if not official(normalize(newurl)):
-                raise ValueError('redirect outside official firmware hosts')
-            return super().redirect_request(req, fp, code, msg, headers, normalize(newurl))
-    opener = urllib.request.build_opener(Guard())
-
     def retrieve(url):
         if fetch:
             result = fetch(url)
             return (result, url, None) if isinstance(result, bytes) else result
         req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT})
-        incoming = (opener.open(req, timeout=15) if mirror(url) else
-                    open_advertised(req, advertised_by=authority(url), timeout=15))
+        incoming = open_advertised(req, advertised_by=authority(url), timeout=15)
         with incoming as response:
             if landing_url(url) and urlsplit(response.url).path.lower().endswith(PAYLOAD_SUFFIXES):
                 return None, response.url, None

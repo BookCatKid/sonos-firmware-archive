@@ -98,18 +98,6 @@ class CapturedManifestRegressionTests(unittest.TestCase):
             m,cs=parse_manifest(p)
         self.assertTrue(any('needs manifest source' in w for w in m['warnings']))
 
-    def test_legacy_mirror_explicitly_seeded_only(self):
-        url='https://github.com/systemcrash/sonos-firmware/blob/abc/update.upm'
-        body=b'<update_manifest version="1.1"></update_manifest>'
-        calls=[]
-        def fetch(u):
-            calls.append(u);return body
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({'source_manifests':[{'source_url':url}]},[],[],Path(d),fetch=fetch,delay=0)
-        self.assertEqual(calls,['https://raw.githubusercontent.com/systemcrash/sonos-firmware/abc/update.upm'])
-        self.assertEqual(len(r['manifests']),1)
-
-
 class InitialFetchTests(unittest.TestCase):
     def test_feed_manifest_without_body_uses_guarded_retrieve(self):
         url='https://update.sonos.com/firmware/Prod/a/update.upm'
