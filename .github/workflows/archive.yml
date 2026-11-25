@@ -58,7 +58,7 @@ jobs:
     needs: select
     if: ${{ toJSON(fromJSON(needs.select.outputs.matrix).include) != '[]' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
