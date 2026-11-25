@@ -35,14 +35,61 @@ def discover(previous, fetch, now=NOW, pages=1):
 
 
 class CommonCrawlIndexTests(unittest.TestCase):
-    def test_exact_observed_sources_progress_when_broad_archive_queries_time_out(self):
+    def test_many_observed_files_coalesce_into_a_directory_that_discovers_unknown_siblings(self):
+        unseen = 'https://update.sonos.com/software/previously-unseen.exe?variant=older'
         requests = []
         def fetch(url):
             requests.append(url)
             if url == cc.REGISTRY:
                 return [{'cdx-api': A}]
             query = parse_qs(urlsplit(url).query)
-            if query.get('matchType') != ['exact']:
+            if query.get('matchType') != ['prefix']:
+                return [] if urlsplit(url).hostname == 'web.archive.org' else {'pages': 0}
+            self.assertEqual(query['url'], ['update.sonos.com/software/'])
+            if urlsplit(url).hostname == 'web.archive.org':
+                return [['timestamp', 'original', 'digest'], ['20200101000000', unseen, 'fixture']]
+            return {'pages': 1} if 'showNumPages' in query else [indexed(url=unseen)]
+        seeds = [f'https://update.sonos.com/software/known-{i}.exe?profile={i}' for i in range(1000)]
+        with patch.object(retry, '_now', return_value=NOW):
+            result = archive_index.discover_archives({}, fetch=fetch, pages=2, seed_urls=seeds,
+                extensions=('exe',), allowed=installers.official_source)
+        self.assertEqual(len(result['wayback_directories']['query_roots']), 1)
+        self.assertEqual(len(result['commoncrawl_directories']['query_roots']), 1)
+        self.assertIn(unseen, result['artifacts'])
+        self.assertEqual(len(result['artifacts'][unseen]['captures']), 2)
+
+    def test_directory_migration_preserves_old_exact_captures_and_provider_cooldown(self):
+        roots = {SOURCE: SOURCE.removeprefix('https://')}
+        with patch.object(retry, '_now', return_value=NOW):
+            legacy = archive_index.discover_sources({}, pages=1, roots=roots, match_type='exact',
+                extensions=('exe',), allowed=installers.official_source,
+                fetch=lambda url: [['timestamp', 'original', 'digest'], ['20200101000000', SOURCE, 'fixture']])
+            def throttled(url):
+                raise urllib.error.HTTPError(url, 429, 'later', {'Retry-After': '7200'}, None)
+            legacy = archive_index.discover_sources(legacy, pages=1, roots=roots, match_type='exact',
+                extensions=('exe',), allowed=installers.official_source, fetch=throttled)
+            previous = {**legacy, 'wayback_exact': legacy}
+            requests = []
+            def fetch(url):
+                requests.append(url)
+                if url == cc.REGISTRY:
+                    return [{'cdx-api': A}]
+                return {'pages': 0}
+            result = archive_index.discover_archives(previous, fetch=fetch, pages=2,
+                extensions=('exe',), allowed=installers.official_source)
+        self.assertFalse(any(urlsplit(url).hostname == 'web.archive.org' for url in requests))
+        self.assertEqual(len(result['artifacts'][SOURCE]['captures']), 1)
+        self.assertEqual(result['wayback_directories']['index_retry'], legacy['index_retry'])
+        self.assertEqual(list(result['wayback_directories']['query_roots']), ['https://update.sonos.com/software/'])
+
+    def test_observed_directories_progress_when_broad_archive_queries_time_out(self):
+        requests = []
+        def fetch(url):
+            requests.append(url)
+            if url == cc.REGISTRY:
+                return [{'cdx-api': A}]
+            query = parse_qs(urlsplit(url).query)
+            if query.get('matchType') != ['prefix']:
                 raise TimeoutError('fixture broad search is too expensive')
             if urlsplit(url).hostname == 'web.archive.org':
                 return [['timestamp', 'original', 'digest'], ['20200101000000', SOURCE, 'fixture']]
@@ -53,10 +100,10 @@ class CommonCrawlIndexTests(unittest.TestCase):
                 allowed=installers.official_source)
         self.assertEqual({row.get('provider', 'wayback')
                           for row in result['artifacts'][SOURCE]['captures'].values()}, {'wayback', 'commoncrawl'})
-        exact = [parse_qs(urlsplit(url).query)['url'][0] for url in requests if 'matchType=exact' in url]
-        self.assertEqual(set(exact), {SOURCE.removeprefix('https://')})
+        exact = [parse_qs(urlsplit(url).query)['url'][0] for url in requests if 'matchType=prefix' in url]
+        self.assertEqual(set(exact), {SOURCE.rsplit('/', 1)[0].removeprefix('https://')+'/'})
 
-    def test_single_page_budget_rotates_broad_and_exact_queries_without_losing_sources(self):
+    def test_single_page_budget_rotates_broad_and_directory_queries_without_losing_sources(self):
         requests = []
         def fetch(url):
             requests.append(url)
@@ -66,22 +113,22 @@ class CommonCrawlIndexTests(unittest.TestCase):
         with patch.object(retry, '_now', return_value=NOW):
             first = archive_index.discover_archives({}, fetch=fetch, pages=1,
                 seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-            self.assertFalse(any('matchType=exact' in url for url in requests))
+            self.assertFalse(any('matchType=prefix' in url for url in requests))
             requests.clear()
             second = archive_index.discover_archives(first, fetch=fetch, pages=1,
                 extensions=('exe',), allowed=installers.official_source)
         queries = [parse_qs(urlsplit(url).query) for url in requests if 'url=' in url]
         self.assertTrue(queries)
-        self.assertTrue(all(query['matchType'] == ['exact'] for query in queries))
-        self.assertIn(SOURCE, second['wayback_exact']['query_roots'])
+        self.assertTrue(all(query['matchType'] == ['prefix'] for query in queries))
+        self.assertIn(SOURCE.rsplit('/', 1)[0]+'/', second['wayback_directories']['query_roots'])
 
-    def test_exact_mutable_firmware_source_retains_distinct_historical_contents(self):
+    def test_directory_search_for_mutable_firmware_source_retains_distinct_historical_contents(self):
         source = 'https://update.sonos.com/firmware/mutable/controller.upd'
         def fetch(url):
             if url == cc.REGISTRY:
                 return [{'cdx-api': A}]
             query = parse_qs(urlsplit(url).query)
-            if query.get('matchType') != ['exact']:
+            if query.get('matchType') != ['prefix']:
                 return [] if urlsplit(url).hostname == 'web.archive.org' else {'pages': 0}
             if urlsplit(url).hostname == 'web.archive.org':
                 return [['timestamp', 'original', 'digest'], ['20200101000000', source, 'old'],
@@ -93,7 +140,7 @@ class CommonCrawlIndexTests(unittest.TestCase):
         self.assertEqual(artifact['filename'], 'controller.upd')
         self.assertEqual({capture['digest'] for capture in artifact['captures'].values()}, {'old', 'changed'})
 
-    def test_enabling_exact_queries_retains_broad_resume_tokens_and_collection_pages(self):
+    def test_enabling_directory_queries_retains_broad_resume_tokens_and_collection_pages(self):
         requests = []
         def fetch(url):
             requests.append(url)
@@ -112,7 +159,7 @@ class CommonCrawlIndexTests(unittest.TestCase):
         self.assertTrue(any(query.get('resumeKey') == ['resume-token'] for query in broad))
         self.assertTrue(any(query.get('page') == ['1'] for query in broad))
 
-    def test_provider_rate_limit_blocks_exact_queries_and_survives_lane_rotation(self):
+    def test_provider_rate_limit_blocks_directory_queries_and_survives_lane_rotation(self):
         requests = []
         def fetch(url):
             requests.append(url)
@@ -122,16 +169,16 @@ class CommonCrawlIndexTests(unittest.TestCase):
         with patch.object(retry, '_now', return_value=NOW):
             first = archive_index.discover_archives({}, fetch=fetch, pages=2,
                 seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-            self.assertFalse(any('matchType=exact' in url for url in requests))
+            self.assertFalse(any('matchType=prefix' in url for url in requests))
             requests.clear()
             second = archive_index.discover_archives(first, fetch=fetch, pages=1,
                 extensions=('exe',), allowed=installers.official_source)
             third = archive_index.discover_archives(second, fetch=fetch, pages=1,
                 extensions=('exe',), allowed=installers.official_source)
         self.assertEqual(requests, [])
-        self.assertEqual(third['wayback_exact']['index_retry'], first['wayback']['index_retry'])
+        self.assertEqual(third['wayback_directories']['index_retry'], first['wayback']['index_retry'])
 
-    def test_explicit_server_retry_after_is_shared_by_broad_and_exact_queries(self):
+    def test_explicit_server_retry_after_is_shared_by_broad_and_directory_queries(self):
         requests = []
         def fetch(url):
             requests.append(url)
@@ -141,7 +188,7 @@ class CommonCrawlIndexTests(unittest.TestCase):
         with patch.object(retry, '_now', return_value=NOW):
             first = archive_index.discover_archives({}, fetch=fetch, pages=2,
                 seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-            self.assertFalse(any('matchType=exact' in url for url in requests))
+            self.assertFalse(any('matchType=prefix' in url for url in requests))
             requests.clear()
             archive_index.discover_archives(first, fetch=fetch, pages=2,
                 extensions=('exe',), allowed=installers.official_source)

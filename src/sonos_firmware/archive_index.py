@@ -110,9 +110,10 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     from .source_urls import sonos_url
     if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
         raise ValueError('archive index page budget must be positive')
+    retained = previous.get('wayback_directories', previous.get('wayback_exact', {})).get('query_roots', {})
     urls = [*seed_urls, *previous.get('query_seeds', []),
             *previous.get('entries', {}), *previous.get('artifacts', {}),
-            *previous.get('wayback_exact', {}).get('query_roots', {})]
+            *retained]
     roots = options.get('roots')
     if roots is None:
         # Keep the domain-wide search while learning narrower host searches
@@ -125,18 +126,24 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
                 host = urlsplit(url).hostname
                 roots.setdefault(host, host+'/')
         options = {**options, 'roots': roots, 'match_type': options.get('match_type') or 'domain'}
-    exact_roots = {}
+    directory_roots = {}
     extensions = options.get('extensions', ('upm', 'upd'))
-    for url in [*previous.get('wayback_exact', {}).get('query_roots', {}), *urls]:
+    for url in [*retained, *urls]:
         if isinstance(url, str) and url.startswith('http://'):
             url = 'https://'+url[7:]
         if (isinstance(url, str) and sonos_url(url) and
-                urlsplit(url).path.lower().endswith(tuple('.'+extension for extension in extensions))):
+                (urlsplit(url).path.endswith('/') or
+                 urlsplit(url).path.lower().endswith(tuple('.'+extension for extension in extensions)))):
             parsed = urlsplit(url)
-            source = urlunsplit(('https', parsed.hostname, parsed.path, parsed.query, ''))
-            exact_roots.setdefault(source, source.removeprefix('https://'))
+            directory = parsed.path.rsplit('/', 1)[0]+'/'
+            source = urlunsplit(('https', parsed.hostname, directory, '', ''))
+            directory_roots.setdefault(source, source.removeprefix('https://'))
     def provider_state(name, provider):
-        state = dict(previous.get(name, previous if name == 'wayback' else {}))
+        fallback = previous if name == 'wayback' else previous.get(name.replace('_directories', '_exact'), {})
+        state = dict(previous.get(name, fallback))
+        if name.endswith('_directories') and name not in previous:
+            state.pop('next_host', None)
+            state.pop('next_query', None)
         for field in ('entries', 'artifacts'):
             records = {}
             for url, row in _observations(previous.get(field, {})).items():
@@ -147,14 +154,15 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
             state[field] = records
         return state
     # Divide each provider's existing page budget fairly between broad traversal
-    # and exact sources. A one-page budget alternates across worker restarts.
+    # and observed directories. A one-page budget alternates across worker restarts.
     lane = previous.get('index_query_lane', 0) % 2
-    budgets = [pages, 0] if not exact_roots else [pages//2, pages//2]
-    if exact_roots and pages % 2:
+    budgets = [pages, 0] if not directory_roots else [pages//2, pages//2]
+    if directory_roots and pages % 2:
         budgets[lane] += 1
-    configuration = {'extensions': list(extensions), 'match_type': options.get('match_type') or 'prefix'}
+    configuration = {'extensions': list(extensions), 'match_type': options.get('match_type') or 'prefix',
+                     'source_match_type': 'prefix'}
     def traverse(provider, implementation, cooldown, **arguments):
-        states = [provider_state(provider, provider), provider_state(provider+'_exact', provider)]
+        states = [provider_state(provider, provider), provider_state(provider+'_directories', provider)]
         for index, budget in enumerate(budgets):
             shared = max((state.get(cooldown, {}) for state in states),
                          key=lambda row: row.get('next_attempt_at', ''))
@@ -168,22 +176,22 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
                 for state in states:
                     state.update(collections=collections, registry=registry)
             if budget:
-                settings = {**arguments, 'roots': exact_roots, 'match_type': 'exact'} if index else arguments
+                settings = {**arguments, 'roots': directory_roots, 'match_type': 'prefix'} if index else arguments
                 states[index] = implementation(states[index], pages=budget, **settings)
             else:
-                pending = (states[index].get('query_roots') != (exact_roots if index else roots) or
+                pending = (states[index].get('query_roots') != (directory_roots if index else roots) or
                            previous.get('query_configuration') != configuration)
                 states[index] = {**states[index], 'observations': [],
                     'errors': states[index].get('errors', []),
                     'status': 'partial' if pending else states[index].get('status', 'partial')}
-                states[index]['query_roots'] = exact_roots if index else roots
+                states[index]['query_roots'] = directory_roots if index else roots
         return states
-    wayback, wayback_exact = traverse('wayback', lambda state, **kw: discover_sources(state, fetch=fetch, **kw),
+    wayback, wayback_directories = traverse('wayback', lambda state, **kw: discover_sources(state, fetch=fetch, **kw),
                                      'index_retry', **options)
-    commoncrawl, commoncrawl_exact = traverse('commoncrawl', lambda state, **kw: discover(state, fetch, **kw),
+    commoncrawl, commoncrawl_directories = traverse('commoncrawl', lambda state, **kw: discover(state, fetch, **kw),
         'host_retry', roots=roots, extensions=extensions, allowed=options.get('allowed', official),
         match_type=options.get('match_type') or 'prefix')
-    results = (wayback, wayback_exact, commoncrawl, commoncrawl_exact)
+    results = (wayback, wayback_directories, commoncrawl, commoncrawl_directories)
     merged = {}
     for field in ('entries', 'artifacts'):
         records = _observations(previous.get(field, {}))
@@ -195,13 +203,13 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     cursors = lambda state: {key: value for key, value in state.items() if key not in {'entries', 'artifacts'}}
     return {**wayback, **merged, 'query_roots': roots,
             'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
-            'wayback_exact': cursors(wayback_exact), 'commoncrawl_exact': cursors(commoncrawl_exact),
-            'index_query_lane': (lane+pages) % 2 if exact_roots else lane,
+            'wayback_directories': cursors(wayback_directories), 'commoncrawl_directories': cursors(commoncrawl_directories),
+            'index_query_lane': (lane+pages) % 2 if directory_roots else lane,
             'query_configuration': configuration,
             'observations': [row for result in results for row in result['observations']],
             'errors': [row for result in results for row in result['errors']],
             'status': 'ok' if all(result['status'] == 'ok' for result in
-                                (results if exact_roots else (wayback, commoncrawl))) else 'partial'}
+                                (results if directory_roots else (wayback, commoncrawl))) else 'partial'}
 
 
 def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,

@@ -146,21 +146,18 @@ def main():
                                  limit=args.limit, pages=args.pages, refresh_hours=args.historical_refresh_hours,
                                  current_refresh_hours=args.refresh_hours)
         write_json(args.work_dir/'replay.json', report)
-        if report['status'] == 'partial':
-            raise RuntimeError('installer history has pending captures or incomplete discovery; verified progress retained')
+        print(json.dumps(report, indent=2))
     elif args.task == 'archive-historical-firmware':
         from ..historical_firmware import archive_history
         report = archive_history(args.root, args.work_dir, args.repository,
                                  limit=args.limit, manifest_limit=args.manifest_limit)
         write_json(args.work_dir / 'replay.json', report)
-        if report['status'] == 'partial':
-            raise RuntimeError('historical firmware replay has pending captures or errors; verified progress retained')
+        print(json.dumps(report, indent=2))
     elif args.task == 'scan-preserved-binaries':
         report = discover_preserved(args.root, args.work_dir, args.repository, limit=args.limit,
                                     max_bytes=args.max_bytes, max_source_bytes=args.max_source_bytes,
                                     max_entry_bytes=args.max_entry_bytes)
-        if report['status'] == 'partial':
-            raise RuntimeError(f"binary discovery has {report['pending_total']} pending captures; verified evidence retained")
+        print(json.dumps(report, indent=2))
 
 
 if __name__ == '__main__':

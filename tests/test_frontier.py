@@ -45,8 +45,8 @@ class FrontierTests(unittest.TestCase):
                          {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'})
         wayback = [parse_qs(urlsplit(url).query)['url'][0] for url in requested
                    if urlsplit(url).hostname == 'web.archive.org']
-        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/update.upm'])
-        # The same budget now covers exact observations too; host traversal
+        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/'])
+        # The same budget now covers directory searches too; host traversal
         # keeps its position and continues in the next normal worker.
         requested.clear()
         following = archive_index.discover_archives(state['archive_index'], fetch=index, pages=2)
