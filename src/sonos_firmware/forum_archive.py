@@ -8,17 +8,18 @@ import io
 import json
 import re
 import tarfile
+import tempfile
 import urllib.error
 import urllib.request
-
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from .retry import checkpoint, due, error_checkpoint
 from .discovery import USER_AGENT
 
 LATEST_RELEASE = 'https://api.github.com/repos/BookCatKid/Sonos-forum-crawl/releases/latest'
-MAX_STATE_BYTES = 900*1024*1024
-MAX_JSONL_BYTES = 900*1024*1024
+MAX_STATE_BYTES = 4*1024**3
+MAX_JSONL_BYTES = 4*1024**3
 
 _URL = re.compile(r'https?://[^\s"\'<>`\\)\]]+', re.I)
 _FIRMWARE_PATH = re.compile(r'^/firmware/[^/]+/[^/]+/')
@@ -51,6 +52,22 @@ def _release(fetch):
         raise ValueError('forum archive manifest lacks a state.tar.gz digest')
     return {'tag': document.get('tag_name'), 'url': assets['state.tar.gz'], 'sha256': expected,
             'size': manifest.get('assets', {}).get('state.tar.gz', {}).get('size')}
+
+
+def _download(release, opener, destination):
+    """Stream the snapshot to disk; its digest is checked before any parsing."""
+    request = urllib.request.Request(release['url'], headers={'User-Agent': USER_AGENT})
+    digest, size = hashlib.sha256(), 0
+    with opener(request, timeout=120) as response, destination.open('wb') as output:
+        while block := response.read(1024*1024):
+            size += len(block)
+            if size > MAX_STATE_BYTES:
+                raise ValueError('forum archive state snapshot exceeds the byte budget')
+            digest.update(block)
+            output.write(block)
+    if digest.hexdigest() != release['sha256']:
+        raise ValueError('forum archive state snapshot does not match its manifest digest')
+    return digest.hexdigest()
 
 
 def lead_urls(text):
@@ -113,22 +130,17 @@ def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlope
                     'status': 'observed', 'note': 'no newer forum snapshot'}
         if release.get('size') and release['size'] > MAX_STATE_BYTES:
             raise ValueError('forum archive state snapshot exceeds the byte budget')
-        request = urllib.request.Request(release['url'], headers={'User-Agent': USER_AGENT})
-        with opener(request, timeout=120) as response:
-            raw = response.read(MAX_STATE_BYTES+1)
-        if len(raw) > MAX_STATE_BYTES:
-            raise ValueError('forum archive state snapshot exceeds the byte budget')
-        digest = hashlib.sha256(raw).hexdigest()
-        if digest != release['sha256']:
-            raise ValueError('forum archive state snapshot does not match its manifest digest')
         leads = {'roots': {}, 'installers': {}}
         budget = {'bytes': 0}
-        with tarfile.open(fileobj=io.BytesIO(raw), mode='r:gz') as archive:
-            for member in ('replies.jsonl', 'topics.jsonl'):
-                extracted = archive.extractfile(member)
-                if extracted is None:
-                    raise ValueError('forum archive state lacks '+member)
-                _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'), leads, budget)
+        with tempfile.TemporaryDirectory() as workspace:
+            snapshot = Path(workspace)/'state.tar.gz'
+            digest = _download(release, opener, snapshot)
+            with tarfile.open(snapshot, mode='r:gz') as archive:
+                for member in ('replies.jsonl', 'topics.jsonl'):
+                    extracted = archive.extractfile(member)
+                    if extracted is None:
+                        raise ValueError('forum archive state lacks '+member)
+                    _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'), leads, budget)
         return {**state, **checkpoint(previous, success=True, success_hours=success_hours),
                 'status': 'observed', 'mined_tag': release['tag'], 'state_sha256': digest,
                 'roots': leads['roots'], 'installers': leads['installers'],
