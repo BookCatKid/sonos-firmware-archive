@@ -449,6 +449,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         host = urlsplit(row['url']).hostname
         if host in blocked:
             continue
+        if row.get('source') == 'forum-archive':
+            continue
         namespace = namespaces.get(row.get('inferred_namespace'))
         if row.get('advance_inference') and (namespace['next_model'] != row['package_model'] or not due(namespace)):
             continue

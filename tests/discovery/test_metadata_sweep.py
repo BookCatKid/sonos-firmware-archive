@@ -8,7 +8,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch, Mock
 
-from sonos_firmware.metadata_sweep import BASELINE, PROFILE_FIELDS, build_profiles, discover_profiles, discover_version_hints
+from sonos_firmware.metadata_sweep import (BASELINE, PROFILE_FIELDS, build_profiles, discover_client_reports,
+                                          discover_profiles, discover_version_hints)
 
 
 class MetadataSweepTests(unittest.TestCase):
@@ -298,6 +299,66 @@ class MetadataSweepTests(unittest.TestCase):
             {"cmaj": 97, "cmin": 1, "cbld": 80312, "subm": 1, "rev": 1, "reg": 2},
             first,
         )
+
+
+class PublicReportSearchTests(unittest.TestCase):
+    STAMP = '2026-01-01T00:00:00Z'
+
+    def report(self, start, count):
+        body = ('ZoneGroupTopology availableSoftwareUpdate manifestURL=https://update-firmware.sonos.com/'
+                'firmware/Prod/62.1-88070-v13.0.5-lqipsm-GA-1/update.upm')
+        return [{'id': start+offset, 'html_url': 'https://github.com/x/y/issues/'+str(start+offset),
+                 'repository_url': 'https://api.github.com/repos/x/y',
+                 'updated_at': self.STAMP, 'body': body,
+                 'comments': 0, 'comments_url': 'https://api.github.com/repos/x/y/issues/'+str(start+offset)+'/comments'}
+                for offset in range(count)]
+
+    def test_an_indivisible_bucket_drains_before_later_windows(self):
+        def fetch(query, page):
+            return {'items': self.report(0 if page == 1 else 20, 20 if page == 1 else 5),
+                    'total_count': 25}
+        record = {'windows': [{'start': self.STAMP, 'end': self.STAMP,
+                              'created_start': self.STAMP, 'created_end': self.STAMP},
+                             {'start': self.STAMP, 'end': '2026-06-01T00:00:00Z'}]}
+        state = discover_client_reports({'queries': {'"manifestURL" sonos in:body,comments is:issue is:public': record}},
+                                       pages=1, fetch=fetch)
+        remaining = state['queries']['"manifestURL" sonos in:body,comments is:issue is:public']['windows']
+        self.assertEqual(len(remaining), 1)
+        self.assertEqual(remaining[0]['end'], '2026-06-01T00:00:00Z')
+        self.assertEqual(len(state['roots']), 1)
+        self.assertEqual(len(next(iter(state['roots'].values()))), 25)
+
+    def test_a_saturated_bucket_rotates_behind_later_windows(self):
+        fetch = Mock(return_value={'items': self.report(0, 20), 'total_count': 500})
+        record = {'windows': [{'start': self.STAMP, 'end': self.STAMP,
+                              'created_start': self.STAMP, 'created_end': self.STAMP},
+                             {'start': self.STAMP, 'end': '2026-06-01T00:00:00Z'}]}
+        state = discover_client_reports({'queries': {'"manifestURL" sonos in:body,comments is:issue is:public': record}},
+                                       pages=1, fetch=fetch)
+        remaining = state['queries']['"manifestURL" sonos in:body,comments is:issue is:public']['windows']
+        self.assertTrue(remaining[-1].get('saturated'))
+        self.assertNotIn('saturated', remaining[0])
+        self.assertTrue(state['errors'])
+
+    def test_comment_traces_keep_their_own_provenance_and_scan_once(self):
+        issue = {'id': 7, 'html_url': 'https://github.com/x/y/issues/7', 'updated_at': self.STAMP,
+                 'repository_url': 'https://api.github.com/repos/x/y', 'body': 'no links',
+                 'comments': 1, 'comments_url': 'https://api.github.com/repos/x/y/issues/7/comments'}
+        body = ('ZoneGroupTopology manifestURL=https://update-firmware.sonos.com/'
+                'firmware/Prod/62.1-88070-v13.0.5-lqipsm-GA-1/update.upm')
+        comments = Mock(return_value=[{'html_url': 'https://github.com/x/y/issues/7#issuecomment-1',
+                                       'updated_at': self.STAMP, 'body': body}])
+        state = discover_client_reports({}, pages=1, comments=1,
+                                       fetch=Mock(return_value={'items': [issue], 'total_count': 1}),
+                                       fetch_comments=comments)
+        proof = state['roots']['https://update-firmware.sonos.com/firmware/Prod/'
+                               '62.1-88070-v13.0.5-lqipsm-GA-1/update.upm'][0]
+        self.assertTrue(proof['report_url'].endswith('#issuecomment-1'))
+        self.assertEqual(state['comment_queue'], {})
+        discover_client_reports(state, pages=1, comments=1,
+                                fetch=Mock(return_value={'items': [issue], 'total_count': 1}),
+                                fetch_comments=comments)
+        self.assertEqual(comments.call_count, 1)
 
 
 if __name__ == "__main__":

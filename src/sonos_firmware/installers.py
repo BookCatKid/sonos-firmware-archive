@@ -260,9 +260,10 @@ def installer_pivot_contexts(record):
 
 def pivotable(record):
     """Only campaign installers can yield a native manifest URL."""
+    urls = [*(record.get('source_urls') or []), record.get('source_url'), record.get('url')]
     return any(isinstance(url, str) and re.fullmatch(
         r'/software/[A-Za-z0-9_-]+/Sonos_\d+[.]\d+-\d+[.](?:dmg|exe)', urlsplit(url).path, re.I)
-        for url in record.get('source_urls') or [])
+        for url in urls if url)
 
 
 def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', paused_hosts=()):

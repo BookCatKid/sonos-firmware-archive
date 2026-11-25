@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import html
+import ipaddress
 import io
 import json
 import re
@@ -15,6 +16,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from .retry import checkpoint, due, error_checkpoint
+from .source_urls import sonos_url
 from .discovery import USER_AGENT
 
 LATEST_RELEASE = 'https://api.github.com/repos/BookCatKid/Sonos-forum-crawl/releases/latest'
@@ -70,8 +72,19 @@ def _download(release, opener, destination):
     return digest.hexdigest()
 
 
+def _device_local(host):
+    """Link-local, private and single-label hosts expose a device's own layout."""
+    if not host or host.endswith('.local') or '.' not in host:
+        return True
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        return False
+    return address.is_private or address.is_loopback or address.is_link_local
+
+
 def lead_urls(text):
-    """Native firmware locations plus server-layout paths from any host."""
+    """Native firmware locations plus device-layout paths."""
     roots, installers = set(), set()
     for raw in _URL.findall(html.unescape(text).replace('\\/', '/')):
         url = raw.rstrip('),].};')
@@ -81,16 +94,17 @@ def lead_urls(text):
             continue
         host = (parts.hostname or '').lower()
         path = parts.path
-        if host in NATIVE_HOSTS and path.lower().endswith(('.exe', '.dmg', '.apk')):
-            installers.add('https://'+host+path)
+        native = host in NATIVE_HOSTS
+        secure = 'https://'+host+path
+        if sonos_url(secure) and path.lower().endswith(('.exe', '.dmg', '.apk')):
+            installers.add(secure)
         directory = _FIRMWARE_PATH.match(path)
-        if directory and (host in NATIVE_HOSTS or not host.endswith('sonos.com')):
-            # Device-local links expose the server layout; only an actual
-            # Sonos response can prove the lead.
-            for native in NATIVE_HOSTS:
-                roots.add('https://'+native+directory.group(0)+'update.upm')
-        elif host in NATIVE_HOSTS and path.endswith('/update.upm'):
+        if native and path.endswith('/update.upm'):
             roots.add('https://'+host+path)
+        elif directory and (native or _device_local(host)):
+            directory_url = directory.group(0)
+            for update_host in (NATIVE_HOSTS if not native else (host,)):
+                roots.add('https://'+update_host+directory_url+'update.upm')
     return sorted(roots), sorted(installers)
 
 

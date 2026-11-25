@@ -167,9 +167,11 @@ def main():
                         'url': url, 'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'saved-archive-observation',
                         'advertised_by': package.get('advertised_sources', {}).get(url)})
     if forum_archive:
-        for url in forum_archive.get('installers', {}):
-            known.append({'version': 'unknown', 'package_model': None, 'url': url,
-                          'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'forum-archive'})
+        # Installer leads belong to the app targets; the firmware worker keeps
+        # them in the shared candidate state without probing or acquiring them.
+        known.extend({'version': 'unknown', 'package_model': None, 'url': url,
+                      'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'forum-archive'}
+                     for url in forum_archive.get('installers', {}))
     result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
                       index_fetch=None if args.no_history_index else partial(discover_sources, pages=args.index_pages), artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
