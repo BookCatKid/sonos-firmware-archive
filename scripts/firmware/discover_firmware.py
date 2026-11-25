@@ -22,6 +22,7 @@ from sonos_firmware.firmware_archive import (
 from sonos_firmware.releases import verified_asset
 from sonos_firmware.release_series import ReleaseSeries
 from sonos_firmware.metadata_sweep import discover_version_hints, discover_client_reports
+from sonos_firmware.forum_archive import discover_forum_archive
 from sonos_firmware.historical_firmware import replay_preserved_manifests
 
 
@@ -133,11 +134,15 @@ def main():
         parser.error('--index-pages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
     client_reports = None
+    forum_archive = None
     if args.publish:
         client_reports = discover_client_reports(old.get('public_client_reports', {}))
         old['public_client_reports'] = client_reports
         pending = old.setdefault('pending_manifest_urls', [])
         pending.extend(url for url in client_reports['roots'] if url not in pending)
+        forum_archive = discover_forum_archive(old.get('forum_archive', {}))
+        old['forum_archive'] = forum_archive
+        pending.extend(url for url in forum_archive.get('roots', {}) if url not in pending)
     hints = old.get('release_notes', {})
     if not args.no_release_notes:
         hints = discover_version_hints(hints)
@@ -171,6 +176,10 @@ def main():
     if client_reports is not None:
         result['public_client_reports'] = client_reports
         if client_reports['status'] == 'partial':
+            result['status'] = 'partial'
+    if forum_archive is not None:
+        result['forum_archive'] = forum_archive
+        if forum_archive.get('status') in ('partial', 'failed'):
             result['status'] = 'partial'
     if cross_source['errors']:
         result['bootstrap_errors'].extend(cross_source['errors'])
