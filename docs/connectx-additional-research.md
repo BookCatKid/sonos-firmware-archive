@@ -1,6 +1,6 @@
 # Additional external ConnectX historical research
 
-Checked 2026-11-13 UTC. Follow-up to [the earlier history report](connectx-history-research.md), scoped to external repositories, historical manifests, and retained static copies. [Compact evidence ledger](../data/discovery/connectx-additional-candidates.json).
+Checked 2026-11-13 UTC. Follow-up to [the earlier history report](connectx-history-research.md), scoped to external repositories, historical manifests, and retained static copies. [Compact evidence ledger](https://github.com/BookCatKid/sonos-firmware-archive/blob/a81a9ce7e3b29899ac0b52780d999429668a207c/data/discovery/connectx-additional-candidates.json).
 
 ## Concrete result: 24 additional live model-17 versions
 

@@ -50,7 +50,8 @@ and extraction receipts use `data/raw/`. Shared extraction and inventory
 queues are recorded in `data/discovery/firmware-extraction.json` and
 `data/discovery/firmware-inventories.json`; the catalog contains verified
 publication references. Earlier `connectx-index.json` and `connectx-scan.json`
-records are retained historical observations, not scheduled worker inputs.
+records remain available in Git history as historical observations; scheduled
+workers generate their own state and inventories.
 
 ## Historical research evidence
 
@@ -59,7 +60,7 @@ They do not establish that a new destination has acquired or inventoried every
 source. Current publication and extraction status comes from that repository's
 shared ledgers and verified catalog records.
 
-The [2026-11-13 manifest-coverage audit](../data/discovery/manifest-coverage-2026-11-13.json)
+The [2026-11-13 manifest-coverage audit](https://github.com/BookCatKid/sonos-firmware-archive/blob/a81a9ce7e3b29899ac0b52780d999429668a207c/data/discovery/manifest-coverage-2026-11-13.json)
 verified all 68 preserved source manifests against their recorded SHA-256s.
 Their 1,199 distinct artifact URL references include 864 matching preserved
 artifacts and 335 without a preserved match. All 326 unpreserved UPD references
@@ -198,7 +199,7 @@ uses parsed section boundaries rather than these fixed offsets.
 Anacapa is ELF32, big-endian PowerPC, dynamically linked with `/lib/ld.so.1`,
 with build ID `426f7f3a55a84b37cf7ccd5c8abb591208ecdcaf`. The original issue
 observation is retained in
-[`data/discovery/connectx-2026-11-13.json`](../data/discovery/connectx-2026-11-13.json).
+[`data/discovery/connectx-2026-11-13.json`](https://github.com/BookCatKid/sonos-firmware-archive/blob/a81a9ce7e3b29899ac0b52780d999429668a207c/data/discovery/connectx-2026-11-13.json).
 
 Historical source research and the unrecovered `82.3-60197` static build are
 documented in [ConnectX history](connectx-history-research.md).

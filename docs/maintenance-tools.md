@@ -2,22 +2,17 @@
 
 Most archive work is automatic: one scheduled workflow reads
 [`config/targets.json`](../config/targets.json) and runs each target's provider.
-The scripts below are **not** on that path. They are manual maintenance and
-recovery commands for a human operator, kept because they answer questions or
-repair state that an automated worker cannot.
+The scripts below support the scheduled workers or provide manual recovery
+and analysis commands. The tables identify commands used by scheduled targets.
 
 Nothing here is required to add a target, start from an empty archive, or run a
-normal cycle. `scripts/audit_repository_consistency.py` treats a script as
-accounted for when it is wired into a provider, a workflow or another module, or
-documented in this file, so a new orphan is reported rather than forgotten.
+normal cycle.
 
 ## Consistency and coverage reporting
 
 | Script | Purpose |
 | --- | --- |
-| `scripts/audit_repository_consistency.py` | Check provider/target correspondence, target reachability, orphan scripts, documentation paths and retired workflow references. Run before a release. |
-| `scripts/audit_connectx_coverage.py` | Report ConnectX (model 17) historical coverage: preserved versus withdrawn contents, distinctness and manifest attribution. Also runs as the last firmware step. |
-| `scripts/audit_gpl_link_coverage.py` | Require every advertised GPL link to be published or to carry a recorded terminal state. Also runs first in the `gpl-audit` target. |
+| `scripts/audit_gpl_link_coverage.py` | Require every advertised GPL link to be published or to carry a recorded terminal state. Runs after source verification in the `gpl-audit` target. |
 | `scripts/audit_gpl_published_streams.py` | Reacquire published GPL sources and validate the entire compressed stream against the immutable receipt. |
 | `scripts/audit_gpl_legacy_provenance.py` | Compare legacy GPL publications with direct-source provenance. |
 | `scripts/audit_release_assets.py` | Reconcile every recorded asset against GitHub Release metadata; splits duplicate from unexplained extras. Also runs as the `release-audit` target. |
@@ -79,11 +74,3 @@ explicitly not runtime discovery inputs.
 | `scripts/upload_raw_assets.py` | Upload raw component assets that already have receipts. |
 | `scripts/archive_android_store_apps.py` | Manual Android store acquisition, sharing the workers' signature and manifest inspection. |
 | `scripts/discover_google_play_listings.py` | Metadata-only Google Play listing discovery. |
-
-## Historical note
-
-`docs/archive-platform-runtime-audit.md` is a snapshot of the state **before**
-workflow unification. Its links are pinned to commit `d34f6c8`, so they describe
-the retired ten-workflow layout rather than the current tree. Only
-`archive.yml` and `verify.yml` remain; every capability in the old workflows is
-now a target in `config/targets.json`.

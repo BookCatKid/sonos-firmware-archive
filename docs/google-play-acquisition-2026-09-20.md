@@ -5,7 +5,7 @@ Checked: **2026-09-20**
 Update **2026-11-24**: the normal archive worker now preserves signer-verified
 direct Play deliveries using account-free device registration and the pinned
 goopdl downloader. Four S1/S2 receipts and 11 distinct published assets are
-verified; [current evidence](archive-followup-checklist.md#anonymous-google-play-delivery-item-8)
+verified; [current evidence](https://github.com/BookCatKid/sonos-firmware-archive/blob/a81a9ce7e3b29899ac0b52780d999429668a207c/docs/archive-followup-checklist.md#anonymous-google-play-delivery-item-8)
 supersedes the acquisition limitations in this historical investigation.
 Historical-version coverage still depends on what Google serves.
 
