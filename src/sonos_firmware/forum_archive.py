@@ -8,14 +8,14 @@ import io
 import json
 import re
 import tarfile
-import time
 import urllib.error
 import urllib.request
+
+from urllib.parse import urlsplit
 
 from .retry import checkpoint, due, error_checkpoint
 from .discovery import USER_AGENT
 
-REPOSITORY = 'BookCatKid/Sonos-forum-crawl'
 LATEST_RELEASE = 'https://api.github.com/repos/BookCatKid/Sonos-forum-crawl/releases/latest'
 MAX_STATE_BYTES = 900*1024*1024
 MAX_JSONL_BYTES = 900*1024*1024
@@ -26,7 +26,7 @@ _FIRMWARE_PATH = re.compile(r'^/firmware/[^/]+/[^/]+/')
 NATIVE_HOSTS = ('update-firmware.sonos.com', 'update.sonos.com')
 
 
-def _get(url, *, limit, timeout=60, binary=True):
+def _get(url, *, limit, timeout=60):
     import os
     headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
     token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
@@ -55,9 +55,7 @@ def _release(fetch):
 
 def lead_urls(text):
     """Native firmware locations plus server-layout paths from any host."""
-    from urllib.parse import urlsplit
-    roots = {}
-    installers = {}
+    roots, installers = set(), set()
     for raw in _URL.findall(html.unescape(text).replace('\\/', '/')):
         url = raw.rstrip('),].};')
         try:
@@ -67,19 +65,19 @@ def lead_urls(text):
         host = (parts.hostname or '').lower()
         path = parts.path
         if host in NATIVE_HOSTS and path.lower().endswith(('.exe', '.dmg', '.apk')):
-            installers['https://'+host+path] = True
+            installers.add('https://'+host+path)
         directory = _FIRMWARE_PATH.match(path)
         if directory and (host in NATIVE_HOSTS or not host.endswith('sonos.com')):
             # Device-local links expose the server layout; only an actual
             # Sonos response can prove the lead.
             for native in NATIVE_HOSTS:
-                roots['https://'+native+directory.group(0)+'update.upm'] = True
+                roots.add('https://'+native+directory.group(0)+'update.upm')
         elif host in NATIVE_HOSTS and path.endswith('/update.upm'):
-            roots['https://'+host+path] = True
+            roots.add('https://'+host+path)
     return sorted(roots), sorted(installers)
 
 
-def _mine(stream, roots, installers, proofs, budget):
+def _mine(stream, leads, budget):
     for line in stream:
         budget['bytes'] += len(line)
         if budget['bytes'] > MAX_JSONL_BYTES:
@@ -91,20 +89,16 @@ def _mine(stream, roots, installers, proofs, budget):
         except ValueError:
             continue
         text = row.get('content_html') or ''
-        found, found_installers = lead_urls(text)
-        if not found and not found_installers:
+        roots, installers = lead_urls(text)
+        if not roots and not installers:
             continue
         proof = {'host': row.get('host'), 'topic': row.get('topic_public_id') or row.get('public_id'),
                  'reply': row.get('public_reply_id'), 'replied_at': row.get('replied_at'),
                  'content_sha256': hashlib.sha256(text.encode()).hexdigest()}
-        for url in found:
-            if proof not in proofs.setdefault('roots', {}).setdefault(url, []):
-                proofs['roots'][url].append(proof)
-            roots[url] = True
-        for url in found_installers:
-            if proof not in proofs.setdefault('installers', {}).setdefault(url, []):
-                proofs['installers'][url].append(proof)
-            installers[url] = True
+        for kind, urls in (('roots', roots), ('installers', installers)):
+            for url in urls:
+                if proof not in leads[kind].setdefault(url, []):
+                    leads[kind][url].append(proof)
 
 
 def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlopen, success_hours=720):
@@ -113,7 +107,7 @@ def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlope
         return previous
     state = dict(previous)
     try:
-        release = _release(fetch if not callable(fetch) else fetch)
+        release = _release(fetch)
         if release['tag'] and release['tag'] == previous.get('mined_tag'):
             return {**state, **checkpoint(previous, success=True, success_hours=success_hours),
                     'status': 'observed', 'note': 'no newer forum snapshot'}
@@ -127,19 +121,18 @@ def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlope
         digest = hashlib.sha256(raw).hexdigest()
         if digest != release['sha256']:
             raise ValueError('forum archive state snapshot does not match its manifest digest')
-        roots, installers, proofs = {}, {}, {}
+        leads = {'roots': {}, 'installers': {}}
         budget = {'bytes': 0}
         with tarfile.open(fileobj=io.BytesIO(raw), mode='r:gz') as archive:
             for member in ('replies.jsonl', 'topics.jsonl'):
                 extracted = archive.extractfile(member)
                 if extracted is None:
                     raise ValueError('forum archive state lacks '+member)
-                _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'),
-                      roots, installers, proofs, budget)
+                _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'), leads, budget)
         return {**state, **checkpoint(previous, success=True, success_hours=success_hours),
                 'status': 'observed', 'mined_tag': release['tag'], 'state_sha256': digest,
-                'roots': proofs.get('roots', {}), 'installers': proofs.get('installers', {}),
-                'root_total': len(roots), 'installer_total': len(installers)}
+                'roots': leads['roots'], 'installers': leads['installers'],
+                'root_total': len(leads['roots']), 'installer_total': len(leads['installers'])}
     except Exception as error:
         if isinstance(error, urllib.error.HTTPError):
             error.close()
