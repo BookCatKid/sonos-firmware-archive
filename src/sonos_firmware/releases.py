@@ -62,7 +62,7 @@ def graphql_assets(repository: str, tag: str) -> list[dict]:
         repository(owner:$owner, name:$name) {
           release(tagName:$tag) {
             releaseAssets(first:100, after:$after) {
-              nodes { id name size downloadUrl digest }
+              nodes { id name size downloadUrl digest createdAt }
               pageInfo { hasNextPage endCursor }
             }
           }
@@ -87,6 +87,7 @@ def graphql_assets(repository: str, tag: str) -> list[dict]:
                 "size": item["size"],
                 "browser_download_url": item["downloadUrl"],
                 "digest": item["digest"],
+                **({'created_at': item['createdAt']} if item.get('createdAt') else {}),
             }
             for item in connection["nodes"]
         )

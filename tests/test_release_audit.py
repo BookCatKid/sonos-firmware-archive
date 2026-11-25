@@ -6,6 +6,8 @@ import tempfile
 import unittest
 import urllib.error
 import hashlib
+import subprocess
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -344,13 +346,112 @@ class DocumentRecoveryTests(unittest.TestCase):
                 result = self.recover(root, self.publication(original, source=source),
                                       lambda capture, path, repo: path.write_bytes(received))
                 self.assertFalse((root/'data/catalog.json').exists())
-                self.assertEqual(result['status'], 'partial')
+                self.assertEqual(result['status'], 'partial' if changed else 'ok')
                 self.assertEqual(result['recovered'], [])
                 if not changed:
                     observation = next(iter(result['observations'].values()))
                     self.assertEqual(observation['state'], 'external-origin')
                     self.assertEqual(observation['origin_host'], 'github.com')
                     self.assertNotIn('source_url', observation)
+
+    def test_own_metadata_history_restores_an_origin_removed_from_current_state(self):
+        body = b'<html>an interrupted capture without a self link</html>'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def git(*args):
+                subprocess.run(['git', *args], cwd=root, check=True,
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            git('init', '-q')
+            git('config', 'user.name', 'Fixture')
+            git('config', 'user.email', 'fixture@example.test')
+            metadata = root/'data/discovery/firmware-frontier.json'
+            atomic_json(metadata, {'documents': [{'url': self.source}]})
+            git('add', 'data')
+            git('commit', '-qm', 'Observe source')
+            atomic_json(metadata, {})
+            git('commit', '-qam', 'Replace current observations')
+            for i in range(5):
+                atomic_json(metadata, {'tick': i})
+                git('commit', '-qam', 'Advance metadata')
+            assets = self.publication(body)
+            fetch = lambda capture, path, repo: path.write_bytes(body)
+            first = self.recover(root, assets, fetch, limit=1)
+            self.assertEqual(first['pending'], 1)
+            second = self.recover(root, assets, fetch, previous=first, limit=1)
+            self.assertEqual(second['pending'], 0)
+            record = json.loads((root/'data/catalog.json').read_text())['source_documents'][0]
+            self.assertEqual(record['source_url'], self.source)
+            self.assertTrue(second['origin_history']['matches'])
+
+    def test_verified_foreign_publications_are_accounted_without_becoming_sonos_receipts(self):
+        source = 'https://outside.test/reference.html'
+        body = ('<a href="'+source+'">reference</a>').encode()
+        assets = self.publication(body, source=source)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            first = self.run_normal_audit(root, assets, {hashlib.sha256(body).hexdigest(): body})
+            second = self.run_normal_audit(root, assets, {hashlib.sha256(body).hexdigest(): body})
+            for report in (first, second):
+                self.assertEqual(report['external_origin_extra_total'], 1)
+                self.assertEqual(report['unexplained_extra_total'], 0)
+                self.assertEqual(report['recorded_asset_total'], 0)
+                self.assertEqual(report['status'], 'ok')
+                self.assertEqual(report['document_recovery']['pending'], 0)
+            self.assertFalse((root/'data/catalog.json').exists())
+            self.assertEqual(audit.recorded_assets(root, 'owner/archive'), {})
+
+    def test_changed_foreign_asset_cannot_reuse_a_prior_exclusion(self):
+        source = 'https://outside.test/reference.html'
+        body = ('<a href="'+source+'">reference</a>').encode()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            assets = self.publication(body, source=source)
+            first = self.recover(root, assets, lambda capture, path, repo: path.write_bytes(body))
+            changed = {key: {**value, 'sha256': '0'*64} for key, value in assets.items()}
+            second = self.recover(root, changed, lambda *args: self.fail('conflict must fail before download'), previous=first)
+            self.assertEqual(second['external_origins'], [])
+            self.assertEqual(second['pending'], 1)
+            self.assertEqual(second['status'], 'partial')
+
+    def test_non_metadata_git_history_does_not_supply_an_origin(self):
+        body = b'<html>no source link</html>'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(['git', 'init', '-q'], cwd=root, check=True)
+            (root/'README.md').write_text(json.dumps({'url': self.source}))
+            subprocess.run(['git', 'add', 'README.md'], cwd=root, check=True)
+            subprocess.run(['git', '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.test',
+                            'commit', '-qm', 'Documentation only'], cwd=root, check=True)
+            result = self.recover(root, self.publication(body), lambda capture, path, repo: path.write_bytes(body))
+            self.assertEqual(result['pending'], 1)
+            self.assertFalse((root/'data/catalog.json').exists())
+
+    def test_history_lookup_failures_remain_deferred_then_resume_without_false_completion(self):
+        from sonos_firmware import firmware_archive, retry
+        now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        revision = 'a'*40
+        identity = hashlib.sha256(self.source.encode()).hexdigest()
+        history = {}
+        log = revision+' 123\n'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = (root, [Path('data/catalog.json')], {identity: None}, history)
+            with patch.object(retry, '_now', return_value=now), patch.object(
+                    firmware_archive.subprocess, 'check_output', side_effect=[log, subprocess.TimeoutExpired('git', 30)]):
+                firmware_archive._historical_origins(*args, limit=1)
+            self.assertEqual(history['status'], 'unavailable')
+            self.assertIn(revision, history['retries'])
+            with patch.object(retry, '_now', return_value=now), patch.object(
+                    firmware_archive.subprocess, 'check_output', return_value=log) as command:
+                firmware_archive._historical_origins(*args, limit=1)
+            self.assertEqual(command.call_count, 1)
+            self.assertEqual(history['status'], 'deferred')
+            with patch.object(retry, '_now', return_value=now+timedelta(hours=2)), patch.object(
+                    firmware_archive.subprocess, 'check_output', side_effect=[log, '+"url": '+json.dumps(self.source)]):
+                firmware_archive._historical_origins(*args, limit=1)
+            self.assertEqual(history['status'], 'searched')
+            self.assertEqual(history['matches'][identity]['url'], self.source)
+            self.assertEqual(history['retries'], {})
 
     def test_server_retry_after_blocks_unattempted_document_downloads_across_restarts(self):
         from sonos_firmware import retry

@@ -6,6 +6,7 @@ import hashlib
 import re
 import os
 import struct
+import subprocess
 import tempfile
 import urllib.error
 from urllib.parse import urlsplit, urljoin
@@ -120,6 +121,70 @@ def register_document(path, manifest, publication):
     return record
 
 
+def _historical_origins(root, paths, wanted, history, *, limit):
+    """Resume optional searches of this checkout's own metadata changes."""
+    if not wanted:
+        return
+    specs = [(':(literal)'+str(path) if path.suffix == '.json' else
+              ':(glob)'+str(path).rstrip('/')+'/**/*.json') for path in sorted(paths)]
+    try:
+        log = subprocess.check_output(['git', 'log', '--format=%H %ct', 'HEAD', '--', *specs],
+            cwd=root, text=True, stderr=subprocess.DEVNULL, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        history['status'] = 'unavailable'
+        return
+    commits = [line.split() for line in log.splitlines()]
+    checked = history.setdefault('checked_commits', {})
+    retries = history.setdefault('retries', {})
+    revisions = {revision for revision, _ in commits}
+    def remaining():
+        return any(revisions-set(checked.get(identity, [])) for identity in wanted
+                   if identity not in history.get('matches', {}))
+    origins = list(wanted)
+    position = history.get('next_origin', 0)
+    for _ in origins:
+        origin = origins[position % len(origins)]
+        position += 1
+        seen = set(checked.get(origin, []))
+        pending = [(revision, int(stamp)) for revision, stamp in commits if revision not in seen and due(retries.get(revision))]
+        if pending:
+            break
+    else:
+        history['status'] = 'deferred' if remaining() else 'searched'
+        return
+    history['next_origin'] = position
+    if wanted[origin] is not None:
+        pending.sort(key=lambda row: abs(row[1]-wanted[origin]))
+    failed = False
+    for revision, _ in pending[:limit]:
+        try:
+            changes = subprocess.check_output(['git', 'show', '--format=', '--no-ext-diff',
+                '--no-textconv', '--unified=0', revision, '--', *specs], cwd=root,
+                text=True, errors='replace', stderr=subprocess.DEVNULL, timeout=30)
+        except (OSError, subprocess.SubprocessError) as error:
+            retries[revision] = {**error_checkpoint(error, retries.get(revision)), 'error_type': type(error).__name__}
+            history['status'] = 'unavailable'
+            failed = True
+            continue
+        retries.pop(revision, None)
+        for match in re.finditer(r'"https?://(?:[^"\\]|\\.)*"', changes):
+            try:
+                url = json.loads(match[0])
+            except ValueError:
+                continue
+            secure = 'https://'+url[7:] if url.startswith('http://') else url
+            for value in {url, secure, url.split('#', 1)[0], secure.split('#', 1)[0]}:
+                identity = hashlib.sha256(value.encode()).hexdigest()
+                if identity in wanted:
+                    history.setdefault('matches', {})[identity] = {'url': url, 'commit': revision}
+        for identity in wanted:
+            if revision not in checked.setdefault(identity, []):
+                checked[identity].append(revision)
+        if all(identity in history.get('matches', {}) for identity in wanted):
+            break
+    history['status'] = 'unavailable' if failed else 'partial' if remaining() else 'searched'
+
+
 def reconcile_documents(root, repository, assets, work, *, previous=None, limit=8,
                         max_bytes=2_000_000, fetch=None):
     """Restore interrupted source receipts using publication and origin digests.
@@ -138,7 +203,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
     fetch = fetch or download_verified
     state = {**(previous or {}), 'observations': dict((previous or {}).get('observations', {}))}
     backoff = RequestBackoff(state, repository)
-    urls, origin_hosts = {}, {}
+    urls, origin_hosts, origin_urls = {}, {}, {}
     def remember(value):
         if isinstance(value, dict):
             for key, child in value.items():
@@ -158,14 +223,17 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
                     identity = hashlib.sha256(origin.encode()).hexdigest()
                     if host:
                         origin_hosts[identity] = host
+                        origin_urls[identity] = origin
                     if sonos_url(secure):
                         urls[identity] = origin
     paths = {root/'data/catalog.json', root/'data/discovery/firmware-frontier.json',
              *(root/'data/apps').glob('*.json')}
+    history_paths = {Path('data/catalog.json'), Path('data/discovery/firmware-frontier.json'), Path('data/apps')}
     if (root/'config/targets.json').exists():
         from .platform.registry import targets
         for target in targets(root).values():
             for relative in target.metadata:
+                history_paths.add(Path(relative))
                 location = root/relative
                 paths.update(location.rglob('*.json') if location.is_dir() else [location])
     for path in sorted(paths):
@@ -181,13 +249,49 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
         identity = json.dumps([tag, name, asset.get('sha256'), asset.get('bytes')])
         candidates.append({'identity': identity, 'tag': tag, 'name': name, 'asset': asset,
                            'digest': match[2], 'origin': match[3], 'kind': match[1], 'format': match[4]})
-    result = {**state, 'recovered': [], 'verified': [], 'errors': [], 'pending': len(candidates)}
+    history = state.setdefault('origin_history', {})
+    for row in state['observations'].values():
+        if row.get('state') == 'external-origin':
+            remember(row.get('origin_url'))
+    for row in history.get('matches', {}).values():
+        remember(row['url'])
+    wanted = {}
+    for row in candidates:
+        if row['origin'] not in origin_hosts:
+            try:
+                stamp = row['asset'].get('created_at')
+                created = datetime.fromisoformat(stamp.replace('Z', '+00:00')).timestamp() if isinstance(stamp, str) else None
+            except (ValueError, TypeError, OverflowError, OSError):
+                created = None
+            wanted[row['origin']] = created
+    _historical_origins(root, history_paths, wanted, history, limit=limit*4)
+    for row in history.get('matches', {}).values():
+        remember(row['url'])
+    external = {}
+    for row in candidates:
+        prior = state['observations'].get(row['identity'], {})
+        if (prior.get('state') == 'external-origin' and prior.get('sha256') == row['digest'] == row['asset'].get('sha256')
+                and prior.get('bytes') == row['asset']['bytes'] and
+                prior.get('origin_sha256') == row['origin'] and
+                row['origin'] in origin_hosts and
+                prior.get('origin_host') == origin_hosts.get(row['origin']) and
+                not sonos_url('https://'+prior.get('origin_host', '')+'/')):
+            external[row['identity']] = {key: prior[key] for key in
+                ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
+    result = {**state, 'recovered': [], 'verified': [], 'external_origins': list(external.values()),
+              'errors': [], 'pending': len(candidates)-len(external)}
     if backoff.paused('document-downloads'):
-        result['status'] = 'partial' if candidates else 'ok'
+        result['status'] = 'partial' if result['pending'] else 'ok'
         return result
-    chosen = select(candidates, state['observations'], key=lambda row: row['identity'],
+    eligible = {key: dict(value) for key, value in state['observations'].items()}
+    for row in candidates:
+        prior = eligible.get(row['identity'], {})
+        if prior.get('state') == 'origin-unresolved' and not prior.get('origin_known') and row['origin'] in origin_hosts:
+            prior.pop('next_attempt_at', None)
+    chosen = select(candidates, eligible, key=lambda row: row['identity'],
                     limit=limit, state=result, queue='orphan-source-documents')
     for row in chosen:
+        external.pop(row['identity'], None)
         prior = state['observations'].get(row['identity'], {})
         asset, digest = row['asset'], row['digest']
         capture = {'release_tag': row['tag'], 'release_asset': row['name'],
@@ -223,6 +327,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
                     metadata, _ = parse_manifest(destination, origin)
                 backoff.clear('document-downloads')
                 result['verified'].append(capture)
+                observation.update(sha256=digest, bytes=asset['bytes'], origin_known=row['origin'] in origin_hosts)
                 if origin is not None:
                     publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
                     manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
@@ -232,9 +337,11 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
                     register_document(root/'data/catalog.json', manifest, publication)
                     result['recovered'].append({**capture, 'source_url': origin})
                     observation.update(state='recovered', source_url=origin)
-                elif row['origin'] in origin_hosts:
+                elif row['origin'] in origin_hosts and not sonos_url('https://'+origin_hosts[row['origin']]+'/'):
                     observation.update(state='external-origin',
-                                       origin_host=origin_hosts[row['origin']])
+                                       origin_host=origin_hosts[row['origin']], origin_url=origin_urls[row['origin']])
+                    external[row['identity']] = {key: observation[key] for key in
+                        ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
         except Exception as error:
             observation.update(state='recovery-error', error_type=type(error).__name__,
                                **error_checkpoint(error, prior))
@@ -243,12 +350,13 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
         else:
-            observation.update(checkpoint(prior, success=observation['state'] == 'recovered'))
+            observation.update(checkpoint(prior, success=observation['state'] == 'recovered' or
+                observation['state'] == 'external-origin' and bool(asset.get('sha256'))))
         state['observations'][row['identity']] = observation
         if backoff.paused('document-downloads'):
             break
-    result.update(pending=len(candidates)-len(result['recovered']),
-                  status='partial' if len(candidates) > len(result['recovered']) else 'ok')
+    pending = len(candidates)-len(result['recovered'])-len(external)
+    result.update(pending=pending, external_origins=list(external.values()), status='partial' if pending else 'ok')
     return result
 
 

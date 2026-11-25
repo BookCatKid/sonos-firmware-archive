@@ -89,6 +89,15 @@ an adapter-specific filename list. Unknown origins stay unrecorded and make the 
 partial. Recovery uses durable retry rotation and server cooldowns; its batch
 size and document-byte budget are target options. Local verification never
 downloads these captures or imports recovery receipts.
+If current observations no longer contain an origin, reconciliation can search
+this checkout's own committed JSON metadata changes. Batches retain progress per
+origin, prioritizing commits near the publication date. Git history is optional;
+cold startup needs no earlier metadata commits. Only matching origin hashes supply attribution, and
+capture bytes still require verification in CI. Verified non-Sonos publications
+are reported separately from unexplained extras and never promoted into the
+Sonos catalog. Reusing that classification requires the same current content
+digest, size and matching external origin; changed or unresolved captures remain
+pending.
 
 Wayback index requests retain every returned origin and capture instead of
 collapsing adjacent records by body digest. Identical manifests at different

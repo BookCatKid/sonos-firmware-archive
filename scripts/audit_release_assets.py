@@ -139,6 +139,7 @@ def github_assets(repository: str) -> tuple[int, dict]:
                 "bytes": asset["size"],
                 "sha256": (asset.get("digest") or "").removeprefix("sha256:"),
                 "url": asset["browser_download_url"],
+                **({'created_at': asset['created_at']} if asset.get('created_at') else {}),
             }
     return len(releases), assets
 
@@ -197,7 +198,15 @@ def main() -> int:
     for extra in extras:
         extra["recorded_as"] = by_digest.get(extra["sha256"], [])
     duplicated = [extra for extra in extras if extra["recorded_as"]]
-    unexplained = [extra for extra in extras if not extra["recorded_as"]]
+    foreign = {(row['release_tag'], row['release_asset']): row for row in
+               (recovery or {}).get('external_origins', [])}
+    external = [{**extra, 'origin_host': proof['origin_host'], 'origin_sha256': proof['origin_sha256']}
+                for extra in extras if not extra['recorded_as'] and
+                (proof := foreign.get((extra['release_tag'], extra['release_asset']))) and
+                proof['sha256'] == extra['sha256'] and proof['bytes'] == extra['bytes']]
+    external_names = {(extra['release_tag'], extra['release_asset']) for extra in external}
+    unexplained = [extra for extra in extras if not extra["recorded_as"] and
+                   (extra['release_tag'], extra['release_asset']) not in external_names]
     report = {
         "schema_version": 1,
         "checked": datetime.now(timezone.utc).isoformat(),
@@ -209,11 +218,13 @@ def main() -> int:
         "mismatched_total": len(mismatched),
         "unrecorded_extra_total": len(extras),
         "duplicated_extra_total": len(duplicated),
+        "external_origin_extra_total": len(external),
         "unexplained_extra_total": len(unexplained),
         "missing": missing,
         "mismatched": mismatched,
         "unrecorded_extras": extras,
         "duplicated_extras": duplicated,
+        "external_origin_extras": external,
         "unexplained_extras": unexplained,
         'status': 'partial' if missing or mismatched or unexplained else 'ok',
     }
