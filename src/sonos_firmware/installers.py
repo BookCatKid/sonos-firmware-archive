@@ -151,15 +151,23 @@ def _inspect_desktop(candidate, path):
     Algorithm provenance: ReverseTelnet's manifest_files_provenance_and_research.md.
     Inputs are our captured installer bytes, never a foreign manifest collection.
     """
+    numeric = lambda value: isinstance(value, str) and re.fullmatch(r'\d+(?:[.]\d+)+', value)
+
     def parse(data, member):
         info = plistlib.loads(data)
-        value = info.get('CFBundleShortVersionString')
-        if (not isinstance(value, str) or not re.fullmatch(r'\d+(?:[.]\d+)+', value) or
-                not str(info.get('CFBundleIdentifier', '')).lower().startswith('com.sonos')):
+        if not str(info.get('CFBundleIdentifier', '')).lower().startswith('com.sonos'):
+            raise ValueError('installer plist is not a Sonos application bundle')
+        metadata = {'bundle_id': info.get('CFBundleIdentifier'), 'member': member,
+                    'bundle_version': info.get('CFBundleVersion') if numeric(info.get('CFBundleVersion')) else None,
+                    'plist_sha256': hashlib.sha256(data).hexdigest()}
+        # The short version is the release marketing version used by campaign
+        # URLs. Classic installers expose only the bundle build, which is kept
+        # as metadata but cannot reconstruct a campaign.
+        if numeric(info.get('CFBundleShortVersionString')):
+            metadata['app_version'] = info['CFBundleShortVersionString']
+        if not metadata.get('app_version') and not metadata.get('bundle_version'):
             raise ValueError('installer plist has no Sonos application version')
-        return {'desktop_metadata': {'app_version': value, 'bundle_version': info.get('CFBundleVersion'),
-                'bundle_id': info.get('CFBundleIdentifier'), 'member': member,
-                'plist_sha256': hashlib.sha256(data).hexdigest()}}
+        return {'desktop_metadata': metadata}
     with tempfile.TemporaryDirectory(dir=path.parent, prefix='desktop-metadata-') as temporary:
         work = Path(temporary)
         if path.suffix.lower() != '.exe' and zipfile.is_zipfile(path):
@@ -200,8 +208,9 @@ def _inspect_desktop(candidate, path):
                     # 7zip's uppercase PRODUCTVERSION fixed-header summary.
                     version = re.search(pattern, text) or re.search(pattern, text, re.I)
                     if version and 'sonos' in text.lower():
-                        return {'desktop_metadata': {'app_version': re.sub(r',\s*', '.', version[1]),
-                                'member': member['Path'], 'version_resource_sha256': hashlib.sha256(data).hexdigest()}}
+                        return {'desktop_metadata': {'installer_version': re.sub(r',\s*', '.', version[1]),
+                                'member': member['Path'],
+                                'version_resource_sha256': hashlib.sha256(data).hexdigest()}}
             raise ValueError('installer has no readable Sonos ProductVersion resource')
         plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
                         key=lambda e: e['Path'].count('/'))
@@ -273,7 +282,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
-                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-3',
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-4',
                      inspect_if=None if mobile else pivotable,
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)

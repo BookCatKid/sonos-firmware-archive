@@ -59,65 +59,61 @@ any other archive.
 
 ## Execution constraints
 
-12. **No local Sonos payload work.** UPDs, real EXEs/DMGs/APKs and source
-    archives are acquired, hashed, decrypted and extracted in GitHub Actions
-    only. Local work may use public metadata, XML manifests, HTML, API
-    responses and synthetic fixtures. No `GITHUB_ACTIONS=true` bypasses.
-13. **Use the worker's resources.** Budgets exist only as runaway guards.
+12. **Use the worker's resources.** Budgets exist only as runaway guards.
     Do not cap job time, batch sizes, page counts, download sizes or decoder
     runtimes below what the Actions runner can comfortably do; a slow run is
     cheaper than another run. Stream large downloads instead of buffering
     them only when a cap would otherwise cause a real failure.
-14. **No repeated full-matrix validation runs.** Use focused local checks and,
+13. **No repeated full-matrix validation runs.** Use focused local checks and,
     when CI proof is needed, one targeted validation deployment plus a single
     normal target dispatch. A complete end-to-end run is never a pre-merge
     ritual, and validation exists to prove machinery, not to gate discovery.
-15. **Zero tolerated failures in worker receipts.** An inspection or decoder
+14. **Zero tolerated failures in worker receipts.** An inspection or decoder
     failure on a capture that cannot contribute discovery is removed by
     narrowing the work, not by accepting the red entry. Failures that remain
     must be real source or code faults worth fixing.
-16. All real acquisition uses the unified `archive.yml` workflow and its
+15. All real acquisition uses the unified `archive.yml` workflow and its
     registered providers. No diagnostic/backfill side workflows, no manual
     receipt imports, no pre-collected payload archives, no one-off
     backlog-draining prerequisites.
-17. An empty archive must bootstrap from nothing. Existing Releases, prior
+16. An empty archive must bootstrap from nothing. Existing Releases, prior
     catalogs and git history may supplement discovery but are optional.
-18. Do not inspect the private recovery vault, private device captures,
+17. Do not inspect the private recovery vault, private device captures,
     ignored original artifacts or real private keys. Do not clone the
     validation repository locally.
 
 ## Truthfulness
 
-19. Explain errors truthfully. Runtime source failures, pending batches and
+18. Explain errors truthfully. Runtime source failures, pending batches and
     code crashes are different states. Never greenwash incomplete coverage,
     never inflate counts (multiple deliveries of one version are one version;
     URL-level availability is not distinct binaries).
-20. Discovery and preservation are separate numbers. Observing a revision is
+19. Discovery and preservation are separate numbers. Observing a revision is
     not preserving it. Report both with provenance.
-21. Be direct and concise in progress updates. Do not restate unresolved
+20. Be direct and concise in progress updates. Do not restate unresolved
     problems as if they were plans; fix them or say exactly what is blocking.
 
 ## Code quality
 
-22. **Comments describe what the code does, never the project's history.**
+21. **Comments describe what the code does, never the project's history.**
     No comments explaining what changed, what was wrong before, what a review
     said, or how the current version differs from an earlier one. If a
     comment references the past, delete it.
-23. No test/quality machinery displacing discovery work. No useless one-off
+22. No test/quality machinery displacing discovery work. No useless one-off
     tools, no masses of tests. Existing functional checks stay; add focused
     tests only where they protect real behavior.
-24. Beautiful code: small deep modules, clear names, no dead paths, no
+23. Beautiful code: small deep modules, clear names, no dead paths, no
     speculative generality, no duplicated logic across scripts.
 
 ## Process
 
-25. Use the question tool extensively before making decisions.
-26. Rules belong in this file. Do not create rule documentation in random
+24. Use the question tool extensively before making decisions.
+25. Rules belong in this file. Do not create rule documentation in random
     files; other documentation describes architecture and usage only.
-27. Do not merge to production without explicit user authorization.
-28. Do not comment on or close issues #23/#24/#25 and do not add automatic
+26. Do not merge to production without explicit user authorization.
+27. Do not comment on or close issues #23/#24/#25 and do not add automatic
     closing directives for them; the PR uses `Related: #23, #24, #25.` Monitor
     issues are ongoing reports: a passing parser or code check never closes one.
-29. Reversible local edits, source-only validation deployments and pushing
+28. Reversible local edits, source-only validation deployments and pushing
     the PR branch are pre-authorized; no fresh permission question is needed
     for ordinary fixes.

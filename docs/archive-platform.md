@@ -100,8 +100,11 @@ the original vendor URL. Historical manifests and direct payload captures enter
 the same queues as live discoveries. Namespace model ranges expand after each
 completed pass; synthetic protocol profiles advance a saved exploration cursor.
 WinGet history follows changed and parent snapshots, including removed metadata.
-Desktop acquisition reads application versions from captured DMG and Windows
-metadata; build/token/version observations feed native campaign exploration.
+Desktop acquisition reads the release version from a captured DMG application
+bundle and the installer build from Windows version resources; build, token and
+release version observations feed native campaign exploration, and a classic
+installer that exposes only its bundle build is recorded without a campaign
+context.
 Only campaign-shaped installer URLs are inspected, because a classic installer
 carries no campaign token to pivot from. The desktop worker installs a pinned
 upstream 7-Zip so that application plists inside the HFS or APFS filesystem
