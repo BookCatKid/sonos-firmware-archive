@@ -29,6 +29,7 @@ class AppSource:
     current_refresh_hours: float = 6
     inspect: Callable[[dict, Path], dict] | None = None
     inspection_revision: str | None = None
+    inspect_if: Callable[[dict], bool] | None = None
 
 
 def receipt_path(path: Path, root: Path) -> str:
@@ -68,8 +69,11 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     if source.inspection_revision is not None and not isinstance(source.inspection_revision, str):
         raise ValueError('installer inspection revision must be a string')
 
+    def needs_inspection(candidate):
+        return source.inspect is not None and (source.inspect_if is None or source.inspect_if(candidate))
+
     def inspected(capture):
-        return source.inspect is None or (capture.get('inspection_revision') == source.inspection_revision
+        return not needs_inspection(capture.get('candidate', capture)) or (capture.get('inspection_revision') == source.inspection_revision
                                           and isinstance(capture.get('verification'), dict))
     document = json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'artifacts': [], 'gaps': []}
     records = document['artifacts']
@@ -126,7 +130,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 # New evidence of changed bytes is new work, even at a known URL.
                 eligibility.pop(url)
                 observation['status'] = 'needs-refresh'
-        if source.inspect and observation.get('inspection_revision') != source.inspection_revision:
+        if needs_inspection(observation['candidate']) and observation.get('inspection_revision') != source.inspection_revision:
             eligibility.pop(url, None)
             observation['status'] = 'needs-refresh'
     ready = set()
@@ -134,6 +138,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
 
     def save():
         errors = [{'phase': 'discovery', 'error': error} for error in discovery_errors]
+        errors.extend({'phase': 'installer-metadata', 'sha256': row['sha256'], 'error': error}
+                      for row in records for error in row.get('verification', {}).get('discovery_errors', []))
         errors.extend({'url': row['candidate']['url'], 'error': row.get('error'),
                        **({'acquisition_id': identity} if identity != row['candidate']['url'] else {})}
                       for identity, row in observations.items() if row['status'] == 'failed')
@@ -190,6 +196,10 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                                          'release_asset': known['release_asset']}
         if capture.get('inspection_revision'):
             observations[acquisition_id(candidate)]['inspection_revision'] = capture['inspection_revision']
+        if capture.get('verification', {}).get('discovery_errors'):
+            # The source is preserved; retry metadata discovery with the normal
+            # fair/backoff queue rather than blocking publication or giving up.
+            observations[acquisition_id(candidate)].update(checkpoint(previous), status='needs-refresh')
         gaps.pop(acquisition_id(candidate), None)
 
     save()
@@ -271,8 +281,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     backoff.clear(host)
                     if not isinstance(fetched_from, str) or not fetched_from:
                         raise ValueError('acquisition did not return its source URL')
-                    verification = source.inspect(candidate, path) if source.inspect else None
-                    if source.inspect and not isinstance(verification, dict):
+                    verification = source.inspect(candidate, path) if needs_inspection(candidate) else None
+                    if needs_inspection(candidate) and not isinstance(verification, dict):
                         raise ValueError('installer inspection did not return a verification record')
                     size, digest = path.stat().st_size, file_digest(path)
                     if size <= 0:
@@ -293,7 +303,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                     pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
                                'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
                                'acquired_at': datetime.now(timezone.utc).isoformat()}
-                    if source.inspect:
+                    if needs_inspection(candidate):
                         pending.update(verification=verification, inspection_revision=source.inspection_revision)
                     observations[acquisition_id(candidate)]['pending_publication'] = pending
                     save()
@@ -311,7 +321,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 observations[identity] = {**error_checkpoint(error, previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
                                      'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
                                      'status': 'failed', 'error': str(error)}
-                if source.inspect:
+                if needs_inspection(candidate):
                     observations[identity]['inspection_revision'] = source.inspection_revision
                 if pending:
                     observations[identity]['pending_publication'] = pending

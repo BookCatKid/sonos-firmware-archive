@@ -226,3 +226,134 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
             'negative_profile_total': sum(row.get('status') == 'not-served' for row in observations.values()),
             'failed_profile_total': failed, 'pending_profile_total': unchecked + failed,
             'status': 'disabled' if not limit else 'partial' if unchecked or failed else 'ok', 'errors': errors}
+
+
+def fetch_client_reports(query, page):
+    """Read public client diagnostics, retaining no log bodies or household IDs."""
+    import json
+    import os
+    from urllib.parse import urlencode
+    headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
+    token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
+    if token:
+        headers['Authorization'] = 'Bearer '+token
+    url = 'https://api.github.com/search/issues?'+urlencode({
+        'q': query, 'sort': 'updated', 'order': 'asc', 'per_page': 20, 'page': page})
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:
+            body = response.read(16*1024*1024+1)
+    except urllib.error.HTTPError as error:
+        if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
+            try:
+                error.headers['Retry-After'] = str(max(0, int(error.headers['X-RateLimit-Reset'])-int(time.time())))
+            except (ValueError, KeyError, TypeError):
+                pass
+        raise
+    if len(body) > 16*1024*1024:
+        raise ValueError('public client report page exceeds the metadata budget')
+    return json.loads(body)
+
+
+def client_manifest_urls(body):
+    """Extract only public Sonos update locations from actual client traces."""
+    import html
+    from urllib.parse import urlsplit, urlunsplit
+    from .source_urls import sonos_url
+    body = html.unescape(body).replace('\\/', '/')
+    if not re.search(r'availableSoftwareUpdate|ZoneGroupTopology|manifestRevision', body, re.I):
+        return []
+    roots = set()
+    for raw in re.findall(r'https?://[^\s"\'<>`\\]+', body):
+        try:
+            parsed = urlsplit(raw.rstrip('),]}'))
+            if not parsed.hostname or parsed.port not in {None, 80, 443}:
+                continue
+            path = parsed.path
+            if '^' in path:
+                path = path.split('^', 1)[0].rstrip('/')+'/update.upm'
+            elif path.lower().endswith(('.upd', '.exe', '.dmg', '.bin', '.apk')):
+                path = path.rsplit('/', 1)[0]+'/update.upm'
+            if not path.lower().endswith('.upm') or '/latest/' in path:
+                continue
+            # Never copy identifying query parameters out of a device log.
+            url = urlunsplit(('https', parsed.hostname, path, '', ''))
+            if sonos_url(url):
+                roots.add(url)
+        except ValueError:
+            continue
+    return sorted(roots)
+
+
+def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
+    """Search primary client reports, subdividing windows before GitHub's cap."""
+    from datetime import datetime, timedelta, timezone
+    state = deepcopy(previous)
+    queries = ('"manifestURL" sonos in:body is:issue is:public',
+               '"manifestRevision" sonos in:body is:issue is:public',
+               '"update-firmware.sonos.com" sonos in:body is:issue is:public')
+    contexts = state.setdefault('queries', {})
+    roots = state.setdefault('roots', {})
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    end = now.isoformat().replace('+00:00', 'Z')
+    for query in queries:
+        record = contexts.setdefault(query, {})
+        if not record.get('windows') and due(record):
+            record['windows'] = [{'start': record.get('through'), 'end': end, 'page': 1}]
+    errors = []
+    cursor = state.get('cursor', 0)
+    for _ in range(pages):
+        if state.get('source_backoff') and not due(state['source_backoff']):
+            break
+        active = [q for q in queries if contexts[q].get('windows') and due(contexts[q])]
+        if not active:
+            break
+        query = active[cursor % len(active)]
+        cursor += 1
+        record = contexts[query]
+        window = record['windows'][0]
+        span = ((window['start']+'..') if window['start'] else '<=')+window['end']
+        try:
+            document = fetch(query+' updated:'+span, window['page'])
+            items, total = document.get('items'), document.get('total_count')
+            if not isinstance(items, list) or not isinstance(total, int):
+                raise ValueError('invalid public client report search response')
+            for item in items:
+                repository = item.get('repository_url', '').rsplit('/', 1)[-1].lower()
+                if 'manifest' in repository:
+                    continue  # Reference manifest collections are not runtime sources.
+                body = item.get('body') or ''
+                for url in client_manifest_urls(body):
+                    proof = {'report_url': item['html_url'], 'updated_at': item.get('updated_at'),
+                             'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
+                    if proof not in roots.setdefault(url, []):
+                        roots[url].append(proof)
+            if document.get('incomplete_results'):
+                raise ValueError('public client search returned incomplete results; page retained')
+            if total > 1000:
+                earliest = window['start'] or (items[0]['updated_at'] if items else window['end'])
+                start_dt = datetime.fromisoformat(earliest.replace('Z', '+00:00'))
+                end_dt = datetime.fromisoformat(window['end'].replace('Z', '+00:00'))
+                if end_dt-start_dt <= timedelta(seconds=1):
+                    raise ValueError('public client search saturated a timestamp; window retained')
+                middle = start_dt+(end_dt-start_dt)//2
+                stamp = middle.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+                record['windows'][:1] = [{'start': earliest, 'end': stamp, 'page': 1},
+                    {'start': stamp, 'end': window['end'], 'page': 1}]
+            elif len(items) < 20 or window['page']*20 >= total:
+                record['windows'].pop(0)
+                record['through'] = window['end']
+            else:
+                window['page'] += 1
+            record.update(checkpoint(record, success=True, success_hours=0 if record['windows'] else 6))
+            record.pop('error', None)
+            state.pop('source_backoff', None)
+        except Exception as error:
+            record.update(error_checkpoint(error, record), error=str(error))
+            errors.append({'source': 'public-client-reports', 'error': str(error)})
+            if getattr(error, 'code', None) in {403, 429}:
+                state['source_backoff'] = {**record, 'windows': []}
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+    state.update(cursor=cursor, errors=errors,
+                 status='partial' if errors or any(r.get('windows') for r in contexts.values()) else 'ok')
+    return state

@@ -95,6 +95,12 @@ the original vendor URL. Historical manifests and direct payload captures enter
 the same queues as live discoveries. Namespace model ranges expand after each
 completed pass; synthetic protocol profiles advance a saved exploration cursor.
 WinGet history follows changed and parent snapshots, including removed metadata.
+Desktop acquisition reads application versions from captured DMG and Windows
+metadata; build/token/version observations feed native campaign exploration.
+Release shapes are learned from our own Sonos observations and their numeric
+fields continue across runs, including compound release labels. Public client
+diagnostics supply additional native manifest leads without importing another
+archive's manifest collection or retaining raw logs.
 The firmware worker also replays its own hash-verified preserved XML snapshots,
 so a changed or dead origin cannot hide links in an older revision. Parsed
 payload leads queue sibling manifests even when the payload is unavailable.

@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -126,6 +127,7 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
                     continue
                 print(f'{label}: starting', file=sys.stderr, flush=True)
                 log = work / (str(len(report['steps'])) + '.log')
+                step_started = time.time_ns()
                 try:
                     if execute:
                         code, output = execute(step, context, child_env)
@@ -138,16 +140,23 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
                                   output_tail=redact(output, environment)[-4000:])
                     if code not in step.accepted_codes:
                         failed = True
-                        report['errors'].append({'step': step.name, 'exit_code': code})
+                        record['failure_kind'] = 'process-exit'
+                        report['errors'].append({'step': step.name, 'exit_code': code, 'kind': 'process-exit'})
                     if step.report and Path(step.report).exists():
                         native = json.loads(Path(step.report).read_text())
+                        record['source_status'] = native.get('status') if isinstance(native, dict) else None
                         if _source_incomplete(native):
+                            if (code == 1 and code not in step.accepted_codes and
+                                    Path(step.report).stat().st_mtime_ns >= step_started and
+                                    'Traceback (most recent call last)' not in output):
+                                record['failure_kind'] = 'source-reported-incomplete'
+                                report['errors'][-1]['kind'] = record['failure_kind']
                             record['status'] = 'partial' if code in step.accepted_codes else 'failed'
                             report['pending'].append({'step': step.name, 'reason': 'source reports incomplete work'})
                 except Exception as error:
                     failed = True
-                    record.update(status='failed', error=redact(str(error), environment))
-                    report['errors'].append({'step': step.name, 'error': record['error']})
+                    record.update(status='failed', failure_kind='exception', error=redact(str(error), environment))
+                    report['errors'].append({'step': step.name, 'kind': 'exception', 'error': record['error']})
                 report['steps'].append(record)
                 print(f'{label}: {record["status"]}', file=sys.stderr, flush=True)
             if report['errors']:

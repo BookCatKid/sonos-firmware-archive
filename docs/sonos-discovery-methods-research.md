@@ -1,56 +1,38 @@
-# Sonos discovery methods: algorithms, provenance, and limits
+# Sonos discovery methods
 
-Research date: **2026-11-13 UTC**. Scope: independent public Sonos discovery algorithms, the provenance of historical manifests, and limits imposed by unreferenced opaque campaign paths.
+## Historical discovery and provenance
 
-## Findings relevant to implementation
+ReverseTelnet documents the actual collection method in
+[Manifest File Provenance and Research](https://github.com/ReverseTelnet/sonos_update_manifests/blob/master/docs/manifest_files_provenance_and_research.md).
+The initial collection came from historical network logs. Further discovery used
+recursive manifest links, public client diagnostics, package-manager metadata,
+and an installer-to-manifest pivot. Earlier conclusions here that no historical
+reconstruction recipe was documented are superseded by that source.
 
-**Porting the traversal algorithm is justified; importing the collection is not necessary for current endpoint discovery. Neither approach establishes discovery of every historical campaign.** Public software-generation bootstrap endpoints can expose a current canonical manifest without knowing its opaque campaign identifier. Recursively following image-directory siblings and header locations can discover additional manifests. Historical directories absent from that reachable graph require another provenance source or a demonstrably effective additional protocol profile; a numeric build label alone supplies no opaque directory token.
+The installer pivot combines the build and opaque token in a discovered Sonos
+installer URL with the application version inside the installer. Those values
+supply a candidate native campaign directory; release-type variants must still
+be checked against Sonos. An installer filename alone does not contain all the
+required information.
 
-The important distinctions are:
+Our implementation uses the normal Actions acquisition path to inspect macOS
+Info.plist and Windows version resources without executing the software. It
+records the captured-file and metadata provenance. Firmware discovery learns
+release templates from our own Sonos responses and continues numeric enumeration,
+including compound suffixes and gaps, rather than importing a release list or
+stopping at a fixed suffix number.
 
-| Mechanism | What the primary evidence establishes | What it does not establish |
-| --- | --- | --- |
-| Anonymous software-generation bootstrap | GET the public `swgen/1` and `swgen/2` manifest routes; record canonical `Content-Location` and parse the returned XML. | A complete historical index, or arbitrary generation support. |
-| Legacy UPS bootstrap | A synthetic request returns typed records containing a base URI and manifest URI. | That changing the supplied current version requests a specific historic release. |
-| Recursive manifest traversal | Follow literal URLs and derive `update.upm` in already observed package directories; optionally probe the evidenced Dev/Prod counterpart. | Discovery of an opaque directory that no visited response references. |
-| Saved local manifest corpus | Its URLs create additional traversal roots, including historical roots. | Independent rediscovery of how that initial corpus was acquired. |
-| Known URL/release utilities | Reference lists and filename-derived metadata exist in the external repository. | That these files are the crawler's input or an algorithm for deriving unknown campaign tokens. |
-| Passive device/update-log evidence | A real client can expose an exact update URL/profile that generic public requests may not reveal. | Permission to scan unrelated devices, or a universal account-free history endpoint. |
-| Repeated scheduled capture | New response bytes can be retained while public mutable URLs change. | Recovery of overwritten old bodies after the fact. |
+Public client diagnostic searches are another independent input. Only native
+Sonos update locations and report provenance are retained; raw device logs and
+identifying query parameters are not committed. Search windows subdivide when
+GitHub's result cap would otherwise hide reports. Reference manifest collections
+remain comparison material rather than runtime inputs.
 
-## How ReverseTelnet's collection was obtained: what is documented
-
-### The historical crawler is algorithmic, but starts with a corpus
-
-The initial populated [crawler at `d0a1133035eb1af83dc565495ecb7c8cafb9fdaf`](https://github.com/ReverseTelnet/sonos_update_manifests/blob/d0a1133035eb1af83dc565495ecb7c8cafb9fdaf/check_for_new_manifest_files.py) documents its queue algorithm in lines 11–29. Its actual implementation starts with **eight fixed bootstrap requests plus URLs extracted from saved `.upm`/`.xml` files**. Those requests combine generations 1 and 2 with ordinary, stage, performance, and test update hosts. It then:
-
-1. Parses absolute `base_url` and image URLs from existing manifests.
-2. Normalizes an observed image directory to a sibling `update.upm` request.
-3. Adds Dev/Prod substitutions for observed URLs.
-4. GETs queued URLs, following response `Content-Location` into the queue.
-5. Saves newly observed signature variants, parses their links, and repeats with an already-visited set.
-
-These are demonstrated in the historical source's [link parser](https://github.com/ReverseTelnet/sonos_update_manifests/blob/d0a1133035eb1af83dc565495ecb7c8cafb9fdaf/check_for_new_manifest_files.py#L434-L480), [fixed roots and local-corpus processing](https://github.com/ReverseTelnet/sonos_update_manifests/blob/d0a1133035eb1af83dc565495ecb7c8cafb9fdaf/check_for_new_manifest_files.py#L581-L623), and [response/queue processing](https://github.com/ReverseTelnet/sonos_update_manifests/blob/d0a1133035eb1af83dc565495ecb7c8cafb9fdaf/check_for_new_manifest_files.py#L696-L820).
-
-This implementation **does not import `known_manifest_urls`, `known_release_versions`, or `known_manifest_release_versions`**. The relevant precomputed input it does import is `known_404_url_list`, used to skip requests. It has fixed client tuples for its generation roots, not a controller-version/hardware/submodel/region exploration algorithm. Its `timeout=5`, request headers, signature-derived filenames, and negative skip list are implementation choices, not protocol requirements. In particular, porting permanent negative skips would suppress later revivals; a historical miss should remain a dated observation rather than a permanent exclusion.
-
-This assessment is pinned to the historical implementation, not a duplicate review of the current implementation.
-
-### The reference utilities do not explain initial acquisition
-
-The empty `known_manifest_urls.py` placeholder first appears in [commit `c44baf6`](https://github.com/ReverseTelnet/sonos_update_manifests/commit/c44baf6ab36b528f4cf8e33cee12fd278e348470). The populated file appears at [commit `3a81f0f`](https://github.com/ReverseTelnet/sonos_update_manifests/blob/3a81f0f9d4f0635b1e5c4a27f57741ccb2f3e93c/utilities/known_manifest_urls.py#L3-L18). Its author describes the list as a search-engine discoverability aid and a quick reference. It contains complete historical opaque paths but provides no per-entry acquisition transcript or source attribution. These strings are explicitly supplied reference data; their presence is not a derivation method. It also includes staging/test routes and a `QAtest` `FakeRelease1`, so it is not a verified production-release index.
-
-The populated [known-release utility at `d272d3f`](https://github.com/ReverseTelnet/sonos_update_manifests/blob/d272d3f8acbd790261952af0852edd85b99a39ea/utilities/known_release_versions.py#L19-L26) explicitly describes how it was generated: enumerate local `.upm`/`.xml` files, split each filename before `__`, and sort the results. This list is **derived from already acquired files**, not manually guessed release tokens and not an independent discovery source. Calling every list in the project “hardcoded discovery” would therefore be inaccurate.
-
-The [initial project README](https://github.com/ReverseTelnet/sonos_update_manifests/blob/318415f13816801a7297a6fe647ab70f81c1ca9f/README.md) describes a daily update workflow, but does not document where each initial historical manifest was found. It describes the collection and how to use its contents; it does not provide a recipe reconstructing all historical opaque identifiers from a public Sonos root.
-
-### Commit and issue history does not fill that gap
-
-The public reachable history contained **202 commits**, obtained with three `per_page=100` requests (100, 100, 2), and two branches pointing to the same tip `5583630e7e6723a434bdc9e58fa6fd04b352bd65`. The issue listing contained only four pull requests, with no ordinary issues. Each PR's issue-comment listing returned zero comments. [Commit history](https://github.com/ReverseTelnet/sonos_update_manifests/commits/master), [pull requests](https://github.com/ReverseTelnet/sonos_update_manifests/pulls?q=is%3Apr+is%3Aclosed).
-
-History records many initial manifest additions together, then later repeated observations at existing release paths. Their commit timestamps establish repository insertion history, not when Sonos originally published the bytes or how the author discovered the path. PRs [#1](https://github.com/ReverseTelnet/sonos_update_manifests/pull/1), [#2](https://github.com/ReverseTelnet/sonos_update_manifests/pull/2), and [#3](https://github.com/ReverseTelnet/sonos_update_manifests/pull/3) list added manifest/version/signature observations. [PR #4](https://github.com/ReverseTelnet/sonos_update_manifests/pull/4) lists `75.1-46030`, `73.0-41050`, and two `57.18-44230` variants, without an acquisition transcript. Its [individual manifest addition](https://github.com/ReverseTelnet/sonos_update_manifests/commit/84331227c7a4262d58fdf637c1b753e1f4dcb374) adds the file itself, not an independent URL-discovery method.
-
-**Conclusion on “manually supplied”:** fixed protocol roots, a pre-existing saved corpus, and explicitly written reference URLs are visible inputs. The original acquisition of individual historical files is **undocumented in the examined public history**. Neither a human-looking commit author nor an autogenerated PR description proves whether a specific file was manually downloaded or discovered by a prior automated run. The provenance gap should remain explicit.
+Saved XML snapshots are also replayed from this archive's own verified Releases.
+Their old links remain useful when a mutable source has changed. These mechanisms
+expand the historical graph; they do not prove that every overwritten historical
+revision has been recovered. Coverage comparisons must distinguish discovered
+URLs, observed revisions, and verified preserved bytes.
 
 ## Independent protocol evidence and usable algorithms
 

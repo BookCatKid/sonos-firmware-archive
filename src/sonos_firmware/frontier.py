@@ -5,6 +5,7 @@ import time
 import math
 import json
 import re
+import hashlib
 import urllib.error
 from copy import deepcopy
 from dataclasses import asdict
@@ -33,9 +34,13 @@ def observed_artifacts(root):
             for relative in target.metadata:
                 path = root/relative
                 paths.update(path.rglob('*.json') if path.is_dir() else [path])
-    candidates, errors = {}, []
+    candidates, errors, pivots = {}, [], {}
     def visit(value, source):
+        from .installers import installer_pivot_contexts
+
         if isinstance(value, dict):
+            for pivot in installer_pivot_contexts(value):
+                pivots[(pivot['build'], pivot['app_version'], pivot['token'])] = pivot
             for key, child in value.items():
                 visit(key, source)
                 visit(child, source)
@@ -59,7 +64,7 @@ def observed_artifacts(root):
             visit(json.loads(path.read_text()), str(path.relative_to(root)))
         except (OSError, ValueError) as error:
             errors.append({'source': str(path.relative_to(root)), 'error': str(error)})
-    return {'candidates': list(candidates.values()), 'errors': errors}
+    return {'candidates': list(candidates.values()), 'installer_pivots': list(pivots.values()), 'errors': errors}
 
 
 def _distribution_scope(state, evidence):
@@ -123,6 +128,70 @@ def _distribution_scope(state, evidence):
                 reachable.add(url)
                 queue.append(url)
     return reachable
+
+
+def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
+    """Learn native campaign shapes and enumerate their numeric fields fairly.
+
+    Build/token/app-version come from our installer captures. Release shapes
+    come from our Sonos observations; neither versions nor URL lists are imported.
+    """
+    state = deepcopy(previous)
+    templates = state.setdefault('templates', {})
+    saved = state.setdefault('contexts', {})
+    jobs = state.setdefault('jobs', {})
+    for context in contexts:
+        if (not all(isinstance(context.get(k), str) for k in ('build', 'app_version', 'token')) or
+                not re.fullmatch(r'\d+[.]\d+-\d+', context['build']) or
+                not re.fullmatch(r'\d+(?:[.]\d+)+', context['app_version']) or
+                not re.fullmatch(r'[A-Za-z0-9_-]+', context['token'])):
+            continue
+        identity = hashlib.sha256(json.dumps([context[k] for k in ('build', 'app_version', 'token')]).encode()).hexdigest()
+        saved[identity] = context
+    for url in observed_urls:
+        if not official(url):
+            continue
+        parsed = urlsplit(url)
+        match = re.search(r'(/firmware/[^/]+)/\d+[.]\d+-\d+-v\d+(?:[.]\d+)+-[A-Za-z0-9_]+-([A-Za-z0-9_-]+)/', parsed.path)
+        if not match or not re.search(r'\d', match[2]):
+            continue
+        parts = re.split(r'(\d+)', match[2])
+        shape = [None if part.isdecimal() else part for part in parts]
+        prefix = parsed._replace(path=match[1]+'/', query='', fragment='').geturl()
+        identity = hashlib.sha256(json.dumps([prefix, shape]).encode()).hexdigest()
+        template = templates.setdefault(identity, {'prefix': prefix, 'shape': shape, 'examples': []})
+        if match[2] not in template['examples']:
+            template['examples'].append(match[2])
+    for context_id in saved:
+        for template_id in templates:
+            jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0, 'examples_done': []})
+    state.setdefault('sequence', 0)
+    roots = []
+    for _ in range(limit if jobs else 0):
+        identity = min(jobs, key=lambda key: (jobs[key]['last_queued'], key))
+        context_id, template_id = identity.split(':')
+        job, context, template = jobs[identity], saved[context_id], templates[template_id]
+        fresh = [s for s in template['examples'] if s not in job['examples_done']]
+        if fresh:
+            suffix = fresh[0]
+            job['examples_done'].append(suffix)
+        else:
+            # Bit interleaving visits every finite tuple, including compound
+            # RC/service-pack shapes and zero ordinals, with no fixed maximum.
+            count = template['shape'].count(None)
+            coordinates, value, bit = [0]*count, job['ordinal'], 0
+            while value:
+                for i in range(count):
+                    coordinates[i] |= (value & 1) << bit
+                    value >>= 1
+                bit += 1
+            numbers = iter(coordinates)
+            suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
+            job['ordinal'] += 1
+        roots.append(template['prefix']+context['build']+'-v'+context['app_version']+'-'+context['token']+'-'+suffix+'/update.upm')
+        state['sequence'] += 1
+        job['last_queued'] = state['sequence']
+    return state, list(dict.fromkeys(roots))
 
 
 def _configure_namespace(namespaces, base, model_max):
@@ -200,7 +269,8 @@ def protocol_roots(profile=None):
 
 def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fetch=None, probe_fn=None,
              metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=(),
-             profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128):
+             profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128,
+             installer_pivots=(), pivot_limit=24):
     start = time.monotonic()
     scheduling = {'retry_rotation': deepcopy(state.get('retry_rotation', {}))}
     if not isinstance(model_max, int) or isinstance(model_max, bool) or model_max < 0:
@@ -229,6 +299,13 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                        'source': 'protocol-static', 'refresh_hours': hours}
     live_roots = protocol_roots()
     roots = list(live_roots)
+    observed = [row['url'] for row in state.get('manifests', [])]
+    observed.extend(row.get('metadata', {}).get('base_url') for row in state.get('manifests', [])
+                    if row.get('metadata', {}).get('base_url'))
+    observed.extend(row['url'] for row in state.get('candidates', []) if row.get('source') == 'image')
+    pivot_state, pivot_roots = installer_manifest_roots(state.get('installer_pivot_search', {}), installer_pivots,
+                                                       observed, limit=pivot_limit)
+    roots.extend(pivot_roots)
     # Profile exploration must reach the modern manifest routers too, rather
     # than repeatedly varying only the legacy UPS endpoint. Alternate observed
     # version hints with the same continuing synthetic profile space.
@@ -397,6 +474,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
               'probe_sequence': sequence,
               'protocol_cursor': cursor,
               'protocol_profile_cursor': profile_cursor,
+              'installer_pivot_search': pivot_state,
               'scope_exclusions': {'documents': len(state.get('documents', []))-len(saved_documents),
                                    'queued_urls': excluded_pending},
               'blocked_hosts': sorted(blocked)}

@@ -21,7 +21,7 @@ from sonos_firmware.firmware_archive import (
 )
 from sonos_firmware.releases import verified_asset
 from sonos_firmware.release_series import ReleaseSeries
-from sonos_firmware.metadata_sweep import discover_version_hints
+from sonos_firmware.metadata_sweep import discover_version_hints, discover_client_reports
 from sonos_firmware.historical_firmware import replay_preserved_manifests
 
 
@@ -124,12 +124,19 @@ def main():
                         help='per-provider index page budget; collection and page cursors resume across runs')
     parser.add_argument('--saved-manifest-limit', type=int, default=8,
                         help='preserved manifest snapshots to reparse per worker')
+    parser.add_argument('--pivot-limit', type=int, default=24,
+                        help='installer-derived native manifest URLs to explore per worker')
     args = parser.parse_args()
     if args.max_packages <= 0:
         parser.error('--max-packages must be positive')
     if args.index_pages <= 0:
         parser.error('--index-pages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
+    client_reports = None
+    if args.publish:
+        client_reports = discover_client_reports(old.get('public_client_reports', {}))
+        pending = old.setdefault('pending_manifest_urls', [])
+        pending.extend(url for url in client_reports['roots'] if url not in pending)
     hints = old.get('release_notes', {})
     if not args.no_release_notes:
         hints = discover_version_hints(hints)
@@ -141,7 +148,7 @@ def main():
         replay = replay_preserved_manifests(archive_root, args.evidence_dir, args.repository, old,
                                            limit=args.saved_manifest_limit)
     known = []
-    cross_source = {'candidates': [], 'errors': []}
+    cross_source = {'candidates': [], 'installer_pivots': [], 'errors': []}
     if not args.cold_start:
         archive_root = args.catalog.parent.parent if args.catalog.parent.name == 'data' else args.catalog.parent
         cross_source = observed_artifacts(archive_root)
@@ -157,8 +164,13 @@ def main():
                       index_fetch=None if args.no_history_index else partial(discover_sources, pages=args.index_pages), artifact_roots=args.artifact_root,
                       known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
                       model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
-                      inference_limit=args.inference_limit)
+                      inference_limit=args.inference_limit, installer_pivots=cross_source['installer_pivots'],
+                      pivot_limit=args.pivot_limit)
     result['release_notes'] = hints
+    if client_reports is not None:
+        result['public_client_reports'] = client_reports
+        if client_reports['status'] == 'partial':
+            result['status'] = 'partial'
     if cross_source['errors']:
         result['bootstrap_errors'].extend(cross_source['errors'])
         result['status'] = 'partial'

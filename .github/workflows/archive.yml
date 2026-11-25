@@ -86,6 +86,10 @@ jobs:
       - name: Install filesystem extraction tools
         if: matrix.provider == 'firmware'
         run: sudo apt-get update && sudo apt-get install -y squashfs-tools
+      - name: Install desktop metadata reader
+        if: matrix.provider == 'desktop'
+        continue-on-error: true
+        run: sudo apt-get update && sudo apt-get install -y 7zip
       - name: Install pinned APKPure acquisition binary
         if: matrix.apkeep
         continue-on-error: ${{ matrix.apkeep_optional }}

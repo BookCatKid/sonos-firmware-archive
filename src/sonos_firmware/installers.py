@@ -2,6 +2,11 @@
 import json
 import re
 import shutil
+import hashlib
+import plistlib
+import subprocess
+import tempfile
+import time
 import urllib.error
 import urllib.request
 import zipfile
@@ -121,14 +126,138 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     raise last_error
 
 
+def _archive_output(command, destination, *, limit, seconds=120):
+    """Read an archive through stdout; never execute or extract its member paths."""
+    with destination.open('wb') as stream, subprocess.Popen(
+            command, stdout=stream, stderr=subprocess.DEVNULL) as process:
+        deadline = time.monotonic()+seconds
+        try:
+            while process.poll() is None:
+                if destination.stat().st_size > limit or time.monotonic() >= deadline:
+                    raise ValueError('installer metadata decoder exceeded its resource budget')
+                time.sleep(.05)
+            if process.returncode or destination.stat().st_size > limit:
+                raise ValueError('installer metadata decoder failed or exceeded its output budget')
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait()
+
+
+def _inspect_desktop(candidate, path):
+    """Observe the actual app version needed to discover native manifest URLs.
+
+    Algorithm provenance: ReverseTelnet's manifest_files_provenance_and_research.md.
+    Inputs are our captured installer bytes, never a foreign manifest collection.
+    """
+    def parse(data, member):
+        info = plistlib.loads(data)
+        value = info.get('CFBundleShortVersionString')
+        if (not isinstance(value, str) or not re.fullmatch(r'\d+(?:[.]\d+)+', value) or
+                not str(info.get('CFBundleIdentifier', '')).lower().startswith('com.sonos')):
+            raise ValueError('installer plist has no Sonos application version')
+        return {'desktop_metadata': {'app_version': value, 'bundle_version': info.get('CFBundleVersion'),
+                'bundle_id': info.get('CFBundleIdentifier'), 'member': member,
+                'plist_sha256': hashlib.sha256(data).hexdigest()}}
+    with tempfile.TemporaryDirectory(dir=path.parent, prefix='desktop-metadata-') as temporary:
+        work = Path(temporary)
+        archive = path
+        for depth in range(3):
+            if zipfile.is_zipfile(archive):
+                with zipfile.ZipFile(archive) as bundle:
+                    members = sorted((m for m in bundle.infolist() if
+                        m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
+                    for member in members:
+                        if member.file_size > 1_000_000:
+                            raise ValueError('installer plist exceeds its metadata budget')
+                        try:
+                            return parse(bundle.read(member), member.filename)
+                        except ValueError:
+                            continue
+                raise ValueError('installer archive has no Sonos Info.plist')
+            tool = shutil.which('7zz') or shutil.which('7z')
+            if not tool:
+                raise ValueError('7zip is required to read DMG application metadata')
+            listing = work/'listing.txt'
+            archive_type = ['-tPE'] if path.suffix.lower() == '.exe' else []
+            _archive_output([tool, 'l', '-slt', *archive_type, '--', str(archive)], listing, limit=4*1024*1024)
+            entries = []
+            for block in listing.read_text(errors='replace').split('\n\n'):
+                entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
+            if archive_type:
+                resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:/|$)', e.get('Path', ''))]
+                for member in resources:
+                    output = work/'version-resource'
+                    _archive_output([tool, 'x', '-so', *archive_type, '--', str(archive), member['Path']], output, limit=1_000_000)
+                    data = output.read_bytes()
+                    text = data.decode('utf-16le', errors='ignore')
+                    version = re.search(r'ProductVersion\x00+([0-9]+(?:[.,][ ]*[0-9]+)+)', text)
+                    if version and 'sonos' in text.lower():
+                        return {'desktop_metadata': {'app_version': re.sub(r',\s*', '.', version[1]),
+                                'member': member['Path'], 'version_resource_sha256': hashlib.sha256(data).hexdigest()}}
+                raise ValueError('installer has no readable Sonos ProductVersion resource')
+            plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
+                            key=lambda e: e['Path'].count('/'))
+            for member in plists:
+                output = work/'Info.plist'
+                _archive_output([tool, 'x', '-so', '--', str(archive), member['Path']], output, limit=1_000_000)
+                try:
+                    return parse(output.read_bytes(), member['Path'])
+                except ValueError:
+                    continue
+            nested = [e for e in entries if re.search(r'(?i)([.]hfs[x]?|[.]apfs|[.]img|Apple_HFS)$', e.get('Path', ''))]
+            if not nested:
+                raise ValueError('installer disk image has no readable application plist')
+            output = work/('filesystem-'+str(depth))
+            _archive_output([tool, 'x', '-so', '--', str(archive), nested[0]['Path']], output, limit=2*1024**3)
+            archive = output
+    raise ValueError('installer metadata requires an unsupported container depth')
+
+
+def inspect_desktop(candidate, path):
+    # Metadata discovery must never prevent preservation of the original bytes.
+    try:
+        return _inspect_desktop(candidate, path)
+    except (OSError, ValueError, subprocess.SubprocessError, plistlib.InvalidFileException) as error:
+        return {'discovery_errors': [{'phase': 'desktop-metadata', 'error': str(error)}]}
+
+
+def installer_pivot_contexts(record):
+    verification = record.get('verification')
+    metadata = verification.get('desktop_metadata') if isinstance(verification, dict) else None
+    if not isinstance(metadata, dict):
+        return []
+    app = metadata.get('app_version')
+    if not isinstance(app, str) or not re.fullmatch(r'\d+(?:[.]\d+)+', app):
+        return []
+    result = []
+    for url in record.get('source_urls') or []:
+        if not sonos_url(url):
+            continue
+        match = re.fullmatch(r'/software/([A-Za-z0-9_-]+)/Sonos_(\d+[.]\d+-\d+)[.](?:dmg|exe)', urlsplit(url).path, re.I)
+        if match:
+            versions = [app]
+            parts = app.split('.')
+            while len(parts) > 2 and parts[-1] == '0':
+                parts.pop()
+                versions.append('.'.join(parts))
+            for version in versions:
+                result.append({'build': match[2], 'app_version': version, 'metadata_app_version': app,
+                               'token': match[1], 'source_url': url, 'source_sha256': record.get('sha256'),
+                               'plist_sha256': metadata.get('plist_sha256'),
+                               'version_resource_sha256': metadata.get('version_resource_sha256')})
+    return result
+
+
 def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', paused_hosts=()):
     from .apk import inspect_official, inspection_revision
     mobile = default_platform == 'fireos-android-apk'
     return AppSource(partial(acquire, blocked=set(paused_hosts), inspection_required=mobile), release_for,
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
-                     inspect=inspect_official if mobile else None,
-                     inspection_revision=inspection_revision() if mobile else None)
+                     inspect=inspect_official if mobile else inspect_desktop,
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-1',
+                     inspect_if=None if mobile else lambda row: row.get('platform') in {'macos', 'windows'})
 
 
 def _candidate(url, kind, *, advertised_by=None, source='public-archive-index'):
