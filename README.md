@@ -1,5 +1,8 @@
 # Sonos Firmware Archive
 
+Binding rules for working on this repository live in [AGENTS.md](AGENTS.md) and
+nowhere else; the rest of the documentation describes architecture and usage.
+
 Automatic discovery and preservation of public Sonos firmware, applications,
 web deployments, and GPL sources. Git stores provenance and inventories;
 GitHub Releases stores source binaries and extracted components.

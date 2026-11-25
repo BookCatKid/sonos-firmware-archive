@@ -53,58 +53,62 @@ any other archive.
    ever extracted and every one must be proven by an actual Sonos response.
 10. Do not import community projects as archival targets; a diagnostic URL
     exposed by such a project is a lead for Sonos content only.
+11. Negative results are durable knowledge. Do not blindly repeat disproven
+    endpoint guesses in later sessions; record what was tried and what the
+    server answered.
 
 ## Execution constraints
 
-11. **No local Sonos payload work.** UPDs, real EXEs/DMGs/APKs and source
+12. **No local Sonos payload work.** UPDs, real EXEs/DMGs/APKs and source
     archives are acquired, hashed, decrypted and extracted in GitHub Actions
     only. Local work may use public metadata, XML manifests, HTML, API
     responses and synthetic fixtures. No `GITHUB_ACTIONS=true` bypasses.
-12. **No repeated full-matrix validation runs.** Use focused local checks and,
+13. **No repeated full-matrix validation runs.** Use focused local checks and,
     when CI proof is needed, one targeted validation deployment plus a single
     normal target dispatch. A complete end-to-end run is never a pre-merge
     ritual.
-13. All real acquisition uses the unified `archive.yml` workflow and its
+14. All real acquisition uses the unified `archive.yml` workflow and its
     registered providers. No diagnostic/backfill side workflows, no manual
     receipt imports, no pre-collected payload archives, no one-off
     backlog-draining prerequisites.
-14. An empty archive must bootstrap from nothing. Existing Releases, prior
+15. An empty archive must bootstrap from nothing. Existing Releases, prior
     catalogs and git history may supplement discovery but are optional.
-15. Do not inspect the private recovery vault, private device captures,
+16. Do not inspect the private recovery vault, private device captures,
     ignored original artifacts or real private keys. Do not clone the
     validation repository locally.
 
 ## Truthfulness
 
-16. Explain errors truthfully. Runtime source failures, pending batches and
+17. Explain errors truthfully. Runtime source failures, pending batches and
     code crashes are different states. Never greenwash incomplete coverage,
     never inflate counts (multiple deliveries of one version are one version;
     URL-level availability is not distinct binaries).
-17. Discovery and preservation are separate numbers. Observing a revision is
+18. Discovery and preservation are separate numbers. Observing a revision is
     not preserving it. Report both with provenance.
-18. Be direct and concise in progress updates. Do not restate unresolved
+19. Be direct and concise in progress updates. Do not restate unresolved
     problems as if they were plans; fix them or say exactly what is blocking.
 
 ## Code quality
 
-19. **Comments describe what the code does, never the project's history.**
+20. **Comments describe what the code does, never the project's history.**
     No comments explaining what changed, what was wrong before, what a review
     said, or how the current version differs from an earlier one. If a
     comment references the past, delete it.
-20. No test/quality machinery displacing discovery work. No useless one-off
+21. No test/quality machinery displacing discovery work. No useless one-off
     tools, no masses of tests. Existing functional checks stay; add focused
     tests only where they protect real behavior.
-21. Beautiful code: small deep modules, clear names, no dead paths, no
+22. Beautiful code: small deep modules, clear names, no dead paths, no
     speculative generality, no duplicated logic across scripts.
 
 ## Process
 
-22. Use the question tool extensively before making decisions.
-23. Rules belong in this file. Do not create rule documentation in random
+23. Use the question tool extensively before making decisions.
+24. Rules belong in this file. Do not create rule documentation in random
     files; other documentation describes architecture and usage only.
-24. Do not merge to production without explicit user authorization.
-25. Do not comment on or close issues #23/#24/#25 and do not add automatic
-    closing directives for them; the PR uses `Related: #23, #24, #25.`
-26. Reversible local edits, source-only validation deployments and pushing
+25. Do not merge to production without explicit user authorization.
+26. Do not comment on or close issues #23/#24/#25 and do not add automatic
+    closing directives for them; the PR uses `Related: #23, #24, #25.` Monitor
+    issues are ongoing reports: a passing parser or code check never closes one.
+27. Reversible local edits, source-only validation deployments and pushing
     the PR branch are pre-authorized; no fresh permission question is needed
     for ordinary fixes.
