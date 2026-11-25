@@ -7,12 +7,13 @@ import re
 import tempfile
 import urllib.error
 from dataclasses import dataclass
+from itertools import zip_longest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 from urllib.parse import urlsplit
 
-from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset
+from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset, download_verified
 from .retry import checkpoint, select, error_checkpoint, RequestBackoff
 from .storage import atomic_json
 from .archive_replay import capture_host
@@ -30,6 +31,8 @@ class AppSource:
     inspect: Callable[[dict, Path], dict] | None = None
     inspection_revision: str | None = None
     inspect_if: Callable[[dict], bool] | None = None
+    inspection_blocks_publication: bool = True
+    inspection_priority: Callable[[dict], object] | None = None
 
 
 def receipt_path(path: Path, root: Path) -> str:
@@ -74,7 +77,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
 
     def inspected(capture):
         return not needs_inspection(capture.get('candidate', capture)) or (capture.get('inspection_revision') == source.inspection_revision
-                                          and isinstance(capture.get('verification'), dict))
+                                          and isinstance(capture.get('verification'), dict)
+                                          and not capture['verification'].get('discovery_errors'))
     document = json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'artifacts': [], 'gaps': []}
     records = document['artifacts']
     gaps = {acquisition_id(row): row for row in document.get('gaps', [])}
@@ -130,7 +134,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                 # New evidence of changed bytes is new work, even at a known URL.
                 eligibility.pop(url)
                 observation['status'] = 'needs-refresh'
-        if needs_inspection(observation['candidate']) and observation.get('inspection_revision') != source.inspection_revision:
+        if source.inspection_blocks_publication and needs_inspection(observation['candidate']) and observation.get('inspection_revision') != source.inspection_revision:
             eligibility.pop(url, None)
             observation['status'] = 'needs-refresh'
     ready = set()
@@ -139,13 +143,18 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     def save():
         errors = [{'phase': 'discovery', 'error': error} for error in discovery_errors]
         errors.extend({'phase': 'installer-metadata', 'sha256': row['sha256'], 'error': error}
-                      for row in records for error in row.get('verification', {}).get('discovery_errors', []))
+                      for row in records for error in (row.get('verification') or {}).get('discovery_errors', []))
+        errors.extend({'phase': 'installer-metadata', 'sha256': digest, 'error': value.get('error')}
+                      for digest, value in document.get('metadata_observations', {}).get(repository, {}).items()
+                      if value.get('status') == 'failed')
         errors.extend({'url': row['candidate']['url'], 'error': row.get('error'),
                        **({'acquisition_id': identity} if identity != row['candidate']['url'] else {})}
                       for identity, row in observations.items() if row['status'] == 'failed')
         outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
         errors.extend({'url': row['candidate']['url'], 'sha256': row['sha256'], 'error': 'capture awaiting publication reconciliation'} for row in outstanding)
         pending = sum(row['status'] in ('pending', 'needs-refresh') for row in observations.values())
+        pending += sum(row.get('status') != 'inspected' for row in
+                       document.get('metadata_observations', {}).get(repository, {}).values())
         document.update(updated=datetime.now(timezone.utc).isoformat(), repository=repository,
                         discovery=receipt_path(discovery_reference or discovery, root), artifact_total=len(records),
                         artifacts=sorted(records, key=lambda row: (row['family'], row['platform'], row['version'], row['sha256'])),
@@ -177,7 +186,8 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         contexts = {acquisition_id(row): row for row in known.get('acquisitions', [])}
         contexts[acquisition_id(captured)] = captured
         known['acquisitions'] = list(contexts.values())
-        if capture.get('verification') is not None:
+        if (capture.get('verification') is not None and
+                not (not source.inspection_blocks_publication and inspected(known) and not inspected(capture))):
             known.update(verification=capture['verification'], inspection_revision=capture['inspection_revision'])
         document['unpublished_captures'] = [row for row in document.get('unpublished_captures', [])
                                           if not (row.get('repository') == repository and row['sha256'] == capture['sha256']
@@ -196,10 +206,6 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
                                          'release_asset': known['release_asset']}
         if capture.get('inspection_revision'):
             observations[acquisition_id(candidate)]['inspection_revision'] = capture['inspection_revision']
-        if capture.get('verification', {}).get('discovery_errors'):
-            # The source is preserved; retry metadata discovery with the normal
-            # fair/backoff queue rather than blocking publication or giving up.
-            observations[acquisition_id(candidate)].update(checkpoint(previous), status='needs-refresh')
         gaps.pop(acquisition_id(candidate), None)
 
     save()
@@ -211,11 +217,32 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
                 or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
-    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row)]
-    jobs.extend({'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
-                for row in candidates.values() if selectable(row))
+    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row) or not source.inspection_blocks_publication]
+    source_jobs = [{'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
+                   for row in candidates.values() if selectable(row)]
+    metadata_state = (document.setdefault('metadata_observations', {}).setdefault(repository, {})
+                      if source.inspect and not source.inspection_blocks_publication else {})
+    metadata_records = {}
+    if source.inspect and not source.inspection_blocks_publication:
+        ordered = sorted(by_digest.values(), key=source.inspection_priority) if source.inspection_priority else by_digest.values()
+        for row in ordered:
+            if not needs_inspection(row):
+                continue
+            digest = row['sha256']
+            if inspected(row):
+                metadata_state[digest] = {'status': 'inspected', 'inspection_revision': source.inspection_revision}
+                continue
+            prior = metadata_state.setdefault(digest, {'status': 'pending'})
+            if prior.get('inspection_revision') != source.inspection_revision:
+                metadata_state[digest] = {'status': 'pending', 'inspection_revision': source.inspection_revision}
+            metadata_records[digest] = row
+    metadata_jobs = [{'kind': 'metadata', 'row': row, 'key': ('metadata', digest)}
+                     for digest, row in metadata_records.items()]
+    jobs.extend(job for pair in zip_longest(source_jobs, metadata_jobs) for job in pair if job)
     jobs_due = {('recovery', *key(row)): row for row in outstanding}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
+    jobs_due.update({('metadata', digest): prior for digest, prior in metadata_state.items()})
+    save()
     chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit or len(jobs),
                     state=document, queue=repository)
     recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
@@ -241,6 +268,34 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         save()
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
+        for job in chosen:
+            if job['kind'] != 'metadata':
+                continue
+            row = job['row']
+            digest = row['sha256']
+            attempted += 1
+            path = None
+            try:
+                path = directory/('metadata-'+digest+Path(row['release_asset']).suffix)
+                download_verified(row, path, repository)
+                candidate = {**row, 'url': next(iter(row.get('source_urls', [])), row.get('release_url', ''))}
+                verification = source.inspect(candidate, path)
+                if not isinstance(verification, dict):
+                    raise ValueError('installer inspection returned no metadata record')
+                if verification.get('discovery_errors'):
+                    raise ValueError(str(verification['discovery_errors']))
+                for related in by_digest.values():
+                    if related['sha256'] == digest:
+                        related.update(verification=verification, inspection_revision=source.inspection_revision)
+                metadata_state[digest] = {**checkpoint(metadata_state[digest], success=True),
+                    'status': 'inspected', 'inspection_revision': source.inspection_revision}
+            except Exception as error:
+                metadata_state[digest] = {**error_checkpoint(error, metadata_state[digest]),
+                    'status': 'failed', 'inspection_revision': source.inspection_revision, 'error': str(error)}
+            finally:
+                if path is not None:
+                    path.unlink(missing_ok=True)
+                save()
         for candidate in queue:
             if backoff.paused('publication'):
                 break
@@ -255,7 +310,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             attempted += 1
             phase = 'publication'
             try:
-                if pending and inspected(pending):
+                if pending and (inspected(pending) or not source.inspection_blocks_publication):
                     remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
                     backoff.clear('publication')
                     if remote:

@@ -135,6 +135,7 @@ def main():
     client_reports = None
     if args.publish:
         client_reports = discover_client_reports(old.get('public_client_reports', {}))
+        old['public_client_reports'] = client_reports
         pending = old.setdefault('pending_manifest_urls', [])
         pending.extend(url for url in client_reports['roots'] if url not in pending)
     hints = old.get('release_notes', {})

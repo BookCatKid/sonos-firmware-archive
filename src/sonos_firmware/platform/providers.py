@@ -38,7 +38,7 @@ def desktop(c: Context):
                      '--refresh-hours', c.target.interval_hours,
                      '--observations', c.observations / 'package-index', report=str(discovery)),
             c.script('apps/archive_desktop_installers.py', '--discovery', discovery,
-                     '--repo', c.repository, '--limit', c.options.get('limit', 12),
+                     '--repo', c.repository, '--limit', c.options.get('limit', 24),
                      '--refresh-hours', c.target.interval_hours,
                      '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168),
                      report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True),

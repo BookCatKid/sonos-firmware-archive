@@ -70,6 +70,8 @@ class InstallerHistoryTests(unittest.TestCase):
         self.replays, self.live_requests, self.index_requests = [], [], []
         self.index_error = None
         self.addCleanup(patch.stopall)
+        # These payloads model replay transport, not executable version resources.
+        patch.object(installers, 'inspect_desktop', return_value={'desktop_metadata': {'app_version': '1.0'}}).start()
         patch.object(releases, 'remote_assets', side_effect=self.github.assets).start()
         patch.object(releases.subprocess, 'run', side_effect=self.github.command).start()
         patch.object(archive_replay.urllib.request, 'build_opener', return_value=self).start()

@@ -280,6 +280,15 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     namespaces = {key: dict(row) for key, row in state.get('inferred_namespaces', {}).items()}
     for base in namespaces:
         _configure_namespace(namespaces, base, model_max)
+    # A reported manifest can disappear while its versioned payloads survive.
+    # Its native campaign path still supplies a build to probe independently.
+    for url in state.get('public_client_reports', {}).get('roots', {}):
+        if not official(url) or not urlsplit(url).path.endswith('.upm'):
+            continue
+        folder = url.rsplit('/', 1)[0]
+        build = re.match(r'(\d+[.]\d+-\d+)-v', urlsplit(folder).path.rsplit('/', 1)[-1])
+        if build:
+            _add_namespace(namespaces, folder+'/^'+build[1], 'observed-manifest-path', model_max)
     if (not isinstance(profile_limit, int) or isinstance(profile_limit, bool) or
         not isinstance(profile_count, int) or isinstance(profile_count, bool) or
         not 0 <= profile_limit <= profile_count <= 10000):
@@ -329,6 +338,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     archive = state.get('archive_index', {})
     if index_fetch:
         archive = index_fetch({**archive, 'query_seeds': [*roots, *static,
+            *(url for url in state.get('pending_manifest_urls', []) if url in scoped_urls),
             *(row.get('url') for row in [*state.get('manifests', []),
               *state.get('candidates', []), *saved_documents, *known_artifacts])]})
         roots.extend(archive['entries'])

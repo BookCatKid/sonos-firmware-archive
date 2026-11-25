@@ -312,11 +312,11 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
         record = contexts[query]
         window = record['windows'][0]
         span = ((window['start']+'..') if window['start'] else '<=')+window['end']
-        try:
-            document = fetch(query+' updated:'+span, window['page'])
-            items, total = document.get('items'), document.get('total_count')
-            if not isinstance(items, list) or not isinstance(total, int):
-                raise ValueError('invalid public client report search response')
+        scoped = query+' updated:'+span
+        if window.get('created_end'):
+            created_span = ((window.get('created_start')+'..') if window.get('created_start') else '<=')+window['created_end']
+            scoped += ' created:'+created_span
+        def absorb(items):
             for item in items:
                 repository = item.get('repository_url', '').rsplit('/', 1)[-1].lower()
                 if 'manifest' in repository:
@@ -327,23 +327,76 @@ def discover_client_reports(previous, *, pages=2, fetch=fetch_client_reports):
                              'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
                     if proof not in roots.setdefault(url, []):
                         roots[url].append(proof)
+        try:
+            document = fetch(scoped, 1)
+            items, total = document.get('items'), document.get('total_count')
+            if not isinstance(items, list) or not isinstance(total, int):
+                raise ValueError('invalid public client report search response')
+            absorb(items)
             if document.get('incomplete_results'):
                 raise ValueError('public client search returned incomplete results; page retained')
-            if total > 1000:
-                earliest = window['start'] or (items[0]['updated_at'] if items else window['end'])
-                start_dt = datetime.fromisoformat(earliest.replace('Z', '+00:00'))
+            if total > 20:
+                # Never resume by page offset: edited reports can move out of
+                # earlier pages. Subdivide overlapping time windows until one
+                # response contains the complete bucket. Deduplication above
+                # makes inclusive boundaries safe.
+                epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
+                start_dt = (datetime.fromisoformat(window['start'].replace('Z', '+00:00'))
+                            if window['start'] else epoch)
                 end_dt = datetime.fromisoformat(window['end'].replace('Z', '+00:00'))
-                if end_dt-start_dt <= timedelta(seconds=1):
-                    raise ValueError('public client search saturated a timestamp; window retained')
-                middle = start_dt+(end_dt-start_dt)//2
-                stamp = middle.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
-                record['windows'][:1] = [{'start': earliest, 'end': stamp, 'page': 1},
-                    {'start': stamp, 'end': window['end'], 'page': 1}]
-            elif len(items) < 20 or window['page']*20 >= total:
+                if not window.get('created_end') and end_dt-start_dt > timedelta(seconds=1):
+                    middle = start_dt+(end_dt-start_dt)//2
+                    stamp = middle.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+                    record['windows'][:1] = [{'start': window['start'], 'end': stamp, 'page': 1},
+                                            {'start': stamp, 'end': window['end'], 'page': 1}]
+                else:
+                    # Same-updated-time ties are separated by immutable creation
+                    # time, rather than dropping everything after the first page.
+                    created_start = window.get('created_start')
+                    left = datetime.fromisoformat(created_start.replace('Z', '+00:00')) if created_start else epoch
+                    right_text = window.get('created_end', window['end'])
+                    right = datetime.fromisoformat(right_text.replace('Z', '+00:00'))
+                    if right-left <= timedelta(seconds=1):
+                        # No further time split is possible. Fall back to a
+                        # bounded, identity-deduplicated page scan of this
+                        # single bucket only; this is not the general resume
+                        # algorithm and never carries mutable offsets across
+                        # runs. Proof deduplication makes overlap harmless.
+                        seen = {item.get('id') or item.get('html_url') for item in items}
+                        complete = len(items) < 20
+                        scanned = 1
+                        while not complete and scanned < 5:
+                            scanned += 1
+                            extra_document = fetch(scoped, scanned)
+                            extra = extra_document.get('items')
+                            if not isinstance(extra, list):
+                                raise ValueError('invalid public client report search response')
+                            fresh = [item for item in extra
+                                     if (item.get('id') or item.get('html_url')) not in seen]
+                            absorb(fresh)
+                            seen.update(item.get('id') or item.get('html_url') for item in extra)
+                            if len(extra) < 20 or len(seen) >= total:
+                                complete = True
+                        if complete:
+                            record['windows'].pop(0)
+                            record['through'] = window['end']
+                        else:
+                            # The saturated bucket stays retryable and visible,
+                            # but rotates behind later windows so one dense
+                            # second cannot starve the rest of the query.
+                            record['windows'].append({**record['windows'].pop(0), 'saturated': True})
+                            errors.append({'source': 'public-client-reports',
+                                           'error': 'indivisible timestamp bucket exceeds the bounded page scan; retained for retry'})
+                        record.update(checkpoint(record, success=True, success_hours=6))
+                        record.pop('error', None)
+                        state.pop('source_backoff', None)
+                        continue
+                    stamp = (left+(right-left)//2).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+                    record['windows'][:1] = [dict(window, created_start=created_start, created_end=stamp, page=1),
+                                            dict(window, created_start=stamp, created_end=right_text, page=1)]
+            else:
                 record['windows'].pop(0)
                 record['through'] = window['end']
-            else:
-                window['page'] += 1
             record.update(checkpoint(record, success=True, success_hours=0 if record['windows'] else 6))
             record.pop('error', None)
             state.pop('source_backoff', None)
