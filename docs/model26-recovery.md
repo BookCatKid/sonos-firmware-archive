@@ -93,9 +93,9 @@ SquashFS 4.0 (gzip in 57.14; LZ4 in 97.1). Component sizes and SHA-256
 values are preserved in
 [`data/decryption-runs/2026-11-05-model26-local-validation.json`](../data/decryption-runs/2026-11-05-model26-local-validation.json).
 
-The original 2026-11-05 check covered two packages locally. The subsequent
-[2026-11-18 isolated CI validation](https://github.com/BookCatKid/sonos-archive-bootstrap-validation/actions/runs/44348573166)
-recovered the same recipient from the tracked public inputs and published
+The original 2026-11-05 check covered two packages locally. A subsequent
+isolated 2026-11-18 CI run recovered the same recipient from the tracked public
+inputs and published
 complete raw components and inventories for all four model-26 sources in that
 archive: `57.22-63071-1-26`, `57.22-65130-1-26`, `57.23-74170-1-26`, and
 `98.0-82170-1-26`. All 44 raw components and eight inventory assets match their
