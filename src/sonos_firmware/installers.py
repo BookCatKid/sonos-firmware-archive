@@ -154,10 +154,10 @@ def _archive_output(command, destination, *, limit, seconds=600, allow_partial=F
 
 
 def _complete_member(output, expected):
-    """Return a member's bytes only when the decoder wrote all of them."""
-    if not output.exists():
+    """Return a member's bytes only when the listing proves them complete."""
+    if not output.exists() or not isinstance(expected, str) or not expected.isdigit():
         return None
-    if isinstance(expected, str) and expected.isdigit() and output.stat().st_size != int(expected):
+    if output.stat().st_size != int(expected):
         return None
     return output.read_bytes()
 
@@ -174,13 +174,14 @@ def _inspect_desktop(candidate, path):
         info = plistlib.loads(data)
         if not str(info.get('CFBundleIdentifier', '')).lower().startswith('com.sonos'):
             raise ValueError('installer plist is not a Sonos application bundle')
-        metadata = {'bundle_id': info.get('CFBundleIdentifier'), 'member': member,
+        identifier = info.get('CFBundleIdentifier')
+        metadata = {'bundle_id': identifier, 'member': member,
                     'bundle_version': info.get('CFBundleVersion') if numeric(info.get('CFBundleVersion')) else None,
                     'plist_sha256': hashlib.sha256(data).hexdigest()}
         # The short version is the release marketing version used by campaign
-        # URLs. Classic installers expose only the bundle build, which is kept
-        # as metadata but cannot reconstruct a campaign.
-        if numeric(info.get('CFBundleShortVersionString')):
+        # URLs, and only a controller bundle states it. A nested helper states
+        # its own version, which must not become a release version.
+        if numeric(info.get('CFBundleShortVersionString')) and str(identifier).lower().startswith('com.sonos.maccontroller'):
             metadata['app_version'] = info['CFBundleShortVersionString']
         if not metadata.get('app_version') and not metadata.get('bundle_version'):
             raise ValueError('installer plist has no Sonos application version')
@@ -191,13 +192,19 @@ def _inspect_desktop(candidate, path):
             with zipfile.ZipFile(path) as bundle:
                 members = sorted((m for m in bundle.infolist() if
                     m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
+                build_only = None
                 for member in members:
                     if member.file_size > 1_000_000:
                         raise ValueError('installer plist exceeds its metadata budget')
                     try:
-                        return parse(bundle.read(member), member.filename)
-                    except ValueError:
+                        parsed = parse(bundle.read(member), member.filename)
+                    except (ValueError, plistlib.InvalidFileException, ExpatError):
                         continue
+                    if parsed['desktop_metadata'].get('app_version'):
+                        return parsed
+                    build_only = build_only or parsed
+                if build_only:
+                    return build_only
             raise ValueError('installer archive has no Sonos Info.plist')
         tool = shutil.which('7zz') or shutil.which('7z')
         if not tool:
@@ -249,7 +256,7 @@ def _inspect_desktop(candidate, path):
                 continue
             try:
                 parsed = parse(data, member['Path'])
-            except ValueError:
+            except (ValueError, plistlib.InvalidFileException, ExpatError):
                 continue
             if parsed['desktop_metadata'].get('app_version'):
                 return parsed

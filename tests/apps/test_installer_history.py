@@ -305,6 +305,28 @@ class DesktopMetadataTests(unittest.TestCase):
             'sha256': '0', 'source_urls': ['https://update-software.sonos.com/software/mac/mdcr/'
                                            'SonosDesktopController131.dmg']}), [])
 
+    def test_a_helper_bundle_version_is_not_a_release_version(self):
+        result = self.inspect([
+            ('Sonos/Sonos.app/Contents/Info.plist',
+             {'CFBundleIdentifier': 'com.sonos.macController2', 'CFBundleVersion': '90.0.67171'}),
+            ('Sonos/Sonos.app/Contents/Resources/Helper.app/Contents/Info.plist',
+             {'CFBundleIdentifier': 'com.sonos.installer', 'CFBundleShortVersionString': '5.0.0'})])
+        metadata = result['desktop_metadata']
+        self.assertNotIn('app_version', metadata)
+        self.assertEqual(metadata['bundle_version'], '90.0.67171')
+
+    def test_a_malformed_plist_does_not_hide_a_later_bundle(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            import plistlib, zipfile
+            path = Path(temporary)/'installer.zip'
+            with zipfile.ZipFile(path, 'w') as archive:
+                archive.writestr('Broken.app/Contents/Info.plist', b'<plist><dict>')
+                archive.writestr('Sonos.app/Contents/Info.plist', plistlib.dumps(
+                    {'CFBundleIdentifier': 'com.sonos.macController2', 'CFBundleShortVersionString': '17.2',
+                     'CFBundleVersion': '90.0.67171'}))
+            result = installers.inspect_desktop({}, path)
+        self.assertEqual(result['desktop_metadata']['app_version'], '17.2')
+
     def test_a_non_sonos_bundle_is_not_metadata(self):
         result = self.inspect([('Other.app/Contents/Info.plist',
                                 {'CFBundleIdentifier': 'com.example.other',
@@ -371,4 +393,6 @@ class DecoderOutputTests(unittest.TestCase):
             output = Path(temporary)/'member'
             output.write_bytes(b'prefix')
             self.assertIsNone(installers._complete_member(output, '40'))
+            self.assertIsNone(installers._complete_member(output, ''))
+            self.assertIsNone(installers._complete_member(output, None))
             self.assertEqual(installers._complete_member(output, '6'), b'prefix')
