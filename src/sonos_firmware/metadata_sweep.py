@@ -2,42 +2,84 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 import hashlib
-import json
-import os
+import re
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
-from pathlib import Path
-from urllib.parse import urlencode
 
 from .metadata import (
-    BASE_URI_TYPE,
-    MANIFEST_URI_TYPE,
-    SYNTHETIC_IDENTIFIERS,
     UPDATE_METADATA_URL,
-    USER_AGENT,
     parse_update_metadata,
+    UpdateProfile,
+    fetch_update_metadata,
 )
+from .retry import checkpoint, select, due, error_checkpoint
+from .discovery import USER_AGENT
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
 BASELINE = {"cmaj": 4, "cmin": 1, "cbld": 1, "subm": 100, "rev": 1, "reg": 2}
+# A diagnostic marker worth searching for in public issues. Each entry becomes
+# a body-and-comment query; add a marker here to widen the channel.
+CLIENT_REPORT_MARKERS = ('"manifestURL"', '"manifestRevision"',
+                         '"update-firmware.sonos.com"', '"update.upm"',
+                         '"AvailableSoftwareUpdate"')
+RELEASE_NOTES_URL = 'https://support.sonos.com/en-us/article/release-notes-sonos-system-updates'
+
+
+def capture_response(data, evidence, responses):
+    """Retain exact UPS observations, including traceable parse failures."""
+    if len(data) > 2_000_000:
+        raise ValueError('UPS metadata exceeds 2 MB')
+    digest = hashlib.sha256(data).hexdigest()
+    evidence.mkdir(parents=True, exist_ok=True)
+    snapshot = evidence / (digest + '.ups')
+    snapshot.write_bytes(data)
+    captured = {'sha256': digest, 'bytes': len(data), 'snapshot': snapshot.name,
+                'source_url': UPDATE_METADATA_URL, 'records': []}
+    responses[digest] = captured
+    try:
+        captured['records'] = parse_update_metadata(data)
+        if not captured['records']:
+            raise ValueError('UPS metadata contains no records')
+    except ValueError as error:
+        captured['parse_error'] = str(error)
+    return captured
+
+
+def _fetch_version_hints():
+    request = urllib.request.Request(RELEASE_NOTES_URL, headers={'User-Agent': USER_AGENT})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        return response.read(2_000_001)
+
+
+def discover_version_hints(previous, *, fetch=_fetch_version_hints):
+    """Observed support-page versions guide queries, never guessed campaign URLs."""
+    if previous and not due(previous):
+        return previous
+    try:
+        body = fetch()
+        if not body or len(body) > 2_000_000:
+            raise ValueError('release-note response is empty or exceeds 2 MB')
+        versions = re.findall(r'\b\d{1,3}\.\d{1,3}-\d{1,10}\b', body.decode('utf-8', errors='replace'))
+        return {**checkpoint(previous, success=True, success_hours=6), 'status': 'observed',
+                'source_url': RELEASE_NOTES_URL, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
+                'versions': sorted(set(previous.get('versions', [])) | set(versions))}
+    except Exception as error:
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
+        return {**previous, **error_checkpoint(error, previous), 'status': 'failed',
+                'source_url': RELEASE_NOTES_URL, 'error': str(error)}
 
 
 def _profile_key(profile: dict[str, int]) -> str:
     return ":".join(str(profile[field]) for field in PROFILE_FIELDS)
 
 
-def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
-    """Build a deterministic mix of known-version, axis, and pairwise profiles."""
-    profiles: dict[str, dict[str, int]] = {}
-
-    def add(**changes: int) -> None:
-        profile = {**BASELINE, **changes}
-        profiles.setdefault(_profile_key(profile), profile)
-
-    add()
+def _version_profiles(catalog):
+    profiles = {_profile_key(BASELINE): dict(BASELINE)}
     versions = {
         item.get("version")
         for group in (catalog.get("packages", []), catalog.get("evidence", []))
@@ -52,189 +94,397 @@ def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
         except (ValueError, TypeError):
             continue
         for submodel in (0, 1, 100):
-            add(**values, subm=submodel)
+            profile = {**BASELINE, **values, 'subm': submodel}
+            profiles.setdefault(_profile_key(profile), profile)
+    return list(profiles.values())
 
-    for value in range(128):
-        add(cmaj=value)
-    for value in range(64):
-        add(cmin=value)
-    for value in range(256):
-        add(subm=value)
-    for value in range(32):
-        add(rev=value)
-        add(reg=value)
-    for value in (0, 1, 10, 100, 1000, 10000, 99999):
-        add(cbld=value)
 
-    index = 0
+def _profile_at(index):
+    """Interleave unbounded axis probes, build scales, and full combinations."""
+    if index == 0:
+        return dict(BASELINE)
+    value, lane = divmod(index-1, len(PROFILE_FIELDS)+2)
+    if lane < len(PROFILE_FIELDS):
+        return {**BASELINE, PROFILE_FIELDS[lane]: value}
+    if lane == len(PROFILE_FIELDS):
+        return {**BASELINE, 'cbld': value*value}
+    # Interleaved bits enumerate every finite tuple without materializing a
+    # Cartesian product or imposing a maximum on any protocol field.
+    coordinates = [0]*len(PROFILE_FIELDS)
+    bit = 0
+    while value:
+        for field in range(len(PROFILE_FIELDS)):
+            coordinates[field] |= (value & 1) << bit
+            value >>= 1
+        bit += 1
+    return dict(zip(PROFILE_FIELDS, coordinates))
+
+
+def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
+    """Preview a bounded prefix of the continuing profile search."""
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
+        raise ValueError('profile preview limit must be a nonnegative integer')
+    profiles = {_profile_key(profile): profile for profile in _version_profiles(catalog)} if limit else {}
+    index = 1
     while len(profiles) < limit:
-        add(
-            cmaj=(index * 37) % 128,
-            cmin=(index * 17) % 64,
-            cbld=(index * 7919) % 100000,
-            subm=(index * 73) % 256,
-            rev=(index * 7) % 32,
-            reg=(index * 11) % 32,
-        )
+        profile = _profile_at(index)
+        profiles.setdefault(_profile_key(profile), profile)
         index += 1
     return list(profiles.values())[:limit]
 
 
 def fetch_profile(profile: dict[str, int], timeout: float = 20) -> bytes:
-    query = urlencode({**profile, **SYNTHETIC_IDENTIFIERS})
-    request = urllib.request.Request(
-        f"{UPDATE_METADATA_URL}?{query}", headers={"User-Agent": USER_AGENT}
-    )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.read()
+    return fetch_update_metadata(UpdateProfile(*(profile[field] for field in PROFILE_FIELDS)), timeout)[0]
 
 
-def _write_json_atomic(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
-
-
-def run_sweep(
-    catalog: dict,
-    output: Path,
-    raw_directory: Path,
-    limit: int = 1200,
-    delay: float = 0.2,
-    checkpoint_every: int = 25,
-) -> dict:
-    profiles = build_profiles(catalog, limit)
-    planned_keys = {_profile_key(profile) for profile in profiles}
-    completed: dict[str, dict] = {}
-    started = datetime.now(timezone.utc).isoformat()
-    if output.exists():
-        previous = json.loads(output.read_text(encoding="utf-8"))
-        if previous.get("schema_version") == 1:
-            completed = {
-                _profile_key(item["profile"]): item
-                for item in previous.get("results", [])
-                if _profile_key(item["profile"]) in planned_keys
-            }
-            started = previous.get("started", started)
-
-    raw_directory.mkdir(parents=True, exist_ok=True)
-    consecutive_errors = 0
-
-    def report(status: str) -> dict:
-        results = list(completed.values())
-        variants: dict[str, dict] = {}
-        for result in results:
-            sha256 = result.get("sha256")
-            if not sha256:
-                continue
-            variant = variants.setdefault(
-                sha256,
-                {
-                    "sha256": sha256,
-                    "bytes": result["bytes"],
-                    "raw_file": result["raw_file"],
-                    "profile_total": 0,
-                    "manifest_uris": set(),
-                },
-            )
-            variant["profile_total"] += 1
-            variant["manifest_uris"].update(result.get("manifest_uris", []))
-            base_uris = result.get("base_uris")
-            if base_uris is None and result.get("raw_file"):
-                records = parse_update_metadata(Path(result["raw_file"]).read_bytes())
-                base_uris = [item["uri"] for item in records if item["type"] == BASE_URI_TYPE]
-            variant.setdefault("base_uris", set()).update(base_uris or [])
-        serializable_variants = []
-        for variant in variants.values():
-            serializable_variants.append(
-                {
-                    **variant,
-                    "manifest_uris": sorted(variant["manifest_uris"]),
-                    "base_uris": sorted(variant["base_uris"]),
-                }
-            )
-        known_urls = {
-            item.get("source_url", "").replace("http://", "https://", 1)
-            for item in catalog.get("source_manifests", [])
-        }
-        observed_urls = {
-            uri.replace("http://", "https://", 1)
-            for variant in serializable_variants
-            for uri in variant["manifest_uris"]
-        }
-        observed_base_urls = {
-            uri.replace("http://", "https://", 1)
-            for variant in serializable_variants
-            for uri in variant["base_uris"]
-        }
-        package_urls = [
-            item.get("source_url", "").replace("http://", "https://", 1)
-            for item in catalog.get("packages", [])
-        ]
-        unknown_base_urls = sorted(
-            uri
-            for uri in observed_base_urls
-            if not any(url.startswith(uri.split("^", 1)[0]) for url in package_urls)
-        )
-        return {
-            "schema_version": 1,
-            "status": status,
-            "started": started,
-            "updated": datetime.now(timezone.utc).isoformat(),
-            "method": (
-                "rate-limited GET of default-1-1.ups using public sonostool synthetic "
-                "identifiers; query strings and identifier values are not retained"
-            ),
-            "profile_fields": list(PROFILE_FIELDS),
-            "planned_profile_total": len(profiles),
-            "completed_profile_total": len(results),
-            "error_total": sum("error" in item for item in results),
-            "unique_response_total": len(serializable_variants),
-            "unknown_manifest_uris": sorted(observed_urls - known_urls),
-            "unknown_base_uris": unknown_base_urls,
-            "variants": sorted(serializable_variants, key=lambda item: item["sha256"]),
-            "results": results,
-        }
-
-    pending = [profile for profile in profiles if _profile_key(profile) not in completed]
-    for position, profile in enumerate(pending, 1):
+def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadline=None, fetch=fetch_profile):
+    """Resume bounded windows over an open-ended profile search."""
+    if (not isinstance(limit, int) or isinstance(limit, bool) or not isinstance(count, int) or
+        isinstance(count, bool) or not 0 <= limit <= count <= 10000):
+        raise ValueError('metadata profile budgets must satisfy 0 <= limit <= count <= 10000')
+    scheduling = {'retry_rotation': deepcopy(previous.get('retry_rotation', {}))}
+    observations = dict(previous.get('profiles', {}))
+    responses = dict(previous.get('responses', {}))
+    pending = {}
+    for entry in previous.get('pending_profiles', []):
+        profile = entry.get('profile', entry)
+        kind = entry.get('kind', 'search') if 'profile' in entry else 'search'
+        if kind not in {'hint', 'search'}:
+            raise ValueError('unsupported pending metadata profile kind')
+        pending[_profile_key(profile)] = {'profile': profile, 'kind': kind}
+    exploration = previous.get('profile_exploration', {})
+    cursor = exploration.get('next_profile_index', 0) if exploration.get('generator_version') == 1 else 0
+    if not isinstance(cursor, int) or isinstance(cursor, bool) or cursor < 0:
+        raise ValueError('metadata profile cursor must be a nonnegative integer')
+    next_lane = exploration.get('next_fresh_lane', 0)
+    if next_lane not in (0, 1):
+        raise ValueError('metadata profile lane must be zero or one')
+    seeds = _version_profiles(catalog) if limit else []
+    if limit and not any(entry['kind'] == 'search' for entry in pending.values()):
+        for index in range(cursor, cursor+count):
+            profile = _profile_at(index)
+            if _profile_key(profile) not in observations:
+                pending[_profile_key(profile)] = {'profile': profile, 'kind': 'search'}
+        cursor += count
+    for profile in seeds:
+        if _profile_key(profile) not in observations:
+            pending.setdefault(_profile_key(profile), {'profile': profile, 'kind': 'hint'})
+    baseline = _profile_key(BASELINE)
+    ordered = {baseline: pending[baseline]['profile']} if baseline in pending else {}
+    lanes = [[key for key, entry in pending.items() if key != baseline and entry['kind'] == kind]
+             for kind in ('hint', 'search')]
+    for offset in range(max(map(len, lanes))):
+        for lane in (next_lane, 1-next_lane):
+            if offset < len(lanes[lane]):
+                key = lanes[lane][offset]
+                ordered[key] = pending[key]['profile']
+    ordered.update({key: row['profile'] for key, row in observations.items()})
+    source_backoff = dict(previous.get('source_backoff', {}))
+    paused = bool(source_backoff) and not due(source_backoff)
+    queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit,
+                                    state=scheduling, queue='legacy-ups-profiles')
+    errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
+               'http_status': source_backoff.get('http_status')}] if paused else []
+    attempted = 0
+    for profile in queue:
+        if deadline is not None and time.monotonic() >= deadline:
+            break
         key = _profile_key(profile)
+        if key in pending and key not in observations and key != baseline:
+            next_lane = 1 if pending[key]['kind'] == 'hint' else 0
+        attempted += 1
+        captured = None
         try:
-            body = fetch_profile(profile)
-            records = parse_update_metadata(body)
-            digest = hashlib.sha256(body).hexdigest()
-            raw_path = raw_directory / f"{digest}.ups"
-            if not raw_path.exists():
-                raw_path.write_bytes(body)
-            completed[key] = {
-                "profile": profile,
-                "bytes": len(body),
-                "sha256": digest,
-                "raw_file": str(raw_path),
-                "manifest_uris": sorted(
-                    item["uri"] for item in records if item["type"] == MANIFEST_URI_TYPE
-                ),
-                "base_uris": sorted(
-                    item["uri"] for item in records if item["type"] == BASE_URI_TYPE
-                ),
-            }
-            consecutive_errors = 0
-        except urllib.error.HTTPError as error:
-            completed[key] = {"profile": profile, "http_status": error.code, "error": str(error)}
-            consecutive_errors += 1
+            data = fetch(profile)
+            source_backoff = {}
+            captured = capture_response(data, evidence, responses)
+            if captured.get('parse_error'):
+                raise ValueError(captured['parse_error'])
+            observations[key] = {**checkpoint(observations.get(key), success=True, success_hours=168),
+                                 'profile': profile, 'status': 'observed', 'response_sha256': captured['sha256']}
         except Exception as error:
-            completed[key] = {"profile": profile, "error": str(error)}
-            consecutive_errors += 1
-        if position % checkpoint_every == 0:
-            _write_json_atomic(output, report("running"))
-        if consecutive_errors >= 20:
-            final = report("stopped-after-20-consecutive-errors")
-            _write_json_atomic(output, final)
-            return final
-        if delay:
-            time.sleep(delay)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            negative = getattr(error, 'code', None) in {404, 410}
+            observations[key] = {**error_checkpoint(error, observations.get(key), negative=negative), 'profile': profile,
+                                 'status': 'not-served' if negative else 'failed', 'error': str(error),
+                                 'http_status': getattr(error, 'code', None)}
+            if captured:
+                observations[key]['response_sha256'] = captured['sha256']
+            if not negative:
+                errors.append({'source': 'legacy-ups-profile', 'profile': profile, 'error': str(error),
+                               'http_status': getattr(error, 'code', None)})
+            pending.pop(key, None)
+            if getattr(error, 'code', None) in {403, 429, 503}:
+                source_backoff = {**error_checkpoint(error, source_backoff), 'http_status': error.code, 'error': str(error)}
+                break
+        pending.pop(key, None)
+        time.sleep(.2)
+    unchecked = len(pending)
+    failed = sum(row.get('status') == 'failed' for row in observations.values())
+    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted, **scheduling,
+            'source_backoff': source_backoff,
+            'pending_profiles': list(pending.values()),
+            'profile_exploration': {'policy': 'continuing-windows', 'generator_version': 1,
+                                    'next_profile_index': cursor, 'window_size': count, 'next_fresh_lane': next_lane},
+            'planned_profile_total': len(observations)+unchecked, 'unchecked_profile_total': unchecked,
+            'negative_profile_total': sum(row.get('status') == 'not-served' for row in observations.values()),
+            'failed_profile_total': failed, 'pending_profile_total': unchecked + failed,
+            'status': 'disabled' if not limit else 'partial' if unchecked or failed else 'ok', 'errors': errors}
 
-    final = report("complete")
-    _write_json_atomic(output, final)
-    return final
+
+def fetch_client_reports(query, page):
+    """Read public client diagnostics, retaining no log bodies or household IDs."""
+    import json
+    import os
+    from urllib.parse import urlencode
+    headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
+    token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
+    if token:
+        headers['Authorization'] = 'Bearer '+token
+    url = 'https://api.github.com/search/issues?'+urlencode({
+        'q': query, 'sort': 'updated', 'order': 'asc', 'per_page': 20, 'page': page})
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:
+            body = response.read(16*1024*1024+1)
+    except urllib.error.HTTPError as error:
+        if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
+            try:
+                error.headers['Retry-After'] = str(max(0, int(error.headers['X-RateLimit-Reset'])-int(time.time())))
+            except (ValueError, KeyError, TypeError):
+                pass
+        raise
+    if len(body) > 16*1024*1024:
+        raise ValueError('public client report page exceeds the metadata budget')
+    return json.loads(body)
+
+
+def client_manifest_urls(body):
+    """Extract only public Sonos update locations from actual client traces."""
+    import html
+    from urllib.parse import urlsplit, urlunsplit
+    from .source_urls import sonos_url
+    body = html.unescape(body).replace('\\/', '/')
+    if not re.search(r'availableSoftwareUpdate|ZoneGroupTopology|manifestRevision', body, re.I):
+        return []
+    roots = set()
+    for raw in re.findall(r'https?://[^\s"\'<>`\\]+', body):
+        try:
+            parsed = urlsplit(raw.rstrip('),]}'))
+            if not parsed.hostname or parsed.port not in {None, 80, 443}:
+                continue
+            path = parsed.path
+            if '^' in path:
+                path = path.split('^', 1)[0].rstrip('/')+'/update.upm'
+            elif path.lower().endswith(('.upd', '.exe', '.dmg', '.bin', '.apk')):
+                path = path.rsplit('/', 1)[0]+'/update.upm'
+            epoch = re.fullmatch(r'update_\d+(?:[.]\w+)?', path.rsplit('/', 1)[-1])
+            if not epoch and (not path.lower().endswith('.upm') or '/latest/' in path):
+                continue
+            # Never copy identifying query parameters out of a device log.
+            url = urlunsplit(('https', parsed.hostname, path, '', ''))
+            if sonos_url(url):
+                roots.add(url)
+        except ValueError:
+            continue
+    return sorted(roots)
+
+
+def fetch_issue_comments(url, page):
+    """Read public issue comments, retaining no bodies or household IDs."""
+    import json
+    import os
+    headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
+    token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
+    if token:
+        headers['Authorization'] = 'Bearer '+token
+    separator = '&' if '?' in url else '?'
+    try:
+        with urllib.request.urlopen(urllib.request.Request(
+                url+separator+'per_page=100&page='+str(page), headers=headers), timeout=30) as response:
+            body = response.read(16*1024*1024+1)
+    except urllib.error.HTTPError as error:
+        if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
+            try:
+                error.headers['Retry-After'] = str(max(0, int(error.headers['X-RateLimit-Reset'])-int(time.time())))
+            except (ValueError, KeyError, TypeError):
+                pass
+        raise
+    if len(body) > 16*1024*1024:
+        raise ValueError('public issue comment page exceeds the metadata budget')
+    document = json.loads(body)
+    if not isinstance(document, list):
+        raise ValueError('invalid public issue comment response')
+    return document
+
+
+def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client_reports,
+                            fetch_comments=fetch_issue_comments):
+    """Search primary client reports, subdividing windows before GitHub's cap."""
+    from datetime import datetime, timedelta, timezone
+    state = deepcopy(previous)
+    queries = tuple(query for marker in CLIENT_REPORT_MARKERS
+                    for query in (marker+' sonos in:body,comments is:issue is:public',))
+    contexts = state.setdefault('queries', {})
+    for query in queries:
+        legacy = contexts.pop(query.replace('in:body,comments', 'in:body'), None)
+        if query not in contexts and legacy:
+            contexts[query] = legacy
+    contexts = state['queries']
+    roots = state.setdefault('roots', {})
+    comment_queue = state.setdefault('comment_queue', {})
+    comment_scans = state.setdefault('comment_scans', {})
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    end = now.isoformat().replace('+00:00', 'Z')
+    for query in queries:
+        record = contexts.setdefault(query, {})
+        if not record.get('windows') and due(record):
+            record['windows'] = [{'start': record.get('through'), 'end': end, 'page': 1}]
+    errors = []
+    cursor = state.get('cursor', 0)
+    for _ in range(pages):
+        if state.get('source_backoff') and not due(state['source_backoff']):
+            break
+        active = [q for q in queries if contexts[q].get('windows') and due(contexts[q])]
+        if not active:
+            break
+        query = active[cursor % len(active)]
+        cursor += 1
+        record = contexts[query]
+        window = record['windows'][0]
+        span = ((window['start']+'..') if window['start'] else '<=')+window['end']
+        scoped = query+' updated:'+span
+        if window.get('created_end'):
+            created_span = ((window.get('created_start')+'..') if window.get('created_start') else '<=')+window['created_end']
+            scoped += ' created:'+created_span
+        def absorb(items):
+            for item in items:
+                body = item.get('body') or ''
+                for url in client_manifest_urls(body):
+                    proof = {'report_url': item['html_url'], 'updated_at': item.get('updated_at'),
+                             'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
+                    if proof not in roots.setdefault(url, []):
+                        roots[url].append(proof)
+                if item.get('comments') and item.get('comments_url') and item.get('html_url'):
+                    key = str(item.get('id') or item['html_url'])
+                    entry = comment_queue.get(key)
+                    scanned = comment_scans.get(key, {})
+                    if (not entry or entry.get('updated_at') != item.get('updated_at')) and \
+                            scanned.get('updated_at') != item.get('updated_at'):
+                        comment_queue[key] = {'comments_url': item['comments_url'],
+                                              'issue_url': item['html_url'],
+                                              'updated_at': item.get('updated_at'), 'next_page': 1}
+        try:
+            document = fetch(scoped, 1)
+            items, total = document.get('items'), document.get('total_count')
+            if not isinstance(items, list) or not isinstance(total, int):
+                raise ValueError('invalid public client report search response')
+            absorb(items)
+            if document.get('incomplete_results'):
+                raise ValueError('public client search returned incomplete results; page retained')
+            if total > 20:
+                epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
+                start_dt = (datetime.fromisoformat(window['start'].replace('Z', '+00:00'))
+                            if window['start'] else epoch)
+                end_dt = datetime.fromisoformat(window['end'].replace('Z', '+00:00'))
+                if not window.get('created_end') and end_dt-start_dt > timedelta(seconds=1):
+                    middle = start_dt+(end_dt-start_dt)//2
+                    stamp = middle.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+                    record['windows'][:1] = [{'start': window['start'], 'end': stamp, 'page': 1},
+                                            {'start': stamp, 'end': window['end'], 'page': 1}]
+                else:
+                    created_start = window.get('created_start')
+                    left = datetime.fromisoformat(created_start.replace('Z', '+00:00')) if created_start else epoch
+                    right_text = window.get('created_end', window['end'])
+                    right = datetime.fromisoformat(right_text.replace('Z', '+00:00'))
+                    if right-left <= timedelta(seconds=1):
+                        seen = {item.get('id') or item.get('html_url') for item in items}
+                        complete = len(items) < 20
+                        scanned = 1
+                        while not complete and scanned < 5:
+                            scanned += 1
+                            extra_document = fetch(scoped, scanned)
+                            extra = extra_document.get('items')
+                            if not isinstance(extra, list):
+                                raise ValueError('invalid public client report search response')
+                            fresh = [item for item in extra
+                                     if (item.get('id') or item.get('html_url')) not in seen]
+                            absorb(fresh)
+                            seen.update(item.get('id') or item.get('html_url') for item in extra)
+                            if len(extra) < 20 or len(seen) >= total:
+                                complete = True
+                        if complete:
+                            record['windows'].pop(0)
+                            record['through'] = window['end']
+                        else:
+                            record['windows'].append({**record['windows'].pop(0), 'saturated': True})
+                            errors.append({'source': 'public-client-reports',
+                                           'error': 'indivisible timestamp bucket exceeds the bounded page scan; retained for retry'})
+                        record.update(checkpoint(record, success=True, success_hours=6))
+                        record.pop('error', None)
+                        state.pop('source_backoff', None)
+                        continue
+                    stamp = (left+(right-left)//2).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+                    record['windows'][:1] = [dict(window, created_start=created_start, created_end=stamp, page=1),
+                                            dict(window, created_start=stamp, created_end=right_text, page=1)]
+            else:
+                record['windows'].pop(0)
+                record['through'] = window['end']
+            record.update(checkpoint(record, success=True, success_hours=0 if record['windows'] else 6))
+            record.pop('error', None)
+            state.pop('source_backoff', None)
+        except Exception as error:
+            record.update(error_checkpoint(error, record), error=str(error))
+            errors.append({'source': 'public-client-reports', 'error': str(error)})
+            if getattr(error, 'code', None) in {403, 429}:
+                state['source_backoff'] = {**record, 'windows': []}
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+    keys = sorted(comment_queue)
+    comment_cursor = state.get('comment_cursor', 0)
+    attempted = 0
+    for offset in range(len(keys)):
+        if attempted >= comments:
+            break
+        if state.get('source_backoff') and not due(state['source_backoff']):
+            break
+        key = keys[(comment_cursor+offset) % len(keys)]
+        entry = comment_queue.get(key)
+        if not entry:
+            continue
+        attempted += 1
+        try:
+            page = entry.get('next_page', 1)
+            document = fetch_comments(entry['comments_url'], page)
+            for comment in document:
+                body = comment.get('body') or ''
+                for url in client_manifest_urls(body):
+                    proof = {'report_url': comment.get('html_url', entry['issue_url']),
+                             'updated_at': comment.get('updated_at'),
+                             'body_sha256': hashlib.sha256(body.encode()).hexdigest()}
+                    if proof not in roots.setdefault(url, []):
+                        roots[url].append(proof)
+            if len(document) >= 100:
+                entry['next_page'] = page+1
+            else:
+                comment_scans[key] = {'updated_at': entry.get('updated_at'), 'status': 'scanned',
+                                      'issue_url': entry['issue_url']}
+                comment_queue.pop(key, None)
+            state.pop('source_backoff', None)
+        except Exception as error:
+            errors.append({'source': 'public-client-comments', 'error': str(error),
+                           'issue_url': entry.get('issue_url')})
+            if getattr(error, 'code', None) in {403, 429}:
+                state['source_backoff'] = {**error_checkpoint(error, {}), 'http_status': error.code,
+                                           'error': str(error), 'windows': []}
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+                break
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            entry['error'] = str(error)
+    state['comment_cursor'] = comment_cursor+attempted
+    state.update(cursor=cursor, errors=errors,
+                 status='partial' if errors or comment_queue or
+                 any(r.get('windows') for r in contexts.values()) else 'ok')
+    return state

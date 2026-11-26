@@ -24,9 +24,9 @@ Provenance:
   [blasty/sonos/sonostool/sonostool.py](https://github.com/blasty/sonos/blob/main/sonostool/sonostool.py),
   reproduced in the archive's `src/sonos_firmware/mdp.py`.
 
-The checked-in `scripts/recover_model26_key.py` requires **both** exact sizes
-and hashes above, parses the field header and RSA DER, and rejects a recovered
-key unless its SPKI SHA-1 recipient fingerprint is:
+The automatic worker requires **both** exact sizes and hashes above before
+recovering a key. The shared recovery implementation parses the field header
+and RSA DER and rejects a recipient mismatch. Its expected fingerprint is:
 
 ```text
 b271039ff7ab0f3d395039f1f079ff71af9dea71
@@ -35,7 +35,7 @@ b271039ff7ab0f3d395039f1f079ff71af9dea71
 From the repository root:
 
 ```bash
-python scripts/recover_model26_key.py --output /path/to/model26-private.pem
+sonos-fw recover-amlogic-mdp-key data/key-material/model26/mdp3-model-key.bin --field-only --otp data/key-material/model26/otp.bin --expect-recipient b271039ff7ab0f3d395039f1f079ff71af9dea71 --output /path/to/model26-private.pem
 sonos-fw key-id /path/to/model26-private.pem
 ```
 

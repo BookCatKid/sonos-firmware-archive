@@ -7,7 +7,7 @@ dist/
 build/
 *.egg-info/
 
-# Firmware and extracted filesystems belong in private GitHub Releases, not Git.
+# Firmware and extracted filesystems belong in GitHub Releases, not Git.
 artifacts/
 *.upd
 *.upm
@@ -28,4 +28,7 @@ captures/
 
 # Local research scratch (downloaded release assets, extractions, diffs).
 sonos-research/
+
+# Interrupted atomic metadata writes are disposable checkpoint files.
+data/**/*.tmp
 

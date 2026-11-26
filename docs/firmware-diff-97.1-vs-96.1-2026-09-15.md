@@ -175,14 +175,14 @@ and GitHub Release assets are referenced by package ID. The exact section
 comparison can be regenerated with:
 
 ```sh
-python3 scripts/diff_upd_manifests.py data/upd 96.1-79270 97.1-80312
+python3 scripts/firmware/diff_upd_manifests.py data/upd 96.1-79270 97.1-80312
 ```
 
 The rootfs inventory can be regenerated from the two matching decrypted
 `rootfs.squashfs` assets (after `unsquashfs` extraction) with:
 
 ```sh
-python3 scripts/diff_firmware_trees.py OLD_ROOTFS NEW_ROOTFS \
+python3 scripts/firmware/diff_firmware_trees.py OLD_ROOTFS NEW_ROOTFS \
   --old-label 86.8-78270-1-8/rootfs \
   --new-label 86.10-80260-1-8/rootfs
 ```

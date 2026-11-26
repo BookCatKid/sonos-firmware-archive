@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "targets": [
+    {
+      "name": "firmware",
+      "provider": "firmware",
+      "description": "Public Sonos protocol and manifest discovery, source preservation and extraction",
+      "interval_hours": 6,
+      "options": {
+        "artifact_roots": [
+          {
+            "package_model": 17,
+            "url": "https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd"
+          }
+        ]
+      },
+      "metadata": [
+        "data/catalog.json",
+        "data/discovery",
+        "data/upd",
+        "data/raw",
+        "data/filesystems",
+        "data/key-recovery-ledger.json"
+      ]
+    },
+    {
+      "name": "desktop",
+      "provider": "desktop",
+      "description": "Windows and macOS installers discovered from current and historical public indexes",
+      "interval_hours": 6,
+      "metadata": [
+        "data/apps/desktop-discovery.json",
+        "data/apps/desktop-history-index.json",
+        "data/apps/desktop-archive.json",
+        "data/apps/desktop-package-history.json"
+      ]
+    },
+    {
+      "name": "mobile",
+      "provider": "mobile",
+      "optional_capabilities": ["java"],
+      "description": "Official Sonos-hosted Android packages",
+      "interval_hours": 6,
+      "metadata": [
+        "data/apps/mobile-discovery.json",
+        "data/apps/mobile-history-index.json",
+        "data/apps/mobile-archive.json"
+      ]
+    },
+    {
+      "name": "web",
+      "provider": "web",
+      "description": "Public web deployments and their referenced assets",
+      "interval_hours": 1,
+      "metadata": [
+        "data/apps/web-app-archive.json"
+      ]
+    },
+    {
+      "name": "apple-listings",
+      "provider": "apple-listings",
+      "description": "Public Apple App Store metadata and listing history",
+      "interval_hours": 6,
+      "metadata": [
+        "data/apps/apple-app-store.json",
+        "data/apps/apple-app-store-history.json"
+      ]
+    },
+    {
+      "name": "android-history",
+      "provider": "android-history",
+      "description": "Signer-verified Android deliveries and discovered historical versions",
+      "interval_hours": 24,
+      "capabilities": [],
+      "metadata": [
+        "data/apps/android-store-archive.json",
+        "data/apps/android-store-history-sweep.json"
+      ],
+      "lock": "android-store",
+      "optional_capabilities": [
+        "java",
+        "apkeep"
+      ]
+    },
+    {
+      "name": "google-play",
+      "provider": "google-play",
+      "description": "Anonymous Google Play profile discovery and signer-verified versioned deliveries",
+      "interval_hours": 6,
+      "capabilities": [
+        "goopdl"
+      ],
+      "metadata": [
+        "data/apps/android-store-archive.json",
+        "data/apps/google-play-sweep.json"
+      ],
+      "lock": "android-store",
+      "optional_capabilities": [
+        "java"
+      ]
+    },
+    {
+      "name": "gpl",
+      "provider": "gpl",
+      "description": "GPL indexes discovered through public sites, observed binaries and numeric version exploration",
+      "interval_hours": 12,
+      "metadata": [
+        "data/gpl/live"
+      ],
+      "lock": "gpl"
+    },
+    {
+      "name": "gpl-archive",
+      "provider": "gpl-archive",
+      "description": "Resume original-source GPL acquisition and verified publication",
+      "interval_hours": 6,
+      "metadata": [
+        "data/gpl/live"
+      ],
+      "lock": "gpl"
+    },
+    {
+      "name": "gpl-audit",
+      "provider": "gpl-audit",
+      "description": "Revalidate published GPL compressed streams",
+      "interval_hours": 24,
+      "metadata": [
+        "data/gpl/live"
+      ],
+      "lock": "gpl"
+    },
+    {
+      "name": "google-play-listings",
+      "provider": "google-play-listings",
+      "description": "Public Google Play listing observations independent of delivery acquisition",
+      "interval_hours": 6,
+      "metadata": [
+        "data/apps/google-play-listings.json"
+      ]
+    },
+    {
+      "name": "release-audit",
+      "provider": "release-audit",
+      "description": "Reconcile recorded publication sizes and hashes against GitHub Releases",
+      "interval_hours": 168,
+      "metadata": [
+        "data/catalog.json",
+        "data/platform/audits/release-assets.json"
+      ],
+      "lock": "firmware"
+    },
+    {
+      "name": "gpl-indexes",
+      "provider": "gpl-indexes",
+      "description": "Refresh observed GPL index bodies on explicit request",
+      "interval_hours": 168,
+      "manual": true,
+      "metadata": [
+        "data/gpl/live"
+      ],
+      "lock": "gpl"
+    }
+  ]
+}

@@ -8,7 +8,9 @@ import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlencode, urlsplit
+from urllib.parse import urlencode, urlsplit, urljoin
+
+from .source_urls import sonos_url, open_sonos
 
 
 UPS_MAGIC = 0x35167F49
@@ -87,8 +89,12 @@ def fetch_update_metadata(profile: UpdateProfile | None = None, timeout: float =
     profile = profile or UpdateProfile()
     url = f"{UPDATE_METADATA_URL}?{urlencode(profile.query())}"
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        data = response.read()
+    with open_sonos(request, timeout=timeout) as response:
+        data = response.read(2_000_001)
+        if not data:
+            raise ValueError('empty UPS metadata response')
+        if len(data) > 2_000_000:
+            raise ValueError('UPS metadata exceeds 2 MB')
         response_metadata = {
             "status": response.status,
             "content_type": response.headers.get("Content-Type"),
@@ -135,20 +141,19 @@ MODERN_MANIFEST_QUERY = {
 def fetch_modern_manifest(timeout: float = 30) -> tuple[bytes, dict]:
     url = f"{MODERN_MANIFEST_BASE}?{urlencode(MODERN_MANIFEST_QUERY)}"
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        body = response.read()
+    with open_sonos(request, timeout=timeout) as response:
+        body = response.read(2_000_001)
+        if len(body) > 2_000_000:
+            raise ValueError('modern manifest exceeds 2 MB')
         location = response.headers.get("Content-Location")
         if not location:
             raise ValueError("modern manifest response missing Content-Location")
-        canonical = location
+        canonical = urljoin(response.geturl(), location)
         parsed = urlsplit(canonical)
-        if (parsed.scheme not in {"http", "https"}
-                or parsed.hostname not in {"update.sonos.com", "update-firmware.sonos.com"}
-                or parsed.username or parsed.password or parsed.port
-                or parsed.query or parsed.fragment
-                or not parsed.path.startswith("/firmware/")):
+        if parsed.scheme == 'http' and parsed.port in {None, 80}:
+            canonical = parsed._replace(scheme='https', netloc=parsed.hostname).geturl()
+        if not sonos_url(canonical) or parsed.username is not None or parsed.password is not None:
             raise ValueError("unexpected modern manifest Content-Location")
-        canonical = f"https://{parsed.hostname}{parsed.path}"
         return body, {
             "url": canonical,
             "request_url": url,

@@ -10,6 +10,7 @@ import html.parser
 import json
 import os
 import re
+import math
 import shutil
 import tarfile
 import time
@@ -20,10 +21,15 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
+from types import SimpleNamespace
+
+from .retry import checkpoint, error_checkpoint, retry_after_seconds
+
+from .storage import atomic_json as write_json
 
 BASE = "https://www.sonos.com/documents/gpl/"
-VERSION_RE = re.compile(r"^[1-9][0-9]{0,2}\.[0-9]{1,2}$")
-VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([1-9][0-9]{0,2}\.[0-9]{1,2})/", re.I)
+VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+$")
+VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([0-9]+\.[0-9]+)/", re.I)
 USER_AGENT = "Mozilla/5.0 (compatible; Sonos-GPL-Preservation/1.0)"
 MIN_DELAY = 2.0
 MAX_INDEX_BYTES = 512 * 1024
@@ -36,14 +42,35 @@ def timestamp() -> str:
 
 
 def atomic_json(path: Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    write_json(path, value, sort_keys=True)
 
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def source_receipt_key(link: dict, entries: dict) -> str:
+    """Keep legacy keys while separating distinct source URLs with one filename."""
+    url = link.get('url') or link['fetch_url']
+    for key, record in entries.items():
+        if record.get('filename') == link['filename'] and (record.get('source_url') or record.get('fetch_url')) == url:
+            return key
+    name = link['filename']
+    if name not in entries:
+        return name
+    return name + '--source-' + sha256_bytes(url.encode())
+
+
+def source_receipt_keys(links: list[dict], entries: dict) -> dict[str, str]:
+    """Allocate distinct identities before any of the batch has been acquired."""
+    reserved = dict(entries)
+    result = {}
+    for link in links:
+        url = link.get('url') or link['fetch_url']
+        key = source_receipt_key(link, reserved)
+        reserved.setdefault(key, {'filename': link['filename'], 'source_url': url})
+        result[url] = key
+    return result
 
 
 def file_sha256(path: Path) -> str:
@@ -163,6 +190,7 @@ class HttpResult:
     data: bytes
     content_type: str
     final_url: str
+    retry_after: float | None = None
 
 
 def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -> HttpResult:
@@ -173,8 +201,9 @@ def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -
             response = urllib.request.urlopen(req, timeout=timeout)
         except urllib.error.HTTPError as error:
             with error:
-                response_info = HttpResult(error.code, error.read(4096), error.headers.get("Content-Type", ""), error.url)
-            if error.code not in {500, 502, 503, 504} or attempt == 2:
+                response_info = HttpResult(error.code, error.read(4096), error.headers.get("Content-Type", ""),
+                                           error.url, retry_after_seconds(error))
+            if response_info.retry_after is not None or error.code not in {500, 502, 503, 504} or attempt == 2:
                 return response_info
         except (urllib.error.URLError, OSError, TimeoutError):
             if attempt == 2:
@@ -192,6 +221,8 @@ def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -
 def classify_index(version: str, response: HttpResult) -> dict:
     result = {"version": version, "url": index_url(version), "http_status": response.status,
               "checked_at": timestamp(), "state": "inconclusive"}
+    if response.retry_after is not None:
+        result['retry_after'] = response.retry_after
     if response.status == 200:
         try:
             links = parse_index(version, response.data)
@@ -226,40 +257,31 @@ def offline_candidates(root: Path) -> dict[str, set[str]]:
     return found
 
 
-def candidates(known: set[str], *, major_max: int = 120, minor_max: int = 99, evidence: dict[str, set[str]] | None = None) -> list[dict]:
-    """Enumerate entire version grammar, prioritizing observed and adjacent versions."""
-    if not (1 <= major_max <= 999 and 0 <= minor_max <= 99):
-        raise ValueError("invalid sweep bounds")
+def version_at(index):
+    """Enumerate every nonnegative major/minor pair without a bounded grid."""
+    if not isinstance(index, int) or isinstance(index, bool) or index < 0:
+        raise ValueError('GPL exploration ordinal must be a nonnegative integer')
+    diagonal = (math.isqrt(8*index+1)-1)//2
+    minor = index-diagonal*(diagonal+1)//2
+    return f'{diagonal-minor}.{minor}'
+
+
+def candidates(known: set[str], *, evidence: dict[str, set[str]] | None = None) -> list[dict]:
+    """Prioritize observed releases and neighbors; stream speculative work separately."""
     evidence = evidence or {}
     adjacent = set()
     for version in known:
         major, minor = version_key(valid_version(version))
-        for n in (minor - 1, minor + 1):
-            if 0 <= n <= minor_max:
-                adjacent.add(f"{major}.{n}")
-    known_majors = {version_key(version)[0] for version in known}
-    records = []
-    for major in range(1, major_max + 1):
-        for minor in range(minor_max + 1):
-            version = f"{major}.{minor}"
-            if version in known:
-                continue
-            if version in evidence:
-                priority = 0
-            elif version in adjacent:
-                priority = 1
-            elif major in known_majors and minor <= 40:
-                priority = 2
-            elif major <= 30 and minor <= 40:
-                priority = 3
-            elif major in known_majors:
-                priority = 4
-            elif major <= 30:
-                priority = 5
-            else:
-                priority = 6
-            records.append({"version": version, "priority": priority, "evidence": sorted(evidence.get(version, ()))})
-    return sorted(records, key=lambda item: (item["priority"], version_key(item["version"])))
+        for pair in ((major, minor-1), (major, minor+1), (major-1, minor), (major+1, minor)):
+            if min(pair) >= 0:
+                adjacent.add(f'{pair[0]}.{pair[1]}')
+    records = {version: {'version': version, 'priority': 1, 'evidence': []}
+               for version in adjacent if version not in known}
+    for version, sources in evidence.items():
+        valid_version(version)
+        if version not in known:
+            records[version] = {'version': version, 'priority': 0, 'evidence': sorted(sources)}
+    return sorted(records.values(), key=lambda item: (item["priority"], version_key(item["version"])))
 
 
 def capture_response(version: str, response: HttpResult, output: Path) -> dict:
@@ -312,6 +334,14 @@ def verify_artifact(path: Path, kind: str) -> tuple[bool, str, int]:
         return False, f"invalid-archive:{type(error).__name__}", 0
 
 
+def artifact_checkpoint(result: dict, prior: dict | None = None, *, success_hours=24) -> dict:
+    """Keep HTTP retry timing when a download crosses the JSON receipt seam."""
+    if result.get('published') or result.get('state') == 'verified':
+        return checkpoint(prior, success=True, success_hours=success_hours)
+    return error_checkpoint(SimpleNamespace(retry_after=result.get('retry_after')), prior,
+                            negative=result.get('http_status') == 404)
+
+
 def download_artifact(
     item: dict, destination_root: Path, *, min_free_bytes: int = DEFAULT_FREE_RESERVE,
     request: Callable[[urllib.request.Request], object] | None = None,
@@ -337,7 +367,14 @@ def download_artifact(
     try:
         response = opener(req)
     except urllib.error.HTTPError as error:
-        return {"state": "http-error", "http_status": error.code, "filename": filename, "fetch_url": fetch_url}
+        try:
+            result = {"state": "http-error", "http_status": error.code,
+                      "filename": filename, "fetch_url": fetch_url}
+            if (seconds := retry_after_seconds(error)) is not None:
+                result['retry_after'] = seconds
+            return result
+        finally:
+            error.close()
     with response:
         status = getattr(response, "status", 200)
         content_type = response.headers.get("Content-Type", "")

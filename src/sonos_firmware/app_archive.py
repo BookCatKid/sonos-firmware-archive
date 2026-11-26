@@ -1,0 +1,391 @@
+"""Shared, resumable acquisition and publication of discovered app installers."""
+from __future__ import annotations
+
+import hashlib
+import json
+import re
+import tempfile
+import urllib.error
+from dataclasses import dataclass
+from itertools import zip_longest
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Callable
+from urllib.parse import urlsplit
+
+from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset, download_verified
+from .retry import checkpoint, select, error_checkpoint, RequestBackoff
+from .storage import atomic_json
+from .archive_replay import capture_host
+
+
+@dataclass(frozen=True)
+class AppSource:
+    """Acquire writes one destination and returns its public fetch URL."""
+    acquire: Callable[[dict, Path], str]
+    release_for: Callable[[dict], tuple[str, str]]
+    notes: str
+    default_platform: str = ''
+    refresh_hours: float = 168
+    current_refresh_hours: float = 6
+    inspect: Callable[[dict, Path], dict] | None = None
+    inspection_revision: str | None = None
+    inspect_if: Callable[[dict], bool] | None = None
+    inspection_blocks_publication: bool = True
+    inspection_priority: Callable[[dict], object] | None = None
+
+
+def receipt_path(path: Path, root: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(root.resolve()))
+    except ValueError:
+        return str(path)
+
+
+def file_digest(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def revision(candidate):
+    return {key: candidate[key] for key in ('version', 'expected_sha256', 'etag', 'content_length',
+                                           'http_status', 'wayback_timestamp', 'wayback_digest',
+                                           'package', 'version_code', 'expected_package',
+                                           'expected_version_code', 'expected_version_name') if candidate.get(key) is not None}
+
+
+def acquisition_id(candidate):
+    return candidate.get('acquisition_id') or candidate['url']
+
+
+def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None,
+             paused_hosts=(), discovery_reference: Path | None = None):
+    if limit is not None and limit <= 0:
+        raise ValueError('acquisition limit must be positive')
+    if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
+        raise ValueError('refresh intervals must be positive')
+    if bool(source.inspect) != bool(source.inspection_revision):
+        raise ValueError('an installer inspector requires a stable revision')
+    if source.inspection_revision is not None and not isinstance(source.inspection_revision, str):
+        raise ValueError('installer inspection revision must be a string')
+
+    def needs_inspection(candidate):
+        return source.inspect is not None and (source.inspect_if is None or source.inspect_if(candidate))
+
+    def inspected(capture):
+        return not needs_inspection(capture.get('candidate', capture)) or (capture.get('inspection_revision') == source.inspection_revision
+                                          and isinstance(capture.get('verification'), dict)
+                                          and not capture['verification'].get('discovery_errors'))
+    document = json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'artifacts': [], 'gaps': []}
+    records = document['artifacts']
+    gaps = {acquisition_id(row): row for row in document.get('gaps', [])}
+    scoped = document.setdefault('source_observations', {})
+    observations = scoped.setdefault(repository, {})
+    backoff = RequestBackoff(document, repository)
+    by_digest = {(row['family'], row['platform'], row['sha256']): row for row in records
+                 if receipt_matches_repository(row, repository)}
+    candidates = {url: row['candidate'] for url, row in observations.items() if row.get('candidate')}
+    for row in records:
+        for url in row.get('source_urls', []):
+            fallback = {key: row[key] for key in ('family', 'platform', 'version', 'sources',
+                                                  'wayback_timestamp', 'wayback_digest') if key in row}
+            fallback['url'] = url
+            contexts = [candidate for candidate in row.get('acquisitions', []) if candidate['url'] == url] or [fallback]
+            for candidate in contexts:
+                identity = acquisition_id(candidate)
+                candidates.setdefault(identity, candidate)
+                if receipt_matches_repository(row, repository):
+                    observations.setdefault(identity, {'candidate': candidate, 'status': 'needs-refresh',
+                                              'checked_at': row.get('acquired_at', document.get('updated', ''))})
+    for capture in document.get('unpublished_captures', []):
+        if capture.get('repository') == repository and source.inspect and not inspected(capture):
+            candidate = capture['candidate']
+            identity = acquisition_id(candidate)
+            candidates.setdefault(identity, candidate)
+            observations.setdefault(identity, {'candidate': candidate, 'status': 'pending'})
+    for url, gap in gaps.items():
+        candidate = {**gap, 'platform': gap.get('platform', source.default_platform)}
+        candidates.setdefault(url, candidate)
+        observations.setdefault(url, {'candidate': candidate, 'status': 'failed',
+                                      'checked_at': gap.get('checked_at', ''), 'error': gap.get('reason')})
+    # Never drop an earlier lead when a partial discovery report omits it.
+    incoming = json.loads(discovery.read_text()) if discovery.exists() else {
+        'status': 'unavailable', 'errors': ['discovery file unavailable; resuming saved observations']}
+    discovery_errors = incoming.get('errors', [])
+    incomplete = incoming.get('status') in {'partial', 'incomplete', 'error', 'blocked', 'failed', 'unavailable'}
+    if incomplete and not discovery_errors:
+        discovery_errors = [incoming.get('error') or 'discovery reported incomplete work']
+    candidates.update({acquisition_id(row): row for row in incoming.get('candidates', [])})
+    for url, candidate in candidates.items():
+        observations.setdefault(url, {'status': 'pending'})['candidate'] = candidate
+    eligibility = {}
+    for url, observation in observations.items():
+        if observation.get('checked_at') is not None and observation['status'] != 'pending':
+            eligibility[url] = dict(observation)
+            if observation['status'] == 'preserved' and observation['candidate'].get('current'):
+                checked = datetime.fromisoformat(observation['checked_at'].replace('Z', '+00:00'))
+                earlier = (checked + timedelta(hours=source.current_refresh_hours)).isoformat()
+                eligibility[url]['next_attempt_at'] = min(earlier, observation.get('next_attempt_at', earlier))
+            old = observation.get('revision', {})
+            if 'revision' in observation and any(old.get(key) != value for key, value in revision(observation['candidate']).items()):
+                # New evidence of changed bytes is new work, even at a known URL.
+                eligibility.pop(url)
+                observation['status'] = 'needs-refresh'
+        if source.inspection_blocks_publication and needs_inspection(observation['candidate']) and observation.get('inspection_revision') != source.inspection_revision:
+            eligibility.pop(url, None)
+            observation['status'] = 'needs-refresh'
+    ready = set()
+    attempted = added = 0
+
+    def save():
+        errors = [{'phase': 'discovery', 'error': error} for error in discovery_errors]
+        errors.extend({'phase': 'installer-metadata', 'sha256': row['sha256'], 'error': error}
+                      for row in records for error in (row.get('verification') or {}).get('discovery_errors', []))
+        errors.extend({'phase': 'installer-metadata', 'sha256': digest, 'error': value.get('error')}
+                      for digest, value in document.get('metadata_observations', {}).get(repository, {}).items()
+                      if value.get('status') == 'failed')
+        errors.extend({'url': row['candidate']['url'], 'error': row.get('error'),
+                       **({'acquisition_id': identity} if identity != row['candidate']['url'] else {})}
+                      for identity, row in observations.items() if row['status'] == 'failed')
+        outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
+        errors.extend({'url': row['candidate']['url'], 'sha256': row['sha256'], 'error': 'capture awaiting publication reconciliation'} for row in outstanding)
+        pending = sum(row['status'] in ('pending', 'needs-refresh') for row in observations.values())
+        pending += sum(row.get('status') != 'inspected' for row in
+                       document.get('metadata_observations', {}).get(repository, {}).values())
+        document.update(updated=datetime.now(timezone.utc).isoformat(), repository=repository,
+                        discovery=receipt_path(discovery_reference or discovery, root), artifact_total=len(records),
+                        artifacts=sorted(records, key=lambda row: (row['family'], row['platform'], row['version'], row['sha256'])),
+                        gap_total=len(gaps), gaps=sorted(gaps.values(), key=lambda row: row['url']),
+                        status='partial' if errors or pending else 'ok', errors=errors, pending_total=pending,
+                        discovery_status=incoming.get('status', 'ok'),
+                        attempted_this_run=attempted, added_this_run=added)
+        atomic_json(receipt, document)
+
+    def register(capture, remote):
+        nonlocal added
+        captured = capture['candidate']
+        identity = (captured['family'], captured['platform'], capture['sha256'])
+        known = by_digest.get(identity)
+        if not known:
+            known = {key: captured[key] for key in ('family', 'platform', 'version',
+                                                  'wayback_timestamp', 'wayback_digest') if key in captured}
+            known.update(original_filename=capture['original_filename'], bytes=capture['bytes'],
+                         sha256=capture['sha256'], source_urls=[], sources=[],
+                         release_tag=capture['release_tag'], release_asset=capture['release_asset'],
+                         acquired_at=capture['acquired_at'])
+            records.append(known)
+            by_digest[identity] = known
+            added += 1
+        known.update(release_url=remote.get('browser_download_url') or remote['url'], fetched_from=capture['fetched_from'])
+        known['source_urls'] = sorted(set(known['source_urls']) | {captured['url']})
+        known['sources'] = sorted(set(known.get('sources', [])) | set(captured.get('sources', [])))
+        known['versions'] = sorted(set(known.get('versions', [known['version']])) | {captured['version']})
+        contexts = {acquisition_id(row): row for row in known.get('acquisitions', [])}
+        contexts[acquisition_id(captured)] = captured
+        known['acquisitions'] = list(contexts.values())
+        if (capture.get('verification') is not None and
+                not (not source.inspection_blocks_publication and inspected(known) and not inspected(capture))):
+            known.update(verification=capture['verification'], inspection_revision=capture['inspection_revision'])
+        document['unpublished_captures'] = [row for row in document.get('unpublished_captures', [])
+                                          if not (row.get('repository') == repository and row['sha256'] == capture['sha256']
+                                                  and acquisition_id(row['candidate']) == acquisition_id(captured))]
+        return known
+
+    def finish(capture, candidate, previous, remote):
+        known = register(capture, remote)
+        captured = capture['candidate']
+        checked_revision = revision(captured)
+        changed = any(checked_revision.get(key) != value for key, value in revision(candidate).items())
+        hours = source.current_refresh_hours if candidate.get('current') else source.refresh_hours
+        observations[acquisition_id(candidate)] = {**checkpoint(previous, success=True, success_hours=hours), 'candidate': candidate,
+                                         'revision': checked_revision,
+                                         'status': 'needs-refresh' if changed else 'preserved', 'sha256': capture['sha256'],
+                                         'release_asset': known['release_asset']}
+        if capture.get('inspection_revision'):
+            observations[acquisition_id(candidate)]['inspection_revision'] = capture['inspection_revision']
+        gaps.pop(acquisition_id(candidate), None)
+
+    save()
+    outstanding = [row for row in document.get('unpublished_captures', []) if row.get('repository') == repository]
+    blocked = set(paused_hosts)
+    def selectable(candidate):
+        host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+        previous = observations[acquisition_id(candidate)]
+        return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
+                or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
+    key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
+    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row) or not source.inspection_blocks_publication]
+    source_jobs = [{'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
+                   for row in candidates.values() if selectable(row)]
+    metadata_state = (document.setdefault('metadata_observations', {}).setdefault(repository, {})
+                      if source.inspect and not source.inspection_blocks_publication else {})
+    metadata_records = {}
+    if source.inspect and not source.inspection_blocks_publication:
+        ordered = sorted(by_digest.values(), key=source.inspection_priority) if source.inspection_priority else by_digest.values()
+        required = set()
+        for row in ordered:
+            if not needs_inspection(row):
+                continue
+            digest = row['sha256']
+            required.add(digest)
+            if inspected(row):
+                metadata_state[digest] = {'status': 'inspected', 'inspection_revision': source.inspection_revision}
+                continue
+            prior = metadata_state.setdefault(digest, {'status': 'pending'})
+            if prior.get('inspection_revision') != source.inspection_revision:
+                metadata_state[digest] = {'status': 'pending', 'inspection_revision': source.inspection_revision}
+            metadata_records[digest] = row
+        for digest in set(metadata_state)-required:
+            metadata_state.pop(digest)
+    metadata_jobs = [{'kind': 'metadata', 'row': row, 'key': ('metadata', digest)}
+                     for digest, row in metadata_records.items()]
+    jobs.extend(job for pair in zip_longest(source_jobs, metadata_jobs) for job in pair if job)
+    jobs_due = {('recovery', *key(row)): row for row in outstanding}
+    jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
+    jobs_due.update({('metadata', digest): prior for digest, prior in metadata_state.items()})
+    save()
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit or len(jobs),
+                    state=document, queue=repository)
+    recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
+    queue = [job['row'] for job in chosen if job['kind'] == 'source']
+    for capture in recoveries:
+        if backoff.paused('publication'):
+            break
+        attempted += 1
+        try:
+            known = by_digest.get((capture['candidate']['family'], capture['candidate']['platform'], capture['sha256']))
+            tag, asset = (known['release_tag'], known['release_asset']) if known else (capture['release_tag'], capture['release_asset'])
+            remote = verified_asset(repository, tag, asset, capture['bytes'], capture['sha256'])
+            backoff.clear('publication')
+            if remote:
+                register(capture, remote)
+            else:
+                capture.update(checkpoint(capture))
+        except Exception as error:
+            capture.update(error_checkpoint(error, capture), error=str(error))
+            backoff.failed('publication', error)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+        save()
+    with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
+        directory = Path(temporary)
+        for job in chosen:
+            if job['kind'] != 'metadata':
+                continue
+            row = job['row']
+            digest = row['sha256']
+            attempted += 1
+            path = None
+            try:
+                path = directory/('metadata-'+digest+Path(row['release_asset']).suffix)
+                download_verified(row, path, repository)
+                candidate = {**row, 'url': next(iter(row.get('source_urls', [])), row.get('release_url', ''))}
+                verification = source.inspect(candidate, path)
+                if not isinstance(verification, dict):
+                    raise ValueError('installer inspection returned no metadata record')
+                if verification.get('discovery_errors'):
+                    raise ValueError(str(verification['discovery_errors']))
+                for related in by_digest.values():
+                    if related['sha256'] == digest:
+                        related.update(verification=verification, inspection_revision=source.inspection_revision)
+                metadata_state[digest] = {**checkpoint(metadata_state[digest], success=True),
+                    'status': 'inspected', 'inspection_revision': source.inspection_revision}
+            except Exception as error:
+                metadata_state[digest] = {**error_checkpoint(error, metadata_state[digest]),
+                    'status': 'failed', 'inspection_revision': source.inspection_revision, 'error': str(error)}
+            finally:
+                if path is not None:
+                    path.unlink(missing_ok=True)
+                save()
+        for candidate in queue:
+            if backoff.paused('publication'):
+                break
+            url = candidate['url']
+            identity = acquisition_id(candidate)
+            previous = observations[identity]
+            pending = previous.get('pending_publication')
+            archived = candidate.get('archive_capture') is not None
+            host = capture_host(candidate['archive_capture']) if archived else urlsplit(url).hostname
+            if (host in blocked or backoff.paused(host)) and not pending and previous.get('status') != 'preserved':
+                continue
+            attempted += 1
+            phase = 'publication'
+            try:
+                if pending and (inspected(pending) or not source.inspection_blocks_publication):
+                    remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
+                    backoff.clear('publication')
+                    if remote:
+                        finish(pending, candidate, previous, remote)
+                        save()
+                        continue
+                if archived and previous.get('status') == 'preserved':
+                    known = by_digest.get((candidate['family'], candidate['platform'], previous.get('sha256')))
+                    if known and verified_asset(repository, known['release_tag'], known['release_asset'], known['bytes'], known['sha256']):
+                        observations[acquisition_id(candidate)] = {**previous, **checkpoint(previous, success=True,
+                                                                                       success_hours=source.refresh_hours)}
+                        save()
+                        continue
+                if host in blocked or backoff.paused(host):
+                    continue
+                with tempfile.TemporaryDirectory(dir=directory) as capture:
+                    original = Path(urlsplit(url).path).name
+                    if not original:
+                        raise ValueError('installer URL has no filename')
+                    path = Path(capture) / original
+                    phase = 'acquisition'
+                    fetched_from = source.acquire(candidate, path)
+                    backoff.clear(host)
+                    if not isinstance(fetched_from, str) or not fetched_from:
+                        raise ValueError('acquisition did not return its source URL')
+                    verification = source.inspect(candidate, path) if needs_inspection(candidate) else None
+                    if needs_inspection(candidate) and not isinstance(verification, dict):
+                        raise ValueError('installer inspection did not return a verification record')
+                    size, digest = path.stat().st_size, file_digest(path)
+                    if size <= 0:
+                        raise ValueError('installer capture is empty')
+                    if candidate.get('expected_sha256') and candidate['expected_sha256'].lower() != digest:
+                        raise ValueError('installer SHA-256 does not match the discovery checksum')
+                    phase = 'publication'
+                    identity = (candidate['family'], candidate['platform'], digest)
+                    known = by_digest.get(identity)
+                    tag, title = source.release_for(candidate)
+                    if known:
+                        tag = known['release_tag']
+                        upload = path.with_name(known['release_asset'])
+                    else:
+                        upload = path.with_name(re.sub(r'[^A-Za-z0-9._-]+', '_', path.stem) + '--' + digest + path.suffix.lower())
+                    if pending and pending['sha256'] != digest:
+                        document.setdefault('unpublished_captures', []).append({**pending, **checkpoint()})
+                    pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
+                               'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
+                               'acquired_at': datetime.now(timezone.utc).isoformat()}
+                    if needs_inspection(candidate):
+                        pending.update(verification=verification, inspection_revision=source.inspection_revision)
+                    observations[acquisition_id(candidate)]['pending_publication'] = pending
+                    save()
+                    if tag not in ready:
+                        ensure_release(repository, tag, title, source.notes)
+                        ready.add(tag)
+                    path.rename(upload)
+                    remote = publish_verified(repository, tag, upload, size, digest)
+                    finish(pending, candidate, previous, remote)
+                    backoff.clear('publication')
+            except Exception as error:
+                if backoff.failed(getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication', error) and phase == 'acquisition':
+                    blocked.add(getattr(error, 'pause_host', host))
+                identity = acquisition_id(candidate)
+                observations[identity] = {**error_checkpoint(error, previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
+                                     'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
+                                     'status': 'failed', 'error': str(error)}
+                if needs_inspection(candidate):
+                    observations[identity]['inspection_revision'] = source.inspection_revision
+                if pending:
+                    observations[identity]['pending_publication'] = pending
+                gaps[identity] = {**candidate, 'reason': str(error), 'checked_at': observations[identity]['checked_at']}
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+            save()
+    return document

@@ -1,5 +1,12 @@
 # Feasibility of decrypting the 97.1 modern speaker packages
 
+**Update 2026-11-18:** Model-26 recovery is now reproduced from the tracked
+public MDP3/OTP inputs. CI published complete components and inventories for
+four independently preserved model-26 sources; see the
+[current recovery evidence](model26-recovery.md). The dated analysis below
+preserves the earlier investigation. Its model-26 input-availability blocker
+has been resolved; other models still require matching recovery evidence.
+
 Status: **no 97.1 model-private key recovered** as of 2026-09-15. This note
 separates package facts, an independently implemented and model-specific
 recovery construction, and steps that still require material from an owned,

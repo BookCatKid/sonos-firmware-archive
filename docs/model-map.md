@@ -51,7 +51,7 @@ their names without any `mdp.h` coverage.
 | 23 | `ELREY` | Secure-boot era (`ELREY_AUTH_3_0` revision). **Key missing** |
 | 24 | `HIDEOUT` | Secure-boot era (`HIDEOUT_AUTH_3_0`); confirmed by `HIDEOUT_ADP8863`/`HIDEOUT_STM32`/`HIDEOUT_FNI_PSOC`/`HIDEOUT_PSOC_4248` strings. **Key missing** |
 | 25 | `DHUEZ` | Move (S17); confirmed by `DHUEZ_PSOC_BL483` string. Amlogic path candidate in `model25-recovery.md`. **Key missing** |
-| 26 | `TUPELO` | Sonos One Gen 2 (S18); confirmed by `TUPELO_LED_NTC` string. Amlogic MDP3+OTP path in `model26-recovery.md`. **Key missing** |
+| 26 | `TUPELO` | Sonos One Gen 2 (S18); confirmed by `TUPELO_LED_NTC` string. **Key recovered** from the tracked public MDP3+OTP inputs; [CI recovery and publication evidence](model26-recovery.md). |
 | 27 | `APOLLO` | Confirmed by `APOLLO_PSOC_FNI`/`APOLLO_RICHTEK`/`APOLLO_GB11` strings. Pre-envelope updater uses on-device `upgradekey.priv` (see `key-material.md`). **Key missing** |
 | 28 | `CHAPLIN` / `KAPITAL` | GPL header says CHAPLIN; UPD capability strings say `KAPITAL_PSOC_FNI` (probably a rename or board variant). **Key missing** — 25 blocked packages |
 | 29 | `NEPTUNE` | Capability strings expose no platform name, only `CS43198_DAC_support` + `PSOC_4128` (Cirrus DAC + Cypress PSoC). **Key missing** |

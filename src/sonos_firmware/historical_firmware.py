@@ -1,0 +1,306 @@
+"""Acquire independently indexed firmware captures through the common publisher."""
+from dataclasses import asdict
+import hashlib
+import json
+import tempfile
+import urllib.error
+from pathlib import Path
+
+from .archive_replay import replay_url, open_capture, canonical_source, capture_host
+from .archive_index import paused_index_hosts
+from .crawl import PACKAGE, landing_url
+from .discovery import Candidate, official_firmware_url, parse_manifest
+from .firmware_archive import acquisition_state, archive_candidates, document_name, register_document, document_publication
+from .releases import verified_asset, publication_receipt, download_verified
+from .release_series import ReleaseSeries
+from .retry import checkpoint, select, error_checkpoint, RequestBackoff
+from .storage import atomic_json
+
+
+def remember_manifest(frontier, manifest):
+    """Offer historical leads to live discovery without claiming current availability."""
+    pending = frontier.setdefault('pending_manifest_urls', [])
+    rows = {}
+    for row in frontier.get('candidates', []):
+        if landing_url(row['url']):
+            if row['url'] not in pending:
+                pending.append(row['url'])
+        else:
+            rows[row['url']] = row
+    unresolved = []
+    metadata = manifest.setdefault('metadata', {})
+    origins = [manifest['url']]
+    if metadata.get('base_url'):
+        base = metadata['base_url']
+        origins.append(base.split('^', 1)[0].rstrip('/')+'/update.upm' if '^' in base else base)
+    for origin in origins:
+        if official_firmware_url(origin) and origin.split('?', 1)[0].endswith('.upm') and origin not in pending:
+            pending.append(origin)
+
+    def accepted(url):
+        try:
+            return canonical_source(url)
+        except ValueError:
+            unresolved.append({'url': url, 'manifest_url': manifest['url'],
+                               'error': 'historical manifest link uses an unsupported URL'})
+            return None
+
+    for candidate in manifest.get('candidates', []):
+        url = accepted(candidate['url'])
+        if url is None:
+            continue
+        if landing_url(url):
+            if url not in pending:
+                pending.append(url)
+            continue
+        lead = candidate.copy()
+        lead['url'] = url
+        if not PACKAGE.fullmatch(lead['filename']):
+            lead['version'] = 'unknown'
+        row = rows.setdefault(url, lead)
+        if row.get('package_model') is None:
+            row['package_model'] = candidate['package_model']
+        evidence = {'manifest_url': manifest['url'], 'sha256': manifest['sha256'],
+                    'advertised_version': candidate['version']}
+        if manifest.get('archive_capture'):
+            evidence['archive_capture'] = manifest['archive_capture']
+        if evidence not in row.setdefault('historical_manifests', []):
+            row['historical_manifests'].append(evidence)
+        # A dead payload can still identify a live sibling manifest. Do not
+        # require successful payload acquisition before expanding its graph.
+        if official_firmware_url(url):
+            sibling = url.rsplit('/', 1)[0]+'/update.upm'
+            if sibling not in pending:
+                pending.append(sibling)
+    frontier['candidates'] = list(rows.values())
+    for link in [*metadata.get('manifest_links', []), *metadata.get('landing_links', [])]:
+        url = accepted(link)
+        if url is None:
+            continue
+        if url not in pending:
+            pending.append(url)
+    metadata['unresolved_links'] = unresolved
+
+
+def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8, acquire=None):
+    """Reparse our own immutable XML even when its original URL has changed."""
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
+        raise ValueError('saved manifest batch limit must be positive')
+    from . import discovery
+    acquire = acquire or download_verified
+    catalog_path = root/'data/catalog.json'
+    catalog = json.loads(catalog_path.read_text()) if catalog_path.exists() else {}
+    state = frontier.setdefault('manifest_replay', {'observations': {}})
+    observations = state.setdefault('observations', {})
+    revision = hashlib.sha256(Path(discovery.__file__).read_bytes()+Path(__file__).read_bytes()).hexdigest()
+    sources = {}
+    errors = []
+    for row in catalog.get('source_manifests', []):
+        if not isinstance(row, dict):
+            errors.append({'error': 'saved manifest receipt must be an object'})
+            continue
+        if not all(row.get(k) for k in ('source_url', 'sha256', 'bytes', 'release_tag', 'release_asset')):
+            continue
+        if (not isinstance(row['source_url'], str) or not isinstance(row['sha256'], str) or
+                len(row['sha256']) != 64 or any(c not in '0123456789abcdef' for c in row['sha256'])):
+            errors.append({'url': row['source_url'], 'error': 'saved manifest requires a source URL and SHA-256 receipt'})
+            continue
+        identity = hashlib.sha256((row['source_url']+'\n'+row['sha256']).encode()).hexdigest()
+        sources[identity] = row
+        if observations.get(identity, {}).get('parser_revision') != revision:
+            observations[identity] = {'status': 'pending'}
+    pending = [key for key in sources if observations.get(key, {}).get('status') != 'parsed']
+    queue = select(pending, observations, key=str, limit=limit, state=state, queue='saved-manifests')
+    attempted = 0
+    for identity in queue:
+        row = sources[identity]
+        attempted += 1
+        try:
+            if (not isinstance(row['bytes'], int) or isinstance(row['bytes'], bool) or
+                    not 0 < row['bytes'] <= 2_000_000 or
+                    not isinstance(row['sha256'], str) or len(row['sha256']) != 64 or
+                    any(c not in '0123456789abcdef' for c in row['sha256'])):
+                raise ValueError('saved manifest requires a bounded size and SHA-256 receipt')
+            path = evidence/(row['sha256']+'.upm')
+            evidence.mkdir(parents=True, exist_ok=True)
+            if path.exists() and (path.stat().st_size != row['bytes'] or
+                                 hashlib.sha256(path.read_bytes()).hexdigest() != row['sha256']):
+                path.unlink()
+            proof = document_publication(row, repository) or row
+            acquire(proof, path, repository)
+            # Keep the validation here as well for cached or injected readers.
+            data = path.read_bytes()
+            if len(data) != row['bytes'] or hashlib.sha256(data).hexdigest() != row['sha256']:
+                raise ValueError('saved manifest does not match its preservation receipt')
+            metadata, candidates = parse_manifest(path, source_url=row['source_url'])
+            remember_manifest(frontier, {'url': row['source_url'], 'sha256': row['sha256'],
+                'metadata': metadata, 'candidates': [asdict(c) for c in candidates]})
+            observations[identity] = {**checkpoint(observations.get(identity), success=True),
+                                     'status': 'parsed', 'parser_revision': revision}
+        except Exception as error:
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            observations[identity] = {**error_checkpoint(error, observations.get(identity)),
+                                     'status': 'failed', 'parser_revision': revision, 'error': str(error)}
+            errors.append({'url': row['source_url'], 'error': str(error)})
+    report = {'attempted': attempted, 'pending': sum(observations[key]['status'] != 'parsed' for key in sources),
+              'errors': errors}
+    state['status'] = 'partial' if report['pending'] or errors else 'ok'
+    return report
+
+
+def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
+    blocked = {'web.archive.org'} if paused is True else set(paused or ())
+    path = root/'data/discovery/historical-manifest-acquisition.json'
+    state = acquisition_state(root, path)
+    backoff = RequestBackoff(state, repository)
+    observations = state.setdefault('sources', {}).setdefault(repository, {})
+    errors = []
+    for url, entry in frontier.get('archive_index', {}).get('entries', {}).items():
+        for identity, capture in entry.get('captures', {}).items():
+            try:
+                replay_url(url, capture)
+                observations.setdefault(identity, {'status': 'pending', 'url': url, 'archive_capture': capture})
+            except (ValueError, TypeError) as error:
+                errors.append({'url': url, 'error': str(error)})
+    # Reinterpret saved metadata after parser/routing changes without requiring
+    # another replay acquisition or waiting for the ordinary refresh interval.
+    for row in observations.values():
+        if row.get('status') == 'preserved' and row.get('manifest'):
+            remember_manifest(frontier, row['manifest'])
+    atomic_json(path, state)
+    eligible = [identity for identity, row in observations.items() if row.get('manifest') or
+                (capture_host(row['archive_capture']) not in blocked and
+                 not backoff.paused(capture_host(row['archive_capture'])))]
+    queue = select(eligible, observations, key=lambda identity: identity,
+                   limit=0 if backoff.paused('publication') else limit,
+                   state=state, queue=repository)
+    attempted = preserved = 0
+    series = {}
+    def publisher_for(capture):
+        tag = 'manifest-history-'+capture['timestamp'][:8]
+        return series.setdefault(tag, ReleaseSeries(repository, tag, 'Sonos historical manifests',
+            'Exact independently discovered public update manifest captures.'))
+    work.mkdir(parents=True, exist_ok=True)
+    for identity in queue:
+        if backoff.paused('publication'):
+            break
+        prior = observations[identity]
+        manifest = prior.get('manifest')
+        host = capture_host(prior['archive_capture'])
+        phase = 'publication'
+        try:
+            proof = None
+            remote = verified_asset(repository, manifest['release_tag'], document_name(manifest),
+                                    manifest['bytes'], manifest['sha256']) if manifest else None
+            if manifest and remote is None:
+                proof = publisher_for(prior['archive_capture']).reconcile(document_name(manifest), manifest)
+                if proof:
+                    manifest['release_tag'] = proof['release_tag']
+                    atomic_json(path, state)
+            if remote is None and proof is None:
+                if host in blocked or backoff.paused(host):
+                    continue
+                phase = 'acquisition'
+                attempted += 1
+                with tempfile.TemporaryDirectory(dir=work, prefix='manifest-') as directory:
+                    with open_capture(prior['url'], prior['archive_capture']) as response:
+                        data = response.read(2_000_001)
+                        length = response.headers.get('Content-Length')
+                        if len(data) > 2_000_000 or (length is not None and int(length) != len(data)):
+                            raise ValueError('manifest exceeds 2 MB or has a truncated Content-Length')
+                        fetched_from = response.geturl()
+                    body = Path(directory)/'capture.upm'
+                    body.write_bytes(data)
+                    backoff.clear(host)
+                    phase = 'publication'
+                    metadata, candidates, parse_error = {}, [], None
+                    try:
+                        metadata, candidates = parse_manifest(body, prior['url'])
+                    except Exception as error:
+                        parse_error = str(error)
+                    # Preserve undecodable snapshots too; their discovery remains incomplete.
+                    manifest = {'url': prior['url'], 'archive_capture': prior['archive_capture'],
+                        'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data),
+                        'metadata': metadata, 'candidates': [asdict(row) for row in candidates],
+                        'parse_error': parse_error, 'fetched_from': fetched_from,
+                        'provenance': 'independent-public-archive-replay',
+                        'release_tag': 'manifest-history-'+prior['archive_capture']['timestamp'][:8]}
+                    prior['manifest'] = manifest
+                    atomic_json(path, state)
+                    asset = body.with_name(document_name(manifest))
+                    body.rename(asset)
+                    proof = publisher_for(prior['archive_capture']).publish(asset, manifest)
+                    manifest['release_tag'] = proof['release_tag']
+                    # Persist the actual partition before catalog registration;
+                    # a worker restart can reconcile an interrupted publication.
+                    atomic_json(path, state)
+            proof = proof or publication_receipt(repository, manifest['release_tag'], document_name(manifest), manifest, remote)
+            register_document(root/'data/catalog.json', manifest, proof)
+            backoff.clear('publication')
+            remember_manifest(frontier, manifest)
+            observations[identity] = {**prior, **checkpoint(prior, success=True, success_hours=168), 'status': 'preserved'}
+            preserved += 1
+        except Exception as error:
+            observations[identity] = {**prior, **error_checkpoint(error, prior), 'status': 'failed', 'error': str(error)}
+            scope = getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication'
+            if backoff.failed(scope, error) and phase == 'acquisition':
+                blocked.add(scope)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+        atomic_json(path, state)
+    errors.extend(error for publisher in series.values() for error in publisher.errors)
+    errors.extend({'url': row['url'], 'error': row['error']} for row in observations.values() if row['status'] == 'failed')
+    errors.extend({'url': row['url'], 'error': row['manifest'].get('parse_error') or 'manifest has parser warnings'}
+                  for row in observations.values() if row.get('manifest') and
+                  (row['manifest'].get('parse_error') or row['manifest']['metadata'].get('warnings')))
+    errors.extend(link for row in observations.values() for link in
+                  row.get('manifest', {}).get('metadata', {}).get('unresolved_links', []))
+    blocked.update(scope for scope in backoff.records if scope != 'publication' and backoff.paused(scope))
+    return {'attempted': attempted, 'preserved': preserved, 'errors': errors,
+            'pending': sum(row['status'] != 'preserved' for row in observations.values()),
+            'paused': bool(blocked) or backoff.paused('publication'), 'paused_hosts': sorted(blocked)}
+
+
+def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
+    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in (limit, manifest_limit)):
+        raise ValueError('historical acquisition limit must be positive')
+    frontier_path = root/'data/discovery/firmware-frontier.json'
+    frontier = json.loads(frontier_path.read_text()) if frontier_path.exists() else {}
+    index = frontier.get('archive_index', {})
+    paused = paused_index_hosts(index)
+    manifests = archive_manifests(root, work, repository, frontier, limit=manifest_limit, paused=paused)
+    atomic_json(frontier_path, frontier)
+    state_path = root/'data/discovery/historical-firmware-acquisition.json'
+    previous = acquisition_state(root, state_path).get('sources', {}).get(repository, {})
+    candidates = {identity: row['candidate'] for identity, row in previous.items() if row.get('candidate')}
+    contexts = {row['url']: row for row in frontier.get('candidates', [])}
+    errors = []
+    for url, artifact in index.get('artifacts', {}).items():
+        if not official_firmware_url(url):
+            errors.append({'url': url, 'error': 'indexed replay uses an unsupported firmware URL'})
+            continue
+        for identity, capture in artifact.get('captures', {}).items():
+            try:
+                replay_url(url, capture)
+                model = artifact.get('package_model')
+                if model is None:
+                    model = contexts.get(url, {}).get('package_model')
+                row = Candidate(artifact.get('version', 'unknown'), model, url,
+                                'public-archive-replay', url.split('?', 1)[0].rsplit('/', 1)[-1])
+                source_id = capture.get('provider', 'wayback')+':'+identity
+                candidates[source_id] = {**asdict(row), 'acquisition_id': source_id, 'available': True,
+                    'archive_capture': capture, 'archive_captures': {identity: capture}}
+            except (ValueError, TypeError) as error:
+                errors.append({'url': url, 'capture_id': identity, 'error': str(error)})
+    rows = sorted(candidates.values(), key=lambda row: (row['archive_capture']['timestamp'], row['url'], row['acquisition_id']))
+    manifests.pop('paused')
+    paused = set(manifests.pop('paused_hosts'))
+    result = archive_candidates(root, repository, rows, work, limit=limit, state_path=state_path,
+                                paused_hosts=paused)
+    result['errors'].extend(errors)
+    result['manifests'] = manifests
+    if paused:
+        result['errors'].extend({'source': host, 'error': 'replay deferred after an archive access challenge'} for host in sorted(paused))
+    result['status'] = 'partial' if result['pending'] or result['errors'] or manifests['pending'] or manifests['errors'] else 'ok'
+    return result

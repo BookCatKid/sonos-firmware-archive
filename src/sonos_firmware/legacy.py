@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -177,6 +178,8 @@ def _legacy_random_material(
 
 
 def _read_length(data: bytes, offset: int) -> tuple[int, int]:
+    if offset >= len(data):
+        raise ValueError('truncated DER length')
     first = data[offset]
     if first < 0x80:
         return first, offset + 1
@@ -225,8 +228,8 @@ def _repeat_to_multiple(data: bytes, block_bytes: int) -> bytes:
 
 
 def _pkcs12_key(password: bytes, salt: bytes, iterations: int) -> bytes:
-    if iterations < 1:
-        raise ValueError("PBE iteration count must be positive")
+    if not 1 <= iterations <= 1_000_000:
+        raise ValueError("PBE iteration count is outside supported recovery limits")
     block_bytes = 64
     password_bmp = b"".join(bytes((0, value)) for value in password) + b"\x00\x00"
     repeated = bytearray(
@@ -325,6 +328,69 @@ def recover_legacy_updater_key(
         byte_order=byte_order,
         seed_source="fixed-system-word",
     )
+
+
+def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: str,
+                                *, max_bytes=8 * 1024 * 1024, max_wrappers=64) -> LegacyRecovery:
+    """Find supported legacy wrappers by content and validate the exact recipient.
+
+    The two supported system words are protocol derivations, not release/model
+    inventories. The ECB scan locates the first CBC plaintext block's DER shape
+    at every byte alignment; no binary-specific addresses are required.
+    """
+    if len(updater) > max_bytes:
+        raise ValueError('updater exceeds the recovery size limit')
+    if len(expected_recipient) != 40 or any(c not in '0123456789abcdef' for c in expected_recipient):
+        raise ValueError('expected recipient must be a SHA-1 fingerprint')
+    order = {1: 'little', 2: 'big'}.get(updater[5]) if updater[:4] == b'\x7fELF' and len(updater) >= 6 else None
+    recipes = [(byte_order, word, legacy_seed(model, word, byte_order=byte_order))
+               for byte_order in ([order] if order else ['big', 'little']) for word in (SYSTEM_WORD, 0)]
+    markers = []
+    start = 0
+    while (start := updater.find(UPDATER_MARKER, start)) >= 0:
+        markers.append(start + len(UPDATER_MARKER))
+        start += 1
+        if len(markers) > max_wrappers:
+            raise ValueError('too many updater wrapper candidates')
+
+    def recover(offset, byte_order, seed):
+        try:
+            result = _recover_legacy_updater_key_with_seed(updater, seed, wrapper_offset=offset,
+                        byte_order=byte_order, seed_source='fixed-system-word')
+            return result if key_recipient_id(result.key) == expected_recipient else None
+        except (ValueError, IndexError):
+            return None
+
+    # Try every cheap marker/derivation pair before scanning a whole binary.
+    for byte_order, word, seed in recipes:
+        for offset in markers:
+            result = recover(offset, byte_order, seed)
+            if result:
+                return result
+    for byte_order, word, seed in recipes:
+        key, iv, _ = _random_material_from_seed(seed)
+        shape = [0x30, 0x82, None, None, 0x30, None, 0x06, len(PKCS12_RC4_128_OID), *PKCS12_RC4_128_OID[:8]]
+        prefix = b''.join(b'.' if value is None else re.escape(bytes([value ^ iv[i]]))
+                          for i, value in enumerate(shape))
+        pattern = re.compile(b'(?=' + prefix + b')', re.DOTALL)
+        attempted = 0
+        for alignment in range(16):
+            length = max(0, (len(updater) - alignment) // 16 * 16)
+            decryptor = Cipher(algorithms.AES(key), modes.ECB()).decryptor()
+            blocks = decryptor.update(updater[alignment:alignment + length]) + decryptor.finalize()
+            for match in pattern.finditer(blocks):
+                if match.start() % 16:
+                    continue
+                offset = alignment + match.start()
+                if offset in markers or offset + WRAPPER_BYTES > len(updater):
+                    continue
+                attempted += 1
+                if attempted > max_wrappers:
+                    raise ValueError('too many updater wrapper candidates')
+                result = recover(offset, byte_order, seed)
+                if result:
+                    return result
+    raise ValueError('no supported updater wrapper matches the requested recipient')
 
 
 def recover_legacy_flash_updater_key(
