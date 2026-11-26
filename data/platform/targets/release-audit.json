@@ -4,13 +4,13 @@
   "provider": "release-audit",
   "status": "failed",
   "executed": true,
-  "started_at": "2026-11-26T16:46:54.241078+00:00",
+  "started_at": "2026-11-26T17:58:38.614498+00:00",
   "steps": [
     {
       "name": "audit_release_assets",
       "status": "failed",
       "exit_code": 1,
-      "output_tail": "releases=163 github=6107 recorded=6600 missing=575 mismatched=0 extras=82 duplicated=67 unexplained=15\n",
+      "output_tail": "releases=164 github=6724 recorded=7181 missing=575 mismatched=0 extras=118 duplicated=103 unexplained=15\n",
       "failure_kind": "source-reported-incomplete",
       "source_status": "partial"
     }
@@ -28,6 +28,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T16:50:02.442733+00:00",
-  "next_due": "2026-11-26T17:50:02.442733+00:00"
+  "finished_at": "2026-11-26T18:01:18.738464+00:00",
+  "next_due": "2026-11-26T19:01:18.738464+00:00"
 }
