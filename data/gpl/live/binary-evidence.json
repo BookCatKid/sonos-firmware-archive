@@ -197,7 +197,7 @@
     }
   },
   "schema_version": 1,
-  "updated": "2026-11-26T06:47:40.590616+00:00",
+  "updated": "2026-11-26T07:08:43.157666+00:00",
   "version_evidence": {},
   "repositories": {
     "BookCatKid/sonos-firmware-archive": {
@@ -240,6 +240,26 @@
         "status": "scanned",
         "revision": "a6e6dfe5f673886335d4acf417acc388ea5b9de642a7cf8a44352772cbdaee21",
         "bytes_scanned": 1136
+      },
+      "c6e9fda6e90f71b9e40f98d933a1afdce24955ef762be4a3b7b23043db892d78": {
+        "status": "scanned",
+        "revision": "a6e6dfe5f673886335d4acf417acc388ea5b9de642a7cf8a44352772cbdaee21",
+        "bytes_scanned": 33392
+      },
+      "8ff963e60d21f42e43e2ef6fd7382935087440a36f0e1f58415fde0359349794": {
+        "status": "scanned",
+        "revision": "a6e6dfe5f673886335d4acf417acc388ea5b9de642a7cf8a44352772cbdaee21",
+        "bytes_scanned": 1136
+      },
+      "8de02c74a3c0203e385121370d9a0b76482c3b9555f6690855baf19c9374b3c7": {
+        "status": "scanned",
+        "revision": "a6e6dfe5f673886335d4acf417acc388ea5b9de642a7cf8a44352772cbdaee21",
+        "bytes_scanned": 1136
+      },
+      "17a20634f091bdb31adb307d0e91b5a3239eac30ff2bc1fffbf5b5ca7838c3b8": {
+        "status": "scanned",
+        "revision": "a6e6dfe5f673886335d4acf417acc388ea5b9de642a7cf8a44352772cbdaee21",
+        "bytes_scanned": 1136
       }
     }
   },
@@ -253,7 +273,7 @@
   },
   "repository": "BookCatKid/sonos-firmware-archive",
   "attempted_this_run": 4,
-  "pending_total": 2237,
+  "pending_total": 2233,
   "errors": [],
   "status": "partial"
 }
