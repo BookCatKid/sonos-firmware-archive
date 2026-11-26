@@ -736,6 +736,14 @@ class InstallerPivotVersionTests(unittest.TestCase):
         roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], limit=12)
         self.assertTrue(any('-v16.2-' in root for root in roots))
 
+    def test_an_unknown_build_reuses_an_observed_campaign_shape(self):
+        observed = ['https://update-firmware.sonos.com/firmware/Prod/'
+                    '57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm']
+        _, roots = installer_manifest_roots(
+            {}, [{'build': '57.22-59130', 'app_version': None, 'token': '72ynP0v9lu'}], observed, limit=8)
+        self.assertIn('https://update-firmware.sonos.com/firmware/Prod/'
+                      '57.22-59130-v11.16.2-72ynP0v9lu-SP-1/update.upm', roots)
+
     def test_adjacent_patch_releases_are_considered_for_an_unknown_version(self):
         observed = ['https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm']
         _, roots = installer_manifest_roots({}, [

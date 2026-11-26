@@ -111,7 +111,31 @@ upstream 7-Zip so that application plists inside the HFS or APFS filesystem
 images nested in disk images are selected recursively instead of extracted in
 full.
 Release shapes are learned from our own Sonos observations and their numeric
-fields continue across runs, including compound release labels. Public client diagnostics supply additional native manifest leads without importing another
+fields continue across runs, including compound release labels.
+
+An installer capture extends discovery in four independent ways, each derived
+only from our own observations:
+
+1. A campaign installer URL of the form
+   `/software/<token>/Sonos_<build>.<dmg|exe>` identifies a build and token by
+   itself, so it contributes a pivot context even when its metadata cannot be
+   read.
+2. The same directory and build identify the other platform's installer, so a
+   Windows capture supplies the DMG whose application bundle carries the
+   release version. Only that short version reconstructs a campaign URL; a
+   Windows resource or a classic image exposes the installer build alone and
+   is recorded as metadata without becoming a probe.
+3. A build with no readable release version reuses version-and-suffix pairs
+   already observed for its own build generation, which is how S1 campaigns
+   become reachable from installers alone.
+4. Failing that, it uses the versions observed for that generation, including
+   adjacent patch releases, and enumerates suffixes without a maximum.
+
+Add a discovery channel by writing an adapter that returns native URLs with
+their provenance; the frontier, acquisition and publication stages are
+channel-agnostic. A channel never imports another project's URL table: it may
+only produce leads, and a lead becomes an observation solely when Sonos itself
+answers. Public client diagnostics supply additional native manifest leads without importing another
 archive's manifest collection or retaining raw logs. The same extraction covers
 issue bodies and comment threads; comment scans keep durable per-thread cursors
 and requeue a thread when its activity changes. Timestamp windows subdivide

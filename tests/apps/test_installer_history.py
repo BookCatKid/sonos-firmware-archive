@@ -296,6 +296,15 @@ class DesktopMetadataTests(unittest.TestCase):
         self.assertEqual([(c['build'], c['token'], c['app_version']) for c in contexts],
                          [('57.22-59130', 't', None)])
 
+    def test_a_campaign_url_alone_supplies_a_pivot_context(self):
+        contexts = installers.installer_pivot_contexts({
+            'sha256': '0', 'source_urls': ['https://update-software.sonos.com/software/tok/Sonos_57.22-59130.dmg']})
+        self.assertEqual([(c['build'], c['token'], c['app_version']) for c in contexts],
+                         [('57.22-59130', 'tok', None)])
+        self.assertEqual(installers.installer_pivot_contexts({
+            'sha256': '0', 'source_urls': ['https://update-software.sonos.com/software/mac/mdcr/'
+                                           'SonosDesktopController131.dmg']}), [])
+
     def test_a_non_sonos_bundle_is_not_metadata(self):
         result = self.inspect([('Other.app/Contents/Info.plist',
                                 {'CFBundleIdentifier': 'com.example.other',
