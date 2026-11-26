@@ -4,7 +4,7 @@
   "provider": "desktop",
   "status": "partial",
   "executed": true,
-  "started_at": "2026-11-26T16:46:55.171639+00:00",
+  "started_at": "2026-11-26T17:58:31.122294+00:00",
   "steps": [
     {
       "name": "discover_desktop_installers",
@@ -17,16 +17,13 @@
       "name": "archive_desktop_installers",
       "status": "failed",
       "exit_code": 1,
-      "output_tail": "verified artifacts=123 attempted=64 new=1\n",
+      "output_tail": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/apps-unknown-windows\nverified artifacts=170 attempted=243 new=29\n",
       "failure_kind": "source-reported-incomplete",
       "source_status": "partial"
     },
     {
       "name": "archive-installer-history",
-      "status": "partial",
-      "exit_code": 0,
-      "output_tail": "m/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:bc5edc5136599f95486d1c7b7e2e607cad6f044ee500337f3fa9742c892719a5\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:b7ede2e9e901bbba458f7055415a00f8ac5471f944b2abaeb8a72892d56960bc\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:8e6cce194a8a9bf4bdde1548b6ce7d24fcf08c51b24d90b8cf26bcf8b147efe4\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:e80ccc272802290d191c529c1f85edfa54e86fb82604f049a63c5fd55f85d67e\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:cb0e98e94ed8ef2c7bc8ccf895a65c10a890812d1ed69583c433bcda099f8861\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:c7b7e6d8d25238d81ae138f2a440f774739112791f9c4c5e46c3079c4777b523\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:d582bed5e0d5f06de646824b682fb7952db5a918d3ff450b01a59edd1fac070d\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:20e654dd6a304f69d35f9d0e70dcea5933a36bebc9f7b8e17a22706a7dd5b536\"\n    },\n    {\n      \"url\": \"https://www.sonos.com/en/redir/controller_software_mac2\",\n      \"error\": \"installer SHA-256 does not match the discovery checksum\",\n      \"acquisition_id\": \"package-metadata:9479f2eed43a21a3c25d5de6deda2c7e4e251cb6108f234549c4c0ba1fe8fd62\"\n    },\n    {\n      \"url\": \"https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-software.sonos.com/software/HBVQeC4A1l/Sonos_90.0-79210.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-software.sonos.com/software/7GphjB3HVD/Sonos_90.0-81181.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-software.sonos.com/software/vHbjDs9q4X/Sonos_90.0-82050.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/64.3-19080-v13.2-qelzft-LR-1/64.3-19080-1-4.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-4.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/90.0-68190-v17.2.2-y0RcLefNNu-RC-1/90.0-68190-1-4.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    }\n  ],\n  \"pending\": 626,\n  \"index_status\": \"partial\"\n}\n",
-      "source_status": "partial"
+      "status": "skipped"
     }
   ],
   "errors": [
@@ -47,9 +44,9 @@
     },
     {
       "step": "archive-installer-history",
-      "reason": "source reports incomplete work"
+      "reason": "four-hour soft wind-down requested"
     }
   ],
-  "finished_at": "2026-11-26T16:54:20.062364+00:00",
-  "next_due": "2026-11-26T17:54:20.062364+00:00"
+  "finished_at": "2026-11-26T21:59:58.253854+00:00",
+  "next_due": "2026-11-26T22:59:58.253854+00:00"
 }
