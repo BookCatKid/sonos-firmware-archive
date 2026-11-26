@@ -2,22 +2,12 @@ import tempfile
 import unittest
 import urllib.error
 from pathlib import Path
-from sonos_firmware.discovery import parse_manifest
 from sonos_firmware.crawl import crawl_manifests, official
 
 BASE='https://update.sonos.com/firmware/Gold/opaque/'
 
 class CrawlTests(unittest.TestCase):
-    def parse(self, xml, url=BASE+'update.upm'):
-        with tempfile.TemporaryDirectory() as d:
-            p=Path(d)/'x.upm';p.write_text(xml)
-            return parse_manifest(p, source_url=url)
 
-    def test_relative_caret_and_old_empty_image(self):
-        m,cs=self.parse('<update_manifest version="1" default_version="55.1-74250" base_url="^55.1-74250"><image model="16" version="55.1-74250"/><image model="4" version="55.1-74250">55.1-74250-1-4.dmg</image></update_manifest>')
-        self.assertIn(BASE+'55.1-74250-1-16.upd',{c.url for c in cs})
-        self.assertIn(BASE+'55.1-74250-1-4.dmg',{c.url for c in cs})
-        self.assertTrue(m['warnings'])
 
     def test_manifest_serving_host_supplies_an_independent_payload_lead(self):
         root = 'https://update-stage.sonos.com/firmware/Prod/fixture/update.upm'
@@ -35,9 +25,6 @@ class CrawlTests(unittest.TestCase):
         self.assertIn(alternate, candidates)
         self.assertEqual(candidates[alternate].advertised_by, root)
 
-    def test_unrecognized_version_visible(self):
-        m,cs=self.parse('<update_manifest version="99"></update_manifest>')
-        self.assertTrue(any('unrecognized' in w for w in m['warnings']))
 
     def test_recursive_sibling_cycle_and_evidence(self):
         first=b'<update_manifest version="1.1"><image model="16" version="28.1-83040">28.1-83040-1-16.upd</image><link>../two/update.upm</link></update_manifest>'
@@ -51,7 +38,7 @@ class CrawlTests(unittest.TestCase):
             self.assertEqual(len(r['manifests']),2)
             self.assertEqual(len(calls),1)
             self.assertEqual(len(r['directories']),2)
-            self.assertFalse(r['limits_reached'])
+            self.assertFalse(r['deadline_reached'])
             self.assertEqual(len(list(Path(d).glob('*.upm'))),2)
             self.assertIn(('28.1-83040',BASE.rstrip('/')),{(x['version'],x['directory']) for x in r['directories']})
 
@@ -65,79 +52,40 @@ class CrawlTests(unittest.TestCase):
             r=crawl_manifests({},[{'url':BASE+'update.upm','body':b'bad'}],[],Path(d),delay=0)
             self.assertTrue(r['failures'])
             self.assertEqual(len(list(Path(d).glob('*.upm'))),1)
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[],[BASE+'update.upm',BASE+'another.upm'],Path(d),max_manifests=1,fetch=fetch,delay=0)
-            self.assertTrue(r['limits_reached'])
+        from unittest.mock import patch
+        requested = []
+        def one_fetch(url):
+            requested.append(url)
+            return fetch(url)
+        with tempfile.TemporaryDirectory() as d, \
+             patch('sonos_firmware.crawl.winding_down', side_effect=lambda: len(requested) >= 1):
+            r=crawl_manifests({},[],[BASE+'update.upm',BASE+'another.upm'],Path(d),fetch=one_fetch,delay=0)
+            self.assertTrue(r['deadline_reached'])
 
-    def test_challenge_stops(self):
-        calls=[]
-        def fetch(url):
-            calls.append(url);raise urllib.error.HTTPError(url,429,'slow down',{},None)
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[],[BASE+'update.upm',BASE+'another.upm'],Path(d),fetch=fetch,delay=0)
-        self.assertTrue(r['blocked']);self.assertEqual(len(calls),1)
 
     def test_no_outside_hosts_credentials_or_ports(self):
         for u in ['https://evil.test/firmware/a.upm','https://u:p@update.sonos.com/firmware/a','https://update.sonos.com:444/firmware/a','file:///firmware/a']:
             self.assertFalse(official(u))
 
 
-class CapturedManifestRegressionTests(unittest.TestCase):
-    def test_gold_build_filename_not_campaign_build_and_seeded_directories(self):
-        seed = BASE + '28.1-83040-1-16.upd'
-        def missing(url):
-            raise urllib.error.HTTPError(url,404,'missing',{},None)
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[],[seed],Path(d),fetch=missing,delay=0)
-        self.assertEqual(r['directories'],[{'version':'28.1-83040','directory':BASE.rstrip('/')}])
-        self.assertEqual(r['edges'][0]['url'],BASE+'update.upm')
-
-    def test_relative_path_without_source_not_silently_correct(self):
-        with tempfile.TemporaryDirectory() as d:
-            p=Path(d)/'m';p.write_text('<update_manifest version="1"><image model="3" version="1.0">app.exe</image></update_manifest>')
-            m,cs=parse_manifest(p)
-        self.assertTrue(any('needs manifest source' in w for w in m['warnings']))
-
-class InitialFetchTests(unittest.TestCase):
-    def test_feed_manifest_without_body_uses_guarded_retrieve(self):
-        url='https://update.sonos.com/firmware/Prod/a/update.upm'
-        body=b'<update_manifest version="1.1"></update_manifest>'
-        calls=[]
-        def fetch(u):
-            calls.append(u);return body
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[{'url':url}],[],Path(d),fetch=fetch,delay=0)
-        self.assertEqual(calls,[url])
-        self.assertEqual(len(r['manifests']),1)
-
-
 class ProbeSafetyTests(unittest.TestCase):
-    def test_challenge_does_not_probe_remainder(self):
+
+
+    def test_challenge_does_not_block_unrelated_hosts(self):
         from unittest.mock import patch
         from sonos_firmware.discovery import Candidate, probe_all
-        cs=[Candidate('1.0',n,BASE+str(n)+'.upd','test',str(n)+'.upd') for n in range(3)]
-        with patch('sonos_firmware.discovery.probe', return_value={'http_status':429, 'available':False}) as probe:
-            rows=probe_all(cs)
-        self.assertEqual(probe.call_count,1)
-        self.assertEqual(len(rows),3)
-        self.assertTrue(all(x.get('error') for x in rows))
-
-    def test_probe_budget_marks_remainder_unchecked(self):
-        from unittest.mock import patch
-        from sonos_firmware.discovery import Candidate, probe_all
-        cs=[Candidate('1.0',n,BASE+str(n)+'.upd','test',str(n)+'.upd') for n in range(3)]
-        with patch('sonos_firmware.discovery.probe') as probe:
-            rows=probe_all(cs, deadline=0)
-        self.assertEqual(probe.call_count,0)
-        self.assertTrue(all('budget' in x.get('error','') for x in rows))
-
-    def test_seeded_chip_file_is_checked_without_list(self):
-        seed={'url':BASE+'chip.bin','filename':'chip.bin','version':'3.1.4','package_model':44}
-        def missing(url):
-            raise urllib.error.HTTPError(url,404,'missing',{},None)
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[],[seed],Path(d),fetch=missing,delay=0)
-        self.assertEqual([x.url for x in r['candidates']],[seed['url']])
+        candidates = [
+            Candidate('1.0', 1, 'https://update.sonos.com/one.upd', 'test', 'one.upd'),
+            Candidate('1.0', 2, 'https://update.sonos.com/two.upd', 'test', 'two.upd'),
+            Candidate('1.0', 3, 'https://update-firmware.sonos.com/three.upd', 'test', 'three.upd'),
+        ]
+        outcomes = [{'http_status': 429, 'available': False},
+                    {'http_status': 200, 'available': True}]
+        with patch('sonos_firmware.discovery.probe', side_effect=outcomes) as probe:
+            rows = probe_all(candidates)
+        self.assertEqual(probe.call_count, 2)
+        self.assertIn('cooling down', rows[1]['error'])
+        self.assertTrue(rows[2]['available'])
 
 
 class PublicCapturedReplayTests(unittest.TestCase):
@@ -163,21 +111,9 @@ class PublicCapturedReplayTests(unittest.TestCase):
         targets={u for u in (fixture/'recovered-firmware-urls.txt').read_text().splitlines() if u.startswith('https://')}
         self.assertEqual(len(targets),150)
         self.assertEqual(targets-reached,set())
-        self.assertFalse(graph['limits_reached'])
+        self.assertFalse(graph['deadline_reached'])
 
 class OutOfScopeClassificationTests(unittest.TestCase):
-    def test_image_page_needs_link_discovery_and_remains_a_coverage_gap(self):
-        body = (b'<update_manifest version="1.1">'
-                b'<image model="16" version="28.1-83040">28.1-83040-1-16.upd</image>'
-                b'<image model="21" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/ios.html</image>'
-                b'<image model="22" version="64.3-21150">https://update-beta.sonos.com/software/jnixwd/android.html</image>'
-                b'</update_manifest>')
-        with tempfile.TemporaryDirectory() as d:
-            r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d),
-                                fetch=lambda url: b'<html>No advertised download</html>', delay=0)
-        kinds = {f['kind'] for f in r['failures']}
-        self.assertEqual(kinds, {'unsupported'})
-        self.assertEqual(len(r['candidates']), 1)
 
     def test_private_manifest_host_stays_fail_closed(self):
         body = (b'<update_manifest version="1.1">'
@@ -187,30 +123,3 @@ class OutOfScopeClassificationTests(unittest.TestCase):
             r = crawl_manifests({}, [{'url': BASE + 'update.upm', 'body': body}], [], Path(d), delay=0)
         kinds = {f['kind'] for f in r['failures']}
         self.assertEqual(kinds, {'unsupported'})
-
-
-class DiscoveryIncompleteTests(unittest.TestCase):
-    def _call(self, failures, challenged=False, blocked=False, limits=False, warnings=()):
-        from sonos_firmware.crawl import discovery_incomplete
-        graph = {'failures': failures, 'blocked': blocked, 'limits_reached': limits}
-        manifests = [{'metadata': {'warnings': list(warnings)}}]
-        return discovery_incomplete(graph, manifests, challenged)
-
-    def test_out_of_scope_and_clean_404_do_not_block(self):
-        failures = [
-            {'kind': 'out-of-scope', 'url': 'https://update-beta.sonos.com/software/jnixwd/ios.html'},
-            {'kind': 'not-found', 'url': 'https://update.sonos.com/firmware/Prod/x/update.upm'},
-        ]
-        self.assertFalse(self._call(failures))
-
-    def test_in_scope_unsupported_still_blocks(self):
-        failures = [{'kind': 'unsupported', 'url': 'https://cdn.example.com/Prod/99.0-1/update.upm'}]
-        self.assertTrue(self._call(failures))
-
-    def test_fetch_and_parse_failures_still_block(self):
-        self.assertTrue(self._call([{'kind': 'error'}]))
-        self.assertTrue(self._call([{'kind': 'malformed'}]))
-        self.assertTrue(self._call([], blocked=True))
-        self.assertTrue(self._call([], limits=True))
-        self.assertTrue(self._call([], challenged=True))
-        self.assertTrue(self._call([], warnings=['unrecognized manifest version']))

@@ -7,6 +7,7 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .deadline import winding_down
 from .releases import ensure_release, publish_collection, publication_receipt, receipt_matches_repository
 from .retry import checkpoint, select
 from .storage import atomic_json
@@ -157,17 +158,18 @@ def publish_delivery(receipt, repository, artifact, files, *, title, notes):
     return capture['artifact']
 
 
-def recover_deliveries(receipt, repository, source_kind, packages, *, selector=None, limit=4):
+def recover_deliveries(receipt, repository, source_kind, packages, *, selector=None):
     """Recover exact prior uploads without acquiring or executing a delivery."""
     document = _load(receipt)
     pending = [row for row in document.get('pending_captures', []) if row['repository'] == repository
         and row['artifact']['source_kind'] == source_kind and row['artifact']['package'] in packages
         and (selector is None or selector in {row['artifact'].get('source_version_selector'),
                                              *row['artifact'].get('source_version_selectors', [])})]
-    queue = select(pending, {row['capture_id']: row for row in pending}, key=lambda row: row['capture_id'], limit=limit,
-                   state=document, queue=f'{repository}/{source_kind}/{",".join(sorted(packages))}/{selector or "*"}')
+    queue = select(pending, {row['capture_id']: row for row in pending}, key=lambda row: row['capture_id'])
     recovered = []
     for capture in queue:
+        if winding_down():
+            break
         artifact = capture['artifact']
         try:
             # These intentionally absent paths allow remote-only reconciliation.

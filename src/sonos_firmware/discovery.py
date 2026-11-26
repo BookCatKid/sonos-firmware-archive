@@ -16,6 +16,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
 from .storage import atomic_json, file_sha256 as _sha256
+from .deadline import winding_down
 from .source_urls import sonos_url as official_firmware_url, open_advertised, advertised_url
 
 USER_AGENT = "sonos-firmware-archive/0.1 (+preservation research)"
@@ -34,7 +35,7 @@ def _secure(url: str) -> str:
     return "https://" + url.removeprefix("http://") if url.startswith("http://") else url
 
 
-def expand_metadata_base(uri: str, models=range(256), *, advertised_by=None) -> list[Candidate]:
+def expand_metadata_base(uri: str, models, *, advertised_by=None) -> list[Candidate]:
     """Expand an observed UPS caret base, without inventing a campaign path."""
     uri = _secure(uri)
     if not advertised_url(uri, advertised_by):
@@ -166,26 +167,22 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
     return result
 
 
-def probe_all(candidates: list[Candidate], workers: int = 6, deadline: float | None = None) -> list[dict]:
-    # All source checks stop after throttling/access challenges, not just the
-    # directory sweep. A shared monotonic deadline keeps slow scans inside the
-    # workflow runtime so the report is always written.
-    # Keep the workers argument for caller compatibility.
+def probe_all(candidates: list[Candidate]) -> list[dict]:
     import time
     results = []
-    blocked = False
+    blocked_hosts = set()
     for candidate in candidates:
-        if blocked:
-            results.append({**asdict(candidate), "available": False, "error": "not checked after source challenge"})
+        if urlsplit(candidate.url).hostname in blocked_hosts:
+            results.append({**asdict(candidate), "available": False, "error": "source host is cooling down"})
             continue
-        if deadline is not None and time.monotonic() > deadline:
-            results.append({**asdict(candidate), "available": False, "error": "not checked within probe budget"})
+        if winding_down():
+            results.append({**asdict(candidate), "available": False, "error": "not checked after wind-down"})
             continue
         row = probe(candidate)
         results.append(row)
-        blocked = row.get("http_status") in {403, 429}
-        if blocked:
-            row["error"] = "source challenge; remaining probes skipped"
+        if row.get("http_status") in {403, 429}:
+            blocked_hosts.add(urlsplit(candidate.url).hostname)
+            row["error"] = "source host is cooling down"
         else:
             time.sleep(.25)
     return results

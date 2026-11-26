@@ -150,11 +150,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument('--recover-documents', action='store_true',
                         help='CI: restore source receipts from verified owned publication captures')
-    parser.add_argument('--recovery-limit', type=int, default=8)
-    parser.add_argument('--max-document-bytes', type=int, default=2_000_000)
     args = parser.parse_args()
-    if args.recovery_limit < 1 or args.max_document_bytes < 1:
-        parser.error('document recovery budgets must be positive')
     if args.recover_documents and os.environ.get('GITHUB_ACTIONS') != 'true':
         parser.error('source document recovery runs in CI')
     root = Path(__file__).resolve().parents[2]
@@ -171,8 +167,7 @@ def main() -> int:
         unrecorded = {key: row for key, row in actual.items()
                       if key not in expected}
         with tempfile.TemporaryDirectory(prefix='sonos-document-recovery-') as temporary:
-            recovery = reconcile_documents(root, repository, unrecorded, Path(temporary), previous=prior,
-                limit=args.recovery_limit, max_bytes=args.max_document_bytes)
+            recovery = reconcile_documents(root, repository, unrecorded, Path(temporary), previous=prior)
         for row in recovery['verified']:
             actual[(row['release_tag'], row['release_asset'])]['sha256'] = row['sha256']
         expected = recorded_assets(root, repository)

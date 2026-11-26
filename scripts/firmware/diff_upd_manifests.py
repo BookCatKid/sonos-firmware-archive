@@ -35,7 +35,7 @@ def main() -> None:
     for model in sorted(old.keys() & new.keys()):
         before, after = old[model], new[model]
         a, b = before["sections"], after["sections"]
-        if len(a) != len(b) or any(x["section_type"] != y["section_type"] for x, y in zip(a, b)):
+        if len(a) != len(b) or any(x["section_type"] != y["section_type"] for x, y in zip(a, b, strict=True)):
             raise ValueError(f"model {model}: section layouts differ; manual alignment required")
         comparison["models"].append({
             "model": model,
@@ -50,7 +50,7 @@ def main() -> None:
                 "payload_length_delta": y["payload_length"] - x["payload_length"],
                 "sha256_same": x["sha256"] == y["sha256"],
                 "recipient_same": x["recipient_id"] == y["recipient_id"],
-            } for x, y in zip(a, b)],
+            } for x, y in zip(a, b, strict=True)],
         })
     print(json.dumps(comparison, indent=2))
 

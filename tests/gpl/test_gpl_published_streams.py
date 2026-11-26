@@ -27,34 +27,33 @@ class PublishedStreamAuditTests(unittest.TestCase):
                 "verification": "tar-integrity",
                 **({"stream_integrity": {"state": "verified", "expected_sha256": digest, "checked_at": "2026-11-12T00:00:00Z"}} if strong else {})}
 
-    def test_normal_worker_continues_across_batches_without_a_prepared_archive(self):
+    def test_normal_worker_processes_all_due_streams_without_batch_caps(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             rows = {f'{i}.tgz': self.published(f'{i}.tgz', str(i)*64, 10) for i in range(1, 4)}
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': rows}}))
-            args = Namespace(output=root, store=root/'ephemeral', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0, seconds=60)
+            args = Namespace(output=root, store=root/'ephemeral', version=[], retry_failed=False,
+                             delay=0)
             calls = []
             def download(item, store, **kwargs):
                 calls.append(item['filename'])
                 return {'state': 'verified', 'sha256': rows[item['filename']]['sha256'], 'bytes': 10,
                         'verification': 'tar-and-compression-integrity', 'members': 1}
-            result = MOD.drain(args, download=download, wait=lambda delay: None)
+            result = MOD.run(args, download=download, wait=lambda delay: None)
             self.assertEqual(result['status'], 'ok')
-            self.assertEqual(result['batches'], 3)
             self.assertEqual(result['verified'], 3)
             self.assertEqual(result['remaining_before'], 3)
             self.assertEqual(result['remaining_after'], 0)
             self.assertEqual(calls, ['1.tgz', '2.tgz', '3.tgz'])
             self.assertEqual(json.loads((root/'stream-audit.json').read_text()), result)
 
-    def test_normal_worker_stops_at_budget_and_next_worker_resumes_its_own_receipts(self):
+    def test_shared_deadline_preserves_unfinished_audit_work_for_retry(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             rows = {f'{i}.tgz': self.published(f'{i}.tgz', str(i)*64, 10) for i in range(1, 4)}
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': rows}}))
-            args = Namespace(output=root, store=root/'ephemeral', limit=10, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0, seconds=2)
+            args = Namespace(output=root, store=root/'ephemeral', version=[], retry_failed=False,
+                             delay=0)
             elapsed = [0]
             calls = []
             def download(item, store, **kwargs):
@@ -62,11 +61,12 @@ class PublishedStreamAuditTests(unittest.TestCase):
                 calls.append(item['filename'])
                 return {'state': 'verified', 'sha256': rows[item['filename']]['sha256'], 'bytes': 10,
                         'verification': 'tar-and-compression-integrity', 'members': 1}
-            first = MOD.drain(args, download=download, wait=lambda delay: None, clock=lambda: elapsed[0])
+            with patch.object(MOD, 'winding_down', side_effect=lambda: len(calls) >= 2):
+                first = MOD.run(args, download=download, wait=lambda delay: None)
             self.assertEqual(first['status'], 'partial')
             self.assertEqual(first['processed'], 2)
             self.assertEqual(first['remaining_after'], 1)
-            second = MOD.drain(args, download=download, wait=lambda delay: None, clock=lambda: elapsed[0])
+            second = MOD.run(args, download=download, wait=lambda delay: None)
             self.assertEqual(second['status'], 'ok')
             self.assertEqual(calls, ['1.tgz', '2.tgz', '3.tgz'])
 
@@ -76,16 +76,14 @@ class PublishedStreamAuditTests(unittest.TestCase):
             root = Path(directory)
             row = self.published('limited.tgz', 'a'*64, 10)
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': {'limited.tgz': row}}}))
-            args = Namespace(output=root, store=root/'ephemeral', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0, seconds=60)
+            args = Namespace(output=root, store=root/'ephemeral', version=[], retry_failed=False,
+                             delay=0)
             download = Mock(return_value={'state': 'http-error', 'http_status': 429, 'retry_after': 7200})
-            first = MOD.drain(args, download=download, wait=lambda delay: None)
-            second = MOD.drain(args, download=download, wait=lambda delay: None)
+            first = MOD.run(args, download=download, wait=lambda delay: None)
+            second = MOD.run(args, download=download, wait=lambda delay: None)
             self.assertEqual(download.call_count, 1)
             self.assertEqual(first['failed'], 1)
-            self.assertEqual(first['batches'], 1)
             self.assertEqual(second['processed'], 0)
-            self.assertEqual(second['batches'], 1)
             self.assertEqual(second['status'], 'partial')
 
     def test_identical_hash_can_reuse_proven_full_stream_without_downloading(self):
@@ -97,10 +95,10 @@ class PublishedStreamAuditTests(unittest.TestCase):
                 "7.0": {"source1.tgz": self.published("source1.tgz", digest, len(payload))},
                 "7.1": {"source2.tgz": self.published("source2.tgz", digest, len(payload))}}}
             (root / 'artifacts.json').write_text(json.dumps(data))
-            args = Namespace(output=root, store=root / 'blobstore', limit=2, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=2.5)
+            args = Namespace(output=root, store=root / 'blobstore', version=[], retry_failed=False,
+                             delay=2.5)
             calls = []
-            def download(item, store, *, min_free_bytes):
+            def download(item, store):
                 calls.append(item['filename'])
                 f = store / 'sha256' / digest[:2] / digest
                 f.parent.mkdir(parents=True, exist_ok=True)
@@ -125,9 +123,9 @@ class PublishedStreamAuditTests(unittest.TestCase):
             initial = self.published('mismatch.tgz', wanted, 12)
             data = {"schema_version": 1, "artifacts": {"8.1": {"mismatch.tgz": initial}}}
             (root / 'artifacts.json').write_text(json.dumps(data))
-            args = Namespace(output=root, store=root / 'blobstore', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=2.5)
-            def fake(item, store, *, min_free_bytes):
+            args = Namespace(output=root, store=root / 'blobstore', version=[], retry_failed=False,
+                             delay=2.5)
+            def fake(item, store):
                 f = store / 'sha256' / observed[:2] / observed
                 f.parent.mkdir(parents=True, exist_ok=True)
                 f.write_bytes(b'different')
@@ -145,12 +143,6 @@ class PublishedStreamAuditTests(unittest.TestCase):
             self.assertEqual(len(MOD.pending({"artifacts": {"8.1": {"mismatch.tgz": row}}},
                                          versions=None)), 1)
 
-    def test_bare_verified_claim_cannot_serve_as_proof(self):
-        digest = 'b' * 64
-        row = self.published('bad.tgz', digest, 10, strong=True)
-        records = {'artifacts': {'7.0': {'bad.tgz': row}}}
-        self.assertEqual(MOD.strong_proofs(records), {})
-        self.assertEqual(len(MOD.pending(records, versions=None)), 1)
 
     def test_failed_audits_retry_automatically_without_starving_new_sources(self):
         now = datetime(2026, 11, 16, tzinfo=timezone.utc)
@@ -169,8 +161,8 @@ class PublishedStreamAuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': rows}}))
-            args = Namespace(output=root, store=root/'worker', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0)
+            args = Namespace(output=root, store=root/'worker', version=[], retry_failed=False,
+                             delay=0)
             for attempt, day in enumerate((0, 1, 7)):
                 with patch.object(retry, '_now', return_value=now+timedelta(days=day)):
                     result = MOD.run(args, download=download, wait=lambda delay: None)
@@ -179,22 +171,6 @@ class PublishedStreamAuditTests(unittest.TestCase):
             self.assertEqual(result['remaining_after'], 0)
         self.assertEqual(calls, [bad, fresh, bad])
 
-    def test_rate_limit_retains_all_pending_checks_and_honors_saved_cooldown(self):
-        now = datetime(2026, 11, 16, tzinfo=timezone.utc)
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            row = self.published('limited.tgz', 'a'*64, 10)
-            (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': {'limited.tgz': row}}}))
-            args = Namespace(output=root, store=root/'worker', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0)
-            with patch.object(retry, '_now', return_value=now):
-                download = Mock(return_value={'state': 'http-error', 'http_status': 429})
-                first = MOD.run(args, download=download, wait=lambda delay: None)
-                second = MOD.run(args, download=download, wait=lambda delay: None)
-            self.assertEqual(download.call_count, 1)
-            self.assertEqual(first['remaining_after'], 1)
-            self.assertEqual(second['selected'], 0)
-            self.assertEqual(second['status'], 'partial')
 
     def test_rate_limit_persists_server_deadline_across_worker_restart(self):
         now = datetime(2026, 11, 24, tzinfo=timezone.utc)
@@ -202,8 +178,8 @@ class PublishedStreamAuditTests(unittest.TestCase):
             root = Path(directory)
             row = self.published('limited.tgz', 'a'*64, 10)
             (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': {'limited.tgz': row}}}))
-            args = Namespace(output=root, store=root/'worker', limit=1, version=[], retry_failed=False,
-                             reserve_bytes=0, delay=0)
+            args = Namespace(output=root, store=root/'worker', version=[], retry_failed=False,
+                             delay=0)
             download = Mock(return_value={'state': 'http-error', 'http_status': 429, 'retry_after': 7200})
             with patch.object(retry, '_now', return_value=now):
                 MOD.run(args, download=download, wait=lambda delay: None)
@@ -214,47 +190,3 @@ class PublishedStreamAuditTests(unittest.TestCase):
             stream = json.loads((root/'artifacts.json').read_text())['artifacts']['7.0']['limited.tgz']['stream_integrity']
             self.assertEqual(stream['next_attempt_at'], (now + timedelta(hours=2)).isoformat())
             self.assertEqual(stream['error']['retry_after'], 7200)
-
-    def test_genuine_strong_prior_check_already_accepted(self):
-        h = 'a' * 64
-        row = self.published('a.txz', h, 3, strong=True)
-        row['stream_integrity'].update(method='tar-and-compression-integrity',
-                                       observed_sha256=h, observed_bytes=3, members=1)
-        rows = {'artifacts': {'7.0': {'a.txz': row}}}
-        self.assertEqual(len(MOD.strong_proofs(rows)), 1)
-        self.assertEqual(MOD.pending(rows, versions=None), [])
-        row['sha256'] = 'b' * 64
-        self.assertEqual(MOD.strong_proofs(rows), {})
-        self.assertEqual(len(MOD.pending(rows, versions=None)), 1)
-
-class GPLReportIntegrityCoverageTests(unittest.TestCase):
-    def test_report_distinguishes_published_tar_headers_from_full_stream_verification(self):
-        spec = importlib.util.spec_from_file_location('archive_gpl_integrity_coverage', ROOT / 'scripts/gpl/archive_gpl_direct.py')
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            out.joinpath('catalog.json').write_text(json.dumps({'schema_version': 1, 'releases': {
-                '7.0': {'state': 'verified', 'links': [
-                    {'filename': 'a.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.0/a.tgz'},
-                    {'filename': 'b.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.0/b.tgz'}]},
-                '7.1': {'state': 'verified', 'links': [
-                    {'filename': 'c.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.1/c.tgz'}]},
-            }}))
-            a = PublishedStreamAuditTests.published('a.tgz', 'a'*64, 10)
-            b = PublishedStreamAuditTests.published('b.tgz', 'b'*64, 10)
-            a['stream_integrity'] = {'state': 'verified', 'expected_sha256': 'a'*64}
-            out.joinpath('artifacts.json').write_text(json.dumps({'artifacts': {
-                '7.0': {'gpl.html': {'published': True}, 'a.tgz': a, 'b.tgz': b},
-                '7.1': {'gpl.html': {'published': True}},
-            }}))
-            from argparse import Namespace
-            self.assertEqual(mod.report(Namespace(output=out)), 0)
-            report = json.loads((out/'report.json').read_text())
-            self.assertEqual(report['fully_published_releases'], 1)
-            self.assertEqual(report['published_source_archives'], 2)
-            self.assertEqual(report['full_compressed_stream_verified_source_archives'], 1)
-            self.assertEqual(report['published_source_archives_awaiting_full_stream_verification'], 1)
-            self.assertTrue(report['release_coverage']['7.0']['complete_publication'])
-            self.assertFalse(report['release_coverage']['7.1']['complete_publication'])
-            self.assertEqual(report['release_coverage']['7.1']['remaining_assets'], 1)

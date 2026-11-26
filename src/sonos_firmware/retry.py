@@ -83,14 +83,8 @@ class RequestBackoff:
         self.records.pop(scope, None)
 
 
-def select(items, records, *, key, limit, force=False, now=None, state=None, queue='default'):
-    """Reserve retry capacity; persist alternating turns when only one slot fits.
-
-    Workers pass their saved state and a stable queue name. Larger batches keep
-    their retry reservation and source priority without needing rotation.
-    """
-    if limit <= 0:
-        return []
+def select(items, records, *, key, force=False, now=None):
+    """Return every fresh or retry-eligible item without a work quota."""
     fresh, retries = [], []
     for item in items:
         prior = records.get(key(item))
@@ -99,18 +93,4 @@ def select(items, records, *, key, limit, force=False, now=None, state=None, que
         elif force or due(prior, now):
             retries.append(item)
     retries.sort(key=lambda item: records[key(item)].get('checked_at', ''))
-    if limit == 1 and state is not None:
-        rotation = state.setdefault('retry_rotation', {}).setdefault(queue, {})
-        lane = rotation.get('next_lane', 'retry')
-        if lane not in {'retry', 'fresh'}:
-            raise ValueError('retry queue lane must be retry or fresh')
-        use_retry = bool(retries) and (not fresh or lane == 'retry')
-        chosen = (retries if use_retry else fresh)[:1]
-        if chosen:
-            rotation['next_lane'] = 'fresh' if use_retry else 'retry'
-        return chosen
-    reserved = min(len(retries), max(1, limit // 4))
-    chosen = retries[:reserved] + fresh[:limit - reserved]
-    # Fill spare capacity without starving either queue when the other is empty.
-    chosen.extend(retries[reserved:reserved + limit - len(chosen)])
-    return chosen
+    return retries + fresh

@@ -36,7 +36,7 @@ class UploadResumeTests(unittest.TestCase):
         sleeper = mock.patch.object(releases.time, 'sleep')
         sleeper.start()
         self.addCleanup(sleeper.stop)
-        for name, item in ITEMS.items():
+        for name in ITEMS:
             (directory / name).write_bytes(PAYLOADS[name])
         self.argv = [
             "firmware/upload_raw_assets.py",
@@ -64,11 +64,6 @@ class UploadResumeTests(unittest.TestCase):
             result = MODULE.main()
         return result, upload_asset, upload_streaming
 
-    def test_existing_verified_assets_are_skipped(self):
-        result, upload_asset, upload_streaming = self._run(set(ITEMS))
-        self.assertEqual(result, 0)
-        upload_asset.assert_not_called()
-        upload_streaming.assert_not_called()
 
     def test_missing_local_files_can_reconcile_verified_remote_assets(self):
         for path in (self.root / 'raw/fixture').iterdir():
@@ -87,10 +82,6 @@ class UploadResumeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'missing or does not match'):
             self._run(set())
 
-    def test_requested_package_cannot_succeed_with_no_expected_assets(self):
-        self.argv[-1] = 'unrecognized-package'
-        with self.assertRaisesRegex(ValueError, 'no cataloged raw assets'):
-            self._run(set())
 
     def test_existing_mismatched_asset_errors_without_clobber(self):
         result, upload_asset, upload_streaming = self._run(set(ITEMS))

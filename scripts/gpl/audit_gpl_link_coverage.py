@@ -25,28 +25,18 @@ from sonos_firmware.gpl_archive import source_receipt_keys, valid_version
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA = ROOT / "data/gpl/live"
 
-# States that prove the archive looked at a link and reached a durable verdict.
-TERMINAL_STATES = frozenset({
-    "published", "verified", "invalid-artifact", "http-error", "network-error",
-    "incomplete-transfer", "unexpected-content-type", "insufficient-space",
-    "publish-conflict",
-})
-
-
-def classify(link: dict, receipt: dict | None) -> tuple[str, str | None]:
-    """Return (state, detail) for one advertised link.
+def classify(receipt: dict | None) -> str:
+    """Classify each advertised link by the corresponding publication receipt.
 
     `unattempted` is the only state that requires work: no receipt means the
     link was neither published nor rejected, so the archive cannot explain it.
     """
     if not receipt:
-        return "unattempted", None
+        return "unattempted"
     if receipt.get("published"):
-        return "published", receipt.get("release_asset")
+        return "published"
     state = receipt.get("state")
-    if state in TERMINAL_STATES:
-        return f"recorded:{state}", receipt.get("verification") or receipt.get("error")
-    return f"recorded:{state}", receipt.get("verification") or receipt.get("error")
+    return f"recorded:{state}"
 
 
 def coverage(catalog: dict, receipts: dict) -> dict:
@@ -65,7 +55,7 @@ def coverage(catalog: dict, receipts: dict) -> dict:
         keys = source_receipt_keys(record["links"], prior)
         counts: dict[str, int] = {}
         for link in record["links"]:
-            state, detail = classify(link, prior.get(keys[link["url"]]))
+            state = classify(prior.get(keys[link["url"]]))
             counts[state] = counts.get(state, 0) + 1
             totals[state] = totals.get(state, 0) + 1
             if state == "unattempted":

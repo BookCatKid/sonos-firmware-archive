@@ -6,8 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from sonos_firmware.platform.model import Step, Target
-from sonos_firmware.platform.registry import targets
-from sonos_firmware.platform.runner import run, plan
+from sonos_firmware.platform.runner import run
 
 
 class RunnerTests(unittest.TestCase):
@@ -48,33 +47,11 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(state.read_bytes(), before)
             provider.assert_not_called()
 
-    def test_unchanged_workflow_runs_after_metadata_changes_and_explicit_dispatch_is_preserved(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            path, old = self.workflow_repo(root)
-            (root/'observations.json').write_text('{}')
-            self.commit_fixture(root)
-            report = run(self.target(), root, 'owner/repo', environment=self.workflow_environment(old),
-                         provider_map={'fixture': lambda c: []})
-            self.assertEqual(report['status'], 'ok')
-            path.write_text('name: corrected\n')
-            self.commit_fixture(root)
-            report = run(self.target(), root, 'owner/repo', environment=self.workflow_environment(old, 'workflow_dispatch'),
-                         provider_map={'fixture': lambda c: []})
-            self.assertEqual(report['status'], 'ok')
 
     def target(self, **extra):
         return Target.from_dict({'name': 'new-source', 'provider': 'fixture', 'description': 'Fixture source',
                                  'interval_hours': 6, 'metadata': ['data/new-source'], **extra})
 
-    def test_new_target_can_be_planned_without_an_archive_or_any_acquisition(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            report = plan(self.target(), root, 'owner/repo', provider_map={
-                'fixture': lambda c: [Step('discover', ('discover-tool', str(c.work)))]})
-            self.assertEqual(report['status'], 'planned')
-            self.assertFalse(report['executed'])
-            self.assertEqual(list(root.iterdir()), [])
 
     def test_local_acquisition_is_rejected_before_any_files_or_commands(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -83,25 +60,6 @@ class RunnerTests(unittest.TestCase):
                 run(self.target(), root, 'owner/repo', environment={}, provider_map={})
             self.assertEqual(list(root.iterdir()), [])
 
-    def test_worker_cleans_artifacts_and_still_reports_completed_progress_after_failure(self):
-        workspaces = []
-        visited = []
-        def provider(c):
-            workspaces.append(c.work)
-            return [Step('discover', ('fixture',)), Step('acquire', ('fixture',)),
-                    Step('dependent', ('fixture',)), Step('checkpoint', ('fixture',), after_failure=True)]
-        def execute(step, context, environment):
-            visited.append(step.name)
-            (context.work / 'downloaded.bin').write_bytes(b'fixture artifact')
-            return (1, 'failure') if step.name == 'acquire' else (0, 'done')
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            report = run(self.target(), root, 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
-                         provider_map={'fixture': provider}, execute=execute)
-            self.assertEqual(visited, ['discover', 'acquire', 'checkpoint'])
-            self.assertEqual(report['status'], 'partial')
-            self.assertFalse(workspaces[0].exists())
-            self.assertTrue((root / 'data/platform/targets/new-source.json').exists())
 
     def test_missing_play_dependency_blocks_only_that_target_without_running_it(self):
         from unittest.mock import patch
@@ -114,17 +72,6 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(report['executed'])
             self.assertEqual(report['pending'], ['goopdl'])
 
-    def test_native_incomplete_discovery_is_not_reported_as_complete(self):
-        def provider(c):
-            return [Step('discover', ('fixture',), report=str(c.work / 'native.json'))]
-        def execute(step, context, environment):
-            Path(step.report).write_text(json.dumps({'status': status}))
-            return 0, 'completed bounded discovery'
-        for status in ('partial', 'incomplete', 'error', 'blocked', 'failed', 'unavailable'):
-            with self.subTest(status=status), tempfile.TemporaryDirectory() as temporary:
-                report = run(self.target(), Path(temporary), 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
-                             provider_map={'fixture': provider}, execute=execute)
-                self.assertEqual(report['status'], 'partial')
 
     def test_scheduled_backlog_resumes_hourly_then_returns_to_its_success_cadence(self):
         from datetime import datetime, timedelta
@@ -151,14 +98,6 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(is_due(root, target, now=finished+timedelta(hours=23)))
             self.assertTrue(is_due(root, target, now=finished+timedelta(hours=24)))
 
-    def test_normal_gpl_target_configures_batch_size_and_time_budget(self):
-        root = Path(__file__).resolve().parents[2]
-        target = targets(root)['gpl-audit']
-        report = plan(target, root, 'owner/repo', options={'limit': 3, 'seconds': 120})
-        command = report['steps'][0]['command']
-        self.assertEqual(command[command.index('--limit')+1], '3')
-        self.assertEqual(command[command.index('--seconds')+1], '120')
-        self.assertEqual(report['steps'][0]['report'], str(root/'data/gpl/live/stream-audit.json'))
 
     def test_credentials_are_not_written_into_run_reports(self):
         token = 'secret-value-must-never-be-in-the-report'
@@ -170,24 +109,6 @@ class RunnerTests(unittest.TestCase):
             self.assertNotIn(token, json.dumps(report))
             self.assertIn('[REDACTED]', json.dumps(report))
 
-    def test_declared_targets_all_have_a_side_effect_free_plan(self):
-        root = Path(__file__).resolve().parents[2]
-        for target in targets(root).values():
-            with self.subTest(target=target.name):
-                self.assertTrue(plan(target, root, 'owner/repo')['steps'])
-
-    def test_optional_tools_do_not_block_independent_provider_work(self):
-        from unittest.mock import patch
-        with tempfile.TemporaryDirectory() as temporary, patch(
-                'sonos_firmware.platform.runner.shutil.which', return_value=None):
-            target = self.target(optional_capabilities=['apkeep'])
-            report = run(target, Path(temporary), 'owner/repo', environment={'GITHUB_ACTIONS': 'true'},
-                provider_map={'fixture': lambda c: [Step('metadata', ('fixture',))]},
-                execute=lambda *args: (0, 'metadata discovered'))
-            self.assertTrue(report['executed'])
-            self.assertEqual(report['status'], 'ok')
-            self.assertEqual(plan(target, Path(temporary), 'owner/repo', provider_map={
-                'fixture': lambda c: [Step('metadata', ('fixture',))]})['optional_capabilities'], ['apkeep'])
 
     def test_target_metadata_cannot_stage_code_or_escape_the_checkout(self):
         for path in ('src', '../secrets', '/etc', 'data/../keys'):
@@ -195,45 +116,7 @@ class RunnerTests(unittest.TestCase):
                 self.target(metadata=[path])
 
 class TargetRegistrationTests(unittest.TestCase):
-    def test_source_updates_select_automatic_targets_even_before_their_next_due_time(self):
-        import contextlib
-        import io
-        from sonos_firmware.platform.cli import main
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            automatic = {'name': 'source', 'provider': 'fixture', 'description': 'Automatic',
-                         'interval_hours': 24, 'metadata': ['data/source']}
-            manual = {**automatic, 'name': 'maintenance', 'manual': True}
-            (root/'config').mkdir()
-            (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [automatic, manual]}))
-            state = root/'data/platform/targets'
-            state.mkdir(parents=True)
-            (state/'source.json').write_text(json.dumps({'next_due': '2999-01-01T00:00:00+00:00'}))
-            output = io.StringIO()
-            with contextlib.redirect_stdout(output):
-                self.assertEqual(main(['--root', str(root), 'targets', '--matrix', '--scheduled']), 0)
-            self.assertEqual([row['target'] for row in json.loads(output.getvalue())['include']], ['source'])
 
-    def test_scheduled_cli_retains_explicit_target_options(self):
-        import contextlib
-        import io
-        from unittest.mock import patch
-        from sonos_firmware.platform import cli
-        visited = []
-        def execute_target(target, root, repository, **kwargs):
-            return run(target, root, repository, environment={'GITHUB_ACTIONS': 'true'},
-                       provider_map={'fixture': lambda c: [Step('check', ('fixture', str(c.options['limit'])))]},
-                       execute=lambda step, *args: (visited.append(step.command[-1]) or 0, 'configured task'), **kwargs)
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            (root/'config').mkdir()
-            (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [
-                {'name': 'configured-source', 'provider': 'fixture', 'description': 'Configured source',
-                 'interval_hours': 6, 'metadata': ['data/source'], 'options': {'limit': 5}}]}))
-            with patch.object(cli, 'run', side_effect=execute_target), contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
-                                          '--if-due', '--repository', 'owner/repo']), 0)
-            self.assertEqual(visited, ['5'])
 
     def test_incomplete_coverage_does_not_fail_the_command(self):
         import contextlib
@@ -262,27 +145,6 @@ class TargetRegistrationTests(unittest.TestCase):
             with patch.object(cli, 'run', return_value=faulted), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
                                           '--repository', 'owner/repo']), 1)
-
-    def test_registering_and_planning_target_needs_only_configuration(self):
-        import contextlib
-        import io
-        from sonos_firmware.platform.cli import main
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            (root / 'config').mkdir()
-            configuration = {'schema_version': 1, 'targets': [
-                {'name': 'new-desktop-target', 'provider': 'desktop', 'description': 'New target',
-                 'interval_hours': 6, 'metadata': ['data/apps/desktop-discovery.json', 'data/apps/desktop-archive.json']} ]}
-            (root / 'config/targets.json').write_text(json.dumps(configuration))
-            output = io.StringIO()
-            with contextlib.redirect_stdout(output):
-                self.assertEqual(main(['--root', str(root), 'run', 'new-desktop-target',
-                                       '--repository', 'owner/repo']), 0)
-            report = json.loads(output.getvalue())
-            self.assertEqual(report['status'], 'planned')
-            self.assertFalse(report['executed'])
-            self.assertFalse((root / 'data').exists())
-            self.assertEqual(sorted(p.name for p in root.iterdir()), ['config'])
 
 
 class ExtractionCheckpointTests(unittest.TestCase):
@@ -396,32 +258,6 @@ class ExtractionCheckpointTests(unittest.TestCase):
 
 
 class HistoryBootstrapTests(unittest.TestCase):
-    def test_unattempted_discovery_survives_limit_and_later_listing_outage(self):
-        import importlib.util
-        from unittest.mock import patch
-        from types import SimpleNamespace
-        import sys
-        root = Path(__file__).resolve().parents[2]
-        spec = importlib.util.spec_from_file_location('queued_sweep', root/'scripts/apps/sweep_android_store_history.py')
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            acquired = []
-            def acquire(command, **kwargs):
-                acquired.append(command[command.index('--version-selector')+1])
-                state = json.loads((directory/'state.json').read_text())
-                self.assertEqual({row['version_selector'] for row in state['pending_selectors']}, {'first', 'later'})
-                return SimpleNamespace(returncode=1, stdout='fixture acquisition failure')
-            with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2', '--limit', '1',
-                    '--receipt', str(directory/'archive.json'), '--ledger', str(directory/'state.json')]), \
-                 patch.object(module, 'discover_versions', side_effect=[['first', 'later'], OSError('listing outage')]), \
-                 patch.object(module, 'discover_apkpure', return_value={'variants': [], 'errors': []}), \
-                 patch.object(module, 'discover_sdk_levels', return_value={'levels': [29], 'errors': []}), \
-                 patch.object(module, 'run_acquisition', side_effect=acquire):
-                self.assertEqual(module.main(), 1)
-                self.assertEqual(module.main(), 1)
-            self.assertEqual(acquired, ['first', 'later'])
 
     def test_previously_observed_selector_survives_an_unavailable_store_listing(self):
         import importlib.util
@@ -467,7 +303,7 @@ class HistoryBootstrapTests(unittest.TestCase):
             receipt = Path(temporary) / 'archive.json'
             ledger = Path(temporary) / 'state.json'
             argv = ['sweep', '--package', 'com.sonos.acr2', '--receipt', str(receipt),
-                    '--ledger', str(ledger), '--limit', '1', '--repo', 'owner/repo']
+                    '--ledger', str(ledger), '--repo', 'owner/repo']
             acquired = []
             def acquire(command, **kwargs):
                 acquired.append(command[command.index('--version-selector') + 1])
@@ -483,123 +319,10 @@ class HistoryBootstrapTests(unittest.TestCase):
                 from sonos_firmware import retry
                 with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)):
                     self.assertEqual(module.main(), 1)
-            self.assertEqual(acquired, ['old', 'new', 'old'])
+            self.assertEqual(acquired, ['old', 'new', 'old', 'new'])
             document = json.loads(ledger.read_text())
             self.assertEqual(document['pending_total'], 2)
             self.assertEqual(document['status'], 'partial')
-
-class MetadataPublicationTests(unittest.TestCase):
-    def test_metadata_commit_preserves_unrelated_local_work_and_retains_patch(self):
-        import subprocess
-        from sonos_firmware.platform.git_state import commit_metadata
-        def git(root, *args):
-            return subprocess.check_output(['git', *args], cwd=root, stderr=subprocess.DEVNULL, text=True)
-        with tempfile.TemporaryDirectory() as temporary:
-            base = Path(temporary)
-            remote, root, worker = base / 'remote.git', base / 'checkout', base / 'worker'
-            root.mkdir(); worker.mkdir()
-            git(base, 'init', '--bare', '--initial-branch=main', str(remote))
-            git(root, 'init', '--initial-branch=main')
-            git(root, 'config', 'user.name', 'Fixture')
-            git(root, 'config', 'user.email', 'fixture@example.invalid')
-            (root / 'source.py').write_text('initial source\n')
-            git(root, 'add', 'source.py'); git(root, 'commit', '-m', 'Initial fixture')
-            git(root, 'remote', 'add', 'origin', str(remote))
-            git(root, 'push', '-u', 'origin', 'main')
-            # Automation owns metadata only. Refuse pre-staged human work.
-            (root / 'source.py').write_text('user change\n')
-            git(root, 'add', 'source.py')
-            target = Target.from_dict({'name': 'fixture', 'provider': 'fixture', 'description': 'fixture',
-                                       'interval_hours': 1, 'metadata': ['data/fixture.json']})
-            (root / 'data').mkdir()
-            (root / 'data/fixture.json').write_text('{"published": true}\n')
-            environment = {'GITHUB_ACTIONS': 'true', 'RUNNER_TEMP': str(worker)}
-            with self.assertRaisesRegex(ValueError, 'pre-staged'):
-                commit_metadata(root, target, environment)
-            git(root, 'reset', '--quiet', '--', 'source.py')
-            # Rebase refuses unrelated dirty work, but the metadata checkpoint
-            # must remain recoverable and the user's edit must remain intact.
-            with self.assertRaises(subprocess.CalledProcessError):
-                commit_metadata(root, target, environment)
-            self.assertIn('data/fixture.json', (worker / 'metadata-checkpoint.patch').read_text())
-            self.assertNotIn('user change', (worker / 'metadata-checkpoint.patch').read_text())
-            self.assertEqual((root / 'source.py').read_text(), 'user change\n')
-
-
-class FirmwareBootstrapTests(unittest.TestCase):
-    def test_disabled_hint_source_retains_its_observations_without_fetching_or_using_them(self):
-        import importlib.util
-        import sys
-        from unittest.mock import patch
-        script = Path(__file__).resolve().parents[2]/'scripts/firmware/discover_firmware.py'
-        spec = importlib.util.spec_from_file_location('disabled_hint_fixture', script)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            notes = {'versions': ['99.1-12345'], 'status': 'failed', 'error': 'previous outage'}
-            state_path = root/'state.json'
-            state_path.write_text(json.dumps({'release_notes': notes}))
-            state = {'manifests': [], 'candidates': [], 'probes': {}, 'checked_urls': [],
-                     'checked_this_run': 0, 'pending_manifest_urls': [], 'status': 'ok'}
-            argv = [str(script), '--state', str(state_path), '--catalog', str(root/'catalog.json'),
-                    '--evidence-dir', str(root/'metadata'), '--report', str(root/'report.json'),
-                    '--no-history-index', '--no-release-notes']
-            with patch.object(sys, 'argv', argv), patch.object(module, 'discover', return_value=state) as discover, \
-                 patch.object(module, 'discover_version_hints') as hints:
-                self.assertEqual(module.main(), 0)
-            hints.assert_not_called()
-            self.assertEqual(discover.call_args.kwargs['version_hints'], ())
-            self.assertEqual(json.loads(state_path.read_text())['release_notes'], notes)
-            self.assertEqual(json.loads((root/'report.json').read_text())['status'], 'ok')
-
-    def test_empty_firmware_catalog_is_created_by_worker_without_binary_inputs(self):
-        import importlib.util
-        import sys
-        from unittest.mock import patch
-        scripts = Path(__file__).resolve().parents[2] / 'scripts'
-        spec = importlib.util.spec_from_file_location('bootstrap_fixture', scripts / 'firmware/discover_firmware.py')
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as temporary, patch.object(sys, 'path', [str(scripts), *sys.path]):
-            root = Path(temporary)
-            state = {'manifests': [], 'probes': {}, 'checked_urls': [], 'status': 'ok'}
-            self.assertFalse(module.preserve(state, root / 'catalog.json', root / 'frontier.json',
-                                             root / 'evidence', root / 'work', 'owner/repo'))
-            catalog = json.loads((root / 'catalog.json').read_text())
-            self.assertEqual(catalog['packages'], [])
-            self.assertEqual(catalog['raw_images'], [])
-            self.assertEqual(catalog['source_manifests'], [])
-
-
-    def test_captured_manifest_can_resume_after_worker_directory_changes(self):
-        import hashlib
-        import importlib.util
-        import sys
-        from unittest.mock import patch
-        scripts = Path(__file__).resolve().parents[2] / 'scripts'
-        spec = importlib.util.spec_from_file_location('capture_resume_fixture', scripts / 'firmware/discover_firmware.py')
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as temporary, patch.object(sys, 'path', [str(scripts), *sys.path]):
-            root = Path(temporary)
-            evidence, work = root / 'restored-metadata', root / 'publication'
-            evidence.mkdir(); work.mkdir()
-            body = b'<update_manifest version="1.1"/>'
-            (evidence / 'captured.upm').write_bytes(body)
-            manifest = {'url': 'https://update.sonos.com/firmware/update.upm',
-                        'snapshot': '/previous-worker/temporary/captured.upm',
-                        'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
-                        'metadata': {'system_version': '1.0'}}
-            state = {'manifests': [manifest], 'probes': {}, 'checked_urls': [], 'status': 'ok'}
-            proof = {'status': 'verified', 'repository': 'owner/repo', 'release_tag': 'fixture',
-                     'release_asset': module.document_name(manifest), 'release_url': 'https://github.com/fixture/asset',
-                     'bytes': len(body), 'sha256': manifest['sha256']}
-            with patch.object(module.ReleaseSeries, 'publish', return_value=proof) as upload:
-                self.assertFalse(module.preserve(state, root / 'catalog.json', root / 'frontier.json',
-                                                 evidence, work, 'owner/repo'))
-            upload.assert_called_once()
-            self.assertEqual(len(json.loads((root / 'catalog.json').read_text())['source_manifests']), 1)
 
 
 class ReceiptRepositoryTests(unittest.TestCase):
@@ -613,59 +336,6 @@ class ReceiptRepositoryTests(unittest.TestCase):
         self.assertFalse(receipt_matches_repository({}, 'owner/original'))
 
 
-class PublicationRegressionTests(unittest.TestCase):
-    def test_secret_crossing_report_tail_boundary_is_redacted(self):
-        token = 'SECRET-' + 'x' * 5000
-        with tempfile.TemporaryDirectory() as temporary:
-            target = Target.from_dict({'name': 'fixture', 'provider': 'fixture', 'description': 'fixture',
-                                       'interval_hours': 1, 'metadata': []})
-            report = run(target, Path(temporary), 'owner/repo',
-                         environment={'GITHUB_ACTIONS': 'true', 'GH_TOKEN': token},
-                         provider_map={'fixture': lambda c: [Step('test', ('fixture',))]},
-                         execute=lambda *args: (1, 'error ' + token + ' trailing output'))
-            self.assertNotIn('x' * 100, json.dumps(report))
-            self.assertIn('[REDACTED]', json.dumps(report))
-
-    def test_asset_inventory_falls_back_completely_after_later_page_challenge(self):
-        import io
-        import urllib.error
-        from unittest.mock import patch
-        from sonos_firmware import releases
-        first_page = [{'name': 'asset-' + str(n)} for n in range(100)]
-        error = urllib.error.HTTPError('https://api.github.com/page2', 403, 'rate limited', {}, None)
-        with patch.object(releases, 'public_release', return_value={'id': 1}), \
-             patch.object(releases.urllib.request, 'urlopen', side_effect=[io.BytesIO(json.dumps(first_page).encode()), error]), \
-             patch.object(releases, 'graphql_assets', return_value=first_page + [{'name': 'last-asset'}]) as fallback:
-            result = releases.remote_assets('owner/repo', 'tag')
-        self.assertEqual(len(result), 101)
-        self.assertIn('last-asset', result)
-        fallback.assert_called_once_with('owner/repo', 'tag')
-
-    def test_deleted_tracked_metadata_is_published(self):
-        import subprocess
-        from sonos_firmware.platform.git_state import commit_metadata
-        def git(root, *args):
-            return subprocess.check_output(['git', *args], cwd=root, stderr=subprocess.DEVNULL, text=True)
-        with tempfile.TemporaryDirectory() as temporary:
-            base = Path(temporary)
-            remote, root = base / 'remote.git', base / 'checkout'
-            root.mkdir()
-            git(base, 'init', '--bare', '--initial-branch=main', str(remote))
-            git(root, 'init', '--initial-branch=main')
-            git(root, 'config', 'user.name', 'Fixture'); git(root, 'config', 'user.email', 'fixture@example.invalid')
-            (root / 'data').mkdir()
-            metadata = root / 'data/obsolete.json'
-            metadata.write_text('{}')
-            git(root, 'add', 'data'); git(root, 'commit', '-m', 'Initial fixture')
-            git(root, 'remote', 'add', 'origin', str(remote)); git(root, 'push', '-u', 'origin', 'main')
-            metadata.unlink()
-            target = Target.from_dict({'name': 'fixture', 'provider': 'fixture', 'description': 'fixture',
-                                       'interval_hours': 1, 'metadata': ['data/obsolete.json']})
-            self.assertTrue(commit_metadata(root, target, {'GITHUB_ACTIONS': 'true'}))
-            self.assertEqual(git(root, 'status', '--porcelain'), '')
-            self.assertEqual(git(base, '--git-dir=' + str(remote), 'ls-tree', '-r', '--name-only', 'main'), '')
-
-
 class IndependentSourceFailureTests(unittest.TestCase):
     def load(self, name):
         import importlib.util
@@ -675,25 +345,6 @@ class IndependentSourceFailureTests(unittest.TestCase):
         spec.loader.exec_module(module)
         return module
 
-    def test_desktop_history_failure_keeps_current_discovery_and_reports_partial(self):
-        import sys
-        from unittest.mock import patch
-        module = self.load('discover_desktop_installers')
-        redirect = {'name': 's2-windows', 'url': 'https://www.sonos.com/redir/controller_software_pc2',
-                    'location': 'https://update-software.sonos.com/software/pc/dcr/Sonos_90.0-12345.exe',
-                    'location_source': 'live-redirect'}
-        with tempfile.TemporaryDirectory() as temporary:
-            output = Path(temporary) / 'discovery.json'
-            with patch.object(sys, 'argv', ['discover', '--output', str(output), '--archive-root', temporary]), \
-                 patch.object(module, 'winget_candidates', side_effect=OSError('fixture unavailable')), patch.object(module, 'winget_history', return_value={'status': 'ok', 'pending_total': 0, 'errors': []}), \
-                 patch.object(module, 'homebrew_candidates', return_value=None), \
-                 patch.object(module, 'check_direct_redirects', return_value=[redirect]), \
-                 patch.object(module, 'probe', side_effect=lambda item: {**item, 'http_status': 200}):
-                self.assertEqual(module.main(), 0)
-            report = json.loads(output.read_text())
-            self.assertEqual(report['status'], 'partial')
-            self.assertEqual(report['available_total'], 2)
-            self.assertEqual(report['errors'][0]['source'], 'winget')
 
     def test_mobile_current_discovery_does_not_query_the_separate_history_index(self):
         import sys

@@ -20,8 +20,6 @@ from .source_urls import sonos_url
 from .discovery import USER_AGENT
 
 LATEST_RELEASE = 'https://api.github.com/repos/BookCatKid/Sonos-forum-crawl/releases/latest'
-MAX_STATE_BYTES = 4*1024**3
-MAX_JSONL_BYTES = 4*1024**3
 
 _URL = re.compile(r'https?://[^\s"\'<>`\\)\]]+', re.I)
 _FIRMWARE_PATH = re.compile(r'^/firmware/[^/]+/[^/]+/')
@@ -29,7 +27,7 @@ _FIRMWARE_PATH = re.compile(r'^/firmware/[^/]+/[^/]+/')
 NATIVE_HOSTS = ('update-firmware.sonos.com', 'update.sonos.com')
 
 
-def _get(url, *, limit, timeout=60):
+def _get(url, *, timeout=60):
     import os
     headers = {'User-Agent': USER_AGENT, 'Accept': 'application/vnd.github+json'}
     token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
@@ -37,18 +35,15 @@ def _get(url, *, limit, timeout=60):
         headers['Authorization'] = 'Bearer '+token
     request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=timeout) as response:
-        data = response.read(limit+1)
-    if len(data) > limit:
-        raise ValueError('forum archive response exceeds its byte budget')
-    return data
+        return response.read()
 
 
 def _release(fetch):
-    document = json.loads(fetch(LATEST_RELEASE, limit=2*1024*1024))
+    document = json.loads(fetch(LATEST_RELEASE))
     assets = {asset['name']: asset['browser_download_url'] for asset in document.get('assets', [])}
     if 'state.tar.gz' not in assets or 'manifest.json' not in assets:
         raise ValueError('forum archive release lacks state.tar.gz or manifest.json')
-    manifest = json.loads(fetch(assets['manifest.json'], limit=1024*1024))
+    manifest = json.loads(fetch(assets['manifest.json']))
     expected = manifest.get('assets', {}).get('state.tar.gz', {}).get('sha256')
     if not expected:
         raise ValueError('forum archive manifest lacks a state.tar.gz digest')
@@ -63,8 +58,6 @@ def _download(release, opener, destination):
     with opener(request, timeout=120) as response, destination.open('wb') as output:
         while block := response.read(1024*1024):
             size += len(block)
-            if size > MAX_STATE_BYTES:
-                raise ValueError('forum archive state snapshot exceeds the byte budget')
             digest.update(block)
             output.write(block)
     if digest.hexdigest() != release['sha256']:
@@ -108,11 +101,8 @@ def lead_urls(text):
     return sorted(roots), sorted(installers)
 
 
-def _mine(stream, leads, budget):
+def _mine(stream, leads):
     for line in stream:
-        budget['bytes'] += len(line)
-        if budget['bytes'] > MAX_JSONL_BYTES:
-            raise ValueError('forum archive export exceeds the mining budget')
         if 'sonos.com' not in line and '/firmware/' not in line:
             continue
         try:
@@ -142,10 +132,7 @@ def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlope
         if release['tag'] and release['tag'] == previous.get('mined_tag'):
             return {**state, **checkpoint(previous, success=True, success_hours=success_hours),
                     'status': 'observed', 'note': 'no newer forum snapshot'}
-        if release.get('size') and release['size'] > MAX_STATE_BYTES:
-            raise ValueError('forum archive state snapshot exceeds the byte budget')
         leads = {'roots': {}, 'installers': {}}
-        budget = {'bytes': 0}
         with tempfile.TemporaryDirectory() as workspace:
             snapshot = Path(workspace)/'state.tar.gz'
             digest = _download(release, opener, snapshot)
@@ -154,7 +141,7 @@ def discover_forum_archive(previous, *, fetch=_get, opener=urllib.request.urlope
                     extracted = archive.extractfile(member)
                     if extracted is None:
                         raise ValueError('forum archive state lacks '+member)
-                    _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'), leads, budget)
+                    _mine(io.TextIOWrapper(extracted, encoding='utf-8', errors='replace'), leads)
         return {**state, **checkpoint(previous, success=True, success_hours=success_hours),
                 'status': 'observed', 'mined_tag': release['tag'], 'state_sha256': digest,
                 'roots': leads['roots'], 'installers': leads['installers'],

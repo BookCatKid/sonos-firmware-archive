@@ -46,7 +46,7 @@ def _aes_ecb(key: bytes, block: bytes) -> bytes:
 def _bcc(key: bytes, data: bytes) -> bytes:
     chain = bytes(16)
     for offset in range(0, len(data), 16):
-        block = bytes(a ^ b for a, b in zip(chain, data[offset : offset + 16]))
+        block = bytes(a ^ b for a, b in zip(chain, data[offset : offset + 16], strict=True))
         chain = _aes_ecb(key, block)
     return chain
 
@@ -87,7 +87,7 @@ class _CTRDRBG:
         while len(temporary) < 48:
             self.counter = (int.from_bytes(self.counter, "big") + 1).to_bytes(16, "big")
             temporary += _aes_ecb(self.key, self.counter)
-        temporary = bytes(a ^ b for a, b in zip(temporary, provided))
+        temporary = bytes(a ^ b for a, b in zip(temporary, provided, strict=True))
         self.key = temporary[:32]
         self.counter = temporary[32:48]
 
@@ -228,8 +228,8 @@ def _repeat_to_multiple(data: bytes, block_bytes: int) -> bytes:
 
 
 def _pkcs12_key(password: bytes, salt: bytes, iterations: int) -> bytes:
-    if not 1 <= iterations <= 1_000_000:
-        raise ValueError("PBE iteration count is outside supported recovery limits")
+    if iterations < 1:
+        raise ValueError("PBE iteration count must be positive")
     block_bytes = 64
     password_bmp = b"".join(bytes((0, value)) for value in password) + b"\x00\x00"
     repeated = bytearray(
@@ -331,27 +331,23 @@ def recover_legacy_updater_key(
 
 
 def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: str,
-                                *, max_bytes=8 * 1024 * 1024, max_wrappers=64) -> LegacyRecovery:
+                                ) -> LegacyRecovery:
     """Find supported legacy wrappers by content and validate the exact recipient.
 
     The two supported system words are protocol derivations, not release/model
     inventories. The ECB scan locates the first CBC plaintext block's DER shape
     at every byte alignment; no binary-specific addresses are required.
     """
-    if len(updater) > max_bytes:
-        raise ValueError('updater exceeds the recovery size limit')
     if len(expected_recipient) != 40 or any(c not in '0123456789abcdef' for c in expected_recipient):
         raise ValueError('expected recipient must be a SHA-1 fingerprint')
     order = {1: 'little', 2: 'big'}.get(updater[5]) if updater[:4] == b'\x7fELF' and len(updater) >= 6 else None
-    recipes = [(byte_order, word, legacy_seed(model, word, byte_order=byte_order))
+    recipes = [(byte_order, legacy_seed(model, word, byte_order=byte_order))
                for byte_order in ([order] if order else ['big', 'little']) for word in (SYSTEM_WORD, 0)]
     markers = []
     start = 0
     while (start := updater.find(UPDATER_MARKER, start)) >= 0:
         markers.append(start + len(UPDATER_MARKER))
         start += 1
-        if len(markers) > max_wrappers:
-            raise ValueError('too many updater wrapper candidates')
 
     def recover(offset, byte_order, seed):
         try:
@@ -362,12 +358,12 @@ def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: 
             return None
 
     # Try every cheap marker/derivation pair before scanning a whole binary.
-    for byte_order, word, seed in recipes:
+    for byte_order, seed in recipes:
         for offset in markers:
             result = recover(offset, byte_order, seed)
             if result:
                 return result
-    for byte_order, word, seed in recipes:
+    for byte_order, seed in recipes:
         key, iv, _ = _random_material_from_seed(seed)
         shape = [0x30, 0x82, None, None, 0x30, None, 0x06, len(PKCS12_RC4_128_OID), *PKCS12_RC4_128_OID[:8]]
         prefix = b''.join(b'.' if value is None else re.escape(bytes([value ^ iv[i]]))
@@ -385,8 +381,6 @@ def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: 
                 if offset in markers or offset + WRAPPER_BYTES > len(updater):
                     continue
                 attempted += 1
-                if attempted > max_wrappers:
-                    raise ValueError('too many updater wrapper candidates')
                 result = recover(offset, byte_order, seed)
                 if result:
                     return result

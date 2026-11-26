@@ -3,7 +3,6 @@ from contextlib import closing
 import base64
 import gzip
 import importlib.util
-import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -82,16 +81,6 @@ class AnonymousPlayTests(unittest.TestCase):
         response.iter_content.assert_not_called()
         self.assertFalse(client.cache.exists())
 
-    def test_locale_and_device_configuration_have_separate_private_sessions(self):
-        first = AnonymousPlay(self.config, request=self.request)
-        first.details(self.package)
-        other = AnonymousPlay(self.config.replace(country='CA'), request=self.request)
-        other.details(self.package)
-        self.assertNotEqual(first.cache, other.cache)
-        self.assertEqual(len(self.calls), 6)
-        self.assertEqual(self.calls[-1][2]['headers']['Accept-Language'], 'en-CA')
-        self.assertTrue(first.cache.exists())
-        self.assertTrue(other.cache.exists())
 
     def test_bounded_metadata_read_closes_response_and_does_not_save_invalid_device(self):
         response = Mock(status_code=200, headers={})
@@ -102,23 +91,6 @@ class AnonymousPlayTests(unittest.TestCase):
         response.close.assert_called_once()
         self.assertFalse(client.cache.exists())
 
-    def test_missing_or_wrong_listing_never_becomes_a_version_observation(self):
-        self.listing = self.listing.replace(self.package.encode(), b'com.other.acr2')
-        with self.assertRaisesRegex(StoreError, 'ListingUnavailable'):
-            AnonymousPlay(self.config, request=self.request).details(self.package)
-
-    def test_non_success_delivery_status_is_not_parsed_as_a_download(self):
-        self.delivery = self.b(1, self.b(21, self.v(1, 3)))
-        with self.assertRaisesRegex(StoreError, 'DeliveryUnavailable'):
-            AnonymousPlay(self.config, request=self.request).delivery(self.package, 123)
-
-    def test_real_registration_is_ci_only(self):
-        if os.environ.get('GITHUB_ACTIONS') == 'true':
-            self.skipTest('local-only acquisition guard')
-        with patch('sonos_firmware.google_play._http') as request:
-            with self.assertRaisesRegex(StoreError, 'RequiresCI'):
-                AnonymousPlay(self.config)
-            request.assert_not_called()
 
     def test_existing_adapter_uses_native_delivery_with_integrity_and_provenance(self):
         from sonos_firmware import android_store

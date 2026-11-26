@@ -4,8 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 import tempfile
-from dataclasses import asdict
 
+from .deadline import winding_down
 from . import firmware_inventory, extract, cramfs, upd, catalog
 from .keyring import recipient_key_path
 from .releases import publish_verified, verified_asset, publication_receipt, download_verified
@@ -21,13 +21,13 @@ def decoder_revision():
     return digest.hexdigest()
 
 
-def _context(root, package, directory, limits):
+def _context(root, package, directory):
     path = root / 'data/upd' / (package['id'] + '.json')
     sections = json.loads(path.read_text()).get('sections', []) if path.exists() else []
     keys = {fp: key for row in sections if (fp := row.get('recipient_id')) and row.get('encrypted')
             if (key := recipient_key_path(directory, package['package_model'], fp)).is_file()}
     return keys, {'source_sha256': package['sha256'], 'ready_recipients': sorted(keys),
-                  'decoder_revision': decoder_revision(), 'limits': asdict(limits)}
+                  'decoder_revision': decoder_revision()}
 
 
 def _promote(root, capture, current_revision):
@@ -47,10 +47,7 @@ def _promote(root, capture, current_revision):
     atomic_json(path, catalog)
 
 
-def inventory_preserved(root, work, repository, key_directory, *, limit=24, acquire=None, build=None, limits=None):
-    if limit <= 0:
-        raise ValueError('inventory batch limit must be positive')
-    limits = limits or firmware_inventory.InventoryLimits()
+def inventory_preserved(root, work, repository, key_directory, *, acquire=None, build=None):
     work.mkdir(parents=True, exist_ok=True)
     state_path = root / 'data/discovery/firmware-inventories.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'schema_version': 1, 'repositories': {}}
@@ -67,7 +64,7 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=24, acqu
         try:
             if not identity or Path(identity).name != identity or identity in {'.', '..'}:
                 raise ValueError('inventory package ID must be a basename')
-            contexts[identity] = _context(root, package, key_directory, limits)
+            contexts[identity] = _context(root, package, key_directory)
         except Exception as error:
             errors.append({'package_id': identity, 'error': str(error)})
     packages = [row for row in packages if row['id'] in contexts]
@@ -100,9 +97,10 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=24, acqu
     save()
     # Reconcile exact interrupted captures before requiring source bytes or keys.
     pending = [key for key, value in captures.items() if value['status'] == 'pending']
-    recover = select(pending, captures, key=lambda key: key, limit=max(1, limit // 4),
-                     state=journal, queue='publication')
+    recover = select(pending, captures, key=lambda key: key)
     for identity in recover:
+        if winding_down():
+            break
         capture = captures[identity]
         recovery_attempted += 1
         try:
@@ -136,8 +134,10 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=24, acqu
             errors.append({'package_id': capture['package_id'], 'error': str(error)})
         save()
     queue = select([row for row in packages if row['id'] not in resolved], eligible,
-                   key=lambda row: row['id'], limit=max(0, limit - attempted), state=journal, queue='inventory')
+                   key=lambda row: row['id'])
     for package in queue:
+        if winding_down():
+            break
         identity = package['id']
         keys, revision = contexts[identity]
         attempted += 1
@@ -152,7 +152,7 @@ def inventory_preserved(root, work, repository, key_directory, *, limit=24, acqu
                 if source.stat().st_size != package['bytes'] or file_sha256(source) != package['sha256']:
                     raise ValueError('inventory source does not match its preservation receipt')
                 directory = staging / 'files'
-                report = (build or firmware_inventory.inventory_package)(source, directory, keys, limits=limits)
+                report = (build or firmware_inventory.inventory_package)(source, directory, keys)
                 report.update(package_id=identity, advertised_version=package.get('version'), revision=revision,
                               source_publication={key: package.get(key) for key in ('release_tag', 'release_asset', 'sha256', 'bytes')})
                 atomic_json(directory / 'inventory.json', report)

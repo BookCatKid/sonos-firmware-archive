@@ -23,6 +23,7 @@ from pathlib import Path
 from .releases import ensure_release
 from .release_series import ReleaseSeries
 from .storage import atomic_json, file_sha256
+from .deadline import winding_down
 from .retry import checkpoint, select
 from .source_links import discover_urls
 
@@ -170,12 +171,10 @@ def public_probe(app: str) -> dict:
 
 
 def capture(
-    app: str, destination: Path, max_assets: int = 500,
+    app: str, destination: Path,
     capture_id: str | None = None, *, pending_urls=(),
 ) -> tuple[dict, Path]:
     config = APPS[app]
-    if max_assets <= 0:
-        raise ValueError('web asset limit must be positive')
     capture_id = capture_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     if Path(capture_id).name != capture_id or capture_id in {'', '.', '..'}:
         raise ValueError('capture ID must be a basename')
@@ -187,7 +186,7 @@ def capture(
              *(url for url in pending_urls if allowed_asset(url, host))]
     seen: set[str] = set()
     resources: list[dict] = []
-    while queue and len(seen) < max_assets:
+    while queue and not winding_down():
         url = queue.pop(0)
         if url in seen:
             continue
@@ -234,9 +233,9 @@ def capture(
        or "_buildManifest.js" in item["requested_url"]
        or "_ssgManifest.js" in item["requested_url"])]
     probe_fingerprint = sha256(json.dumps(probe_items, sort_keys=True).encode())
-    # Optional discovered manifests may fall into a later bounded batch. Keep
-    # deployment identity stable across those batches; retain the richer probe
-    # separately as evidence of mutable resources at the same public entrypoint.
+    # Maintain stable deployment identity even if a later workflow resumes
+    # work after its soft wind-down. Retain the richer probe as evidence of
+    # mutable resources at the same public entrypoint.
     deployment_fingerprint = sha256(json.dumps([item for item in probe_items
         if item['requested_url'] in [config['entry_url'], *config['seed_urls']]], sort_keys=True).encode())
     successful = {row['requested_url'] for row in resources if row['outcome'] == 'captured'}
@@ -294,10 +293,10 @@ def _stage_bundle(document, metadata):
     if renamed_bundle != bundle:
         try:
             renamed_bundle.hardlink_to(bundle)
-        except FileExistsError:
+        except FileExistsError as error:
             if (renamed_bundle.stat().st_size != document['bundle']['bytes'] or
                     file_sha256(renamed_bundle) != document['bundle']['sha256']):
-                raise ValueError('retained bundle name belongs to another capture')
+                raise ValueError('retained bundle name belongs to another capture') from error
         document["bundle"]["file"] = str(renamed_bundle)
     atomic_json(metadata, document)
 
@@ -430,7 +429,7 @@ def _mark_published(state, document, repository):
     return result
 
 
-def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capture_id=None, upload=False):
+def archive_apps(apps, destination, receipt, repository, *, capture_id=None, upload=False):
     """Discover, capture and checkpoint independent sites from empty archive state."""
     def load():
         return json.loads(receipt.read_text()) if receipt.exists() else {'schema_version': 1, 'deployments': []}
@@ -451,24 +450,24 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
         pending = [row for row in state.get('pending_captures', [])
                    if row['repository'] == repository and row['app'] in apps]
         for document in select(pending, {row['bundle']['sha256']: row for row in pending},
-                               key=lambda row: row['bundle']['sha256'], limit=4,
-                               state=state, queue=f'{repository}/{",".join(sorted(apps))}'):
+                               key=lambda row: row['bundle']['sha256']):
             try:
                 config = APPS[document['app']]
                 ensure_release(repository, document['release_tag'], config['title'],
                                'Account-free web deployment capture recovery.')
                 captures = [item for item in document['resources'] if item.get('release_asset')] + [document['bundle']]
-                def retained_path(item):
+                paths = []
+                for item in captures:
                     if item is document['bundle']:
                         path = destination/document['app']/item['release_asset']
                     else:
                         path = destination/document['app']/document['capture_id']/item['file']
                     if not path.resolve().is_relative_to(destination.resolve()):
                         raise ValueError('retained web capture escapes its worker directory')
-                    return path
+                    paths.append((path, item))
                 series = ReleaseSeries(repository, config['release_tag'], config['title'],
                                        'Account-free web deployment capture recovery.')
-                proofs = series.publish_collection([(retained_path(item), item) for item in captures])
+                proofs = series.publish_collection(paths)
                 for item in captures:
                     item.update(proofs[item['release_asset']])
                 if series.errors:
@@ -487,7 +486,7 @@ def archive_apps(apps, destination, receipt, repository, *, max_assets=500, capt
                 if row['app'] == app and row.get('repository') == repository
                 for url in [*row.get('pending_urls', []), *(item['requested_url'] for item in row['resources']
                                                           if item['outcome'] != 'captured')]))
-            document, metadata = capture(app, destination, max_assets, capture_id, pending_urls=pending_urls)
+            document, metadata = capture(app, destination, capture_id, pending_urls=pending_urls)
             document['repository'] = repository
             document['bundle']['release_asset'] = (
                 f"sonos-{app}-{document['capture_id']}--{document['bundle']['sha256']}--complete.tar.gz")
@@ -516,15 +515,12 @@ def main() -> int:
     parser.add_argument("--capture-dir", type=Path, default=ROOT / "artifacts/web-captures")
     parser.add_argument("--receipt", type=Path, default=ROOT / "data/apps/web-app-archive.json")
     parser.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")
-    parser.add_argument("--max-assets", type=int, default=500)
     parser.add_argument("--capture-id", help="fixed UTC capture ID for a resumable single-app run")
     parser.add_argument("--resume-metadata", type=Path,
                         help="upload a retained capture.json instead of crawling again")
     parser.add_argument("--upload", action="store_true")
     parser.add_argument("--probe", action="store_true", help="print lightweight JSON fingerprints only")
     args = parser.parse_args()
-    if args.max_assets <= 0:
-        parser.error('--max-assets must be positive')
     apps = list(APPS) if args.app == "all" else [args.app]
     if args.capture_id and len(apps) != 1:
         parser.error("--capture-id requires --app controller or --app pro")
@@ -551,7 +547,7 @@ def main() -> int:
     if args.probe:
         print(json.dumps({"schema_version": 1, "probes": [public_probe(app) for app in apps]}, indent=2))
         return 0
-    result = archive_apps(apps, args.capture_dir, args.receipt, args.repo, max_assets=args.max_assets,
+    result = archive_apps(apps, args.capture_dir, args.receipt, args.repo,
                           capture_id=args.capture_id, upload=args.upload)
     return 1 if result['status'] == 'partial' else 0
 

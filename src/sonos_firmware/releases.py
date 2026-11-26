@@ -51,7 +51,7 @@ def public_release(repository: str, tag: str) -> dict:
         ))
         release = payload["data"]["repository"]["release"]
         if release is None:
-            raise urllib.error.HTTPError(request.full_url, 404, "release not found", {}, None)
+            raise urllib.error.HTTPError(request.full_url, 404, "release not found", {}, None) from None
         return {"id": release["databaseId"], "html_url": release["url"], "tag_name": tag}
 
 
@@ -99,7 +99,9 @@ def graphql_assets(repository: str, tag: str) -> list[dict]:
 def remote_assets(repository: str, tag: str) -> dict[str, dict]:
     release = public_release(repository, tag)
     assets = {}
-    for page in range(1, 101):
+    page = 0
+    while True:
+        page += 1
         request = urllib.request.Request(
             f"https://api.github.com/repos/{repository}/releases/{release['id']}"
             f"/assets?per_page=100&page={page}&_archive_ts={int(time.time())}",
@@ -114,10 +116,12 @@ def remote_assets(repository: str, tag: str) -> dict[str, dict]:
             # A later-page challenge must not turn a partial REST result into
             # a successful inventory. GraphQL enumerates the entire release.
             return {item['name']: item for item in graphql_assets(repository, tag)}
+        previous_total = len(assets)
         assets.update((item["name"], item) for item in items)
         if len(items) < 100:
             return assets
-    raise RuntimeError(f'release asset inventory exceeded pagination limit: {repository}/{tag}')
+        if len(assets) == previous_total:
+            raise RuntimeError(f'release asset pagination made no progress: {repository}/{tag}')
 
 
 def upload_asset(repository: str, release_id: int, name: str, path: Path) -> None:
@@ -275,14 +279,11 @@ def download_verified(source, destination, repository):
         payload = Path(temporary)/'payload'
         command = ['gh', 'release', 'download', '--repo', repository, '--pattern='+pattern,
                    '--output', str(payload), '--', source['release_tag']]
-        deadline = time.monotonic() + 300
         with subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as process:
             try:
                 while process.poll() is None:
                     if payload.exists() and payload.stat().st_size > size:
                         raise ValueError('release asset exceeds its preservation receipt size')
-                    if time.monotonic() >= deadline:
-                        raise TimeoutError('release asset download timed out')
                     time.sleep(.1)
                 if process.returncode:
                     raise subprocess.CalledProcessError(process.returncode, command)

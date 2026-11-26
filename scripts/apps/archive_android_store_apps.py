@@ -7,7 +7,6 @@ import argparse
 import json
 import re
 import shutil
-import subprocess
 import tempfile
 import zipfile
 from datetime import datetime, timezone
@@ -141,7 +140,7 @@ def preserve_package(args, package, index, scratch):
     )
     safe_version = re.sub(r"[^A-Za-z0-9._+-]+", "_", metadata["version_name"])
     uploads = []
-    for component, record in zip(components, component_records):
+    for component, record in zip(components, component_records, strict=True):
         if component.suffix.lower() == '.apk':
             split = record['metadata'].get('split')
             role = 'split-' + split if split else 'base'

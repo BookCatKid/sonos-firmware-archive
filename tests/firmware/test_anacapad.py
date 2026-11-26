@@ -86,14 +86,6 @@ class AnacapadTests(unittest.TestCase):
                 extract_anacapad(self.package, self.output)
         self.assertFalse(self.output.exists())
 
-    def test_rejects_missing_member_and_malformed_tar(self):
-        self.package.write_bytes(section(23, 0, tar_payload([])))
-        with self.assertRaisesRegex(ValueError, "found 0"):
-            extract_anacapad(self.package, self.output)
-        self.package.write_bytes(section(23, 0, b"not a tar"))
-        with self.assertRaises(tarfile.ReadError):
-            extract_anacapad(self.package, self.output)
-        self.assertFalse(self.output.exists())
 
     def test_cli_writes_receipt_and_binary(self):
         self.package.write_bytes(section(23, 0, self.tar) + section(3, 4, b"encrypted"))

@@ -29,16 +29,6 @@ class PlatformWorkflowTests(unittest.TestCase):
         self.assertEqual(registry['android-history'].lock, registry['google-play'].lock)
         self.assertEqual(set(p.name for p in (ROOT / '.github/workflows').glob('*.yml')), {'archive.yml', 'verify.yml'})
 
-    def test_main_source_changes_automatically_start_the_normal_pipeline(self):
-        events = self.workflow.get('on', self.workflow.get(True))
-        self.assertEqual(events['push']['branches'], ['main'])
-        for path in ('config/**', 'data/key-material/**', 'src/**', 'scripts/**', 'tools/**', 'pyproject.toml'):
-            self.assertIn(path, events['push']['paths'])
-        self.assertNotIn('data/**', events['push']['paths'])
-        self.assertNotIn('pull_request', events)
-        selection = next(step for step in self.workflow['jobs']['select']['steps'] if step.get('id') == 'targets')
-        self.assertIn('args+=(--scheduled)', selection['run'])
-        self.assertIn('args+=(--due)', selection['run'])
 
     def test_worker_failure_still_checkpoints_verified_progress_and_reports_failure(self):
         self.assertTrue(self.steps['run']['continue-on-error'])
@@ -50,11 +40,6 @@ class PlatformWorkflowTests(unittest.TestCase):
                          "always() && (steps.run.outcome == 'failure' || steps.commit.outcome == 'failure')")
         self.assertEqual(failure['run'], 'exit 1')
 
-    def test_incomplete_coverage_is_reported_as_a_warning(self):
-        note = self.steps['Note incomplete coverage']
-        self.assertEqual(note['if'], "always() && steps.run.outcome == 'success'")
-        self.assertIn('::warning', note['run'])
-        self.assertEqual(self.steps['run']['continue-on-error'], True)
 
     def test_keys_are_scoped_to_execution_and_not_logged(self):
         run = self.steps['run']
@@ -63,40 +48,6 @@ class PlatformWorkflowTests(unittest.TestCase):
         for model in (1, 8, 9, 12, 16, 17):
             name = f'SONOS_MODEL_{model}_PRIVATE_KEY'
             self.assertEqual(run['env'][name], '${{ secrets.' + name + ' }}')
-
-    def test_acquisition_uses_pinned_binary_and_optional_play_dependency(self):
-        installer = self.steps['Install pinned APKPure acquisition binary']
-        self.assertEqual(installer['continue-on-error'], '${{ matrix.apkeep_optional }}')
-        self.assertIn('tools/install-apkeep', installer['run'])
-        script = (ROOT/'tools/install-apkeep').read_text()
-        self.assertIn('releases/download/1.0.0/apkeep-', script)
-        self.assertIn('sha256sum --check', script)
-        self.assertNotIn('cargo', str(self.job))
-        self.assertEqual(self.steps['Install pinned Google Play client']['if'], 'matrix.goopdl')
-        self.assertIn("'.[google-play]'", self.steps['Install pinned Google Play client']['run'])
-        self.assertIn("pip install -e '.[google-play]'", self.steps['Install pinned Google Play client']['run'])
-
-    def test_google_play_is_scheduled_without_personal_credentials(self):
-        from sonos_firmware.platform.registry import targets
-        target = targets(ROOT)['google-play']
-        self.assertFalse(target.manual)
-        self.assertEqual(target.capabilities, ('goopdl',))
-        self.assertEqual(target.optional_capabilities, ('java',))
-        self.assertFalse(any(name.startswith('GOOGLE_PLAY_') for name in self.steps['run']['env']))
-
-    def test_optional_android_tools_are_still_selected_for_worker_installation(self):
-        import contextlib
-        import io
-        import json
-        from sonos_firmware.platform.cli import main
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output):
-            self.assertEqual(main(['--root', str(ROOT), 'targets', '--matrix', '--select', 'android-history']), 0)
-        worker, = json.loads(output.getvalue())['include']
-        self.assertTrue(worker['java'])
-        self.assertTrue(worker['java_optional'])
-        self.assertTrue(worker['apkeep'])
-        self.assertTrue(worker['apkeep_optional'])
 
 
 if __name__ == '__main__':

@@ -9,7 +9,6 @@ from pathlib import Path
 
 from ..discovery import write_json
 from ..inventory_archive import inventory_preserved
-from ..firmware_inventory import InventoryLimits
 from ..binary_discovery import discover_preserved
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -28,7 +27,7 @@ def store_apple(root: Path, current_path: Path):
     write_json(root / 'data/apps/apple-app-store.json', current)
 
 
-def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inventory_limits=None):
+def extract_firmware(root, work, repository):
     work.mkdir(parents=True, exist_ok=True)
     keys = work / 'keys'
     receipts = work / 'receipts'
@@ -42,7 +41,7 @@ def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inven
             ('recovery/prepare_model_keys.py', ('--directory', keys, '--report', work / 'keys.json', '--repository', repository)),
             ('firmware/decrypt_pending_firmware.py', ('--key-directory', keys, '--staging', work / 'sources',
              '--raw-directory', work / 'raw', '--repo', repository, '--receipt-output', receipts,
-             '--summary', report_path, '--max-packages', limit))]:
+             '--summary', report_path))]:
             try:
                 run(script, *arguments)
             except (OSError, subprocess.CalledProcessError) as error:
@@ -76,8 +75,7 @@ def extract_firmware(root, work, repository, limit=24, inventory_limit=24, inven
                 errors.append({'package_id': receipt.stem, 'step': 'publish', 'error': str(error)})
         report = json.loads(report_path.read_text()) if report_path.exists() else {'schema_version': 1}
         try:
-            inventory = inventory_preserved(root, work / 'inventories', repository, keys, limit=inventory_limit,
-                                            limits=InventoryLimits(**(inventory_limits or {})))
+            inventory = inventory_preserved(root, work / 'inventories', repository, keys)
             report['inventory'] = inventory
             errors.extend(inventory['errors'])
             if inventory['pending']:
@@ -106,29 +104,18 @@ def main():
     history = sub.add_parser('archive-historical-firmware')
     history.add_argument('--work-dir', type=Path, required=True)
     history.add_argument('--repository', required=True)
-    history.add_argument('--limit', type=int, default=8)
-    history.add_argument('--manifest-limit', type=int, default=8)
     installers = sub.add_parser('archive-installer-history')
     installers.add_argument('--kind', choices=('desktop', 'mobile'), required=True)
     installers.add_argument('--work-dir', type=Path, required=True)
     installers.add_argument('--repository', required=True)
-    installers.add_argument('--limit', type=int, default=8)
-    installers.add_argument('--pages', type=int, default=1)
     installers.add_argument('--refresh-hours', type=float, default=6)
     installers.add_argument('--historical-refresh-hours', type=float, default=168)
     extract = sub.add_parser('extract-firmware')
     extract.add_argument('--work-dir', type=Path, required=True)
     extract.add_argument('--repository', required=True)
-    extract.add_argument('--max-packages', type=int, default=24)
-    extract.add_argument('--inventory-limit', type=int, default=24)
-    extract.add_argument('--inventory-limits', type=json.loads, default={})
     binaries = sub.add_parser('scan-preserved-binaries')
     binaries.add_argument('--work-dir', type=Path, required=True)
     binaries.add_argument('--repository', required=True)
-    binaries.add_argument('--limit', type=int, default=4)
-    binaries.add_argument('--max-bytes', type=int, default=768*1024*1024)
-    binaries.add_argument('--max-source-bytes', type=int, default=1024*1024*1024)
-    binaries.add_argument('--max-entry-bytes', type=int, default=300*1024*1024)
     args = parser.parse_args()
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         parser.error('acquisition tasks run in the CI worker; use the platform plan locally')
@@ -137,26 +124,21 @@ def main():
     elif args.task == 'store-google-play-metadata':
         write_json(args.root / 'data/apps/google-play-listings.json', json.loads(args.current.read_text()))
     elif args.task == 'extract-firmware':
-        if args.max_packages <= 0 or args.inventory_limit <= 0:
-            parser.error('extraction and inventory limits must be positive')
-        extract_firmware(args.root, args.work_dir, args.repository, args.max_packages, args.inventory_limit, args.inventory_limits)
+        extract_firmware(args.root, args.work_dir, args.repository)
     elif args.task == 'archive-installer-history':
         from ..installers import archive_history
         report = archive_history(args.root, args.work_dir, args.repository, args.kind,
-                                 limit=args.limit, pages=args.pages, refresh_hours=args.historical_refresh_hours,
+                                 refresh_hours=args.historical_refresh_hours,
                                  current_refresh_hours=args.refresh_hours)
         write_json(args.work_dir/'replay.json', report)
         print(json.dumps(report, indent=2))
     elif args.task == 'archive-historical-firmware':
         from ..historical_firmware import archive_history
-        report = archive_history(args.root, args.work_dir, args.repository,
-                                 limit=args.limit, manifest_limit=args.manifest_limit)
+        report = archive_history(args.root, args.work_dir, args.repository)
         write_json(args.work_dir / 'replay.json', report)
         print(json.dumps(report, indent=2))
     elif args.task == 'scan-preserved-binaries':
-        report = discover_preserved(args.root, args.work_dir, args.repository, limit=args.limit,
-                                    max_bytes=args.max_bytes, max_source_bytes=args.max_source_bytes,
-                                    max_entry_bytes=args.max_entry_bytes)
+        report = discover_preserved(args.root, args.work_dir, args.repository)
         print(json.dumps(report, indent=2))
 
 

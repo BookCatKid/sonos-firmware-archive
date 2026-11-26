@@ -13,10 +13,8 @@ import base64
 import hashlib
 import concurrent.futures
 import json
-import os
 import re
 import subprocess
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -25,6 +23,7 @@ from pathlib import Path
 
 from curl_cffi import requests as tls_requests
 import yaml
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.storage import atomic_json
 from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location, manifest_candidates
 from sonos_firmware.source_urls import open_advertised, sonos_url, advertised_url, curl_source_options
@@ -44,7 +43,6 @@ DIRECT_ENDPOINTS = {
 }
 
 
-GH_API_ATTEMPTS = 4
 GH_SOURCE_PAUSE = None
 
 
@@ -56,21 +54,14 @@ def gh_output(cmd: list[str]) -> str:
     global GH_SOURCE_PAUSE
     if GH_SOURCE_PAUSE:
         raise GH_SOURCE_PAUSE
-    error = None
-    for attempt in range(GH_API_ATTEMPTS):
-        try:
-            return subprocess.check_output(cmd, text=True, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError as caught:
-            error = caught
-            status = re.search(r'\bHTTP (\d{3})\b', caught.stderr or '')
-            if status and int(status[1]) in {401, 403, 429}:
-                GH_SOURCE_PAUSE = GitHubSourcePaused(f'GitHub metadata source paused after HTTP {status[1]}')
-                raise GH_SOURCE_PAUSE from caught
-            if status and int(status[1]) in {404, 422}:
-                raise RuntimeError((caught.stderr or str(caught)).strip()) from caught
-            if attempt < GH_API_ATTEMPTS - 1:
-                time.sleep(min(2 ** attempt, 30))
-    raise RuntimeError((error.stderr or str(error)).strip()) from error
+    try:
+        return subprocess.check_output(cmd, text=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as error:
+        status = re.search(r'\bHTTP (\d{3})\b', error.stderr or '')
+        if status and int(status[1]) in {401, 403, 429}:
+            GH_SOURCE_PAUSE = GitHubSourcePaused(f'GitHub metadata source paused after HTTP {status[1]}')
+            raise GH_SOURCE_PAUSE from error
+        raise RuntimeError((error.stderr or str(error)).strip()) from error
 
 
 def gh_json(endpoint: str) -> object:
@@ -193,9 +184,9 @@ def winget_candidates(target: dict) -> list[dict]:
     return errors
 
 
-def winget_history(target, path, observations, limit, refresh_hours):
+def winget_history(target, path, observations, refresh_hours):
     history = ManifestHistory(path, gh_json, observations=observations)
-    for item in history.advance(limit=limit, refresh_hours=refresh_hours):
+    for item in history.advance(refresh_hours=refresh_hours):
         for source in item['sources']:
             add_candidate(target, family='unknown', platform='windows', version=item['version'],
                           url=item['url'], sha256=item['expected_sha256'], source=source,
@@ -277,8 +268,10 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
             session = tls_requests.Session(impersonate="chrome")
             current = url
             status = None
-            for _ in range(10):
-                current = canonical_source(current, lambda u: advertised_url(u, url))
+            seen_redirects = set()
+            while current not in seen_redirects and not winding_down():
+                seen_redirects.add(current)
+                current = canonical_source(current, lambda u, source=url: advertised_url(u, source))
                 session.curl_options.update(curl_source_options(current, url))
                 response = session.get(
                     current, allow_redirects=False, timeout=30,
@@ -301,7 +294,9 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
             continue
         if not location and include_history:
             current = f"https://web.archive.org/web/2id_/{url}"
-            for _ in range(10):
+            seen_redirects = set()
+            while current not in seen_redirects and not winding_down():
+                seen_redirects.add(current)
                 try:
                     opener.open(urllib.request.Request(current, method="HEAD"), timeout=30)
                     break
@@ -380,7 +375,6 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--current-only", action="store_true")
     parser.add_argument('--history-state', type=Path)
-    parser.add_argument('--history-limit', type=int, default=64)
     parser.add_argument('--observations', type=Path)
     parser.add_argument('--refresh-hours', type=float, default=6)
     args = parser.parse_args()
@@ -397,7 +391,7 @@ def main() -> int:
                               url=item['url'], sha256=None, source=source, advertised_by=item.get('advertised_by'))
         try:
             package_history = winget_history(candidates, args.history_state or args.output.parent/'desktop-package-history.json',
-                                             args.observations, args.history_limit, args.refresh_hours)
+                                             args.observations, args.refresh_hours)
             errors.extend(package_history['errors'])
         except Exception as error:
             errors.append({'source': 'winget-history', 'error': str(error)})

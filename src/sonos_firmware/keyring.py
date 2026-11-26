@@ -1,6 +1,5 @@
 """Prepare recipient-verified keys without making optional recovery a prerequisite."""
 import json
-from pathlib import Path
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.exceptions import UnsupportedAlgorithm

@@ -2,12 +2,9 @@
 import json
 import tempfile
 import unittest
-import urllib.error
-from dataclasses import asdict
 from pathlib import Path
-from unittest.mock import patch
 
-from sonos_firmware import frontier, historical_firmware as history
+from sonos_firmware import historical_firmware as history
 from sonos_firmware.storage import atomic_json
 
 PAGE = 'https://new-downloads.sonos.com/software/start.html'
@@ -46,7 +43,7 @@ class HistoricalLandingPageTests(unittest.TestCase):
                 'status': 'preserved', 'url': MANIFEST, 'manifest': manifest,
                 'checked_at': '2026-01-01T00:00:00+00:00', 'next_attempt_at': '9999-01-01T00:00:00+00:00'}}}})
             state = {}
-            result = history.archive_manifests(root, root/'worker', 'fresh/archive', state, limit=1, paused=True)
+            result = history.archive_manifests(root, root/'worker', 'fresh/archive', state, paused=True)
             saved = json.loads(path.read_text())
         self.assertEqual(result['attempted'], 0)
         self.assertEqual(set(state['pending_manifest_urls']),
@@ -54,23 +51,3 @@ class HistoricalLandingPageTests(unittest.TestCase):
         self.assertEqual([row['url'] for row in result['errors']], [outside])
         metadata = saved['sources']['fresh/archive']['capture']['manifest']['metadata']
         self.assertEqual([row['url'] for row in metadata['unresolved_links']], [outside])
-
-    def test_live_frontier_migrates_a_saved_page_out_of_payload_candidates(self):
-        state = {'candidates': [candidate(PAGE, 'start.html')],
-                 'probes': {PAGE: {'available': True, 'url': PAGE}}}
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == PAGE:
-                return ('<a href="'+PAYLOAD+'">Firmware</a>').encode()
-            raise urllib.error.HTTPError(url, 404, 'fixture absence', {}, None)
-        def probe(row):
-            return {**asdict(row), 'available': False, 'http_status': 404}
-        with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
-             patch.object(frontier.time, 'sleep'):
-            result = frontier.discover(state, Path(temporary), fetch=fetch, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1)
-        self.assertIn(PAGE, requests)
-        self.assertNotIn(PAGE, {row['url'] for row in result['candidates']})
-        self.assertNotIn(PAGE, result['probes'])
-        self.assertIn(PAYLOAD, {row['url'] for row in result['candidates']})

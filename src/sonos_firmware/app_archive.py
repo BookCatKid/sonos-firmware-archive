@@ -1,7 +1,6 @@
 """Shared, resumable acquisition and publication of discovered app installers."""
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import tempfile
@@ -10,13 +9,14 @@ from dataclasses import dataclass
 from itertools import zip_longest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Callable
+from collections.abc import Callable
 from urllib.parse import urlsplit
 
 from .releases import ensure_release, publish_verified, receipt_matches_repository, verified_asset, download_verified
 from .retry import checkpoint, select, error_checkpoint, RequestBackoff
-from .storage import atomic_json
+from .storage import atomic_json, file_sha256
 from .archive_replay import capture_host
+from .deadline import winding_down
 
 
 @dataclass(frozen=True)
@@ -42,14 +42,6 @@ def receipt_path(path: Path, root: Path) -> str:
         return str(path)
 
 
-def file_digest(path):
-    digest = hashlib.sha256()
-    with path.open('rb') as stream:
-        while chunk := stream.read(1024 * 1024):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def revision(candidate):
     return {key: candidate[key] for key in ('version', 'expected_sha256', 'etag', 'content_length',
                                            'http_status', 'wayback_timestamp', 'wayback_digest',
@@ -61,10 +53,8 @@ def acquisition_id(candidate):
     return candidate.get('acquisition_id') or candidate['url']
 
 
-def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None,
+def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path,
              paused_hosts=(), discovery_reference: Path | None = None):
-    if limit is not None and limit <= 0:
-        raise ValueError('acquisition limit must be positive')
     if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
         raise ValueError('refresh intervals must be positive')
     if bool(source.inspect) != bool(source.inspection_revision):
@@ -217,7 +207,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
         return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
                 or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
     key = lambda row: (acquisition_id(row['candidate']), row['sha256'], row['release_asset'])
-    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row) or not source.inspection_blocks_publication]
+    recovery_jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', *key(row))} for row in outstanding if inspected(row) or not source.inspection_blocks_publication]
     source_jobs = [{'kind': 'source', 'row': row, 'key': ('source', acquisition_id(row))}
                    for row in candidates.values() if selectable(row)]
     metadata_state = (document.setdefault('metadata_observations', {}).setdefault(repository, {})
@@ -242,150 +232,158 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
             metadata_state.pop(digest)
     metadata_jobs = [{'kind': 'metadata', 'row': row, 'key': ('metadata', digest)}
                      for digest, row in metadata_records.items()]
-    jobs.extend(job for pair in zip_longest(source_jobs, metadata_jobs) for job in pair if job)
     jobs_due = {('recovery', *key(row)): row for row in outstanding}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
     jobs_due.update({('metadata', digest): prior for digest, prior in metadata_state.items()})
+    kinds = ('source', 'recovery', 'metadata')
+    last_kind = document.get('last_job_kind')
+    if last_kind in kinds:
+        pivot = kinds.index(last_kind) + 1
+        kinds = kinds[pivot:] + kinds[:pivot]
+    groups = {'source': source_jobs, 'recovery': recovery_jobs, 'metadata': metadata_jobs}
+    chosen = [job for group in zip_longest(*(
+        select(groups[kind], jobs_due, key=lambda job: job['key']) for kind in kinds))
+        for job in group if job is not None]
     save()
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit or len(jobs),
-                    state=document, queue=repository)
-    recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
-    queue = [job['row'] for job in chosen if job['kind'] == 'source']
-    for capture in recoveries:
-        if backoff.paused('publication'):
-            break
-        attempted += 1
-        try:
-            known = by_digest.get((capture['candidate']['family'], capture['candidate']['platform'], capture['sha256']))
-            tag, asset = (known['release_tag'], known['release_asset']) if known else (capture['release_tag'], capture['release_asset'])
-            remote = verified_asset(repository, tag, asset, capture['bytes'], capture['sha256'])
-            backoff.clear('publication')
-            if remote:
-                register(capture, remote)
-            else:
-                capture.update(checkpoint(capture))
-        except Exception as error:
-            capture.update(error_checkpoint(error, capture), error=str(error))
-            backoff.failed('publication', error)
-            if isinstance(error, urllib.error.HTTPError):
-                error.close()
-        save()
     with tempfile.TemporaryDirectory(prefix='sonos-app-archive-') as temporary:
         directory = Path(temporary)
         for job in chosen:
-            if job['kind'] != 'metadata':
-                continue
-            row = job['row']
-            digest = row['sha256']
-            attempted += 1
-            path = None
-            try:
-                path = directory/('metadata-'+digest+Path(row['release_asset']).suffix)
-                download_verified(row, path, repository)
-                candidate = {**row, 'url': next(iter(row.get('source_urls', [])), row.get('release_url', ''))}
-                verification = source.inspect(candidate, path)
-                if not isinstance(verification, dict):
-                    raise ValueError('installer inspection returned no metadata record')
-                if verification.get('discovery_errors'):
-                    raise ValueError(str(verification['discovery_errors']))
-                for related in by_digest.values():
-                    if related['sha256'] == digest:
-                        related.update(verification=verification, inspection_revision=source.inspection_revision)
-                metadata_state[digest] = {**checkpoint(metadata_state[digest], success=True),
-                    'status': 'inspected', 'inspection_revision': source.inspection_revision}
-            except Exception as error:
-                metadata_state[digest] = {**error_checkpoint(error, metadata_state[digest]),
-                    'status': 'failed', 'inspection_revision': source.inspection_revision, 'error': str(error)}
-            finally:
-                if path is not None:
-                    path.unlink(missing_ok=True)
-                save()
-        for candidate in queue:
-            if backoff.paused('publication'):
+            if winding_down():
                 break
-            url = candidate['url']
-            identity = acquisition_id(candidate)
-            previous = observations[identity]
-            pending = previous.get('pending_publication')
-            archived = candidate.get('archive_capture') is not None
-            host = capture_host(candidate['archive_capture']) if archived else urlsplit(url).hostname
-            if (host in blocked or backoff.paused(host)) and not pending and previous.get('status') != 'preserved':
-                continue
-            attempted += 1
-            phase = 'publication'
-            try:
-                if pending and (inspected(pending) or not source.inspection_blocks_publication):
-                    remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
+            document['last_job_kind'] = job['kind']
+            if job['kind'] == 'recovery':
+                capture = job['row']
+                if backoff.paused('publication'):
+                    continue
+                attempted += 1
+                try:
+                    known = by_digest.get((capture['candidate']['family'], capture['candidate']['platform'], capture['sha256']))
+                    tag, asset = (known['release_tag'], known['release_asset']) if known else (capture['release_tag'], capture['release_asset'])
+                    remote = verified_asset(repository, tag, asset, capture['bytes'], capture['sha256'])
                     backoff.clear('publication')
                     if remote:
-                        finish(pending, candidate, previous, remote)
-                        save()
-                        continue
-                if archived and previous.get('status') == 'preserved':
-                    known = by_digest.get((candidate['family'], candidate['platform'], previous.get('sha256')))
-                    if known and verified_asset(repository, known['release_tag'], known['release_asset'], known['bytes'], known['sha256']):
-                        observations[acquisition_id(candidate)] = {**previous, **checkpoint(previous, success=True,
-                                                                                       success_hours=source.refresh_hours)}
-                        save()
-                        continue
-                if host in blocked or backoff.paused(host):
-                    continue
-                with tempfile.TemporaryDirectory(dir=directory) as capture:
-                    original = Path(urlsplit(url).path).name
-                    if not original:
-                        raise ValueError('installer URL has no filename')
-                    path = Path(capture) / original
-                    phase = 'acquisition'
-                    fetched_from = source.acquire(candidate, path)
-                    backoff.clear(host)
-                    if not isinstance(fetched_from, str) or not fetched_from:
-                        raise ValueError('acquisition did not return its source URL')
-                    verification = source.inspect(candidate, path) if needs_inspection(candidate) else None
-                    if needs_inspection(candidate) and not isinstance(verification, dict):
-                        raise ValueError('installer inspection did not return a verification record')
-                    size, digest = path.stat().st_size, file_digest(path)
-                    if size <= 0:
-                        raise ValueError('installer capture is empty')
-                    if candidate.get('expected_sha256') and candidate['expected_sha256'].lower() != digest:
-                        raise ValueError('installer SHA-256 does not match the discovery checksum')
-                    phase = 'publication'
-                    identity = (candidate['family'], candidate['platform'], digest)
-                    known = by_digest.get(identity)
-                    tag, title = source.release_for(candidate)
-                    if known:
-                        tag = known['release_tag']
-                        upload = path.with_name(known['release_asset'])
+                        register(capture, remote)
                     else:
-                        upload = path.with_name(re.sub(r'[^A-Za-z0-9._-]+', '_', path.stem) + '--' + digest + path.suffix.lower())
-                    if pending and pending['sha256'] != digest:
-                        document.setdefault('unpublished_captures', []).append({**pending, **checkpoint()})
-                    pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
-                               'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
-                               'acquired_at': datetime.now(timezone.utc).isoformat()}
-                    if needs_inspection(candidate):
-                        pending.update(verification=verification, inspection_revision=source.inspection_revision)
-                    observations[acquisition_id(candidate)]['pending_publication'] = pending
+                        capture.update(checkpoint(capture))
+                except Exception as error:
+                    capture.update(error_checkpoint(error, capture), error=str(error))
+                    backoff.failed('publication', error)
+                    if isinstance(error, urllib.error.HTTPError):
+                        error.close()
+                save()
+            elif job['kind'] == 'metadata':
+                row = job['row']
+                digest = row['sha256']
+                attempted += 1
+                path = None
+                try:
+                    path = directory/('metadata-'+digest+Path(row['release_asset']).suffix)
+                    download_verified(row, path, repository)
+                    candidate = {**row, 'url': next(iter(row.get('source_urls', [])), row.get('release_url', ''))}
+                    verification = source.inspect(candidate, path)
+                    if not isinstance(verification, dict):
+                        raise ValueError('installer inspection returned no metadata record')
+                    if verification.get('discovery_errors'):
+                        raise ValueError(str(verification['discovery_errors']))
+                    for related in by_digest.values():
+                        if related['sha256'] == digest:
+                            related.update(verification=verification, inspection_revision=source.inspection_revision)
+                    metadata_state[digest] = {**checkpoint(metadata_state[digest], success=True),
+                        'status': 'inspected', 'inspection_revision': source.inspection_revision}
+                except Exception as error:
+                    metadata_state[digest] = {**error_checkpoint(error, metadata_state[digest]),
+                        'status': 'failed', 'inspection_revision': source.inspection_revision, 'error': str(error)}
+                finally:
+                    if path is not None:
+                        path.unlink(missing_ok=True)
                     save()
-                    if tag not in ready:
-                        ensure_release(repository, tag, title, source.notes)
-                        ready.add(tag)
-                    path.rename(upload)
-                    remote = publish_verified(repository, tag, upload, size, digest)
-                    finish(pending, candidate, previous, remote)
-                    backoff.clear('publication')
-            except Exception as error:
-                if backoff.failed(getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication', error) and phase == 'acquisition':
-                    blocked.add(getattr(error, 'pause_host', host))
+            else:
+                candidate = job['row']
+                if backoff.paused('publication'):
+                    continue
+                url = candidate['url']
                 identity = acquisition_id(candidate)
-                observations[identity] = {**error_checkpoint(error, previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
-                                     'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
-                                     'status': 'failed', 'error': str(error)}
-                if needs_inspection(candidate):
-                    observations[identity]['inspection_revision'] = source.inspection_revision
-                if pending:
-                    observations[identity]['pending_publication'] = pending
-                gaps[identity] = {**candidate, 'reason': str(error), 'checked_at': observations[identity]['checked_at']}
-                if isinstance(error, urllib.error.HTTPError):
-                    error.close()
-            save()
+                previous = observations[identity]
+                pending = previous.get('pending_publication')
+                archived = candidate.get('archive_capture') is not None
+                host = capture_host(candidate['archive_capture']) if archived else urlsplit(url).hostname
+                if (host in blocked or backoff.paused(host)) and not pending and previous.get('status') != 'preserved':
+                    continue
+                attempted += 1
+                phase = 'publication'
+                try:
+                    if pending and (inspected(pending) or not source.inspection_blocks_publication):
+                        remote = verified_asset(repository, pending['release_tag'], pending['release_asset'], pending['bytes'], pending['sha256'])
+                        backoff.clear('publication')
+                        if remote:
+                            finish(pending, candidate, previous, remote)
+                            save()
+                            continue
+                    if archived and previous.get('status') == 'preserved':
+                        known = by_digest.get((candidate['family'], candidate['platform'], previous.get('sha256')))
+                        if known and verified_asset(repository, known['release_tag'], known['release_asset'], known['bytes'], known['sha256']):
+                            observations[acquisition_id(candidate)] = {**previous, **checkpoint(previous, success=True,
+                                                                                           success_hours=source.refresh_hours)}
+                            save()
+                            continue
+                    if host in blocked or backoff.paused(host):
+                        continue
+                    with tempfile.TemporaryDirectory(dir=directory) as capture:
+                        original = Path(urlsplit(url).path).name
+                        if not original:
+                            raise ValueError('installer URL has no filename')
+                        path = Path(capture) / original
+                        phase = 'acquisition'
+                        fetched_from = source.acquire(candidate, path)
+                        backoff.clear(host)
+                        if not isinstance(fetched_from, str) or not fetched_from:
+                            raise ValueError('acquisition did not return its source URL')
+                        verification = source.inspect(candidate, path) if needs_inspection(candidate) else None
+                        if needs_inspection(candidate) and not isinstance(verification, dict):
+                            raise ValueError('installer inspection did not return a verification record')
+                        size, digest = path.stat().st_size, file_sha256(path)
+                        if size <= 0:
+                            raise ValueError('installer capture is empty')
+                        if candidate.get('expected_sha256') and candidate['expected_sha256'].lower() != digest:
+                            raise ValueError('installer SHA-256 does not match the discovery checksum')
+                        phase = 'publication'
+                        identity = (candidate['family'], candidate['platform'], digest)
+                        known = by_digest.get(identity)
+                        tag, title = source.release_for(candidate)
+                        if known:
+                            tag = known['release_tag']
+                            upload = path.with_name(known['release_asset'])
+                        else:
+                            upload = path.with_name(re.sub(r'[^A-Za-z0-9._-]+', '_', path.stem) + '--' + digest + path.suffix.lower())
+                        if pending and pending['sha256'] != digest:
+                            document.setdefault('unpublished_captures', []).append({**pending, **checkpoint()})
+                        pending = {'repository': repository, 'candidate': candidate, 'original_filename': original, 'bytes': size, 'sha256': digest,
+                                   'release_tag': tag, 'release_asset': upload.name, 'fetched_from': fetched_from,
+                                   'acquired_at': datetime.now(timezone.utc).isoformat()}
+                        if needs_inspection(candidate):
+                            pending.update(verification=verification, inspection_revision=source.inspection_revision)
+                        observations[acquisition_id(candidate)]['pending_publication'] = pending
+                        save()
+                        if tag not in ready:
+                            ensure_release(repository, tag, title, source.notes)
+                            ready.add(tag)
+                        path.rename(upload)
+                        remote = publish_verified(repository, tag, upload, size, digest)
+                        finish(pending, candidate, previous, remote)
+                        backoff.clear('publication')
+                except Exception as error:
+                    if backoff.failed(getattr(error, 'pause_host', host) if phase == 'acquisition' else 'publication', error) and phase == 'acquisition':
+                        blocked.add(getattr(error, 'pause_host', host))
+                    identity = acquisition_id(candidate)
+                    observations[identity] = {**error_checkpoint(error, previous, negative=isinstance(error, urllib.error.HTTPError) and error.code == 404),
+                                         'candidate': candidate, 'revision': {**previous.get('revision', {}), **revision(candidate)},
+                                         'status': 'failed', 'error': str(error)}
+                    if needs_inspection(candidate):
+                        observations[identity]['inspection_revision'] = source.inspection_revision
+                    if pending:
+                        observations[identity]['pending_publication'] = pending
+                    gaps[identity] = {**candidate, 'reason': str(error), 'checked_at': observations[identity]['checked_at']}
+                    if isinstance(error, urllib.error.HTTPError):
+                        error.close()
+                save()
     return document

@@ -11,8 +11,10 @@ import tempfile
 import urllib.error
 from urllib.parse import urlsplit, urljoin
 from datetime import datetime, timezone
+from itertools import zip_longest
 from pathlib import Path
 
+from .deadline import winding_down
 from .discovery import download, DownloadFailure, parse_manifest
 from .releases import ensure_release, publish_verified, verified_asset, publication_receipt
 from .retry import checkpoint, select, due, error_checkpoint, RequestBackoff
@@ -121,7 +123,7 @@ def register_document(path, manifest, publication):
     return record
 
 
-def _historical_origins(root, paths, wanted, history, *, limit):
+def _historical_origins(root, paths, wanted, history):
     """Resume optional searches of this checkout's own metadata changes."""
     if not wanted:
         return
@@ -156,7 +158,9 @@ def _historical_origins(root, paths, wanted, history, *, limit):
     if wanted[origin] is not None:
         pending.sort(key=lambda row: abs(row[1]-wanted[origin]))
     failed = False
-    for revision, _ in pending[:limit]:
+    for revision, _ in pending:
+        if winding_down():
+            break
         try:
             changes = subprocess.check_output(['git', 'show', '--format=', '--no-ext-diff',
                 '--no-textconv', '--unified=0', revision, '--', *specs], cwd=root,
@@ -185,8 +189,7 @@ def _historical_origins(root, paths, wanted, history, *, limit):
     history['status'] = 'unavailable' if failed else 'partial' if remaining() else 'searched'
 
 
-def reconcile_documents(root, repository, assets, work, *, previous=None, limit=8,
-                        max_bytes=2_000_000, fetch=None):
+def reconcile_documents(root, repository, assets, work, *, previous=None, fetch=None):
     """Restore interrupted source receipts using publication and origin digests.
 
     Unattributed captures remain pending. Release filenames alone never become
@@ -196,8 +199,6 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
     from .releases import download_verified
     from .source_links import discover_urls
     from .source_urls import sonos_url
-    if limit < 1 or max_bytes < 1:
-        raise ValueError('document recovery budgets must be positive')
     if fetch is None and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('source document recovery runs in CI; local tests must supply fixture acquisition')
     fetch = fetch or download_verified
@@ -264,7 +265,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
             except (ValueError, TypeError, OverflowError, OSError):
                 created = None
             wanted[row['origin']] = created
-    _historical_origins(root, history_paths, wanted, history, limit=limit*4)
+    _historical_origins(root, history_paths, wanted, history)
     for row in history.get('matches', {}).values():
         remember(row['url'])
     external = {}
@@ -288,9 +289,10 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
         prior = eligible.get(row['identity'], {})
         if prior.get('state') == 'origin-unresolved' and not prior.get('origin_known') and row['origin'] in origin_hosts:
             prior.pop('next_attempt_at', None)
-    chosen = select(candidates, eligible, key=lambda row: row['identity'],
-                    limit=limit, state=result, queue='orphan-source-documents')
+    chosen = select(candidates, eligible, key=lambda row: row['identity'])
     for row in chosen:
+        if winding_down():
+            break
         external.pop(row['identity'], None)
         prior = state['observations'].get(row['identity'], {})
         asset, digest = row['asset'], row['digest']
@@ -301,47 +303,45 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
         try:
             if asset.get('sha256') and asset['sha256'] != digest:
                 raise ValueError('capture filename conflicts with the published digest')
-            if not isinstance(asset['bytes'], int) or isinstance(asset['bytes'], bool) or not 0 < asset['bytes'] <= max_bytes:
-                observation['state'] = 'resource-deferred'
-            else:
-                origin = urls.get(row['origin'])
-                work.mkdir(parents=True, exist_ok=True)
-                destination = work/digest
-                fetch(capture, destination, repository)
-                with destination.open('rb') as stream:
-                    body = stream.read(max_bytes+1)
-                if len(body) != asset['bytes'] or hashlib.sha256(body).hexdigest() != digest:
-                    raise ValueError('source document body conflicts with its capture identity')
-                for url in discover_urls('', body):
-                    remember(url)
-                metadata = {'format': row['format']}
-                if row['kind'] == 'manifest':
-                    metadata, parsed = parse_manifest(destination, origin)
-                    remember(metadata)
-                    for candidate in parsed:
-                        remember(urljoin(candidate.url, 'update.upm'))
-                    if metadata.get('base_url'):
-                        remember(urljoin(metadata['base_url'], 'update.upm'))
-                origin = urls.get(row['origin'])
-                if row['kind'] == 'manifest' and origin is not None:
-                    metadata, _ = parse_manifest(destination, origin)
-                backoff.clear('document-downloads')
-                result['verified'].append(capture)
-                observation.update(sha256=digest, bytes=asset['bytes'], origin_known=row['origin'] in origin_hosts)
-                if origin is not None:
-                    publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
-                    manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
-                                'provenance': 'recovered-publication-with-matching-content-and-origin-digests'}
-                    if row['kind'] == 'page':
-                        manifest.update(document_type='landing-page')
-                    register_document(root/'data/catalog.json', manifest, publication)
-                    result['recovered'].append({**capture, 'source_url': origin})
-                    observation.update(state='recovered', source_url=origin)
-                elif row['origin'] in origin_hosts and not sonos_url('https://'+origin_hosts[row['origin']]+'/'):
-                    observation.update(state='external-origin',
-                                       origin_host=origin_hosts[row['origin']], origin_url=origin_urls[row['origin']])
-                    external[row['identity']] = {key: observation[key] for key in
-                        ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
+            if not isinstance(asset['bytes'], int) or isinstance(asset['bytes'], bool) or asset['bytes'] <= 0:
+                raise ValueError('invalid document receipt size')
+            origin = urls.get(row['origin'])
+            work.mkdir(parents=True, exist_ok=True)
+            destination = work/digest
+            fetch(capture, destination, repository)
+            body = destination.read_bytes()
+            if len(body) != asset['bytes'] or hashlib.sha256(body).hexdigest() != digest:
+                raise ValueError('source document body conflicts with its capture identity')
+            for url in discover_urls('', body):
+                remember(url)
+            metadata = {'format': row['format']}
+            if row['kind'] == 'manifest':
+                metadata, parsed = parse_manifest(destination, origin)
+                remember(metadata)
+                for candidate in parsed:
+                    remember(urljoin(candidate.url, 'update.upm'))
+                if metadata.get('base_url'):
+                    remember(urljoin(metadata['base_url'], 'update.upm'))
+            origin = urls.get(row['origin'])
+            if row['kind'] == 'manifest' and origin is not None:
+                metadata, _ = parse_manifest(destination, origin)
+            backoff.clear('document-downloads')
+            result['verified'].append(capture)
+            observation.update(sha256=digest, bytes=asset['bytes'], origin_known=row['origin'] in origin_hosts)
+            if origin is not None:
+                publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
+                manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
+                            'provenance': 'recovered-publication-with-matching-content-and-origin-digests'}
+                if row['kind'] == 'page':
+                    manifest.update(document_type='landing-page')
+                register_document(root/'data/catalog.json', manifest, publication)
+                result['recovered'].append({**capture, 'source_url': origin})
+                observation.update(state='recovered', source_url=origin)
+            elif row['origin'] in origin_hosts and not sonos_url('https://'+origin_hosts[row['origin']]+'/'):
+                observation.update(state='external-origin',
+                                   origin_host=origin_hosts[row['origin']], origin_url=origin_urls[row['origin']])
+                external[row['identity']] = {key: observation[key] for key in
+                    ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
         except Exception as error:
             observation.update(state='recovery-error', error_type=type(error).__name__,
                                **error_checkpoint(error, prior))
@@ -476,9 +476,9 @@ def register_capture(root, capture, *, catalog_path=None):
     return record
 
 
-def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_path=None, state_path=None,
+def archive_candidates(root, repository, candidates, work, *, catalog_path=None, state_path=None,
                        paused_hosts=()):
-    """Acquire bounded batches, retaining progress and exact interrupted captures."""
+    """Acquire eligible sources, retaining progress and exact interrupted captures."""
     state_path = state_path or acquisition_path(root)
     state = acquisition_state(root, state_path)
     source_id = lambda row: row.get('acquisition_id') or row['url']
@@ -525,125 +525,135 @@ def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_
         previous = observations[source_id(candidate)]
         return ((host not in blocked and not backoff.paused(host)) or previous.get('pending_publication')
                 or (previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None))
-    jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', id(row))} for row in pending]
-    jobs.extend({'kind': 'source', 'row': row, 'key': ('source', source_id(row))}
-                for row in candidates if selectable(row))
+    recovery_jobs = [{'kind': 'recovery', 'row': row, 'key': ('recovery', id(row))} for row in pending]
+    source_jobs = [{'kind': 'source', 'row': row, 'key': ('source', source_id(row))}
+                   for row in candidates if selectable(row)]
     jobs_due = {('recovery', id(row)): row for row in pending}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit,
-                    state=state, queue=repository)
-    recovery = [job['row'] for job in chosen if job['kind'] == 'recovery']
-    queue = [job['row'] for job in chosen if job['kind'] == 'source']
-    for row in recovery:
-        if backoff.paused('publication'):
-            break
-        attempted += 1
-        capture = row['capture']
-        try:
-            remote = verified_asset(repository, capture['release_tag'], capture['release_asset'],
-                                    capture['bytes'], capture['sha256'])
-            backoff.clear('publication')
-            if remote is None:
-                raise ValueError('older capture is not yet visible in its release')
-            capture['publication'] = publication_receipt(repository, capture['release_tag'],
-                                                         capture['release_asset'], capture, remote)
-            register_capture(root, capture, catalog_path=catalog_path)
-            backlog.remove(row)
-            preserved += 1
-            backoff.clear('publication')
-        except Exception as error:
-            row.update(error_checkpoint(error, row), error=str(error))
-            backoff.failed('publication', error)
-        save()
+    kinds = ('source', 'recovery')
+    if state.get('last_job_kind') in kinds:
+        pivot = kinds.index(state['last_job_kind']) + 1
+        kinds = kinds[pivot:] + kinds[:pivot]
+    groups = {'source': source_jobs, 'recovery': recovery_jobs}
+    chosen = [job for pair in zip_longest(*(
+        select(groups[kind], jobs_due, key=lambda job: job['key']) for kind in kinds))
+        for job in pair if job is not None]
     save()
     work.mkdir(parents=True, exist_ok=True)
-    for candidate in queue:
-        if backoff.paused('publication'):
+    for job in chosen:
+        if winding_down():
             break
-        url = source_id(candidate)
-        host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
-        previous = observations[url]
-        capture = previous.get('pending_publication')
-        if (host in blocked or backoff.paused(host)) and not capture and previous.get('status') != 'preserved':
-            continue
-        attempted += 1
-        phase = 'publication'
-        try:
-            if previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None:
-                known = next((row for row in catalog.get('packages', [])
-                              if row['id'] == previous.get('package_id') and row.get('sha256') == previous.get('sha256')), None)
-                remote = verified_asset(repository, known['release_tag'], known['release_asset'],
-                                        known['bytes'], known['sha256']) if known else None
-                if remote:
-                    observations[url] = {**previous, **checkpoint(previous, success=True, success_hours=168), 'candidate': candidate}
-                    preserved += 1
-                    save()
-                    continue
-            if capture:
-                tag, name = capture['release_tag'], capture['release_asset']
-                remote = verified_asset(repository, tag, name, capture['bytes'], capture['sha256'])
+        state['last_job_kind'] = job['kind']
+        if job['kind'] == 'recovery':
+            row = job['row']
+            if backoff.paused('publication'):
+                continue
+            attempted += 1
+            capture = row['capture']
+            try:
+                remote = verified_asset(repository, capture['release_tag'], capture['release_asset'],
+                                        capture['bytes'], capture['sha256'])
                 backoff.clear('publication')
-            else:
-                remote = None
-            if remote is None:
-                if host in blocked or backoff.paused(host):
-                    continue
-                if url not in current_sources:
-                    raise ValueError('pending asset not visible; waiting for source availability')
-                with tempfile.TemporaryDirectory(dir=work, prefix='firmware-') as directory:
-                    phase = 'acquisition'
-                    artifact = download(candidate, Path(directory))
-                    if not artifact.get('downloaded'):
-                        if artifact.get('download_paused') or artifact.get('download_http_status') in {403, 429}:
-                            blocked.add(host)
-                        raise DownloadFailure(artifact)
-                    backoff.clear(host)
-                    phase = 'publication'
-                    body = Path(directory) / artifact['local_file']
-                    inventory = section_inventory(body) if candidate['filename'].endswith('.upd') else {'sections': []}
-                    sections = inventory['sections']
-                    if capture and capture['sha256'] != artifact['sha256']:
-                        backlog.append({'repository': repository, 'capture': capture})
-                    capture = {**artifact, 'candidate': candidate, **inventory,
-                               'observation_revision': revision(candidate),
-                               'release_tag': 'firmware-' + candidate['version'], 'release_asset': artifact['release_asset']}
-                    versions = [row for row in sections if row['section_type'] == 1 and row['payload_length'] == 12]
-                    if len(versions) == 1:
-                        with body.open('rb') as stream:
-                            stream.seek(versions[0]['offset'] + 16)
-                            major, minor, build = struct.unpack('<III', stream.read(12))
-                        capture['embedded_version'] = f'{major}.{minor}-{build}'
-                        if candidate['version'] == 'unknown':
-                            capture['candidate'] = {**candidate, 'version': capture['embedded_version']}
-                            capture['release_tag'] = 'firmware-' + capture['embedded_version']
-                    observations[url]['pending_publication'] = capture
-                    save()
-                    tag, name = capture['release_tag'], capture['release_asset']
-                    if tag not in ready:
-                        ensure_release(repository, tag, f"Sonos firmware {capture['candidate']['version']}", 'Exact source firmware captures and inventories.')
-                        ready.add(tag)
-                    remote = publish_verified(repository, tag, body, capture['bytes'], capture['sha256'])
-            capture['publication'] = publication_receipt(repository, tag, name, capture, remote)
-            observations[url]['pending_publication'] = capture
+                if remote is None:
+                    raise ValueError('older capture is not yet visible in its release')
+                capture['publication'] = publication_receipt(repository, capture['release_tag'],
+                                                             capture['release_asset'], capture, remote)
+                register_capture(root, capture, catalog_path=catalog_path)
+                backlog.remove(row)
+                preserved += 1
+                backoff.clear('publication')
+            except Exception as error:
+                row.update(error_checkpoint(error, row), error=str(error))
+                backoff.failed('publication', error)
             save()
-            record = register_capture(root, capture, catalog_path=catalog_path)
-            checked_revision = capture.get('observation_revision', revision(capture['candidate']))
-            changed = any(checked_revision.get(key) != value for key, value in revision(candidate).items())
-            observations[url] = {**checkpoint(previous, success=True, success_hours=candidate.get('refresh_hours', 168)), 'candidate': candidate,
-                                 'revision': checked_revision, 'sha256': capture['sha256'], 'package_id': record['id'],
-                                 'status': 'needs-refresh' if changed else 'preserved'}
-            preserved += 1
-            backoff.clear('publication')
-        except Exception as error:
-            backoff.failed(host if phase == 'acquisition' else 'publication', error)
-            observations[url] = {**error_checkpoint(error, previous), 'candidate': candidate, 'revision': revision(candidate),
-                                 'status': 'failed', 'error': str(error)}
-            if capture:
+        else:
+            candidate = job['row']
+            if backoff.paused('publication'):
+                continue
+            url = source_id(candidate)
+            host = capture_host(candidate['archive_capture']) if candidate.get('archive_capture') is not None else urlsplit(candidate['url']).hostname
+            previous = observations[url]
+            capture = previous.get('pending_publication')
+            if (host in blocked or backoff.paused(host)) and not capture and previous.get('status') != 'preserved':
+                continue
+            attempted += 1
+            phase = 'publication'
+            try:
+                if previous.get('status') == 'preserved' and candidate.get('archive_capture') is not None:
+                    known = next((row for row in catalog.get('packages', [])
+                                  if row['id'] == previous.get('package_id') and row.get('sha256') == previous.get('sha256')), None)
+                    remote = verified_asset(repository, known['release_tag'], known['release_asset'],
+                                            known['bytes'], known['sha256']) if known else None
+                    if remote:
+                        observations[url] = {**previous, **checkpoint(previous, success=True, success_hours=168), 'candidate': candidate}
+                        preserved += 1
+                        save()
+                        continue
+                if capture:
+                    tag, name = capture['release_tag'], capture['release_asset']
+                    remote = verified_asset(repository, tag, name, capture['bytes'], capture['sha256'])
+                    backoff.clear('publication')
+                else:
+                    remote = None
+                if remote is None:
+                    if host in blocked or backoff.paused(host):
+                        continue
+                    if url not in current_sources:
+                        raise ValueError('pending asset not visible; waiting for source availability')
+                    with tempfile.TemporaryDirectory(dir=work, prefix='firmware-') as directory:
+                        phase = 'acquisition'
+                        artifact = download(candidate, Path(directory))
+                        if not artifact.get('downloaded'):
+                            if artifact.get('download_paused') or artifact.get('download_http_status') in {403, 429}:
+                                blocked.add(host)
+                            raise DownloadFailure(artifact)
+                        backoff.clear(host)
+                        phase = 'publication'
+                        body = Path(directory) / artifact['local_file']
+                        inventory = section_inventory(body) if candidate['filename'].endswith('.upd') else {'sections': []}
+                        sections = inventory['sections']
+                        if capture and capture['sha256'] != artifact['sha256']:
+                            backlog.append({'repository': repository, 'capture': capture})
+                        capture = {**artifact, 'candidate': candidate, **inventory,
+                                   'observation_revision': revision(candidate),
+                                   'release_tag': 'firmware-' + candidate['version'], 'release_asset': artifact['release_asset']}
+                        versions = [row for row in sections if row['section_type'] == 1 and row['payload_length'] == 12]
+                        if len(versions) == 1:
+                            with body.open('rb') as stream:
+                                stream.seek(versions[0]['offset'] + 16)
+                                major, minor, build = struct.unpack('<III', stream.read(12))
+                            capture['embedded_version'] = f'{major}.{minor}-{build}'
+                            if candidate['version'] == 'unknown':
+                                capture['candidate'] = {**candidate, 'version': capture['embedded_version']}
+                                capture['release_tag'] = 'firmware-' + capture['embedded_version']
+                        observations[url]['pending_publication'] = capture
+                        save()
+                        tag, name = capture['release_tag'], capture['release_asset']
+                        if tag not in ready:
+                            ensure_release(repository, tag, f"Sonos firmware {capture['candidate']['version']}", 'Exact source firmware captures and inventories.')
+                            ready.add(tag)
+                        remote = publish_verified(repository, tag, body, capture['bytes'], capture['sha256'])
+                capture['publication'] = publication_receipt(repository, tag, name, capture, remote)
                 observations[url]['pending_publication'] = capture
-            errors.append({'url': url, 'error': str(error)})
-            if isinstance(error, urllib.error.HTTPError):
-                error.close()
-        save()
+                save()
+                record = register_capture(root, capture, catalog_path=catalog_path)
+                checked_revision = capture.get('observation_revision', revision(capture['candidate']))
+                changed = any(checked_revision.get(key) != value for key, value in revision(candidate).items())
+                observations[url] = {**checkpoint(previous, success=True, success_hours=candidate.get('refresh_hours', 168)), 'candidate': candidate,
+                                     'revision': checked_revision, 'sha256': capture['sha256'], 'package_id': record['id'],
+                                     'status': 'needs-refresh' if changed else 'preserved'}
+                preserved += 1
+                backoff.clear('publication')
+            except Exception as error:
+                backoff.failed(host if phase == 'acquisition' else 'publication', error)
+                observations[url] = {**error_checkpoint(error, previous), 'candidate': candidate, 'revision': revision(candidate),
+                                     'status': 'failed', 'error': str(error)}
+                if capture:
+                    observations[url]['pending_publication'] = capture
+                errors.append({'url': url, 'error': str(error)})
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+            save()
     errors = [{'url': row['candidate']['url'], 'error': row.get('error'),
                **({'acquisition_id': url} if url != row['candidate']['url'] else {})}
               for url, row in observations.items() if row['status'] == 'failed']

@@ -56,9 +56,7 @@ def find_inode(fs, path, byte_order="little", root_inode_offset=ROOT_INODE_OFFSE
     return current
 
 
-def read_file(fs, inode, byte_order="little", *, max_bytes=None):
-    if max_bytes is not None and inode['size'] > max_bytes:
-        raise ValueError('CRAMFS member exceeds the size limit')
+def read_file(fs, inode, byte_order="little"):
     prefix = "<" if byte_order == "little" else ">"
     blocks = math.ceil(inode["size"] / 4096)
     table = inode["offset"]

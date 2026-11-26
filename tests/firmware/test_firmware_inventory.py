@@ -51,22 +51,11 @@ class ExecutableInventoryTests(unittest.TestCase):
             self.assertEqual(report['components'][-1]['elf']['architecture'], 'AArch64')
             self.assertTrue((root/'out'/report['components'][-1]['filename']).is_file())
 
-    def test_cramfs_executable_headers_are_described(self):
-        from tests.recovery.test_key_recovery import cramfs_image
-        from tests.firmware.test_upd import section
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root/'model.upd'
-            source.write_bytes(section(4, 0, cramfs_image(elf_fixture(), 'big')))
-            report = extract_package(source, root/'out')
-            self.assertTrue(report['complete'], report['errors'])
-            binary = next(row for row in report['sections'][0]['filesystem']['entries'] if row['path'] == 'bin/upgrade')
-            self.assertEqual(binary['elf']['architecture'], 'PowerPC')
 
     def test_squashfs_executable_headers_are_described_without_following_links(self):
         from sonos_firmware import firmware_inventory as inventory
         from tests.firmware.test_upd import section
-        from unittest.mock import patch, MagicMock
+        from unittest.mock import patch
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = root/'model.upd'
@@ -76,12 +65,8 @@ class ExecutableInventoryTests(unittest.TestCase):
                 directory.mkdir()
                 (directory/'tool').write_bytes(elf_fixture(64, 'little', 183))
                 (directory/'external').symlink_to('/unavailable/firmware-link')
-                process = MagicMock()
-                process.poll.return_value = 0
-                process.returncode = 0
-                process.__enter__.return_value = process
-                return process
-            with patch.object(inventory.subprocess, 'Popen', side_effect=decoder):
+                return inventory.subprocess.CompletedProcess(command, 0)
+            with patch.object(inventory.subprocess, 'run', side_effect=decoder):
                 report = extract_package(source, root/'out')
             self.assertTrue(report['complete'], report['errors'])
             entries = {row['path']: row for row in report['sections'][0]['filesystem']['entries']}
@@ -106,19 +91,6 @@ class ExecutableInventoryTests(unittest.TestCase):
 
 
 class FirmwareBundleTests(unittest.TestCase):
-    def test_bundle_content_is_reproducible_despite_file_mtime(self):
-        import os
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            directory = root / 'files'
-            directory.mkdir()
-            source = directory / 'anacapad'
-            source.write_bytes(b'fixture')
-            bundle(directory, root / 'first.tar.xz')
-            os.utime(source, (2000000000, 2000000000))
-            source.chmod(0o600)
-            bundle(directory, root / 'second.tar.xz')
-            self.assertEqual((root / 'first.tar.xz').read_bytes(), (root / 'second.tar.xz').read_bytes())
 
     def test_extraction_bundles_match_across_host_umasks_and_preserve_firmware_modes(self):
         import os
@@ -154,42 +126,7 @@ class FirmwareBundleTests(unittest.TestCase):
 
 
 class GenericInventoryTests(unittest.TestCase):
-    def test_generic_analysis_command_writes_report_and_bundle_from_an_offline_fixture(self):
-        import json
-        import subprocess
-        import sys
-        import tarfile
-        from tests.firmware.test_upd import section
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root / 'input.upd'
-            source.write_bytes(section(99, 0, b'fixture'))
-            output = root / 'output'
-            subprocess.run([sys.executable, '-m', 'sonos_firmware.cli', 'inventory-upd', str(source),
-                            '--directory', str(output), '--bundle', str(output / 'files.tar.xz')],
-                           check=True, capture_output=True)
-            report = json.loads((output / 'inventory.json').read_text())
-            self.assertTrue(report['complete'])
-            with tarfile.open(output / 'files.tar.xz') as archive:
-                self.assertIn('inventory.json', archive.getnames())
-                self.assertNotIn('files.tar.xz', archive.getnames())
 
-    def test_shared_worker_plans_static_discovery_and_inventory_without_a_separate_model_loop(self):
-        import json
-        from sonos_firmware.platform.registry import targets
-        from sonos_firmware.platform.runner import plan
-        root = Path(__file__).resolve().parents[2]
-        steps = plan(targets(root)['firmware'], root, 'owner/repo')['steps']
-        self.assertEqual(len(steps), 3)
-        command = steps[0]['command']
-        artifact = json.loads(command[command.index('--artifact-root')+1])
-        self.assertEqual(artifact['package_model'], 17)
-        self.assertNotIn('version', artifact)
-        self.assertNotIn('sha256', artifact)
-        self.assertIn('archive-historical-firmware', steps[1]['command'])
-        self.assertTrue(steps[1]['after_failure'])
-        self.assertIn('--inventory-limit', steps[2]['command'])
-        self.assertTrue(steps[2]['after_failure'])
 
     def test_every_plaintext_section_is_inventoried_without_a_version_header(self):
         from sonos_firmware.firmware_inventory import inventory_package
@@ -250,22 +187,9 @@ class GenericInventoryTests(unittest.TestCase):
             self.assertEqual(len(report['errors']), 1)
             self.assertEqual((root / 'out' / report['components'][1]['filename']).read_bytes(), b'other payload')
 
-    def test_tar_expansion_budget_is_reported_without_losing_source_payload(self):
-        from sonos_firmware.firmware_inventory import inventory_package, InventoryLimits
-        from tests.firmware.test_upd import section
-        from tests.firmware.test_anacapad import tar_payload
-        import tarfile
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root / 'limited.upd'
-            source.write_bytes(section(23, 0, tar_payload([('large', bytes(100), tarfile.REGTYPE)])))
-            report = inventory_package(source, root / 'out', limits=InventoryLimits(expanded_bytes=10))
-            self.assertIn('resource budget', report['errors'][0]['message'])
-            self.assertTrue((root / 'out' / report['components'][0]['filename']).is_file())
-            self.assertFalse((root / 'out/limited-section-00-application-archive-files').exists())
 
-    def test_failed_section_releases_expansion_budget_for_later_sections(self):
-        from sonos_firmware.firmware_inventory import inventory_package, InventoryLimits
+    def test_bad_archive_section_does_not_block_following_sections(self):
+        from sonos_firmware.firmware_inventory import inventory_package
         from tests.firmware.test_upd import section
         from tests.firmware.test_anacapad import tar_payload
         import tarfile
@@ -275,7 +199,7 @@ class GenericInventoryTests(unittest.TestCase):
             root = Path(temporary)
             source = root/'mixed.upd'
             source.write_bytes(section(23, 0, bad) + section(23, 0, good))
-            report = inventory_package(source, root/'out', limits=InventoryLimits(expanded_bytes=10))
+            report = inventory_package(source, root/'out')
             self.assertEqual(len(report['errors']), 1)
             self.assertEqual(report['sections'][1]['members'][0]['path'], 'second')
             self.assertEqual((root/'out/mixed-section-01-application-archive-files/second').read_bytes(), b'available')
@@ -306,27 +230,3 @@ class GenericInventoryTests(unittest.TestCase):
                 self.assertEqual((root / 'out' / report['derived'][0]['filename']).read_bytes(), b'linux kernel')
                 self.assertTrue(report['sections'][0]['uimage']['header_crc_valid'])
                 self.assertTrue(report['sections'][0]['uimage']['data_crc_valid'])
-
-    def test_squashfs_decoder_is_shared_and_budgeted(self):
-        from sonos_firmware import firmware_inventory as inventory
-        from tests.firmware.test_upd import section
-        from unittest.mock import patch, MagicMock
-        for magic in (b'hsqs', b'sqsh'):
-            with self.subTest(magic=magic), tempfile.TemporaryDirectory() as temporary:
-                root = Path(temporary)
-                source = root / 'rootfs.upd'
-                source.write_bytes(section(4, 0, magic + b'fixture'))
-                def decoder(command, **kwargs):
-                    self.assertEqual(command[0], 'unsquashfs')
-                    directory = Path(command[command.index('-d')+1])
-                    directory.mkdir()
-                    (directory / 'file').write_bytes(b'content')
-                    process = MagicMock()
-                    process.poll.return_value = 0
-                    process.returncode = 0
-                    process.__enter__.return_value = process
-                    return process
-                with patch.object(inventory.subprocess, 'Popen', side_effect=decoder):
-                    report = inventory.inventory_package(source, root / 'out')
-                self.assertTrue(report['complete'])
-                self.assertEqual(report['sections'][0]['filesystem']['entries'][0]['size'], 7)

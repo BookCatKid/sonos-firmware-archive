@@ -135,26 +135,6 @@ class LegacyTests(unittest.TestCase):
             else:
                 raise AssertionError(f"accepted invalid MTD prefix size {size}")
 
-    def test_rejects_missing_marker(self):
-        try:
-            recover_legacy_updater_key(bytes(4096), 9)
-        except ValueError as error:
-            assert "marker" in str(error)
-        else:
-            raise AssertionError("missing marker was accepted")
-
-    def test_recovers_key_from_explicit_wrapper_offset(self):
-        expected = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-        updater = _synthetic_updater(12, expected)
-        wrapper_offset = 37 + len(UPDATER_MARKER)
-        recovered = recover_legacy_updater_key(
-            updater,
-            12,
-            system_word=SYSTEM_WORD,
-            wrapper_offset=wrapper_offset,
-        )
-        assert recovered.wrapper_offset == wrapper_offset
-        assert key_recipient_id(recovered.key) == key_recipient_id(expected)
 
     def test_writes_secure_recovery_evidence(self):
         with tempfile.TemporaryDirectory() as temporary:

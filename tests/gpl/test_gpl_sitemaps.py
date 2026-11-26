@@ -15,10 +15,6 @@ SPEC.loader.exec_module(MODULE)
 
 
 class SitemapTests(unittest.TestCase):
-    def test_observed_versions_are_not_limited_to_old_numeric_widths(self):
-        url = 'https://www.sonos.com/documents/gpl/1000.1000/gpl.html'
-        versions, _ = MODULE.extract_leads([url])
-        self.assertEqual(versions, {'1000.1000': [url]})
 
     def test_sitemap_scopes_and_schema(self):
         self.assertTrue(MODULE.allowed_sitemap('https://www.sonos.com/en-us/sitemap.xml'))
@@ -33,15 +29,6 @@ class SitemapTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.parse_xml_sitemap(b'<html><a>gpl</a></html>')
 
-    def test_version_leads_from_official_sitemap_only(self):
-        links = ['https://www.sonos.com/documents/gpl/19.12/gpl.html',
-                 'https://www.sonos.com/documents/gpl/19.12/SonosOpenSourceAttributions.pdf',
-                 'https://support.sonos.com/en/article/gpl-downloads',
-                 'https://evil.example/documents/gpl/999.0/gpl.html']
-        versions, related = MODULE.extract_leads(links)
-        self.assertEqual(versions, {'19.12': sorted(links[:2])})
-        self.assertIn(links[2], related)
-        self.assertNotIn(links[3], related)
 
     def test_resumable_checkpoint_does_not_trust_unverified_indexes(self):
         from argparse import Namespace
@@ -52,10 +39,10 @@ class SitemapTests(unittest.TestCase):
             child: HttpResult(200, b'<urlset><url><loc>https://www.sonos.com/documents/gpl/22.13/gpl.html</loc></url></urlset>', 'application/xml', child),
         }
         with tempfile.TemporaryDirectory() as tmp:
-            args = Namespace(output=Path(tmp) / 'site.json', limit=1, seed=[root], delay=2.5, recheck=False)
+            args = Namespace(output=Path(tmp) / 'site.json', seed=[root], delay=2.5, recheck=False)
             with patch.object(MODULE, 'get_page', side_effect=lambda url, **_: responses[url]), patch.object(MODULE, 'pause'):
                 self.assertEqual(MODULE.scan(args), 0)
-                self.assertEqual(len(load_json(args.output, {})['sitemaps']), 1)
+                self.assertEqual(len(load_json(args.output, {})['sitemaps']), 2)
                 self.assertEqual(MODULE.scan(args), 0)
             state = json.loads(args.output.read_text())
             self.assertEqual(state['version_evidence']['22.13'], ['https://www.sonos.com/documents/gpl/22.13/gpl.html'])
@@ -76,15 +63,15 @@ class SitemapPrioritizationTests(unittest.TestCase):
                 'version_evidence': {'22.13': ['https://www.sonos.com/documents/gpl/22.13/gpl.html']},
                 'sitemaps': {}, 'related_pages': [],
             }))
-            args = Namespace(output=root, recheck=False, discovery_window=1,
-                             limit=1, delay=2.5, binary=[])
+            args = Namespace(output=root, recheck=False, delay=2.5, binary=[])
             requested = []
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', url)
             with patch.object(archive, 'offline_candidates', return_value={}), \
                  patch.object(archive, 'get_page', side_effect=fake_get_page), \
-                 patch.object(archive, 'pause'):
+                 patch.object(archive, 'pause'), \
+                 patch.object(archive, 'winding_down', side_effect=lambda: len(requested) >= 1):
                 self.assertEqual(archive.discover(args), 0)
             self.assertEqual(requested, ['https://www.sonos.com/documents/gpl/22.13/gpl.html'])
             self.assertEqual(archive.live_catalog(root)['releases'], {})

@@ -8,7 +8,6 @@ correspondence or GPL compliance. This analyzer never executes target binaries.
 from __future__ import annotations
 
 import argparse
-import gzip
 import json
 import re
 import struct
@@ -23,38 +22,53 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def inspect_uimage(path: Path) -> dict:
+    linux_matches = {}
+    pattern = re.compile(rb"Linux version [^\x00\r\n]{4,150}")
     with path.open("rb") as f:
         header = f.read(64)
         if len(header) != 64:
             raise ValueError("truncated uImage header")
-        magic, expected_hcrc, created, length, load, entry, expected_dcrc, os_type, arch, image_type, compression, name = struct.unpack(">7I4B32s", header)
+        (magic, expected_hcrc, created, length, load, entry, expected_dcrc,
+         os_type, arch, image_type, compression, name) = struct.unpack(">7I4B32s", header)
         if magic != 0x27051956:
             raise ValueError("not a u-boot legacy uImage")
         actual_hcrc = zlib.crc32(header[:4] + b"\x00\x00\x00\x00" + header[8:])
         actual_dcrc = 0
-        payload = b""
+        inflater = zlib.decompressobj(31) if compression == 1 else None
+        carry = b""
         remaining = length
         while remaining:
             chunk = f.read(min(1024 * 1024, remaining))
             if not chunk:
                 raise ValueError("truncated uImage payload")
             actual_dcrc = zlib.crc32(chunk, actual_dcrc)
-            if length <= 32 * 1024 * 1024:
-                payload += chunk
             remaining -= len(chunk)
-    result = {"file": path.name, "sha256": file_sha256(path), "image_name": name.split(b"\0", 1)[0].decode("ascii", errors="replace"),
-              "created_unix": created, "payload_bytes": length, "compression_id": compression,
-              "architecture_id": arch, "os_id": os_type, "image_type_id": image_type,
-              "header_crc_valid": actual_hcrc == expected_hcrc, "payload_crc_valid": actual_dcrc == expected_dcrc}
+            if inflater is None:
+                continue
+            try:
+                pending = chunk
+                while pending:
+                    decoded = inflater.decompress(pending, 1024 * 1024)
+                    pending = inflater.unconsumed_tail
+                    text = carry + decoded
+                    for match in pattern.finditer(text):
+                        linux_matches.setdefault(match[0].decode("latin-1"), None)
+                    carry = text[-200:]
+                    if inflater.eof:
+                        pending = b""
+            except zlib.error:
+                inflater = None
+    result = {"file": path.name, "sha256": file_sha256(path),
+              "image_name": name.split(b"\0", 1)[0].decode("ascii", errors="replace"),
+              "created_unix": created, "payload_bytes": length,
+              "compression_id": compression, "architecture_id": arch,
+              "os_id": os_type, "image_type_id": image_type,
+              "header_crc_valid": actual_hcrc == expected_hcrc,
+              "payload_crc_valid": actual_dcrc == expected_dcrc}
     if not (result["header_crc_valid"] and result["payload_crc_valid"]):
         raise ValueError("uImage CRC mismatch; do not use as correspondence evidence")
-    if compression == 1 and payload:
-        try:
-            inflated = gzip.decompress(payload)
-        except (OSError, EOFError):
-            inflated = b""
-        matches = re.findall(rb"Linux version [^\x00\r\n]{4,150}", inflated)
-        result["linux_version_strings"] = [m.decode("latin-1") for m in matches[:6]]
+    if compression == 1:
+        result["linux_version_strings"] = list(linux_matches)
     return result
 
 
@@ -90,7 +104,7 @@ def elf_metadata(binary: bytes) -> dict:
               "sha256": __import__("hashlib").sha256(binary).hexdigest()}
     notes = []
     phsize = struct.calcsize(ph_format)
-    if 0 < phentsize and phentsize >= phsize and phnum < 4096 and phoff + phentsize * phnum <= len(binary):
+    if 0 < phentsize and phentsize >= phsize and phoff + phentsize * phnum <= len(binary):
         for index in range(phnum):
             values = struct.unpack_from(ph_format, binary, phoff + index * phentsize)
             if values[0] == 4:  # PT_NOTE
@@ -98,7 +112,7 @@ def elf_metadata(binary: bytes) -> dict:
                 if offset + size <= len(binary):
                     notes.append(binary[offset:offset + size])
     shsize = struct.calcsize(sh_format)
-    if 0 < shentsize and shentsize >= shsize and shnum < 16384 and shoff + shentsize * shnum <= len(binary):
+    if 0 < shentsize and shentsize >= shsize and shoff + shentsize * shnum <= len(binary):
         for index in range(shnum):
             values = struct.unpack_from(sh_format, binary, shoff + index * shentsize)
             if values[1] == 7:  # SHT_NOTE
@@ -131,7 +145,7 @@ def inspect_squashfs(path: Path, targets: list[str]) -> dict:
     for suffix in targets:
         candidates = [line.split()[ -1] for line in listing.splitlines() if line.split() and line.split()[-1] == "squashfs-root/" + suffix]
         if len(candidates) != 1:
-            matches[suffix] = {"state": "not-unique-or-missing", "paths": candidates[:5]}
+            matches[suffix] = {"state": "not-unique-or-missing", "paths": candidates}
             continue
         command = ["unsquashfs", "-cat", str(path), suffix]
         binary = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout
@@ -139,7 +153,7 @@ def inspect_squashfs(path: Path, targets: list[str]) -> dict:
                     rb"/usr/src/debug/ffmpeg/[0-9]+\.[0-9]+(?:\.[0-9]+)?-r[0-9]+"]
         strings = []
         for pattern in patterns:
-            strings += [x.decode("ascii", errors="replace") for x in re.findall(pattern, binary)[:4]]
+            strings += [x.decode("ascii", errors="replace") for x in re.findall(pattern, binary)]
         matches[suffix] = {"state": "inspected", "bytes": len(binary), "version_evidence": sorted(set(strings)),
                            "elf": elf_metadata(binary)}
     return {"file": path.name, "sha256": file_sha256(path), "targets": matches}
@@ -206,4 +220,4 @@ if __name__ == "__main__":
         raise SystemExit(main())
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         print(f"GPL firmware analysis: {error}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from None

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from collections import deque
 
 import hashlib
 import re
@@ -18,6 +19,7 @@ from .metadata import (
 )
 from .retry import checkpoint, select, due, error_checkpoint
 from .discovery import USER_AGENT
+from .deadline import winding_down
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
 BASELINE = {"cmaj": 4, "cmin": 1, "cbld": 1, "subm": 100, "rev": 1, "reg": 2}
@@ -31,8 +33,6 @@ RELEASE_NOTES_URL = 'https://support.sonos.com/en-us/article/release-notes-sonos
 
 def capture_response(data, evidence, responses):
     """Retain exact UPS observations, including traceable parse failures."""
-    if len(data) > 2_000_000:
-        raise ValueError('UPS metadata exceeds 2 MB')
     digest = hashlib.sha256(data).hexdigest()
     evidence.mkdir(parents=True, exist_ok=True)
     snapshot = evidence / (digest + '.ups')
@@ -52,7 +52,7 @@ def capture_response(data, evidence, responses):
 def _fetch_version_hints():
     request = urllib.request.Request(RELEASE_NOTES_URL, headers={'User-Agent': USER_AGENT})
     with urllib.request.urlopen(request, timeout=15) as response:
-        return response.read(2_000_001)
+        return response.read()
 
 
 def discover_version_hints(previous, *, fetch=_fetch_version_hints):
@@ -61,8 +61,8 @@ def discover_version_hints(previous, *, fetch=_fetch_version_hints):
         return previous
     try:
         body = fetch()
-        if not body or len(body) > 2_000_000:
-            raise ValueError('release-note response is empty or exceeds 2 MB')
+        if not body:
+            raise ValueError('release-note response is empty')
         versions = re.findall(r'\b\d{1,3}\.\d{1,3}-\d{1,10}\b', body.decode('utf-8', errors='replace'))
         return {**checkpoint(previous, success=True, success_hours=6), 'status': 'observed',
                 'source_url': RELEASE_NOTES_URL, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(),
@@ -117,32 +117,15 @@ def _profile_at(index):
             coordinates[field] |= (value & 1) << bit
             value >>= 1
         bit += 1
-    return dict(zip(PROFILE_FIELDS, coordinates))
-
-
-def build_profiles(catalog: dict, limit: int = 1200) -> list[dict[str, int]]:
-    """Preview a bounded prefix of the continuing profile search."""
-    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
-        raise ValueError('profile preview limit must be a nonnegative integer')
-    profiles = {_profile_key(profile): profile for profile in _version_profiles(catalog)} if limit else {}
-    index = 1
-    while len(profiles) < limit:
-        profile = _profile_at(index)
-        profiles.setdefault(_profile_key(profile), profile)
-        index += 1
-    return list(profiles.values())[:limit]
+    return dict(zip(PROFILE_FIELDS, coordinates, strict=True))
 
 
 def fetch_profile(profile: dict[str, int], timeout: float = 20) -> bytes:
     return fetch_update_metadata(UpdateProfile(*(profile[field] for field in PROFILE_FIELDS)), timeout)[0]
 
 
-def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadline=None, fetch=fetch_profile):
-    """Resume bounded windows over an open-ended profile search."""
-    if (not isinstance(limit, int) or isinstance(limit, bool) or not isinstance(count, int) or
-        isinstance(count, bool) or not 0 <= limit <= count <= 10000):
-        raise ValueError('metadata profile budgets must satisfy 0 <= limit <= count <= 10000')
-    scheduling = {'retry_rotation': deepcopy(previous.get('retry_rotation', {}))}
+def discover_profiles(previous, evidence, catalog, *, fetch=fetch_profile, on_capture=None, stop=None):
+    """Continue observed and synthetic update profiles until the work deadline."""
     observations = dict(previous.get('profiles', {}))
     responses = dict(previous.get('responses', {}))
     pending = {}
@@ -156,42 +139,28 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
     cursor = exploration.get('next_profile_index', 0) if exploration.get('generator_version') == 1 else 0
     if not isinstance(cursor, int) or isinstance(cursor, bool) or cursor < 0:
         raise ValueError('metadata profile cursor must be a nonnegative integer')
-    next_lane = exploration.get('next_fresh_lane', 0)
-    if next_lane not in (0, 1):
-        raise ValueError('metadata profile lane must be zero or one')
-    seeds = _version_profiles(catalog) if limit else []
-    if limit and not any(entry['kind'] == 'search' for entry in pending.values()):
-        for index in range(cursor, cursor+count):
-            profile = _profile_at(index)
-            if _profile_key(profile) not in observations:
-                pending[_profile_key(profile)] = {'profile': profile, 'kind': 'search'}
-        cursor += count
-    for profile in seeds:
+    for profile in _version_profiles(catalog):
         if _profile_key(profile) not in observations:
             pending.setdefault(_profile_key(profile), {'profile': profile, 'kind': 'hint'})
-    baseline = _profile_key(BASELINE)
-    ordered = {baseline: pending[baseline]['profile']} if baseline in pending else {}
-    lanes = [[key for key, entry in pending.items() if key != baseline and entry['kind'] == kind]
-             for kind in ('hint', 'search')]
-    for offset in range(max(map(len, lanes))):
-        for lane in (next_lane, 1-next_lane):
-            if offset < len(lanes[lane]):
-                key = lanes[lane][offset]
-                ordered[key] = pending[key]['profile']
-    ordered.update({key: row['profile'] for key, row in observations.items()})
     source_backoff = dict(previous.get('source_backoff', {}))
     paused = bool(source_backoff) and not due(source_backoff)
-    queue = [] if paused else select(list(ordered.values()), observations, key=_profile_key, limit=limit,
-                                    state=scheduling, queue='legacy-ups-profiles')
     errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
                'http_status': source_backoff.get('http_status')}] if paused else []
+    saved = {key: row['profile'] for key, row in observations.items() if 'profile' in row}
+    saved.update({key: entry['profile'] for key, entry in pending.items()})
+    queue = deque(select(saved.values(), observations, key=_profile_key) if not paused else [])
+    next_saved = exploration.get('next_lane', 0) == 0
     attempted = 0
-    for profile in queue:
-        if deadline is not None and time.monotonic() >= deadline:
-            break
+    while not paused and not winding_down() and (stop is None or not stop.is_set()):
+        if queue and next_saved:
+            profile = queue.popleft()
+        else:
+            profile = _profile_at(cursor)
+            cursor += 1
+            if _profile_key(profile) in observations or _profile_key(profile) in pending:
+                continue
+        next_saved = not next_saved
         key = _profile_key(profile)
-        if key in pending and key not in observations and key != baseline:
-            next_lane = 1 if pending[key]['kind'] == 'hint' else 0
         attempted += 1
         captured = None
         try:
@@ -202,6 +171,8 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
                 raise ValueError(captured['parse_error'])
             observations[key] = {**checkpoint(observations.get(key), success=True, success_hours=168),
                                  'profile': profile, 'status': 'observed', 'response_sha256': captured['sha256']}
+            if on_capture is not None:
+                on_capture(profile, captured)
         except Exception as error:
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
@@ -214,23 +185,23 @@ def discover_profiles(previous, evidence, catalog, *, limit=8, count=1200, deadl
             if not negative:
                 errors.append({'source': 'legacy-ups-profile', 'profile': profile, 'error': str(error),
                                'http_status': getattr(error, 'code', None)})
-            pending.pop(key, None)
             if getattr(error, 'code', None) in {403, 429, 503}:
-                source_backoff = {**error_checkpoint(error, source_backoff), 'http_status': error.code, 'error': str(error)}
+                source_backoff = {**error_checkpoint(error, source_backoff),
+                                  'http_status': error.code, 'error': str(error)}
+                pending.pop(key, None)
                 break
         pending.pop(key, None)
         time.sleep(.2)
     unchecked = len(pending)
     failed = sum(row.get('status') == 'failed' for row in observations.values())
-    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted, **scheduling,
-            'source_backoff': source_backoff,
-            'pending_profiles': list(pending.values()),
-            'profile_exploration': {'policy': 'continuing-windows', 'generator_version': 1,
-                                    'next_profile_index': cursor, 'window_size': count, 'next_fresh_lane': next_lane},
+    return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted,
+            'source_backoff': source_backoff, 'pending_profiles': list(pending.values()),
+            'profile_exploration': {'policy': 'continuing-search', 'generator_version': 1,
+                                    'next_profile_index': cursor, 'next_lane': 0 if next_saved else 1},
             'planned_profile_total': len(observations)+unchecked, 'unchecked_profile_total': unchecked,
             'negative_profile_total': sum(row.get('status') == 'not-served' for row in observations.values()),
             'failed_profile_total': failed, 'pending_profile_total': unchecked + failed,
-            'status': 'disabled' if not limit else 'partial' if unchecked or failed else 'ok', 'errors': errors}
+            'status': 'partial' if unchecked or failed or paused else 'ok', 'errors': errors}
 
 
 def fetch_client_reports(query, page):
@@ -246,7 +217,7 @@ def fetch_client_reports(query, page):
         'q': query, 'sort': 'updated', 'order': 'asc', 'per_page': 20, 'page': page})
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:
-            body = response.read(16*1024*1024+1)
+            body = response.read()
     except urllib.error.HTTPError as error:
         if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
             try:
@@ -254,8 +225,6 @@ def fetch_client_reports(query, page):
             except (ValueError, KeyError, TypeError):
                 pass
         raise
-    if len(body) > 16*1024*1024:
-        raise ValueError('public client report page exceeds the metadata budget')
     return json.loads(body)
 
 
@@ -302,7 +271,7 @@ def fetch_issue_comments(url, page):
     try:
         with urllib.request.urlopen(urllib.request.Request(
                 url+separator+'per_page=100&page='+str(page), headers=headers), timeout=30) as response:
-            body = response.read(16*1024*1024+1)
+            body = response.read()
     except urllib.error.HTTPError as error:
         if error.headers.get('X-RateLimit-Remaining') == '0' and not error.headers.get('Retry-After'):
             try:
@@ -310,15 +279,13 @@ def fetch_issue_comments(url, page):
             except (ValueError, KeyError, TypeError):
                 pass
         raise
-    if len(body) > 16*1024*1024:
-        raise ValueError('public issue comment page exceeds the metadata budget')
     document = json.loads(body)
     if not isinstance(document, list):
         raise ValueError('invalid public issue comment response')
     return document
 
 
-def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client_reports,
+def discover_client_reports(previous, *, fetch=fetch_client_reports,
                             fetch_comments=fetch_issue_comments):
     """Search primary client reports, subdividing windows before GitHub's cap."""
     from datetime import datetime, timedelta, timezone
@@ -342,7 +309,7 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
             record['windows'] = [{'start': record.get('through'), 'end': end, 'page': 1}]
     errors = []
     cursor = state.get('cursor', 0)
-    for _ in range(pages):
+    while not winding_down():
         if state.get('source_backoff') and not due(state['source_backoff']):
             break
         active = [q for q in queries if contexts[q].get('windows') and due(contexts[q])]
@@ -401,7 +368,7 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
                         seen = {item.get('id') or item.get('html_url') for item in items}
                         complete = len(items) < 20
                         scanned = 1
-                        while not complete and scanned < 5:
+                        while not complete and not winding_down():
                             scanned += 1
                             extra_document = fetch(scoped, scanned)
                             extra = extra_document.get('items')
@@ -413,13 +380,17 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
                             seen.update(item.get('id') or item.get('html_url') for item in extra)
                             if len(extra) < 20 or len(seen) >= total:
                                 complete = True
+                            elif not fresh:
+                                # An unchanging page cannot advance a cursor.
+                                # Retain the incomplete time bucket for retry.
+                                break
                         if complete:
                             record['windows'].pop(0)
                             record['through'] = window['end']
                         else:
                             record['windows'].append({**record['windows'].pop(0), 'saturated': True})
                             errors.append({'source': 'public-client-reports',
-                                           'error': 'indivisible timestamp bucket exceeds the bounded page scan; retained for retry'})
+                                           'error': 'GitHub search results exceeded its pagination capability; retained for retry'})
                         record.update(checkpoint(record, success=True, success_hours=6))
                         record.pop('error', None)
                         state.pop('source_backoff', None)
@@ -440,19 +411,15 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
                 state['source_backoff'] = {**record, 'windows': []}
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
-    keys = sorted(comment_queue)
-    comment_cursor = state.get('comment_cursor', 0)
-    attempted = 0
-    for offset in range(len(keys)):
-        if attempted >= comments:
-            break
+    attempted = set()
+    while comment_queue and not winding_down():
         if state.get('source_backoff') and not due(state['source_backoff']):
             break
-        key = keys[(comment_cursor+offset) % len(keys)]
-        entry = comment_queue.get(key)
-        if not entry:
-            continue
-        attempted += 1
+        keys = [key for key in sorted(comment_queue) if key not in attempted]
+        if not keys:
+            break
+        key = keys[0]
+        entry = comment_queue[key]
         try:
             page = entry.get('next_page', 1)
             document = fetch_comments(entry['comments_url'], page)
@@ -471,6 +438,8 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
                                       'issue_url': entry['issue_url']}
                 comment_queue.pop(key, None)
             state.pop('source_backoff', None)
+            if key in comment_queue:
+                continue
         except Exception as error:
             errors.append({'source': 'public-client-comments', 'error': str(error),
                            'issue_url': entry.get('issue_url')})
@@ -483,7 +452,7 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
             if isinstance(error, urllib.error.HTTPError):
                 error.close()
             entry['error'] = str(error)
-    state['comment_cursor'] = comment_cursor+attempted
+        attempted.add(key)
     state.update(cursor=cursor, errors=errors,
                  status='partial' if errors or comment_queue or
                  any(r.get('windows') for r in contexts.values()) else 'ok')

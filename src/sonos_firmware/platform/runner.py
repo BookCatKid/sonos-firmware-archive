@@ -16,7 +16,9 @@ from pathlib import Path
 
 from .model import Context
 from .registry import providers
+from .providers import validate_options
 from ..storage import atomic_json
+from ..deadline import winding_down
 
 
 def state_path(root, target):
@@ -35,8 +37,10 @@ def is_due(root, target, now=None):
 
 
 def plan(target, root, repository, options=None, provider_map=None):
+    settings = {**target.options, **(options or {})}
+    validate_options(target.provider, settings)
     context = Context(root, Path('$RUNNER_TEMP') / target.name, repository, target, True,
-                      {**target.options, **(options or {})},
+                      settings,
                       Path('$RUNNER_TEMP') / 'sonos-discovery-metadata' / target.name)
     implementation = (provider_map or providers()).get(target.provider)
     if implementation is None:
@@ -47,7 +51,7 @@ def plan(target, root, repository, options=None, provider_map=None):
             'metadata': list(target.metadata), 'steps': [asdict(step) for step in implementation(context)]}
 
 
-def missing_capabilities(target, environment, options):
+def missing_capabilities(target, options):
     missing = []
     for capability in target.capabilities:
         if capability == 'goopdl' and importlib.util.find_spec('goopdl') is None:
@@ -100,11 +104,12 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
         return {'schema_version': 1, 'target': target.name, 'provider': target.provider,
                 'status': 'skipped', 'executed': False, 'reason': 'workflow definition superseded'}
     options = {**target.options, **(options or {})}
+    validate_options(target.provider, options)
     started = datetime.now(timezone.utc)
     report = {'schema_version': 1, 'target': target.name, 'provider': target.provider,
               'status': 'ok', 'executed': True, 'started_at': started.isoformat(),
               'steps': [], 'errors': [], 'pending': []}
-    missing = missing_capabilities(target, environment, options)
+    missing = missing_capabilities(target, options)
     if missing:
         report.update(status='blocked', executed=False, pending=missing)
     else:
@@ -121,6 +126,11 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
             for step in implementation(context):
                 record = {'name': step.name, 'status': 'skipped'}
                 label = redact(f'[{target.name}] {step.name}', environment)
+                if winding_down():
+                    report['steps'].append(record)
+                    report['pending'].append({'step': step.name, 'reason': 'four-hour soft wind-down requested'})
+                    print(f'{label}: deferred at soft wind-down', file=sys.stderr, flush=True)
+                    continue
                 if failed and not step.after_failure:
                     report['steps'].append(record)
                     print(f'{label}: skipped after an earlier failure', file=sys.stderr, flush=True)
@@ -131,13 +141,22 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
                 try:
                     if execute:
                         code, output = execute(step, context, child_env)
+                        output_tail = redact(output, environment)[-4000:]
+                        has_traceback = 'Traceback (most recent call last)' in output
                     else:
                         with log.open('w') as stream:
-                            completed = subprocess.run(step.command, cwd=root, env=child_env,
-                                stdout=stream, stderr=subprocess.STDOUT, timeout=options.get('step_timeout', 14400))
-                        code, output = completed.returncode, log.read_text(errors='replace')
+                            process = subprocess.Popen(step.command, cwd=root, env=child_env,
+                                                       stdout=stream, stderr=subprocess.STDOUT)
+                            process.wait()
+                        code = process.returncode
+                        output_tail = ''
+                        has_traceback = False
+                        with log.open(errors='replace') as stream:
+                            for line in stream:
+                                has_traceback |= 'Traceback (most recent call last)' in line
+                                output_tail = (output_tail + redact(line, environment))[-4000:]
                     record.update(exit_code=code, status='ok' if code in step.accepted_codes else 'failed',
-                                  output_tail=redact(output, environment)[-4000:])
+                                  output_tail=output_tail)
                     if code not in step.accepted_codes:
                         failed = True
                         record['failure_kind'] = 'process-exit'
@@ -148,7 +167,7 @@ def run(target, root, repository, *, environment=None, options=None, provider_ma
                         if _source_incomplete(native):
                             if (code == 1 and code not in step.accepted_codes and
                                     Path(step.report).stat().st_mtime_ns >= step_started and
-                                    'Traceback (most recent call last)' not in output):
+                                    not has_traceback):
                                 record['failure_kind'] = 'source-reported-incomplete'
                                 report['errors'][-1]['kind'] = record['failure_kind']
                             record['status'] = 'partial' if code in step.accepted_codes else 'failed'

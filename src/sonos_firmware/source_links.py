@@ -39,7 +39,7 @@ class _Links(HTMLParser):
 
     def handle_data(self, data):
         if self.anchor:
-            self.anchor[1] += data[:1000]
+            self.anchor[1] += data
 
     def handle_endtag(self, tag):
         if tag == 'a' and self.anchor:

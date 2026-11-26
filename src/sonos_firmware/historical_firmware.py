@@ -6,6 +6,7 @@ import tempfile
 import urllib.error
 from pathlib import Path
 
+from .deadline import winding_down
 from .archive_replay import replay_url, open_capture, canonical_source, capture_host
 from .archive_index import paused_index_hosts
 from .crawl import PACKAGE, landing_url
@@ -82,10 +83,8 @@ def remember_manifest(frontier, manifest):
     metadata['unresolved_links'] = unresolved
 
 
-def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8, acquire=None):
+def replay_preserved_manifests(root, evidence, repository, frontier, *, acquire=None):
     """Reparse our own immutable XML even when its original URL has changed."""
-    if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
-        raise ValueError('saved manifest batch limit must be positive')
     from . import discovery
     acquire = acquire or download_verified
     catalog_path = root/'data/catalog.json'
@@ -110,17 +109,19 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
         if observations.get(identity, {}).get('parser_revision') != revision:
             observations[identity] = {'status': 'pending'}
     pending = [key for key in sources if observations.get(key, {}).get('status') != 'parsed']
-    queue = select(pending, observations, key=str, limit=limit, state=state, queue='saved-manifests')
+    queue = select(pending, observations, key=str)
     attempted = 0
     for identity in queue:
+        if winding_down():
+            break
         row = sources[identity]
         attempted += 1
         try:
             if (not isinstance(row['bytes'], int) or isinstance(row['bytes'], bool) or
-                    not 0 < row['bytes'] <= 2_000_000 or
+                    row['bytes'] <= 0 or
                     not isinstance(row['sha256'], str) or len(row['sha256']) != 64 or
                     any(c not in '0123456789abcdef' for c in row['sha256'])):
-                raise ValueError('saved manifest requires a bounded size and SHA-256 receipt')
+                raise ValueError('saved manifest requires a positive size and SHA-256 receipt')
             path = evidence/(row['sha256']+'.upm')
             evidence.mkdir(parents=True, exist_ok=True)
             if path.exists() and (path.stat().st_size != row['bytes'] or
@@ -149,7 +150,7 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
     return report
 
 
-def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
+def archive_manifests(root, work, repository, frontier, *, paused=False):
     blocked = {'web.archive.org'} if paused is True else set(paused or ())
     path = root/'data/discovery/historical-manifest-acquisition.json'
     state = acquisition_state(root, path)
@@ -172,9 +173,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     eligible = [identity for identity, row in observations.items() if row.get('manifest') or
                 (capture_host(row['archive_capture']) not in blocked and
                  not backoff.paused(capture_host(row['archive_capture'])))]
-    queue = select(eligible, observations, key=lambda identity: identity,
-                   limit=0 if backoff.paused('publication') else limit,
-                   state=state, queue=repository)
+    queue = select(eligible, observations, key=lambda identity: identity)
     attempted = preserved = 0
     series = {}
     def publisher_for(capture):
@@ -183,6 +182,8 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
             'Exact independently discovered public update manifest captures.'))
     work.mkdir(parents=True, exist_ok=True)
     for identity in queue:
+        if winding_down():
+            break
         if backoff.paused('publication'):
             break
         prior = observations[identity]
@@ -205,10 +206,10 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
                 attempted += 1
                 with tempfile.TemporaryDirectory(dir=work, prefix='manifest-') as directory:
                     with open_capture(prior['url'], prior['archive_capture']) as response:
-                        data = response.read(2_000_001)
+                        data = response.read()
                         length = response.headers.get('Content-Length')
-                        if len(data) > 2_000_000 or (length is not None and int(length) != len(data)):
-                            raise ValueError('manifest exceeds 2 MB or has a truncated Content-Length')
+                        if length is not None and int(length) != len(data):
+                            raise ValueError('historical manifest Content-Length is truncated')
                         fetched_from = response.geturl()
                     body = Path(directory)/'capture.upm'
                     body.write_bytes(data)
@@ -262,14 +263,12 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
             'paused': bool(blocked) or backoff.paused('publication'), 'paused_hosts': sorted(blocked)}
 
 
-def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
-    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in (limit, manifest_limit)):
-        raise ValueError('historical acquisition limit must be positive')
+def archive_history(root, work, repository):
     frontier_path = root/'data/discovery/firmware-frontier.json'
     frontier = json.loads(frontier_path.read_text()) if frontier_path.exists() else {}
     index = frontier.get('archive_index', {})
     paused = paused_index_hosts(index)
-    manifests = archive_manifests(root, work, repository, frontier, limit=manifest_limit, paused=paused)
+    manifests = archive_manifests(root, work, repository, frontier, paused=paused)
     atomic_json(frontier_path, frontier)
     state_path = root/'data/discovery/historical-firmware-acquisition.json'
     previous = acquisition_state(root, state_path).get('sources', {}).get(repository, {})
@@ -296,7 +295,7 @@ def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
     rows = sorted(candidates.values(), key=lambda row: (row['archive_capture']['timestamp'], row['url'], row['acquisition_id']))
     manifests.pop('paused')
     paused = set(manifests.pop('paused_hosts'))
-    result = archive_candidates(root, repository, rows, work, limit=limit, state_path=state_path,
+    result = archive_candidates(root, repository, rows, work, state_path=state_path,
                                 paused_hosts=paused)
     result['errors'].extend(errors)
     result['manifests'] = manifests

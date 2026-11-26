@@ -22,7 +22,7 @@ def main() -> int:
     path = ROOT / "data/key-recovery-ledger.json"
     ledger = json.loads(path.read_text(encoding="utf-8"))
     missing = {item["recipient_id"]: item for item in ledger["missing_keys"]}
-    for recipient, family, model in zip(args.recipient, args.family, args.model):
+    for recipient, family, model in zip(args.recipient, args.family, args.model, strict=True):
         group = missing.pop(recipient, None)
         if group is None:
             raise ValueError(f"missing recipient group not found: {recipient}")

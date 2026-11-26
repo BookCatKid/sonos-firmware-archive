@@ -58,7 +58,6 @@ jobs:
     needs: select
     if: ${{ toJSON(fromJSON(needs.select.outputs.matrix).include) != '[]' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
@@ -69,6 +68,9 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      - name: Establish four-hour cooperative wind-down clock
+        shell: bash
+        run: echo "SONOS_WIND_DOWN_AT=$(( $(date +%s) + 4 * 60 * 60 ))" >> "$GITHUB_ENV"
       - uses: actions/checkout@v7
         with:
           ref: main

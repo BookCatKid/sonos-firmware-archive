@@ -5,7 +5,6 @@ import json
 import sys
 import hashlib
 import urllib.error
-from functools import partial
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -26,7 +25,7 @@ from sonos_firmware.forum_archive import discover_forum_archive
 from sonos_firmware.historical_firmware import replay_preserved_manifests
 
 
-def preserve(result, catalog_path, state_path, evidence, work, repository, max_packages=24):
+def preserve(result, catalog_path, state_path, evidence, work, repository):
     if catalog_path.exists():
         catalog = json.loads(catalog_path.read_text())
     else:
@@ -41,7 +40,7 @@ def preserve(result, catalog_path, state_path, evidence, work, repository, max_p
     report = monitor_report(result, catalog, acquisition_state(archive_root), repository)
     candidates = report['available_uncatalogued_candidates'] + report['available_refresh_candidates']
     archived = archive_candidates(archive_root, repository, candidates, work,
-                                  limit=max_packages, catalog_path=catalog_path)
+                                  catalog_path=catalog_path)
     errors.extend(archived['errors'])
     catalog = json.loads(catalog_path.read_text())
     tag = 'manifest-snapshots-' + datetime.now(timezone.utc).date().isoformat()
@@ -105,38 +104,19 @@ def main():
     parser.add_argument('--report', type=Path, required=True)
     parser.add_argument('--catalog', type=Path, default=ROOT / 'data/catalog.json')
     parser.add_argument('--cold-start', action='store_true', help='ignore all saved frontier and catalog knowledge during discovery')
-    parser.add_argument('--seconds', type=float, default=900)
-    parser.add_argument('--max-manifests', type=int, default=4096)
-    parser.add_argument('--profile-limit', type=int, default=8)
-    parser.add_argument('--profile-count', type=int, default=1200,
-                        help='profile planning window size; exploration continues across windows')
-    parser.add_argument('--model-max', type=int, default=255,
-                        help='initial package-model range; completed passes widen automatically')
-    parser.add_argument('--inference-limit', type=int, default=512)
     parser.add_argument('--no-release-notes', action='store_true', help='disable public version hints for profile exploration')
     parser.add_argument('--publish', action='store_true')
-    parser.add_argument('--max-packages', type=int, default=24)
     parser.add_argument('--artifact-root', type=json.loads, action='append', default=[],
                         help='protocol artifact root JSON with url and package_model; version is read from captured bytes')
     parser.add_argument('--repository', default='BookCatKid/sonos-firmware-archive')
     parser.add_argument('--work-dir', type=Path)
     parser.add_argument('--no-history-index', action='store_true', help='restrict discovery to live Sonos protocol roots and saved observations')
-    parser.add_argument('--index-pages', type=int, default=2,
-                        help='per-provider index page budget; collection and page cursors resume across runs')
-    parser.add_argument('--saved-manifest-limit', type=int, default=8,
-                        help='preserved manifest snapshots to reparse per worker')
-    parser.add_argument('--pivot-limit', type=int, default=24,
-                        help='installer-derived native manifest URLs to explore per worker')
     args = parser.parse_args()
-    if args.max_packages <= 0:
-        parser.error('--max-packages must be positive')
-    if args.index_pages <= 0:
-        parser.error('--index-pages must be positive')
     old = json.loads(args.state.read_text()) if args.state.exists() and not args.cold_start else {}
     client_reports = None
     forum_archive = None
     if args.publish:
-        client_reports = discover_client_reports(old.get('public_client_reports', {}), pages=6, comments=12)
+        client_reports = discover_client_reports(old.get('public_client_reports', {}))
         old['public_client_reports'] = client_reports
         pending = old.setdefault('pending_manifest_urls', [])
         pending.extend(url for url in client_reports['roots'] if url not in pending)
@@ -151,8 +131,7 @@ def main():
     if args.publish and not args.cold_start:
         archive_root = args.catalog.parent.parent if args.catalog.parent.name == 'data' else args.catalog.parent
         args.evidence_dir.mkdir(parents=True, exist_ok=True)
-        replay = replay_preserved_manifests(archive_root, args.evidence_dir, args.repository, old,
-                                           limit=args.saved_manifest_limit)
+        replay = replay_preserved_manifests(archive_root, args.evidence_dir, args.repository, old)
     known = []
     cross_source = {'candidates': [], 'installer_pivots': [], 'errors': []}
     if not args.cold_start:
@@ -172,12 +151,10 @@ def main():
         known.extend({'version': 'unknown', 'package_model': None, 'url': url,
                       'filename': urlsplit(url).path.rsplit('/', 1)[-1], 'source': 'forum-archive'}
                      for url in forum_archive.get('installers', {}))
-    result = discover(old, args.evidence_dir, seconds=args.seconds, max_manifests=args.max_manifests,
-                      index_fetch=None if args.no_history_index else partial(discover_sources, pages=args.index_pages), artifact_roots=args.artifact_root,
-                      known_artifacts=known, profile_limit=args.profile_limit, profile_count=args.profile_count,
-                      model_max=args.model_max, version_hints=() if args.no_release_notes else hints.get('versions', []),
-                      inference_limit=args.inference_limit, installer_pivots=cross_source['installer_pivots'],
-                      pivot_limit=args.pivot_limit)
+    result = discover(old, args.evidence_dir,
+                      index_fetch=None if args.no_history_index else discover_sources, artifact_roots=args.artifact_root,
+                      known_artifacts=known, version_hints=() if args.no_release_notes else hints.get('versions', []),
+                      installer_pivots=cross_source['installer_pivots'])
     result['release_notes'] = hints
     if client_reports is not None:
         result['public_client_reports'] = client_reports
@@ -203,7 +180,7 @@ def main():
     if args.publish:
         work = args.work_dir or args.evidence_dir.parent / 'publish'
         work.mkdir(parents=True, exist_ok=True)
-        failed = preserve(result, args.catalog, args.state, args.evidence_dir, work, args.repository, args.max_packages)
+        failed = preserve(result, args.catalog, args.state, args.evidence_dir, work, args.repository)
         archive_root = args.catalog.parent.parent if args.catalog.parent.name == 'data' else args.catalog.parent
         catalog = json.loads(args.catalog.read_text())
         write_json(args.report, monitor_report(result, catalog, acquisition_state(archive_root), args.repository))

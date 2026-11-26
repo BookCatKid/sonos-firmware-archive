@@ -69,20 +69,16 @@ def main() -> int:
             package["raw_status"] = "pending"
             continue
         sections = json.loads(manifest_path.read_text(encoding="utf-8")).get("sections", [])
-        def covered(section):
-            if any(item.get("section_index") == section.get("index")
-                   for (pid, _), item in raw.items() if pid == package_id):
-                return True
-            if package.get('extraction_policy') == 'all-sections':
-                return False
-            kind = SECTION_KIND.get(section.get("section_type"))
-            return any(
-                pid == package_id and item.get("section_index") is None and item.get("kind") == kind
-                for (pid, _), item in raw.items()
-            )
-        needed = [s for s in sections if package.get("extraction_policy") == "all-sections" or
-                  s.get("section_type") in EXTRACTABLE_SECTION_TYPES]
-        package["raw_status"] = "complete" if needed and all(covered(s) for s in needed) else "pending"
+        components = [item for (pid, _), item in raw.items() if pid == package_id]
+        indexed = {item.get("section_index") for item in components if item.get("section_index") is not None}
+        unindexed = {item.get("kind") for item in components if item.get("section_index") is None}
+        all_sections = package.get("extraction_policy") == "all-sections"
+        needed = [section for section in sections if all_sections or
+                  section.get("section_type") in EXTRACTABLE_SECTION_TYPES]
+        complete = all(section.get("index") in indexed or
+                       (not all_sections and SECTION_KIND.get(section.get("section_type")) in unindexed)
+                       for section in needed)
+        package["raw_status"] = "complete" if needed and complete else "pending"
 
     catalog["raw_images"] = sorted(
         raw.values(),

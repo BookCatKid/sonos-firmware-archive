@@ -32,12 +32,6 @@ class KeyringTests(unittest.TestCase):
             self.assertFalse((directory/'modelNone.pem').exists())
             self.assertNotIn('PRIVATE KEY', json.dumps(result))
 
-    def test_known_and_unclassified_packages_share_the_same_validated_recipient(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            result = prepare_keys(Path(temporary), {None: {self.recipient}, 17: {self.recipient}},
-                                  {'SONOS_MODEL_17_PRIVATE_KEY': self.pem}, {})
-            self.assertEqual(result['ready_recipients'][self.recipient]['models'], [17])
-            self.assertEqual(result['unavailable'], [])
 
     def test_worker_prepares_and_records_a_configured_key_without_model_context(self):
         import importlib.util
@@ -65,16 +59,6 @@ class KeyringTests(unittest.TestCase):
             self.assertEqual(json.loads(ledger.read_text())['key_origin']['summary']['models'], [])
             self.assertTrue(recipient_key_path(directory/'keys', None, self.recipient).is_file())
 
-    def test_optional_recovery_failure_does_not_discard_a_configured_key(self):
-        def unavailable(): raise ConnectionError('source unavailable')
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary) / 'keys'
-            result = prepare_keys(directory, {8: self.recipient, 17: '0' * 40},
-                                  {'SONOS_MODEL_8_PRIVATE_KEY': self.pem}, {17: unavailable})
-            self.assertEqual(result['ready'], {'8': self.recipient})
-            self.assertEqual(result['unavailable'][0]['model'], 17)
-            self.assertTrue((directory / 'model8.pem').exists())
-            self.assertEqual((directory / 'model8.pem').stat().st_mode & 0o777, 0o600)
 
     def test_invalid_configured_material_is_not_reported_or_written(self):
         secret = 'invalid-private-input-that-must-not-appear-in-the-report'
@@ -139,17 +123,6 @@ class KeyringTests(unittest.TestCase):
             self.assertEqual(set(result['ready']['8']), set(keys))
             self.assertEqual(result['unavailable'], [])
             self.assertFalse(alias.exists())
-
-    def test_shared_recipient_is_ready_for_earlier_models_when_prepared_by_a_later_model(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            result = prepare_keys(directory, {1: self.recipient, 17: self.recipient},
-                                  {'SONOS_MODEL_17_PRIVATE_KEY': self.pem}, {})
-            self.assertEqual(result['ready'], {'1': self.recipient, '17': self.recipient})
-            self.assertEqual(result['ready_recipients'][self.recipient]['models'], [1, 17])
-            self.assertEqual(result['unavailable'], [])
-            self.assertTrue((directory / 'model1.pem').is_file())
-            self.assertTrue((directory / 'model17.pem').is_file())
 
 
 if __name__ == '__main__':

@@ -72,8 +72,7 @@ def main(argv=None):
         if args.report:
             atomic_json(args.report, report)
         print(json.dumps(report, indent=2))
-        # Source incompleteness is recorded as a pending report, not as a
-        # fault; any other error still fails the command.
+        # Incomplete sources are pending work; other recorded errors are faults.
         errors = report.get('errors') or []
         faults = [row for row in errors
                   if not isinstance(row, dict) or row.get('kind') != 'source-reported-incomplete']

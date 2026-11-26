@@ -2,54 +2,20 @@
 from __future__ import annotations
 import hashlib
 import bz2
-import gzip
 import io
 import json
-import math
 import lzma
 import shutil
 import stat
 import struct
 import subprocess
 import tarfile
-import tempfile
-import time
 import zlib
-from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from . import cramfs
 from .catalog import filesystem_manifest
 from .extract import extract_available_components
 from .upd import parse_bytes
-
-
-@dataclass(frozen=True)
-class InventoryLimits:
-    expanded_bytes: int = 512 * 1024 * 1024
-    files: int = 100000
-    depth: int = 64
-    decoder_seconds: float = 300
-
-    def __post_init__(self):
-        if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0
-               for value in (self.expanded_bytes, self.files, self.depth)):
-            raise ValueError('inventory byte, file and depth limits must be positive integers')
-        if not isinstance(self.decoder_seconds, (int, float)) or not math.isfinite(self.decoder_seconds) or self.decoder_seconds <= 0:
-            raise ValueError('inventory decoder timeout must be positive and finite')
-
-
-class _Budget:
-    def __init__(self, limits):
-        self.limits, self.bytes, self.files = limits, 0, 0
-
-    def check(self, size, count=1):
-        if self.bytes + size > self.limits.expanded_bytes or self.files + count > self.limits.files:
-            raise ValueError('expanded inventory exceeds its resource budget')
-
-    def consume(self, size, count=1):
-        self.check(size, count)
-        self.bytes += size
-        self.files += count
 
 
 def sha256(data: bytes) -> str:
@@ -103,69 +69,25 @@ def package_version(data: bytes) -> str:
     return f"{major}.{minor}-{build}"
 
 
-class _TarInput:
-    """Bound even extended-header reads before tarfile interprets their size."""
-    def __init__(self, stream, size):
-        self.stream, self.size = stream, size
-
-    def read(self, size=-1):
-        remaining = self.size - self.stream.tell()
-        if size >= 0 and remaining == 0:
-            return b''
-        if size < 0 or size > remaining:
-            raise ValueError('tar metadata read exceeds the bounded archive')
-        return self.stream.read(size)
-
-    def seek(self, *args):
-        return self.stream.seek(*args)
-
-    def tell(self):
-        return self.stream.tell()
+def unpack_tar(payload: bytes, directory: Path) -> list[dict]:
+    """Stream regular members and preserve metadata without extraction quotas."""
+    with tarfile.open(fileobj=io.BytesIO(payload), mode='r|*') as archive:
+        return _unpack_tar_members(archive, directory)
 
 
-def unpack_tar(payload: bytes, directory: Path, *, budget=None, limits=None) -> list[dict]:
-    """Write regular members only; retain links and special entries as metadata."""
-    inventory = []
-    budget = budget or _Budget(limits or InventoryLimits())
-    seen = set()
-    # Bound the entire decompressed stream, including PAX/GNU metadata that
-    # tarfile parses before yielding a member to our per-file budget checks.
-    ceiling = budget.limits.expanded_bytes - budget.bytes + budget.limits.files * 1024 + 10240
-    raw = io.BytesIO(payload)
-    if payload.startswith(b'\x1f\x8b'):
-        stream = gzip.GzipFile(fileobj=raw)
-    elif payload.startswith(b'BZh'):
-        stream = bz2.BZ2File(raw)
-    elif payload.startswith(b'\xfd7zXZ\x00'):
-        stream = lzma.LZMAFile(raw)
-    else:
-        stream = raw
-    with stream, tempfile.SpooledTemporaryFile(max_size=1024 * 1024) as bounded:
-        while chunk := stream.read(min(1024 * 1024, ceiling - bounded.tell() + 1)):
-            bounded.write(chunk)
-            if bounded.tell() > ceiling:
-                raise ValueError('expanded tar exceeds its resource budget')
-        size = bounded.tell()
-        bounded.seek(0)
-        with tarfile.open(fileobj=_TarInput(bounded, size), mode='r:') as archive:
-            return _unpack_tar_members(archive, directory, budget, inventory, seen)
-
-
-def _unpack_tar_members(archive, directory, budget, inventory, seen):
+def _unpack_tar_members(archive, directory):
+    inventory, seen = [], set()
     for member in archive:
         path = PurePosixPath(member.name)
         if not path.parts and member.isdir() and member.name:
             if "." in seen:
                 raise ValueError("duplicate tar member: .")
             seen.add(".")
-            budget.consume(0)
             inventory.append({"path": ".", "mode": member.mode, "bytes": member.size, "type": "5",
                               'uid': member.uid, 'gid': member.gid})
             continue
         if path.is_absolute() or ".." in path.parts or not path.parts:
             raise ValueError(f"unsafe tar member: {member.name}")
-        if len(path.parts) > budget.limits.depth:
-            raise ValueError('tar member depth exceeds the inventory limit')
         name = path.as_posix()
         if name in seen:
             raise ValueError(f"duplicate tar member: {name}")
@@ -173,96 +95,81 @@ def _unpack_tar_members(archive, directory, budget, inventory, seen):
         record = {"path": name, "mode": member.mode, "bytes": member.size,
                   'uid': member.uid, 'gid': member.gid,
                   "type": member.type.decode("ascii", errors="replace")}
-        budget.consume(member.size if member.isfile() else 0)
         if member.issym() or member.islnk():
             record["target"] = member.linkname
         if member.isfile():
-            with archive.extractfile(member) as stream:
-                content = stream.read()
             destination = directory.joinpath(*path.parts)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_bytes(content)
-            record["sha256"] = sha256(content)
-            _annotate_elf(record, content)
+            digest = hashlib.sha256()
+            first_bytes = bytearray()
+            with archive.extractfile(member) as stream, destination.open('wb') as output:
+                while block := stream.read(1024 * 1024):
+                    if len(first_bytes) < 64:
+                        first_bytes.extend(block[:64-len(first_bytes)])
+                    digest.update(block)
+                    output.write(block)
+            if destination.stat().st_size != member.size:
+                raise ValueError(f'truncated tar member: {name}')
+            record["sha256"] = digest.hexdigest()
+            _annotate_elf(record, first_bytes)
         elif member.isdir():
             directory.joinpath(*path.parts).mkdir(parents=True, exist_ok=True)
         inventory.append(record)
     return inventory
 
 
-def legacy_kernel_data(payload: bytes, *, limit=128 * 1024 * 1024, seconds=300) -> tuple[int, bytes] | None:
-    """Locate the validated gzip stream in a PowerPC self-extracting zImage."""
+def legacy_kernel_data(payload: bytes) -> tuple[int, bytes] | None:
+    """Locate a complete gzip stream in a legacy PowerPC kernel wrapper."""
     offset = payload.find(b"\x1f\x8b\x08")
-    deadline = time.monotonic() + seconds
-    work = 0
     view = memoryview(payload)
     while offset >= 0:
-        if time.monotonic() >= deadline or work >= 64 * 1024 * 1024:
-            raise ValueError('legacy kernel scan exceeds its resource budget')
-        stream = zlib.decompressobj(31)
+        decoder = zlib.decompressobj(31)
         chunks = []
-        total = 0
         cursor = offset
         try:
-            # Limit candidate input as well as output; repeated false markers
-            # must not copy or decompress every suffix of a large wrapper.
-            while cursor < len(payload) and not stream.eof:
-                if time.monotonic() >= deadline or work >= 64 * 1024 * 1024:
-                    raise ValueError('legacy kernel scan exceeds its resource budget')
-                length = min(len(payload) - cursor, 65536, 64 * 1024 * 1024 - work)
-                work += length
-                chunk = stream.decompress(view[cursor:cursor + length], limit - total + 1)
-                chunks.append(chunk)
-                total += len(chunk)
-                if total > limit:
-                    raise ValueError('legacy kernel data exceeds its inventory budget')
+            while cursor < len(payload) and not decoder.eof:
+                length = min(len(payload)-cursor, 65536)
+                chunks.append(decoder.decompress(view[cursor:cursor+length]))
                 cursor += length
         except zlib.error:
             pass
         else:
-            if stream.eof:
+            if decoder.eof:
                 return offset, b''.join(chunks)
-        offset = payload.find(b"\x1f\x8b\x08", offset + 1)
+        offset = payload.find(b"\x1f\x8b\x08", offset+1)
     return None
 
 
-def _uimage_data(data, compression, limit):
-    # Compression identifiers: U-Boot include/image.h, enum IH_COMP_*.
-    # https://github.com/u-boot/u-boot/blob/master/include/image.h
+def _uimage_data(data, compression):
     if compression == 0:
-        if len(data) > limit:
-            raise ValueError('kernel data exceeds its inventory budget')
         return data
     if compression == 1:
         decoder = zlib.decompressobj(31)
     elif compression == 2:
         decoder = bz2.BZ2Decompressor()
     elif compression == 3:
-        decoder = lzma.LZMADecompressor(memlimit=128 * 1024 * 1024)
+        decoder = lzma.LZMADecompressor()
     else:
         raise ValueError('unsupported uImage compression')
-    result = decoder.decompress(data, max_length=limit + 1)
-    if not decoder.eof or len(result) > limit:
-        raise ValueError('kernel stream is truncated or exceeds its inventory budget')
+    result = decoder.decompress(data)
+    if not decoder.eof:
+        raise ValueError('kernel stream is truncated')
     return result
 
 
-def _unpack_cramfs(payload, directory, budget):
+def _unpack_cramfs(payload, directory):
     order, offset = cramfs.detect_filesystem(payload)
     root = cramfs.inode_at(payload, offset + cramfs.ROOT_INODE_OFFSET, order)
     entries = []
     stack = [('.', root, frozenset())]
     while stack:
         name, inode, ancestors = stack.pop()
-        if len(PurePosixPath(name).parts) > budget.limits.depth:
-            raise ValueError('CRAMFS directory depth exceeds the inventory limit')
         mode = inode['mode']
         record = {'path': name, 'mode': stat.S_IMODE(mode), 'uid': inode['uid'], 'gid': inode['gid']}
         if stat.S_ISDIR(mode):
             location = (inode['offset'], inode['size'])
             if location in ancestors:
                 raise ValueError('cyclic CRAMFS directory')
-            budget.consume(0)
             record['type'] = 'directory'
             (directory / name).mkdir(parents=True, exist_ok=True)
             for child_name, child in reversed(list(cramfs.entries(payload, inode, order))):
@@ -272,8 +179,7 @@ def _unpack_cramfs(payload, directory, budget):
                 relative = child_name if name == '.' else name + '/' + child_name
                 stack.append((relative, child, ancestors | {location}))
         elif stat.S_ISREG(mode) or stat.S_ISLNK(mode):
-            budget.consume(inode['size'])
-            content = cramfs.read_file(payload, inode, order, max_bytes=budget.limits.expanded_bytes)
+            content = cramfs.read_file(payload, inode, order)
             if stat.S_ISLNK(mode):
                 record.update(type='symlink', target=content.decode('utf-8', 'surrogateescape'))
             else:
@@ -283,42 +189,17 @@ def _unpack_cramfs(payload, directory, budget):
                 record.update(type='file', size=len(content), sha256=sha256(content))
                 _annotate_elf(record, content)
         else:
-            budget.consume(0)
             record.update(type='special', device=inode['size'])
         entries.append(record)
     return {'format': 'cramfs', 'byte_order': order, 'root': directory.name,
             'entries': sorted(entries, key=lambda row: row['path'])}
 
 
-def _unpack_squashfs(component, directory, budget):
-    deadline = time.monotonic() + budget.limits.decoder_seconds
+def _unpack_squashfs(component, directory):
     command = ['unsquashfs', '-no-progress', '-no-xattrs', '-d', str(directory), str(component)]
-    def measure():
-        size = count = 0
-        for path in directory.rglob('*'):
-            info = path.lstat()
-            count += 1
-            if len(path.relative_to(directory).parts) > budget.limits.depth:
-                raise ValueError('filesystem directory depth exceeds the inventory limit')
-            size += info.st_size if stat.S_ISREG(info.st_mode) else 0
-            budget.check(size, count)
-        return size, count
-    with subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as process:
-        try:
-            while process.poll() is None:
-                if time.monotonic() >= deadline:
-                    raise TimeoutError('filesystem decoder timed out')
-                measure()
-                time.sleep(.1)
-            if process.returncode:
-                raise ValueError('filesystem decoder failed')
-        finally:
-            if process.poll() is None:
-                process.kill()
-                process.wait()
+    subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
     if not directory.is_dir():
         raise ValueError('filesystem decoder produced no tree')
-    budget.consume(*measure())
     manifest = filesystem_manifest(directory)
     manifest['format'] = 'squashfs'
     for record in manifest['entries']:
@@ -328,15 +209,11 @@ def _unpack_squashfs(component, directory, budget):
     return manifest
 
 
-def inventory_package(source, directory, keys=None, *, store_sections=False, limits=None):
+def inventory_package(source, directory, keys=None, *, store_sections=False):
     """Extract available payloads and analyze recognized containers for any model."""
     if directory.exists() and any(directory.iterdir()):
         raise ValueError('inventory output directory must be empty')
     directory.mkdir(parents=True, exist_ok=True)
-    limits = limits or InventoryLimits()
-    if min(limits.expanded_bytes, limits.files, limits.depth, limits.decoder_seconds) <= 0:
-        raise ValueError('inventory limits must be positive')
-    budget = _Budget(limits)
     data = source.read_bytes()
     sections = parse_bytes(data)
     if not sections:
@@ -372,14 +249,13 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
         payload = (directory / component['filename']).read_bytes()
         _annotate_elf(component, payload)
         expanded = directory / (prefix + '-files')
-        prior_budget = budget.bytes, budget.files
         try:
             if section.section_type == 23:
-                record['members'] = unpack_tar(payload, expanded, budget=budget)
+                record['members'] = unpack_tar(payload, expanded)
             elif payload[:4] in {b'hsqs', b'sqsh'}:
-                record['filesystem'] = _unpack_squashfs(directory / component['filename'], expanded, budget)
+                record['filesystem'] = _unpack_squashfs(directory / component['filename'], expanded)
             elif any(payload[offset:offset + 4] in cramfs.CRAMFS_MAGICS for offset in (0, 0x200)):
-                record['filesystem'] = _unpack_cramfs(payload, expanded, budget)
+                record['filesystem'] = _unpack_cramfs(payload, expanded)
             elif section.section_type == 4:
                 raise ValueError('unsupported root filesystem format')
             if section.section_type == 6:
@@ -391,7 +267,7 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
                     if 64 + size > len(payload):
                         raise ValueError('truncated uImage data')
                     compressed = payload[64:64 + size]
-                    kernel = _uimage_data(compressed, payload[31], min(128 * 1024 * 1024, limits.expanded_bytes - budget.bytes))
+                    kernel = _uimage_data(compressed, payload[31])
                     header = bytearray(payload[:64])
                     header[4:8] = bytes(4)
                     record['uimage'] = {'name': payload[32:64].rstrip(b'\0').decode(errors='replace'),
@@ -402,13 +278,11 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
                         'header_crc_valid': zlib.crc32(header) == int.from_bytes(payload[4:8], 'big'),
                         'data_crc_valid': zlib.crc32(compressed) == int.from_bytes(payload[24:28], 'big')}
                 else:
-                    decoded = legacy_kernel_data(payload, limit=min(128 * 1024 * 1024, limits.expanded_bytes - budget.bytes),
-                                                 seconds=limits.decoder_seconds)
+                    decoded = legacy_kernel_data(payload)
                     if decoded:
                         offset, kernel = decoded
                         record['zimage'] = {'gzip_offset': offset, 'bytes': len(kernel), 'sha256': sha256(kernel)}
                 if kernel is not None:
-                    budget.consume(len(kernel))
                     name = prefix + '-unpacked.bin'
                     (directory / name).write_bytes(kernel)
                     report['derived'].append({'package_id': source.stem, 'section_index': section.index,
@@ -417,7 +291,6 @@ def inventory_package(source, directory, keys=None, *, store_sections=False, lim
                     _annotate_elf(report['derived'][-1], kernel)
         except Exception as error:
             shutil.rmtree(expanded, ignore_errors=True)
-            budget.bytes, budget.files = prior_budget
             record['analysis_error'] = {'type': type(error).__name__, 'message': getattr(error, 'strerror', None) or str(error)}
             report['errors'].append({'section_index': section.index, **record['analysis_error']})
         binaries = [component, *record.get('members', []), *record.get('filesystem', {}).get('entries', []),

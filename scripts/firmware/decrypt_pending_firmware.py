@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.catalog import EXTRACTABLE_SECTION_TYPES  # noqa: E402
 from sonos_firmware.extract import extract_components, extract_available_components  # noqa: E402
 from sonos_firmware.storage import atomic_json, file_sha256 as _sha256  # noqa: E402
@@ -58,11 +59,8 @@ def main() -> int:
                              "use a staging dir so receipts only reach data/raw after "
                              "their components are published")
     parser.add_argument("--summary", type=Path)
-    parser.add_argument('--max-packages', type=int, default=24)
     parser.add_argument('--state', type=Path)
     args = parser.parse_args()
-    if args.max_packages <= 0:
-        parser.error('--max-packages must be positive')
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8")) if args.catalog.exists() else {'packages': [], 'raw_images': []}
     ledger = json.loads(args.ledger.read_text(encoding="utf-8")) if args.ledger.exists() else {'recovered_keys': {}}
@@ -170,13 +168,15 @@ def main() -> int:
     for entry in pending:
         if observations.get(identity(entry), {}).get('revision') != revision(entry):
             eligible.pop(identity(entry), None)
-    queue = select(pending, eligible, key=identity, limit=args.max_packages, state=state, queue=args.repo)
+    queue = select(pending, eligible, key=identity)
 
     decrypted: list[str] = []
     extracted_plaintext: list[str] = []
     skipped: list[dict] = inventory_skipped
     failures = []
     for entry in queue:
+        if winding_down():
+            break
         package, model, recipient = entry["package"], entry["model"], entry["recipient"]
         prior = observations.get(package['id'], {})
         try:
