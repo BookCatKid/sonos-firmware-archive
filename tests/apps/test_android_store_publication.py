@@ -4,6 +4,7 @@ import importlib.util
 import io
 import json
 import sys
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -41,7 +42,7 @@ class AndroidStorePublicationTests(unittest.TestCase):
                 {'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}, [self.apk])),
             patch.object(STORE, 'apk_metadata', return_value={
                 'package': 'com.sonos.acr2', 'version_code': '1', 'version_name': '1.0'}),
-            patch.object(STORE.subprocess, 'check_output', side_effect=self.verify),
+            patch.object(subprocess, 'check_output', side_effect=self.verify),
         ):
             mocked.start()
             self.addCleanup(mocked.stop)

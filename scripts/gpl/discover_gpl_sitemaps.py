@@ -9,17 +9,14 @@ only a candidate; `archive_gpl_direct.py discover` validates the actual index.
 from __future__ import annotations
 
 import argparse
-import json
-import re
 import sys
-import time
 import urllib.parse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from sonos_firmware.deadline import winding_down
 from sonos_firmware.gpl_archive import (
-    USER_AGENT, VERSION_IN_URL, atomic_json, get_page, load_json, pause,
+    VERSION_IN_URL, atomic_json, get_page, load_json, pause,
     sha256_bytes, timestamp, valid_version,
 )
 from sonos_firmware.retry import checkpoint, due

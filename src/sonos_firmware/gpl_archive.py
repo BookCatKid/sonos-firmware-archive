@@ -20,7 +20,7 @@ import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
+from collections.abc import Callable
 from types import SimpleNamespace
 
 from .retry import checkpoint, error_checkpoint, retry_after_seconds

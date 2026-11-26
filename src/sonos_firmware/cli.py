@@ -60,7 +60,6 @@ def main() -> int:
     discover = sub.add_parser("discover", help="probe every artifact named by a Sonos UPM")
     discover.add_argument("manifest", type=Path)
     discover.add_argument("--output", type=Path, required=True)
-    discover.add_argument("--workers", type=int, default=6)
     discover.add_argument(
         "--source-url",
         help="manifest URL, used to resolve relative artifact paths",
@@ -153,7 +152,7 @@ def main() -> int:
         return 0 if report['complete'] else 1
     if args.command == "discover":
         metadata, candidates = parse_manifest(args.manifest, source_url=args.source_url)
-        results = probe_all(candidates, args.workers)
+        results = probe_all(candidates)
         write_json(args.output, {**metadata, "candidates": results})
         available = sum(item["available"] for item in results)
         print(f"discovered {len(results)} candidates; {available} available")

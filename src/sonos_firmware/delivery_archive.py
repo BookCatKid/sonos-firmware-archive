@@ -7,6 +7,7 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .deadline import winding_down
 from .releases import ensure_release, publish_collection, publication_receipt, receipt_matches_repository
 from .retry import checkpoint, select
 from .storage import atomic_json
@@ -167,6 +168,8 @@ def recover_deliveries(receipt, repository, source_kind, packages, *, selector=N
     queue = select(pending, {row['capture_id']: row for row in pending}, key=lambda row: row['capture_id'])
     recovered = []
     for capture in queue:
+        if winding_down():
+            break
         artifact = capture['artifact']
         try:
             # These intentionally absent paths allow remote-only reconciliation.

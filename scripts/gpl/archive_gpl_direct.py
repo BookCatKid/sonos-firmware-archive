@@ -20,7 +20,7 @@ from sonos_firmware.gpl_archive import (
     timestamp, valid_version, version_at, file_sha256, source_receipt_keys,
 )
 
-from sonos_firmware.retry import checkpoint, due, select
+from sonos_firmware.retry import due, select
 
 ROOT = Path(__file__).resolve().parents[2]
 LIVE = ROOT / "data/gpl/live"
@@ -112,6 +112,7 @@ def discover(args: argparse.Namespace) -> int:
     version_at(cursor)  # Validate the saved ordinal before any network request.
     backoff = dict(state.get('source_backoff', {}))
     paused = bool(backoff) and not due(backoff)
+    next_saved = exploration.get('next_saved', True)
     total = 0
     errors = [{'state': 'source-cooldown', 'reason': backoff.get('reason'),
                'http_status': backoff.get('http_status')}] if paused else []
@@ -123,7 +124,8 @@ def discover(args: argparse.Namespace) -> int:
         state.update(updated=timestamp(), status='partial' if errors or pending else 'ok', errors=errors,
                      checked_this_run=total, pending_versions=pending, pending_version_total=len(pending),
                      source_backoff=backoff,
-                     exploration={'policy': 'continuing-numeric-frontier', 'next_ordinal': cursor})
+                     exploration={'policy': 'continuing-numeric-frontier', 'next_ordinal': cursor,
+                                  'next_saved': next_saved})
         atomic_json(output/'discovery.json', state)
 
     save()
@@ -141,8 +143,22 @@ def discover(args: argparse.Namespace) -> int:
             if version not in checked and version not in pending:
                 yield {'version': version, 'priority': 2, 'evidence': []}
 
-    from itertools import chain
-    for item in chain(todo, frontier()):
+    pending_items = iter(todo)
+
+    def work():
+        nonlocal next_saved
+        speculative = frontier()
+        while not winding_down():
+            saved = next_saved
+            try:
+                item = next(pending_items) if saved else next(speculative)
+            except StopIteration:
+                item = next(speculative)
+                saved = False
+            next_saved = not saved
+            yield item
+
+    for item in (() if paused else work()):
         if winding_down():
             break
         version = item["version"]

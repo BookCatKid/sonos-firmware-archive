@@ -16,7 +16,7 @@ from curl_cffi import requests as tls_requests
 from sonos_firmware.deadline import winding_down
 from sonos_firmware.storage import atomic_json
 from sonos_firmware.installers import family as installer_family, version as installer_version, observed_candidates, installer_location, manifest_candidates
-from sonos_firmware.source_urls import open_advertised, sonos_url, advertised_url, curl_source_options
+from sonos_firmware.source_urls import open_advertised, advertised_url, curl_source_options
 from sonos_firmware.archive_replay import canonical_source
 
 REDIRECT = "https://www.sonos.com/redir/controller_software_android2"

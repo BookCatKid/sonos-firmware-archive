@@ -3,20 +3,18 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 from pathlib import Path
-import selectors
 import subprocess
 import tarfile
 import tempfile
-import time
 import urllib.error
 from datetime import datetime, timezone
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.exceptions import UnsupportedAlgorithm
 
+from .deadline import winding_down
 from . import cramfs
 from .legacy import discover_legacy_updater_key
 from .mdp import write_private_key_exclusive
@@ -253,7 +251,7 @@ def _source_key(body, source, model, expected_recipient, read_member):
 
 def recover_catalog_key(root, catalog, model, expected_recipient, output, repository, *,
                         read_artifact=None, read_member=None):
-    """Try bounded verified sources and write only an exact matching key.
+    """Try verified sources and write only an exact matching key.
 
     Return public provenance; derivation material and keys never enter reports.
     The callbacks are internal seams for offline fixtures and decoder isolation.
@@ -291,6 +289,8 @@ def recover_catalog_key(root, catalog, model, expected_recipient, output, reposi
     output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     failures = []
     for source in queue:
+        if winding_down():
+            break
         assessment['attempted_sources'] += 1
         atomic_json(state_path, state)
         try:

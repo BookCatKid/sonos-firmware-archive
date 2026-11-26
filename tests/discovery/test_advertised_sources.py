@@ -11,6 +11,7 @@ from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.discovery.test_frontier import scan_frontier
 from sonos_firmware import discovery, firmware_archive, frontier, installers, source_urls
 from sonos_firmware.crawl import crawl_manifests
 from sonos_firmware.package_history import ManifestHistory
@@ -116,11 +117,12 @@ class AdvertisedSourceTests(unittest.TestCase):
             return {**asdict(candidate), 'available': True, 'http_status': 200}
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[ROOT]), patch.object(frontier.time, 'sleep'):
-            first = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
-                fetch=fetch, probe_fn=probe, max_manifests=1, inference_limit=1)
+            with patch('sonos_firmware.crawl.winding_down', side_effect=lambda: bool(requests)):
+                first = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                    fetch=fetch, probe_fn=probe, work_units=1)
             self.assertEqual(first['pending_manifest_urls'], [PAGE])
-            resumed = frontier.discover(json.loads(json.dumps(first)), Path(temporary),
-                metadata_fetch=lambda: (b'', {}), fetch=fetch, probe_fn=probe, max_manifests=1, inference_limit=1)
+            resumed = scan_frontier(json.loads(json.dumps(first)), Path(temporary),
+                metadata_fetch=lambda: (b'', {}), fetch=fetch, probe_fn=probe, work_units=1, )
             row = next(row for row in resumed['candidates'] if row['url'] == PAYLOAD)
             self.assertEqual(row['advertised_by'], ROOT)
             body = section(99, 0, b'synthetic external firmware')
@@ -131,8 +133,8 @@ class AdvertisedSourceTests(unittest.TestCase):
             firmware_archive.register_capture(Path(temporary), captured(row, body))
             saved = firmware_archive.catalog_at(Path(temporary)/'data/catalog.json')['packages'][0]
             self.assertEqual(saved['advertised_sources'][PAYLOAD], ROOT)
-            third = frontier.discover(json.loads(json.dumps(resumed)), Path(temporary),
-                metadata_fetch=lambda: (b'', {}), fetch=fetch, probe_fn=probe, max_manifests=1, inference_limit=1)
+            third = scan_frontier(json.loads(json.dumps(resumed)), Path(temporary),
+                metadata_fetch=lambda: (b'', {}), fetch=fetch, probe_fn=probe, work_units=1, )
         self.assertIn(PAYLOAD, third['probes'])
         self.assertNotIn(PAYLOAD, requests)  # Discovery never GETs the firmware.
 
@@ -162,13 +164,12 @@ class AdvertisedSourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[ROOT]), patch.object(frontier.time, 'sleep'):
             with patch.object(frontier, 'crawl_manifests', wraps=crawl_manifests):
-                first = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
-                    fetch=lambda url: xml if url == ROOT else challenged(url), max_manifests=2, inference_limit=1)
+                first = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                    fetch=lambda url: xml if url == ROOT else challenged(url), work_units=1, )
             self.assertIn(PAGE, first['pending_manifest_urls'])
             self.assertEqual(first['advertised_sources'][PAGE], ROOT)
-            next_worker = frontier.discover(json.loads(json.dumps(first)), Path(temporary),
-                metadata_fetch=lambda: (b'', {}), max_manifests=1, inference_limit=1,
-                fetch=lambda url: ('<a href="'+PAYLOAD+'">Download</a>').encode(),
+            next_worker = scan_frontier(json.loads(json.dumps(first)), Path(temporary),
+                metadata_fetch=lambda: (b'', {}), work_units=1, fetch=lambda url: ('<a href="'+PAYLOAD+'">Download</a>').encode(),
                 probe_fn=lambda c: {**asdict(c), 'available': True, 'http_status': 200})
         self.assertEqual(next_worker['probes'][PAYLOAD]['advertised_by'], ROOT)
 
@@ -180,9 +181,8 @@ class AdvertisedSourceTests(unittest.TestCase):
         seen = []
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (ups, {}),
-                fetch=missing, model_max=0, inference_limit=1,
-                probe_fn=lambda c: seen.append(c) or {**asdict(c), 'available': True, 'http_status': 200})
+            state = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (ups, {}),
+                fetch=missing, work_units=1, probe_fn=lambda c: seen.append(c) or {**asdict(c), 'available': True, 'http_status': 200})
         self.assertEqual(seen[0].url, 'https://metadata-cdn.example/firmware/1.0-1-1-0.upd')
         self.assertEqual(seen[0].advertised_by, UPDATE_METADATA_URL)
         self.assertEqual(state['candidates'][0]['advertised_by'], UPDATE_METADATA_URL)

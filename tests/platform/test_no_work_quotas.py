@@ -58,7 +58,7 @@ class NoWorkQuotas(unittest.TestCase):
                             bad.append(f'{path.relative_to(ROOT)}:{node.lineno} {node.name}({name})')
         self.assertEqual(bad, [])
 
-    def test_no_retired_quota_flag_is_registered_with_any_parser(self):
+    def test_no_work_quota_flag_is_registered_with_any_parser(self):
         found = []
         for directory in ('src', 'scripts'):
             for path in (ROOT / directory).rglob('*.py'):
@@ -90,7 +90,7 @@ class NoWorkQuotas(unittest.TestCase):
                         function(*args, **{keyword: 1})
 
     def test_public_discovery_entrypoints_do_not_have_wildcard_quota_options(self):
-        """A former **options parameter silently swallowed limit=; that is forbidden."""
+        """Unknown arguments cannot bypass a strict discovery interface."""
         from sonos_firmware import archive_index, frontier, commoncrawl
         for function in (archive_index.discover_archives, archive_index.discover_sources,
                          frontier.discover, frontier.installer_manifest_roots):
@@ -141,7 +141,7 @@ class NoWorkQuotas(unittest.TestCase):
         self.assertIn('unsupported firmware provider option(s): limit', actual.stderr)
 
     def test_source_scan_can_try_all_five_published_mirrors(self):
-        """Regression: formerly only the first four release aliases were tried."""
+        """Every published mirror is eligible for a verified acquisition."""
         import hashlib
         import zipfile
         import io

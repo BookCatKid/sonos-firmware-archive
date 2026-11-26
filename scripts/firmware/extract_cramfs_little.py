@@ -7,8 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from sonos_firmware.cramfs import (
-    ROOT_INODE_OFFSET, PADDED_SUPERBLOCK_OFFSET, CRAMFS_MAGICS,
-    inode_at, entries, find_inode, read_file, detect_filesystem,
+    ROOT_INODE_OFFSET, find_inode, read_file, detect_filesystem,
 )
 
 

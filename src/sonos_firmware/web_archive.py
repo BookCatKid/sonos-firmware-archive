@@ -293,10 +293,10 @@ def _stage_bundle(document, metadata):
     if renamed_bundle != bundle:
         try:
             renamed_bundle.hardlink_to(bundle)
-        except FileExistsError:
+        except FileExistsError as error:
             if (renamed_bundle.stat().st_size != document['bundle']['bytes'] or
                     file_sha256(renamed_bundle) != document['bundle']['sha256']):
-                raise ValueError('retained bundle name belongs to another capture')
+                raise ValueError('retained bundle name belongs to another capture') from error
         document["bundle"]["file"] = str(renamed_bundle)
     atomic_json(metadata, document)
 
@@ -456,17 +456,18 @@ def archive_apps(apps, destination, receipt, repository, *, capture_id=None, upl
                 ensure_release(repository, document['release_tag'], config['title'],
                                'Account-free web deployment capture recovery.')
                 captures = [item for item in document['resources'] if item.get('release_asset')] + [document['bundle']]
-                def retained_path(item):
+                paths = []
+                for item in captures:
                     if item is document['bundle']:
                         path = destination/document['app']/item['release_asset']
                     else:
                         path = destination/document['app']/document['capture_id']/item['file']
                     if not path.resolve().is_relative_to(destination.resolve()):
                         raise ValueError('retained web capture escapes its worker directory')
-                    return path
+                    paths.append((path, item))
                 series = ReleaseSeries(repository, config['release_tag'], config['title'],
                                        'Account-free web deployment capture recovery.')
-                proofs = series.publish_collection([(retained_path(item), item) for item in captures])
+                proofs = series.publish_collection(paths)
                 for item in captures:
                     item.update(proofs[item['release_asset']])
                 if series.errors:

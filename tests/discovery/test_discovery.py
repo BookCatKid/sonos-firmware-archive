@@ -20,7 +20,7 @@ class DiscoveryTests(unittest.TestCase):
                     'https://update.sonos.com/firmware/x/^unknown',
                     'https://update.sonos.com/firmware/x/^1.2-3/extra'):
             with self.subTest(uri=uri):
-                self.assertEqual(expand_metadata_base(uri), [])
+                self.assertEqual(expand_metadata_base(uri, []), [])
 
     def test_metadata_base_accepts_advertised_new_sonos_host_and_path(self):
         rows = expand_metadata_base('https://new-firmware.sonos.com/new-layout/^1.2-3', [300])

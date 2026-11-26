@@ -6,7 +6,6 @@ import hashlib
 import plistlib
 import subprocess
 import tempfile
-import time
 import urllib.error
 import urllib.request
 import zipfile
@@ -144,7 +143,7 @@ def _complete_member(output, expected):
     return output.read_bytes()
 
 
-def _inspect_desktop(candidate, path):
+def _inspect_desktop(path):
     """Observe the actual app version needed to discover native manifest URLs.
 
     Algorithm provenance: ReverseTelnet's manifest_files_provenance_and_research.md.
@@ -258,7 +257,7 @@ def _inspect_desktop(candidate, path):
 def inspect_desktop(candidate, path):
     # Metadata discovery must never prevent preservation of the original bytes.
     try:
-        return _inspect_desktop(candidate, path)
+        return _inspect_desktop(path)
     except (OSError, ValueError, subprocess.SubprocessError, plistlib.InvalidFileException, ExpatError) as error:
         return {'discovery_errors': [{'phase': 'desktop-metadata', 'error': str(error)}]}
 

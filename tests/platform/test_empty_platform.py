@@ -14,6 +14,7 @@ from sonos_firmware.platform.runner import plan, run
 from sonos_firmware.platform.model import Step
 from sonos_firmware.platform.git_state import validate_metadata
 from sonos_firmware.platform.tasks import extract_firmware
+from tests.discovery.test_frontier import scan_frontier
 from sonos_firmware import discovery, frontier, releases, release_series
 from tests.apps.test_app_archive import FakeGitHub
 from tests.firmware.test_firmware_archive import Response
@@ -49,8 +50,8 @@ class EmptyPlatformTests(unittest.TestCase):
              patch.object(releases, 'upload_streaming', side_effect=github.upload_streaming), \
              patch.object(discovery, 'open_advertised', side_effect=lambda *args, **kwargs: Response(body)):
             root = Path(temporary)
-            result = frontier.discover({}, root/'observations', fetch=fetch, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), profile_limit=0, inference_limit=1, max_manifests=8)
+            result = scan_frontier({}, root/'observations', fetch=fetch, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), work_units=1, )
             self.assertEqual(github.releases, {})
             self.assertFalse((root/'data').exists())
             (root/'worker').mkdir()

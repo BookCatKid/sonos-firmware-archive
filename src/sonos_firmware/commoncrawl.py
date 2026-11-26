@@ -159,9 +159,9 @@ def discover(previous, fetch, *, roots, extensions, allowed, match_type=None):
             if getattr(error, 'code', None) in {403, 429} or retry_after_seconds(error) is not None:
                 state['host_retry'] = error_checkpoint(error, state.get('host_retry'))
     entries, artifacts = _observations(previous.get('entries', {})), _observations(previous.get('artifacts', {}))
-    revision = hashlib.sha256(json.dumps([list(roots.items()), list(extensions), match_type]).encode()).hexdigest()
+    revision = hashlib.sha256(json.dumps([list(roots.items()), list(extensions), match_type, 'server-default-page-size']).encode()).hexdigest()
     query_specs = {root: hashlib.sha256(json.dumps([root, list(extensions),
-        match_type or ('domain' if root == 'sonos.com/' else 'prefix')]).encode()).hexdigest()
+        match_type or ('domain' if root == 'sonos.com/' else 'prefix'), 'server-default-page-size']).encode()).hexdigest()
         for root in roots.values()}
     if previous.get('query_revision') != revision:
         legacy_values = {key.partition('|')[2] for key in state['queries']}
@@ -198,7 +198,7 @@ def discover(previous, fetch, *, roots, extensions, allowed, match_type=None):
             visited.add(identity)
             continue
         query = {'url': root, 'matchType': match_type or ('domain' if root == 'sonos.com/' else 'prefix'),
-                 'output': 'json', 'pageSize': 1,
+                 'output': 'json',
                  'filter': ['=status:200', '~url:(?i).*[.]('+'|'.join(re.escape(ext) for ext in extensions)+')([?].*)?$']}
         try:
             page = prior.get('next_page', 0) if prior.get('status') != 'complete' else 0

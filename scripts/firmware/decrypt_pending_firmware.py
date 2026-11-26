@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.catalog import EXTRACTABLE_SECTION_TYPES  # noqa: E402
 from sonos_firmware.extract import extract_components, extract_available_components  # noqa: E402
 from sonos_firmware.storage import atomic_json, file_sha256 as _sha256  # noqa: E402
@@ -174,6 +175,8 @@ def main() -> int:
     skipped: list[dict] = inventory_skipped
     failures = []
     for entry in queue:
+        if winding_down():
+            break
         package, model, recipient = entry["package"], entry["model"], entry["recipient"]
         prior = observations.get(package['id'], {})
         try:

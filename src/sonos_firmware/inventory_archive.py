@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 
+from .deadline import winding_down
 from . import firmware_inventory, extract, cramfs, upd, catalog
 from .keyring import recipient_key_path
 from .releases import publish_verified, verified_asset, publication_receipt, download_verified
@@ -98,6 +99,8 @@ def inventory_preserved(root, work, repository, key_directory, *, acquire=None, 
     pending = [key for key, value in captures.items() if value['status'] == 'pending']
     recover = select(pending, captures, key=lambda key: key)
     for identity in recover:
+        if winding_down():
+            break
         capture = captures[identity]
         recovery_attempted += 1
         try:
@@ -133,6 +136,8 @@ def inventory_preserved(root, work, repository, key_directory, *, acquire=None, 
     queue = select([row for row in packages if row['id'] not in resolved], eligible,
                    key=lambda row: row['id'])
     for package in queue:
+        if winding_down():
+            break
         identity = package['id']
         keys, revision = contexts[identity]
         attempted += 1

@@ -7,6 +7,7 @@ from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.discovery.test_frontier import scan_frontier
 from sonos_firmware import frontier, historical_firmware as history
 from sonos_firmware.storage import atomic_json
 
@@ -46,7 +47,7 @@ class HistoricalLandingPageTests(unittest.TestCase):
                 'status': 'preserved', 'url': MANIFEST, 'manifest': manifest,
                 'checked_at': '2026-01-01T00:00:00+00:00', 'next_attempt_at': '9999-01-01T00:00:00+00:00'}}}})
             state = {}
-            result = history.archive_manifests(root, root/'worker', 'fresh/archive', state, limit=1, paused=True)
+            result = history.archive_manifests(root, root/'worker', 'fresh/archive', state, paused=True)
             saved = json.loads(path.read_text())
         self.assertEqual(result['attempted'], 0)
         self.assertEqual(set(state['pending_manifest_urls']),
@@ -68,8 +69,8 @@ class HistoricalLandingPageTests(unittest.TestCase):
             return {**asdict(row), 'available': False, 'http_status': 404}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            result = frontier.discover(state, Path(temporary), fetch=fetch, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1)
+            result = scan_frontier(state, Path(temporary), fetch=fetch, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), work_units=1, )
         self.assertIn(PAGE, requests)
         self.assertNotIn(PAGE, {row['url'] for row in result['candidates']})
         self.assertNotIn(PAGE, result['probes'])

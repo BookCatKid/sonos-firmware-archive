@@ -46,7 +46,7 @@ def _aes_ecb(key: bytes, block: bytes) -> bytes:
 def _bcc(key: bytes, data: bytes) -> bytes:
     chain = bytes(16)
     for offset in range(0, len(data), 16):
-        block = bytes(a ^ b for a, b in zip(chain, data[offset : offset + 16]))
+        block = bytes(a ^ b for a, b in zip(chain, data[offset : offset + 16], strict=True))
         chain = _aes_ecb(key, block)
     return chain
 
@@ -87,7 +87,7 @@ class _CTRDRBG:
         while len(temporary) < 48:
             self.counter = (int.from_bytes(self.counter, "big") + 1).to_bytes(16, "big")
             temporary += _aes_ecb(self.key, self.counter)
-        temporary = bytes(a ^ b for a, b in zip(temporary, provided))
+        temporary = bytes(a ^ b for a, b in zip(temporary, provided, strict=True))
         self.key = temporary[:32]
         self.counter = temporary[32:48]
 
@@ -341,7 +341,7 @@ def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: 
     if len(expected_recipient) != 40 or any(c not in '0123456789abcdef' for c in expected_recipient):
         raise ValueError('expected recipient must be a SHA-1 fingerprint')
     order = {1: 'little', 2: 'big'}.get(updater[5]) if updater[:4] == b'\x7fELF' and len(updater) >= 6 else None
-    recipes = [(byte_order, word, legacy_seed(model, word, byte_order=byte_order))
+    recipes = [(byte_order, legacy_seed(model, word, byte_order=byte_order))
                for byte_order in ([order] if order else ['big', 'little']) for word in (SYSTEM_WORD, 0)]
     markers = []
     start = 0
@@ -358,12 +358,12 @@ def discover_legacy_updater_key(updater: bytes, model: int, expected_recipient: 
             return None
 
     # Try every cheap marker/derivation pair before scanning a whole binary.
-    for byte_order, word, seed in recipes:
+    for byte_order, seed in recipes:
         for offset in markers:
             result = recover(offset, byte_order, seed)
             if result:
                 return result
-    for byte_order, word, seed in recipes:
+    for byte_order, seed in recipes:
         key, iv, _ = _random_material_from_seed(seed)
         shape = [0x30, 0x82, None, None, 0x30, None, 0x06, len(PKCS12_RC4_128_OID), *PKCS12_RC4_128_OID[:8]]
         prefix = b''.join(b'.' if value is None else re.escape(bytes([value ^ iv[i]]))

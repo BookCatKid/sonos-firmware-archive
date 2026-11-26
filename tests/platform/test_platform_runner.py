@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 import subprocess
 import unittest
@@ -168,6 +169,32 @@ class RunnerTests(unittest.TestCase):
                          execute=lambda *args: (1, 'error token=' + token))
             self.assertNotIn(token, json.dumps(report))
             self.assertIn('[REDACTED]', json.dumps(report))
+
+    def test_large_child_log_is_streamed_redacted_and_classified(self):
+        import sys
+        token = 'not-for-run-report-secret-token'
+        script = ("import json, sys; from pathlib import Path; "
+                  "print('Traceback (most recent call last)'); "
+                  "[print('worker line', i, 'x'*100) for i in range(12000)]; "
+                  "Path(sys.argv[1]).write_text(json.dumps({'status': 'partial'})); "
+                  "print(sys.argv[2]); sys.exit(1)")
+        def provider(context):
+            report = context.work/'source.json'
+            return [Step('large-log', (sys.executable, '-c', script, str(report), token),
+                         report=str(report))]
+        original = Path.read_text
+        def read_text(path, *args, **kwargs):
+            if path.suffix == '.log':
+                raise AssertionError('worker logs must not be materialized into memory')
+            return original(path, *args, **kwargs)
+        with tempfile.TemporaryDirectory() as temporary, patch.object(Path, 'read_text', read_text):
+            report = run(self.target(), Path(temporary), 'owner/repo',
+                         environment={**os.environ, 'GITHUB_ACTIONS': 'true', 'GH_TOKEN': token},
+                         provider_map={'fixture': provider})
+        self.assertEqual(report['errors'][0]['kind'], 'process-exit')
+        self.assertNotIn(token, json.dumps(report))
+        self.assertIn('[REDACTED]', report['steps'][0]['output_tail'])
+        self.assertLessEqual(len(report['steps'][0]['output_tail']), 4000)
 
     def test_declared_targets_all_have_a_side_effect_free_plan(self):
         root = Path(__file__).resolve().parents[2]

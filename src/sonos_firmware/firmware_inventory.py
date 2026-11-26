@@ -2,20 +2,15 @@
 from __future__ import annotations
 import hashlib
 import bz2
-import gzip
 import io
 import json
-import math
 import lzma
 import shutil
 import stat
 import struct
 import subprocess
 import tarfile
-import tempfile
-import time
 import zlib
-from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from . import cramfs
 from .catalog import filesystem_manifest

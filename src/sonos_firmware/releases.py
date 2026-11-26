@@ -51,7 +51,7 @@ def public_release(repository: str, tag: str) -> dict:
         ))
         release = payload["data"]["repository"]["release"]
         if release is None:
-            raise urllib.error.HTTPError(request.full_url, 404, "release not found", {}, None)
+            raise urllib.error.HTTPError(request.full_url, 404, "release not found", {}, None) from None
         return {"id": release["databaseId"], "html_url": release["url"], "tag_name": tag}
 
 

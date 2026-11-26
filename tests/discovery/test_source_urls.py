@@ -9,6 +9,7 @@ from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
 from sonos_firmware import archive_index, discovery, installers, source_urls
+from tests.discovery.test_archive_index import scan_index
 from sonos_firmware.crawl import crawl_manifests
 
 
@@ -34,11 +35,11 @@ class SourceURLTests(unittest.TestCase):
             requests.append(url)
             return [['timestamp', 'original', 'digest'], ['20200101000000', firmware, 'fw'],
                     ['20200101000000', installer, 'app']]
-        result = archive_index.discover_sources({}, fetch=fetch, pages=1)
+        result = scan_index({}, fetch=fetch, requests=1)
         query = parse_qs(urlsplit(requests[0]).query)
         self.assertEqual((query['url'], query['matchType']), (['sonos.com/'], ['domain']))
         self.assertIn(firmware, result['artifacts'])
-        apps = archive_index.discover_sources({}, fetch=fetch, pages=1, extensions=('exe',),
+        apps = scan_index({}, fetch=fetch, requests=1, extensions=('exe',),
                                              allowed=installers.official_source)
         self.assertIn(installer, apps['artifacts'])
 
@@ -47,7 +48,7 @@ class SourceURLTests(unittest.TestCase):
         prior = {'schema_version': 2, 'cursors': {'update.sonos.com': 'old-scope'},
                  'artifacts': {url: {'timestamp': '20200101000000', 'digest': 'original'}}}
         requests = []
-        result = archive_index.discover_sources(prior, fetch=lambda url: requests.append(url) or [], pages=1)
+        result = scan_index(prior, fetch=lambda url: requests.append(url) or [], requests=1)
         self.assertNotIn('resumeKey', requests[0])
         self.assertEqual(result['cursors'], {'sonos.com': None})
         self.assertEqual(len(result['artifacts'][url]['captures']), 1)

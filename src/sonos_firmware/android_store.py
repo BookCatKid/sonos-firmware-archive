@@ -9,8 +9,6 @@ import re
 import subprocess
 import json
 import math
-import os
-import signal
 
 GOOPDL_REVISION = 'b66bf60d686fd93724b7c9f1963fe8bf4070b89d'
 
@@ -67,9 +65,9 @@ def play_profiles():
     return [profile for group in zip_longest(*groups) for profile in group if profile is not None]
 
 
-def run_apkeep(command, *, timeout=None):
+def run_apkeep(command):
     """Apkeep sometimes reports HTTP errors despite a successful exit status."""
-    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if re.search(r'HTTP\s*429\b|too many requests|rate[- ]limit(?:ed|ing)', result.stdout, re.IGNORECASE):
         match = re.search(r'retry.after\s*[:=]\s*(\d+)', result.stdout, re.IGNORECASE)
         raise StoreError('APKPureRateLimited', status_code=429,
@@ -81,9 +79,8 @@ def run_apkeep(command, *, timeout=None):
 
 def run_acquisition(command, *, cwd):
     """Wait for a child acquisition to finish, without imposing an elapsed-time cap."""
-    result = subprocess.run(command, cwd=cwd, text=True, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT)
-    return result
+    return subprocess.run(command, cwd=cwd, text=True, stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT)
 
 
 def play_client(auth_dir, arch, profile=None):

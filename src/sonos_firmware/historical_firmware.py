@@ -6,6 +6,7 @@ import tempfile
 import urllib.error
 from pathlib import Path
 
+from .deadline import winding_down
 from .archive_replay import replay_url, open_capture, canonical_source, capture_host
 from .archive_index import paused_index_hosts
 from .crawl import PACKAGE, landing_url
@@ -111,14 +112,16 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, acquire=
     queue = select(pending, observations, key=str)
     attempted = 0
     for identity in queue:
+        if winding_down():
+            break
         row = sources[identity]
         attempted += 1
         try:
             if (not isinstance(row['bytes'], int) or isinstance(row['bytes'], bool) or
-                    not 0 < row['bytes'] <= 2_000_000 or
+                    row['bytes'] <= 0 or
                     not isinstance(row['sha256'], str) or len(row['sha256']) != 64 or
                     any(c not in '0123456789abcdef' for c in row['sha256'])):
-                raise ValueError('saved manifest requires a bounded size and SHA-256 receipt')
+                raise ValueError('saved manifest requires a positive size and SHA-256 receipt')
             path = evidence/(row['sha256']+'.upm')
             evidence.mkdir(parents=True, exist_ok=True)
             if path.exists() and (path.stat().st_size != row['bytes'] or
@@ -179,6 +182,8 @@ def archive_manifests(root, work, repository, frontier, *, paused=False):
             'Exact independently discovered public update manifest captures.'))
     work.mkdir(parents=True, exist_ok=True)
     for identity in queue:
+        if winding_down():
+            break
         if backoff.paused('publication'):
             break
         prior = observations[identity]
@@ -201,10 +206,10 @@ def archive_manifests(root, work, repository, frontier, *, paused=False):
                 attempted += 1
                 with tempfile.TemporaryDirectory(dir=work, prefix='manifest-') as directory:
                     with open_capture(prior['url'], prior['archive_capture']) as response:
-                        data = response.read(2_000_001)
+                        data = response.read()
                         length = response.headers.get('Content-Length')
-                        if len(data) > 2_000_000 or (length is not None and int(length) != len(data)):
-                            raise ValueError('manifest exceeds 2 MB or has a truncated Content-Length')
+                        if length is not None and int(length) != len(data):
+                            raise ValueError('historical manifest Content-Length is truncated')
                         fetched_from = response.geturl()
                     body = Path(directory)/'capture.upm'
                     body.write_bytes(data)

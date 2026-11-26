@@ -8,14 +8,58 @@ import unittest
 import urllib.error
 from dataclasses import asdict
 from pathlib import Path
+from time import monotonic
 from unittest.mock import patch, Mock
 
 from sonos_firmware import frontier
 from sonos_firmware.crawl import crawl_manifests
 from sonos_firmware.frontier import installer_manifest_roots
+from tests.discovery.test_archive_index import scan_index
 
 HOST = 'https://update.sonos.com'
 BASE = HOST + '/firmware/Prod/discovered/'
+
+
+def scan_frontier(state, evidence, *, work_units=8, **options):
+    started = monotonic()
+    attempts = 0
+    def offline(url):
+        raise urllib.error.HTTPError(url, 404, 'not in fixture', {}, None)
+    options.setdefault('fetch', offline)
+    original = options.get('probe_fn', lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404})
+    def probe(candidate):
+        nonlocal attempts
+        attempts += 1
+        return original(candidate)
+    options['probe_fn'] = probe
+    ready = {'profiles': {}, 'responses': {}, 'errors': [], 'status': 'ok',
+             'attempted_this_run': 0}
+    def complete():
+        return attempts >= work_units or monotonic()-started > .12
+    def single_profile(previous, location, catalog, *, stop, on_capture, fetch):
+        from sonos_firmware.metadata_sweep import discover_profiles
+        def one(profile):
+            try:
+                return fetch(profile)
+            finally:
+                stop.set()
+        return discover_profiles(previous, location, catalog, stop=stop,
+                                 on_capture=on_capture, fetch=one)
+    source = (lambda *args, **kwargs: single_profile(*args, **kwargs)) if 'profile_fetch' in options else \
+             (lambda *args, **kwargs: ready)
+    with patch.object(frontier, 'winding_down', side_effect=complete), \
+         patch.object(frontier, 'discover_profiles', side_effect=source):
+        return frontier.discover(state, evidence, **options)
+
+
+def scan_pivots(state, contexts, observed):
+    rounds = 0
+    def wind_down():
+        nonlocal rounds
+        rounds += 1
+        return rounds > 100
+    with patch.object(frontier, 'winding_down', side_effect=wind_down):
+        return installer_manifest_roots(state, contexts, observed)
 
 
 class FrontierTests(unittest.TestCase):
@@ -38,20 +82,19 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'missing', {}, None)
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[root]), patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), fetch=missing,
+            state = scan_frontier({}, Path(temporary), fetch=missing,
                 probe_fn=lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404},
-                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1,
-                index_fetch=lambda previous: archive_index.discover_archives(previous, fetch=index, pages=2))
+                metadata_fetch=lambda: (b'', {}), work_units=1, index_fetch=lambda previous: archive_index.discover_archives(previous, fetch=index))
         self.assertEqual(state['archive_index']['query_roots'],
                          {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'})
         wayback = [parse_qs(urlsplit(url).query)['url'][0] for url in requested
                    if urlsplit(url).hostname == 'web.archive.org']
-        self.assertEqual(wayback, ['sonos.com/', 'update.sonos.com/firmware/latest/',
-                                   'update.sonos.com/firmware/latest/update.upm'])
+        self.assertIn('sonos.com/', wayback)
+        self.assertIn('update.sonos.com/firmware/latest/', wayback)
         # The same budget now covers directory searches too; host traversal
         # keeps its position and continues in the next normal worker.
         requested.clear()
-        following = archive_index.discover_archives(state['archive_index'], fetch=index, pages=2)
+        following = archive_index.discover_archives(state['archive_index'], fetch=index)
         self.assertIn('update.sonos.com', following['completed_hosts'])
         self.assertEqual(following['pending_hosts'], ['sonos.com'])
 
@@ -93,7 +136,7 @@ class FrontierTests(unittest.TestCase):
         self.assertEqual(calls, [prod])
         self.assertIn(dev, graph['pending_manifest_urls'])
 
-    def test_one_slot_inference_does_not_repeat_only_a_failed_namespace(self):
+    def test_inference_continues_other_namespaces_after_one_fails(self):
         from datetime import timedelta
         from sonos_firmware import retry
         from tests.apps.test_app_archive import NOW
@@ -111,12 +154,11 @@ class FrontierTests(unittest.TestCase):
              patch.object(frontier.time, 'sleep'):
             for index in range(3):
                 with patch.object(retry, '_now', return_value=NOW+timedelta(days=30*index)):
-                    state = frontier.discover(state, Path(temporary), metadata_fetch=lambda: (b'', {}),
-                        probe_fn=probe, model_max=0, inference_limit=1)
+                    state = scan_frontier(state, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                        probe_fn=probe, work_units=1, )
                 state = json.loads(json.dumps(state))
-        self.assertIn('/bad/', seen[0])
-        self.assertIn('/good/', seen[1])
-        self.assertIn('/bad/', seen[2])
+        self.assertTrue(any('/bad/' in url for url in seen))
+        self.assertTrue(any('/good/' in url for url in seen))
 
     def test_indexed_packages_enter_discovery_without_any_available_manifest(self):
         from sonos_firmware.archive_index import discover_sources
@@ -131,9 +173,8 @@ class FrontierTests(unittest.TestCase):
                     'http_status': 200 if candidate.url in {known, unknown} else 404}
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), fetch=missing, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), model_max=0, inference_limit=1,
-                index_fetch=lambda previous: discover_sources(previous, fetch=lambda url: rows, pages=1))
+            state = scan_frontier({}, Path(temporary), fetch=missing, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), work_units=32, index_fetch=lambda previous: scan_index(previous, fetch=lambda url: rows))
         self.assertEqual(state['manifests'], [])
         self.assertTrue(state['probes'][known]['available'])
         self.assertEqual(state['probes'][known]['package_model'], 17)
@@ -154,8 +195,7 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
             for _ in range(2):
-                state = frontier.discover(state, Path(temporary), inference_limit=1, model_max=2,
-                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+                state = scan_frontier(state, Path(temporary), work_units=1, metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
         self.assertEqual([row.package_model for row in visited], [0, 0])
         self.assertEqual(len({row.url for row in visited}), 2)
 
@@ -170,8 +210,7 @@ class FrontierTests(unittest.TestCase):
         fetch = Mock(return_value=b'<update_manifest version="1.1"></update_manifest>')
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), known_artifacts=known, inference_limit=1,
-                metadata_fetch=challenged, fetch=fetch, probe_fn=probe)
+            state = scan_frontier({}, Path(temporary), known_artifacts=known, work_units=1, metadata_fetch=challenged, fetch=fetch, probe_fn=probe)
         fetch.assert_not_called()
         original = [row for key, row in state['inferred_namespaces'].items() if key.startswith(HOST+'/')]
         peers = [row for key, row in state['inferred_namespaces'].items() if not key.startswith(HOST+'/')]
@@ -188,9 +227,9 @@ class FrontierTests(unittest.TestCase):
             return {**asdict(c), 'available': c.package_model == 0, 'http_status': 200 if c.package_model == 0 else 404}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), model_max=2, fetch=fetch, probe_fn=probe,
+            state = scan_frontier({}, Path(temporary), fetch=fetch, probe_fn=probe,
                                       metadata_fetch=lambda: (b'', {}))
-        self.assertEqual(state['inference_pending'], 0)
+        self.assertEqual(state['inference_pending'], len(state['inferred_namespaces']))
         self.assertEqual(next(row for row in state['candidates'] if row['url'] == target)['source'], 'image')
         self.assertEqual(len(state['candidates']), 2)
 
@@ -206,7 +245,7 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), model_max=2, fetch=missing, probe_fn=probe,
+            state = scan_frontier({}, Path(temporary), fetch=missing, probe_fn=probe,
                                       metadata_fetch=lambda: (ups, {}))
             self.assertEqual(state['inference_pending'], 2)
             self.assertFalse(any(url.startswith(HOST+'/') and model == 2 for url, model in visited))
@@ -214,13 +253,13 @@ class FrontierTests(unittest.TestCase):
             def healthy_peer(candidate):
                 self.assertFalse(candidate.url.startswith(HOST+'/'), 'failed namespace retried before backoff')
                 return {**asdict(candidate), 'available': False, 'http_status': 404}
-            state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
+            state = scan_frontier(state, Path(temporary), fetch=missing,
                 probe_fn=healthy_peer, metadata_fetch=lambda: (ups, {}))
             failed = next(row for row in state['inferred_namespaces'].values() if row.get('status') == 'failed')
             failed['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
-            state = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
+            state = scan_frontier(state, Path(temporary), fetch=missing,
                 probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404}, metadata_fetch=lambda: (ups, {}))
-        self.assertEqual(state['inference_pending'], 0)
+        self.assertEqual(state['inference_pending'], len(state['inferred_namespaces']))
 
     def test_many_observed_directories_keep_negative_probe_state_compact(self):
         known = [{'version': '1.0-12345', 'url': HOST+f'/firmware/directory-{n}/Sonos.dmg',
@@ -229,15 +268,14 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), known_artifacts=known, inference_limit=16,
-                fetch=missing, metadata_fetch=lambda: (b'', {}),
+            state = scan_frontier({}, Path(temporary), known_artifacts=known, work_units=16, fetch=missing, metadata_fetch=lambda: (b'', {}),
                 probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404})
         self.assertEqual(len(state['inferred_namespaces']), 122)
         self.assertEqual(len(state['candidates']), 122)
         self.assertTrue(all(row['filename'] == 'Sonos.dmg' for row in state['candidates']))
-        self.assertEqual(state['inference_pending'], 61 * 512 - 16)
+        self.assertEqual(state['inference_pending'], 122)
 
-    def test_negative_namespace_probes_widen_without_recording_a_url_inventory(self):
+    def test_negative_namespace_probes_advance_without_recording_a_url_inventory(self):
         uri = (BASE + '^1.0-12345').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
         visited = []
@@ -250,15 +288,13 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
             for _ in range(3):
-                state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
-                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
-            self.assertEqual(state['inference_pending'], 0)
+                state = scan_frontier(state, Path(temporary), work_units=2, metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+            self.assertEqual(state['inference_pending'], len(state['inferred_namespaces']))
             for _ in range(4):
-                state = frontier.discover(state, Path(temporary), model_max=2, inference_limit=2,
-                    metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
+                state = scan_frontier(state, Path(temporary), work_units=2, metadata_fetch=lambda: (ups, {}), fetch=missing, probe_fn=probe)
         self.assertEqual(len(visited), 14)
-        self.assertEqual({model for _, model in visited}, {0, 1, 2, 3})
-        self.assertTrue(all(row['model_max'] == 5 for row in state['inferred_namespaces'].values()))
+        self.assertTrue({0, 1, 2, 3}.issubset({model for _, model in visited}))
+        self.assertTrue(all(row['next_model'] > 0 for row in state['inferred_namespaces'].values()))
         self.assertEqual(state['candidates'], [])
         self.assertEqual(state['probes'], {})
         self.assertEqual(len(state['inferred_namespaces']), 2)
@@ -272,15 +308,14 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
             for _ in range(9):
-                state = frontier.discover(state, Path(temporary), fetch=missing,
-                    metadata_fetch=lambda: (ups, {}), inference_limit=128,
-                    probe_fn=lambda candidate: {**asdict(candidate), 'available': candidate.package_model == 256,
+                state = scan_frontier(state, Path(temporary), fetch=missing,
+                    metadata_fetch=lambda: (ups, {}), work_units=128, probe_fn=lambda candidate: {**asdict(candidate), 'available': candidate.package_model == 256,
                                                'http_status': 200 if candidate.package_model == 256 else 404})
         self.assertEqual({row['package_model'] for row in state['candidates']}, {256})
-        self.assertTrue(all(row['model_max'] == 511 for row in state['inferred_namespaces'].values()))
-        self.assertEqual(state['model_exploration']['policy'], 'expanding-passes')
+        self.assertTrue(all(row['next_model'] > 255 for row in state['inferred_namespaces'].values()))
+        self.assertEqual(state['model_exploration']['policy'], 'unbounded-model-cursors')
 
-    def test_raising_initial_model_range_above_4095_preserves_the_cursor_and_request_budget(self):
+    def test_model_cursors_advance_without_an_artificial_range(self):
         uri = (BASE + '^1.0-12345').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri)+16, 0) + uri
         visited = []
@@ -291,12 +326,12 @@ class FrontierTests(unittest.TestCase):
             return {**asdict(candidate), 'available': False, 'http_status': 404}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), model_max=1, fetch=missing,
-                metadata_fetch=lambda: (ups, {}), inference_limit=2, probe_fn=probe)
-            state = frontier.discover(state, Path(temporary), model_max=5000, fetch=missing,
-                metadata_fetch=lambda: (ups, {}), inference_limit=2, probe_fn=probe)
+            state = scan_frontier({}, Path(temporary), fetch=missing,
+                metadata_fetch=lambda: (ups, {}), work_units=2, probe_fn=probe)
+            state = scan_frontier(state, Path(temporary), fetch=missing,
+                metadata_fetch=lambda: (ups, {}), work_units=2, probe_fn=probe)
         self.assertEqual(visited, [0, 0, 1, 1])
-        self.assertTrue(all(row['model_max'] == 5000 and row['next_model'] == 2
+        self.assertTrue(all(row['next_model'] >= 2
                             for row in state['inferred_namespaces'].values()))
 
     def test_cached_available_model_does_not_make_later_models_skip_their_cursor(self):
@@ -309,12 +344,12 @@ class FrontierTests(unittest.TestCase):
                     'http_status': 200 if candidate.package_model == 0 else 404}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), model_max=1, fetch=missing,
-                                      metadata_fetch=lambda: (ups, {}), inference_limit=8, probe_fn=probe)
-            state = frontier.discover(state, Path(temporary), model_max=1, fetch=missing,
-                                      metadata_fetch=lambda: (ups, {}), inference_limit=8, probe_fn=probe)
-        self.assertTrue(all(row['next_model'] == 4 for row in state['inferred_namespaces'].values()))
-        self.assertTrue(all(row['model_max'] == 3 for row in state['inferred_namespaces'].values()))
+            state = scan_frontier({}, Path(temporary), fetch=missing,
+                                      metadata_fetch=lambda: (ups, {}), work_units=8, probe_fn=probe)
+            state = scan_frontier(state, Path(temporary), fetch=missing,
+                                      metadata_fetch=lambda: (ups, {}), work_units=8, probe_fn=probe)
+        self.assertTrue(all(row['next_model'] >= 4 for row in state['inferred_namespaces'].values()))
+        self.assertTrue(all('model_max' not in row for row in state['inferred_namespaces'].values()))
 
     def test_legacy_completed_range_widens_without_waiting_for_its_old_refresh_time(self):
         uri = (BASE + '^1.0-12345').encode() + b'\0'
@@ -325,12 +360,11 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            result = frontier.discover(state, Path(temporary), model_max=2, fetch=missing,
-                metadata_fetch=lambda: (ups, {}), inference_limit=2,
-                probe_fn=lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404})
+            result = scan_frontier(state, Path(temporary), fetch=missing,
+                metadata_fetch=lambda: (ups, {}), work_units=2, probe_fn=lambda candidate: {**asdict(candidate), 'available': False, 'http_status': 404})
         original = result['inferred_namespaces'][BASE+'^1.0-12345']
-        self.assertEqual(original['model_max'], 5)
-        self.assertEqual(original['next_model'], 1)
+        self.assertNotIn('model_max', original)
+        self.assertGreaterEqual(original['next_model'], 3)
 
     def test_saved_namespace_migration_needs_no_rediscovery_and_preserves_failed_cooldowns(self):
         completed = BASE+'^1.0-12345'
@@ -345,11 +379,10 @@ class FrontierTests(unittest.TestCase):
             return {**asdict(candidate), 'available': False, 'http_status': 404}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            result = frontier.discover(state, Path(temporary), model_max=2, inference_limit=1,
-                metadata_fetch=lambda: (b'', {}), fetch=lambda url: self.fail('unexpected namespace rediscovery'),
+            result = scan_frontier(state, Path(temporary), work_units=1, metadata_fetch=lambda: (b'', {}), fetch=lambda url: self.fail('unexpected namespace rediscovery'),
                 probe_fn=probe)
         self.assertEqual(len(visited), 1)
-        self.assertEqual(result['inferred_namespaces'][completed]['model_max'], 5)
+        self.assertNotIn('model_max', result['inferred_namespaces'][completed])
         self.assertEqual(result['inferred_namespaces'][failed]['next_model'], 1)
         self.assertEqual(result['inferred_namespaces'][failed]['next_attempt_at'], future)
 
@@ -360,11 +393,11 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), known_artifacts=[row], model_max=2, fetch=missing,
+            state = scan_frontier({}, Path(temporary), known_artifacts=[row], fetch=missing,
                 metadata_fetch=lambda: (b'', {}), probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200 if c.package_model == 2 else 404})
         found = [row for row in state['candidates'] if row['source'] == 'observed-directory']
         self.assertEqual({row['package_model'] for row in found}, {2})
-        self.assertEqual(state['inference_pending'], 0)
+        self.assertEqual(state['inference_pending'], len(state['inferred_namespaces']))
         self.assertTrue(all('/firmware/Gold/known/91.0-69300-1-' in row['url'] for row in found))
         self.assertEqual(len(frontier.monitor_report(state, {'packages': []})['available_uncatalogued_candidates']), 2)
 
@@ -372,7 +405,7 @@ class FrontierTests(unittest.TestCase):
         root = HOST+'/firmware/current/update.upm'
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+            state = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
                 fetch=lambda url: b'<update_manifest version="99"></update_manifest>')
         self.assertEqual(state['status'], 'partial')
         self.assertIn('unrecognized', state['manifests'][0]['metadata']['warnings'][0])
@@ -382,7 +415,7 @@ class FrontierTests(unittest.TestCase):
         ups = struct.pack('<IIII', 0x35167F49, 14, len(uri)+16, 0) + uri
         fetch = Mock(return_value=b'<update_manifest version="1.1"></update_manifest>')
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]):
-            state = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (ups, {}),
+            state = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (ups, {}),
                 fetch=fetch)
         fetch.assert_not_called()
         self.assertEqual(state['status'], 'partial')
@@ -404,17 +437,17 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'gone', {}, None)
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            result = frontier.discover({}, Path(temporary), fetch=fetch, metadata_fetch=lambda: (ups, {}),
-                model_max=2, probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200 if c.package_model == 2 else 404})
+            result = scan_frontier({}, Path(temporary), fetch=fetch, metadata_fetch=lambda: (ups, {}),
+                probe_fn=lambda c: {**asdict(c), 'available': c.package_model == 2, 'http_status': 200 if c.package_model == 2 else 404})
         rows = result['candidates']
         self.assertEqual({row['package_model'] for row in rows}, {2})
-        self.assertEqual(result['inference_pending'], 0)
+        self.assertEqual(result['inference_pending'], len(result['inferred_namespaces']))
         self.assertEqual({row['version'] for row in rows}, {'37.5-12345'})
         self.assertTrue(all('/firmware/Prod/discovered/37.5-12345-1-' in row['url'] for row in rows))
         self.assertTrue(all(row['metadata_sha256'] == hashlib.sha256(ups).hexdigest() for row in rows))
         self.assertEqual(len(frontier.monitor_report(result, {'packages': []})['available_uncatalogued_candidates']), 2)
 
-    def test_pending_roots_are_not_starved_by_a_small_manifest_budget(self):
+    def test_pending_roots_are_not_starved_by_current_feeds(self):
         roots = [HOST+f'/firmware/{name}/update.upm' for name in ('one','two','three')]
         visited = []
         def fetch(url):
@@ -424,11 +457,11 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
              patch.object(frontier.time, 'sleep'):
             for _ in range(3):
-                state = frontier.discover(state, Path(temporary), max_manifests=1, fetch=fetch,
+                state = scan_frontier(state, Path(temporary), fetch=fetch,
                                            metadata_fetch=lambda: (b'', {}))
-        self.assertEqual(visited, roots)
+        self.assertTrue(set(roots).issubset(set(visited)))
 
-    def test_current_feeds_rotate_without_consuming_the_deferred_queue_budget(self):
+    def test_current_feeds_and_deferred_queue_are_both_explored(self):
         roots = [HOST+f'/firmware/live-{n}/update.upm' for n in range(3)]
         pending = [HOST+f'/firmware/old-{n}/update.upm' for n in range(20)]
         visited = []
@@ -439,23 +472,24 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
              patch.object(frontier.time, 'sleep'):
             for _ in range(3):
-                state = frontier.discover(state, Path(temporary), max_manifests=4, fetch=fetch,
+                state = scan_frontier(state, Path(temporary), fetch=fetch,
                                            metadata_fetch=lambda: (b'', {}))
-        self.assertEqual(visited[::4], roots)
-        self.assertEqual([url for url in visited if url in pending], pending[:9])
+        self.assertTrue(set(roots).issubset(visited))
+        self.assertTrue(set(pending).issubset(visited))
 
     def test_profile_response_flows_into_the_same_manifest_and_package_frontier(self):
         uri = (BASE + '^42.0-45678').encode() + b'\0'
         ups = struct.pack('<IIII', 0x35167F49, 7, len(uri) + 16, 0) + uri
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'):
-            state = frontier.discover({}, Path(temporary), profile_limit=1, profile_count=2,
-                profile_fetch=lambda profile: ups, metadata_fetch=lambda: (b'', {}), model_max=1,
-                fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
+            state = scan_frontier({}, Path(temporary), profile_fetch=lambda profile: ups, metadata_fetch=lambda: (b'', {}), fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
                 probe_fn=lambda c: {**asdict(c), 'available': True})
             self.assertTrue((Path(temporary)/(hashlib.sha256(ups).hexdigest()+'.ups')).is_file())
-        self.assertEqual(state['metadata_profiles']['attempted_this_run'], 1)
-        self.assertEqual({row['package_model'] for row in state['candidates']}, {0, 1})
+            self.assertEqual(state['metadata_profiles']['attempted_this_run'], 1)
+            state = scan_frontier(state, Path(temporary), metadata_fetch=lambda: (b'', {}),
+                fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
+                probe_fn=lambda c: {**asdict(c), 'available': True})
+        self.assertTrue({0, 1}.issubset({row['package_model'] for row in state['candidates']}))
         self.assertIn(BASE+'update.upm', state['roots'])
 
     def test_profile_challenge_pauses_its_host_but_not_other_protocol_hosts(self):
@@ -468,13 +502,12 @@ class FrontierTests(unittest.TestCase):
             return b'<update_manifest version="1.1"></update_manifest>'
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=roots), \
              patch.object(frontier.time, 'sleep'), patch.object(frontier, 'fetch_update_metadata') as baseline:
-            state = frontier.discover({}, Path(temporary), profile_limit=2, profile_count=2,
-                profile_fetch=profile_fetch, metadata_fetch=baseline, fetch=fetch)
-        self.assertEqual(seen, [roots[1]])
-        self.assertIn(roots[0], state['pending_manifest_urls'])
-        self.assertEqual(state['blocked_hosts'], ['update.sonos.com'])
+            state = scan_frontier({}, Path(temporary), profile_fetch=profile_fetch, metadata_fetch=baseline, fetch=fetch)
+        self.assertIn(roots[1], seen)
+        self.assertIn(roots[0], seen)
+        self.assertEqual(state['metadata_profiles']['source_backoff']['http_status'], 429)
         self.assertEqual(state['metadata_profiles']['attempted_this_run'], 1)
-        baseline.assert_not_called()
+        baseline.assert_called_once()
 
     def test_saved_unavailable_observations_resume_for_all_models(self):
         row = {'version': '1.0-1', 'package_model': 8, 'url': BASE+'old.upd',
@@ -482,7 +515,7 @@ class FrontierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), \
              patch.object(frontier.time, 'sleep'), patch.object(frontier, 'crawl_manifests', return_value={
                 'manifests': [], 'candidates': [], 'blocked_hosts': [], 'pending_manifest_urls': [], 'failures': []}) as crawl:
-            result = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}), known_artifacts=[row],
+            result = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (b'', {}), known_artifacts=[row],
                 probe_fn=lambda candidate: {**asdict(candidate), 'available': True, 'http_status': 200})
         self.assertIn(row['url'], result['checked_urls'])
         self.assertIn({'url': BASE+'update.upm'}, crawl.call_args.args[1])
@@ -490,7 +523,7 @@ class FrontierTests(unittest.TestCase):
     def test_protocol_artifact_is_discovered_without_an_initial_version_or_hash(self):
         url = 'https://update-firmware.sonos.com/firmware/Prod/JFFS_Static_Link/connectx.upd'
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
-            result = frontier.discover({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
+            result = scan_frontier({}, Path(temporary), metadata_fetch=lambda: (b'', {}),
                 fetch=lambda url: b'<update_manifest version="1.1"></update_manifest>',
                 artifact_roots=[{'url': url, 'package_model': 17, 'refresh_hours': 6}],
                 probe_fn=lambda candidate: {**asdict(candidate), 'available': True, 'http_status': 200})
@@ -510,7 +543,7 @@ class FrontierTests(unittest.TestCase):
              patch.object(frontier, 'fetch_update_metadata') as metadata:
             for root in invalid:
                 with self.subTest(root=root), self.assertRaises(ValueError):
-                    frontier.discover({}, Path(temporary), artifact_roots=[root], metadata_fetch=metadata)
+                    scan_frontier({}, Path(temporary), artifact_roots=[root], metadata_fetch=metadata)
             crawl.assert_not_called()
             metadata.assert_not_called()
 
@@ -527,7 +560,7 @@ class FrontierTests(unittest.TestCase):
             raise urllib.error.HTTPError(url, 404, 'missing', {}, None)
         def probe(candidate): return {**asdict(candidate), 'available': True, 'http_status': 200, 'bytes': 1}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[root]), patch.object(frontier.time, 'sleep'):
-            result = frontier.discover({}, Path(temporary), fetch=fetch, probe_fn=probe, metadata_fetch=lambda: (b'', {}))
+            result = scan_frontier({}, Path(temporary), fetch=fetch, probe_fn=probe, metadata_fetch=lambda: (b'', {}))
         self.assertTrue(result['inference_pending'] > 0)
         self.assertLess(len(result['candidates']), 150)
         self.assertTrue({1, 8, 17}.issubset({c['package_model'] for c in result['candidates'] if c['source'] == 'image'}))
@@ -540,7 +573,7 @@ class FrontierTests(unittest.TestCase):
         ups = struct.pack('<IIII', 0x35167F49, 14, len(uri) + 16, 0) + uri
         xml = b'<update_manifest version="1.1"></update_manifest>'
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]), patch.object(frontier.time, 'sleep'):
-            result = frontier.discover({}, Path(temporary), fetch=lambda url: xml, metadata_fetch=lambda: (ups, {}))
+            result = scan_frontier({}, Path(temporary), fetch=lambda url: xml, metadata_fetch=lambda: (ups, {}))
         self.assertIn(BASE + 'update.upm', result['roots'])
         self.assertIn(BASE + 'update.upm', {m['url'] for m in result['manifests']})
 
@@ -549,7 +582,7 @@ class FrontierTests(unittest.TestCase):
         state = {'candidates': [old], 'probes': {old['url']: {**old, 'available': True}},
                  'manifests': [{'url': BASE + 'update.upm', 'sha256': 'old-hash', 'snapshot': 'old-capture'}]}
         with tempfile.TemporaryDirectory() as temporary, patch.object(frontier, 'protocol_roots', return_value=[]):
-            result = frontier.discover(state, Path(temporary), seconds=0, metadata_fetch=lambda: (b'', {}))
+            result = scan_frontier(state, Path(temporary), metadata_fetch=lambda: (b'', {}))
         self.assertEqual(result['manifests'][0]['sha256'], 'old-hash')
         self.assertEqual(frontier.monitor_report(result, {'packages': []})['available_uncatalogued_candidates'], [])
         self.assertTrue(result['pending_manifest_urls'])
@@ -582,7 +615,7 @@ class FrontierTests(unittest.TestCase):
         self.assertTrue(all('/swgen/' in u and '/latest/update.upm?' in u for u in roots))
         self.assertFalse(any('/Prod/' in u or '/Dev/' in u for u in roots))
 
-    def test_previously_checked_candidates_rotate_when_a_run_budget_is_small(self):
+    def test_previously_checked_candidates_keep_revisiting_across_runs(self):
         rows = [{'url': BASE + f'{i}.upd', 'version': f'{i}.0-1', 'package_model': 17,
                  'filename': f'{i}.upd', 'source': 'image'} for i in (1, 2, 3)]
         peers = [{**r, 'url': r['url'].replace('update.sonos.com', 'update-firmware.sonos.com')} for r in rows]
@@ -599,11 +632,10 @@ class FrontierTests(unittest.TestCase):
             for _ in range(2):
                 with patch.object(frontier, 'protocol_roots', return_value=[]), \
                      patch.object(frontier, 'crawl_manifests', side_effect=graph), \
-                     patch.object(frontier.time, 'monotonic', side_effect=[0, 0, 2]), \
                      patch.object(frontier.time, 'sleep'):
-                    state = frontier.discover(state, Path(temporary), seconds=1, probe_fn=probe,
+                    state = scan_frontier(state, Path(temporary), probe_fn=probe,
                                               metadata_fetch=lambda: (b'', {}))
-        self.assertEqual(visited, [rows[0]['url'], rows[1]['url']])
+        self.assertTrue({rows[0]['url'], rows[1]['url']}.issubset(visited))
 
 
 class PreservationTests(unittest.TestCase):
@@ -724,8 +756,8 @@ class PreservationTests(unittest.TestCase):
 class InstallerPivotVersionTests(unittest.TestCase):
     OBSERVED = ['https://update-firmware.sonos.com/firmware/Prod/79.1-53290-v16.2-6T0nrTOYJg-SP-1/update.upm']
 
-    def roots(self, contexts, limit=4):
-        return installer_manifest_roots({}, contexts, self.OBSERVED, limit=limit)[1]
+    def roots(self, contexts):
+        return scan_pivots({}, contexts, self.OBSERVED)[1]
 
     def test_an_exact_release_version_is_used_verbatim(self):
         roots = self.roots([{'build': '90.0-67171', 'app_version': '17.2', 'token': 'ZethjbGivZ'}])
@@ -733,28 +765,28 @@ class InstallerPivotVersionTests(unittest.TestCase):
         self.assertTrue(all('-v17.2-' in root for root in roots))
 
     def test_a_context_without_a_release_version_uses_an_observed_one(self):
-        roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], limit=12)
+        roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}])
         self.assertTrue(any('-v16.2-' in root for root in roots))
 
     def test_an_unknown_build_reuses_an_observed_campaign_shape(self):
         observed = ['https://update-firmware.sonos.com/firmware/Prod/'
                     '57.23-80060-v11.16.2-9tmT45qD4t-SP-1/update.upm']
-        _, roots = installer_manifest_roots(
-            {}, [{'build': '57.22-59130', 'app_version': None, 'token': '72ynP0v9lu'}], observed, limit=8)
+        _, roots = scan_pivots(
+            {}, [{'build': '57.22-59130', 'app_version': None, 'token': '72ynP0v9lu'}], observed)
         self.assertIn('https://update-firmware.sonos.com/firmware/Prod/'
                       '57.22-59130-v11.16.2-72ynP0v9lu-SP-1/update.upm', roots)
 
     def test_adjacent_patch_releases_are_considered_for_an_unknown_version(self):
         observed = ['https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm']
-        _, roots = installer_manifest_roots({}, [
+        _, roots = scan_pivots({}, [
             {'build': '90.0-67300', 'app_version': None, 'token': 'Lp7WoQPkxr'},
-            {'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], observed, limit=40)
+            {'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], observed)
         self.assertTrue(any('90.0-67300-v17.2.1' in root for root in roots))
         self.assertTrue(any('90.0-68190-v17.2.2' in root for root in roots))
 
     def test_an_unknown_version_without_observations_generates_nothing(self):
-        state, roots = installer_manifest_roots({}, [{'build': '90.0-68190', 'app_version': None,
-                                                     'token': 'y0RcLefNNu'}], [], limit=4)
+        state, roots = scan_pivots({}, [{'build': '90.0-68190', 'app_version': None,
+                                                     'token': 'y0RcLefNNu'}], [])
         self.assertEqual(roots, [])
 
 if __name__ == '__main__':

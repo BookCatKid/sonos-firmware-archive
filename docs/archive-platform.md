@@ -65,7 +65,7 @@ HTTP throttling honors Retry-After across runs; a paused host does not
 pause unrelated sources. Changed recovery methods, inspectors, or source hashes
 can make older work eligible again.
 
-Provider options can be set in the target's configured options, or overridden for a plan. Unsupported options (including retired quota names) fail validation rather than silently being ignored:
+Provider options can be set in the target's configured options, or overridden for a plan. Unknown options fail validation:
 
 ```bash
 sonos-archive run desktop --plan --set historical_refresh_hours=168

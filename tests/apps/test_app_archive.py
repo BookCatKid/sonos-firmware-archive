@@ -96,11 +96,17 @@ class AppArchiveTests(unittest.TestCase):
         destination.write_bytes(data)
         return url
 
-    def run_archive(self, candidates=None, *, now=NOW, limit=12, repo='owner/repo'):
+    def run_archive(self, candidates=None, *, now=NOW, repo='owner/repo', work_units=None):
         if candidates is not None:
             self.discovery.write_text(json.dumps({'candidates': candidates}))
-        with patch.object(retry, '_now', return_value=now):
-            return preserve(self.source, self.discovery, self.receipt, repo, root=self.root, limit=limit)
+        checked = 0
+        def winding_down():
+            nonlocal checked
+            checked += 1
+            return work_units is not None and checked > work_units
+        with patch.object(retry, '_now', return_value=now), \
+             patch('sonos_firmware.app_archive.winding_down', side_effect=winding_down):
+            return preserve(self.source, self.discovery, self.receipt, repo, root=self.root)
 
     def test_empty_archive_bootstraps_and_cleans_worker_payloads(self):
         candidate = self.candidate()
@@ -215,30 +221,31 @@ class AppArchiveTests(unittest.TestCase):
         self.assertEqual(inspect.call_count, 2)
         self.assertEqual(len(self.github.uploads), 1)
 
-    def test_single_slot_cannot_be_monopolized_by_a_missing_old_upload(self):
+    def test_publication_recovery_failure_does_not_hide_fresh_sources(self):
         old = {'repository': 'owner/repo', 'candidate': self.candidate('old.exe'),
                'sha256': 'a'*64, 'bytes': 10, 'release_tag': 'missing-old', 'release_asset': 'old.exe',
                'checked_at': '2000-01-01T00:00:00+00:00'}
         self.receipt.write_text(json.dumps({'schema_version': 1, 'artifacts': [], 'unpublished_captures': [old]}))
         fresh = self.candidate('new.exe')
-        first = self.run_archive([fresh], limit=1)
+        first = self.run_archive([fresh], work_units=1)
         self.assertEqual(first['attempted_this_run'], 1)
-        self.assertEqual(self.acquired, [])
-        second = self.run_archive([fresh], now=NOW+timedelta(days=2), limit=1)
+        self.assertEqual(first['artifact_total'], 1)
+        self.assertEqual(self.acquired, [fresh['url']])
+        second = self.run_archive([fresh], now=NOW+timedelta(days=2), work_units=1)
         self.assertEqual(second['attempted_this_run'], 1)
         self.assertEqual(second['artifact_total'], 1)
         self.assertEqual(self.acquired, [fresh['url']])
-        third = self.run_archive([], now=NOW+timedelta(days=4), limit=1)
+        third = self.run_archive([], now=NOW+timedelta(days=4), work_units=1)
         self.assertEqual(third['unpublished_captures'][0]['consecutive_failures'], 2)
         self.assertEqual(len(self.acquired), 1)
 
-    def test_paused_unattempted_replay_cannot_take_a_healthy_sources_only_slot(self):
+    def test_paused_unattempted_replay_does_not_block_healthy_source(self):
         paused = self.candidate('paused.exe', acquisition_id='wayback:paused', archive_capture={'timestamp': '20200101000000'})
         fresh = self.candidate('healthy.exe')
         self.discovery.write_text(json.dumps({'candidates': [paused, fresh]}))
         with patch.object(retry, '_now', return_value=NOW):
             result = preserve(self.source, self.discovery, self.receipt, 'owner/repo', root=self.root,
-                              limit=1, paused_hosts={'web.archive.org'})
+                              paused_hosts={'web.archive.org'})
         self.assertEqual(self.acquired, [fresh['url']])
         self.assertEqual(result['attempted_this_run'], 1)
         self.assertEqual(result['source_observations']['owner/repo']['wayback:paused']['status'], 'pending')
@@ -257,7 +264,7 @@ class AppArchiveTests(unittest.TestCase):
         rows = [self.candidate(acquisition_id='wayback:old'), self.candidate(acquisition_id='wayback:new')]
         self.data.update({'wayback:old': b'MZ older captured installer', 'wayback:new': b'MZ newer captured installer'})
         self.github.lose_upload_response = True
-        self.assertEqual(self.run_archive(rows, limit=1)['artifact_total'], 0)
+        self.assertEqual(self.run_archive(rows, work_units=1)['artifact_total'], 0)
         self.data['wayback:old'] = AssertionError('recovery must not acquire the old source again')
         result = self.run_archive(rows, now=NOW+timedelta(hours=2))
         self.assertEqual(result['status'], 'ok')
@@ -322,15 +329,15 @@ class AppArchiveTests(unittest.TestCase):
         self.assertEqual(len(self.acquired), 2)
         self.assertEqual(result['artifact_total'], 2)
 
-    def test_changed_revision_left_outside_budget_remains_pending(self):
+    def test_changed_revision_deferred_by_wind_down_remains_pending(self):
         candidates = [self.candidate('one.exe', etag='old'), self.candidate('two.exe', etag='old')]
         self.run_archive(candidates)
         changed = [{**row, 'etag': 'new'} for row in candidates]
         self.data.update({row['url']: ('MZ new ' + row['url']).encode() for row in changed})
-        result = self.run_archive(changed, now=NOW + timedelta(minutes=5), limit=1)
+        result = self.run_archive(changed, now=NOW + timedelta(minutes=5), work_units=1)
         self.assertEqual(result['status'], 'partial')
         self.assertEqual(result['pending_total'], 1)
-        result = self.run_archive([], now=NOW + timedelta(minutes=10), limit=1)
+        result = self.run_archive([], now=NOW + timedelta(minutes=10), work_units=1)
         self.assertEqual(result['status'], 'ok')
         self.assertEqual(result['pending_total'], 0)
         self.assertEqual(len(self.acquired), 4)
@@ -359,14 +366,14 @@ class AppArchiveTests(unittest.TestCase):
         self.assertEqual(result['gaps'], [])
         self.assertEqual(result['status'], 'ok')
 
-    def test_limit_counts_failures_and_retains_unattempted_discoveries(self):
+    def test_wind_down_retains_unattempted_discoveries_after_failures(self):
         candidates = [self.candidate(str(n) + '.exe') for n in range(4)]
         self.data.update({c['url']: OSError('fixture offline') for c in candidates})
-        result = self.run_archive(candidates, limit=2)
+        result = self.run_archive(candidates, work_units=2)
         self.assertEqual(len(self.acquired), 2)
         self.assertEqual(result['attempted_this_run'], 2)
         self.assertEqual(result['pending_total'], 2)
-        self.run_archive([], limit=2, now=NOW + timedelta(minutes=5))
+        self.run_archive([], work_units=2, now=NOW + timedelta(minutes=5))
         self.assertEqual(self.acquired, [c['url'] for c in candidates])
 
     def test_legacy_gap_is_not_a_permanent_exclusion(self):

@@ -207,8 +207,8 @@ def discover_archives(previous, fetch=fetch_index, *, seed_urls=(), roots=None,
             'wayback_directories': cursors(wayback_directories), 'commoncrawl_directories': cursors(commoncrawl_directories),
             'wayback_exact': cursors(exact),
             'query_configuration': configuration,
-            'observations': [row for result in results for row in result['observations']],
-            'errors': [row for result in results for row in result['errors']],
+            'observations': [row for result in results for row in result.get('observations', [])],
+            'errors': [row for result in results for row in result.get('errors', [])],
             'status': 'ok' if all(result['status'] == 'ok' for result in
                                 (results if directory_roots else (wayback, commoncrawl))) else 'partial'}
 

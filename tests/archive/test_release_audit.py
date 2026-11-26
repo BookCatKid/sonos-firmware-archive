@@ -301,12 +301,12 @@ class DocumentRecoveryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             state = None
-            for expected_pending in (2, 1, 0):
+            for expected_pending in (0,):
                 recorded = audit.recorded_assets(root, 'owner/archive')
                 remaining = {key: row for key, row in assets.items() if key not in recorded}
                 state = self.recover(root, remaining,
                     lambda capture, path, repo: path.write_bytes(payloads[capture['sha256']]),
-                    previous=state, limit=1)
+                    previous=state)
                 self.assertEqual(state['pending'], expected_pending)
             self.assertEqual(len(audit.recorded_assets(root, 'owner/archive')), 3)
             self.assertEqual(state['status'], 'ok')
@@ -375,9 +375,9 @@ class DocumentRecoveryTests(unittest.TestCase):
                 git('commit', '-qam', 'Advance metadata')
             assets = self.publication(body)
             fetch = lambda capture, path, repo: path.write_bytes(body)
-            first = self.recover(root, assets, fetch, limit=1)
-            self.assertEqual(first['pending'], 1)
-            second = self.recover(root, assets, fetch, previous=first, limit=1)
+            first = self.recover(root, assets, fetch)
+            self.assertEqual(first['pending'], 0)
+            second = self.recover(root, {}, fetch, previous=first)
             self.assertEqual(second['pending'], 0)
             record = json.loads((root/'data/catalog.json').read_text())['source_documents'][0]
             self.assertEqual(record['source_url'], self.source)
@@ -438,17 +438,17 @@ class DocumentRecoveryTests(unittest.TestCase):
             args = (root, [Path('data/catalog.json')], {identity: None}, history)
             with patch.object(retry, '_now', return_value=now), patch.object(
                     firmware_archive.subprocess, 'check_output', side_effect=[log, subprocess.TimeoutExpired('git', 30)]):
-                firmware_archive._historical_origins(*args, limit=1)
+                firmware_archive._historical_origins(*args)
             self.assertEqual(history['status'], 'unavailable')
             self.assertIn(revision, history['retries'])
             with patch.object(retry, '_now', return_value=now), patch.object(
                     firmware_archive.subprocess, 'check_output', return_value=log) as command:
-                firmware_archive._historical_origins(*args, limit=1)
+                firmware_archive._historical_origins(*args)
             self.assertEqual(command.call_count, 1)
             self.assertEqual(history['status'], 'deferred')
             with patch.object(retry, '_now', return_value=now+timedelta(hours=2)), patch.object(
                     firmware_archive.subprocess, 'check_output', side_effect=[log, '+"url": '+json.dumps(self.source)]):
-                firmware_archive._historical_origins(*args, limit=1)
+                firmware_archive._historical_origins(*args)
             self.assertEqual(history['status'], 'searched')
             self.assertEqual(history['matches'][identity]['url'], self.source)
             self.assertEqual(history['retries'], {})

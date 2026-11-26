@@ -51,7 +51,7 @@ class CrawlTests(unittest.TestCase):
             self.assertEqual(len(r['manifests']),2)
             self.assertEqual(len(calls),1)
             self.assertEqual(len(r['directories']),2)
-            self.assertFalse(r['limits_reached'])
+            self.assertFalse(r['deadline_reached'])
             self.assertEqual(len(list(Path(d).glob('*.upm'))),2)
             self.assertIn(('28.1-83040',BASE.rstrip('/')),{(x['version'],x['directory']) for x in r['directories']})
 
@@ -65,9 +65,15 @@ class CrawlTests(unittest.TestCase):
             r=crawl_manifests({},[{'url':BASE+'update.upm','body':b'bad'}],[],Path(d),delay=0)
             self.assertTrue(r['failures'])
             self.assertEqual(len(list(Path(d).glob('*.upm'))),1)
-        with tempfile.TemporaryDirectory() as d:
-            r=crawl_manifests({},[],[BASE+'update.upm',BASE+'another.upm'],Path(d),max_manifests=1,fetch=fetch,delay=0)
-            self.assertTrue(r['limits_reached'])
+        from unittest.mock import patch
+        requested = []
+        def one_fetch(url):
+            requested.append(url)
+            return fetch(url)
+        with tempfile.TemporaryDirectory() as d, \
+             patch('sonos_firmware.crawl.winding_down', side_effect=lambda: len(requested) >= 1):
+            r=crawl_manifests({},[],[BASE+'update.upm',BASE+'another.upm'],Path(d),fetch=one_fetch,delay=0)
+            self.assertTrue(r['deadline_reached'])
 
     def test_challenge_stops(self):
         calls=[]
@@ -122,14 +128,31 @@ class ProbeSafetyTests(unittest.TestCase):
         self.assertEqual(len(rows),3)
         self.assertTrue(all(x.get('error') for x in rows))
 
-    def test_probe_budget_marks_remainder_unchecked(self):
+    def test_wind_down_defers_new_probes(self):
         from unittest.mock import patch
         from sonos_firmware.discovery import Candidate, probe_all
         cs=[Candidate('1.0',n,BASE+str(n)+'.upd','test',str(n)+'.upd') for n in range(3)]
-        with patch('sonos_firmware.discovery.probe') as probe:
-            rows=probe_all(cs, deadline=0)
-        self.assertEqual(probe.call_count,0)
-        self.assertTrue(all('budget' in x.get('error','') for x in rows))
+        with patch('sonos_firmware.discovery.probe') as probe, \
+             patch('sonos_firmware.discovery.winding_down', return_value=True):
+            rows=probe_all(cs)
+        probe.assert_not_called()
+        self.assertTrue(all('wind-down' in row.get('error', '') for row in rows))
+
+    def test_challenge_does_not_block_unrelated_hosts(self):
+        from unittest.mock import patch
+        from sonos_firmware.discovery import Candidate, probe_all
+        candidates = [
+            Candidate('1.0', 1, 'https://update.sonos.com/one.upd', 'test', 'one.upd'),
+            Candidate('1.0', 2, 'https://update.sonos.com/two.upd', 'test', 'two.upd'),
+            Candidate('1.0', 3, 'https://update-firmware.sonos.com/three.upd', 'test', 'three.upd'),
+        ]
+        outcomes = [{'http_status': 429, 'available': False},
+                    {'http_status': 200, 'available': True}]
+        with patch('sonos_firmware.discovery.probe', side_effect=outcomes) as probe:
+            rows = probe_all(candidates)
+        self.assertEqual(probe.call_count, 2)
+        self.assertIn('cooling down', rows[1]['error'])
+        self.assertTrue(rows[2]['available'])
 
     def test_seeded_chip_file_is_checked_without_list(self):
         seed={'url':BASE+'chip.bin','filename':'chip.bin','version':'3.1.4','package_model':44}
@@ -163,7 +186,7 @@ class PublicCapturedReplayTests(unittest.TestCase):
         targets={u for u in (fixture/'recovered-firmware-urls.txt').read_text().splitlines() if u.startswith('https://')}
         self.assertEqual(len(targets),150)
         self.assertEqual(targets-reached,set())
-        self.assertFalse(graph['limits_reached'])
+        self.assertFalse(graph['deadline_reached'])
 
 class OutOfScopeClassificationTests(unittest.TestCase):
     def test_image_page_needs_link_discovery_and_remains_a_coverage_gap(self):
@@ -190,9 +213,9 @@ class OutOfScopeClassificationTests(unittest.TestCase):
 
 
 class DiscoveryIncompleteTests(unittest.TestCase):
-    def _call(self, failures, challenged=False, blocked=False, limits=False, warnings=()):
+    def _call(self, failures, challenged=False, blocked=False, deadline=False, warnings=()):
         from sonos_firmware.crawl import discovery_incomplete
-        graph = {'failures': failures, 'blocked': blocked, 'limits_reached': limits}
+        graph = {'failures': failures, 'blocked': blocked, 'deadline_reached': deadline}
         manifests = [{'metadata': {'warnings': list(warnings)}}]
         return discovery_incomplete(graph, manifests, challenged)
 
@@ -211,6 +234,6 @@ class DiscoveryIncompleteTests(unittest.TestCase):
         self.assertTrue(self._call([{'kind': 'error'}]))
         self.assertTrue(self._call([{'kind': 'malformed'}]))
         self.assertTrue(self._call([], blocked=True))
-        self.assertTrue(self._call([], limits=True))
+        self.assertTrue(self._call([], deadline=True))
         self.assertTrue(self._call([], challenged=True))
         self.assertTrue(self._call([], warnings=['unrecognized manifest version']))

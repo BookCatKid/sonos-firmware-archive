@@ -8,7 +8,6 @@ correspondence or GPL compliance. This analyzer never executes target binaries.
 from __future__ import annotations
 
 import argparse
-import gzip
 import json
 import re
 import struct
@@ -221,4 +220,4 @@ if __name__ == "__main__":
         raise SystemExit(main())
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         print(f"GPL firmware analysis: {error}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from None

@@ -134,9 +134,6 @@ def gpl_audit(c: Context):
             c.script('gpl/archive_gpl_direct.py', 'report', after_failure=True)]
 
 
-# Built-in provider configuration is closed over real, supported knobs.
-# Unknown keys are rejected instead of silently accepted (including retired
-# work quotas). Third-party providers define their own option contracts.
 SUPPORTED_OPTIONS = {
     'firmware': {'artifact_roots'},
     'desktop': {'historical_refresh_hours'},

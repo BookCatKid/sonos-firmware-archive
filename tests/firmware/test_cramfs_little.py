@@ -5,6 +5,8 @@ import unittest
 import importlib.util
 import struct
 import zlib
+
+from sonos_firmware.cramfs import PADDED_SUPERBLOCK_OFFSET
 from pathlib import Path
 
 
@@ -72,7 +74,7 @@ class CramfsLittleTests(unittest.TestCase):
     def test_detect_and_read_padded_big_endian_filesystem(self) -> None:
         payload = b"padded synthetic model-5 utility\n"
         compressed = zlib.compress(payload)
-        base = cramfs.PADDED_SUPERBLOCK_OFFSET
+        base = PADDED_SUPERBLOCK_OFFSET
         filesystem = bytearray(base + 0xA4 + len(compressed))
         filesystem[base : base + 4] = bytes.fromhex("28cd3d45")
 

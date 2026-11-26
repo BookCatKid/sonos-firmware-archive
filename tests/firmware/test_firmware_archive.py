@@ -38,6 +38,16 @@ def captured(row, body):
     return capture
 
 
+def run_archive(root, repository, candidates, work, *, work_units=None, **kwargs):
+    checks = 0
+    def wind_down():
+        nonlocal checks
+        checks += 1
+        return work_units is not None and checks > work_units
+    with patch.object(archive, 'winding_down', side_effect=wind_down):
+        return archive.archive_candidates(root, repository, candidates, work, **kwargs)
+
+
 class AcquisitionTests(unittest.TestCase):
     def test_partial_http_response_is_rejected_even_when_its_own_length_matches(self):
         response = Response(b'short', {'Content-Length': '5', 'Content-Range': 'bytes 0-4/100'})
@@ -116,14 +126,14 @@ class PublicationTests(unittest.TestCase):
              patch.object(releases.subprocess, 'run', side_effect=github.command):
             root = Path(temporary)
             with patch.object(retry, '_now', return_value=NOW):
-                archive.archive_candidates(root, 'owner/repo', rows[:1], root/'worker')
+                run_archive(root, 'owner/repo', rows[:1], root/'worker')
             with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)):
-                waiting = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+                waiting = run_archive(root, 'owner/repo', rows, root/'worker')
             self.assertEqual(waiting['attempted'], 0)
             self.assertEqual(calls, [rows[0]['url']])
             failing = False
             with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
-                resumed = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+                resumed = run_archive(root, 'owner/repo', rows, root/'worker')
             self.assertEqual(resumed['preserved'], 2)
             self.assertEqual(validate_catalog(root), [])
 
@@ -143,13 +153,13 @@ class PublicationTests(unittest.TestCase):
              patch.object(releases.subprocess, 'run', side_effect=github.command):
             root = Path(temporary)
             with patch.object(retry, '_now', return_value=NOW):
-                archive.archive_candidates(root, 'owner/repo', rows[:1], root/'worker')
+                run_archive(root, 'owner/repo', rows[:1], root/'worker')
             with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=74)):
-                waiting = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+                waiting = run_archive(root, 'owner/repo', rows, root/'worker')
             self.assertEqual(waiting['attempted'], 0)
             self.assertEqual(fetch.call_count, 1)
             with patch.object(retry, '_now', return_value=NOW+timedelta(seconds=76)):
-                resumed = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+                resumed = run_archive(root, 'owner/repo', rows, root/'worker')
             self.assertEqual(resumed['preserved'], 2)
             self.assertEqual(validate_catalog(root), [])
 
@@ -162,9 +172,9 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
-            archive.archive_candidates(root, 'owner/repo', [historical, current], root/'worker', limit=1)
+            run_archive(root, 'owner/repo', [historical, current], root/'worker', work_units=1)
             self.assertEqual(fetch.call_args.args[0].full_url, current['url'])
-            archive.archive_candidates(root, 'owner/repo', [historical, current], root/'worker', limit=1)
+            run_archive(root, 'owner/repo', [historical, current], root/'worker', work_units=1)
             self.assertEqual(fetch.call_args.args[0].full_url, historical['url'])
             observations = archive.acquisition_state(root)['sources']['owner/repo']
             for row in (current, historical):
@@ -180,7 +190,7 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
-            result = archive.archive_candidates(root, 'owner/repo', rows, root/'worker')
+            result = run_archive(root, 'owner/repo', rows, root/'worker')
             self.assertEqual(result['preserved'], 2)
             records = archive.catalog_at(root/'data/catalog.json')['packages']
             unclassified = next(row for row in records if row['filename'] == 'opaque.upd')
@@ -211,14 +221,14 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
-            archive.archive_candidates(root, 'owner/repo', [row], root/'worker')
+            run_archive(root, 'owner/repo', [row], root/'worker')
             state = archive.acquisition_state(root)
             observation = state['sources']['owner/repo'][row['url']]
             self.assertEqual(observation['revision']['version'], 'unknown')
             self.assertEqual(observation['status'], 'preserved')
             observation['next_attempt_at'] = ''
             atomic_json(archive.acquisition_path(root), state)
-            archive.archive_candidates(root, 'owner/repo', [row], root/'worker')
+            run_archive(root, 'owner/repo', [row], root/'worker')
             packages = archive.catalog_at(root/'data/catalog.json')['packages']
             self.assertEqual({record['version'] for record in packages}, {'86.4-73207', '87.1-74000'})
             self.assertEqual(len({record['id'] for record in packages}), 2)
@@ -232,7 +242,7 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}) as publish:
             root = Path(temporary)
-            result = archive.archive_candidates(root, 'owner/repo', [row], root / 'worker')
+            result = run_archive(root, 'owner/repo', [row], root / 'worker')
             self.assertEqual(result, {'attempted': 1, 'preserved': 1, 'errors': [], 'pending': 0})
             record = archive.catalog_at(root / 'data/catalog.json')['packages'][0]
             self.assertEqual(record['sha256'], hashlib.sha256(body).hexdigest())
@@ -249,7 +259,7 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
-            result = archive.archive_candidates(root, 'owner/repo', [candidate()], root / 'worker')
+            result = run_archive(root, 'owner/repo', [candidate()], root / 'worker')
             self.assertEqual(result['preserved'], 1)
             record = archive.catalog_at(root / 'data/catalog.json')['packages'][0]
             self.assertEqual(record['raw_status'], 'pending')
@@ -257,7 +267,7 @@ class PublicationTests(unittest.TestCase):
             self.assertTrue(inventory['inventory_error'])
             self.assertEqual(validate_catalog(root), [])
 
-    def test_failed_acquisition_counts_against_budget_and_other_urls_continue(self):
+    def test_failed_acquisitions_are_recorded_and_other_urls_continue(self):
         rows = [candidate(str(i)) for i in range(3)]
         body = section(6, 0, b'kernel')
         with tempfile.TemporaryDirectory() as temporary, \
@@ -265,7 +275,7 @@ class PublicationTests(unittest.TestCase):
              patch.object(archive, 'ensure_release'), \
              patch.object(archive, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
             root = Path(temporary)
-            result = archive.archive_candidates(root, 'owner/repo', rows, root / 'worker', limit=2)
+            result = run_archive(root, 'owner/repo', rows, root / 'worker', work_units=2)
             self.assertEqual(result['attempted'], 2)
             self.assertEqual(result['preserved'], 1)
             self.assertEqual(result['pending'], 2)
@@ -279,14 +289,14 @@ class PublicationTests(unittest.TestCase):
             with patch.object(discovery, 'open_advertised', return_value=Response(body)), \
                  patch.object(archive, 'ensure_release'), \
                  patch.object(archive, 'publish_verified', side_effect=OSError('lost response')):
-                first = archive.archive_candidates(root, 'owner/repo', [row], root / 'worker')
+                first = run_archive(root, 'owner/repo', [row], root / 'worker')
             self.assertEqual(first['preserved'], 0)
             state = archive.acquisition_state(root)
             state['sources']['owner/repo'][row['url']]['next_attempt_at'] = ''
             atomic_json(archive.acquisition_path(root), state)
             with patch.object(discovery, 'open_advertised') as fetch, \
                  patch.object(archive, 'verified_asset', return_value={'url': 'https://github.com/fixture/asset'}):
-                result = archive.archive_candidates(root, 'owner/repo', [], root / 'worker')
+                result = run_archive(root, 'owner/repo', [], root / 'worker')
             fetch.assert_not_called()
             self.assertEqual(result['preserved'], 1)
             self.assertEqual(validate_catalog(root), [])
@@ -343,14 +353,14 @@ class PublicationTests(unittest.TestCase):
                 {'repository': 'another/repo', 'capture': capture}]}
             atomic_json(archive.acquisition_path(root), state)
             with patch.object(archive, 'verified_asset', return_value={'url': 'https://github.com/fixture/asset'}) as verify:
-                result = archive.archive_candidates(root, 'owner/repo', [], root / 'worker', limit=1)
+                result = run_archive(root, 'owner/repo', [], root / 'worker', work_units=1)
             self.assertEqual(result['preserved'], 1)
             self.assertEqual(result['pending'], 0)
             verify.assert_called_once()
             remaining = archive.acquisition_state(root)['unpublished_captures']
             self.assertEqual([r['repository'] for r in remaining], ['another/repo'])
 
-    def test_one_slot_rotates_between_old_publication_recovery_and_new_sources(self):
+    def test_publication_recovery_and_new_sources_share_wind_down(self):
         from datetime import timedelta
         from sonos_firmware import releases, retry
         from tests.apps.test_app_archive import FakeGitHub, NOW
@@ -367,21 +377,22 @@ class PublicationTests(unittest.TestCase):
                    'checked_at': '2000-01-01T00:00:00+00:00'}
             atomic_json(archive.acquisition_path(root), {'sources': {}, 'unpublished_captures': [old]})
             with patch.object(retry, '_now', return_value=NOW):
-                first = archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+                first = run_archive(root, 'owner/repo', [fresh], root/'worker', work_units=1)
             self.assertEqual(first['attempted'], 1)
-            acquire.assert_not_called()
+            self.assertEqual(first['preserved'], 1)
+            self.assertEqual(acquire.call_count, 1)
             with patch.object(retry, '_now', return_value=NOW+timedelta(days=2)):
-                second = archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+                second = run_archive(root, 'owner/repo', [fresh], root/'worker', work_units=1)
             self.assertEqual(second['attempted'], 1)
-            self.assertEqual(second['preserved'], 1)
+            self.assertEqual(second['preserved'], 0)
             self.assertEqual(acquire.call_count, 1)
             with patch.object(retry, '_now', return_value=NOW+timedelta(days=4)):
-                archive.archive_candidates(root, 'owner/repo', [fresh], root/'worker', limit=1)
+                run_archive(root, 'owner/repo', [fresh], root/'worker', work_units=1)
             remaining = archive.acquisition_state(root)['unpublished_captures']
             self.assertEqual(remaining[0]['consecutive_failures'], 2)
             self.assertEqual(acquire.call_count, 1)
 
-    def test_paused_replay_does_not_consume_the_only_firmware_acquisition_slot(self):
+    def test_paused_replay_does_not_block_new_firmware_acquisition(self):
         from sonos_firmware import releases
         from tests.apps.test_app_archive import FakeGitHub
         github = FakeGitHub()
@@ -392,8 +403,8 @@ class PublicationTests(unittest.TestCase):
              patch.object(releases.subprocess, 'run', side_effect=github.command), \
              patch.object(discovery, 'open_advertised', return_value=Response(section(99, 0, b'fixture'))) as acquire:
             root = Path(temporary)
-            result = archive.archive_candidates(root, 'owner/repo', [paused, fresh], root/'worker',
-                                                limit=1, paused_hosts={'web.archive.org'})
+            result = run_archive(root, 'owner/repo', [paused, fresh], root/'worker',
+                                                work_units=1, paused_hosts={'web.archive.org'})
             self.assertEqual(result['attempted'], 1)
             self.assertEqual(result['preserved'], 1)
             self.assertEqual(acquire.call_args.args[0].full_url, fresh['url'])

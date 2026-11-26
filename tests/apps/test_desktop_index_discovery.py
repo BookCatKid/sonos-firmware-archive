@@ -32,13 +32,11 @@ class DesktopIndexTests(unittest.TestCase):
     def test_github_challenge_pauses_later_requests_without_immediate_retries(self):
         error = subprocess.CalledProcessError(1, ['gh'], stderr='gh: rate limit exceeded (HTTP 403)')
         with patch.object(MODULE, 'GH_SOURCE_PAUSE', None), \
-             patch.object(MODULE.subprocess, 'check_output', side_effect=error) as request, \
-             patch.object(MODULE.time, 'sleep') as sleep:
+             patch.object(MODULE.subprocess, 'check_output', side_effect=error) as request:
             for endpoint in ('first', 'later'):
                 with self.assertRaisesRegex(MODULE.GitHubSourcePaused, 'HTTP 403'):
                     MODULE.gh_json(endpoint)
             self.assertEqual(request.call_count, 1)
-            sleep.assert_not_called()
 
     def snapshot(self, versions, documents):
         nodes = {

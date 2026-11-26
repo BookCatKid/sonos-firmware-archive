@@ -167,24 +167,22 @@ def probe(candidate: Candidate, timeout: float = 20) -> dict:
     return result
 
 
-def probe_all(candidates: list[Candidate], workers: int = 6) -> list[dict]:
-    # Source challenges and the shared wind-down signal stop new requests.
-    # This routine has no per-call work or time budget.
+def probe_all(candidates: list[Candidate]) -> list[dict]:
     import time
     results = []
-    blocked = False
+    blocked_hosts = set()
     for candidate in candidates:
-        if blocked:
-            results.append({**asdict(candidate), "available": False, "error": "not checked after source challenge"})
+        if urlsplit(candidate.url).hostname in blocked_hosts:
+            results.append({**asdict(candidate), "available": False, "error": "source host is cooling down"})
             continue
         if winding_down():
-            results.append({**asdict(candidate), "available": False, "error": "not checked before the deadline"})
+            results.append({**asdict(candidate), "available": False, "error": "not checked after wind-down"})
             continue
         row = probe(candidate)
         results.append(row)
-        blocked = row.get("http_status") in {403, 429}
-        if blocked:
-            row["error"] = "source challenge; remaining probes skipped"
+        if row.get("http_status") in {403, 429}:
+            blocked_hosts.add(urlsplit(candidate.url).hostname)
+            row["error"] = "source host is cooling down"
         else:
             time.sleep(.25)
     return results

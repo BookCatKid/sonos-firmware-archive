@@ -13,10 +13,8 @@ import base64
 import hashlib
 import concurrent.futures
 import json
-import os
 import re
 import subprocess
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -45,7 +43,6 @@ DIRECT_ENDPOINTS = {
 }
 
 
-GH_API_ATTEMPTS = 4
 GH_SOURCE_PAUSE = None
 
 
@@ -57,21 +54,14 @@ def gh_output(cmd: list[str]) -> str:
     global GH_SOURCE_PAUSE
     if GH_SOURCE_PAUSE:
         raise GH_SOURCE_PAUSE
-    error = None
-    for attempt in range(GH_API_ATTEMPTS):
-        try:
-            return subprocess.check_output(cmd, text=True, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError as caught:
-            error = caught
-            status = re.search(r'\bHTTP (\d{3})\b', caught.stderr or '')
-            if status and int(status[1]) in {401, 403, 429}:
-                GH_SOURCE_PAUSE = GitHubSourcePaused(f'GitHub metadata source paused after HTTP {status[1]}')
-                raise GH_SOURCE_PAUSE from caught
-            if status and int(status[1]) in {404, 422}:
-                raise RuntimeError((caught.stderr or str(caught)).strip()) from caught
-            if attempt < GH_API_ATTEMPTS - 1:
-                time.sleep(min(2 ** attempt, 30))
-    raise RuntimeError((error.stderr or str(error)).strip()) from error
+    try:
+        return subprocess.check_output(cmd, text=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as error:
+        status = re.search(r'\bHTTP (\d{3})\b', error.stderr or '')
+        if status and int(status[1]) in {401, 403, 429}:
+            GH_SOURCE_PAUSE = GitHubSourcePaused(f'GitHub metadata source paused after HTTP {status[1]}')
+            raise GH_SOURCE_PAUSE from error
+        raise RuntimeError((error.stderr or str(error)).strip()) from error
 
 
 def gh_json(endpoint: str) -> object:
@@ -281,7 +271,7 @@ def check_direct_redirects(*, include_history: bool = True) -> list[dict]:
             seen_redirects = set()
             while current not in seen_redirects and not winding_down():
                 seen_redirects.add(current)
-                current = canonical_source(current, lambda u: advertised_url(u, url))
+                current = canonical_source(current, lambda u, source=url: advertised_url(u, source))
                 session.curl_options.update(curl_source_options(current, url))
                 response = session.get(
                     current, allow_redirects=False, timeout=30,

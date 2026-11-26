@@ -20,10 +20,10 @@ from .crawl import crawl_manifests, official, discovery_incomplete, landing_url,
 from .discovery import Candidate, probe, expand_metadata_base, host_counterpart, parse_manifest
 from .firmware_archive import capture_due, candidate_is_preserved
 from .metadata import fetch_update_metadata, UPDATE_METADATA_URL
-from .metadata_sweep import discover_profiles, capture_response, _profile_at, _version_profiles
+from .metadata_sweep import discover_profiles, capture_response
 from .source_urls import advertised_url
 from .source_links import distribution_url, distribution_urls
-from .retry import checkpoint, select, due
+from .retry import checkpoint, due
 from .deadline import winding_down
 
 

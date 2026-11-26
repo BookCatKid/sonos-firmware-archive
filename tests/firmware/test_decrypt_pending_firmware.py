@@ -172,7 +172,7 @@ class DecryptPendingTests(unittest.TestCase):
             self.assertEqual(self._run(), 0)
             extract.assert_called_once()
 
-    def test_failed_package_does_not_block_another_and_budget_includes_failure(self):
+    def test_failed_package_does_not_block_another(self):
         second = {**PACKAGE, 'id': 'another-package', 'filename': 'another-package.upd'}
         self.catalog.write_text(json.dumps({'packages': [PACKAGE, second], 'raw_images': []}))
         ledger = json.loads(self.ledger.read_text())
@@ -186,9 +186,9 @@ class DecryptPendingTests(unittest.TestCase):
                 raise ValueError('broken first fixture')
             return [{**COMPONENT, 'package_id': second['id']}]
         with mock.patch.object(MODULE, 'extract_components', side_effect=extract):
-            self.assertEqual(self._run('--max-packages', '1'), 1)
-            self.assertEqual(calls, [PACKAGE['id']])
-            self.assertEqual(self._run('--max-packages', '1'), 0)
+            self.assertEqual(self._run(), 1)
+            self.assertEqual(calls, [PACKAGE['id'], second['id']])
+            self.assertEqual(self._run(), 0)
         self.assertEqual(calls, [PACKAGE['id'], second['id']])
         self.assertTrue((self.receipts / (second['id'] + '.json')).exists())
 

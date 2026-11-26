@@ -11,7 +11,7 @@ from datetime import timedelta
 from pathlib import Path
 from unittest.mock import patch
 
-from sonos_firmware import archive_replay, historical_firmware as history, releases, retry, release_series
+from sonos_firmware import archive_replay, firmware_archive, historical_firmware as history, releases, retry, release_series
 from sonos_firmware.catalog import validate_catalog
 from sonos_firmware.firmware_archive import catalog_at
 from sonos_firmware.storage import atomic_json
@@ -34,6 +34,16 @@ class Response(io.BytesIO):
 
     def geturl(self):
         return self.url
+
+
+def run_replay(*args, work_units=None, **kwargs):
+    checks = 0
+    def wind_down():
+        nonlocal checks
+        checks += 1
+        return work_units is not None and checks > work_units
+    with patch.object(history, 'winding_down', side_effect=wind_down):
+        return history.replay_preserved_manifests(*args, **kwargs)
 
 
 class HistoricalFirmwareTests(unittest.TestCase):
@@ -70,9 +80,16 @@ class HistoricalFirmwareTests(unittest.TestCase):
         atomic_json(self.frontier, {'archive_index': {'artifacts': artifacts, 'entries':
             {MANIFEST: {'captures': manifests}} if manifests else {}}})
 
-    def run_history(self, *, now=NOW, repository='fresh/archive', **kwargs):
-        with patch.object(retry, '_now', return_value=now):
-            return history.archive_history(self.root, self.root/'worker', repository, **kwargs)
+    def run_history(self, *, now=NOW, repository='fresh/archive', work_units=None):
+        checks = 0
+        def wind_down():
+            nonlocal checks
+            checks += 1
+            return work_units is not None and checks > work_units
+        with patch.object(retry, '_now', return_value=now), \
+             patch.object(history, 'winding_down', side_effect=wind_down), \
+             patch.object(firmware_archive, 'winding_down', side_effect=wind_down):
+            return history.archive_history(self.root, self.root/'worker', repository)
 
     def add_firmware(self, identity, timestamp, version):
         item = capture(timestamp)
@@ -123,9 +140,9 @@ class HistoricalFirmwareTests(unittest.TestCase):
     def test_unattempted_index_captures_survive_index_reset(self):
         self.index(dict([self.add_firmware('old', '20200101000000', (1, 0, 1)),
                          self.add_firmware('new', '20210101000000', (2, 0, 2))]))
-        self.assertEqual(self.run_history(limit=1)['pending'], 1)
+        self.assertEqual(self.run_history(work_units=1)['pending'], 1)
         self.index()
-        self.assertEqual(self.run_history(limit=1)['preserved'], 1)
+        self.assertEqual(self.run_history(work_units=1)['preserved'], 1)
         self.assertEqual(len(self.github.uploads), 2)
 
     def test_historical_manifest_replay_preserves_raw_gzip_and_discovers_vendor_relative_urls(self):
@@ -199,7 +216,7 @@ class HistoricalFirmwareTests(unittest.TestCase):
         def archive(now):
             with patch.object(retry, '_now', return_value=now):
                 frontier = json.loads(self.frontier.read_text())
-                return history.archive_manifests(self.root, self.root/'worker', 'fresh/archive', frontier, limit=4)
+                return history.archive_manifests(self.root, self.root/'worker', 'fresh/archive', frontier)
         archive(NOW)
         self.index(manifests={'old': old, 'peer': peer})
         self.responses[archive_replay.replay_url(MANIFEST, peer)] = XML
@@ -220,7 +237,7 @@ class HistoricalFirmwareTests(unittest.TestCase):
         def archive(now):
             with patch.object(retry, '_now', return_value=now):
                 return history.archive_manifests(self.root, self.root/'worker', 'fresh/archive',
-                    json.loads(self.frontier.read_text()), limit=4)
+                    json.loads(self.frontier.read_text()))
         first = archive(NOW)
         self.assertEqual(first['preserved'], 0)
         self.assertTrue(first['paused'])
@@ -247,7 +264,7 @@ class HistoricalFirmwareTests(unittest.TestCase):
             return Response('https://data.commoncrawl.org/crawl/fixture.warc.gz', XML)
         with patch.object(history, 'open_capture', side_effect=replay), patch.object(retry, '_now', return_value=NOW):
             result = history.archive_manifests(self.root, self.root/'worker', 'fresh/archive',
-                json.loads(self.frontier.read_text()), limit=4)
+                json.loads(self.frontier.read_text()))
         self.assertEqual(visited, ['web.archive.org', 'data.commoncrawl.org'])
         self.assertEqual(result['preserved'], 1)
         self.assertEqual(result['paused_hosts'], ['web.archive.org'])
@@ -265,7 +282,7 @@ class HistoricalFirmwareTests(unittest.TestCase):
             captures[str(day)] = item
             self.responses[archive_replay.replay_url(MANIFEST, item)] = XML
         self.index(manifests=captures)
-        self.run_history(now=NOW+timedelta(hours=2), manifest_limit=4)
+        self.run_history(now=NOW+timedelta(hours=2), work_units=4)
         journal = json.loads((self.root/'data/discovery/historical-manifest-acquisition.json').read_text())
         self.assertEqual(journal['sources']['fresh/archive']['old']['status'], 'preserved')
         self.assertEqual(len(self.fetched), 4)  # Original capture plus three new ones; recovery needs no GET.
@@ -401,15 +418,15 @@ class PreservedManifestReplayTests(unittest.TestCase):
             def acquire(source, path, repository):
                 path.write_bytes(bodies[int(Path(source['release_asset']).stem)])
             frontier = {}
-            first = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            first = run_replay(root, root/'metadata', 'owner/archive', frontier, work_units=1, acquire=acquire)
             self.assertEqual(first['pending'], 1)
             self.assertTrue(first['errors'])
-            second = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            second = run_replay(root, root/'metadata', 'owner/archive', frontier, work_units=1, acquire=acquire)
             self.assertEqual(second['pending'], 0)
             self.assertEqual({x['version'] for x in frontier['candidates']}, {'1.0-1', '2.0-2'})
             self.assertIn(MANIFEST.rsplit('/', 2)[0]+'/older/update.upm', frontier['pending_manifest_urls'])
             self.assertIn(MANIFEST.rsplit('/', 2)[0]+'/newer/update.upm', frontier['pending_manifest_urls'])
-            third = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, limit=1, acquire=acquire)
+            third = run_replay(root, root/'metadata', 'owner/archive', frontier, work_units=1, acquire=acquire)
             self.assertEqual(third['attempted'], 0)
 
     def test_mismatched_saved_bytes_cannot_supply_discovery_leads(self):
@@ -422,7 +439,7 @@ class PreservedManifestReplayTests(unittest.TestCase):
             frontier = {}
             def corrupt(source, path, repository):
                 path.write_bytes(XML+b'changed')
-            result = history.replay_preserved_manifests(root, root/'metadata', 'owner/archive', frontier, acquire=corrupt)
+            result = run_replay(root, root/'metadata', 'owner/archive', frontier, acquire=corrupt)
             self.assertEqual(result['pending'], 1)
             self.assertTrue(result['errors'])
             self.assertFalse(frontier.get('candidates'))

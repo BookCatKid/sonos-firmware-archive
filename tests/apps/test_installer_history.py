@@ -132,8 +132,7 @@ class InstallerHistoryTests(unittest.TestCase):
 
     def run_history(self, kind='desktop', now=NOW, **kwargs):
         with patch.object(retry, '_now', return_value=now):
-            return installers.archive_history(self.root, self.root/'worker', 'owner/archive', kind,
-                                              pages=3, **kwargs)
+            return installers.archive_history(self.root, self.root/'worker', 'owner/archive', kind, **kwargs)
 
     def receipt(self, kind='desktop'):
         return json.loads((self.root/f'data/apps/{kind}-archive.json').read_text())
@@ -202,7 +201,7 @@ class InstallerHistoryTests(unittest.TestCase):
         self.add('20200101000000', b'MZ older installer')
         # Save indexed evidence from an earlier run without acquiring its bytes.
         with patch.object(retry, '_now', return_value=NOW):
-            index = archive_index.discover_sources({}, fetch=self.index, pages=3,
+            index = archive_index.discover_sources({}, fetch=self.index,
                 extensions=('exe', 'dmg'), allowed=installers.official_source)
             atomic_json(self.root/'data/apps/desktop-history-index.json', index)
             current = self.root/'current.json'
@@ -336,36 +335,16 @@ class DesktopMetadataTests(unittest.TestCase):
 
 
 class DecoderOutputTests(unittest.TestCase):
-    class Process:
-        def __init__(self, output, returncode):
-            self.output, self.returncode = output, returncode
-
-        def poll(self):
-            return self.returncode
-
-        def wait(self):
-            return self.returncode
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *exception):
-            return False
-
     def run_decoder(self, output, returncode, allow_partial):
-        def launch(command, stdout=None, stderr=None):
+        def decode(command, stdout=None, stderr=None, check=None):
             if output and stdout is not None:
                 stdout.write(output)
-                stdout.flush()
-            return self.Process(output, returncode)
-
+            return installers.subprocess.CompletedProcess(command, returncode)
         with tempfile.TemporaryDirectory() as temporary:
             destination = Path(temporary)/'output'
-            with patch.object(installers.subprocess, 'Popen', side_effect=launch), \
-                    patch.object(installers.time, 'sleep', return_value=None):
+            with patch.object(installers.subprocess, 'run', side_effect=decode):
                 try:
-                    installers._archive_output(['decoder'], destination, limit=1024,
-                                               allow_partial=allow_partial)
+                    installers._archive_output(['decoder'], destination, allow_partial=allow_partial)
                 except ValueError as error:
                     return str(error)
                 return destination.read_bytes()

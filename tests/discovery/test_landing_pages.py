@@ -8,6 +8,7 @@ from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.discovery.test_frontier import scan_frontier
 from sonos_firmware import discovery, frontier, releases, release_series
 from sonos_firmware import crawl
 from sonos_firmware.catalog import validate_catalog
@@ -78,8 +79,8 @@ class LandingPageTests(unittest.TestCase):
             return missing(url)
         with tempfile.TemporaryDirectory() as temporary, \
              patch.object(frontier, 'protocol_roots', return_value=[MANIFEST]), patch.object(frontier.time, 'sleep'):
-            result = frontier.discover(state, Path(temporary), metadata_fetch=lambda: (b'', {}), fetch=fetch,
-                probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404}, inference_limit=1)
+            result = scan_frontier(state, Path(temporary), metadata_fetch=lambda: (b'', {}), fetch=fetch,
+                probe_fn=lambda c: {**asdict(c), 'available': False, 'http_status': 404}, work_units=1, )
         self.assertNotIn(noise, calls)
         self.assertIn(next_page, calls)
         self.assertNotIn(noise, [row['url'] for row in result['documents']])
@@ -198,16 +199,21 @@ class LandingPageTests(unittest.TestCase):
     def test_budget_resume_retains_a_page_discovered_at_the_end_of_the_batch(self):
         second = PAGE.replace('start.html', 'next.html')
         with tempfile.TemporaryDirectory() as temporary:
-            first = crawl_manifests({}, [{'url': MANIFEST, 'body': XML}], [], Path(temporary),
-                fetch=lambda url: b'<a href="next.html">Next</a>', delay=0, max_manifests=2)
+            visited = []
+            def first_page(url):
+                visited.append(url)
+                return b'<a href="next.html">Next</a>'
+            with patch.object(crawl, 'winding_down', side_effect=lambda: bool(visited)):
+                first = crawl_manifests({}, [{'url': MANIFEST, 'body': XML}], [], Path(temporary),
+                    fetch=first_page, delay=0)
             self.assertEqual(first['pending_manifest_urls'], [second])
-            self.assertTrue(first['limits_reached'])
+            self.assertTrue(first['deadline_reached'])
             def fetch(url):
                 return ('<a href="'+PAYLOAD+'">Firmware</a>').encode() if url == second else missing(url)
             resumed = crawl_manifests({}, [{'url': url} for url in first['pending_manifest_urls']], [],
                 Path(temporary), fetch=fetch, delay=0)
         self.assertEqual([row.url for row in resumed['candidates']], [PAYLOAD])
-        self.assertFalse(resumed['limits_reached'])
+        self.assertFalse(resumed['deadline_reached'])
 
     def test_page_redirect_yields_a_payload_lead_without_treating_bytes_as_html(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -223,13 +229,16 @@ class LandingPageTests(unittest.TestCase):
         response.__enter__.return_value = response
         response.url = PAYLOAD
         response.read.side_effect = AssertionError('payload read into page cache')
-        with tempfile.TemporaryDirectory() as temporary, patch.object(crawl, 'open_advertised') as factory:
-            factory.return_value = response
-            graph = crawl_manifests({}, [{'url': MANIFEST, 'body': XML}], [], Path(temporary),
-                delay=0, max_manifests=2)
+        def fetch_page(request, **kwargs):
+            if request.full_url != PAGE:
+                raise urllib.error.HTTPError(request.full_url, 404, 'not in fixture', {}, None)
+            return response
+        with tempfile.TemporaryDirectory() as temporary, patch.object(
+                crawl, 'open_advertised', side_effect=fetch_page) as factory:
+            graph = crawl_manifests({}, [{'url': MANIFEST, 'body': XML}], [], Path(temporary), delay=0)
         response.read.assert_not_called()
         self.assertEqual([row.url for row in graph['candidates']], [PAYLOAD])
-        self.assertEqual(factory.call_args.args[0].full_url, PAGE)
+        self.assertTrue(any(call.args[0].full_url == PAGE for call in factory.call_args_list))
 
     def test_private_payloads_and_empty_pages_remain_explicit_gaps(self):
         for body in (b'<a href="https://127.0.0.1/firmware.upd">Download</a>', b'<html>No links</html>'):
@@ -308,8 +317,8 @@ class LandingPageTests(unittest.TestCase):
             root = Path(temporary)
             evidence, work = root/'observations', root/'worker'
             work.mkdir()
-            state = frontier.discover({}, evidence, fetch=fetch, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), inference_limit=1, model_max=0)
+            state = scan_frontier({}, evidence, fetch=fetch, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), work_units=1, )
             self.assertEqual(len(state['documents']), 1)
             self.assertEqual(github.releases, {})
             self.assertFalse(module.preserve(state, root/'data/catalog.json', root/'state.json',
@@ -327,7 +336,7 @@ class LandingPageTests(unittest.TestCase):
                 evidence, work, 'fresh/archive'))
             self.assertEqual(len(github.uploads), 3)
             requests.clear()
-            resumed = frontier.discover(state, evidence, fetch=fetch, probe_fn=probe,
-                metadata_fetch=lambda: (b'', {}), inference_limit=1, model_max=0)
+            resumed = scan_frontier(state, evidence, fetch=fetch, probe_fn=probe,
+                metadata_fetch=lambda: (b'', {}), work_units=1, )
             self.assertIn(PAGE, requests)
             self.assertEqual(len(resumed['documents']), 1)

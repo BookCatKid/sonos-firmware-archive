@@ -7,6 +7,7 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .deadline import winding_down
 from . import gpl_binary_evidence
 from .releases import download_verified
 from .retry import checkpoint, select
@@ -132,6 +133,8 @@ def discover_preserved(root, work, repository, *, acquire=download_verified, sca
         atomic_json(path, document)
 
     for candidate in queue:
+        if winding_down():
+            break
         identity = candidate['sha256']
         attempted += 1
         next_source = records.get(identity, {}).get('next_source', 0)

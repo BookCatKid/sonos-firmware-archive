@@ -52,10 +52,10 @@ class SitemapTests(unittest.TestCase):
             child: HttpResult(200, b'<urlset><url><loc>https://www.sonos.com/documents/gpl/22.13/gpl.html</loc></url></urlset>', 'application/xml', child),
         }
         with tempfile.TemporaryDirectory() as tmp:
-            args = Namespace(output=Path(tmp) / 'site.json', limit=1, seed=[root], delay=2.5, recheck=False)
+            args = Namespace(output=Path(tmp) / 'site.json', seed=[root], delay=2.5, recheck=False)
             with patch.object(MODULE, 'get_page', side_effect=lambda url, **_: responses[url]), patch.object(MODULE, 'pause'):
                 self.assertEqual(MODULE.scan(args), 0)
-                self.assertEqual(len(load_json(args.output, {})['sitemaps']), 1)
+                self.assertEqual(len(load_json(args.output, {})['sitemaps']), 2)
                 self.assertEqual(MODULE.scan(args), 0)
             state = json.loads(args.output.read_text())
             self.assertEqual(state['version_evidence']['22.13'], ['https://www.sonos.com/documents/gpl/22.13/gpl.html'])
@@ -76,15 +76,15 @@ class SitemapPrioritizationTests(unittest.TestCase):
                 'version_evidence': {'22.13': ['https://www.sonos.com/documents/gpl/22.13/gpl.html']},
                 'sitemaps': {}, 'related_pages': [],
             }))
-            args = Namespace(output=root, recheck=False, discovery_window=1,
-                             limit=1, delay=2.5, binary=[])
+            args = Namespace(output=root, recheck=False, delay=2.5, binary=[])
             requested = []
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', url)
             with patch.object(archive, 'offline_candidates', return_value={}), \
                  patch.object(archive, 'get_page', side_effect=fake_get_page), \
-                 patch.object(archive, 'pause'):
+                 patch.object(archive, 'pause'), \
+                 patch.object(archive, 'winding_down', side_effect=lambda: len(requested) >= 1):
                 self.assertEqual(archive.discover(args), 0)
             self.assertEqual(requested, ['https://www.sonos.com/documents/gpl/22.13/gpl.html'])
             self.assertEqual(archive.live_catalog(root)['releases'], {})

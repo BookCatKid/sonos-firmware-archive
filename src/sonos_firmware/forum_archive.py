@@ -35,8 +35,7 @@ def _get(url, *, timeout=60):
         headers['Authorization'] = 'Bearer '+token
     request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=timeout) as response:
-        data = response.read()
-    return data
+        return response.read()
 
 
 def _release(fetch):

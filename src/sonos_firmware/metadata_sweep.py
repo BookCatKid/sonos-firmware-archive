@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from itertools import chain
+from copy import deepcopy
+from collections import deque
 
 import hashlib
 import re
@@ -116,7 +117,7 @@ def _profile_at(index):
             coordinates[field] |= (value & 1) << bit
             value >>= 1
         bit += 1
-    return dict(zip(PROFILE_FIELDS, coordinates))
+    return dict(zip(PROFILE_FIELDS, coordinates, strict=True))
 
 
 def fetch_profile(profile: dict[str, int], timeout: float = 20) -> bytes:
@@ -145,22 +146,20 @@ def discover_profiles(previous, evidence, catalog, *, fetch=fetch_profile, on_ca
     paused = bool(source_backoff) and not due(source_backoff)
     errors = [{'source': 'legacy-ups-profile', 'error': 'metadata endpoint is in access-challenge cooldown',
                'http_status': source_backoff.get('http_status')}] if paused else []
-    saved = [entry['profile'] for entry in pending.values()]
-    saved += [row['profile'] for row in observations.values() if 'profile' in row]
-    queue = [] if paused else select(saved, observations, key=_profile_key)
-
-    def unexplored():
-        nonlocal cursor
-        while not winding_down() and (stop is None or not stop.is_set()):
+    saved = {key: row['profile'] for key, row in observations.items() if 'profile' in row}
+    saved.update({key: entry['profile'] for key, entry in pending.items()})
+    queue = deque(select(saved.values(), observations, key=_profile_key) if not paused else [])
+    next_saved = exploration.get('next_lane', 0) == 0
+    attempted = 0
+    while not paused and not winding_down() and (stop is None or not stop.is_set()):
+        if queue and next_saved:
+            profile = queue.popleft()
+        else:
             profile = _profile_at(cursor)
             cursor += 1
-            if _profile_key(profile) not in observations and _profile_key(profile) not in pending:
-                yield profile
-
-    attempted = 0
-    for profile in chain(queue, unexplored() if not paused else ()):
-        if winding_down() or (stop is not None and stop.is_set()):
-            break
+            if _profile_key(profile) in observations or _profile_key(profile) in pending:
+                continue
+        next_saved = not next_saved
         key = _profile_key(profile)
         attempted += 1
         captured = None
@@ -198,7 +197,7 @@ def discover_profiles(previous, evidence, catalog, *, fetch=fetch_profile, on_ca
     return {'profiles': observations, 'responses': responses, 'attempted_this_run': attempted,
             'source_backoff': source_backoff, 'pending_profiles': list(pending.values()),
             'profile_exploration': {'policy': 'continuing-search', 'generator_version': 1,
-                                    'next_profile_index': cursor},
+                                    'next_profile_index': cursor, 'next_lane': 0 if next_saved else 1},
             'planned_profile_total': len(observations)+unchecked, 'unchecked_profile_total': unchecked,
             'negative_profile_total': sum(row.get('status') == 'not-served' for row in observations.values()),
             'failed_profile_total': failed, 'pending_profile_total': unchecked + failed,
