@@ -58,8 +58,8 @@ def mobile(c: Context):
 
 def installer_history(c, kind):
     return c.task('archive-installer-history', '--kind', kind, '--work-dir', c.work/'history',
-                  '--repository', c.repository, '--limit', c.options.get('history_limit', 8),
-                  '--pages', c.options.get('history_pages', 1),
+                  '--repository', c.repository, '--limit', c.options.get('history_limit', 32),
+                  '--pages', c.options.get('history_pages', 4),
                   '--refresh-hours', c.target.interval_hours,
                   '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168), after_failure=True,
                   report=str(c.work/'history/replay.json'))

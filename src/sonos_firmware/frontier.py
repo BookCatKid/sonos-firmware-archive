@@ -9,7 +9,7 @@ import hashlib
 import urllib.error
 from copy import deepcopy
 from dataclasses import asdict
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
@@ -206,7 +206,8 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
             jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0, 'examples_done': []})
     state.setdefault('sequence', 0)
     roots = []
-    prefixes = [template['prefix'] for template in templates.values()]
+    counts = Counter(template['prefix'] for template in templates.values())
+    prefixes = sorted(counts, key=lambda prefix: (-counts[prefix], prefix))
     # A build without a known release version reuses campaign shapes already
     # observed for its own build generation, which pairs a version with a
     # suffix exactly as Sonos published it.
