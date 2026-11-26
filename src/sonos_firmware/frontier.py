@@ -203,7 +203,7 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
                     pairs.append(pair)
     for context_id in saved:
         for template_id in templates:
-            jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0, 'examples_done': []})
+            jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0})
     state.setdefault('sequence', 0)
     roots = []
     counts = Counter(template['prefix'] for template in templates.values())
