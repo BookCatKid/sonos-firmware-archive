@@ -127,8 +127,14 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     raise last_error
 
 
-def _archive_output(command, destination, *, limit, seconds=600):
-    """Read an archive through stdout; never execute or extract its member paths."""
+def _archive_output(command, destination, *, limit, seconds=600, allow_partial=False):
+    """Read an archive through stdout; never execute or extract its member paths.
+
+    A disk image can contain members the decoder refuses while still serving the
+    one requested here, in which case it reports failure after writing complete
+    output. Callers that parse the result pass allow_partial, so the parse itself
+    is what proves the output usable.
+    """
     with destination.open('wb') as stream, subprocess.Popen(
             command, stdout=stream, stderr=subprocess.DEVNULL) as process:
         deadline = time.monotonic()+seconds
@@ -137,12 +143,23 @@ def _archive_output(command, destination, *, limit, seconds=600):
                 if destination.stat().st_size > limit or time.monotonic() >= deadline:
                     raise ValueError('installer metadata decoder exceeded its resource budget')
                 time.sleep(.05)
-            if process.returncode or destination.stat().st_size > limit:
+            size = destination.stat().st_size
+            failed = process.returncode and not (allow_partial and size)
+            if failed or size > limit:
                 raise ValueError('installer metadata decoder failed or exceeded its output budget')
         finally:
             if process.poll() is None:
                 process.kill()
                 process.wait()
+
+
+def _complete_member(output, expected):
+    """Return a member's bytes only when the listing proves them complete."""
+    if not output.exists() or not isinstance(expected, str) or not expected.isdigit():
+        return None
+    if output.stat().st_size != int(expected):
+        return None
+    return output.read_bytes()
 
 
 def _inspect_desktop(candidate, path):
@@ -157,13 +174,14 @@ def _inspect_desktop(candidate, path):
         info = plistlib.loads(data)
         if not str(info.get('CFBundleIdentifier', '')).lower().startswith('com.sonos'):
             raise ValueError('installer plist is not a Sonos application bundle')
-        metadata = {'bundle_id': info.get('CFBundleIdentifier'), 'member': member,
+        identifier = info.get('CFBundleIdentifier')
+        metadata = {'bundle_id': identifier, 'member': member,
                     'bundle_version': info.get('CFBundleVersion') if numeric(info.get('CFBundleVersion')) else None,
                     'plist_sha256': hashlib.sha256(data).hexdigest()}
         # The short version is the release marketing version used by campaign
-        # URLs. Classic installers expose only the bundle build, which is kept
-        # as metadata but cannot reconstruct a campaign.
-        if numeric(info.get('CFBundleShortVersionString')):
+        # URLs, and only a controller bundle states it. A nested helper states
+        # its own version, which must not become a release version.
+        if numeric(info.get('CFBundleShortVersionString')) and str(identifier).lower().startswith('com.sonos.maccontroller'):
             metadata['app_version'] = info['CFBundleShortVersionString']
         if not metadata.get('app_version') and not metadata.get('bundle_version'):
             raise ValueError('installer plist has no Sonos application version')
@@ -174,13 +192,19 @@ def _inspect_desktop(candidate, path):
             with zipfile.ZipFile(path) as bundle:
                 members = sorted((m for m in bundle.infolist() if
                     m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
+                build_only = None
                 for member in members:
                     if member.file_size > 1_000_000:
                         raise ValueError('installer plist exceeds its metadata budget')
                     try:
-                        return parse(bundle.read(member), member.filename)
-                    except ValueError:
+                        parsed = parse(bundle.read(member), member.filename)
+                    except (ValueError, plistlib.InvalidFileException, ExpatError):
                         continue
+                    if parsed['desktop_metadata'].get('app_version'):
+                        return parsed
+                    build_only = build_only or parsed
+                if build_only:
+                    return build_only
             raise ValueError('installer archive has no Sonos Info.plist')
         tool = shutil.which('7zz') or shutil.which('7z')
         if not tool:
@@ -192,16 +216,32 @@ def _inspect_desktop(candidate, path):
         selection = '*.app/Contents/Info.plist' if not executable else None
         listing = work/'listing.txt'
         _archive_output([tool, 'l', '-slt', *(('-r',) if selection else ()), *archive_type, '--', str(path),
-                         *([selection] if selection else [])], listing, limit=4*1024*1024)
+                         *([selection] if selection else [])], listing, limit=4*1024*1024,
+                        allow_partial=True)
+        listing_text = listing.read_text(errors='replace')
+        # A decoder that reports errors may have stopped before listing every
+        # member, so a build-only helper bundle is not proof of the installer's
+        # own identity.
+        incomplete = 'ERRORS:' in listing_text
         entries = []
-        for block in listing.read_text(errors='replace').split('\n\n'):
+        for block in listing_text.split('\n\n'):
             entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
+
+        def member_bytes(member, name, limit=1_000_000):
+            """Read one member; a failed or short extraction is not usable."""
+            output = work/name
+            try:
+                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output,
+                                limit=limit, allow_partial=True)
+            except ValueError:
+                return None
+            return _complete_member(output, member.get('Size', ''))
         if executable:
             resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:[.]txt|/|$)', e.get('Path', ''))]
             for member in resources:
-                output = work/'version-resource'
-                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output, limit=1_000_000)
-                data = output.read_bytes()
+                data = member_bytes(member, 'version-resource')
+                if data is None:
+                    continue
                 for text in (data.decode('utf-16le', errors='ignore'), data.decode('utf-8', errors='ignore')):
                     pattern = r'ProductVersion[\s\x00\",:=]+([0-9]+(?:[.,][ ]*[0-9]+)+)'
                     # Prefer the application's StringFileInfo value over
@@ -214,13 +254,25 @@ def _inspect_desktop(candidate, path):
             raise ValueError('installer has no readable Sonos ProductVersion resource')
         plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
                         key=lambda e: e['Path'].count('/'))
+        build_only = None
+        controller = False
         for member in plists:
-            output = work/'Info.plist'
-            _archive_output([tool, 'x', '-so', '--', str(path), member['Path']], output, limit=1_000_000)
-            try:
-                return parse(output.read_bytes(), member['Path'])
-            except ValueError:
+            data = member_bytes(member, 'Info.plist')
+            if data is None:
                 continue
+            try:
+                parsed = parse(data, member['Path'])
+            except (ValueError, plistlib.InvalidFileException, ExpatError):
+                continue
+            if str(parsed['desktop_metadata'].get('bundle_id', '')).lower().startswith('com.sonos.maccontroller'):
+                controller = True
+            if parsed['desktop_metadata'].get('app_version'):
+                return parsed
+            build_only = build_only or parsed
+        if build_only and (controller or not incomplete):
+            return build_only
+        if incomplete and not controller:
+            raise ValueError('installer listing is incomplete and contains no controller bundle')
         raise ValueError('installer disk image has no readable application plist')
 
 
@@ -288,7 +340,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
-                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-4',
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-5',
                      inspect_if=None if mobile else pivotable,
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)

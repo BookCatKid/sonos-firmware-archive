@@ -305,9 +305,94 @@ class DesktopMetadataTests(unittest.TestCase):
             'sha256': '0', 'source_urls': ['https://update-software.sonos.com/software/mac/mdcr/'
                                            'SonosDesktopController131.dmg']}), [])
 
+    def test_a_helper_bundle_version_is_not_a_release_version(self):
+        result = self.inspect([
+            ('Sonos/Sonos.app/Contents/Info.plist',
+             {'CFBundleIdentifier': 'com.sonos.macController2', 'CFBundleVersion': '90.0.67171'}),
+            ('Sonos/Sonos.app/Contents/Resources/Helper.app/Contents/Info.plist',
+             {'CFBundleIdentifier': 'com.sonos.installer', 'CFBundleShortVersionString': '5.0.0'})])
+        metadata = result['desktop_metadata']
+        self.assertNotIn('app_version', metadata)
+        self.assertEqual(metadata['bundle_version'], '90.0.67171')
+
+    def test_a_malformed_plist_does_not_hide_a_later_bundle(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            import plistlib, zipfile
+            path = Path(temporary)/'installer.zip'
+            with zipfile.ZipFile(path, 'w') as archive:
+                archive.writestr('Broken.app/Contents/Info.plist', b'<plist><dict>')
+                archive.writestr('Sonos.app/Contents/Info.plist', plistlib.dumps(
+                    {'CFBundleIdentifier': 'com.sonos.macController2', 'CFBundleShortVersionString': '17.2',
+                     'CFBundleVersion': '90.0.67171'}))
+            result = installers.inspect_desktop({}, path)
+        self.assertEqual(result['desktop_metadata']['app_version'], '17.2')
+
     def test_a_non_sonos_bundle_is_not_metadata(self):
         result = self.inspect([('Other.app/Contents/Info.plist',
                                 {'CFBundleIdentifier': 'com.example.other',
                                  'CFBundleShortVersionString': '1.2.3'})])
         self.assertIn('discovery_errors', result)
 
+
+
+class DecoderOutputTests(unittest.TestCase):
+    class Process:
+        def __init__(self, output, returncode):
+            self.output, self.returncode = output, returncode
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self):
+            return self.returncode
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exception):
+            return False
+
+    def run_decoder(self, output, returncode, allow_partial):
+        def launch(command, stdout=None, stderr=None):
+            if output and stdout is not None:
+                stdout.write(output)
+                stdout.flush()
+            return self.Process(output, returncode)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary)/'output'
+            with patch.object(installers.subprocess, 'Popen', side_effect=launch), \
+                    patch.object(installers.time, 'sleep', return_value=None):
+                try:
+                    installers._archive_output(['decoder'], destination, limit=1024,
+                                               allow_partial=allow_partial)
+                except ValueError as error:
+                    return str(error)
+                return destination.read_bytes()
+
+    def plist(self, version='1.2.3'):
+        import plistlib
+        return plistlib.dumps({'CFBundleIdentifier': 'com.sonos.controller',
+                               'CFBundleShortVersionString': version})
+
+    def test_a_partial_archive_is_usable_when_its_output_parses(self):
+        import plistlib
+        body = self.plist()
+        result = self.run_decoder(body, 2, True)
+        self.assertEqual(result, body)
+        self.assertEqual(plistlib.loads(result)['CFBundleShortVersionString'], '1.2.3')
+
+    def test_a_partial_archive_without_output_is_a_failure(self):
+        self.assertIn('decoder failed', self.run_decoder(b'', 2, True))
+
+    def test_a_failure_remains_a_failure_when_partial_output_is_not_allowed(self):
+        self.assertIn('decoder failed', self.run_decoder(self.plist(), 2, False))
+
+    def test_a_short_member_is_not_usable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)/'member'
+            output.write_bytes(b'prefix')
+            self.assertIsNone(installers._complete_member(output, '40'))
+            self.assertIsNone(installers._complete_member(output, ''))
+            self.assertIsNone(installers._complete_member(output, None))
+            self.assertEqual(installers._complete_member(output, '6'), b'prefix')
