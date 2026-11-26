@@ -2,7 +2,7 @@
   "status": "ok",
   "errors": [],
   "schema_version": 1,
-  "checked": "2026-11-26T07:08:41.499177+00:00",
+  "checked": "2026-11-26T16:46:58.330255+00:00",
   "current_only": false,
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
@@ -22,6 +22,7 @@
       "platform": "fireos-android-apk",
       "version": "120",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -36,6 +37,7 @@
       "platform": "fireos-android-apk",
       "version": "1206",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -50,6 +52,7 @@
       "platform": "fireos-android-apk",
       "version": "1221",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -64,6 +67,7 @@
       "platform": "fireos-android-apk",
       "version": "1303",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -92,6 +96,7 @@
       "platform": "fireos-android-apk",
       "version": "1312",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -106,6 +111,7 @@
       "platform": "fireos-android-apk",
       "version": "1322",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -120,6 +126,7 @@
       "platform": "fireos-android-apk",
       "version": "133",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -134,6 +141,7 @@
       "platform": "fireos-android-apk",
       "version": "1332",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -148,6 +156,7 @@
       "platform": "fireos-android-apk",
       "version": "134",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -162,6 +171,7 @@
       "platform": "fireos-android-apk",
       "version": "1341",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -176,6 +186,7 @@
       "platform": "fireos-android-apk",
       "version": "1461",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -190,6 +201,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-59130_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -204,6 +216,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-61300_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -218,6 +231,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-71190_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -232,6 +246,7 @@
       "platform": "fireos-android-apk",
       "version": "68.3-30100_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -246,6 +261,7 @@
       "platform": "fireos-android-apk",
       "version": "69.1-31120_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -260,6 +276,7 @@
       "platform": "fireos-android-apk",
       "version": "69.1-33120_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -302,6 +319,7 @@
       "platform": "fireos-android-apk",
       "version": "70.3-35094_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -316,6 +334,7 @@
       "platform": "fireos-android-apk",
       "version": "70.4-36090_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -330,6 +349,7 @@
       "platform": "fireos-android-apk",
       "version": "72.2-39150_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -344,6 +364,7 @@
       "platform": "fireos-android-apk",
       "version": "76.2-46300_32bit",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -371,6 +392,7 @@
       "platform": "fireos-android-apk",
       "version": "80.09.04",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -413,6 +435,7 @@
       "platform": "fireos-android-apk",
       "version": "80.15.01",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -427,6 +450,7 @@
       "platform": "fireos-android-apk",
       "version": "80.18.24",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -441,6 +465,7 @@
       "platform": "fireos-android-apk",
       "version": "80.24.32",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -455,6 +480,7 @@
       "platform": "fireos-android-apk",
       "version": "80.27.6",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -469,6 +495,7 @@
       "platform": "fireos-android-apk",
       "version": "80.27.8",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -497,6 +524,7 @@
       "platform": "fireos-android-apk",
       "version": "80.28.36",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -511,6 +539,7 @@
       "platform": "fireos-android-apk",
       "version": "80.32.32",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -525,6 +554,7 @@
       "platform": "fireos-android-apk",
       "version": "81.00.51",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -539,6 +569,7 @@
       "platform": "fireos-android-apk",
       "version": "83.00.35",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -567,6 +598,7 @@
       "platform": "fireos-android-apk",
       "version": "85.00.31",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
@@ -595,6 +627,7 @@
       "platform": "fireos-android-apk",
       "version": "89.00.49",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -608,6 +641,7 @@
       "platform": "fireos-android-apk",
       "version": "89.00.51",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -621,6 +655,7 @@
       "platform": "fireos-android-apk",
       "version": "89.01.11",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -634,6 +669,7 @@
       "platform": "fireos-android-apk",
       "version": "90.00.43",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -647,6 +683,7 @@
       "platform": "fireos-android-apk",
       "version": "90.01.9",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -660,6 +697,7 @@
       "platform": "fireos-android-apk",
       "version": "91.00.33",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,
@@ -673,6 +711,7 @@
       "platform": "fireos-android-apk",
       "version": "91.01.11",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
@@ -688,6 +727,7 @@
       "platform": "fireos-android-apk",
       "version": "91.01.7",
       "sources": [
+        "firmware-observation:data/catalog.json",
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
       "current": false,

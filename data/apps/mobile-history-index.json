@@ -731,9 +731,11 @@
     }
   },
   "cursors": {
-    "update-software.sonos.com": null
+    "update-software.sonos.com": null,
+    "update-beta.sonos.com": null,
+    "update-stage.sonos.com": null
   },
-  "next_host": 2,
+  "next_host": 0,
   "retries": {
     "sonos.com": {
       "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -753,37 +755,43 @@
     }
   },
   "index_retry": {},
-  "completed_hosts": [],
+  "completed_hosts": [
+    "update-beta.sonos.com",
+    "update-stage.sonos.com"
+  ],
   "pending_hosts": [
     "sonos.com",
-    "update-beta.sonos.com",
-    "update-software.sonos.com",
-    "update-stage.sonos.com"
+    "update-software.sonos.com"
   ],
   "status": "partial",
   "observations": [
     {
-      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F72ynP0v9lu%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-      "records": 1,
-      "more_pages": false
-    },
-    {
-      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FsLUvGZEjVv%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-      "records": 1,
-      "more_pages": false
-    },
-    {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-beta.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
       "records": 0,
       "more_pages": false
     },
     {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-stage.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-stage.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
       "records": 0,
       "more_pages": false
     },
     {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2Fdpnugadm%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FnpgNL9nqYX%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "records": 1,
+      "more_pages": false
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": true
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": false
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2Fgjocspcx%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
       "records": 0,
       "more_pages": false
     }
@@ -822,6 +830,14 @@
       "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
     },
     {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fdpnugadm%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "<urlopen error timed out>",
+      "http_status": null,
+      "checked_at": "2026-11-26T17:04:03.213102+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T18:04:03.213102+00:00"
+    },
+    {
       "checked_at": "2026-11-26T06:34:39.223363+00:00",
       "consecutive_failures": 1,
       "next_attempt_at": "2026-11-26T07:34:39.223363+00:00",
@@ -858,6 +874,15 @@
       "http_status": 502
     },
     {
+      "checked_at": "2026-11-26T17:04:28.683693+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T18:04:28.683693+00:00",
+      "status": "failed",
+      "error": "HTTP Error 502: Bad Gateway",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+      "http_status": 502
+    },
+    {
       "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
       "error": "<urlopen error [Errno 111] Connection refused>",
       "http_status": null,
@@ -880,6 +905,14 @@
       "checked_at": "2026-11-26T07:12:47.968893+00:00",
       "consecutive_failures": 1,
       "next_attempt_at": "2026-11-26T08:12:47.968893+00:00"
+    },
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1303.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "<urlopen error timed out>",
+      "http_status": null,
+      "checked_at": "2026-11-26T17:05:21.708618+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T18:05:21.708618+00:00"
     }
   ],
   "wayback": {
@@ -898,9 +931,11 @@
       "update-stage.sonos.com": "update-stage.sonos.com/"
     },
     "cursors": {
-      "update-software.sonos.com": null
+      "update-software.sonos.com": null,
+      "update-beta.sonos.com": null,
+      "update-stage.sonos.com": null
     },
-    "next_host": 2,
+    "next_host": 0,
     "retries": {
       "sonos.com": {
         "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -920,15 +955,27 @@
       }
     },
     "index_retry": {},
-    "completed_hosts": [],
-    "pending_hosts": [
-      "sonos.com",
+    "completed_hosts": [
       "update-beta.sonos.com",
-      "update-software.sonos.com",
       "update-stage.sonos.com"
     ],
+    "pending_hosts": [
+      "sonos.com",
+      "update-software.sonos.com"
+    ],
     "status": "partial",
-    "observations": [],
+    "observations": [
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "records": 0,
+        "more_pages": false
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-stage.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "records": 0,
+        "more_pages": false
+      }
+    ],
     "errors": [
       {
         "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -1132,9 +1179,22 @@
         "checked_at": "2026-11-26T07:12:13.114151+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T07:12:13.114151+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-43-index|sonos.com/": {
+        "next_page": 1,
+        "pages": 12,
+        "status": "pending"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-43-index|update-software.sonos.com/": {
+        "next_page": 1,
+        "pages": 1,
+        "status": "complete",
+        "checked_at": "2026-11-26T17:04:22.594016+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T17:04:22.594016+00:00"
       }
     },
-    "next_query": 8,
+    "next_query": 10,
     "query_revision": "08581c6f2cd8fecbc3a1ad5d9b441619a7478d3952c54de4928987efbca0f003",
     "query_specs": {
       "sonos.com/": "ab5f7d5bdcaa31feb1f3a4d3f3a04046875b802f3d547561f9e0d32d60424953",
@@ -1161,17 +1221,17 @@
     ],
     "observations": [
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-beta.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
         "records": 0,
-        "more_pages": false
+        "more_pages": true
       },
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-stage.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
         "records": 0,
         "more_pages": false
       }
     ],
-    "pending_queries": 516,
+    "pending_queries": 515,
     "status": "partial"
   },
   "wayback_directories": {
@@ -1258,9 +1318,10 @@
     "cursors": {
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": null,
       "https://update-software.sonos.com/software/72ynP0v9lu/": null,
-      "https://update-software.sonos.com/software/sLUvGZEjVv/": null
+      "https://update-software.sonos.com/software/sLUvGZEjVv/": null,
+      "https://update-software.sonos.com/software/npgNL9nqYX/": null
     },
-    "next_host": 4,
+    "next_host": 6,
     "retries": {
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -1277,11 +1338,20 @@
         "checked_at": "2026-11-26T06:34:32.331058+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
+      },
+      "https://update-software.sonos.com/software/dpnugadm/": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fdpnugadm%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error timed out>",
+        "http_status": null,
+        "checked_at": "2026-11-26T17:04:03.213102+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:04:03.213102+00:00"
       }
     },
     "index_retry": {},
     "completed_hosts": [
       "https://update-software.sonos.com/software/72ynP0v9lu/",
+      "https://update-software.sonos.com/software/npgNL9nqYX/",
       "https://update-software.sonos.com/software/sLUvGZEjVv/"
     ],
     "pending_hosts": [
@@ -1313,7 +1383,6 @@
       "https://update-software.sonos.com/software/fgiespzv/",
       "https://update-software.sonos.com/software/flfowmpo/",
       "https://update-software.sonos.com/software/gjocspcx/",
-      "https://update-software.sonos.com/software/npgNL9nqYX/",
       "https://update-software.sonos.com/software/nvasc21FQF/",
       "https://update-software.sonos.com/software/vgnciqkn/",
       "https://update-software.sonos.com/software/wfdshdmg/",
@@ -1324,12 +1393,7 @@
     "status": "partial",
     "observations": [
       {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F72ynP0v9lu%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "records": 1,
-        "more_pages": false
-      },
-      {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FsLUvGZEjVv%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FnpgNL9nqYX%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "records": 1,
         "more_pages": false
       }
@@ -1350,6 +1414,14 @@
         "checked_at": "2026-11-26T06:34:32.331058+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fdpnugadm%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error timed out>",
+        "http_status": null,
+        "checked_at": "2026-11-26T17:04:03.213102+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:04:03.213102+00:00"
       }
     ]
   },
@@ -1542,9 +1614,26 @@
         "checked_at": "2026-11-26T07:12:32.474200+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T07:12:32.474200+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/software/flfowmpo/": {
+        "checked_at": "2026-11-26T17:04:28.683693+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:04:28.683693+00:00",
+        "status": "failed",
+        "error": "HTTP Error 502: Bad Gateway",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 502
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/software/gjocspcx/": {
+        "next_page": 1,
+        "pages": 0,
+        "status": "complete",
+        "checked_at": "2026-11-26T17:04:36.591199+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T17:04:36.591199+00:00"
       }
     },
-    "next_query": 6,
+    "next_query": 8,
     "query_revision": "23ecb44e085cee8958da98c9fa87cf91ec3741233bd40b6b494c216d0d4be8ae",
     "query_specs": {
       "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "3dd17532866f64f90037c3dc0f1b5b4e5d4c1d96fd941f694c13de8a8ca453be",
@@ -1651,23 +1740,31 @@
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
         "http_status": 502
+      },
+      {
+        "checked_at": "2026-11-26T17:04:28.683693+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:04:28.683693+00:00",
+        "status": "failed",
+        "error": "HTTP Error 502: Bad Gateway",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 502
       }
     ],
     "observations": [
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2Fdpnugadm%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2Fgjocspcx%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
         "records": 0,
         "more_pages": false
       }
     ],
-    "pending_queries": 4807,
+    "pending_queries": 4806,
     "status": "partial"
   },
   "wayback_exact": {
     "schema_version": 2,
-    "query_revision": "5857c39e462bbb5dbb64607196dc3edba59d6a7d00b15960952ca8d512a25495",
+    "query_revision": "45178226c541730a8a2a2a08f4923fb34bcd34c1d4ea102df8bb1414f2493385",
     "query_specs": {
-      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "492d2b016e5644da0db3879ad6d0f9f99f92a25dff9dcafb66dd325bb239bf78",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": "2472a63342b162e352cd9081dfbf7d371f8d2416e9574aa85ff0d1b5f9878b9f",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk": "f53d55adba3365d672dc8a9dd5cfcd5daeecd4fe50255157d4af817786de7242",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk": "5a2803ba49a9188b0f3de594a36ed0c1ee0bd35641ff447115fc7dcb125bfea6",
@@ -1708,6 +1805,7 @@
       "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk": "998a2d5c5d5b8c4881fbdf438cb575ab99e3dd08bc749d42caaed2bb30743cec",
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "60bac3801de1aad00b2f70abcbecf1621083df8a8fd5182a7cbdfbd88e7df286",
       "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk": "c2dc5185624f244c407a5d29e6aa04f781b2982fd357d01c4a1e96ef16dbcb01",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "492d2b016e5644da0db3879ad6d0f9f99f92a25dff9dcafb66dd325bb239bf78",
       "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk": "84ead1e9da9b15fba5b0a7527bfb59ed3b08a9b29617256aabd3b8acdb70192e",
       "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk": "f248f7f15f65e433e1dd72bde6ec38e3d3ccabc9373fa18feebfb49c12e7996f",
       "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk": "dd008d6c98544faf58b4910f08ecaa1370c3b9d573d2a88ec706752ebef72e3b",
@@ -1720,7 +1818,6 @@
       "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk": "b15baa60b1ff8c62c560224fbaedb089ceb6fbd85f41d79b99cf77c114880545"
     },
     "query_roots": {
-      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
       "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
@@ -1761,6 +1858,7 @@
       "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk": "update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk",
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
       "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk": "update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
       "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk": "update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk",
       "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk": "update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
       "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk": "update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
@@ -1773,7 +1871,7 @@
       "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk": "update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk"
     },
     "cursors": {},
-    "next_host": 3,
+    "next_host": 4,
     "retries": {
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -1798,6 +1896,14 @@
         "checked_at": "2026-11-26T07:12:47.968893+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T08:12:47.968893+00:00"
+      },
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1303.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error timed out>",
+        "http_status": null,
+        "checked_at": "2026-11-26T17:05:21.708618+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:05:21.708618+00:00"
       }
     },
     "index_retry": {},
@@ -1881,6 +1987,14 @@
         "checked_at": "2026-11-26T07:12:47.968893+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T08:12:47.968893+00:00"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1303.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error timed out>",
+        "http_status": null,
+        "checked_at": "2026-11-26T17:05:21.708618+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T18:05:21.708618+00:00"
       }
     ]
   },
