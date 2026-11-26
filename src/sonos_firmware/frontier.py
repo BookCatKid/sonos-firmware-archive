@@ -142,12 +142,13 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
     saved = state.setdefault('contexts', {})
     jobs = state.setdefault('jobs', {})
     for context in contexts:
-        if (not all(isinstance(context.get(k), str) for k in ('build', 'app_version', 'token')) or
+        app = context.get('app_version')
+        if (not isinstance(context.get('build'), str) or not isinstance(context.get('token'), str) or
                 not re.fullmatch(r'\d+[.]\d+-\d+', context['build']) or
-                not re.fullmatch(r'\d+(?:[.]\d+)+', context['app_version']) or
-                not re.fullmatch(r'[A-Za-z0-9_-]+', context['token'])):
+                not re.fullmatch(r'[A-Za-z0-9_-]+', context['token']) or
+                (app is not None and (not isinstance(app, str) or not re.fullmatch(r'\d+(?:[.]\d+)+', app)))):
             continue
-        identity = hashlib.sha256(json.dumps([context[k] for k in ('build', 'app_version', 'token')]).encode()).hexdigest()
+        identity = hashlib.sha256(json.dumps([context['build'], app, context['token']]).encode()).hexdigest()
         saved[identity] = context
     for url in observed_urls:
         if not official(url):
@@ -163,6 +164,11 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
         template = templates.setdefault(identity, {'prefix': prefix, 'shape': shape, 'examples': []})
         if match[2] not in template['examples']:
             template['examples'].append(match[2])
+        version = re.search(r'-v(\d+(?:[.]\d+)+)-', parsed.path)
+        if version:
+            release = state.setdefault('versions', [])
+            if version[1] not in release:
+                release.append(version[1])
     for context_id in saved:
         for template_id in templates:
             jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0, 'examples_done': []})
@@ -189,7 +195,14 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
             numbers = iter(coordinates)
             suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
             job['ordinal'] += 1
-        roots.append(template['prefix']+context['build']+'-v'+context['app_version']+'-'+context['token']+'-'+suffix+'/update.upm')
+        versions = [context['app_version']] if context.get('app_version') else state.get('versions', [])
+        if not versions:
+            state['sequence'] = state.setdefault('sequence', 0)+1
+            job['last_queued'] = state['sequence']
+            continue
+        version = versions[job.get('version_ordinal', 0) % len(versions)]
+        job['version_ordinal'] = job.get('version_ordinal', 0)+1
+        roots.append(template['prefix']+context['build']+'-v'+version+'-'+context['token']+'-'+suffix+'/update.upm')
         state['sequence'] += 1
         job['last_queued'] = state['sequence']
     return state, list(dict.fromkeys(roots))

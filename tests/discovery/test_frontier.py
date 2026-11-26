@@ -12,6 +12,7 @@ from unittest.mock import patch, Mock
 
 from sonos_firmware import frontier
 from sonos_firmware.crawl import crawl_manifests
+from sonos_firmware.frontier import installer_manifest_roots
 
 HOST = 'https://update.sonos.com'
 BASE = HOST + '/firmware/Prod/discovered/'
@@ -717,6 +718,29 @@ class PreservationTests(unittest.TestCase):
             self.assertEqual(len(state['preservation_errors']), 2)
             self.assertEqual(operations, ['firmware', 'document'])
 
+
+
+
+class InstallerPivotVersionTests(unittest.TestCase):
+    OBSERVED = ['https://update-firmware.sonos.com/firmware/Prod/79.1-53290-v16.2-6T0nrTOYJg-SP-1/update.upm']
+
+    def roots(self, contexts, limit=4):
+        return installer_manifest_roots({}, contexts, self.OBSERVED, limit=limit)[1]
+
+    def test_an_exact_release_version_is_used_verbatim(self):
+        roots = self.roots([{'build': '90.0-67171', 'app_version': '17.2', 'token': 'ZethjbGivZ'}])
+        self.assertTrue(roots)
+        self.assertTrue(all('-v17.2-' in root for root in roots))
+
+    def test_a_context_without_a_release_version_uses_an_observed_one(self):
+        roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}])
+        self.assertTrue(roots)
+        self.assertTrue(all('-v16.2-' in root for root in roots))
+
+    def test_an_unknown_version_without_observations_generates_nothing(self):
+        state, roots = installer_manifest_roots({}, [{'build': '90.0-68190', 'app_version': None,
+                                                     'token': 'y0RcLefNNu'}], [], limit=4)
+        self.assertEqual(roots, [])
 
 if __name__ == '__main__':
     unittest.main()

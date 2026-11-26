@@ -245,8 +245,14 @@ def installer_pivot_contexts(record):
     metadata = verification.get('desktop_metadata') if isinstance(verification, dict) else None
     if not isinstance(metadata, dict):
         return []
+    def usable(value):
+        return isinstance(value, str) and re.fullmatch(r'\d+(?:[.]\d+)+', value)
+
     app = metadata.get('app_version')
-    if not isinstance(app, str) or not re.fullmatch(r'\d+(?:[.]\d+)+', app):
+    # A campaign installer whose application version is unknown still supplies
+    # the build and token that identify its release family.
+    app = app if usable(app) else None
+    if app is None and not usable(metadata.get('installer_version')):
         return []
     result = []
     for url in record.get('source_urls') or []:
@@ -254,11 +260,13 @@ def installer_pivot_contexts(record):
             continue
         match = re.fullmatch(r'/software/([A-Za-z0-9_-]+)/Sonos_(\d+[.]\d+-\d+)[.](?:dmg|exe)', urlsplit(url).path, re.I)
         if match:
-            versions = [app]
-            parts = app.split('.')
-            while len(parts) > 2 and parts[-1] == '0':
-                parts.pop()
-                versions.append('.'.join(parts))
+            versions = [None]
+            if app is not None:
+                versions = [app]
+                parts = app.split('.')
+                while len(parts) > 2 and parts[-1] == '0':
+                    parts.pop()
+                    versions.append('.'.join(parts))
             for version in versions:
                 result.append({'build': match[2], 'app_version': version, 'metadata_app_version': app,
                                'token': match[1], 'source_url': url, 'source_sha256': record.get('sha256'),
