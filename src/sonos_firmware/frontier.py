@@ -211,7 +211,7 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
     # A build without a known release version reuses campaign shapes already
     # observed for its own build generation, which pairs a version with a
     # suffix exactly as Sonos published it. These candidates share the budget
-    # with exact-version pivots instead of preceding them.
+    # with exact-version pivots, alternating one for one.
     known = {normalize(url) for url in observed_urls}
     pair_queue = deque()
     if prefixes:
@@ -243,8 +243,7 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
             job['last_queued'] = state['sequence']
             continue
         # Each version is combined with every observed suffix before a wider
-        # suffix range is generated, so a build with no known release version
-        # reaches the whole learned version space early.
+        # suffix range is generated.
         examples = template['examples']
         index = job['ordinal']
         job['ordinal'] += 1
@@ -277,7 +276,7 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
 def _configure_namespace(namespaces, base, model_max):
     row = namespaces.setdefault(base, {'next_model': 0})
     if 'initial_model_max' not in row and row.get('status') == 'complete':
-        # Old completed ranges waited a week before repeating the same IDs.
+        # A completed range is refreshed after a week.
         row['next_attempt_at'] = ''
     row['initial_model_max'] = model_max
     row['model_max'] = max(row.get('model_max', model_max), model_max)
@@ -361,7 +360,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     for base in namespaces:
         _configure_namespace(namespaces, base, model_max)
     # A reported manifest can disappear while its versioned payloads survive.
-    # Its native campaign path still supplies a build to probe independently.
+    # Its native campaign path supplies a build to probe independently.
     for url in state.get('public_client_reports', {}).get('roots', {}):
         if not official(url) or not urlsplit(url).path.endswith('.upm'):
             continue
@@ -463,7 +462,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     known_urls = [m['url'] for m in state.get('manifests', [])]
     known_urls.extend(m['url'] for m in saved_documents)
     # Reserve a small rotating slice for current feeds, then resume the FIFO.
-    # A one-request budget reserves nothing, so it still drains deferred work.
+    # A one-request budget reserves nothing and drains deferred work.
     cursor = state.get('protocol_cursor', 0)
     reserved = min(len(live_roots), max_manifests // 4)
     priority = [live_roots[(cursor + offset) % len(live_roots)] for offset in range(reserved)]
