@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "target": "release-audit",
+  "provider": "release-audit",
+  "status": "failed",
+  "executed": true,
+  "started_at": "2026-11-26T06:42:17.861808+00:00",
+  "steps": [
+    {
+      "name": "audit_release_assets",
+      "status": "failed",
+      "exit_code": 1,
+      "output_tail": "releases=158 github=5266 recorded=5716 missing=575 mismatched=0 extras=125 duplicated=76 unexplained=49\n",
+      "failure_kind": "source-reported-incomplete",
+      "source_status": "partial"
+    }
+  ],
+  "errors": [
+    {
+      "step": "audit_release_assets",
+      "exit_code": 1,
+      "kind": "source-reported-incomplete"
+    }
+  ],
+  "pending": [
+    {
+      "step": "audit_release_assets",
+      "reason": "source reports incomplete work"
+    }
+  ],
+  "finished_at": "2026-11-26T06:44:21.564618+00:00",
+  "next_due": "2026-11-26T07:44:21.564618+00:00"
+}
