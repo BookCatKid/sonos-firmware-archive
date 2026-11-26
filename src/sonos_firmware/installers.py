@@ -218,8 +218,13 @@ def _inspect_desktop(candidate, path):
         _archive_output([tool, 'l', '-slt', *(('-r',) if selection else ()), *archive_type, '--', str(path),
                          *([selection] if selection else [])], listing, limit=4*1024*1024,
                         allow_partial=True)
+        listing_text = listing.read_text(errors='replace')
+        # A decoder that reports errors may have stopped before listing every
+        # member, so a build-only helper bundle is not proof of the installer's
+        # own identity.
+        incomplete = 'ERRORS:' in listing_text
         entries = []
-        for block in listing.read_text(errors='replace').split('\n\n'):
+        for block in listing_text.split('\n\n'):
             entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
 
         def member_bytes(member, name, limit=1_000_000):
@@ -250,6 +255,7 @@ def _inspect_desktop(candidate, path):
         plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
                         key=lambda e: e['Path'].count('/'))
         build_only = None
+        controller = False
         for member in plists:
             data = member_bytes(member, 'Info.plist')
             if data is None:
@@ -258,11 +264,15 @@ def _inspect_desktop(candidate, path):
                 parsed = parse(data, member['Path'])
             except (ValueError, plistlib.InvalidFileException, ExpatError):
                 continue
+            if str(parsed['desktop_metadata'].get('bundle_id', '')).lower().startswith('com.sonos.maccontroller'):
+                controller = True
             if parsed['desktop_metadata'].get('app_version'):
                 return parsed
             build_only = build_only or parsed
-        if build_only:
+        if build_only and (controller or not incomplete):
             return build_only
+        if incomplete and not controller:
+            raise ValueError('installer listing is incomplete and contains no controller bundle')
         raise ValueError('installer disk image has no readable application plist')
 
 
