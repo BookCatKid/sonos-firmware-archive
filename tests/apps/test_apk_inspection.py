@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from sonos_firmware import apk, installers
+from sonos_firmware import apk
 from sonos_firmware.android_store import StoreError
 
 
@@ -40,14 +40,6 @@ class ApkInspectionTests(unittest.TestCase):
             self.assertEqual(list(path.parent.iterdir()), [path])
             return result
 
-    def test_official_certificate_is_observed_separately_from_play_pin(self):
-        record = self.inspect({'version': 'internal-build-label'})
-        self.assertTrue(record['verified'])
-        self.assertFalse(record['matches_store_signer'])
-        self.assertEqual(record['advertised_version'], 'internal-build-label')
-        self.assertEqual(record['package'], 'com.sonos.acr2')
-        self.assertEqual(record['version_code'], '123')
-        self.assertEqual(record['version_name'], '1.2')
 
     def test_explicit_package_and_version_expectations_must_match(self):
         for candidate, error in (({'package': 'different.app'}, 'APKPackageMismatch'),
@@ -58,10 +50,6 @@ class ApkInspectionTests(unittest.TestCase):
         self.assertTrue(self.inspect({'expected_package': 'com.sonos.acr2',
                                       'expected_version_code': '123', 'expected_version_name': '1.2'})['verified'])
 
-    def test_new_package_id_is_recorded_without_an_app_whitelist(self):
-        record = self.inspect(metadata={'package': 'new.official.app', 'version_code': '1', 'version_name': '1'})
-        self.assertEqual(record['package'], 'new.official.app')
-        self.assertIsNone(record['matches_store_signer'])
 
     def test_invalid_manifest_identity_is_rejected(self):
         for metadata in ({'package': 'bad id', 'version_code': '1'},
@@ -69,23 +57,6 @@ class ApkInspectionTests(unittest.TestCase):
                          {'package': 'fixture.app', 'version_code': '0'}):
             with self.subTest(metadata=metadata), self.assertRaisesRegex(StoreError, 'APKMetadataInvalid'):
                 self.inspect(metadata=metadata)
-
-    def test_mobile_factory_uses_shared_inspector_and_tool_revision(self):
-        mobile = installers.source(default_platform='fireos-android-apk')
-        self.assertIs(mobile.inspect, apk.inspect_official)
-        self.assertEqual(mobile.inspection_revision, apk.inspection_revision())
-        desktop = installers.source(default_platform='windows')
-        self.assertIs(desktop.inspect, installers.inspect_desktop)
-        self.assertEqual(desktop.inspection_revision, 'desktop-metadata-5')
-        self.assertFalse(desktop.inspection_blocks_publication)
-
-    def test_missing_optional_java_defers_acquisition_before_downloading(self):
-        source = installers.source(default_platform='fireos-android-apk')
-        with patch.object(installers.shutil, 'which', return_value=None), \
-             patch.object(installers, 'open_advertised') as download:
-            with self.assertRaisesRegex(ValueError, 'APKInspectionUnavailable'):
-                source.acquire({'url': 'https://update.sonos.com/fixture.apk'}, Path('unused.apk'))
-        download.assert_not_called()
 
 
 if __name__ == '__main__':

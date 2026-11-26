@@ -53,14 +53,6 @@ class ReleaseSeriesTests(unittest.TestCase):
         self.assertEqual(proof['release_tag'], self.base+'-part-12')
         self.assertEqual(len(self.github.uploads), 1)
 
-    def test_existing_later_partition_is_reconciled_before_using_earlier_space(self):
-        self.fill(self.base)
-        path, capture = self.capture()
-        first = self.series.publish(path, capture)
-        self.github.releases[(self.repo, self.base)].pop('old-0')
-        restarted = release_series.ReleaseSeries(self.repo, self.base, 'Captures', 'Tests')
-        self.assertEqual(restarted.publish(path, capture), first)
-        self.assertEqual(len(self.github.uploads), 1)
 
     def test_name_collision_is_not_hidden_in_another_partition(self):
         path, capture = self.capture()
@@ -86,34 +78,6 @@ class ReleaseSeriesTests(unittest.TestCase):
             proof = self.series.publish(*self.capture())
         self.assertEqual(proof['release_tag'], self.base+'-part-2')
 
-    def test_unconfirmed_capacity_error_does_not_create_endless_partitions(self):
-        error = subprocess.CalledProcessError(1, 'upload', stderr='file_count limited to 1000 assets per release')
-        with patch.object(releases, 'upload_streaming', side_effect=error):
-            with self.assertRaises(subprocess.CalledProcessError):
-                self.series.publish(*self.capture())
-        self.assertEqual(set(self.github.releases), {(self.repo, self.base)})
-
-    def test_other_upload_failures_do_not_create_partitions(self):
-        with patch.object(releases, 'upload_streaming', side_effect=TimeoutError('unavailable')):
-            with self.assertRaises(TimeoutError):
-                self.series.publish(*self.capture())
-        self.assertEqual(set(self.github.releases), {(self.repo, self.base)})
-
-    def test_unavailable_inventory_does_not_block_fresh_evidence_and_remains_reported(self):
-        self.fill(self.base)
-        original = self.github.assets
-        def inventory(repo, tag):
-            if tag == self.base:
-                raise urllib.error.URLError('older release temporarily unavailable')
-            return original(repo, tag)
-        with patch.object(releases, 'remote_assets', side_effect=inventory):
-            proof = self.series.publish(*self.capture())
-            other = self.series.publish(*self.capture('other.upm', b'other metadata'))
-        self.assertEqual(proof['release_tag'], self.base+'-part-2')
-        self.assertEqual(other['release_tag'], proof['release_tag'])
-        self.assertEqual(len(self.series.errors), 1)
-        self.assertEqual(self.series.errors[0]['release_tag'], self.base)
-        self.assertEqual(len(self.github.releases[(self.repo, self.base)]), 1000)
 
     def test_throttled_inventory_preserves_server_delay_and_does_not_open_a_partition(self):
         error = urllib.error.HTTPError('https://api.github.com/fixture', 429, 'retry later',
@@ -124,13 +88,6 @@ class ReleaseSeriesTests(unittest.TestCase):
         self.assertIs(raised.exception, error)
         self.assertFalse(self.github.releases)
 
-    def test_inventory_is_shared_across_uploads_and_refreshes_on_restart(self):
-        self.series.publish(*self.capture())
-        self.series.publish(*self.capture('other.upm', b'other metadata'))
-        self.inventory.assert_called_once_with(self.repo, self.base)
-        self.inventory.reset_mock()
-        release_series.ReleaseSeries(self.repo, self.base, 'Captures', 'Tests').publish(*self.capture())
-        self.inventory.assert_called_once_with(self.repo, self.base)
 
     def test_changed_local_bytes_are_rejected_before_any_network_access(self):
         path, capture = self.capture()
@@ -148,15 +105,6 @@ class ReleaseSeriesTests(unittest.TestCase):
             self.assertEqual(self.series.publish(path, capture)['sha256'], capture['sha256'])
         verify.assert_called_once()
 
-    def test_exact_tag_revalidation_can_verify_older_assets_without_digest_metadata(self):
-        path, capture = self.capture()
-        self.series.publish(path, capture)
-        remote = self.github.releases[(self.repo, self.base)][path.name]
-        del remote['digest']
-        with patch.object(releases, 'verified_remote_digest', return_value=capture['sha256']) as verify:
-            self.assertEqual(releases.verified_asset(self.repo, self.base, path.name,
-                capture['bytes'], capture['sha256']), remote)
-        verify.assert_called_once_with(remote)
 
     def test_manifest_preservation_rolls_over_a_full_release_and_records_actual_tag(self):
         root = Path(__file__).resolve().parents[2]

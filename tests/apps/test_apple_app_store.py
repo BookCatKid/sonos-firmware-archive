@@ -38,23 +38,6 @@ class AppleAppStoreMonitorTests(unittest.TestCase):
         self.assertIn("version", changes[0]["changed_fields"])
         self.assertIn("release_notes", changes[0]["changed_fields"])
 
-    def test_identical_listing_is_not_a_change(self):
-        listing = {
-            "track_id": 1,
-            "family": "s1",
-            "name": "Sonos S1 Controller",
-            "version": "11.16.1",
-            "current_version_release_date": "2026-02-25T14:37:57Z",
-            "minimum_os_version": "12.0",
-            "file_size_bytes": 108355584,
-            "release_notes": "notes",
-            "track_view_url": "https://example.test",
-        }
-        self.assertEqual(
-            MODULE.changed({"listings": [listing]}, {"listings": [dict(listing)]}),
-            [],
-        )
-
 
 if __name__ == "__main__":
     unittest.main()

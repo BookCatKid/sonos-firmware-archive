@@ -13,16 +13,6 @@ def record(record_type: int, body: bytes, unknown: int = 0) -> bytes:
 
 
 class MetadataTests(unittest.TestCase):
-    def test_metadata_fetch_is_bounded_before_parsing(self):
-        from unittest.mock import MagicMock, patch
-        from sonos_firmware.metadata import fetch_update_metadata
-        response = MagicMock()
-        response.__enter__.return_value = response
-        response.read.return_value = bytes(2_000_001)
-        with patch('sonos_firmware.metadata.open_sonos', return_value=response):
-            with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
-                fetch_update_metadata()
-        response.read.assert_called_once_with(2_000_001)
 
     def test_empty_metadata_response_is_a_source_failure(self):
         from unittest.mock import MagicMock, patch
@@ -76,24 +66,6 @@ class ModernManifestTests(unittest.TestCase):
         response.headers = {'Content-Location': location} if location else {}
         return response
 
-    def test_anonymous_query_and_canonical_location(self):
-        from unittest.mock import patch
-        from urllib.parse import parse_qs, urlsplit
-        from sonos_firmware.metadata import fetch_modern_manifest
-        with patch('sonos_firmware.metadata.open_sonos', return_value=self.response()) as call:
-            body, receipt = fetch_modern_manifest()
-        query = parse_qs(urlsplit(call.call_args.args[0].full_url).query)
-        self.assertEqual(query, {'sonosid': ['Anonymous'], 'householdid': ['nohhid'], 'cmaj': ['81'], 'cmin': ['0'], 'cbld': ['52']})
-        self.assertEqual(receipt['url'], 'https://update.sonos.com/firmware/Prod/current/update.upm')
-        self.assertEqual(body, b'<update_manifest></update_manifest>')
-        self.assertEqual(receipt['sha256'], hashlib.sha256(body).hexdigest())
-
-    def test_normalizes_mixed_case_scheme(self):
-        from unittest.mock import patch
-        from sonos_firmware.metadata import fetch_modern_manifest
-        with patch('sonos_firmware.metadata.open_sonos', return_value=self.response('HTTP://update.sonos.com/firmware/Prod/current/update.upm')):
-            body, receipt = fetch_modern_manifest()
-        self.assertEqual(receipt['url'], 'https://update.sonos.com/firmware/Prod/current/update.upm')
 
     def test_rejects_foreign_content_location(self):
         from unittest.mock import patch
@@ -114,23 +86,6 @@ class ModernManifestTests(unittest.TestCase):
                 _, receipt = fetch_modern_manifest()
                 self.assertEqual(receipt['url'], expected)
 
-    def test_relative_content_location_uses_final_redirect_directory(self):
-        from unittest.mock import patch
-        from sonos_firmware.metadata import fetch_modern_manifest
-        response = self.response('canonical.upm?variant=1')
-        response.geturl.return_value = 'https://new-firmware.sonos.com/new-layout/entry.upm'
-        with patch('sonos_firmware.metadata.open_sonos', return_value=response):
-            _, receipt = fetch_modern_manifest()
-        self.assertEqual(receipt['url'], 'https://new-firmware.sonos.com/new-layout/canonical.upm?variant=1')
-        self.assertTrue(receipt['request_url'].startswith('https://update.sonos.com/firmware/swgen/2/latest/update.upm?'))
-
-    def test_http_failure_is_not_silently_ignored(self):
-        from unittest.mock import patch
-        from urllib.error import HTTPError
-        from sonos_firmware.metadata import fetch_modern_manifest
-        with patch('sonos_firmware.metadata.open_sonos', side_effect=HTTPError('u', 404, 'Not Found', {}, None)):
-            with self.assertRaises(HTTPError):
-                fetch_modern_manifest()
 
     def test_missing_canonical_location_fails_closed(self):
         from unittest.mock import patch

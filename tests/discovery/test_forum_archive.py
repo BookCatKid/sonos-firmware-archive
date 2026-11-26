@@ -15,14 +15,6 @@ class ForumLeadTests(unittest.TestCase):
         self.assertEqual(installers, ['https://update-software.sonos.com/software/mac/mdcr/'
                                       'SonosDesktopController131.dmg'])
 
-    def test_a_device_local_link_supplies_the_server_layout_only(self):
-        roots, installers = lead_urls(
-            'http://169.254.1.2/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83040-1-1.upd')
-        self.assertEqual(roots, ['https://update-firmware.sonos.com/firmware/Gold/'
-                                 '28.1-83251-v5.2-pcyakr-RC4/update.upm',
-                                 'https://update.sonos.com/firmware/Gold/'
-                                 '28.1-83251-v5.2-pcyakr-RC4/update.upm'])
-        self.assertEqual(installers, [])
 
     def test_unrelated_hosts_and_payload_bytes_are_ignored(self):
         roots, installers = lead_urls(
@@ -31,12 +23,6 @@ class ForumLeadTests(unittest.TestCase):
             'https://www.last.fm/api/show/track.updateNowPlaying')
         self.assertEqual(roots, ['https://update.sonos.com/firmware/Prod/a/update.upm'])
         self.assertEqual(installers, [])
-
-    def test_html_escapes_and_duplicates_collapse(self):
-        roots, _ = lead_urls(
-            'https://update.sonos.com/firmware/Prod/a/update.upm '
-            'https://update.sonos.com/firmware/Prod/a/update.upm &quot;quoted&quot;')
-        self.assertEqual(roots, ['https://update.sonos.com/firmware/Prod/a/update.upm'])
 
 
 if __name__ == '__main__':

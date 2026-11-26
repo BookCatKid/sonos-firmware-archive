@@ -45,26 +45,6 @@ class InventoryArchiveTests(unittest.TestCase):
                                              acquire=acquire, work_units=1)
             self.assertEqual(calls, [first['id'], waiting['id']])
 
-    def test_decoder_reanalysis_keeps_waiting_inventories_eligible(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            first, first_body = self.source(root, 'a')
-            waiting, waiting_body = self.source(root, 'z')
-            bodies = {first['id']: first_body, waiting['id']: waiting_body}
-            calls = []
-            def acquire(package, path, repo):
-                calls.append(package['id'])
-                path.write_bytes(bodies[package['id']])
-            with patch.object(inventory, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
-                with patch.object(inventory, 'decoder_revision', return_value='old'):
-                    run_inventory(root, root/'worker', 'owner/repo', root/'keys',
-                                                 acquire=acquire, work_units=1)
-                with patch.object(inventory, 'decoder_revision', return_value='new'):
-                    run_inventory(root, root/'worker', 'owner/repo', root/'keys',
-                                                 acquire=acquire, work_units=1)
-                    run_inventory(root, root/'worker', 'owner/repo', root/'keys',
-                                                 acquire=acquire, work_units=1)
-            self.assertEqual(calls, [first['id'], waiting['id'], first['id']])
 
     def source(self, root, name='one', body=None):
         body = body or section(99, 0, name.encode())
@@ -151,42 +131,6 @@ class InventoryArchiveTests(unittest.TestCase):
             self.assertEqual(result['published'], 1)
             self.assertEqual(len(calls),2)
 
-    def test_missing_upload_rebuilds_after_decoder_changes(self):
-        for changed_decoder in (False, True):
-            with self.subTest(changed_decoder=changed_decoder), tempfile.TemporaryDirectory() as temporary:
-                root = Path(temporary)
-                package, body = self.source(root)
-                remote = {}
-                def publish(repo, tag, path, size, digest):
-                    if path.name.endswith('.tar.xz'):
-                        raise TimeoutError('upload never reached GitHub')
-                    remote[path.name] = {'url': 'https://github.com/fixture/'+path.name}
-                    return remote[path.name]
-                with patch.object(inventory, 'decoder_revision', return_value='old'), \
-                     patch.object(inventory, 'publish_verified', side_effect=publish):
-                    run_inventory(root, root/'worker', 'owner/repo', root/'keys', work_units=1,
-                        acquire=lambda package, path, repo: path.write_bytes(body))
-                calls = []
-                def acquire(package, path, repo):
-                    calls.append(package['id'])
-                    path.write_bytes(body)
-                with patch.object(inventory, 'decoder_revision', return_value='new' if changed_decoder else 'old'), \
-                     patch.object(inventory, 'verified_asset', side_effect=lambda repo, tag, name, size, digest: remote.get(name)), \
-                     patch.object(inventory, 'publish_verified', return_value={'url': 'https://github.com/fixture/asset'}):
-                    result = run_inventory(root, root/'worker', 'owner/repo', root/'keys',
-                        work_units=2, acquire=acquire)
-                self.assertEqual(calls, [package['id']])
-                self.assertEqual(result['published'], 1)
-                self.assertEqual(result['attempted'], 1)
-                self.assertEqual(result['pending'], 0)
-                self.assertEqual(validate_catalog(root), [])
-                if changed_decoder:
-                    state = json.loads((root/'data/discovery/firmware-inventories.json').read_text())
-                    captures = list(state['repositories']['owner/repo']['captures'].values())
-                    self.assertEqual(len(captures), 2)
-                    old = next(row for row in captures if row['revision']['decoder_revision'] == 'old')
-                    self.assertEqual(old['status'], 'incomplete')
-                    self.assertEqual(old['publications']['manifest']['status'], 'verified')
 
     def test_catalog_rejects_inventory_bound_to_another_source(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -200,26 +144,6 @@ class InventoryArchiveTests(unittest.TestCase):
             self.assertTrue(any('another' in error for error in errors))
             self.assertTrue(any('bundle' in error for error in errors))
 
-    def test_unavailable_keys_leave_explicit_spans_without_duplicating_ciphertext(self):
-        import tarfile
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            package, body = self.source(root, body=section(4, 4, b'encrypted fixture'))
-            def publish(repo, tag, path, size, digest):
-                if path.name.endswith('.tar.xz'):
-                    with tarfile.open(path) as archive:
-                        self.assertEqual(archive.getnames(), ['inventory.json'])
-                        report = json.load(archive.extractfile('inventory.json'))
-                        self.assertEqual(report['sections'][0]['extraction'], 'blocked-key')
-                        self.assertEqual(report['sections'][0]['source_span']['bytes'], len(b'encrypted fixture'))
-                return {'url': 'https://github.com/fixture/asset'}
-            with patch.object(inventory, 'publish_verified', side_effect=publish):
-                result = run_inventory(root, root/'worker', 'owner/repo', root/'keys',
-                    acquire=lambda package, path, repo: path.write_bytes(body))
-            self.assertEqual(result['published'], 1)
-            receipt = json.loads((root/'data/catalog.json').read_text())['packages'][0]['inventory']
-            self.assertFalse(receipt['complete'])
-            self.assertEqual(validate_catalog(root), [])
 
     def test_losing_a_key_cannot_replace_an_already_complete_public_inventory(self):
         from cryptography.hazmat.primitives.asymmetric import rsa

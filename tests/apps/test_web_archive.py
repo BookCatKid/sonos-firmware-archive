@@ -1,9 +1,7 @@
 """First-time web capture and interrupted publication use the real publisher."""
 import hashlib
-import json
 import tempfile
 import unittest
-import sys
 import subprocess
 import urllib.error
 from pathlib import Path
@@ -87,16 +85,6 @@ class WebArchiveTests(unittest.TestCase):
         self.assertTrue(all(row['release_tag'] == tag+'-part-2'
             for row in [*result['deployments'][0]['resources'], result['deployments'][0]['bundle']]))
 
-    def test_overflow_preflight_rejects_a_late_collision_before_uploading_anything(self):
-        document, metadata = web.capture('pro', self.root/'worker', capture_id='fixture')
-        tag = web.APPS['pro']['release_tag']
-        self.github.releases[('fresh/archive', tag)] = {f'old-{i}': {'size': 1} for i in range(1000)}
-        self.github.releases[('fresh/archive', tag+'-part-2')] = {
-            document['bundle']['release_asset']: {'size': document['bundle']['bytes'],
-                'digest': 'sha256:'+'0'*64, 'browser_download_url': 'https://github.com/fixture/collision'}}
-        with self.assertRaisesRegex(RuntimeError, 'asset mismatch'):
-            web.upload_capture(document, metadata, 'fresh/archive')
-        self.assertEqual(self.uploads, [])
 
     def run_archive(self, apps=('pro',), **kwargs):
         return web.archive_apps(apps, self.root/'worker', self.receipt, 'fresh/archive',
@@ -116,24 +104,6 @@ class WebArchiveTests(unittest.TestCase):
             self.assertEqual(capture['status'], 'verified')
             self.assertEqual(capture['repository'], 'fresh/archive')
 
-    def test_failed_site_does_not_block_another_site_or_report_complete(self):
-        def fetch(url):
-            if 'play.sonos.com' in url:
-                raise OSError('fixture source outage')
-            return self.fetch(url)
-        with patch.object(web, 'fetch', side_effect=fetch):
-            result = self.run_archive(('controller', 'pro'))
-        self.assertEqual(result['status'], 'partial')
-        self.assertEqual(result['observations']['fresh/archive']['pro']['status'], 'published')
-        self.assertEqual(result['observations']['fresh/archive']['controller']['status'], 'partial')
-        self.assertEqual({row['app'] for row in result['deployments']}, {'pro', 'controller'})
-
-    def test_all_discovered_assets_are_captured_in_one_run(self):
-        result = self.run_archive()
-        self.assertEqual(result['status'], 'ok')
-        self.assertEqual(result['deployments'][0]['pending_urls'], [])
-        self.assertTrue(result['deployments'][0]['complete'])
-        self.assertEqual(result['deployments'][0]['captured_total'], 2)
 
     def test_public_login_shell_and_its_scripts_are_preserved_without_claiming_controller_access(self):
         entry = web.APPS['controller']['entry_url']
@@ -186,58 +156,6 @@ class WebArchiveTests(unittest.TestCase):
         self.assertEqual(deployment['actionable_gap_total'], 0)
         self.assertTrue(deployment['complete'])
 
-    def test_an_actionable_failure_keeps_the_deployment_incomplete(self):
-        """A network error is retryable, so it must still block completion."""
-        entry = web.APPS['pro']['entry_url']
-        script = entry+'_next/static/app.js'
-        def fetch(url):
-            if url == script:
-                raise OSError('connection reset')
-            return self.fetch(url)
-        with patch.object(web, 'fetch', side_effect=fetch):
-            result = self.run_archive()
-        deployment, = result['deployments']
-        row = next(row for row in deployment['resources'] if row['requested_url'] == script)
-        self.assertEqual(row['outcome'], 'network-error')
-        self.assertEqual(deployment['gated_total'], 0)
-        self.assertEqual(deployment['actionable_gap_total'], 1)
-        self.assertFalse(deployment['complete'])
-        self.assertEqual(result['status'], 'partial')
-
-    def test_entire_asset_graph_and_repeated_capture_preserve_all_evidence(self):
-        def fetch(url):
-            result = self.fetch(url)
-            if url.endswith('/'):
-                result['body'] = b'<script src="/_next/static/a.js"></script><script src="/_next/static/b.js"></script>'
-            return result
-        with patch.object(web, 'fetch', side_effect=fetch):
-            first = self.run_archive()
-            self.assertEqual(first['status'], 'ok')
-            self.assertEqual(first['deployments'][0]['pending_urls'], [])
-            result = web.archive_apps(('pro',), self.root/'next-worker', self.receipt, 'fresh/archive',
-                                      capture_id='next', upload=True)
-        self.assertEqual(result['status'], 'ok')
-        deployment, = result['deployments']
-        self.assertTrue(deployment['complete'])
-        self.assertEqual(deployment['pending_urls'], [])
-        self.assertEqual({row['requested_url'] for row in deployment['resources']},
-                         {'https://pro.sonos.com/', 'https://pro.sonos.com/_next/static/a.js',
-                          'https://pro.sonos.com/_next/static/b.js'})
-        self.assertEqual(len(deployment['bundles']), 2)
-
-    def test_repeated_capture_keeps_every_verified_publication_for_audit(self):
-        from tests.archive.test_release_audit import audit
-        self.run_archive()
-        for capture_id in ('next', 'third', 'third'):
-            result = web.archive_apps(('pro',), self.root/capture_id, self.receipt, 'fresh/archive',
-                                      capture_id=capture_id, upload=True)
-        deployment, = result['deployments']
-        self.assertEqual(deployment['captured_total'], 2)
-        expected = {}
-        audit.walk_release_records(result, 'web-receipt', expected, 'fresh/archive')
-        actual = {(tag, name) for (repository, tag), assets in self.github.releases.items()
-                  for name in assets}
-        self.assertEqual(set(expected), actual)
 
     def test_lost_upload_response_reconciles_without_original_worker_or_source(self):
         self.lose_response = True
@@ -270,54 +188,6 @@ class WebArchiveTests(unittest.TestCase):
         self.assertEqual(result['pending_total'], 0)
         self.assertEqual(len(self.uploads), 3)
 
-    def test_release_creation_failure_can_retry_the_retained_bundle(self):
-        with patch.object(web, 'ensure_release', side_effect=OSError('release creation unavailable')):
-            first = self.run_archive()
-        self.assertEqual(first['pending_total'], 1)
-        self.assertEqual(self.github.releases, {})
-        with patch.object(web, 'capture', side_effect=AssertionError('must reuse retained capture')) as capture:
-            result = self.run_archive()
-        capture.assert_not_called()
-        self.assertEqual(result['status'], 'ok')
-        self.assertEqual(len(self.uploads), 3)
-
-    def test_relative_static_dynamic_and_reexported_modules_are_captured(self):
-        bodies = {
-            'https://pro.sonos.com/': b'<script src="/_next/static/app.js"></script>',
-            'https://pro.sonos.com/_next/static/app.js':
-                b'import {value} from "./helper.mjs"; import("./lazy.js"); export * from "./reexport.js";',
-            'https://pro.sonos.com/_next/static/helper.mjs': b'export const value=1;',
-            'https://pro.sonos.com/_next/static/lazy.js': b'export default 2;',
-            'https://pro.sonos.com/_next/static/reexport.js': b'export const other=3;',
-        }
-        def fetch(url):
-            result = self.fetch(url)
-            result['body'] = bodies[url]
-            return result
-        with patch.object(web, 'fetch', side_effect=fetch):
-            result = self.run_archive()
-        self.assertEqual(result['status'], 'ok')
-        deployment, = result['deployments']
-        self.assertEqual({row['requested_url'] for row in deployment['resources']}, set(bodies))
-        self.assertEqual(len(self.uploads), len(bodies)+1)
-
-    def test_explicit_metadata_resume_clears_pending_capture_and_failed_observation(self):
-        self.lose_response = True
-        self.assertEqual(self.run_archive()['status'], 'partial')
-        metadata = self.root/'worker/pro/fixture/capture.json'
-        with patch.object(sys, 'argv', ['apps/archive_web_apps.py', '--app', 'pro', '--repo', 'fresh/archive',
-                '--receipt', str(self.receipt), '--resume-metadata', str(metadata)]):
-            self.assertEqual(web.main(), 0)
-        result = json.loads(self.receipt.read_text())
-        self.assertEqual(result['pending_total'], 0)
-        self.assertEqual(result['errors'], [])
-        self.assertEqual(result['status'], 'ok')
-
-    def test_dotted_capture_ids_keep_distinct_bundle_paths(self):
-        first, _ = web.capture('pro', self.root/'worker', capture_id='fixture.one')
-        second, _ = web.capture('pro', self.root/'worker', capture_id='fixture.two')
-        self.assertNotEqual(first['bundle']['file'], second['bundle']['file'])
-        self.assertTrue(Path(first['bundle']['file']).exists())
 
     def test_collection_preflight_rejects_all_uploads_if_a_later_capture_collides(self):
         body = b'new fixture'

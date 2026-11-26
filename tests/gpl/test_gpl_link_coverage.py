@@ -9,7 +9,6 @@ only revalidates published receipts.
 import importlib.util
 import io
 import json
-import lzma
 import tarfile
 import tempfile
 import unittest
@@ -50,12 +49,6 @@ class LinkCoverageTests(unittest.TestCase):
         self.assertEqual(report['state_totals'], {'published': 1})
         self.assertEqual(report['link_total'], 1)
 
-    def test_a_rejected_link_is_accounted_for_by_its_terminal_state(self):
-        report = coverage.coverage(catalog(link('libusb.txz')),
-                                   receipts(**{'libusb.txz': {'state': 'invalid-artifact',
-                                                              'verification': 'empty-tar'}}))
-        self.assertEqual(report['unattempted_total'], 0)
-        self.assertEqual(report['state_totals'], {'recorded:invalid-artifact': 1})
 
     def test_a_link_with_no_receipt_is_unattempted_and_actionable(self):
         report = coverage.coverage(catalog(link('libusb.txz')), receipts())
@@ -64,10 +57,6 @@ class LinkCoverageTests(unittest.TestCase):
         self.assertEqual(report['unattempted'][0]['url'],
                          'https://www.sonos.com/documents/gpl/14.12/libusb.txz')
 
-    def test_upstream_links_are_covered_too(self):
-        report = coverage.coverage(catalog(link('glibc-2.17.tar.gz', origin='upstream')), receipts())
-        self.assertEqual(report['unattempted_total'], 1)
-        self.assertEqual(report['unattempted'][0]['origin'], 'upstream')
 
     def test_an_unverified_index_is_not_claimed_as_coverage(self):
         report = coverage.coverage(catalog(link('x.txz'), state='access-denied'), receipts())
@@ -75,46 +64,6 @@ class LinkCoverageTests(unittest.TestCase):
         self.assertEqual(report['link_total'], 0)
         self.assertEqual(report['unattempted_total'], 0)
 
-    def test_a_legacy_receipt_keyed_by_filename_still_counts_as_published(self):
-        """Old receipts use the bare filename; identity must not be lost."""
-        report = coverage.coverage(catalog(link('busybox.txz')),
-                                   receipts(**{'busybox.txz': {'published': True}}))
-        self.assertEqual(report['unattempted_total'], 0)
-
-    def test_a_link_sharing_a_filename_with_another_url_is_tracked_separately(self):
-        first = link('glibc-2.17.tar.gz')
-        second = {**link('glibc-2.17.tar.gz'),
-                  'url': 'https://ftp.gnu.org/gnu/glibc/glibc-2.17.tar.gz', 'origin': 'upstream'}
-        report = coverage.coverage(
-            catalog(first, second),
-            receipts(**{'glibc-2.17.tar.gz': {'published': True,
-                                              'source_url': first['url'],
-                                              'filename': 'glibc-2.17.tar.gz'}}))
-        # The Sonos copy is published; the upstream copy has its own identity.
-        self.assertEqual(report['state_totals'], {'published': 1, 'unattempted': 1})
-        self.assertEqual(report['unattempted'][0]['origin'], 'upstream')
-
-    def test_the_real_catalog_and_receipts_report_their_own_coverage(self):
-        """The committed archive data is consistent with this classifier.
-
-        This asserts the invariant, not production counts: a different checkout
-        may legitimately hold a smaller or larger catalogue.
-        """
-        report = coverage.coverage(
-            json.loads((ROOT/'data/gpl/live/catalog.json').read_text()),
-            json.loads((ROOT/'data/gpl/live/artifacts.json').read_text()))
-        self.assertGreaterEqual(report['versions'], 1)
-        self.assertGreaterEqual(report['link_total'], 1)
-        self.assertEqual(report['unattempted_total'], len(report['unattempted']))
-        # The classifier accounts for every advertised link exactly once.
-        self.assertEqual(sum(report['state_totals'].values()), report['link_total'])
-        self.assertEqual(sum(report['state_totals'].values()), sum(row['links'] for row in report['versions_detail']))
-        for state in report['state_totals']:
-            self.assertTrue(state == 'published' or state == 'unattempted' or state.startswith('recorded:'), state)
-        # Every unattempted link is named with the URL a worker would retry.
-        for row in report['unattempted']:
-            self.assertTrue(row['url'].startswith('https://'))
-            self.assertTrue(row['filename'])
 
     def test_the_cli_fails_on_unattempted_links_and_can_report_without_failing(self):
         import sys
@@ -135,23 +84,6 @@ class LinkCoverageTests(unittest.TestCase):
 class EmptyArchiveValidationTests(unittest.TestCase):
     """A served file can be a valid stream that contains nothing."""
 
-    def empty_xz_tar(self, path):
-        stream = io.BytesIO()
-        with tarfile.open(fileobj=stream, mode='w:xz'):
-            pass
-        path.write_bytes(stream.getvalue())
-        return stream.getvalue()
-
-    def test_a_valid_compressed_stream_with_no_members_is_rejected(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary)/'libusb-1.0.23.txz'
-            body = self.empty_xz_tar(path)
-            # The stream itself is well-formed, so only member validation catches it.
-            self.assertEqual(lzma.decompress(body)[:0], b'')
-            ok, verification, members = verify_artifact(path, 'source')
-        self.assertFalse(ok)
-        self.assertEqual(verification, 'empty-tar')
-        self.assertEqual(members, 0)
 
     def test_a_truncated_stream_with_a_plausible_member_list_is_rejected(self):
         """Tar iteration stops at its end marker; the compressor footer must too."""

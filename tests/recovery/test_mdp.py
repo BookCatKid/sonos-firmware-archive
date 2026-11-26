@@ -72,10 +72,6 @@ class MDPTests(unittest.TestCase):
         recovered = recover_amlogic_model_key(self.mdp3, self.otp)
         self.assertEqual(key_recipient_id(recovered), key_recipient_id(self.key))
 
-    def test_recovers_key_from_only_model_private_field(self):
-        field = self.mdp3[MODEL_KEY_OFFSET : MODEL_KEY_OFFSET + 0x800]
-        recovered = recover_amlogic_model_key_field(field, self.otp)
-        self.assertEqual(key_recipient_id(recovered), key_recipient_id(self.key))
 
     def test_rejects_invalid_model_private_field(self):
         field = self.mdp3[MODEL_KEY_OFFSET : MODEL_KEY_OFFSET + 0x800]

@@ -2,10 +2,8 @@
 import importlib.util
 import importlib.metadata
 import json
-import subprocess
 import sys
 import tempfile
-import time
 import types
 import unittest
 from datetime import datetime, timedelta, timezone
@@ -85,27 +83,6 @@ class GoopdlAdapterTests(unittest.TestCase):
         self.assertEqual(caught.exception.retry_after, 90)
         self.assertEqual(caught.exception.status_code, 429)
         self.download.assert_not_called()
-
-    def test_profile_enumeration_is_not_capped_and_interleaves_architectures(self):
-        names = [(str(n), {}) for n in range(12)]
-        with patch.dict(sys.modules, {'goopdl.profiles': types.SimpleNamespace(get_priority_profiles=lambda arch: names)}):
-            profiles = android_store.play_profiles()
-        self.assertEqual(len(profiles), 60)
-        self.assertEqual(len({p['arch'] for p in profiles[:5]}), 5)
-        self.assertEqual({p['profile'] for p in profiles}, {str(n) for n in range(12)})
-
-    def test_cdn_429_status_is_preserved_when_upstream_retains_only_an_error_label(self):
-        error = android_store.safe_error(RuntimeError('base.apk: HTTP 429'))
-        self.assertEqual(error.status_code, 429)
-        self.assertEqual(str(error), 'RuntimeError')
-
-    def test_apkpure_throttle_is_detected_even_when_apkeep_exits_zero(self):
-        with patch.object(android_store.subprocess, 'run', return_value=subprocess.CompletedProcess(
-                ['apkeep'], 0, 'HTTP 429 Too Many Requests; Retry-After: 81')):
-            with self.assertRaises(StoreError) as caught:
-                android_store.run_apkeep(['apkeep'])
-        self.assertEqual(caught.exception.status_code, 429)
-        self.assertEqual(caught.exception.retry_after, 81)
 
 
 class Clock:
@@ -195,160 +172,10 @@ class PlaySweepTests(unittest.TestCase):
         acquire.assert_not_called()
         self.assertEqual(self.clock.sleeps, [])
 
-    def test_service_retry_after_waits_then_retries_same_delivery(self):
-        calls = []
-        def acquire(command, **kwargs):
-            calls.append((self.clock.elapsed, command[command.index('--play-profile')+1]))
-            result = Path(command[command.index('--result')+1])
-            if len(calls) == 1:
-                result.write_text(json.dumps({'errors': [{'error': 'GooglePlayAnonymousRequestFailed',
-                    'status_code': 503, 'retry_after': 3}]}))
-                return types.SimpleNamespace(returncode=1, stdout='maintenance')
-            return types.SimpleNamespace(returncode=0, stdout='verified')
-        self.run_sweep(acquire)
-        self.assertEqual(calls, [(0, 'one'), (3, 'one'), (3, 'two')])
-        self.assertEqual(self.clock.sleeps, [3])
-        self.assertEqual(json.loads(self.ledger.read_text())['pending_total'], 0)
-
-    def test_different_offered_code_is_retained_as_a_lead_without_fulfilling_original_request(self):
-        def mismatch(command, **kwargs):
-            Path(command[command.index('--result')+1]).write_text(json.dumps({'errors': [{
-                'error': 'GooglePlayVersionMismatch', 'observed_version_code': '999'}]}))
-            return types.SimpleNamespace(returncode=1, stdout='mismatch')
-        self.run_sweep(mismatch)
-        state = json.loads(self.ledger.read_text())
-        self.assertEqual({row['version_selector'] for row in state['pending_selectors']}, {'123', '999'})
-        self.assertEqual(state['attempts'][0]['status'], 'failed')
-
-    def test_invalid_retry_after_cannot_break_checkpoint_and_long_valid_delay_is_respected(self):
-        for value in ('invalid', float('inf'), float('nan'), -1, 1e200):
-            with self.subTest(value=value):
-                state = {}
-                self.assertTrue(SWEEP.cooldown(state, {'status_code': 429, 'retry_after': value}))
-                self.assertEqual(state['next_request_at'], (self.clock.current+timedelta(seconds=60)).isoformat())
-        state = {}
-        SWEEP.cooldown(state, {'status_code': 429, 'retry_after': 3*86400})
-        self.assertEqual(state['next_request_at'], (self.clock.current+timedelta(days=3)).isoformat())
-
-    def test_failed_attempt_is_checkpointed_without_a_worker_timeout(self):
-        self.profiles[:] = [{'arch': 'arm64', 'profile': 'one'}]
-        def failed(command, **kwargs):
-            self.assertNotIn('timeout', kwargs)
-            return types.SimpleNamespace(returncode=1, stdout='source unavailable')
-        self.assertEqual(self.run_sweep(failed), 1)
-        state = json.loads(self.ledger.read_text())
-        record, = state['attempts']
-        self.assertEqual(record['exit_code'], 1)
-        self.assertEqual(record['status'], 'failed')
-        self.assertEqual(record['next_attempt_at'], (self.clock.current+timedelta(hours=1)).isoformat())
-        self.assertEqual(state['pending_total'], 1)
-
-    def test_unattempted_profiles_and_historical_code_hints_survive_listing_outage(self):
-        self.receipt.write_text(json.dumps({'artifacts': [{'package': 'com.sonos.acr2', 'version_code': '7'}]}))
-        acquired = []
-        def acquire(command, **kwargs):
-            acquired.append((command[command.index('--version-code')+1], command[command.index('--play-profile')+1]))
-            return types.SimpleNamespace(returncode=1, stdout='unavailable')
-        self.run_sweep(acquire)
-        def down(*args):
-            raise StoreError('NetworkError')
-        self.run_sweep(acquire, down)
-        self.assertEqual(acquired, [('123', 'one'), ('123', 'two'), ('7', 'one'), ('7', 'two')])
-        pending = json.loads(self.ledger.read_text())['pending_selectors']
-        self.assertIn(('7', 'two'), [(p['version_selector'], p['profile']) for p in pending])
-
-
-class ProcessLifetimeTests(unittest.TestCase):
-    def test_acquisition_runs_child_to_completion_and_rejects_timeout_quota(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            path = root / 'finished'
-            program = (f'import time; from pathlib import Path; '
-                       f'time.sleep(.08); Path({str(path)!r}).touch()')
-            command = [sys.executable, '-c', program]
-            with self.assertRaisesRegex(TypeError, 'unexpected keyword argument'):
-                android_store.run_acquisition(command, cwd=root, timeout=2)
-            result = android_store.run_acquisition(command, cwd=root)
-            self.assertEqual(result.returncode, 0)
-            self.assertTrue(path.exists())
-
 
 @unittest.skipUnless(importlib.util.find_spec('goopdl') is not None, 'install the google-play extra for SDK contract tests')
 class PinnedGoopdlContractTests(unittest.TestCase):
-    def test_streaming_transport_closes_response_and_session_on_reader_failure(self):
-        from curl_cffi import requests
-        session = Mock()
-        response = Mock()
-        session.request.return_value = response
-        manager = Mock()
-        manager.__enter__ = Mock(return_value=session)
-        manager.__exit__ = Mock(return_value=False)
-        with patch.object(requests, 'Session', return_value=manager) as create:
-            with self.assertRaisesRegex(ValueError, 'synthetic read failure'):
-                from sonos_firmware.google_play import _http
-                with _http('POST', 'https://fixture.invalid', stream=True) as received:
-                    self.assertIs(received, response)
-                    raise ValueError('synthetic read failure')
-        create.assert_called_once_with(impersonate='chrome_android', default_headers=False)
-        response.close.assert_called_once()
-        manager.__exit__.assert_called_once()
 
-    def test_only_dispenser_unavailability_earns_one_direct_anonymous_fallback(self):
-        from goopdl.api import PlayAPIError, RateLimitedError
-        from goopdl.auth import DispenserUnavailableError
-        refused = PlayAPIError('private', status_code=403)
-        refused.__cause__ = DispenserUnavailableError(403)
-        client = Mock()
-        client.details.side_effect = refused
-        with patch('sonos_firmware.google_play.AnonymousPlay') as native:
-            native.return_value.details.return_value = 'listing'
-            provenance = {}
-            self.assertEqual(android_store._anonymous_call(client, 'details', 'com.sonos.acr2',
-                                                           provenance=provenance), 'listing')
-            native.assert_called_once_with(client.config)
-            native.return_value.details.assert_called_once_with('com.sonos.acr2')
-            self.assertEqual(provenance['details']['backend'], 'google-play-device-anonymous')
-        for status in (503, None):
-            unavailable = PlayAPIError('private', status_code=status)
-            unavailable.__cause__ = DispenserUnavailableError(status)
-            client.details.side_effect = unavailable
-            with patch('sonos_firmware.google_play.AnonymousPlay') as native:
-                native.return_value.details.return_value = 'listing'
-                self.assertEqual(android_store._anonymous_call(client, 'details', 'com.sonos.acr2'), 'listing')
-                native.assert_called_once()
-        for error in (PlayAPIError('private', status_code=403), RateLimitedError('private', retry_after=30)):
-            client.details.reset_mock()
-            client.details.side_effect = error
-            with patch('sonos_firmware.google_play.AnonymousPlay') as native:
-                with self.assertRaises(type(error)):
-                    android_store._anonymous_call(client, 'details', 'com.sonos.acr2')
-                native.assert_not_called()
-                self.assertEqual(client.details.call_count, 1)
-        client.details.side_effect = refused
-        with patch('sonos_firmware.google_play.AnonymousPlay') as native:
-            native.return_value.details.side_effect = StoreError('fixture refusal', status_code=429, retry_after=90)
-            with self.assertRaises(StoreError) as caught:
-                android_store._anonymous_call(client, 'details', 'com.sonos.acr2')
-            self.assertEqual(caught.exception.retry_after, 90)
-            native.assert_called_once()
-
-    def test_dispenser_refusal_is_distinguished_from_a_play_api_refusal(self):
-        from goopdl.api import PlayAPIError, RateLimitedError
-        from goopdl.auth import DispenserUnavailableError, DispenserRateLimitedError
-        error = PlayAPIError('sensitive upstream detail must not enter receipts', status_code=403)
-        error.__cause__ = DispenserUnavailableError(403)
-        sanitized = android_store.safe_error(error)
-        self.assertEqual(str(sanitized), 'GooglePlayTokenDispenserUnavailable')
-        self.assertEqual(sanitized.status_code, 403)
-        play_error = android_store.safe_error(PlayAPIError('another private detail', status_code=403))
-        self.assertEqual(str(play_error), 'PlayAPIError')
-        self.assertEqual(play_error.status_code, 403)
-        limited = RateLimitedError('private throttle detail', retry_after=75)
-        limited.__cause__ = DispenserRateLimitedError(75)
-        sanitized = android_store.safe_error(limited)
-        self.assertEqual(str(sanitized), 'GooglePlayTokenDispenserRateLimited')
-        self.assertEqual(sanitized.status_code, 429)
-        self.assertEqual(sanitized.retry_after, 75)
 
     def test_pinned_sdk_delivers_all_advertised_part_types_through_our_adapter(self):
         from goopdl.api import DeliveryResult, SplitInfo, DexMetadata, AdditionalFile

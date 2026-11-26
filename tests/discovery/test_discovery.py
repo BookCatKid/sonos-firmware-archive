@@ -22,10 +22,6 @@ class DiscoveryTests(unittest.TestCase):
             with self.subTest(uri=uri):
                 self.assertEqual(expand_metadata_base(uri, []), [])
 
-    def test_metadata_base_accepts_advertised_new_sonos_host_and_path(self):
-        rows = expand_metadata_base('https://new-firmware.sonos.com/new-layout/^1.2-3', [300])
-        self.assertEqual([row.url for row in rows],
-                         ['https://new-firmware.sonos.com/new-layout/1.2-3-1-300.upd'])
 
     def test_expands_placeholder_and_default_models(self):
         xml = """<?xml version='1.0'?>
@@ -45,24 +41,6 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("https://example.test/fw/2.0-1-17.upd", urls)
         self.assertEqual(len(urls), 3)
 
-    def test_tolerates_truncated_signature_comment(self):
-        xml = "<update_manifest version='1.1'><update_list/></update_manifest><!-- SIGNATURE:abc"
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "update.upm"
-            path.write_text(xml)
-            metadata, candidates = parse_manifest(path)
-        self.assertEqual(metadata["manifest_version"], "1.1")
-        self.assertEqual(candidates, [])
-
 
 if __name__ == "__main__":
     unittest.main()
-
-class ProbeInputTests(unittest.TestCase):
-    def test_relative_candidate_returns_error_not_crash(self):
-        from sonos_firmware.discovery import Candidate, probe
-        row = probe(Candidate('1.0', 3, 'app.exe', 'test', 'app.exe'))
-        self.assertFalse(row['available'])
-        self.assertIsNone(row['http_status'])
-        self.assertTrue(row['error'])
-

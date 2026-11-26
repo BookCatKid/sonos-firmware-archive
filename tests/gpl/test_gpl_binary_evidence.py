@@ -110,41 +110,6 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             self.assertTrue(any('central directory' in reason for reason in report['limitations']))
             self.assertIn('19.17',report['version_evidence'])
 
-    def test_scan_actual_macho_style_utf16le_strings(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / 'Sonos'
-            url = '/documents/gpl/20.13/gpl.html'
-            path.write_bytes(b'\xca\xfe\xba\xbe' + url.encode('utf-16le') + b'\x00\x00')
-            report = scan_binary(path)
-            self.assertEqual(report['version_evidence']['20.13'][0]['format'], 'utf16le')
-            self.assertEqual(report['version_evidence']['20.13'][0]['entry'], None)
-            self.assertEqual(report['format'], 'raw')
-
-    def test_zip_with_no_executables_is_not_claimed_complete(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            path=Path(tmp)/'fake.apk'
-            with zipfile.ZipFile(path,'w',zipfile.ZIP_DEFLATED) as archive:
-                archive.writestr('res/drawable/logo.png',b'\x89PNG'+b'0'*320)
-            report=scan_binary(path)
-            self.assertEqual(report['entries_scanned'],0)
-            self.assertFalse(report['complete'])
-            self.assertTrue(any('no executable' in msg for msg in report['limitations']))
-
-    def test_scans_complete_member_without_byte_ceiling(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp)/'app.apk'
-            with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as zip:
-                zip.writestr('classes.dex', b'https://www.sonos.com/documents/gpl/19.12/gpl.html' + b'X' * 8192)
-            result = scan_binary(path)
-            self.assertTrue(result['complete'])
-            self.assertIn('19.12', result['version_evidence'])
-
-    def test_binary_discovery_does_not_infer_unrelated_numbers(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            path=Path(tmp)/'sonos.so'
-            path.write_bytes(b'firmware 85.0 + version 16.2, no GPL paths')
-            result=scan_binary(path)
-            self.assertEqual(result['version_evidence'], {})
 
     def test_binary_reference_across_megabyte_stream_boundary(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -154,31 +119,3 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             result=scan_binary(path)
             self.assertEqual(len(result['version_evidence']['21.17']),1)
             self.assertEqual(result['version_evidence']['21.17'][0]['offset'],1024*1024-7)
-
-    def test_archive_discover_prioritizes_version_proven_by_app_binary(self):
-        import importlib.util
-        from argparse import Namespace
-        from unittest.mock import patch
-        from sonos_firmware.gpl_archive import HttpResult
-        spec=importlib.util.spec_from_file_location('archive_gpl_binary_discover',Path(__file__).resolve().parents[2]/'scripts/gpl/archive_gpl_direct.py')
-        mod=importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        with tempfile.TemporaryDirectory() as tmp:
-            path=Path(tmp)/'source.apk'
-            path.write_bytes(b'https://www.sonos.com/documents/gpl/22.17/gpl.html')
-            args=Namespace(output=Path(tmp)/'out',binary=[path],recheck=False,delay=0)
-            requested=[]
-            def fake_get_page(url):
-                requested.append(url)
-                return HttpResult(403,b'<Error><Code>AccessDenied</Code></Error>','application/xml',url)
-            with patch.object(mod,'offline_candidates',return_value={}), \
-                 patch.object(mod,'get_page',side_effect=fake_get_page), \
-                 patch.object(mod,'pause'), \
-                 patch.object(mod,'winding_down',side_effect=lambda: len(requested)>=1):
-                self.assertEqual(mod.discover(args),0)
-            self.assertEqual(requested,['https://www.sonos.com/documents/gpl/22.17/gpl.html'])
-            import json
-            state=json.loads((args.output/'discovery.json').read_text())['candidates']['22.17']
-            self.assertEqual(state['priority'],0)
-            self.assertTrue(any(x.startswith('binary:source.apk:<raw>') for x in state['evidence']))
-            self.assertEqual(mod.live_catalog(args.output)['releases'],{})

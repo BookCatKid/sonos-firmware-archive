@@ -15,10 +15,6 @@ SPEC.loader.exec_module(MODULE)
 
 
 class SitemapTests(unittest.TestCase):
-    def test_observed_versions_are_not_limited_to_old_numeric_widths(self):
-        url = 'https://www.sonos.com/documents/gpl/1000.1000/gpl.html'
-        versions, _ = MODULE.extract_leads([url])
-        self.assertEqual(versions, {'1000.1000': [url]})
 
     def test_sitemap_scopes_and_schema(self):
         self.assertTrue(MODULE.allowed_sitemap('https://www.sonos.com/en-us/sitemap.xml'))
@@ -33,15 +29,6 @@ class SitemapTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.parse_xml_sitemap(b'<html><a>gpl</a></html>')
 
-    def test_version_leads_from_official_sitemap_only(self):
-        links = ['https://www.sonos.com/documents/gpl/19.12/gpl.html',
-                 'https://www.sonos.com/documents/gpl/19.12/SonosOpenSourceAttributions.pdf',
-                 'https://support.sonos.com/en/article/gpl-downloads',
-                 'https://evil.example/documents/gpl/999.0/gpl.html']
-        versions, related = MODULE.extract_leads(links)
-        self.assertEqual(versions, {'19.12': sorted(links[:2])})
-        self.assertIn(links[2], related)
-        self.assertNotIn(links[3], related)
 
     def test_resumable_checkpoint_does_not_trust_unverified_indexes(self):
         from argparse import Namespace

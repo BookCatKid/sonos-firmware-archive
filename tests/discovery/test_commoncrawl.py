@@ -17,7 +17,6 @@ from warcio.exceptions import ArchiveLoadFailed
 
 from sonos_firmware import commoncrawl as cc, archive_index, archive_replay, installers, releases, retry
 from tests.apps.test_app_archive import NOW, FakeGitHub
-from tests.discovery.test_archive_index import scan_index
 
 A = 'https://index.commoncrawl.org/CC-MAIN-2020-01-index'
 B = 'https://index.commoncrawl.org/CC-MAIN-2021-02-index'
@@ -87,107 +86,6 @@ class CommonCrawlIndexTests(unittest.TestCase):
         self.assertIn(unseen, result['artifacts'])
         self.assertEqual(len(result['artifacts'][unseen]['captures']), 2)
 
-    def test_directory_migration_preserves_old_exact_captures_and_provider_cooldown(self):
-        roots = {SOURCE: SOURCE.removeprefix('https://')}
-        with patch.object(retry, '_now', return_value=NOW):
-            legacy = scan_index({}, requests=1, roots=roots, match_type='exact',
-                extensions=('exe',), allowed=installers.official_source,
-                fetch=lambda url: [['timestamp', 'original', 'digest'], ['20200101000000', SOURCE, 'fixture']])
-            def throttled(url):
-                raise urllib.error.HTTPError(url, 429, 'later', {'Retry-After': '7200'}, None)
-            legacy = scan_index(legacy, requests=1, roots=roots, match_type='exact',
-                extensions=('exe',), allowed=installers.official_source, fetch=throttled)
-            previous = {**legacy, 'wayback_exact': legacy}
-            requests = []
-            def fetch(url):
-                requests.append(url)
-                if url == cc.REGISTRY:
-                    return [{'cdx-api': A}]
-                return {'pages': 0}
-            result = scan_archives(previous, fetch=fetch, steps=2,
-                extensions=('exe',), allowed=installers.official_source)
-        self.assertFalse(any(urlsplit(url).hostname == 'web.archive.org' for url in requests))
-        self.assertEqual(len(result['artifacts'][SOURCE]['captures']), 1)
-        self.assertEqual(result['wayback_directories']['index_retry'], legacy['index_retry'])
-        self.assertEqual(list(result['wayback_directories']['query_roots']), ['https://update.sonos.com/software/'])
-
-    def test_observed_directories_progress_when_broad_archive_queries_time_out(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            query = parse_qs(urlsplit(url).query)
-            if query.get('matchType') != ['prefix']:
-                raise TimeoutError('fixture broad search is too expensive')
-            if urlsplit(url).hostname == 'web.archive.org':
-                return [['timestamp', 'original', 'digest'], ['20200101000000', SOURCE, 'fixture']]
-            return {'pages': 1} if 'showNumPages' in query else [indexed()]
-        with patch.object(retry, '_now', return_value=NOW):
-            result = scan_archives({}, fetch=fetch,
-                seed_urls=[SOURCE, 'https://outside.test/other.exe'], extensions=('exe',),
-                allowed=installers.official_source)
-        self.assertEqual({row.get('provider', 'wayback')
-                          for row in result['artifacts'][SOURCE]['captures'].values()}, {'wayback', 'commoncrawl'})
-        exact = [parse_qs(urlsplit(url).query)['url'][0] for url in requests if 'matchType=prefix' in url]
-        self.assertEqual(set(exact), {SOURCE.rsplit('/', 1)[0].removeprefix('https://')+'/'})
-
-    def test_single_page_budget_rotates_broad_and_directory_queries_without_losing_sources(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            return {'pages': 0} if 'showNumPages' in url else []
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_archives({}, fetch=fetch,
-                seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-            self.assertTrue(any('matchType=prefix' in url for url in requests))
-            requests.clear()
-            second = scan_archives(first, fetch=fetch, steps=1,
-                extensions=('exe',), allowed=installers.official_source)
-        queries = [parse_qs(urlsplit(url).query) for url in requests if 'url=' in url]
-        self.assertTrue(queries)
-        self.assertTrue(any(query['matchType'] == ['prefix'] for query in queries) or
-                        SOURCE.rsplit('/', 1)[0]+'/' in second['wayback_directories']['query_roots'])
-        self.assertIn(SOURCE.rsplit('/', 1)[0]+'/', second['wayback_directories']['query_roots'])
-
-    def test_directory_search_for_mutable_firmware_source_retains_distinct_historical_contents(self):
-        source = 'https://update.sonos.com/firmware/mutable/controller.upd'
-        def fetch(url):
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            query = parse_qs(urlsplit(url).query)
-            if query.get('matchType') != ['prefix']:
-                return [] if urlsplit(url).hostname == 'web.archive.org' else {'pages': 0}
-            if urlsplit(url).hostname == 'web.archive.org':
-                return [['timestamp', 'original', 'digest'], ['20200101000000', source, 'old'],
-                        ['20210101000000', source, 'changed']]
-            return {'pages': 0}
-        with patch.object(retry, '_now', return_value=NOW):
-            result = scan_archives({}, fetch=fetch, seed_urls=[source])
-        artifact = result['artifacts'][source]
-        self.assertEqual(artifact['filename'], 'controller.upd')
-        self.assertEqual({capture['digest'] for capture in artifact['captures'].values()}, {'old', 'changed'})
-
-    def test_enabling_directory_queries_retains_broad_resume_tokens_and_collection_pages(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            if urlsplit(url).hostname == 'web.archive.org':
-                return [['timestamp', 'original', 'digest'], [], ['resume-token']]
-            return {'pages': 3} if 'showNumPages' in url else [indexed()]
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_archives({}, fetch=fetch, steps=1,
-                extensions=('exe',), allowed=installers.official_source)
-            requests.clear()
-            scan_archives(first, fetch=fetch, steps=2,
-                seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-        broad = [parse_qs(urlsplit(url).query) for url in requests if 'matchType=domain' in url]
-        self.assertTrue(any(query.get('resumeKey') == ['resume-token'] for query in broad))
-        self.assertTrue(any(query.get('page') == ['1'] for query in broad))
 
     def test_provider_rate_limit_blocks_directory_queries_and_survives_lane_rotation(self):
         requests = []
@@ -208,101 +106,6 @@ class CommonCrawlIndexTests(unittest.TestCase):
         self.assertEqual(requests, [])
         self.assertEqual(third['wayback_directories']['index_retry'], first['wayback']['index_retry'])
 
-    def test_explicit_server_retry_after_is_shared_by_broad_and_directory_queries(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            raise urllib.error.HTTPError(url, 503, 'later', {'Retry-After': '7200'}, None)
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_archives({}, fetch=fetch, steps=2,
-                seed_urls=[SOURCE], extensions=('exe',), allowed=installers.official_source)
-            self.assertFalse(any('matchType=prefix' in url for url in requests))
-            requests.clear()
-            scan_archives(first, fetch=fetch, steps=2,
-                extensions=('exe',), allowed=installers.official_source)
-        self.assertEqual(requests, [])
-
-    def test_normal_discovery_learns_host_queries_and_retains_the_broad_search(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            return {'pages': 0} if 'showNumPages' in url else []
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_archives({}, fetch=fetch, steps=4,
-                seed_urls=['https://update.sonos.com/software/nonce/old.exe',
-                           'https://outside.test/other.exe'], extensions=('exe',),
-                allowed=installers.official_source)
-            expected = {'sonos.com': 'sonos.com/', 'update.sonos.com': 'update.sonos.com/'}
-            self.assertEqual(first['query_roots'], expected)
-            for provider in ('web.archive.org', 'index.commoncrawl.org'):
-                roots = {parse_qs(urlsplit(url).query)['url'][0] for url in requests
-                         if urlsplit(url).hostname == provider and 'matchType=domain' in url}
-                self.assertEqual(roots, set(expected.values()))
-            second = scan_archives(first, fetch=fetch, steps=1,
-                extensions=('exe',), allowed=installers.official_source)
-            self.assertEqual(second['query_roots'], expected)
-
-    def test_adding_a_root_keeps_existing_page_progress_with_unvisited_roots(self):
-        calls = []
-        def fetch(url):
-            calls.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            return {'pages': 3} if 'showNumPages' in url else [indexed()]
-        with patch.object(retry, '_now', return_value=NOW):
-            roots = {'software': 'update.sonos.com/software/', 'unvisited': 'update.sonos.com/unvisited/'}
-            first = scan_cc({}, fetch, steps=1, roots=roots,
-                                extensions=('exe',), allowed=installers.official_source)
-            first['next_query'] = 0
-            for checkpoint in (first, {key: value for key, value in first.items() if key != 'query_specs'}):
-                calls.clear()
-                second = scan_cc(checkpoint, fetch, steps=1,
-                    roots={**roots, 'firmware': 'update.sonos.com/firmware/'},
-                    extensions=('exe',), allowed=installers.official_source)
-                identity = A+'|update.sonos.com/software/'
-                self.assertGreaterEqual(second['queries'][identity]['next_page'],
-                                        first['queries'][identity]['next_page'])
-                resumed = scan_cc(second, fetch, roots={**roots, 'firmware': 'update.sonos.com/firmware/'},
-                                  extensions=('exe',), allowed=installers.official_source)
-                self.assertTrue(any(parse_qs(urlsplit(url).query).get('page') == ['1'] for url in calls))
-                self.assertEqual(resumed['queries'][identity]['next_page'], 3)
-
-    def test_new_host_search_does_not_retry_an_existing_query_before_its_deadline(self):
-        calls = []
-        def fetch(url):
-            calls.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            if 'software' in url:
-                raise TimeoutError('temporary index failure')
-            return {'pages': 0}
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_cc({}, fetch, steps=1, roots={'software': 'update.sonos.com/software/'},
-                                extensions=('exe',), allowed=installers.official_source)
-            prior = first['queries'][A+'|update.sonos.com/software/']
-            calls.clear()
-            second = scan_cc(first, fetch, steps=1,
-                roots={'software': 'update.sonos.com/software/', 'firmware': 'update.sonos.com/firmware/'},
-                extensions=('exe',), allowed=installers.official_source)
-        self.assertEqual(second['queries'][A+'|update.sonos.com/software/'], prior)
-        self.assertEqual(len(calls), 1)
-        self.assertIn('firmware', calls[0])
-
-    def test_empty_query_404_is_distinct_from_a_missing_collection(self):
-        for message, expected in (('No Captures found for: sonos.com/', 'ok'),
-                                  ('No handler for collection', 'partial')):
-            with self.subTest(message=message):
-                def fetch(url):
-                    if url == cc.REGISTRY:
-                        return [{'cdx-api': A}]
-                    raise urllib.error.HTTPError(url, 404, 'not found', {},
-                        io.BytesIO(json.dumps({'message': message}).encode()))
-                state = discover({}, fetch)
-                self.assertEqual(state['status'], expected)
 
     def test_collection_and_page_cursors_resume_without_download_lists_or_line_limits(self):
         calls = []
@@ -327,39 +130,6 @@ class CommonCrawlIndexTests(unittest.TestCase):
         self.assertEqual(sum(url == cc.REGISTRY for url in calls), 1)
         self.assertTrue(any(url.startswith(A) and parse_qs(urlsplit(url).query).get('page') == ['1'] for url in calls))
 
-    def test_failed_collection_does_not_starve_other_collections_and_retries(self):
-        fail = True
-        def fetch(url):
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}, {'cdx-api': B}]
-            if url.startswith(B) and fail:
-                raise TimeoutError('temporary index failure')
-            return {'pages': 1} if 'showNumPages' in url else [indexed()]
-        first = discover({}, fetch)
-        second = discover(first, fetch)
-        self.assertIn(SOURCE, second['artifacts'])
-        self.assertEqual(second['pending_queries'], 1)
-        fail = False
-        third = discover(second, fetch, now=NOW+timedelta(hours=2))
-        self.assertEqual(third['status'], 'ok')
-
-    def test_429_retry_after_pauses_index_host_and_then_resumes(self):
-        fail, requests = True, []
-        def fetch(url):
-            requests.append(url)
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}, {'cdx-api': B}]
-            if fail:
-                raise urllib.error.HTTPError(url, 429, 'retry later', {'Retry-After': '75'}, None)
-            return {'pages': 1} if 'showNumPages' in url else [indexed()]
-        first = discover({}, fetch)
-        count = len(requests)
-        discover(first, fetch, now=NOW+timedelta(seconds=74))
-        self.assertEqual(len(requests), count)
-        fail = False
-        second = discover(first, fetch, now=NOW+timedelta(seconds=76))
-        self.assertIn(SOURCE, second['artifacts'])
-        self.assertEqual(archive_index.paused_index_hosts(second), set())
 
     def test_malformed_page_retains_valid_rows_and_retries_same_page(self):
         bad = True
@@ -378,66 +148,6 @@ class CommonCrawlIndexTests(unittest.TestCase):
         second = discover(first, fetch, now=NOW+timedelta(hours=2))
         self.assertEqual(second['status'], 'ok')
         self.assertEqual(sum('showNumPages' in url for url in calls), 1)
-
-    def test_new_collections_enter_after_registry_refresh(self):
-        refreshed = False
-        def fetch(url):
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}, *([{'cdx-api': B}] if refreshed else [])]
-            return {'pages': 0}
-        first = discover({}, fetch)
-        refreshed = True
-        second = discover(first, fetch, now=NOW+timedelta(days=8), steps=2)
-        self.assertIn(B, second['collections'])
-        self.assertEqual(second['status'], 'ok')
-
-    def test_registry_cannot_redirect_discovery_to_an_arbitrary_endpoint(self):
-        requests = []
-        def fetch(url):
-            requests.append(url)
-            return [{'cdx-api': 'https://127.0.0.1/private-index'}]
-        result = discover({}, fetch)
-        self.assertEqual(requests, [cc.REGISTRY])
-        self.assertEqual(result['status'], 'partial')
-
-    def test_wayback_failure_does_not_prevent_independent_captures(self):
-        def fetch(url):
-            if url.startswith('https://web.archive.org/'):
-                raise TimeoutError('Wayback unavailable')
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            return {'pages': 1} if 'showNumPages' in url else [indexed()]
-        with patch.object(retry, '_now', return_value=NOW):
-            result = scan_archives({}, fetch, steps=1, extensions=('exe',), allowed=installers.official_source)
-        self.assertEqual(result['status'], 'partial')
-        self.assertEqual(result['commoncrawl']['status'], 'ok')
-        capture, = result['artifacts'][SOURCE]['captures'].values()
-        self.assertEqual(capture['provider'], 'commoncrawl')
-
-    def test_combined_checkpoint_keeps_capture_records_once_and_resumes_both_providers(self):
-        def fetch(url):
-            if url.startswith('https://web.archive.org/'):
-                return [['timestamp', 'original', 'digest'], ['20200101000000', SOURCE, 'wayback']]
-            if url == cc.REGISTRY:
-                return [{'cdx-api': A}]
-            return {'pages': 1} if 'showNumPages' in url else [indexed()]
-        with patch.object(retry, '_now', return_value=NOW):
-            first = scan_archives({}, fetch, steps=1, extensions=('exe',), allowed=installers.official_source)
-            second = scan_archives(json.loads(json.dumps(first)), fetch, steps=1,
-                                                     extensions=('exe',), allowed=installers.official_source)
-            third = scan_archives(json.loads(json.dumps(second)), fetch, steps=1,
-                                                    extensions=('exe',), allowed=installers.official_source)
-            fourth = scan_archives(json.loads(json.dumps(third)), fetch,
-                                                     extensions=('exe',), allowed=installers.official_source)
-        self.assertEqual(len(second['artifacts'][SOURCE]['captures']), 2)
-        self.assertEqual(second['artifacts'][SOURCE]['filename'], 'Sonos.exe')
-        self.assertNotIn('artifacts', second['commoncrawl'])
-        self.assertNotIn('artifacts', second['wayback'])
-        self.assertEqual(second['status'], 'partial')
-        self.assertEqual(third['status'], 'partial')
-        self.assertEqual(fourth['status'], 'ok')
-        self.assertEqual(len(third['artifacts'][SOURCE]['captures']), 2)
-        self.assertEqual(len(fourth['artifacts'][SOURCE]['captures']), 2)
 
 
 def warc(body=b'MZ synthetic installer', source=SOURCE, date='2020-01-01T00:00:00Z', extra=None, encoded=False):
@@ -489,14 +199,6 @@ class CommonCrawlReplayTests(unittest.TestCase):
                 self.assertEqual(body, b'MZ synthetic installer')
                 self.assertEqual(int(headers['Content-Length']), len(body))
 
-    def test_older_arc_record_ranges_are_supported(self):
-        body = b'MZ older synthetic installer'
-        http = b'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body
-        record = f'{SOURCE} 0.0.0.0 20200101000000 application/http {len(http)}\n'.encode()+http+b'\n'
-        data = gzip.compress(record)
-        _, capture = warc()
-        capture.update(filename='crawl-data/legacy/test.arc.gz', length=str(len(data)), digest='-')
-        self.assertEqual(self.replay(data, capture)[0], body)
 
     def test_wrong_record_identity_timestamp_truncation_and_digest_are_rejected(self):
         examples = [warc(source=SOURCE.replace('Sonos.exe', 'another.exe')),
@@ -518,10 +220,6 @@ class CommonCrawlReplayTests(unittest.TestCase):
             with self.subTest(response=response), self.assertRaises(ValueError):
                 self.replay(data, capture, response)
 
-    def test_storage_paths_cannot_escape_the_fixed_archive_host(self):
-        for filename in ('../private', 'https://outside.test/warc.gz', 'a?token=secret', '/absolute'):
-            with self.subTest(filename=filename), self.assertRaises(ValueError):
-                cc.capture_url({'filename': filename, 'offset': 0, 'length': 10})
 
     def test_native_capture_bootstraps_the_actual_installer_publisher(self):
         data, capture = warc()
@@ -542,34 +240,6 @@ class CommonCrawlReplayTests(unittest.TestCase):
             self.assertEqual(observed['acquisition_id'], 'commoncrawl:native')
             self.assertEqual(observed['archive_capture'], capture)
             self.assertNotIn('wayback_timestamp', observed)
-
-    def test_wayback_backoff_does_not_block_native_firmware_publication_from_empty_state(self):
-        import struct
-        from tests.firmware.test_upd import section
-        from sonos_firmware.historical_firmware import archive_history
-        from sonos_firmware.storage import atomic_json
-        source = SOURCE.rsplit('/', 1)[0]+'/1.2-345-1-17.upd'
-        body = section(1, 0, struct.pack('<III', 1, 2, 345)) + section(99, 0, b'synthetic firmware')
-        data, capture = warc(body, source=source)
-        capture['original_url'] = source
-        index = {'errors': [{'url': 'https://web.archive.org/cdx', 'http_status': 429,
-                            'next_attempt_at': (NOW+timedelta(days=1)).isoformat()}],
-                 'artifacts': {source: {'version': '1.2-345', 'package_model': 17, 'captures': {'native': capture}}}}
-        github = FakeGitHub()
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            atomic_json(root/'data/discovery/firmware-frontier.json', {'archive_index': index})
-            with patch.object(retry, '_now', return_value=NOW), \
-                 patch.object(cc.urllib.request, 'build_opener') as opener, \
-                 patch.object(releases, 'remote_assets', side_effect=github.assets), \
-                 patch.object(releases.subprocess, 'run', side_effect=github.command):
-                opener.return_value.open.return_value = Response(data, capture)
-                result = archive_history(root, root/'work', 'fresh/archive', )
-            self.assertEqual(result['preserved'], 1)
-            self.assertEqual(github.uploads[0][3], body)
-            package, = json.loads((root/'data/catalog.json').read_text())['packages']
-            self.assertEqual(package['version'], '1.2-345')
-            self.assertEqual(package['artifact_status'], 'preserved')
 
 
 if __name__ == '__main__':

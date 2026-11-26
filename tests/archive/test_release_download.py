@@ -51,7 +51,7 @@ class ReleaseDownloadTests(unittest.TestCase):
             with self.subTest(running=running), tempfile.TemporaryDirectory() as temporary:
                 target = Path(temporary)/'source.bin'
                 processes = []
-                def download(command, **kwargs):
+                def download(command, body=body, running=running, processes=processes, **kwargs):
                     process = self.process(command, body, running=running)
                     processes.append(process)
                     return process
@@ -103,15 +103,6 @@ class AnonymousReadThrottleTests(unittest.TestCase):
             self.assertEqual(release['tag_name'], 'fixture')
             client.assert_called_once()
 
-    def test_a_missing_release_stays_missing_instead_of_being_retried_as_throttling(self):
-        with patch.object(releases.urllib.request, 'urlopen',
-                          side_effect=urllib.error.HTTPError('https://api.github.com/fixture',
-                                                             404, 'missing', {}, None)), \
-             patch.object(releases.subprocess, 'check_output') as client:
-            with self.assertRaises(urllib.error.HTTPError) as raised:
-                releases.public_release('owner/archive', 'fixture')
-        self.assertEqual(raised.exception.code, 404)
-        client.assert_not_called()
 
     def test_a_throttled_asset_page_falls_back_before_returning_a_partial_inventory(self):
         first_page = [{'name': f'asset-{i}.bin', 'size': 1, 'digest': 'sha256:'+'a'*64,

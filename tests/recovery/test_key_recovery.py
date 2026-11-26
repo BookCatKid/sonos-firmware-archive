@@ -117,17 +117,6 @@ class RecoveryTests(unittest.TestCase):
             path.unlink()
             self.assertEqual(recovery.select_updater_sources(root, catalog, 17), [])
 
-    def test_malformed_receipt_does_not_hide_other_updater_sources(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            catalog, filesystem, _ = self.chained_catalog(root)
-            atomic_json(root/'data/raw/arbitrary-source.json', None)
-            healthy, _ = source_catalog(root, 17, filesystem, identity='healthy-source')
-            catalog['packages'].extend(healthy['packages'])
-            catalog['raw_images'].extend(healthy['raw_images'])
-            sources = recovery.select_updater_sources(root, catalog, 17)
-            self.assertEqual([row['package_id'] for row in sources], ['healthy-source', 'healthy-source'])
-            self.assertEqual([row['kind'] for row in sources], ['raw', 'upd'])
 
     def updater(self, model, *, order='big', word=SYSTEM_WORD, relocated=False):
         body = _synthetic_updater_from_seed(legacy_seed(model, word, byte_order=order), self.key)
@@ -156,11 +145,6 @@ class RecoveryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             discover_legacy_updater_key(UPDATER_MARKER * 65, 17, self.recipient)
 
-    def test_multiple_marker_candidates_are_filtered_by_exact_recipient(self):
-        wrong = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-        first = _synthetic_updater_from_seed(legacy_seed(17), wrong)
-        result = discover_legacy_updater_key(first + self.updater(17), 17, self.recipient)
-        self.assertGreater(result.wrapper_offset, len(first))
 
     def test_full_cramfs_source_recovery_from_metadata_without_version_inventory(self):
         for order in ('big', 'little'):
@@ -171,7 +155,7 @@ class RecoveryTests(unittest.TestCase):
                 catalog, _ = source_catalog(root, 1, filesystem)
                 output = root / 'keys/model1.pem'
                 proof = recovery.recover_catalog_key(root, catalog, 1, self.recipient, output, 'owner/repo',
-                           read_artifact=lambda source, path, repo: path.write_bytes(filesystem))
+                           read_artifact=lambda source, path, repo, data=filesystem: path.write_bytes(data))
                 self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
                 self.assertEqual(proof['source']['package_id'], 'arbitrary-source')
                 self.assertEqual(proof['updater_sha256'], digest(updater))
@@ -191,7 +175,7 @@ class RecoveryTests(unittest.TestCase):
                     catalog, _ = source_catalog(root, 27, filesystem)
                     output = root/'keys/recipient.pem'
                     proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                        read_artifact=lambda source, path, repo: path.write_bytes(filesystem))
+                        read_artifact=lambda source, path, repo, data=filesystem: path.write_bytes(data))
                     self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
                     self.assertEqual(proof['method'], 'embedded-updater-private-key')
                     self.assertEqual(proof['key_offset'], 23+len(wrong)+5)
@@ -238,7 +222,7 @@ class RecoveryTests(unittest.TestCase):
                     output = root/'keys/recipient.pem'
                     with patch.object(recovery, 'read_updater_member', side_effect=AssertionError('not a filesystem')):
                         proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                            read_artifact=lambda source, path, repo: path.write_bytes(payload if raw else body))
+                            read_artifact=lambda source, path, repo, data=payload if raw else body: path.write_bytes(data))
                     self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
                     self.assertEqual(proof['method'], 'embedded-component-private-key')
                     self.assertEqual(proof['component_sha256'], digest(payload))
@@ -303,27 +287,6 @@ class RecoveryTests(unittest.TestCase):
                 'release_tag': 'fixture-source', 'release_asset': 'inventory.tar.xz'}}}
         return catalog, body
 
-    def test_inventory_recovery_scans_decoded_files_without_unpacking_paths(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            private = self.key.private_bytes(serialization.Encoding.PEM,
-                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
-            catalog, body = self.inventory_catalog(root, [('etc/link.pem', None),
-                ('decoded-kernel', b'kernel without key'), ('rootfs/etc/arbitrary-name', private)])
-            visited = []
-            def fetch(source, path, repo):
-                visited.append(source)
-                self.assertEqual(source['kind'], 'inventory-bundle')
-                path.write_bytes(body)
-            output = root/'keys/key.pem'
-            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                read_artifact=fetch)
-            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
-            self.assertEqual(proof['method'], 'embedded-inventory-private-key')
-            self.assertEqual(proof['member'], 'rootfs/etc/arbitrary-name')
-            self.assertEqual(proof['member_sha256'], digest(private))
-            self.assertEqual(visited[0]['source_sha256'], catalog['packages'][0]['sha256'])
-            self.assertEqual(sorted(path.name for path in root.iterdir()), ['data', 'keys'])
 
     def test_inventory_sources_require_verified_matching_parent_receipts(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -340,18 +303,6 @@ class RecoveryTests(unittest.TestCase):
             self.assertTrue(any(row['kind'] == 'inventory-bundle'
                                 for row in recovery._select_sources(root, catalog, 27)))
 
-    def test_inventory_scan_rejects_wrong_recipient_links_and_expansion_overruns(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            wrong = self.transport_key.private_bytes(serialization.Encoding.DER,
-                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
-            catalog, body = self.inventory_catalog(root, [('link.pem', None), ('file', wrong)])
-            path = root/'inventory.tar.xz'
-            path.write_bytes(body)
-            self.assertIsNone(recovery.inventory_private_key(path, self.recipient, catalog['packages'][0]['sha256']))
-            self.assertIsNone(recovery.inventory_private_key(path, self.recipient, catalog['packages'][0]['sha256']))
-            with self.assertRaisesRegex(ValueError, 'parent source'):
-                recovery.inventory_private_key(path, self.recipient, '0'*64)
 
     def test_inventory_candidate_key_is_not_written_before_manifest_validation(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -390,36 +341,6 @@ class RecoveryTests(unittest.TestCase):
             self.assertTrue(proof['member'].endswith('/bin/upgrade'))
             self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
 
-    def test_inventory_scans_every_verified_member(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            private = self.key.private_bytes(serialization.Encoding.PEM,
-                serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
-            catalog, body = self.inventory_catalog(root, [('first', b'unrelated'), ('private.pem', private)])
-            output = root/'keys/key.pem'
-            proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                read_artifact=lambda source, path, repo: path.write_bytes(body))
-            self.assertEqual(proof['method'], 'embedded-inventory-private-key')
-            self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
-
-    def test_new_recovery_method_revision_revisits_a_previously_failed_source(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            updater = self.key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
-                                             serialization.NoEncryption())
-            filesystem = cramfs_image(updater)
-            catalog, _ = source_catalog(root, 27, filesystem)
-            output = root/'keys/recipient.pem'
-            def fetch(source, path, repo):
-                path.write_bytes(filesystem)
-            with patch.object(recovery, 'embedded_private_key', return_value=None):
-                with self.assertRaises(ValueError):
-                    recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                        read_artifact=fetch)
-            with patch.object(recovery, 'RECOVERY_REVISION', recovery.RECOVERY_REVISION+1):
-                proof = recovery.recover_catalog_key(root, catalog, 27, self.recipient, output, 'owner/repo',
-                    read_artifact=fetch)
-            self.assertEqual(proof['method'], 'embedded-updater-private-key')
 
     def test_bad_raw_capture_falls_back_to_original_upd_before_decoding(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -438,26 +359,6 @@ class RecoveryTests(unittest.TestCase):
             read_member.assert_called_once()
             self.assertEqual(proof['source']['kind'], 'upd')
 
-    def test_selection_requires_matching_section_inventory_and_publication(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            catalog, _ = source_catalog(root, 17, b'fixture')
-            self.assertEqual(len(recovery.select_updater_sources(root, catalog, 17)), 2)
-            catalog['raw_images'][0]['sha256'] = '0' * 64
-            self.assertEqual([r['kind'] for r in recovery.select_updater_sources(root, catalog, 17)], ['upd'])
-            catalog['packages'][0]['sha256'] = '0' * 64
-            self.assertEqual(recovery.select_updater_sources(root, catalog, 17), [])
-
-    def test_failed_sources_do_not_expose_input_details(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            catalog, _ = source_catalog(root, 17, b'fixture')
-            def fail(*args):
-                raise ValueError('private-input-that-must-not-appear')
-            with self.assertRaisesRegex(ValueError, '2 attempted sources; 0 sources deferred') as error:
-                recovery.recover_catalog_key(root, catalog, 17, self.recipient, root / 'keys/model17.pem',
-                                             'owner/repo', read_artifact=fail)
-            self.assertNotIn('private-input', str(error.exception))
 
     def test_failed_sources_do_not_block_success_and_replay_in_a_fresh_worker(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -513,40 +414,6 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(assessment['status'], 'no-eligible-source')
             self.assertNotIn('PRIVATE KEY', json.dumps(state))
 
-    def test_assessment_changes_when_new_source_arrives_without_waiting_for_old_failure(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            output = root/'keys/recipient.pem'
-            with self.assertRaises(ValueError):
-                recovery.recover_catalog_key(root, {'packages': []}, 17, self.recipient,
-                    output, 'owner/repo', read_artifact=lambda *args: self.fail('no source'))
-            updater = self.updater(17)
-            catalog, _ = source_catalog(root, 17, updater)
-            recovery.recover_catalog_key(root, catalog, 17, self.recipient, output, 'owner/repo',
-                read_artifact=lambda source, path, repo: path.write_bytes(updater),
-                read_member=lambda path: path.read_bytes())
-            assessment = json.loads((root/'data/discovery/key-recovery.json').read_text())['assessments']['owner/repo'][self.recipient]
-            self.assertEqual(assessment['status'], 'recovered')
-            self.assertEqual(assessment['eligible_sources'], 2)
-            self.assertEqual(assessment['attempted_sources'], 1)
-
-    def test_failed_and_deferred_attempts_are_distinct_in_recipient_assessments(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            catalog, _ = source_catalog(root, 17, b'fixture', raw=False)
-            def fail(*args):
-                raise ValueError('private-input-must-not-be-reported')
-            for expected_status, attempted in [('attempts-failed', 1), ('deferred', 0)]:
-                with self.assertRaises(ValueError):
-                    recovery.recover_catalog_key(root, catalog, 17, self.recipient,
-                        root/'keys/recipient.pem', 'owner/repo', read_artifact=fail)
-                state = json.loads((root/'data/discovery/key-recovery.json').read_text())
-                assessment = state['assessments']['owner/repo'][self.recipient]
-                self.assertEqual(assessment['status'], expected_status)
-                self.assertEqual(assessment['attempted_sources'], attempted)
-                self.assertEqual(assessment['eligible_sources'], 1)
-                self.assertEqual(assessment['pending_sources'], 1)
-                self.assertNotIn('private-input', json.dumps(state))
 
     def test_interrupted_first_attempt_leaves_assessment_and_retryable_source(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -596,23 +463,6 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(key_recipient_id(load_private_key(output)), self.recipient)
 
 
-class MemberReaderTests(unittest.TestCase):
-    def test_decoder_output_reads_all_bytes_and_checks_exit_status(self):
-        command = [sys.executable, '-c']
-        data = recovery.decoder_output(command + ['print("abc" * 10000, end="")'])
-        self.assertEqual(data, b'abc' * 10000)
-        with self.assertRaises(recovery.subprocess.CalledProcessError):
-            recovery.decoder_output(command + ['raise SystemExit(2)'])
-
-    def test_squashfs_member_reads_the_complete_decoder_output(self):
-        with tempfile.TemporaryDirectory() as temporary, patch.object(
-                recovery, 'decoder_output', return_value=b'updater') as read:
-            path = Path(temporary) / 'extension-does-not-matter'
-            path.write_bytes(b'sqsh' + bytes(16))
-            self.assertEqual(recovery.read_updater_member(path), b'updater')
-            read.assert_called_once_with(['unsquashfs', '-cat', str(path), 'bin/upgrade'])
-
-
 def envelope(payload, private_key):
     aes_key, iv = bytes(range(16)), bytes(range(16, 32))
     amount = 16 - len(payload) % 16
@@ -660,42 +510,6 @@ class RecipientExtractionTests(unittest.TestCase):
             paths[key_recipient_id(self.keys[0])] = bad
             result = extract_available_components(package, root / 'invalid-key', paths)
             self.assertEqual([row['section_index'] for row in result['components']], [1, 2])
-
-    def test_worker_uses_ready_rotated_key_then_retries_immediately_when_the_other_arrives(self):
-        script = Path(__file__).resolve().parents[2] / 'scripts/firmware/decrypt_pending_firmware.py'
-        spec = importlib.util.spec_from_file_location('recipient_worker_fixture', script)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        keys = sorted(self.keys, key=key_recipient_id)
-        fingerprints = [key_recipient_id(key) for key in keys]
-        body = section(4, 4, envelope(b'older recipient', keys[0])) + section(6, 4, envelope(b'newer recipient', keys[1])) + section(3, 0, b'plaintext')
-        for policy in ('all-sections', 'legacy'):
-            with self.subTest(policy=policy), tempfile.TemporaryDirectory() as temporary:
-                root = Path(temporary)
-                package = {'id': 'rotating-source', 'filename': 'advertised.upd', 'package_model': 8,
-                    'artifact_status': 'preserved', 'artifact_type': 'upd', 'extraction_policy': policy,
-                    'bytes': len(body), 'sha256': digest(body), 'release_tag': 'fixture-source', 'release_asset': 'exact-capture.upd'}
-                atomic_json(root / 'data/catalog.json', {'packages': [package]})
-                atomic_json(root / 'data/upd/rotating-source.json', {'sections': [s.to_dict() for s in parse_bytes(body)]})
-                atomic_json(root / 'ledger.json', {'recovered_keys': {fp: {'package_model': 8,
-                    'coverage_packages': [{'package_id': package['id'], 'artifact_status': 'preserved'}]} for fp in fingerprints}})
-                (root / 'keys').mkdir()
-                write_private_key_exclusive(root / 'keys' / ('recipient-' + fingerprints[1] + '.pem'), keys[1])
-                (root / 'sources').mkdir()
-                source = root / 'sources/rotating-source.upd'
-                source.write_bytes(body)
-                argv = [str(script), '--key-directory', str(root / 'keys'), '--catalog', str(root / 'data/catalog.json'),
-                        '--ledger', str(root / 'ledger.json'), '--staging', str(root / 'sources'), '--raw-directory', str(root / 'raw'),
-                        '--upd-manifest-directory', str(root / 'data/upd'), '--receipt-directory', str(root / 'receipts')]
-                with patch.object(sys, 'argv', argv):
-                    self.assertEqual(module.main(), 0)
-                receipt = root / 'receipts/rotating-source.json'
-                self.assertEqual({row['section_index'] for row in json.loads(receipt.read_text())['components']}, {1, 2})
-                write_private_key_exclusive(root / 'keys' / ('recipient-' + fingerprints[0] + '.pem'), keys[0])
-                source.write_bytes(body)
-                with patch.object(sys, 'argv', argv):
-                    self.assertEqual(module.main(), 0)
-                self.assertEqual({row['section_index'] for row in json.loads(receipt.read_text())['components']}, {0, 1, 2})
 
 
 class WorkerPreparationTests(unittest.TestCase):

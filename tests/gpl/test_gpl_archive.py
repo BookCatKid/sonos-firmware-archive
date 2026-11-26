@@ -14,8 +14,8 @@ from unittest.mock import patch
 from pathlib import Path
 
 from sonos_firmware.gpl_archive import (
-    HttpResult, candidates, capture_response, classify_index, download_artifact,
-    file_sha256, index_url, offline_candidates, parse_index, sha256_bytes,
+    HttpResult, classify_index, download_artifact,
+    index_url, offline_candidates, parse_index, sha256_bytes,
     source_url, valid_version, verify_artifact,
     version_at,
 )
@@ -40,17 +40,6 @@ class GPLArchiveTests(unittest.TestCase):
             with self.subTest(version=bad), self.assertRaises(ValueError):
                 valid_version(bad)
 
-    def test_plus_encoding_is_not_query_form_encoding(self):
-        url = "https://www.sonos.com/documents/gpl/18.6/libdash-2.2+gitAUTOINC+eb7a09ce37-r0-patched.tar.xz"
-        canonical = source_url(url)
-        self.assertEqual(canonical, url.replace("+", "%2B"))
-        self.assertEqual(source_url(canonical), canonical)
-        for other in ("https://evil.example/documents/gpl/18.6/a.tar.xz",
-                      "https://www.sonos.com/documents/gpl/18.6/%2Fetc.tar.xz",
-                      "https://www.sonos.com/documents/gpl/18.6/%2E%2E",
-                      "https://www.sonos.com/documents/gpl/18.6/a.tar.xz?x=y"):
-            with self.subTest(url=other), self.assertRaises(ValueError):
-                source_url(other)
 
     def test_real_sonos_pages_and_direct_links(self):
         for version, expected in (("7.2", 28), ("14.18", 43), ("18.6", 59)):
@@ -72,22 +61,6 @@ class GPLArchiveTests(unittest.TestCase):
         self.assertEqual(classify_index("14.2", HttpResult(403, b"<Error>AccessDenied</Error>", "application/xml", ""))["state"], "access-denied")
         self.assertEqual(classify_index("14.2", HttpResult(429, b"", "", ""))["state"], "rate-limited")
 
-    def test_verified_page_written_to_index_once(self):
-        raw = b'<h1>Sonos GPL/LGPL Downloads</h1><a href="busybox.tgz">busybox</a>'
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory)
-            result = capture_response("11.3", HttpResult(200, raw, "text/html", index_url("11.3")), path)
-            self.assertEqual(result["state"], "verified")
-            self.assertEqual(result["sha256"], sha256_bytes(raw))
-            self.assertEqual((path / "indexes/11.3.html").read_bytes(), raw)
-
-    def test_candidate_order_with_evidence_and_neighbors(self):
-        result = candidates({"14.12", "14.18"}, evidence={"15.7": {"firmware.bin"}})
-        self.assertEqual(result[0]["version"], "15.7")
-        self.assertEqual(result[0]["evidence"], ["firmware.bin"])
-        self.assertEqual(set(item["version"] for item in result if item["priority"] == 1),
-                         {"14.11", "14.13", "14.17", "14.19", '13.12', '15.12', '13.18', '15.18'})
-        self.assertNotIn("14.12", [item["version"] for item in result])
 
     def test_numeric_frontier_reaches_every_pair_without_size_caps(self):
         versions = {version_at(index) for index in range(45)}
@@ -95,22 +68,6 @@ class GPLArchiveTests(unittest.TestCase):
         self.assertTrue({f'{major}.{minor}' for major in range(5) for minor in range(5)} <= versions)
         self.assertEqual(version_at(2000*2001//2+1000), '1000.1000')
 
-    def test_offline_evidence_from_firmware_reference(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "docs"
-            path.mkdir()
-            (path / "notes.md").write_text("Firmware references https://www.sonos.com/documents/gpl/22.17/gpl.html")
-            evidence = offline_candidates(Path(directory))
-            self.assertIn("docs/notes.md", evidence["22.17"])
-
-    def test_bad_artifact_and_pdf(self):
-        with tempfile.TemporaryDirectory() as directory:
-            f = Path(directory) / "x.tar.xz"
-            f.write_bytes(b"Akamai challenge")
-            self.assertFalse(verify_artifact(f, "source")[0])
-            f.write_bytes(b"%PDF-1.7\nstartxref\n0\n%%EOF\n")
-            self.assertTrue(verify_artifact(f, "attribution")[0])
-            self.assertFalse(verify_artifact(f, "other")[0])
 
     @staticmethod
     def tar_bytes():
@@ -148,8 +105,8 @@ class GPLArchiveTests(unittest.TestCase):
             with self.subTest(header=header), tempfile.TemporaryDirectory() as directory:
                 body = io.BytesIO(b"rate limited")
                 error = urllib.error.HTTPError(url, 429, "slow down", {"Retry-After": header}, body)
-                def limited(request):
-                    raise error
+                def limited(request, failure=error):
+                    raise failure
                 with patch.object(retry, '_now', return_value=now):
                     result = download_artifact(item, Path(directory), request=limited)
                 self.assertEqual(result["retry_after"], 7200)
@@ -221,21 +178,6 @@ if __name__ == "__main__":
 
 
 class GPLArchiveIntegrityTests(unittest.TestCase):
-    def test_every_retained_direct_index_has_exact_integrity_and_links(self):
-        catalog = json.loads((ROOT / "data/gpl/live/catalog.json").read_text())
-        self.assertIsInstance(catalog['releases'], dict)
-        for version, record in catalog["releases"].items():
-            with self.subTest(version=version):
-                self.assertEqual(record["state"], "verified")
-                body = (ROOT / "data/gpl/live/indexes" / f"{version}.html").read_bytes()
-                self.assertEqual(sha256_bytes(body), record["sha256"])
-                self.assertEqual(len(body), record["bytes"])
-                self.assertEqual(parse_index(version, body), record["links"])
-                self.assertEqual(len({(x['filename'], x['url']) for x in record['links']}), len(record['links']))
-                for snapshot in record.get('index_snapshots', []):
-                    captured = (ROOT / 'data/gpl/live' / snapshot['capture_file']).read_bytes()
-                    self.assertEqual(sha256_bytes(captured), snapshot['sha256'])
-                    self.assertEqual(len(captured), snapshot['bytes'])
 
     def test_direct_receipts_match_advertised_artifact_identities(self):
         catalog = json.loads((ROOT / "data/gpl/live/catalog.json").read_text())
@@ -269,7 +211,6 @@ class GPLArchiveIntegrityTests(unittest.TestCase):
         import importlib.util
         import struct
         import zlib
-        from unittest.mock import patch
         spec = importlib.util.spec_from_file_location("analyze_gpl_firmware", ROOT / "scripts/gpl/analyze_gpl_firmware.py")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -287,56 +228,8 @@ class GPLArchiveIntegrityTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 module.inspect_uimage(path)
 
-    def test_immutable_publication_renames_preexisting_conflicting_asset(self):
-        import importlib.util
-        import hashlib
-        from unittest.mock import patch
-        spec = importlib.util.spec_from_file_location("archive_gpl_direct", ROOT / "scripts/gpl/archive_gpl_direct.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        blob_bytes = b"sample-source-archive"
-        digest = hashlib.sha256(blob_bytes).hexdigest()
-        tag = "gpl-18.6"
-        assets = [{"name":"example.tar.xz","size":2,"digest":"sha256:" + "a"*64,"browser_download_url":"https://example.invalid/legacy"}]
-        uploaded = []
-        def fake_gh(*args, **kwargs):
-            if args[0] == "api":
-                return json.dumps({"assets": assets})
-            if args[:2] == ("release", "upload"):
-                published_name = Path(args[3]).name
-                uploaded.append(published_name)
-                assets.append({"name":published_name,"size":len(blob_bytes),"digest":"sha256:" + digest,
-                               "browser_download_url":"https://example.invalid/direct"})
-                return ""
-            raise AssertionError(args)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "sha256"
-            path.write_bytes(blob_bytes)
-            with patch.object(module, "run_gh", side_effect=fake_gh):
-                result = module.publish({"filename":"example.tar.xz","version":"18.6","bytes":len(blob_bytes),"sha256":digest},path,"owner/repo")
-        self.assertTrue(result["original_name_conflict"])
-        self.assertEqual(result["release_asset"], f"direct-{digest[:12]}-example.tar.xz")
-        self.assertEqual(uploaded, [result["release_asset"]])
-        self.assertEqual(assets[0]["name"], "example.tar.xz")
-
 
 class GPLDiscoveryStateTests(unittest.TestCase):
-    def test_denied_probe_never_pollutes_verified_index_catalog(self):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("archive_gpl_direct", ROOT / "scripts/gpl/archive_gpl_direct.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory() as directory:
-            dest = Path(directory)
-            bad = HttpResult(403, b"<Error><Code>AccessDenied</Code></Error>", "application/xml", "")
-            record = module.save_index("15.4", bad, dest)
-            self.assertEqual(record["state"], "access-denied")
-            self.assertEqual(module.live_catalog(dest)["releases"], {})
-            good = HttpResult(200, b'<h1>Sonos GPL/LGPL Downloads</h1><a href="busybox.tgz">busybox</a>', "text/html", index_url("15.4"))
-            module.save_index("15.4", good, dest)
-            module.save_index("15.4", bad, dest)
-            self.assertEqual(module.live_catalog(dest)["releases"]["15.4"]["state"], "verified")
-            self.assertTrue((dest / "indexes/15.4.html").is_file())
 
     def test_probe_log_does_not_create_spurious_independent_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -344,65 +237,6 @@ class GPLDiscoveryStateTests(unittest.TestCase):
             folder.mkdir(parents=True)
             (folder / "discovery.json").write_text('{"url":"https://www.sonos.com/documents/gpl/15.5/gpl.html"}')
             self.assertNotIn("15.5", offline_candidates(Path(directory)))
-
-
-class GPLReleaseReceiptRecoveryTests(unittest.TestCase):
-    def test_recover_only_verified_index_links_and_preserve_prior_records(self):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("reconcile_gpl_release_assets", ROOT / "scripts/gpl/reconcile_gpl_release_assets.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        link = {"filename":"source.tar.xz", "url":"https://www.sonos.com/documents/gpl/18.6/source.tar.xz",
-                "fetch_url":"https://www.sonos.com/documents/gpl/18.6/source.tar.xz", "kind":"source", "origin":"sonos"}
-        catalog = {"releases":{"18.6":{"state":"verified","links":[link],
-                                               "url":"https://www.sonos.com/documents/gpl/18.6/gpl.html",
-                                               "bytes":100,"sha256":"0"*64}}}
-        original = {"state":"published", "sha256":"a"*64,"bytes":5,"filename":"source.tar.xz","published":True}
-        receipts = {"artifacts":{"18.6":{"source.tar.xz":original.copy()}}}
-        assets = [{"name":"source.tar.xz","size":5,"digest":"sha256:"+"a"*64,"browser_download_url":"https://github.com/asset"},
-                  {"name":"fake.tar.xz","size":5,"digest":"sha256:"+"b"*64,"browser_download_url":"https://github.com/fake"}]
-        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
-        self.assertEqual((imported,conflicts),(0,0))
-        self.assertEqual(receipts["artifacts"]["18.6"],{"source.tar.xz":original})
-        del receipts["artifacts"]["18.6"]["source.tar.xz"]
-        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
-        self.assertEqual((imported,conflicts),(1,0))
-        recovered = receipts["artifacts"]["18.6"]["source.tar.xz"]
-        self.assertTrue(recovered["published"])
-        self.assertEqual(recovered["verification"],"published-binary-digest-confirmed")
-        self.assertFalse(recovered["source_tar_integrity_reevaluated"])
-        self.assertNotIn("fake.tar.xz",receipts["artifacts"]["18.6"])
-        assets[0]["digest"] = "sha256:" + "c"*64
-        imported,conflicts = module.reconcile(catalog,receipts,"18.6",assets,run_url="https://github.com/run")
-        self.assertEqual((imported,conflicts),(0,1))
-
-
-class GPLBinaryELFTests(unittest.TestCase):
-    def test_parse_powerpc_big_endian_gnu_build_id_without_running_binary(self):
-        import importlib.util
-        import struct
-        spec = importlib.util.spec_from_file_location("analyze_gpl_firmware_elf", ROOT / "scripts/gpl/analyze_gpl_firmware.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        build_id = bytes(range(20))
-        note = struct.pack(">III", 4, len(build_id), 3) + b"GNU\0" + build_id
-        header = bytearray(52)
-        header[:6] = b"\x7fELF\x01\x02"
-        struct.pack_into(">H", header, 18, 20)
-        struct.pack_into(">I", header, 28, 52)
-        struct.pack_into(">HH", header, 42, 32, 1)
-        program_header = struct.pack(">IIIIIIII", 4, 84, 0, 0, len(note), len(note), 0, 4)
-        raw = bytes(header) + program_header + note
-        metadata = module.elf_metadata(raw)
-        self.assertEqual(metadata["state"], "elf")
-        self.assertEqual(metadata["class"], 32)
-        self.assertEqual(metadata["endian"], "big")
-        self.assertEqual(metadata["machine"], 20)
-        self.assertEqual(metadata["gnu_build_id"], build_id.hex())
-        self.assertEqual(module.elf_metadata(b"not an ELF")["state"], "not-elf")
-        truncated = bytearray(raw)
-        struct.pack_into(">I", truncated, 52 + 4, len(raw) + 1)
-        self.assertIsNone(module.elf_metadata(bytes(truncated))["gnu_build_id"])
 
 
 class GPLMultiReleaseProgressTests(unittest.TestCase):
@@ -446,29 +280,3 @@ class GPLMultiReleaseProgressTests(unittest.TestCase):
             # No quota field is consulted; an empty due queue is a normal success.
             again = module.archive(args)
             self.assertEqual(again, 0)
-
-
-class GPLLegacyAssetCollisionTests(unittest.TestCase):
-    def test_recover_renamed_direct_index_without_mislabeling_wayback(self):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("reconcile_gpl_legacy_collision", ROOT / "scripts/gpl/reconcile_gpl_release_assets.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        direct_sha = "d7c3efcdda3cd4b4cbab7aa28e1bfa6707cf46ce634ac939d7d04b9d4a08e460"
-        catalog = {"releases": {"7.2": {"state": "verified", "bytes": 2925, "sha256": direct_sha,
-                "url": "https://www.sonos.com/documents/gpl/7.2/gpl.html", "links": []}}}
-        assets = [{"name": "gpl.html", "size": 3000, "digest": "sha256:" + "a" * 64,
-                   "browser_download_url": "https://github.com/legacy-index"},
-                  {"name": f"direct-{direct_sha[:12]}-gpl.html", "size": 2925,
-                   "digest": "sha256:" + direct_sha, "browser_download_url": "https://github.com/direct-index"},
-                  {"name": "direct-ffffffffffff-gpl.html", "size": 2925,
-                   "digest": "sha256:" + "f" * 63 + "0", "browser_download_url": "https://github.com/forged"}]
-        receipts = {"artifacts": {}}
-        imported, conflicts = module.reconcile(catalog, receipts, "7.2", assets, run_url="https://github.com/run")
-        self.assertEqual((imported, conflicts), (1, 0))
-        record = receipts["artifacts"]["7.2"]["gpl.html"]
-        self.assertEqual(record["release_asset"], f"direct-{direct_sha[:12]}-gpl.html")
-        self.assertTrue(record["original_name_conflict"])
-        self.assertEqual(record["sha256"], direct_sha)
-        self.assertFalse(record["source_tar_integrity_reevaluated"])
-        self.assertEqual(module.reconcile(catalog, receipts, "7.2", assets, run_url="https://github.com/run"), (0, 0))

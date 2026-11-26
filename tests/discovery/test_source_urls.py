@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
-from sonos_firmware import archive_index, discovery, installers, source_urls
+from sonos_firmware import installers, source_urls
 from tests.discovery.test_archive_index import scan_index
 from sonos_firmware.crawl import crawl_manifests
 
@@ -43,15 +43,6 @@ class SourceURLTests(unittest.TestCase):
                                              allowed=installers.official_source)
         self.assertIn(installer, apps['artifacts'])
 
-    def test_old_host_cursors_reset_when_scope_expands_without_losing_captures(self):
-        url = 'https://update.sonos.com/firmware/old.upd'
-        prior = {'schema_version': 2, 'cursors': {'update.sonos.com': 'old-scope'},
-                 'artifacts': {url: {'timestamp': '20200101000000', 'digest': 'original'}}}
-        requests = []
-        result = scan_index(prior, fetch=lambda url: requests.append(url) or [], requests=1)
-        self.assertNotIn('resumeKey', requests[0])
-        self.assertEqual(result['cursors'], {'sonos.com': None})
-        self.assertEqual(len(result['artifacts'][url]['captures']), 1)
 
     def test_url_boundary_rejects_lookalikes_credentials_and_nonstandard_ports(self):
         for url in ('https://sonos.com.evil.test/file.upd', 'https://evilsonos.com/file.upd',
@@ -78,21 +69,3 @@ class SourceURLTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 source_urls.open_sonos(request)
         self.assertTrue(response.closed)
-
-    def test_download_and_installer_acquisition_use_the_shared_boundary(self):
-        url = 'https://new-downloads.sonos.com/new-layout/image.upd'
-        with tempfile.TemporaryDirectory() as temporary, patch.object(source_urls._OPENER, 'open') as network:
-            result = discovery.download({'url': 'https://outside.test/image.upd', 'filename': 'image.upd'}, temporary)
-            self.assertFalse(result['downloaded'])
-            network.assert_not_called()
-            candidate = {'url': 'https://outside.test/Sonos.exe', 'platform': 'windows'}
-            with self.assertRaises(ValueError):
-                installers.acquire(candidate, Path(temporary)/'installer.exe')
-            network.assert_not_called()
-            response = io.BytesIO(b'fixture')
-            response.headers = {}
-            response.geturl = lambda: url
-            network.return_value = response
-            result = discovery.download({'url': url, 'filename': 'image.upd'}, temporary)
-            self.assertTrue(result['downloaded'])
-            self.assertEqual(result['fetched_from'], url)

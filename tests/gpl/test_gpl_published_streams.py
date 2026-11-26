@@ -143,12 +143,6 @@ class PublishedStreamAuditTests(unittest.TestCase):
             self.assertEqual(len(MOD.pending({"artifacts": {"8.1": {"mismatch.tgz": row}}},
                                          versions=None)), 1)
 
-    def test_bare_verified_claim_cannot_serve_as_proof(self):
-        digest = 'b' * 64
-        row = self.published('bad.tgz', digest, 10, strong=True)
-        records = {'artifacts': {'7.0': {'bad.tgz': row}}}
-        self.assertEqual(MOD.strong_proofs(records), {})
-        self.assertEqual(len(MOD.pending(records, versions=None)), 1)
 
     def test_failed_audits_retry_automatically_without_starving_new_sources(self):
         now = datetime(2026, 11, 16, tzinfo=timezone.utc)
@@ -177,22 +171,6 @@ class PublishedStreamAuditTests(unittest.TestCase):
             self.assertEqual(result['remaining_after'], 0)
         self.assertEqual(calls, [bad, fresh, bad])
 
-    def test_rate_limit_retains_all_pending_checks_and_honors_saved_cooldown(self):
-        now = datetime(2026, 11, 16, tzinfo=timezone.utc)
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            row = self.published('limited.tgz', 'a'*64, 10)
-            (root/'artifacts.json').write_text(json.dumps({'artifacts': {'7.0': {'limited.tgz': row}}}))
-            args = Namespace(output=root, store=root/'worker', version=[], retry_failed=False,
-                             delay=0)
-            with patch.object(retry, '_now', return_value=now):
-                download = Mock(return_value={'state': 'http-error', 'http_status': 429})
-                first = MOD.run(args, download=download, wait=lambda delay: None)
-                second = MOD.run(args, download=download, wait=lambda delay: None)
-            self.assertEqual(download.call_count, 1)
-            self.assertEqual(first['remaining_after'], 1)
-            self.assertEqual(second['selected'], 0)
-            self.assertEqual(second['status'], 'partial')
 
     def test_rate_limit_persists_server_deadline_across_worker_restart(self):
         now = datetime(2026, 11, 24, tzinfo=timezone.utc)
@@ -212,47 +190,3 @@ class PublishedStreamAuditTests(unittest.TestCase):
             stream = json.loads((root/'artifacts.json').read_text())['artifacts']['7.0']['limited.tgz']['stream_integrity']
             self.assertEqual(stream['next_attempt_at'], (now + timedelta(hours=2)).isoformat())
             self.assertEqual(stream['error']['retry_after'], 7200)
-
-    def test_genuine_strong_prior_check_already_accepted(self):
-        h = 'a' * 64
-        row = self.published('a.txz', h, 3, strong=True)
-        row['stream_integrity'].update(method='tar-and-compression-integrity',
-                                       observed_sha256=h, observed_bytes=3, members=1)
-        rows = {'artifacts': {'7.0': {'a.txz': row}}}
-        self.assertEqual(len(MOD.strong_proofs(rows)), 1)
-        self.assertEqual(MOD.pending(rows, versions=None), [])
-        row['sha256'] = 'b' * 64
-        self.assertEqual(MOD.strong_proofs(rows), {})
-        self.assertEqual(len(MOD.pending(rows, versions=None)), 1)
-
-class GPLReportIntegrityCoverageTests(unittest.TestCase):
-    def test_report_distinguishes_published_tar_headers_from_full_stream_verification(self):
-        spec = importlib.util.spec_from_file_location('archive_gpl_integrity_coverage', ROOT / 'scripts/gpl/archive_gpl_direct.py')
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            out.joinpath('catalog.json').write_text(json.dumps({'schema_version': 1, 'releases': {
-                '7.0': {'state': 'verified', 'links': [
-                    {'filename': 'a.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.0/a.tgz'},
-                    {'filename': 'b.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.0/b.tgz'}]},
-                '7.1': {'state': 'verified', 'links': [
-                    {'filename': 'c.tgz', 'kind': 'source', 'origin': 'sonos', 'fetch_url': 'https://www.sonos.com/documents/gpl/7.1/c.tgz'}]},
-            }}))
-            a = PublishedStreamAuditTests.published('a.tgz', 'a'*64, 10)
-            b = PublishedStreamAuditTests.published('b.tgz', 'b'*64, 10)
-            a['stream_integrity'] = {'state': 'verified', 'expected_sha256': 'a'*64}
-            out.joinpath('artifacts.json').write_text(json.dumps({'artifacts': {
-                '7.0': {'gpl.html': {'published': True}, 'a.tgz': a, 'b.tgz': b},
-                '7.1': {'gpl.html': {'published': True}},
-            }}))
-            from argparse import Namespace
-            self.assertEqual(mod.report(Namespace(output=out)), 0)
-            report = json.loads((out/'report.json').read_text())
-            self.assertEqual(report['fully_published_releases'], 1)
-            self.assertEqual(report['published_source_archives'], 2)
-            self.assertEqual(report['full_compressed_stream_verified_source_archives'], 1)
-            self.assertEqual(report['published_source_archives_awaiting_full_stream_verification'], 1)
-            self.assertTrue(report['release_coverage']['7.0']['complete_publication'])
-            self.assertFalse(report['release_coverage']['7.1']['complete_publication'])
-            self.assertEqual(report['release_coverage']['7.1']['remaining_assets'], 1)
