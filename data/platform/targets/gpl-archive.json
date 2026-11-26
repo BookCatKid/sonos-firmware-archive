@@ -4,13 +4,13 @@
   "provider": "gpl-archive",
   "status": "ok",
   "executed": true,
-  "started_at": "2026-11-26T07:29:09.592386+00:00",
+  "started_at": "2026-11-26T16:46:59.178592+00:00",
   "steps": [
     {
       "name": "archive_gpl_direct",
       "status": "ok",
       "exit_code": 0,
-      "output_tail": "No due GPL downloads in the chosen scope; failed sources remain scheduled for retry.\n"
+      "output_tail": "queued_incomplete_release=14.12 remaining=1\n14.12/libusb-1.0.23.txz: invalid-artifact bytes=0\nrecorded unavailable/invalid source; continuing\nattempted=1 verified_bytes=0\n"
     },
     {
       "name": "archive_gpl_direct",
@@ -21,6 +21,6 @@
   ],
   "errors": [],
   "pending": [],
-  "finished_at": "2026-11-26T07:29:09.930717+00:00",
-  "next_due": "2026-11-26T13:29:09.930717+00:00"
+  "finished_at": "2026-11-26T16:47:02.066333+00:00",
+  "next_due": "2026-11-26T22:47:02.066333+00:00"
 }
