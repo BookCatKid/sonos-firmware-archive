@@ -4,13 +4,13 @@
   "provider": "firmware",
   "status": "partial",
   "executed": true,
-  "started_at": "2026-11-26T07:26:13.234597+00:00",
+  "started_at": "2026-11-26T16:50:33.991245+00:00",
   "steps": [
     {
       "name": "discover_firmware",
       "status": "partial",
       "exit_code": 0,
-      "output_tail": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-snapshots-2026-11-26-part-2\nmanifests=127 candidates=4725 checked=4828 pending=1550\n",
+      "output_tail": "manifests=130 candidates=4727 checked=4790 pending=2098\n",
       "source_status": "partial"
     },
     {
@@ -43,6 +43,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T08:13:36.512663+00:00",
-  "next_due": "2026-11-26T09:13:36.512663+00:00"
+  "finished_at": "2026-11-26T17:48:31.130756+00:00",
+  "next_due": "2026-11-26T18:48:31.130756+00:00"
 }
