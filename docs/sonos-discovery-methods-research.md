@@ -120,6 +120,28 @@ The pinned [SonOpen investigation](https://github.com/turbotas/SonOpen/blob/6947
 
 A **proposed bounded profile-exploration method**, not an established Sonos historical selector, is to derive numeric client versions and compatibility boundaries from newly fetched first-party manifests/artifacts; test representative version tuples and boundary-adjacent tuples while holding identities anonymous; vary independently evidenced hardware fields one axis at a time; and deduplicate by body hash while retaining every tested profile and result. Prefer adaptive exploration when a response actually changes, rather than a Cartesian product of all integers. Report this as exploration coverage, not successful historical enumeration. The original blasty request and this session's ablation show how to issue/compare profiles; they do not prove that this strategy can recover all missing manifests.
 
+## Channels verified not to supply history (2026-11-25)
+
+These were tested against the live services, not inferred:
+
+- `update.sonos.com/firmware/latest/default-1-1.ups` returns the current S1
+  target for every tested profile. Controller major/minor/build, submodel and
+  revision all produced the same campaign directory, so varying them cannot
+  recover an older release.
+- `update.sonos.com/firmware/swgen/{1,2}/latest/update.upm` returns the current
+  manifest of that generation regardless of `cmaj`/`cmin`/`cbld`. Generation 2
+  currently answers `98.0-83230`; generation 1 answers `57.23-83121`.
+- Common Crawl reports no captures at all for `update-firmware.sonos.com/firmware/`
+  or `update-software.sonos.com/software/` in the collections checked.
+- Wayback holds only a handful of firmware captures (16 rows for
+  `firmware/Prod/*`), of which five are manifests. Its installer coverage is far
+  better: about 77 installer URLs, and those are what the pivot consumes.
+
+A historical campaign therefore has to be observed while it is live, or
+reconstructed from an installer token and a matching release version. Neither
+public endpoint will enumerate the past, so profile exploration is a sampling
+channel, not a historical recovery method.
+
 ## Which historical URLs are not explained by a reproducible public-root path?
 
 No examined source supplies a complete derivation of the initial historical corpus from anonymous Sonos endpoints. It would be equally unsupported to assert that every URL in the corpus is impossible to rediscover from any public profile. The defensible distinction is **observed reachability versus missing acquisition provenance**.

@@ -10,7 +10,7 @@ def firmware(c: Context):
     return [
         c.script('firmware/discover_firmware.py', '--evidence-dir', c.observations / 'manifests', '--work-dir', c.work / 'publish',
                  '--report', report, '--seconds', c.options.get('seconds', 2400),
-                 '--profile-limit', c.options.get('profile_limit', 32),
+                 '--profile-limit', c.options.get('profile_limit', 4),
                  '--profile-count', c.options.get('profile_count', 4800),
                  '--model-max', c.options.get('model_max', 255),
                  '--inference-limit', c.options.get('inference_limit', 128),
