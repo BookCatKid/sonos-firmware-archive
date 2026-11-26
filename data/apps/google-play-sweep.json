@@ -68,10 +68,10 @@
       "version_selector": "430354030",
       "arch": "arm64",
       "profile": "Pv",
-      "checked_at": "2026-11-26T06:44:26.496581+00:00",
-      "consecutive_failures": 2,
-      "next_attempt_at": "2026-11-26T08:44:26.496581+00:00",
-      "checked": "2026-11-26T06:44:26.496603+00:00",
+      "checked_at": "2026-11-26T16:51:55.845725+00:00",
+      "consecutive_failures": 3,
+      "next_attempt_at": "2026-11-26T20:51:55.845725+00:00",
+      "checked": "2026-11-26T16:51:55.845753+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -146,10 +146,10 @@
       "version_selector": "430354030",
       "arch": "armv7",
       "profile": "Gj",
-      "checked_at": "2026-11-26T05:33:36.814391+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T06:33:36.814391+00:00",
-      "checked": "2026-11-26T05:33:36.814418+00:00",
+      "checked_at": "2026-11-26T16:51:55.170309+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-26T18:51:55.170309+00:00",
+      "checked": "2026-11-26T16:51:55.170336+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383121"
@@ -159,10 +159,10 @@
       "version_selector": "430354030",
       "arch": "x86_64",
       "profile": "7M",
-      "checked_at": "2026-11-26T05:33:37.664192+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T06:33:37.664192+00:00",
-      "checked": "2026-11-26T05:33:37.664215+00:00",
+      "checked_at": "2026-11-26T16:51:55.506917+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-26T18:51:55.506917+00:00",
+      "checked": "2026-11-26T16:51:55.506945+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -406,13 +406,135 @@
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "arm64",
+      "profile": "Fj",
+      "discovered_from": "google-play-delivery",
+      "checked_at": "2026-11-26T16:52:10.711774+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:52:10.711774+00:00",
+      "checked": "2026-11-26T16:52:10.711799+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "arm64",
+      "profile": "HE",
+      "discovered_from": "google-play-delivery",
+      "checked_at": "2026-11-26T16:52:19.055284+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:52:19.055284+00:00",
+      "checked": "2026-11-26T16:52:19.055311+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "arm64",
+      "profile": "VP",
+      "discovered_from": "google-play-delivery",
+      "checked_at": "2026-11-26T16:52:27.125528+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:52:27.125528+00:00",
+      "checked": "2026-11-26T16:52:27.125554+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr2",
+      "version_selector": "1270401011",
+      "arch": "armv7",
+      "profile": "Gj",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile",
+      "checked_at": "2026-11-26T16:52:51.571746+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:52:51.571746+00:00",
+      "checked": "2026-11-26T16:52:51.571778+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr2",
+      "version_selector": "1270401011",
+      "arch": "x86_64",
+      "profile": "7M",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile",
+      "checked_at": "2026-11-26T16:52:51.926271+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T17:52:51.926271+00:00",
+      "checked": "2026-11-26T16:52:51.926295+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayAnonymousDeliveryUnavailable"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "armv7",
+      "profile": "D2",
+      "checked_at": "2026-11-26T16:52:52.626520+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T17:52:52.626520+00:00",
+      "checked": "2026-11-26T16:52:52.626547+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayAnonymousDeliveryUnavailable"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "arm64",
+      "profile": "Hb",
+      "checked_at": "2026-11-26T16:52:53.336760+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T17:52:53.336760+00:00",
+      "checked": "2026-11-26T16:52:53.336785+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "armv7",
+      "profile": "F-",
+      "checked_at": "2026-11-26T16:52:53.995505+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T17:52:53.995505+00:00",
+      "checked": "2026-11-26T16:52:53.995531+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "arm64",
+      "profile": "p6",
+      "checked_at": "2026-11-26T16:52:54.777503+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T17:52:54.777503+00:00",
+      "checked": "2026-11-26T16:52:54.777532+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayAnonymousDeliveryUnavailable"
     }
   ],
   "discovery": {
     "com.sonos.acr2|arm64|Pv": {
-      "checked_at": "2026-11-26T05:31:50.808390+00:00",
+      "checked_at": "2026-11-26T16:51:53.333470+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-26T11:31:50.808390+00:00",
+      "next_attempt_at": "2026-11-26T22:51:53.333470+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -560,12 +682,60 @@
           "discovered_from": "google-play-profile"
         }
       ]
+    },
+    "com.sonos.acr2|armv7|Gj": {
+      "checked_at": "2026-11-26T16:51:53.820205+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-26T22:51:53.820205+00:00",
+      "versions": [
+        {
+          "arch": "armv7",
+          "profile": "Gj",
+          "package": "com.sonos.acr2",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
+          "discovered_from": "google-play-profile"
+        }
+      ]
+    },
+    "com.sonos.acr|armv7|Gj": {
+      "checked_at": "2026-11-26T16:51:54.065290+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-26T22:51:54.065290+00:00",
+      "versions": [
+        {
+          "arch": "armv7",
+          "profile": "Gj",
+          "package": "com.sonos.acr",
+          "version_code": "572383121",
+          "version_name": "11.16.2",
+          "version_selector": "572383121",
+          "discovered_from": "google-play-profile"
+        }
+      ]
+    },
+    "com.sonos.acr2|x86_64|7M": {
+      "checked_at": "2026-11-26T16:51:54.858254+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-26T22:51:54.858254+00:00",
+      "versions": [
+        {
+          "arch": "x86_64",
+          "profile": "7M",
+          "package": "com.sonos.acr2",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
+          "discovered_from": "google-play-profile"
+        }
+      ]
     }
   },
   "observed_variants": {},
   "sdk_hints": [],
   "cooldown_failures": 0,
-  "updated": "2026-11-26T07:30:02.843109+00:00",
+  "updated": "2026-11-26T16:52:54.784890+00:00",
   "pending_selectors": [
     {
       "package": "com.sonos.acr",
@@ -8106,57 +8276,38 @@
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
       "arch": "arm64",
-      "profile": "Fj",
+      "profile": "Hb",
       "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
       "arch": "armv7",
-      "profile": "1Z"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "arm64",
-      "profile": "HE",
+      "profile": "F-",
       "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
-      "arch": "armv7",
-      "profile": "7M"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "arm64",
-      "profile": "VP",
-      "discovered_from": "google-play-delivery"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "armv7",
-      "profile": "D2"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "arm64",
-      "profile": "Hb"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "armv7",
-      "profile": "F-"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
       "arch": "arm64",
       "profile": "p6"
     },
@@ -9591,14 +9742,11 @@
     {
       "package": "com.sonos.acr2",
       "version_selector": "1270401011",
-      "arch": "armv7",
-      "profile": "Gj"
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "1270401011",
       "arch": "x86_64",
-      "profile": "7M"
+      "profile": "7M",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile"
     },
     {
       "package": "com.sonos.acr2",
@@ -21397,24 +21545,11 @@
       "profile": "wD"
     }
   ],
-  "attempt_total": 30,
-  "archived_total": 12,
-  "failed_total": 18,
-  "discovery_errors": [
-    {
-      "package": "com.sonos.acr2",
-      "error": "GooglePlayAnonymousListingUnavailable",
-      "status_code": null,
-      "retry_after": null
-    },
-    {
-      "package": "com.sonos.acr",
-      "error": "GooglePlayAnonymousListingUnavailable",
-      "status_code": null,
-      "retry_after": null
-    }
-  ],
-  "pending_total": 3471,
+  "attempt_total": 39,
+  "archived_total": 16,
+  "failed_total": 23,
+  "discovery_errors": [],
+  "pending_total": 3467,
   "status": "partial",
-  "discovery_pending_total": 74
+  "discovery_pending_total": 71
 }
