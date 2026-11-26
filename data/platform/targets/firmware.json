@@ -4,15 +4,8 @@
   "provider": "firmware",
   "status": "partial",
   "executed": true,
-  "started_at": "2026-11-26T16:50:33.991245+00:00",
+  "started_at": "2026-11-26T18:02:04.819088+00:00",
   "steps": [
-    {
-      "name": "discover_firmware",
-      "status": "partial",
-      "exit_code": 0,
-      "output_tail": "manifests=130 candidates=4727 checked=4790 pending=2098\n",
-      "source_status": "partial"
-    },
     {
       "name": "archive-historical-firmware",
       "status": "partial",
@@ -25,15 +18,18 @@
       "status": "partial",
       "exit_code": 0,
       "output_tail": "{\n  \"encrypted_upd_packages\": 723,\n  \"unidentified_encrypted_packages\": 0,\n  \"missing_upd_section_manifests\": 0,\n  \"plaintext_upd_packages\": 25,\n  \"unique_recipients\": 34\n}\nprepared recipients=7; unavailable recipients=27\nno preserved packages are pending decryption\n",
+      "source_status": null
+    },
+    {
+      "name": "discover_firmware",
+      "status": "partial",
+      "exit_code": 0,
+      "output_tail": "manifests=130 candidates=4727 checked=0 pending=2747\n",
       "source_status": "partial"
     }
   ],
   "errors": [],
   "pending": [
-    {
-      "step": "discover_firmware",
-      "reason": "source reports incomplete work"
-    },
     {
       "step": "archive-historical-firmware",
       "reason": "source reports incomplete work"
@@ -41,8 +37,12 @@
     {
       "step": "extract-firmware",
       "reason": "source reports incomplete work"
+    },
+    {
+      "step": "discover_firmware",
+      "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T17:48:31.130756+00:00",
-  "next_due": "2026-11-26T18:48:31.130756+00:00"
+  "finished_at": "2026-11-26T22:03:25.831728+00:00",
+  "next_due": "2026-11-26T23:03:25.831728+00:00"
 }
