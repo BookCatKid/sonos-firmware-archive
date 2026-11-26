@@ -4,7 +4,22 @@
     "needed_per_model": "Every encrypted UPD requires the model-specific private key matching its envelope. Model 26/Tupelo is independently reproducible from the published MDP3 model-key field and matching OTP using scripts/recover_model26_key.py. Other generations may have different key-storage and hardware unwrap mechanisms. A complete live-device dump is not interchangeable with a different model or individual public field.",
     "public_paths": "Fenway model-8 family (MPC8314, includes Play:1): UART + diagnostic firmware gives root shell; mdputil reads flash; public dumps exist (trulyspinach/sonos-fenway) - origin of the model-8 key. Amlogic-era models (Sonos One and siblings): public EL3 exploit dumps OTP/eFUSE and sonostool derives MDP/LUKS/OTA keys without a device oracle (blasty/sonos, HITB Amsterdam 2023); requires the physical device and the exploit chain. Sonos One Gen 2 (Amlogic A113): published PCIe DMA attack yields root shell and cleartext firmware (Synacktiv, 2021). Sonos One / Era 100: OTA remote kernel exploitation and secure-boot chain research (NCC Group, BlackHat USA 2024).",
     "searched_2026_09_03": "No published private keys were found for the then-missing recipients (checked: Fenway repo is model-8 only; trulyspinach/sonor has public Sub Gen1 MTD dumps but its published sample contains only MDP1 and no MDP3/model-private-key field; blasty/sonos ships tooling, not keys; systemcrash/sonos-firmware ships packages/manifests only). Recovery requires model-specific evidence and access to matching hardware or another verified key source.",
-    "local_status_current": "7 recovered recipient keys cover package models 1, 8, 9, 12, 16, 17, 26. Models 1, 8, 9, 12, 16, 17 are reproducible from encrypted wrappers in plaintext 34.16-37101 updaters. Model 26 is reproducible from the publicly documented MDP3 model-key field and matching HITB 2023 OTP using scripts/recover_model26_key.py. The legacy recovery vault is gitignored; model-26 PEM output is written to the caller-selected path and is not tracked by this ledger. 27 recipient groups remain missing."
+    "summary": {
+      "recovered_recipients": 7,
+      "models": [
+        1,
+        8,
+        9,
+        12,
+        16,
+        17,
+        26
+      ],
+      "missing_recipient_groups": 27
+    },
+    "recovery_methods": [
+      "public-model26-mdp3"
+    ]
   },
   "missing_keys": [
     {
@@ -3763,7 +3778,10 @@
         }
       ],
       "key_family": "model 9 / Playbar family",
-      "package_model": 9
+      "package_model": 9,
+      "package_models": [
+        9
+      ]
     },
     "346ce6e38225ca8177024fbebfaad7043344b3bd": {
       "coverage_packages": [
@@ -3955,7 +3973,10 @@
         }
       ],
       "key_family": "model 8 / Play:1 family",
-      "package_model": 8
+      "package_model": 8,
+      "package_models": [
+        8
+      ]
     },
     "fd88f2642a9c89a44747c7b4342cdb483fe1d437": {
       "coverage_packages": [
@@ -4033,7 +4054,10 @@
         }
       ],
       "key_family": "model 16 legacy family",
-      "package_model": 16
+      "package_model": 16,
+      "package_models": [
+        16
+      ]
     },
     "f2acc70d8db3ee388c534d99d4bff64d9dab8154": {
       "coverage_packages": [
@@ -4213,7 +4237,10 @@
         }
       ],
       "key_family": "model 17 legacy family",
-      "package_model": 17
+      "package_model": 17,
+      "package_models": [
+        17
+      ]
     },
     "e35f7c21c0ec00a768bfbd364a9a105cf300f023": {
       "coverage_packages": [
@@ -4393,7 +4420,10 @@
         }
       ],
       "key_family": "model 12 legacy family",
-      "package_model": 12
+      "package_model": 12,
+      "package_models": [
+        12
+      ]
     },
     "21e7b8c8199c8d6442d2a0a7a4e776c4efd4319c": {
       "coverage_packages": [
@@ -4471,7 +4501,10 @@
         }
       ],
       "key_family": "model 1 / legacy ZonePlayer family",
-      "package_model": 1
+      "package_model": 1,
+      "package_models": [
+        1
+      ]
     },
     "b271039ff7ab0f3d395039f1f079ff71af9dea71": {
       "coverage_packages": [
@@ -4669,14 +4702,26 @@
         }
       ],
       "key_family": "model 26 / Tupelo (Sonos One)",
-      "package_model": 26
+      "package_model": 26,
+      "package_models": [
+        26
+      ],
+      "recovery_provenance": [
+        {
+          "method": "public-model26-mdp3",
+          "model": 26,
+          "recipient_id": "b271039ff7ab0f3d395039f1f079ff71af9dea71"
+        }
+      ]
     }
   },
   "schema_version": 1,
   "summary": {
     "encrypted_upd_packages": 722,
+    "unidentified_encrypted_packages": 0,
     "missing_upd_section_manifests": 0,
     "plaintext_upd_packages": 25,
     "unique_recipients": 34
-  }
+  },
+  "unidentified_encrypted_packages": []
 }

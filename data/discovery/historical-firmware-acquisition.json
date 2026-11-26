@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "BookCatKid/sonos-firmware-archive": {}
+  },
+  "request_backoff": {
+    "BookCatKid/sonos-firmware-archive": {}
+  },
+  "unpublished_captures": [],
+  "updated": "2026-11-26T06:29:58.608279+00:00"
+}

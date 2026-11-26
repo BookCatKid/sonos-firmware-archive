@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "target": "firmware",
+  "provider": "firmware",
+  "status": "partial",
+  "executed": true,
+  "started_at": "2026-11-26T05:31:44.424440+00:00",
+  "steps": [
+    {
+      "name": "discover_firmware",
+      "status": "partial",
+      "exit_code": 0,
+      "output_tail": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-unknown\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.12-31030\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.16-41110\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.21-50280\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-57.22-71190\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-70.1-34112\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-70.3-35070\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-71.1-38240\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-73.0-41050\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-75.1-46030\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-77.4-49290\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-79.0-52294\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/firmware-79.1-53290\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-snapshots-2026-11-26\nmanifests=107 candidates=4294 checked=3078 pending=616\n",
+      "source_status": "partial"
+    },
+    {
+      "name": "archive-historical-firmware",
+      "status": "partial",
+      "exit_code": 0,
+      "output_tail": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-history-20260828\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-history-20260921\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-history-20261025\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-history-20260914\nhttps://github.com/BookCatKid/sonos-firmware-archive/releases/tag/manifest-history-20260910\n{\n  \"attempted\": 0,\n  \"preserved\": 0,\n  \"errors\": [],\n  \"pending\": 0,\n  \"manifests\": {\n    \"attempted\": 10,\n    \"preserved\": 10,\n    \"errors\": [\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/Prod/2024-Sonos-18-ImHN1eseKR-GA-5/update.upm\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/Prod/2026-Sonos-18-5lfFTJjZGf-GA-1/update.upm\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/Prod/2026-Sonos-18-5lfFTJjZGf-GA-1/update.upm\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/1/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=25&cmin=0&cbld=34\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/2/latest/update.upm?cbld=52&sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52%60\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      },\n      {\n        \"url\": \"market://details?id=com.sonos.acr2\",\n        \"manifest_url\": \"https://update.sonos.com/firmware/swgen/2/latest/update.upm?cmin=0&cbld=52%60&sonosid=Anonymous&householdid=nohhid&cmaj=81\",\n        \"error\": \"historical manifest link uses an unsupported URL\"\n      }\n    ],\n    \"pending\": 0\n  },\n  \"status\": \"partial\"\n}\n",
+      "source_status": "partial"
+    },
+    {
+      "name": "extract-firmware",
+      "status": "partial",
+      "exit_code": 0,
+      "output_tail": "{\n  \"encrypted_upd_packages\": 722,\n  \"unidentified_encrypted_packages\": 0,\n  \"missing_upd_section_manifests\": 0,\n  \"plaintext_upd_packages\": 25,\n  \"unique_recipients\": 34\n}\nprepared recipients=7; unavailable recipients=27\nno preserved packages are pending decryption\n",
+      "source_status": "partial"
+    }
+  ],
+  "errors": [],
+  "pending": [
+    {
+      "step": "discover_firmware",
+      "reason": "source reports incomplete work"
+    },
+    {
+      "step": "archive-historical-firmware",
+      "reason": "source reports incomplete work"
+    },
+    {
+      "step": "extract-firmware",
+      "reason": "source reports incomplete work"
+    }
+  ],
+  "finished_at": "2026-11-26T06:41:40.204196+00:00",
+  "next_due": "2026-11-26T07:41:40.204196+00:00"
+}
