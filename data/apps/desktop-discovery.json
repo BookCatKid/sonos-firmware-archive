@@ -3,11 +3,11 @@
   "errors": [],
   "package_history": {
     "status": "partial",
-    "pending_total": 83,
+    "pending_total": 80,
     "errors": []
   },
   "schema_version": 1,
-  "checked": "2026-11-26T05:32:39.323530+00:00",
+  "checked": "2026-11-26T06:32:57.446628+00:00",
   "sources": [
     "microsoft/winget-pkgs",
     "Homebrew/homebrew-cask",
@@ -884,6 +884,7 @@
       "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController112.exe",
       "expected_sha256": "0662d22698d1b798e3a817960b45bf614160518ef59c958efa2272cf4583611c",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/11.2/Sonos.S1Controller.installer.yaml:6cf8c99d0498190e002b21f40c09eba8b380f52b",
         "winget:S1Controller/11.2:6cf8c99d0498190e002b21f40c09eba8b380f52b"
       ],
       "advertised_urls": [
@@ -907,6 +908,7 @@
       "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1122.exe",
       "expected_sha256": "a748b16cb43eb3c64435816f24b6dc3819ce062abf5dbd841ed132733d4b8090",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/11.2.2/Sonos.S1Controller.installer.yaml:4c7f200ca418f147d12522e7f7e56ce8c5ec14c8",
         "winget:S1Controller/11.2.2:4c7f200ca418f147d12522e7f7e56ce8c5ec14c8"
       ],
       "advertised_urls": [
@@ -930,6 +932,7 @@
       "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1124.exe",
       "expected_sha256": "5df497b809f69c437483b6291c3a1427bfd8898aaa77623396a95afaf8bd0a20",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/11.2.4/Sonos.S1Controller.installer.yaml:023c16be3df33f6277101343634e253b160154d9",
         "winget:S1Controller/11.2.4:023c16be3df33f6277101343634e253b160154d9"
       ],
       "advertised_urls": [
@@ -953,6 +956,7 @@
       "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController1126.exe",
       "expected_sha256": "614ca005275ca9893bc6f7dc769b48457068721ab2e952adeb1abc94fc3e48f5",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/11.2.6/Sonos.S1Controller.installer.yaml:b7adee70dd9972acf71e9235b40999c3e636a778",
         "winget:S1Controller/11.2.6:b7adee70dd9972acf71e9235b40999c3e636a778"
       ],
       "advertised_urls": [
@@ -1047,6 +1051,7 @@
       "url": "https://update-software.sonos.com/software/LGeb8h0Gma/Sonos_57.21-50280.exe",
       "expected_sha256": "8f2bff45fed2e8ace52b029d5b9bac374c44b592d1afdc6fa1cef798830477e0",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/57.21.50280/Sonos.S1Controller.installer.yaml:a20f35c57d01c25e247594cc82f8520356551483",
         "winget:S1Controller/57.21.50280:a20f35c57d01c25e247594cc82f8520356551483"
       ],
       "advertised_urls": [
@@ -1191,6 +1196,7 @@
       "url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130.exe",
       "expected_sha256": "dd26a2fd6cb3084ff3dcc90c7a37b179e43542ba4caeae2dc99b7820c5e98501",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/57.22.59130/Sonos.S1Controller.installer.yaml:509840f88a3d6fecd4e1a48d8d97c6f9292f3151",
         "winget:S1Controller/57.22.59130:509840f88a3d6fecd4e1a48d8d97c6f9292f3151"
       ],
       "advertised_urls": [
@@ -1214,6 +1220,7 @@
       "url": "https://update-software.sonos.com/software/NUPz7mPXln/Sonos_57.22-68080.exe",
       "expected_sha256": "8e5c5929b23acdf7ff63982f9e5a2b9508c8e513e7a2c6a07ad54919909bf30f",
       "sources": [
+        "winget-history:manifests/s/Sonos/S1Controller/57.22.68080/Sonos.S1Controller.installer.yaml:19f0ef8ef1769b00efe3018bc5b04286aca6fd45",
         "winget:S1Controller/57.22.68080:19f0ef8ef1769b00efe3018bc5b04286aca6fd45"
       ],
       "advertised_urls": [
@@ -2911,6 +2918,7 @@
       "url": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.exe",
       "expected_sha256": "d3dcbfb41537ff8dd953430ea0d54dbce05167b67ff7d3c53a0db3d5ea273be1",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/83.1.61210/Sonos.Controller.installer.yaml:fb3344909b73f3ece979defce8db97af880a8e47",
         "winget:Controller/83.1.61210:fb3344909b73f3ece979defce8db97af880a8e47"
       ],
       "advertised_urls": [
@@ -2951,6 +2959,7 @@
       "url": "https://update-software.sonos.com/software/20BaICzCKO/Sonos_84.1-63110.exe",
       "expected_sha256": "32cb1aa032ff288e98ed51b0f531efc3d9c0c5aa2a0626135a40ec69b7d0c362",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/84.1.63110/Sonos.Controller.installer.yaml:ef8f534352065861f3e3c34a3eb72f6f205d8e2f",
         "winget:Controller/84.1.63110:ef8f534352065861f3e3c34a3eb72f6f205d8e2f"
       ],
       "advertised_urls": [
@@ -2991,6 +3000,7 @@
       "url": "https://update-software.sonos.com/software/6aE5Z4LEEK/Sonos_85.0-64200.exe",
       "expected_sha256": "9ebae60536b74ed97066744bbd4eb75335cf28e498fd410c6f69a8174651d2cf",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/85.0.64200/Sonos.Controller.installer.yaml:46dbe12b2ebd6e592cc512a1b6dd28361fd14c0e",
         "winget:Controller/85.0.64200:46dbe12b2ebd6e592cc512a1b6dd28361fd14c0e"
       ],
       "advertised_urls": [
@@ -3101,6 +3111,7 @@
       "url": "https://update-software.sonos.com/software/ZethjbGivZ/Sonos_90.0-67171.exe",
       "expected_sha256": "c10067768acbd78eb022027a7f4096a6de551acfeb997c79d56cbf36cf94863e",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/90.0.67171/Sonos.Controller.installer.yaml:ae051a1ed6b4f15d2cc2120451ff5d6b90bf9237",
         "winget:Controller/90.0.67171:ae051a1ed6b4f15d2cc2120451ff5d6b90bf9237"
       ],
       "advertised_urls": [
@@ -3124,6 +3135,7 @@
       "url": "https://update-software.sonos.com/software/Lp7WoQPkxr/Sonos_90.0-67300.exe",
       "expected_sha256": "1a90fb565d9a2d077af52441d1f66312ca134a4732ad0c084587f72bdc4e14d0",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/90.0.67300/Sonos.Controller.installer.yaml:7643e05802bc4d537d65274144e174d6ca277c93",
         "winget:Controller/90.0.67300:7643e05802bc4d537d65274144e174d6ca277c93"
       ],
       "advertised_urls": [
@@ -3147,6 +3159,7 @@
       "url": "https://update-software.sonos.com/software/y0RcLefNNu/Sonos_90.0-68190.exe",
       "expected_sha256": "a5876796498a24241b5a4e94e5f9e3fe8dd50de79d573e9ca75bf25c9494768f",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/90.0.68190/Sonos.Controller.installer.yaml:b570e0bd3238498d7ea655935d38f1655c4f152e",
         "winget:Controller/90.0.68190:b570e0bd3238498d7ea655935d38f1655c4f152e"
       ],
       "advertised_urls": [
@@ -3170,6 +3183,7 @@
       "url": "https://update-software.sonos.com/software/rT0797IawE/Sonos_90.0-77070.exe",
       "expected_sha256": "041d3a74d60f94d2b2c4f63909e765efd9648fc5407e970ef6441e66db8bd8ca",
       "sources": [
+        "winget-history:manifests/s/Sonos/Controller/90.0.77070/Sonos.Controller.installer.yaml:da411386c525fc70f2b2d60c18654ca44ded4979",
         "winget:Controller/90.0.77070:da411386c525fc70f2b2d60c18654ca44ded4979"
       ],
       "advertised_urls": [
@@ -3193,7 +3207,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg"
@@ -3245,7 +3260,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg"
@@ -3617,7 +3633,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/90.0-79210-1-4.dmg",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/90.0-79210-1-4.dmg"
@@ -3634,7 +3651,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-4.dmg",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-4.dmg"
@@ -3651,7 +3669,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/90.0-82050-v17.2.5-vHbjDs9q4X-RC-1/90.0-82050-1-4.dmg"
@@ -3807,7 +3826,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe"
@@ -4040,7 +4060,8 @@
       "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/90.0-67300-1-3.exe",
       "expected_sha256": null,
       "sources": [
-        "firmware-observation:data/catalog.json"
+        "firmware-observation:data/catalog.json",
+        "saved-installer-index"
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/90.0-67300-1-3.exe"
@@ -4075,6 +4096,7 @@
       "expected_sha256": null,
       "sources": [
         "firmware-observation:data/catalog.json",
+        "saved-installer-index",
         "derived-cross-platform"
       ],
       "advertised_urls": [
