@@ -210,15 +210,28 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
     prefixes = sorted(counts, key=lambda prefix: (-counts[prefix], prefix))
     # A build without a known release version reuses campaign shapes already
     # observed for its own build generation, which pairs a version with a
-    # suffix exactly as Sonos published it.
-    for context_id, context in saved.items():
-        if context.get('app_version') or not prefixes:
+    # suffix exactly as Sonos published it. These candidates share the budget
+    # with exact-version pivots instead of preceding them.
+    known = {normalize(url) for url in observed_urls}
+    pair_queue = deque()
+    if prefixes:
+        for context in saved.values():
+            if context.get('app_version'):
+                continue
+            pairs = state.get('campaign_pairs', {}).get(context['build'].split('.')[0], [])
+            for pair in pairs[:8]:
+                candidate = (prefixes[0]+context['build']+'-v'+pair['version']+'-'+
+                             context['token']+'-'+pair['suffix']+'/update.upm')
+                if candidate not in known:
+                    pair_queue.append(candidate)
+    for step in range(limit):
+        if pair_queue and (step % 2 or not jobs):
+            candidate = pair_queue.popleft()
+            if candidate not in known:
+                roots.append(candidate)
             continue
-        for pair in state.get('campaign_pairs', {}).get(context['build'].split('.')[0], []):
-            if len(roots) >= limit:
-                break
-            roots.append(prefixes[0]+context['build']+'-v'+pair['version']+'-'+context['token']+'-'+pair['suffix']+'/update.upm')
-    for _ in range(max(0, limit-len(roots)) if jobs else 0):
+        if not jobs:
+            break
         identity = min(jobs, key=lambda key: (jobs[key]['last_queued'], key))
         context_id, template_id = identity.split(':')
         job, context, template = jobs[identity], saved[context_id], templates[template_id]
@@ -253,7 +266,9 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
                 bit += 1
             numbers = iter(coordinates)
             suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
-        roots.append(template['prefix']+context['build']+'-v'+version+'-'+context['token']+'-'+suffix+'/update.upm')
+        candidate = template['prefix']+context['build']+'-v'+version+'-'+context['token']+'-'+suffix+'/update.upm'
+        if candidate not in known:
+            roots.append(candidate)
         state['sequence'] += 1
         job['last_queued'] = state['sequence']
     return state, list(dict.fromkeys(roots))
