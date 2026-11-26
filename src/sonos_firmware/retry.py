@@ -83,13 +83,13 @@ class RequestBackoff:
         self.records.pop(scope, None)
 
 
-def select(items, records, *, key, limit, force=False, now=None, state=None, queue='default'):
-    """Reserve retry capacity; persist alternating turns when only one slot fits.
+def select(items, records, *, key, limit=None, force=False, now=None, state=None, queue='default'):
+    """Reserve retry capacity, alternating retries with fresh work.
 
-    Workers pass their saved state and a stable queue name. Larger batches keep
-    their retry reservation and source priority without needing rotation.
+    Without a limit every eligible item is returned; callers bound the work by
+    time instead.
     """
-    if limit <= 0:
+    if limit is not None and limit <= 0:
         return []
     fresh, retries = [], []
     for item in items:
@@ -109,6 +109,8 @@ def select(items, records, *, key, limit, force=False, now=None, state=None, que
         if chosen:
             rotation['next_lane'] = 'fresh' if use_retry else 'retry'
         return chosen
+    if limit is None:
+        return retries + fresh
     reserved = min(len(retries), max(1, limit // 4))
     chosen = retries[:reserved] + fresh[:limit - reserved]
     # Fill spare capacity without starving either queue when the other is empty.

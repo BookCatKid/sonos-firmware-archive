@@ -153,7 +153,7 @@ def _release_version_candidates(observed, build, majors):
     return candidates
 
 
-def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
+def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, deadline=None):
     """Learn native campaign shapes and enumerate their numeric fields fairly.
 
     Build/token/app-version come from our installer captures. Release shapes
@@ -224,7 +224,11 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
                              context['token']+'-'+pair['suffix']+'/update.upm')
                 if candidate not in known:
                     pair_queue.append(candidate)
-    for step in range(limit):
+    step = 0
+    while (pair_queue or jobs) and (limit is None or step < limit):
+        if deadline is not None and time.monotonic() >= deadline:
+            break
+        step += 1
         if pair_queue and (step % 2 or not jobs):
             candidate = pair_queue.popleft()
             if candidate not in known:
@@ -349,7 +353,7 @@ def protocol_roots(profile=None):
 def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fetch=None, probe_fn=None,
              metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=(),
              profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128,
-             installer_pivots=(), pivot_limit=24):
+             installer_pivots=(), pivot_limit=None):
     start = time.monotonic()
     scheduling = {'retry_rotation': deepcopy(state.get('retry_rotation', {}))}
     if not isinstance(model_max, int) or isinstance(model_max, bool) or model_max < 0:
@@ -392,7 +396,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                     if row.get('metadata', {}).get('base_url'))
     observed.extend(row['url'] for row in state.get('candidates', []) if row.get('source') == 'image')
     pivot_state, pivot_roots = installer_manifest_roots(state.get('installer_pivot_search', {}), installer_pivots,
-                                                       observed, limit=pivot_limit)
+                                                       observed, limit=pivot_limit,
+                                                       deadline=start + seconds*.7)
     roots.extend(pivot_roots)
     # Profile exploration must reach the modern manifest routers too, rather
     # than repeatedly varying only the legacy UPS endpoint. Alternate observed

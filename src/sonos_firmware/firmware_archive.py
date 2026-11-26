@@ -156,7 +156,7 @@ def _historical_origins(root, paths, wanted, history, *, limit):
     if wanted[origin] is not None:
         pending.sort(key=lambda row: abs(row[1]-wanted[origin]))
     failed = False
-    for revision, _ in pending[:limit]:
+    for revision, _ in (pending if limit is None else pending[:limit]):
         try:
             changes = subprocess.check_output(['git', 'show', '--format=', '--no-ext-diff',
                 '--no-textconv', '--unified=0', revision, '--', *specs], cwd=root,
@@ -196,7 +196,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
     from .releases import download_verified
     from .source_links import discover_urls
     from .source_urls import sonos_url
-    if limit < 1 or max_bytes < 1:
+    if (limit is not None and limit < 1) or max_bytes < 1:
         raise ValueError('document recovery budgets must be positive')
     if fetch is None and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('source document recovery runs in CI; local tests must supply fixture acquisition')
@@ -476,7 +476,7 @@ def register_capture(root, capture, *, catalog_path=None):
     return record
 
 
-def archive_candidates(root, repository, candidates, work, *, limit=24, catalog_path=None, state_path=None,
+def archive_candidates(root, repository, candidates, work, *, limit=None, catalog_path=None, state_path=None,
                        paused_hosts=()):
     """Acquire bounded batches, retaining progress and exact interrupted captures."""
     state_path = state_path or acquisition_path(root)
