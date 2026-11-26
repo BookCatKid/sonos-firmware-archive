@@ -1,0 +1,1287 @@
+{
+  "schema_version": 2,
+  "query_revision": "c649b12efb851aa76f3a953b6da597f8c5025af58d60514cd4c634798382e8e3",
+  "query_specs": {
+    "sonos.com": "fdc8a0ebaa36090b200a760eb3644b4e510ed65c9fde13bd739be74eb0f6ec6e",
+    "update-software.sonos.com": "9643dcdc1df25075fa23bd21674a7ed3898f5836ad58d85a3aba2c5a8e9627e5"
+  },
+  "query_roots": {
+    "sonos.com": "sonos.com/",
+    "update-software.sonos.com": "update-software.sonos.com/"
+  },
+  "entries": {},
+  "artifacts": {
+    "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.24.32.apk",
+      "advertised_by": null,
+      "captures": {
+        "50c6295c518bda57cb5b60ca967a91ee377382432fbaa75c3267db690d53470d": {
+          "timestamp": "20250823180737",
+          "digest": "FC7PV63MJLJGSISDUE2WNN3TOA7WRAM6",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk"
+        }
+      },
+      "timestamp": "20250823180737",
+      "digest": "FC7PV63MJLJGSISDUE2WNN3TOA7WRAM6",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk"
+    },
+    "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.15.01.apk",
+      "advertised_by": null,
+      "captures": {
+        "6845ea917ce464f512fe1f6d38e01e707cfe8eab332e78cfda8dabdc23fd2e82": {
+          "timestamp": "20250114015717",
+          "digest": "VWYKIEYQGAJTE4PFHLNSQMGHIZMF2BTP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk"
+        },
+        "24ecb432cd0b2942d3ed86d435e7f49b16cdb6601cb2591f1e01b3ee5e4e702f": {
+          "timestamp": "20250127094054",
+          "digest": "VWYKIEYQGAJTE4PFHLNSQMGHIZMF2BTP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk"
+        }
+      },
+      "timestamp": "20250127094054",
+      "digest": "VWYKIEYQGAJTE4PFHLNSQMGHIZMF2BTP",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk"
+    },
+    "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_81.00.51.apk",
+      "advertised_by": null,
+      "captures": {
+        "455d1d988caded710d1978456023325775343aba82157d2722b79700de1fdcd2": {
+          "timestamp": "20260131025730",
+          "digest": "MAYGRECPJDEIVXLI2STWA67HJYZMDNWK",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk"
+        }
+      },
+      "timestamp": "20260131025730",
+      "digest": "MAYGRECPJDEIVXLI2STWA67HJYZMDNWK",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk"
+    },
+    "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_83.00.35.apk",
+      "advertised_by": null,
+      "captures": {
+        "54fda05b41eaa58b2515221ffed677296adfd3af101102a27e675024a801cc06": {
+          "timestamp": "20260324152647",
+          "digest": "OA7RL6SFM7QEJGA7BLOS5DXDWWX2VR2H",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk"
+        },
+        "dc2ce3feb3f09c17ff737a6eb89d0c7984246f3d82ac4fd8c45e452e981f3700": {
+          "timestamp": "20260325031345",
+          "digest": "OA7RL6SFM7QEJGA7BLOS5DXDWWX2VR2H",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk"
+        }
+      },
+      "timestamp": "20260325031345",
+      "digest": "OA7RL6SFM7QEJGA7BLOS5DXDWWX2VR2H",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk"
+    },
+    "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.27.6.apk",
+      "advertised_by": null,
+      "captures": {
+        "d1a723528f469b1730cd2d6ad1085ae1b445ea766654b0573584cfd864f58909": {
+          "timestamp": "20250904163945",
+          "digest": "ZMJMP2Q3AVM6DP7PCNYZKLASXQXJUQRB",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk"
+        }
+      },
+      "timestamp": "20250904163945",
+      "digest": "ZMJMP2Q3AVM6DP7PCNYZKLASXQXJUQRB",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk"
+    },
+    "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.28.36.apk",
+      "advertised_by": null,
+      "captures": {
+        "3ea07be7a257a745c4e1f275e2f238eb8e976b9699682730fda290dfa1f66a4c": {
+          "timestamp": "20250919023606",
+          "digest": "3S5PVHXU3BLSTXW2OZNVVE7GNANL5B5B",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk"
+        }
+      },
+      "timestamp": "20250919023606",
+      "digest": "3S5PVHXU3BLSTXW2OZNVVE7GNANL5B5B",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk"
+    },
+    "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_57.22-59130_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "2bd2a4fcb3b47152b1b2453f94a766b8a1084d2c11032daf0074a9550879f59b": {
+          "timestamp": "20250114031618",
+          "digest": "Q2NWZCZOBUELADUXELR3WGXMUG4V2S2A",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk"
+        }
+      },
+      "timestamp": "20250114031618",
+      "digest": "Q2NWZCZOBUELADUXELR3WGXMUG4V2S2A",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_85.00.31.apk",
+      "advertised_by": null,
+      "captures": {
+        "5b0e0854d36461d34233adc7d35e58d79f8c9cc58705b57976aafbb743aadf7b": {
+          "timestamp": "20260526094100",
+          "digest": "EN2CJJYZKTMGWS5DS6BYGAV5AUCDXC5I",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk"
+        }
+      },
+      "timestamp": "20260526094100",
+      "digest": "EN2CJJYZKTMGWS5DS6BYGAV5AUCDXC5I",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk"
+    },
+    "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.32.32.apk",
+      "advertised_by": null,
+      "captures": {
+        "03a2feffa7359bca9789553aa277c9cce7d744c119fc7e90c4934a6b39a08139": {
+          "timestamp": "20251202090036",
+          "digest": "5EL2RFM4VRULIHH4DXKFKDWRJWYBU3BF",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk"
+        }
+      },
+      "timestamp": "20251202090036",
+      "digest": "5EL2RFM4VRULIHH4DXKFKDWRJWYBU3BF",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController120.apk",
+      "advertised_by": null,
+      "captures": {
+        "48aea713bd6a2f266ff039605f3a707a3c3c20c7485320c6b9dcea593259d2e5": {
+          "timestamp": "20200617020532",
+          "digest": "2A5RGY2OKIRLCVDPBNYNMINSHTNUZMMX",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk"
+        }
+      },
+      "timestamp": "20200617020532",
+      "digest": "2A5RGY2OKIRLCVDPBNYNMINSHTNUZMMX",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1206.apk",
+      "advertised_by": null,
+      "captures": {
+        "b72e8ee19087a87260a3c710ecdcb8509a7faf1c2b9c48f239bac01f25403371": {
+          "timestamp": "20200923064748",
+          "digest": "4UZJE2UP7K5PSCVLAKARF4GFULJAUZ4I",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk"
+        }
+      },
+      "timestamp": "20200923064748",
+      "digest": "4UZJE2UP7K5PSCVLAKARF4GFULJAUZ4I",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1221.apk",
+      "advertised_by": null,
+      "captures": {
+        "ea4d6a2c8789024ca1edd09684fae15fc92d352c84012952ea6c5dc3d5062062": {
+          "timestamp": "20201124151138",
+          "digest": "ZCK7MJN3GM66CPTX2XG4W76DDO2CJMQF",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk"
+        }
+      },
+      "timestamp": "20201124151138",
+      "digest": "ZCK7MJN3GM66CPTX2XG4W76DDO2CJMQF",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1303.apk",
+      "advertised_by": null,
+      "captures": {
+        "e4bb44c3b172b5d3cce7be48afc20e654a77ac3e37b693b6c96d951610f36e6a": {
+          "timestamp": "20210419121122",
+          "digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk"
+        }
+      },
+      "timestamp": "20210419121122",
+      "digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1305.apk",
+      "advertised_by": null,
+      "captures": {
+        "e5f88826916713855e94e1f4b9632d84866210166c0bf95427b6a8b433002dcc": {
+          "timestamp": "20210422173744",
+          "digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk"
+        }
+      },
+      "timestamp": "20210422173744",
+      "digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1312.apk",
+      "advertised_by": null,
+      "captures": {
+        "578645f4b682916803b34307f3e4aac1813b677a3c65c8f70e1dcd594163bc0c": {
+          "timestamp": "20210615091901",
+          "digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+        },
+        "20ebf74414f4dc26f963560c6b1757582a8e69be834bf46fc026bf04daadbbc5": {
+          "timestamp": "20210619121235",
+          "digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+        }
+      },
+      "timestamp": "20210619121235",
+      "digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1322.apk",
+      "advertised_by": null,
+      "captures": {
+        "7f204e20c69ee80675373ecb22068a46cf0df6feaca15c4a1a803a61f3e0c3e4": {
+          "timestamp": "20210916102256",
+          "digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk"
+        }
+      },
+      "timestamp": "20210916102256",
+      "digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController133.apk",
+      "advertised_by": null,
+      "captures": {
+        "a943167035d5e2c89537897b71d8fbaab8341dcbf86d9187a8fa700989191598": {
+          "timestamp": "20210929233833",
+          "digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk"
+        }
+      },
+      "timestamp": "20210929233833",
+      "digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1332.apk",
+      "advertised_by": null,
+      "captures": {
+        "2de8b9aa7f4cf35958f99bc42bc00a2801ac6adcc336e623fd5f8b5440f42379": {
+          "timestamp": "20211022084736",
+          "digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk"
+        }
+      },
+      "timestamp": "20211022084736",
+      "digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController134.apk",
+      "advertised_by": null,
+      "captures": {
+        "96ebea6af08ae83aa4e34d86f5224b03a581087c8b3424cc8ca04c0a54b620ad": {
+          "timestamp": "20211203074125",
+          "digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk"
+        }
+      },
+      "timestamp": "20211203074125",
+      "digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1341.apk",
+      "advertised_by": null,
+      "captures": {
+        "2fd0d0d16ad49474e9cb0967e2b2339e323ceb68fe9f3bde52707b962ab3f8b3": {
+          "timestamp": "20220118132836",
+          "digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+        },
+        "49f66a259fea3ed5d04cf1d3f1da205160691b94f7de74c201fe45cfba62af15": {
+          "timestamp": "20220121143240",
+          "digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+        },
+        "5d294606e61b2c3e1cfa23b28aba15f5dd790cac343ac72d1f77efb51ec2bc00": {
+          "timestamp": "20220122223042",
+          "digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+        }
+      },
+      "timestamp": "20220122223042",
+      "digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+    },
+    "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "source": "public-archive-index",
+      "filename": "SonosAndroidController1461.apk",
+      "advertised_by": null,
+      "captures": {
+        "fa6eac231b8146f57b6c30ede7c364c393bb297190cf32f4fcb5ee103edaed2e": {
+          "timestamp": "20220519083448",
+          "digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk"
+        }
+      },
+      "timestamp": "20220519083448",
+      "digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk"
+    },
+    "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.09.04.apk",
+      "advertised_by": null,
+      "captures": {
+        "70b796fcd200454bad508064b45eabc64fe5fa47c25b47af89b623c6998845e5": {
+          "timestamp": "20241005225439",
+          "digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk"
+        }
+      },
+      "timestamp": "20241005225439",
+      "digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk"
+    },
+    "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_68.3-30100_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "2bb4a95952aaf2c2df47430a639343bbd86c58fff388276577898a06e6cae01e": {
+          "timestamp": "20220711112338",
+          "digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk"
+        }
+      },
+      "timestamp": "20220711112338",
+      "digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.27.8.apk",
+      "advertised_by": null,
+      "captures": {
+        "4ea99725608c9798aa2b7b22078746e83707fc416d50d33ed6c2fcf8c27b5790": {
+          "timestamp": "20250909210844",
+          "digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk"
+        }
+      },
+      "timestamp": "20250909210844",
+      "digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk"
+    },
+    "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_80.18.24.apk",
+      "advertised_by": null,
+      "captures": {
+        "710c365400a8789c97b25c7f7da10ad1aa13835ea5b0ae523c2586aa350a70c4": {
+          "timestamp": "20250404160652",
+          "digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk"
+        }
+      },
+      "timestamp": "20250404160652",
+      "digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk"
+    },
+    "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_70.4-36090_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "c471a3d9fc21243049d5dbe5c14ba76021de408451c81e59f161804deae89d0e": {
+          "timestamp": "20230205151206",
+          "digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk"
+        }
+      },
+      "timestamp": "20230205151206",
+      "digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_69.1-31120_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "606a6ad23701ec1f1e14788c4853340a80e914874844aa2eba32aac152023122": {
+          "timestamp": "20220814155951",
+          "digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk"
+        }
+      },
+      "timestamp": "20220814155951",
+      "digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_69.1-33120_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "48d6baa154125b7fdd332aab7fefbc3f7b86ab2e1e437eb43d06dfbb2f5351dc": {
+          "timestamp": "20220927103639",
+          "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+        },
+        "d61edd359da25c2ca42e3fb02d5e9a3b118d90a1dae81451286e65eed0cc91fe": {
+          "timestamp": "20221003013800",
+          "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+        },
+        "797e4bb8335c2d3c967331377226653a26e4693e8552feaca134a352bf8b6499": {
+          "timestamp": "20221007180005",
+          "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+        }
+      },
+      "timestamp": "20221007180005",
+      "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_57.22-71190_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "4150b96329ea18fec261204cac3faa93234153455a4124d4f03a5ec8663d0766": {
+          "timestamp": "20251219062406",
+          "digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk"
+        }
+      },
+      "timestamp": "20251219062406",
+      "digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_57.22-61300_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "133a4d7ae98e450b852ee82f34823923e15d7f81bc26b7ed155f31b73b6a599f": {
+          "timestamp": "20250420170811",
+          "digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk"
+        }
+      },
+      "timestamp": "20250420170811",
+      "digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_72.2-39150_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "253336c1a22a45bf654c46d0bd7c201dffe2b566f25fd6bcbe9aea640c8b0d08": {
+          "timestamp": "20230401195618",
+          "digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk"
+        }
+      },
+      "timestamp": "20230401195618",
+      "digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_76.2-46300_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "8031552bebfcc34185f92758bd7e76152009ee9bbd11b98474fb64794bbdbb31": {
+          "timestamp": "20231129144008",
+          "digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk"
+        }
+      },
+      "timestamp": "20231129144008",
+      "digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk"
+    },
+    "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk": {
+      "version": "unknown",
+      "package_model": null,
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "source": "public-archive-index",
+      "filename": "Sonos_70.3-35094_32bit.apk",
+      "advertised_by": null,
+      "captures": {
+        "9dce28ca6e1c9c00b6391f98921fcabe679d1f809b3947726265671c6ba20fe3": {
+          "timestamp": "20221129172319",
+          "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+        },
+        "663032cefc3477d0b2b87da3dd37c14735cc3837918c1ed318e7304749e9240f": {
+          "timestamp": "20221202163548",
+          "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+        },
+        "b8c60ab154cebe37359fec1953d689e8e5eb535f4560e42c849d09b6e93bc9aa": {
+          "timestamp": "20221203020409",
+          "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+        }
+      },
+      "timestamp": "20221203020409",
+      "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+      "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+    }
+  },
+  "cursors": {
+    "update-software.sonos.com": null
+  },
+  "next_host": 0,
+  "retries": {
+    "sonos.com": {
+      "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "The read operation timed out",
+      "http_status": null,
+      "checked_at": "2026-11-26T05:33:48.699164+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
+    }
+  },
+  "index_retry": {},
+  "completed_hosts": [
+    "update-software.sonos.com"
+  ],
+  "pending_hosts": [
+    "sonos.com"
+  ],
+  "status": "partial",
+  "observations": [
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "records": 44,
+      "more_pages": false
+    },
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "records": 0,
+      "more_pages": false
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": true
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": false
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": false
+    },
+    {
+      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "records": 0,
+      "more_pages": false
+    }
+  ],
+  "errors": [
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "The read operation timed out",
+      "http_status": null,
+      "checked_at": "2026-11-26T05:33:48.699164+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
+    },
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "http_status": null,
+      "checked_at": "2026-11-26T05:34:44.885330+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+    }
+  ],
+  "wayback": {
+    "schema_version": 2,
+    "query_revision": "c649b12efb851aa76f3a953b6da597f8c5025af58d60514cd4c634798382e8e3",
+    "query_specs": {
+      "sonos.com": "fdc8a0ebaa36090b200a760eb3644b4e510ed65c9fde13bd739be74eb0f6ec6e",
+      "update-software.sonos.com": "9643dcdc1df25075fa23bd21674a7ed3898f5836ad58d85a3aba2c5a8e9627e5"
+    },
+    "query_roots": {
+      "sonos.com": "sonos.com/",
+      "update-software.sonos.com": "update-software.sonos.com/"
+    },
+    "cursors": {
+      "update-software.sonos.com": null
+    },
+    "next_host": 0,
+    "retries": {
+      "sonos.com": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "The read operation timed out",
+        "http_status": null,
+        "checked_at": "2026-11-26T05:33:48.699164+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
+      }
+    },
+    "index_retry": {},
+    "completed_hosts": [
+      "update-software.sonos.com"
+    ],
+    "pending_hosts": [
+      "sonos.com"
+    ],
+    "status": "partial",
+    "observations": [
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "records": 44,
+        "more_pages": false
+      }
+    ],
+    "errors": [
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "The read operation timed out",
+        "http_status": null,
+        "checked_at": "2026-11-26T05:33:48.699164+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
+      }
+    ]
+  },
+  "commoncrawl": {
+    "collections": {
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index": "CC-MAIN-2026-47",
+      "https://index.commoncrawl.org/CC-MAIN-2026-43-index": "CC-MAIN-2026-43",
+      "https://index.commoncrawl.org/CC-MAIN-2026-39-index": "CC-MAIN-2026-39",
+      "https://index.commoncrawl.org/CC-MAIN-2026-34-index": "CC-MAIN-2026-34",
+      "https://index.commoncrawl.org/CC-MAIN-2026-30-index": "CC-MAIN-2026-30",
+      "https://index.commoncrawl.org/CC-MAIN-2026-25-index": "CC-MAIN-2026-25",
+      "https://index.commoncrawl.org/CC-MAIN-2026-21-index": "CC-MAIN-2026-21",
+      "https://index.commoncrawl.org/CC-MAIN-2026-17-index": "CC-MAIN-2026-17",
+      "https://index.commoncrawl.org/CC-MAIN-2026-12-index": "CC-MAIN-2026-12",
+      "https://index.commoncrawl.org/CC-MAIN-2026-08-index": "CC-MAIN-2026-08",
+      "https://index.commoncrawl.org/CC-MAIN-2026-04-index": "CC-MAIN-2026-04",
+      "https://index.commoncrawl.org/CC-MAIN-2025-51-index": "CC-MAIN-2025-51",
+      "https://index.commoncrawl.org/CC-MAIN-2025-47-index": "CC-MAIN-2025-47",
+      "https://index.commoncrawl.org/CC-MAIN-2025-43-index": "CC-MAIN-2025-43",
+      "https://index.commoncrawl.org/CC-MAIN-2025-38-index": "CC-MAIN-2025-38",
+      "https://index.commoncrawl.org/CC-MAIN-2025-33-index": "CC-MAIN-2025-33",
+      "https://index.commoncrawl.org/CC-MAIN-2025-30-index": "CC-MAIN-2025-30",
+      "https://index.commoncrawl.org/CC-MAIN-2025-26-index": "CC-MAIN-2025-26",
+      "https://index.commoncrawl.org/CC-MAIN-2025-21-index": "CC-MAIN-2025-21",
+      "https://index.commoncrawl.org/CC-MAIN-2025-18-index": "CC-MAIN-2025-18",
+      "https://index.commoncrawl.org/CC-MAIN-2025-13-index": "CC-MAIN-2025-13",
+      "https://index.commoncrawl.org/CC-MAIN-2025-08-index": "CC-MAIN-2025-08",
+      "https://index.commoncrawl.org/CC-MAIN-2025-05-index": "CC-MAIN-2025-05",
+      "https://index.commoncrawl.org/CC-MAIN-2024-51-index": "CC-MAIN-2024-51",
+      "https://index.commoncrawl.org/CC-MAIN-2024-46-index": "CC-MAIN-2024-46",
+      "https://index.commoncrawl.org/CC-MAIN-2024-42-index": "CC-MAIN-2024-42",
+      "https://index.commoncrawl.org/CC-MAIN-2024-38-index": "CC-MAIN-2024-38",
+      "https://index.commoncrawl.org/CC-MAIN-2024-33-index": "CC-MAIN-2024-33",
+      "https://index.commoncrawl.org/CC-MAIN-2024-30-index": "CC-MAIN-2024-30",
+      "https://index.commoncrawl.org/CC-MAIN-2024-26-index": "CC-MAIN-2024-26",
+      "https://index.commoncrawl.org/CC-MAIN-2024-22-index": "CC-MAIN-2024-22",
+      "https://index.commoncrawl.org/CC-MAIN-2024-18-index": "CC-MAIN-2024-18",
+      "https://index.commoncrawl.org/CC-MAIN-2024-10-index": "CC-MAIN-2024-10",
+      "https://index.commoncrawl.org/CC-MAIN-2023-50-index": "CC-MAIN-2023-50",
+      "https://index.commoncrawl.org/CC-MAIN-2023-40-index": "CC-MAIN-2023-40",
+      "https://index.commoncrawl.org/CC-MAIN-2023-23-index": "CC-MAIN-2023-23",
+      "https://index.commoncrawl.org/CC-MAIN-2023-14-index": "CC-MAIN-2023-14",
+      "https://index.commoncrawl.org/CC-MAIN-2023-06-index": "CC-MAIN-2023-06",
+      "https://index.commoncrawl.org/CC-MAIN-2022-49-index": "CC-MAIN-2022-49",
+      "https://index.commoncrawl.org/CC-MAIN-2022-40-index": "CC-MAIN-2022-40",
+      "https://index.commoncrawl.org/CC-MAIN-2022-33-index": "CC-MAIN-2022-33",
+      "https://index.commoncrawl.org/CC-MAIN-2022-27-index": "CC-MAIN-2022-27",
+      "https://index.commoncrawl.org/CC-MAIN-2022-21-index": "CC-MAIN-2022-21",
+      "https://index.commoncrawl.org/CC-MAIN-2022-05-index": "CC-MAIN-2022-05",
+      "https://index.commoncrawl.org/CC-MAIN-2021-49-index": "CC-MAIN-2021-49",
+      "https://index.commoncrawl.org/CC-MAIN-2021-43-index": "CC-MAIN-2021-43",
+      "https://index.commoncrawl.org/CC-MAIN-2021-39-index": "CC-MAIN-2021-39",
+      "https://index.commoncrawl.org/CC-MAIN-2021-31-index": "CC-MAIN-2021-31",
+      "https://index.commoncrawl.org/CC-MAIN-2021-25-index": "CC-MAIN-2021-25",
+      "https://index.commoncrawl.org/CC-MAIN-2021-21-index": "CC-MAIN-2021-21",
+      "https://index.commoncrawl.org/CC-MAIN-2021-17-index": "CC-MAIN-2021-17",
+      "https://index.commoncrawl.org/CC-MAIN-2021-10-index": "CC-MAIN-2021-10",
+      "https://index.commoncrawl.org/CC-MAIN-2021-04-index": "CC-MAIN-2021-04",
+      "https://index.commoncrawl.org/CC-MAIN-2020-50-index": "CC-MAIN-2020-50",
+      "https://index.commoncrawl.org/CC-MAIN-2020-45-index": "CC-MAIN-2020-45",
+      "https://index.commoncrawl.org/CC-MAIN-2020-40-index": "CC-MAIN-2020-40",
+      "https://index.commoncrawl.org/CC-MAIN-2020-34-index": "CC-MAIN-2020-34",
+      "https://index.commoncrawl.org/CC-MAIN-2020-29-index": "CC-MAIN-2020-29",
+      "https://index.commoncrawl.org/CC-MAIN-2020-24-index": "CC-MAIN-2020-24",
+      "https://index.commoncrawl.org/CC-MAIN-2020-16-index": "CC-MAIN-2020-16",
+      "https://index.commoncrawl.org/CC-MAIN-2020-10-index": "CC-MAIN-2020-10",
+      "https://index.commoncrawl.org/CC-MAIN-2020-05-index": "CC-MAIN-2020-05",
+      "https://index.commoncrawl.org/CC-MAIN-2019-51-index": "CC-MAIN-2019-51",
+      "https://index.commoncrawl.org/CC-MAIN-2019-47-index": "CC-MAIN-2019-47",
+      "https://index.commoncrawl.org/CC-MAIN-2019-43-index": "CC-MAIN-2019-43",
+      "https://index.commoncrawl.org/CC-MAIN-2019-39-index": "CC-MAIN-2019-39",
+      "https://index.commoncrawl.org/CC-MAIN-2019-35-index": "CC-MAIN-2019-35",
+      "https://index.commoncrawl.org/CC-MAIN-2019-30-index": "CC-MAIN-2019-30",
+      "https://index.commoncrawl.org/CC-MAIN-2019-26-index": "CC-MAIN-2019-26",
+      "https://index.commoncrawl.org/CC-MAIN-2019-22-index": "CC-MAIN-2019-22",
+      "https://index.commoncrawl.org/CC-MAIN-2019-18-index": "CC-MAIN-2019-18",
+      "https://index.commoncrawl.org/CC-MAIN-2019-13-index": "CC-MAIN-2019-13",
+      "https://index.commoncrawl.org/CC-MAIN-2019-09-index": "CC-MAIN-2019-09",
+      "https://index.commoncrawl.org/CC-MAIN-2019-04-index": "CC-MAIN-2019-04",
+      "https://index.commoncrawl.org/CC-MAIN-2018-51-index": "CC-MAIN-2018-51",
+      "https://index.commoncrawl.org/CC-MAIN-2018-47-index": "CC-MAIN-2018-47",
+      "https://index.commoncrawl.org/CC-MAIN-2018-43-index": "CC-MAIN-2018-43",
+      "https://index.commoncrawl.org/CC-MAIN-2018-39-index": "CC-MAIN-2018-39",
+      "https://index.commoncrawl.org/CC-MAIN-2018-34-index": "CC-MAIN-2018-34",
+      "https://index.commoncrawl.org/CC-MAIN-2018-30-index": "CC-MAIN-2018-30",
+      "https://index.commoncrawl.org/CC-MAIN-2018-26-index": "CC-MAIN-2018-26",
+      "https://index.commoncrawl.org/CC-MAIN-2018-22-index": "CC-MAIN-2018-22",
+      "https://index.commoncrawl.org/CC-MAIN-2018-17-index": "CC-MAIN-2018-17",
+      "https://index.commoncrawl.org/CC-MAIN-2018-13-index": "CC-MAIN-2018-13",
+      "https://index.commoncrawl.org/CC-MAIN-2018-09-index": "CC-MAIN-2018-09",
+      "https://index.commoncrawl.org/CC-MAIN-2018-05-index": "CC-MAIN-2018-05",
+      "https://index.commoncrawl.org/CC-MAIN-2017-51-index": "CC-MAIN-2017-51",
+      "https://index.commoncrawl.org/CC-MAIN-2017-47-index": "CC-MAIN-2017-47",
+      "https://index.commoncrawl.org/CC-MAIN-2017-43-index": "CC-MAIN-2017-43",
+      "https://index.commoncrawl.org/CC-MAIN-2017-39-index": "CC-MAIN-2017-39",
+      "https://index.commoncrawl.org/CC-MAIN-2017-34-index": "CC-MAIN-2017-34",
+      "https://index.commoncrawl.org/CC-MAIN-2017-30-index": "CC-MAIN-2017-30",
+      "https://index.commoncrawl.org/CC-MAIN-2017-26-index": "CC-MAIN-2017-26",
+      "https://index.commoncrawl.org/CC-MAIN-2017-22-index": "CC-MAIN-2017-22",
+      "https://index.commoncrawl.org/CC-MAIN-2017-17-index": "CC-MAIN-2017-17",
+      "https://index.commoncrawl.org/CC-MAIN-2017-13-index": "CC-MAIN-2017-13",
+      "https://index.commoncrawl.org/CC-MAIN-2017-09-index": "CC-MAIN-2017-09",
+      "https://index.commoncrawl.org/CC-MAIN-2017-04-index": "CC-MAIN-2017-04",
+      "https://index.commoncrawl.org/CC-MAIN-2016-50-index": "CC-MAIN-2016-50",
+      "https://index.commoncrawl.org/CC-MAIN-2016-44-index": "CC-MAIN-2016-44",
+      "https://index.commoncrawl.org/CC-MAIN-2016-40-index": "CC-MAIN-2016-40",
+      "https://index.commoncrawl.org/CC-MAIN-2016-36-index": "CC-MAIN-2016-36",
+      "https://index.commoncrawl.org/CC-MAIN-2016-30-index": "CC-MAIN-2016-30",
+      "https://index.commoncrawl.org/CC-MAIN-2016-26-index": "CC-MAIN-2016-26",
+      "https://index.commoncrawl.org/CC-MAIN-2016-22-index": "CC-MAIN-2016-22",
+      "https://index.commoncrawl.org/CC-MAIN-2016-18-index": "CC-MAIN-2016-18",
+      "https://index.commoncrawl.org/CC-MAIN-2016-07-index": "CC-MAIN-2016-07",
+      "https://index.commoncrawl.org/CC-MAIN-2015-48-index": "CC-MAIN-2015-48",
+      "https://index.commoncrawl.org/CC-MAIN-2015-40-index": "CC-MAIN-2015-40",
+      "https://index.commoncrawl.org/CC-MAIN-2015-35-index": "CC-MAIN-2015-35",
+      "https://index.commoncrawl.org/CC-MAIN-2015-32-index": "CC-MAIN-2015-32",
+      "https://index.commoncrawl.org/CC-MAIN-2015-27-index": "CC-MAIN-2015-27",
+      "https://index.commoncrawl.org/CC-MAIN-2015-22-index": "CC-MAIN-2015-22",
+      "https://index.commoncrawl.org/CC-MAIN-2015-18-index": "CC-MAIN-2015-18",
+      "https://index.commoncrawl.org/CC-MAIN-2015-14-index": "CC-MAIN-2015-14",
+      "https://index.commoncrawl.org/CC-MAIN-2015-11-index": "CC-MAIN-2015-11",
+      "https://index.commoncrawl.org/CC-MAIN-2015-06-index": "CC-MAIN-2015-06",
+      "https://index.commoncrawl.org/CC-MAIN-2014-52-index": "CC-MAIN-2014-52",
+      "https://index.commoncrawl.org/CC-MAIN-2014-49-index": "CC-MAIN-2014-49",
+      "https://index.commoncrawl.org/CC-MAIN-2014-42-index": "CC-MAIN-2014-42",
+      "https://index.commoncrawl.org/CC-MAIN-2014-41-index": "CC-MAIN-2014-41",
+      "https://index.commoncrawl.org/CC-MAIN-2014-35-index": "CC-MAIN-2014-35",
+      "https://index.commoncrawl.org/CC-MAIN-2014-23-index": "CC-MAIN-2014-23",
+      "https://index.commoncrawl.org/CC-MAIN-2014-15-index": "CC-MAIN-2014-15",
+      "https://index.commoncrawl.org/CC-MAIN-2014-10-index": "CC-MAIN-2014-10",
+      "https://index.commoncrawl.org/CC-MAIN-2013-48-index": "CC-MAIN-2013-48",
+      "https://index.commoncrawl.org/CC-MAIN-2013-20-index": "CC-MAIN-2013-20",
+      "https://index.commoncrawl.org/CC-MAIN-2012-index": "CC-MAIN-2012",
+      "https://index.commoncrawl.org/CC-MAIN-2009-2010-index": "CC-MAIN-2009-2010",
+      "https://index.commoncrawl.org/CC-MAIN-2008-2009-index": "CC-MAIN-2008-2009"
+    },
+    "registry": {
+      "checked_at": "2026-11-26T05:34:18.875659+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-12-03T05:34:18.875659+00:00"
+    },
+    "queries": {
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|sonos.com/": {
+        "next_page": 1,
+        "pages": 13,
+        "status": "pending"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/": {
+        "next_page": 1,
+        "pages": 1,
+        "status": "complete",
+        "checked_at": "2026-11-26T05:34:25.081432+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T05:34:25.081432+00:00"
+      }
+    },
+    "next_query": 2,
+    "query_revision": "25a292a1d6088214dd064f35c926f948c9fee635f3c865752217c6d5ce741545",
+    "query_specs": {
+      "sonos.com/": "ab5f7d5bdcaa31feb1f3a4d3f3a04046875b802f3d547561f9e0d32d60424953",
+      "update-software.sonos.com/": "1447235543e70a4cfce2fe205d6281abbeae140f5c7e2eead26e82ea93afd87b"
+    },
+    "query_roots": {
+      "sonos.com": "sonos.com/",
+      "update-software.sonos.com": "update-software.sonos.com/"
+    },
+    "errors": [],
+    "observations": [
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "records": 0,
+        "more_pages": true
+      },
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "records": 0,
+        "more_pages": false
+      }
+    ],
+    "pending_queries": 259,
+    "status": "partial"
+  },
+  "wayback_directories": {
+    "schema_version": 2,
+    "query_revision": "9d8069235e287e31f13291865350b0bcbc7ba8e7a994277b92f84844d94e7b60",
+    "query_specs": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "140077aa0754884405f75415b4a9c751bba6fae950c4e572fbc2f5b358664345"
+    },
+    "query_roots": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+    },
+    "cursors": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": null
+    },
+    "next_host": 0,
+    "retries": {},
+    "index_retry": {},
+    "completed_hosts": [
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+    ],
+    "pending_hosts": [],
+    "status": "ok",
+    "observations": [
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "records": 0,
+        "more_pages": false
+      }
+    ],
+    "errors": []
+  },
+  "commoncrawl_directories": {
+    "collections": {
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index": "CC-MAIN-2026-47",
+      "https://index.commoncrawl.org/CC-MAIN-2026-43-index": "CC-MAIN-2026-43",
+      "https://index.commoncrawl.org/CC-MAIN-2026-39-index": "CC-MAIN-2026-39",
+      "https://index.commoncrawl.org/CC-MAIN-2026-34-index": "CC-MAIN-2026-34",
+      "https://index.commoncrawl.org/CC-MAIN-2026-30-index": "CC-MAIN-2026-30",
+      "https://index.commoncrawl.org/CC-MAIN-2026-25-index": "CC-MAIN-2026-25",
+      "https://index.commoncrawl.org/CC-MAIN-2026-21-index": "CC-MAIN-2026-21",
+      "https://index.commoncrawl.org/CC-MAIN-2026-17-index": "CC-MAIN-2026-17",
+      "https://index.commoncrawl.org/CC-MAIN-2026-12-index": "CC-MAIN-2026-12",
+      "https://index.commoncrawl.org/CC-MAIN-2026-08-index": "CC-MAIN-2026-08",
+      "https://index.commoncrawl.org/CC-MAIN-2026-04-index": "CC-MAIN-2026-04",
+      "https://index.commoncrawl.org/CC-MAIN-2025-51-index": "CC-MAIN-2025-51",
+      "https://index.commoncrawl.org/CC-MAIN-2025-47-index": "CC-MAIN-2025-47",
+      "https://index.commoncrawl.org/CC-MAIN-2025-43-index": "CC-MAIN-2025-43",
+      "https://index.commoncrawl.org/CC-MAIN-2025-38-index": "CC-MAIN-2025-38",
+      "https://index.commoncrawl.org/CC-MAIN-2025-33-index": "CC-MAIN-2025-33",
+      "https://index.commoncrawl.org/CC-MAIN-2025-30-index": "CC-MAIN-2025-30",
+      "https://index.commoncrawl.org/CC-MAIN-2025-26-index": "CC-MAIN-2025-26",
+      "https://index.commoncrawl.org/CC-MAIN-2025-21-index": "CC-MAIN-2025-21",
+      "https://index.commoncrawl.org/CC-MAIN-2025-18-index": "CC-MAIN-2025-18",
+      "https://index.commoncrawl.org/CC-MAIN-2025-13-index": "CC-MAIN-2025-13",
+      "https://index.commoncrawl.org/CC-MAIN-2025-08-index": "CC-MAIN-2025-08",
+      "https://index.commoncrawl.org/CC-MAIN-2025-05-index": "CC-MAIN-2025-05",
+      "https://index.commoncrawl.org/CC-MAIN-2024-51-index": "CC-MAIN-2024-51",
+      "https://index.commoncrawl.org/CC-MAIN-2024-46-index": "CC-MAIN-2024-46",
+      "https://index.commoncrawl.org/CC-MAIN-2024-42-index": "CC-MAIN-2024-42",
+      "https://index.commoncrawl.org/CC-MAIN-2024-38-index": "CC-MAIN-2024-38",
+      "https://index.commoncrawl.org/CC-MAIN-2024-33-index": "CC-MAIN-2024-33",
+      "https://index.commoncrawl.org/CC-MAIN-2024-30-index": "CC-MAIN-2024-30",
+      "https://index.commoncrawl.org/CC-MAIN-2024-26-index": "CC-MAIN-2024-26",
+      "https://index.commoncrawl.org/CC-MAIN-2024-22-index": "CC-MAIN-2024-22",
+      "https://index.commoncrawl.org/CC-MAIN-2024-18-index": "CC-MAIN-2024-18",
+      "https://index.commoncrawl.org/CC-MAIN-2024-10-index": "CC-MAIN-2024-10",
+      "https://index.commoncrawl.org/CC-MAIN-2023-50-index": "CC-MAIN-2023-50",
+      "https://index.commoncrawl.org/CC-MAIN-2023-40-index": "CC-MAIN-2023-40",
+      "https://index.commoncrawl.org/CC-MAIN-2023-23-index": "CC-MAIN-2023-23",
+      "https://index.commoncrawl.org/CC-MAIN-2023-14-index": "CC-MAIN-2023-14",
+      "https://index.commoncrawl.org/CC-MAIN-2023-06-index": "CC-MAIN-2023-06",
+      "https://index.commoncrawl.org/CC-MAIN-2022-49-index": "CC-MAIN-2022-49",
+      "https://index.commoncrawl.org/CC-MAIN-2022-40-index": "CC-MAIN-2022-40",
+      "https://index.commoncrawl.org/CC-MAIN-2022-33-index": "CC-MAIN-2022-33",
+      "https://index.commoncrawl.org/CC-MAIN-2022-27-index": "CC-MAIN-2022-27",
+      "https://index.commoncrawl.org/CC-MAIN-2022-21-index": "CC-MAIN-2022-21",
+      "https://index.commoncrawl.org/CC-MAIN-2022-05-index": "CC-MAIN-2022-05",
+      "https://index.commoncrawl.org/CC-MAIN-2021-49-index": "CC-MAIN-2021-49",
+      "https://index.commoncrawl.org/CC-MAIN-2021-43-index": "CC-MAIN-2021-43",
+      "https://index.commoncrawl.org/CC-MAIN-2021-39-index": "CC-MAIN-2021-39",
+      "https://index.commoncrawl.org/CC-MAIN-2021-31-index": "CC-MAIN-2021-31",
+      "https://index.commoncrawl.org/CC-MAIN-2021-25-index": "CC-MAIN-2021-25",
+      "https://index.commoncrawl.org/CC-MAIN-2021-21-index": "CC-MAIN-2021-21",
+      "https://index.commoncrawl.org/CC-MAIN-2021-17-index": "CC-MAIN-2021-17",
+      "https://index.commoncrawl.org/CC-MAIN-2021-10-index": "CC-MAIN-2021-10",
+      "https://index.commoncrawl.org/CC-MAIN-2021-04-index": "CC-MAIN-2021-04",
+      "https://index.commoncrawl.org/CC-MAIN-2020-50-index": "CC-MAIN-2020-50",
+      "https://index.commoncrawl.org/CC-MAIN-2020-45-index": "CC-MAIN-2020-45",
+      "https://index.commoncrawl.org/CC-MAIN-2020-40-index": "CC-MAIN-2020-40",
+      "https://index.commoncrawl.org/CC-MAIN-2020-34-index": "CC-MAIN-2020-34",
+      "https://index.commoncrawl.org/CC-MAIN-2020-29-index": "CC-MAIN-2020-29",
+      "https://index.commoncrawl.org/CC-MAIN-2020-24-index": "CC-MAIN-2020-24",
+      "https://index.commoncrawl.org/CC-MAIN-2020-16-index": "CC-MAIN-2020-16",
+      "https://index.commoncrawl.org/CC-MAIN-2020-10-index": "CC-MAIN-2020-10",
+      "https://index.commoncrawl.org/CC-MAIN-2020-05-index": "CC-MAIN-2020-05",
+      "https://index.commoncrawl.org/CC-MAIN-2019-51-index": "CC-MAIN-2019-51",
+      "https://index.commoncrawl.org/CC-MAIN-2019-47-index": "CC-MAIN-2019-47",
+      "https://index.commoncrawl.org/CC-MAIN-2019-43-index": "CC-MAIN-2019-43",
+      "https://index.commoncrawl.org/CC-MAIN-2019-39-index": "CC-MAIN-2019-39",
+      "https://index.commoncrawl.org/CC-MAIN-2019-35-index": "CC-MAIN-2019-35",
+      "https://index.commoncrawl.org/CC-MAIN-2019-30-index": "CC-MAIN-2019-30",
+      "https://index.commoncrawl.org/CC-MAIN-2019-26-index": "CC-MAIN-2019-26",
+      "https://index.commoncrawl.org/CC-MAIN-2019-22-index": "CC-MAIN-2019-22",
+      "https://index.commoncrawl.org/CC-MAIN-2019-18-index": "CC-MAIN-2019-18",
+      "https://index.commoncrawl.org/CC-MAIN-2019-13-index": "CC-MAIN-2019-13",
+      "https://index.commoncrawl.org/CC-MAIN-2019-09-index": "CC-MAIN-2019-09",
+      "https://index.commoncrawl.org/CC-MAIN-2019-04-index": "CC-MAIN-2019-04",
+      "https://index.commoncrawl.org/CC-MAIN-2018-51-index": "CC-MAIN-2018-51",
+      "https://index.commoncrawl.org/CC-MAIN-2018-47-index": "CC-MAIN-2018-47",
+      "https://index.commoncrawl.org/CC-MAIN-2018-43-index": "CC-MAIN-2018-43",
+      "https://index.commoncrawl.org/CC-MAIN-2018-39-index": "CC-MAIN-2018-39",
+      "https://index.commoncrawl.org/CC-MAIN-2018-34-index": "CC-MAIN-2018-34",
+      "https://index.commoncrawl.org/CC-MAIN-2018-30-index": "CC-MAIN-2018-30",
+      "https://index.commoncrawl.org/CC-MAIN-2018-26-index": "CC-MAIN-2018-26",
+      "https://index.commoncrawl.org/CC-MAIN-2018-22-index": "CC-MAIN-2018-22",
+      "https://index.commoncrawl.org/CC-MAIN-2018-17-index": "CC-MAIN-2018-17",
+      "https://index.commoncrawl.org/CC-MAIN-2018-13-index": "CC-MAIN-2018-13",
+      "https://index.commoncrawl.org/CC-MAIN-2018-09-index": "CC-MAIN-2018-09",
+      "https://index.commoncrawl.org/CC-MAIN-2018-05-index": "CC-MAIN-2018-05",
+      "https://index.commoncrawl.org/CC-MAIN-2017-51-index": "CC-MAIN-2017-51",
+      "https://index.commoncrawl.org/CC-MAIN-2017-47-index": "CC-MAIN-2017-47",
+      "https://index.commoncrawl.org/CC-MAIN-2017-43-index": "CC-MAIN-2017-43",
+      "https://index.commoncrawl.org/CC-MAIN-2017-39-index": "CC-MAIN-2017-39",
+      "https://index.commoncrawl.org/CC-MAIN-2017-34-index": "CC-MAIN-2017-34",
+      "https://index.commoncrawl.org/CC-MAIN-2017-30-index": "CC-MAIN-2017-30",
+      "https://index.commoncrawl.org/CC-MAIN-2017-26-index": "CC-MAIN-2017-26",
+      "https://index.commoncrawl.org/CC-MAIN-2017-22-index": "CC-MAIN-2017-22",
+      "https://index.commoncrawl.org/CC-MAIN-2017-17-index": "CC-MAIN-2017-17",
+      "https://index.commoncrawl.org/CC-MAIN-2017-13-index": "CC-MAIN-2017-13",
+      "https://index.commoncrawl.org/CC-MAIN-2017-09-index": "CC-MAIN-2017-09",
+      "https://index.commoncrawl.org/CC-MAIN-2017-04-index": "CC-MAIN-2017-04",
+      "https://index.commoncrawl.org/CC-MAIN-2016-50-index": "CC-MAIN-2016-50",
+      "https://index.commoncrawl.org/CC-MAIN-2016-44-index": "CC-MAIN-2016-44",
+      "https://index.commoncrawl.org/CC-MAIN-2016-40-index": "CC-MAIN-2016-40",
+      "https://index.commoncrawl.org/CC-MAIN-2016-36-index": "CC-MAIN-2016-36",
+      "https://index.commoncrawl.org/CC-MAIN-2016-30-index": "CC-MAIN-2016-30",
+      "https://index.commoncrawl.org/CC-MAIN-2016-26-index": "CC-MAIN-2016-26",
+      "https://index.commoncrawl.org/CC-MAIN-2016-22-index": "CC-MAIN-2016-22",
+      "https://index.commoncrawl.org/CC-MAIN-2016-18-index": "CC-MAIN-2016-18",
+      "https://index.commoncrawl.org/CC-MAIN-2016-07-index": "CC-MAIN-2016-07",
+      "https://index.commoncrawl.org/CC-MAIN-2015-48-index": "CC-MAIN-2015-48",
+      "https://index.commoncrawl.org/CC-MAIN-2015-40-index": "CC-MAIN-2015-40",
+      "https://index.commoncrawl.org/CC-MAIN-2015-35-index": "CC-MAIN-2015-35",
+      "https://index.commoncrawl.org/CC-MAIN-2015-32-index": "CC-MAIN-2015-32",
+      "https://index.commoncrawl.org/CC-MAIN-2015-27-index": "CC-MAIN-2015-27",
+      "https://index.commoncrawl.org/CC-MAIN-2015-22-index": "CC-MAIN-2015-22",
+      "https://index.commoncrawl.org/CC-MAIN-2015-18-index": "CC-MAIN-2015-18",
+      "https://index.commoncrawl.org/CC-MAIN-2015-14-index": "CC-MAIN-2015-14",
+      "https://index.commoncrawl.org/CC-MAIN-2015-11-index": "CC-MAIN-2015-11",
+      "https://index.commoncrawl.org/CC-MAIN-2015-06-index": "CC-MAIN-2015-06",
+      "https://index.commoncrawl.org/CC-MAIN-2014-52-index": "CC-MAIN-2014-52",
+      "https://index.commoncrawl.org/CC-MAIN-2014-49-index": "CC-MAIN-2014-49",
+      "https://index.commoncrawl.org/CC-MAIN-2014-42-index": "CC-MAIN-2014-42",
+      "https://index.commoncrawl.org/CC-MAIN-2014-41-index": "CC-MAIN-2014-41",
+      "https://index.commoncrawl.org/CC-MAIN-2014-35-index": "CC-MAIN-2014-35",
+      "https://index.commoncrawl.org/CC-MAIN-2014-23-index": "CC-MAIN-2014-23",
+      "https://index.commoncrawl.org/CC-MAIN-2014-15-index": "CC-MAIN-2014-15",
+      "https://index.commoncrawl.org/CC-MAIN-2014-10-index": "CC-MAIN-2014-10",
+      "https://index.commoncrawl.org/CC-MAIN-2013-48-index": "CC-MAIN-2013-48",
+      "https://index.commoncrawl.org/CC-MAIN-2013-20-index": "CC-MAIN-2013-20",
+      "https://index.commoncrawl.org/CC-MAIN-2012-index": "CC-MAIN-2012",
+      "https://index.commoncrawl.org/CC-MAIN-2009-2010-index": "CC-MAIN-2009-2010",
+      "https://index.commoncrawl.org/CC-MAIN-2008-2009-index": "CC-MAIN-2008-2009"
+    },
+    "registry": {
+      "checked_at": "2026-11-26T05:34:18.875659+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-12-03T05:34:18.875659+00:00"
+    },
+    "queries": {
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": {
+        "next_page": 1,
+        "pages": 0,
+        "status": "complete",
+        "checked_at": "2026-11-26T05:34:27.982979+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T05:34:27.982979+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2008-2009-index|update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": {
+        "next_page": 1,
+        "pages": 0,
+        "status": "complete",
+        "checked_at": "2026-11-26T05:34:29.350652+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T05:34:29.350652+00:00"
+      }
+    },
+    "next_query": 2,
+    "query_revision": "0072044e29950488fe958e872997c8135c1a1b41e659aa979ed3db70fd765433",
+    "query_specs": {
+      "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "3dd17532866f64f90037c3dc0f1b5b4e5d4c1d96fd941f694c13de8a8ca453be"
+    },
+    "query_roots": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+    },
+    "errors": [],
+    "observations": [
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "records": 0,
+        "more_pages": false
+      },
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "records": 0,
+        "more_pages": false
+      }
+    ],
+    "pending_queries": 128,
+    "status": "partial"
+  },
+  "wayback_exact": {
+    "schema_version": 2,
+    "query_revision": "a9ecde2344647f734f03e21fbbd865a624a9a4309c6bf05397577c3ab9ba0a06",
+    "query_specs": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "60bac3801de1aad00b2f70abcbecf1621083df8a8fd5182a7cbdfbd88e7df286"
+    },
+    "query_roots": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk"
+    },
+    "cursors": {},
+    "next_host": 0,
+    "retries": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T05:34:44.885330+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+      }
+    },
+    "index_retry": {},
+    "completed_hosts": [],
+    "pending_hosts": [
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk"
+    ],
+    "status": "partial",
+    "observations": [],
+    "errors": [
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T05:34:44.885330+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+      }
+    ]
+  },
+  "index_query_lane": 0,
+  "query_configuration": {
+    "extensions": [
+      "apk"
+    ],
+    "match_type": "domain",
+    "source_match_type": "prefix"
+  }
+}

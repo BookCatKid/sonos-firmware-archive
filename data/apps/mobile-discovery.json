@@ -1,7 +1,9 @@
 {
+  "status": "ok",
+  "errors": [],
   "schema_version": 1,
-  "checked": "2026-11-12T22:17:35.225124+00:00",
-  "current_only": true,
+  "checked": "2026-11-26T05:31:40.412033+00:00",
+  "current_only": false,
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
     "live_http_status": 302,
@@ -9,8 +11,7 @@
     "location_source": "live"
   },
   "wayback": {
-    "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F&matchType=prefix&output=json&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest%2Clength&filter=statuscode%3A200&filter=original%3A.%2A%5C.apk%24&collapse=urlkey&limit=5000",
-    "row_total": 0
+    "provider": "shared-installer-history"
   },
   "candidate_total": 1,
   "available_live_total": 1,
@@ -23,6 +24,8 @@
       "sources": [
         "official-current-fireos-redirect"
       ],
+      "advertised_by": "https://www.sonos.com/redir/controller_software_android2",
+      "current": true,
       "http_status": 200,
       "content_length": 259903267,
       "etag": "\"4c568627cc42005bab7041f6cb93bbd6-31\""
