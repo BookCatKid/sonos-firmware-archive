@@ -157,6 +157,23 @@ jobs:
             ${{ runner.temp }}/metadata-checkpoint.patch
             data/
           retention-days: 30
-      - name: Report incomplete work
+      - name: Note incomplete coverage
+        if: always() && steps.run.outcome == 'success'
+        run: |
+          python - "$RUNNER_TEMP/archive-report.json" <<'PY'
+          import json, sys
+          try:
+              report = json.load(open(sys.argv[1]))
+          except Exception:
+              sys.exit(0)
+          pending = report.get('pending') or []
+          errors = report.get('errors') or []
+          if report.get('status') == 'partial' or pending:
+              sources = [row for row in errors
+                         if isinstance(row, dict) and row.get('kind') == 'source-reported-incomplete']
+              print(f"::warning title=Incomplete coverage::{report.get('target')} finished partial: "
+                    f"{len(pending)} pending step(s), {len(sources)} incomplete source(s)")
+          PY
+      - name: Report failed work
         if: always() && (steps.run.outcome == 'failure' || steps.commit.outcome == 'failure')
         run: exit 1
