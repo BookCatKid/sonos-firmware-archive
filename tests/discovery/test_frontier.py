@@ -733,9 +733,16 @@ class InstallerPivotVersionTests(unittest.TestCase):
         self.assertTrue(all('-v17.2-' in root for root in roots))
 
     def test_a_context_without_a_release_version_uses_an_observed_one(self):
-        roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}])
-        self.assertTrue(roots)
-        self.assertTrue(all('-v16.2-' in root for root in roots))
+        roots = self.roots([{'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], limit=12)
+        self.assertTrue(any('-v16.2-' in root for root in roots))
+
+    def test_adjacent_patch_releases_are_considered_for_an_unknown_version(self):
+        observed = ['https://update-firmware.sonos.com/firmware/Prod/90.0-79210-v17.2.3-HBVQeC4A1l-RC-1/update.upm']
+        _, roots = installer_manifest_roots({}, [
+            {'build': '90.0-67300', 'app_version': None, 'token': 'Lp7WoQPkxr'},
+            {'build': '90.0-68190', 'app_version': None, 'token': 'y0RcLefNNu'}], observed, limit=40)
+        self.assertTrue(any('90.0-67300-v17.2.1' in root for root in roots))
+        self.assertTrue(any('90.0-68190-v17.2.2' in root for root in roots))
 
     def test_an_unknown_version_without_observations_generates_nothing(self):
         state, roots = installer_manifest_roots({}, [{'build': '90.0-68190', 'app_version': None,

@@ -131,6 +131,24 @@ def _distribution_scope(state, evidence):
     return reachable
 
 
+def _release_version_candidates(observed):
+    """Observed release versions plus their adjacent patch releases."""
+    candidates = list(observed)
+    for version in observed:
+        parts = version.split('.')
+        try:
+            patch = int(parts[-1])
+        except ValueError:
+            continue
+        for delta in (-2, -1, 1, 2):
+            if patch + delta < 0:
+                continue
+            candidate = '.'.join([*parts[:-1], str(patch+delta)])
+            if candidate not in candidates:
+                candidates.append(candidate)
+    return candidates
+
+
 def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
     """Learn native campaign shapes and enumerate their numeric fields fairly.
 
@@ -195,7 +213,8 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
             numbers = iter(coordinates)
             suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
             job['ordinal'] += 1
-        versions = [context['app_version']] if context.get('app_version') else state.get('versions', [])
+        versions = ([context['app_version']] if context.get('app_version')
+                    else _release_version_candidates(state.get('versions', [])))
         if not versions:
             state['sequence'] = state.setdefault('sequence', 0)+1
             job['last_queued'] = state['sequence']
