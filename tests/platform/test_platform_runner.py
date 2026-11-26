@@ -254,6 +254,14 @@ class TargetRegistrationTests(unittest.TestCase):
                     contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
                                           '--repository', 'owner/repo']), 1)
+            source_only = {**partial, 'errors': [{'step': 'scan', 'kind': 'source-reported-incomplete'}]}
+            with patch.object(cli, 'run', return_value=source_only), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
+                                          '--repository', 'owner/repo']), 0)
+            faulted = {**partial, 'errors': [{'step': 'scan', 'kind': 'exception', 'error': 'boom'}]}
+            with patch.object(cli, 'run', return_value=faulted), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
+                                          '--repository', 'owner/repo']), 1)
 
     def test_registering_and_planning_target_needs_only_configuration(self):
         import contextlib

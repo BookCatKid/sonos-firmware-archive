@@ -46,8 +46,8 @@ class PlatformWorkflowTests(unittest.TestCase):
         self.assertIn('sonos-archive commit', self.steps['commit']['run'])
         self.assertEqual(self.steps['Retain run report and metadata checkpoint']['if'], 'always()')
         failure = self.steps['Report failed work']
-        self.assertIn("steps.run.outcome == 'failure'", failure['if'])
-        self.assertIn("steps.commit.outcome == 'failure'", failure['if'])
+        self.assertEqual(failure['if'],
+                         "always() && (steps.run.outcome == 'failure' || steps.commit.outcome == 'failure')")
         self.assertEqual(failure['run'], 'exit 1')
 
     def test_incomplete_coverage_is_reported_as_a_warning(self):

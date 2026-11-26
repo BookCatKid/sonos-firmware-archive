@@ -72,7 +72,12 @@ def main(argv=None):
         if args.report:
             atomic_json(args.report, report)
         print(json.dumps(report, indent=2))
-        return 1 if report['status'] in {'failed', 'blocked'} else 0
+        # Source incompleteness is recorded as a pending report, not as a
+        # fault; any other error still fails the command.
+        errors = report.get('errors') or []
+        faults = [row for row in errors
+                  if not isinstance(row, dict) or row.get('kind') != 'source-reported-incomplete']
+        return 1 if report['status'] in {'failed', 'blocked'} or faults else 0
     except (KeyError, ValueError) as error:
         parser.error(str(error))
 
