@@ -4,18 +4,18 @@
   "provider": "android-history",
   "status": "ok",
   "executed": true,
-  "started_at": "2026-11-26T16:47:01.326988+00:00",
+  "started_at": "2026-11-26T17:58:28.188049+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
       "status": "ok",
       "exit_code": 0,
-      "output_tail": "archived com.sonos.acr2@20260917.7f4c363\narchived com.sonos.acr2@20261006.65c4a1e\narchived com.sonos.acr2@20261015.ec5ada6\narchived com.sonos.acr2@20261023.590619d\narchived com.sonos.acr2@20261103.afb484e\narchived com.sonos.acr2@20261110.b463dd1\n",
+      "output_tail": "",
       "source_status": "ok"
     }
   ],
   "errors": [],
   "pending": [],
-  "finished_at": "2026-11-26T16:51:16.851544+00:00",
-  "next_due": "2026-11-27T16:51:16.851544+00:00"
+  "finished_at": "2026-11-26T17:58:28.572826+00:00",
+  "next_due": "2026-11-27T17:58:28.572826+00:00"
 }
