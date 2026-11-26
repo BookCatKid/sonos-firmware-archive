@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "target": "web",
+  "provider": "web",
+  "status": "ok",
+  "executed": true,
+  "started_at": "2026-11-26T05:31:39.838723+00:00",
+  "steps": [
+    {
+      "name": "archive_web_apps",
+      "status": "ok",
+      "exit_code": 0,
+      "output_tail": "controller: captured=5 gaps=33\npro: captured=77 gaps=0\n",
+      "source_status": "ok"
+    }
+  ],
+  "errors": [],
+  "pending": [],
+  "finished_at": "2026-11-26T05:34:53.045933+00:00",
+  "next_due": "2026-11-26T06:34:53.045933+00:00"
+}
