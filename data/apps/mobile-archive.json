@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-26T07:02:10.585276+00:00",
+  "updated": "2026-11-26T07:27:06.254575+00:00",
   "discovery": "data/apps/mobile-history-index.json",
-  "artifact_total": 40,
-  "gap_total": 4,
+  "artifact_total": 46,
+  "gap_total": 29,
   "gaps": [
     {
       "url": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
@@ -66,6 +66,26 @@
       "checked_at": "2026-11-26T07:02:10.585161+00:00"
     },
     {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1303",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:e4bb44c3b172b5d3cce7be48afc20e654a77ac3e37b693b6c96d951610f36e6a",
+      "archive_capture": {
+        "timestamp": "20210419121122",
+        "digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk"
+      },
+      "wayback_timestamp": "20210419121122",
+      "wayback_digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:09:58.909447+00:00"
+    },
+    {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
       "family": "legacy",
       "platform": "fireos-android-apk",
@@ -79,6 +99,473 @@
       "etag": null,
       "reason": "HTTP Error 404: Not Found",
       "checked_at": "2026-11-26T06:36:37.811725+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1305",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:e5f88826916713855e94e1f4b9632d84866210166c0bf95427b6a8b433002dcc",
+      "archive_capture": {
+        "timestamp": "20210422173744",
+        "digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk"
+      },
+      "wayback_timestamp": "20210422173744",
+      "wayback_digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:09:59.652185+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1312",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:578645f4b682916803b34307f3e4aac1813b677a3c65c8f70e1dcd594163bc0c",
+      "archive_capture": {
+        "timestamp": "20210615091901",
+        "digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+      },
+      "wayback_timestamp": "20210615091901",
+      "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:10:03.588818+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1312",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:20ebf74414f4dc26f963560c6b1757582a8e69be834bf46fc026bf04daadbbc5",
+      "archive_capture": {
+        "timestamp": "20210619121235",
+        "digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk"
+      },
+      "wayback_timestamp": "20210619121235",
+      "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:10:04.801141+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1322",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:7f204e20c69ee80675373ecb22068a46cf0df6feaca15c4a1a803a61f3e0c3e4",
+      "archive_capture": {
+        "timestamp": "20210916102256",
+        "digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk"
+      },
+      "wayback_timestamp": "20210916102256",
+      "wayback_digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:10:07.264478+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "133",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:a943167035d5e2c89537897b71d8fbaab8341dcbf86d9187a8fa700989191598",
+      "archive_capture": {
+        "timestamp": "20210929233833",
+        "digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk"
+      },
+      "wayback_timestamp": "20210929233833",
+      "wayback_digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX",
+      "reason": "<urlopen error [Errno 111] Connection refused>",
+      "checked_at": "2026-11-26T07:13:03.417912+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1332",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:2de8b9aa7f4cf35958f99bc42bc00a2801ac6adcc336e623fd5f8b5440f42379",
+      "archive_capture": {
+        "timestamp": "20211022084736",
+        "digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk"
+      },
+      "wayback_timestamp": "20211022084736",
+      "wayback_digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ",
+      "reason": "<urlopen error [Errno 111] Connection refused>",
+      "checked_at": "2026-11-26T07:13:19.037438+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "134",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:96ebea6af08ae83aa4e34d86f5224b03a581087c8b3424cc8ca04c0a54b620ad",
+      "archive_capture": {
+        "timestamp": "20211203074125",
+        "digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk"
+      },
+      "wayback_timestamp": "20211203074125",
+      "wayback_digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>",
+      "checked_at": "2026-11-26T07:15:19.394421+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1341",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:2fd0d0d16ad49474e9cb0967e2b2339e323ceb68fe9f3bde52707b962ab3f8b3",
+      "archive_capture": {
+        "timestamp": "20220118132836",
+        "digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+      },
+      "wayback_timestamp": "20220118132836",
+      "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:15:20.883202+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1341",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:49f66a259fea3ed5d04cf1d3f1da205160691b94f7de74c201fe45cfba62af15",
+      "archive_capture": {
+        "timestamp": "20220121143240",
+        "digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+      },
+      "wayback_timestamp": "20220121143240",
+      "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:15:21.836691+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1461",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:fa6eac231b8146f57b6c30ede7c364c393bb297190cf32f4fcb5ee103edaed2e",
+      "archive_capture": {
+        "timestamp": "20220519083448",
+        "digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk"
+      },
+      "wayback_timestamp": "20220519083448",
+      "wayback_digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:15:52.882278+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.18.24",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:710c365400a8789c97b25c7f7da10ad1aa13835ea5b0ae523c2586aa350a70c4",
+      "archive_capture": {
+        "timestamp": "20250404160652",
+        "digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk"
+      },
+      "wayback_timestamp": "20250404160652",
+      "wayback_digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB",
+      "reason": "<urlopen error [Errno 111] Connection refused>",
+      "checked_at": "2026-11-26T07:20:26.360636+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.4-36090_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:c471a3d9fc21243049d5dbe5c14ba76021de408451c81e59f161804deae89d0e",
+      "archive_capture": {
+        "timestamp": "20230205151206",
+        "digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk"
+      },
+      "wayback_timestamp": "20230205151206",
+      "wayback_digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:20:27.494653+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-31120_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:606a6ad23701ec1f1e14788c4853340a80e914874844aa2eba32aac152023122",
+      "archive_capture": {
+        "timestamp": "20220814155951",
+        "digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk"
+      },
+      "wayback_timestamp": "20220814155951",
+      "wayback_digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>",
+      "checked_at": "2026-11-26T07:24:24.162517+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-33120_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:48d6baa154125b7fdd332aab7fefbc3f7b86ab2e1e437eb43d06dfbb2f5351dc",
+      "archive_capture": {
+        "timestamp": "20220927103639",
+        "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+      },
+      "wayback_timestamp": "20220927103639",
+      "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:24:26.646275+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-33120_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:d61edd359da25c2ca42e3fb02d5e9a3b118d90a1dae81451286e65eed0cc91fe",
+      "archive_capture": {
+        "timestamp": "20221003013800",
+        "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+      },
+      "wayback_timestamp": "20221003013800",
+      "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:24:28.167066+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "69.1-33120_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:797e4bb8335c2d3c967331377226653a26e4693e8552feaca134a352bf8b6499",
+      "archive_capture": {
+        "timestamp": "20221007180005",
+        "digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk"
+      },
+      "wayback_timestamp": "20221007180005",
+      "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:24:28.732063+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "72.2-39150_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:253336c1a22a45bf654c46d0bd7c201dffe2b566f25fd6bcbe9aea640c8b0d08",
+      "archive_capture": {
+        "timestamp": "20230401195618",
+        "digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk"
+      },
+      "wayback_timestamp": "20230401195618",
+      "wayback_digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:24:54.654198+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "76.2-46300_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:8031552bebfcc34185f92758bd7e76152009ee9bbd11b98474fb64794bbdbb31",
+      "archive_capture": {
+        "timestamp": "20231129144008",
+        "digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk"
+      },
+      "wayback_timestamp": "20231129144008",
+      "wayback_digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+      "reason": "<urlopen error [Errno 111] Connection refused>",
+      "checked_at": "2026-11-26T07:25:10.209666+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:9dce28ca6e1c9c00b6391f98921fcabe679d1f809b3947726265671c6ba20fe3",
+      "archive_capture": {
+        "timestamp": "20221129172319",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+      },
+      "wayback_timestamp": "20221129172319",
+      "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:25:11.101220+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:663032cefc3477d0b2b87da3dd37c14735cc3837918c1ed318e7304749e9240f",
+      "archive_capture": {
+        "timestamp": "20221202163548",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+      },
+      "wayback_timestamp": "20221202163548",
+      "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+      "reason": "downloaded installer is not a ZIP/APK",
+      "checked_at": "2026-11-26T07:25:11.737818+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "wayback:b8c60ab154cebe37359fec1953d689e8e5eb535f4560e42c849d09b6e93bc9aa",
+      "archive_capture": {
+        "timestamp": "20221203020409",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
+      },
+      "wayback_timestamp": "20221203020409",
+      "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+      "reason": "<urlopen error [Errno 111] Connection refused>",
+      "checked_at": "2026-11-26T07:25:27.280083+00:00"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.1-12345",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null,
+      "reason": "HTTP Error 404: Not Found",
+      "checked_at": "2026-11-26T07:25:27.835996+00:00"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.1-12345",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null,
+      "reason": "HTTP Error 404: Not Found",
+      "checked_at": "2026-11-26T07:25:28.152099+00:00"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "unknown",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null,
+      "reason": "HTTP Error 404: Not Found",
+      "checked_at": "2026-11-26T07:27:06.254452+00:00"
     }
   ],
   "artifacts": [
@@ -659,7 +1146,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "fetched_from": "https://web.archive.org/web/20220122223042id_/https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -685,6 +1172,24 @@
           "http_status": 200,
           "content_length": 84325203,
           "etag": "\"9501a740f200933111dbc5bc145afaba-11\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+          "family": "legacy",
+          "platform": "fireos-android-apk",
+          "version": "1341",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:5d294606e61b2c3e1cfa23b28aba15f5dd790cac343ac72d1f77efb51ec2bc00",
+          "archive_capture": {
+            "timestamp": "20220122223042",
+            "digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk"
+          },
+          "wayback_timestamp": "20220122223042",
+          "wayback_digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN"
         }
       ],
       "verification": {
@@ -860,7 +1365,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+      "fetched_from": "https://web.archive.org/web/20250420170811id_/https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -886,6 +1391,24 @@
           "http_status": 200,
           "content_length": 58150860,
           "etag": "\"86c46430b4ad6b573d958dabb60bd6e0-7\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+          "family": "s1",
+          "platform": "fireos-android-apk",
+          "version": "57.22-61300_32bit",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:133a4d7ae98e450b852ee82f34823923e15d7f81bc26b7ed155f31b73b6a599f",
+          "archive_capture": {
+            "timestamp": "20250420170811",
+            "digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk"
+          },
+          "wayback_timestamp": "20250420170811",
+          "wayback_digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4"
         }
       ],
       "verification": {
@@ -921,7 +1444,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+      "fetched_from": "https://web.archive.org/web/20251219062406id_/https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -947,6 +1470,24 @@
           "http_status": 200,
           "content_length": 57377553,
           "etag": "\"9b7188fba64d03fbaad0c021067f1336-7\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+          "family": "s1",
+          "platform": "fireos-android-apk",
+          "version": "57.22-71190_32bit",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:4150b96329ea18fec261204cac3faa93234153455a4124d4f03a5ec8663d0766",
+          "archive_capture": {
+            "timestamp": "20251219062406",
+            "digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk"
+          },
+          "wayback_timestamp": "20251219062406",
+          "wayback_digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI"
         }
       ],
       "verification": {
@@ -982,7 +1523,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+      "fetched_from": "https://web.archive.org/web/20220711112338id_/https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -1008,6 +1549,24 @@
           "http_status": 200,
           "content_length": 99023223,
           "etag": "\"ba7c65a2d4cc058d574a127e7d835f5e-12\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "68.3-30100_32bit",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:2bb4a95952aaf2c2df47430a639343bbd86c58fff388276577898a06e6cae01e",
+          "archive_capture": {
+            "timestamp": "20220711112338",
+            "digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk"
+          },
+          "wayback_timestamp": "20220711112338",
+          "wayback_digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P"
         }
       ],
       "verification": {
@@ -1402,6 +1961,65 @@
     {
       "family": "s2",
       "platform": "fireos-android-apk",
+      "version": "78.1-51030_64bit",
+      "original_filename": "Sonos_78.1-51030_64bit.apk",
+      "bytes": 88171877,
+      "sha256": "cbdc26584755c6fab23889dd5b4590b2f75159d28f5f14a877d7d5ab272f3589",
+      "source_urls": [
+        "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_78.1-51030_64bit--cbdc26584755c6fab23889dd5b4590b2f75159d28f5f14a877d7d5ab272f3589.apk",
+      "acquired_at": "2026-11-26T07:25:33.780460+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_78.1-51030_64bit--cbdc26584755c6fab23889dd5b4590b2f75159d28f5f14a877d7d5ab272f3589.apk",
+      "fetched_from": "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk",
+      "versions": [
+        "78.1-51030_64bit"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "78.1-51030_64bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "current": false,
+          "http_status": 200,
+          "content_length": 88171877,
+          "etag": "\"5c9d06d0cc4ade45985451cf915636b3-11\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+        "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+            "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v2",
+          "v3"
+        ],
+        "package": "com.sonos.acr2",
+        "version_code": "780151031",
+        "version_name": "16.1",
+        "split": null,
+        "advertised_version": "78.1-51030_64bit",
+        "matches_store_signer": true
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
       "version": "80.09.04",
       "original_filename": "Sonos_80.09.04.apk",
       "bytes": 250687372,
@@ -1409,7 +2027,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+      "fetched_from": "https://web.archive.org/web/20241005225439id_/https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -1435,6 +2053,24 @@
           "http_status": 200,
           "content_length": 250687372,
           "etag": "\"7967ace64d25fafb3ea5ca1c1fdbff7f-30\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.09.04",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:70b796fcd200454bad508064b45eabc64fe5fa47c25b47af89b623c6998845e5",
+          "archive_capture": {
+            "timestamp": "20241005225439",
+            "digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk"
+          },
+          "wayback_timestamp": "20241005225439",
+          "wayback_digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG"
         }
       ],
       "verification": {
@@ -1457,6 +2093,126 @@
         "split": null,
         "advertised_version": "80.09.04",
         "matches_store_signer": true
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.1-56190_32bit",
+      "original_filename": "Sonos_80.1-56190_32bit.apk",
+      "bytes": 86361394,
+      "sha256": "88c073bf96480af58c7733190e0f398dc6a389c1cc83c60ee19475425ce6daba",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.1-56190_32bit--88c073bf96480af58c7733190e0f398dc6a389c1cc83c60ee19475425ce6daba.apk",
+      "acquired_at": "2026-11-26T07:25:43.753485+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.1-56190_32bit--88c073bf96480af58c7733190e0f398dc6a389c1cc83c60ee19475425ce6daba.apk",
+      "fetched_from": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk",
+      "versions": [
+        "80.1-56190_32bit"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.1-56190_32bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 86361394,
+          "etag": "\"4b9939d15d0eeeb0b35a29bb7b3ce91e-11\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "50ee1b8dbe9b7940c7c0f769c74d1437a0ddbcebd8da8fe93c12b499c35fdbed",
+        "signer_subject": "CN=Sonos Inc.,OU=Sonos PD,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "50ee1b8dbe9b7940c7c0f769c74d1437a0ddbcebd8da8fe93c12b499c35fdbed",
+            "subject": "CN=Sonos Inc.,OU=Sonos PD,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v2",
+          "v3"
+        ],
+        "package": "com.sonos.acr.s2",
+        "version_code": "800156190",
+        "version_name": "16.3.3",
+        "split": null,
+        "advertised_version": "80.1-56190_32bit",
+        "matches_store_signer": null
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.1-56190_64bit",
+      "original_filename": "Sonos_80.1-56190_64bit.apk",
+      "bytes": 88204582,
+      "sha256": "bd63b123a797354886d1a4e89591c69dc657a0c142ed4b8cd61047b333f306f0",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.1-56190_64bit--bd63b123a797354886d1a4e89591c69dc657a0c142ed4b8cd61047b333f306f0.apk",
+      "acquired_at": "2026-11-26T07:25:54.101301+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.1-56190_64bit--bd63b123a797354886d1a4e89591c69dc657a0c142ed4b8cd61047b333f306f0.apk",
+      "fetched_from": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk",
+      "versions": [
+        "80.1-56190_64bit"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.1-56190_64bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 88204582,
+          "etag": "\"e2501253f4f8434d29706d7899793d8d-11\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "50ee1b8dbe9b7940c7c0f769c74d1437a0ddbcebd8da8fe93c12b499c35fdbed",
+        "signer_subject": "CN=Sonos Inc.,OU=Sonos PD,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "50ee1b8dbe9b7940c7c0f769c74d1437a0ddbcebd8da8fe93c12b499c35fdbed",
+            "subject": "CN=Sonos Inc.,OU=Sonos PD,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v2",
+          "v3"
+        ],
+        "package": "com.sonos.acr.s2",
+        "version_code": "800156191",
+        "version_name": "16.3.3",
+        "split": null,
+        "advertised_version": "80.1-56190_64bit",
+        "matches_store_signer": null
       },
       "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
     },
@@ -1786,7 +2542,7 @@
       "source_urls": [
         "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk"
       ],
-      "fetched_from": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+      "fetched_from": "https://web.archive.org/web/20250909210844id_/https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
       "sources": [
         "public-archive-index",
         "wayback-cdx"
@@ -1812,6 +2568,24 @@
           "http_status": 200,
           "content_length": 238798382,
           "etag": "\"032d4403bbee62367e3048632890154f-29\""
+        },
+        {
+          "url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.27.8",
+          "sources": [
+            "public-archive-index"
+          ],
+          "acquisition_id": "wayback:4ea99725608c9798aa2b7b22078746e83707fc416d50d33ed6c2fcf8c27b5790",
+          "archive_capture": {
+            "timestamp": "20250909210844",
+            "digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk"
+          },
+          "wayback_timestamp": "20250909210844",
+          "wayback_digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX"
         }
       ],
       "verification": {
@@ -1833,6 +2607,66 @@
         "version_name": "80.27.8-release+20250829.74c4ed0",
         "split": null,
         "advertised_version": "80.27.8",
+        "matches_store_signer": true
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.28.33",
+      "original_filename": "Sonos_80.28.33.apk",
+      "bytes": 272448205,
+      "sha256": "dff8b6555a0a8c84c18c0dd8d15a5ef46d49b39d06cd7502890302030ff3748d",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_80.28.33--dff8b6555a0a8c84c18c0dd8d15a5ef46d49b39d06cd7502890302030ff3748d.apk",
+      "acquired_at": "2026-11-26T07:26:09.141646+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_80.28.33--dff8b6555a0a8c84c18c0dd8d15a5ef46d49b39d06cd7502890302030ff3748d.apk",
+      "fetched_from": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk",
+      "versions": [
+        "80.28.33"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.28.33",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 272448205,
+          "etag": "\"33f234b14caa28b89178c858806bc2a7-33\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+        "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+            "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v2",
+          "v3"
+        ],
+        "package": "com.sonos.acr2",
+        "version_code": "802800033",
+        "version_name": "80.28.33-release+20250826.e8f80cf",
+        "split": null,
+        "advertised_version": "80.28.33",
         "matches_store_signer": true
       },
       "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
@@ -2171,6 +3005,65 @@
     {
       "family": "s2",
       "platform": "fireos-android-apk",
+      "version": "85.00.12",
+      "original_filename": "Sonos_85.00.12.apk",
+      "bytes": 339757559,
+      "sha256": "a00500e06f852ef3e5fe8099827b663ebc5dc8b0c9d509e97e5372abcc80d5a2",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_85.00.12--a00500e06f852ef3e5fe8099827b663ebc5dc8b0c9d509e97e5372abcc80d5a2.apk",
+      "acquired_at": "2026-11-26T07:26:25.837414+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_85.00.12--a00500e06f852ef3e5fe8099827b663ebc5dc8b0c9d509e97e5372abcc80d5a2.apk",
+      "fetched_from": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk",
+      "versions": [
+        "85.00.12"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "85.00.12",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 339757559,
+          "etag": "\"45672de678839368e45d43487401fcdd-41\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+        "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+            "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v3"
+        ],
+        "package": "com.sonos.acr2",
+        "version_code": "850000012",
+        "version_name": "85.00.12-beta+20260328.a23de06",
+        "split": null,
+        "advertised_version": "85.00.12",
+        "matches_store_signer": true
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
       "version": "85.00.31",
       "original_filename": "Sonos_85.00.31.apk",
       "bytes": 341211232,
@@ -2231,6 +3124,65 @@
     {
       "family": "s2",
       "platform": "fireos-android-apk",
+      "version": "88.01.9",
+      "original_filename": "Sonos_88.01.9.apk",
+      "bytes": 339022164,
+      "sha256": "aa3fcc7a6c75d0c6cfb5640b710bb55115f87f5f9cc0d2d403159efd43babd5a",
+      "source_urls": [
+        "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk"
+      ],
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "release_tag": "apps-fireos-s2",
+      "release_asset": "Sonos_88.01.9--aa3fcc7a6c75d0c6cfb5640b710bb55115f87f5f9cc0d2d403159efd43babd5a.apk",
+      "acquired_at": "2026-11-26T07:26:51.781579+00:00",
+      "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-fireos-s2/Sonos_88.01.9--aa3fcc7a6c75d0c6cfb5640b710bb55115f87f5f9cc0d2d403159efd43babd5a.apk",
+      "fetched_from": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk",
+      "versions": [
+        "88.01.9"
+      ],
+      "acquisitions": [
+        {
+          "url": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "88.01.9",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 339022164,
+          "etag": "\"b2b8e572564432fb6969b97257d285e7-41\""
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+        "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+        "signers": [
+          {
+            "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+            "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+          }
+        ],
+        "schemes": [
+          "v3"
+        ],
+        "package": "com.sonos.acr2",
+        "version_code": "880100009",
+        "version_name": "88.01.9-release+20260818.b568a6b",
+        "split": null,
+        "advertised_version": "88.01.9",
+        "matches_store_signer": true
+      },
+      "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+    },
+    {
+      "family": "s2",
+      "platform": "fireos-android-apk",
       "version": "89.00.49",
       "original_filename": "Sonos_89.00.49.apk",
       "bytes": 327874794,
@@ -2240,6 +3192,7 @@
       ],
       "fetched_from": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2252,15 +3205,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.00.49",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327874794,
+          "etag": "\"64bcea54beac1a548b0f429d03c538be-40\""
         }
       ],
       "verification": {
@@ -2297,6 +3252,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2309,15 +3265,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.00.51",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327874794,
+          "etag": "\"acaa97fee10d1048e72d5f59febf393d-40\""
         }
       ],
       "verification": {
@@ -2354,6 +3312,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2366,15 +3325,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.01.11",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327801142,
+          "etag": "\"7b2a6d63dc95dfd1b8e9eaaf04ae8874-40\""
         }
       ],
       "verification": {
@@ -2411,6 +3372,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2423,15 +3385,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "90.00.43",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 248921485,
+          "etag": "\"15942ff8fc97266f457f50e5c53b769a-30\""
         }
       ],
       "verification": {
@@ -2468,6 +3432,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2480,15 +3445,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "90.01.9",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 256474509,
+          "etag": "\"072f9ef2170fe0ac2fa98fe6642fdfee-31\""
         }
       ],
       "verification": {
@@ -2525,6 +3492,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2537,15 +3505,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "91.00.33",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 259874595,
+          "etag": "\"9739b99b7ccde2e5dbcd21d54115b0eb-31\""
         }
       ],
       "verification": {
@@ -2642,6 +3612,7 @@
       ],
       "fetched_from": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "wayback_timestamp": null,
@@ -2654,15 +3625,17 @@
       ],
       "acquisitions": [
         {
+          "url": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "91.01.7",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 259882787,
+          "etag": "\"48da58979543c03db1cb3c7a729e1694-31\""
         }
       ],
       "verification": {
@@ -2700,6 +3673,7 @@
           "platform": "fireos-android-apk",
           "version": "120",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2728,6 +3702,7 @@
           "platform": "fireos-android-apk",
           "version": "1206",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2756,6 +3731,7 @@
           "platform": "fireos-android-apk",
           "version": "1221",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2784,6 +3760,7 @@
           "platform": "fireos-android-apk",
           "version": "1303",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2812,6 +3789,7 @@
           "platform": "fireos-android-apk",
           "version": "1312",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2840,6 +3818,7 @@
           "platform": "fireos-android-apk",
           "version": "1322",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2868,6 +3847,7 @@
           "platform": "fireos-android-apk",
           "version": "133",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2896,6 +3876,7 @@
           "platform": "fireos-android-apk",
           "version": "1332",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2924,6 +3905,7 @@
           "platform": "fireos-android-apk",
           "version": "134",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2952,6 +3934,7 @@
           "platform": "fireos-android-apk",
           "version": "1341",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -2980,6 +3963,7 @@
           "platform": "fireos-android-apk",
           "version": "1461",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3008,6 +3992,7 @@
           "platform": "fireos-android-apk",
           "version": "57.22-59130_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3036,6 +4021,7 @@
           "platform": "fireos-android-apk",
           "version": "57.22-61300_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3064,6 +4050,7 @@
           "platform": "fireos-android-apk",
           "version": "57.22-71190_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3092,6 +4079,7 @@
           "platform": "fireos-android-apk",
           "version": "68.3-30100_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3120,6 +4108,7 @@
           "platform": "fireos-android-apk",
           "version": "69.1-31120_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3148,6 +4137,7 @@
           "platform": "fireos-android-apk",
           "version": "69.1-33120_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3176,6 +4166,7 @@
           "platform": "fireos-android-apk",
           "version": "70.3-35094_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3204,6 +4195,7 @@
           "platform": "fireos-android-apk",
           "version": "70.4-36090_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3232,6 +4224,7 @@
           "platform": "fireos-android-apk",
           "version": "72.2-39150_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3260,6 +4253,7 @@
           "platform": "fireos-android-apk",
           "version": "76.2-46300_32bit",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3288,6 +4282,7 @@
           "platform": "fireos-android-apk",
           "version": "80.09.04",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3316,6 +4311,7 @@
           "platform": "fireos-android-apk",
           "version": "80.15.01",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3344,6 +4340,7 @@
           "platform": "fireos-android-apk",
           "version": "80.18.24",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3372,6 +4369,7 @@
           "platform": "fireos-android-apk",
           "version": "80.24.32",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3400,6 +4398,7 @@
           "platform": "fireos-android-apk",
           "version": "80.27.6",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3428,6 +4427,7 @@
           "platform": "fireos-android-apk",
           "version": "80.27.8",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3456,6 +4456,7 @@
           "platform": "fireos-android-apk",
           "version": "80.28.36",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3484,6 +4485,7 @@
           "platform": "fireos-android-apk",
           "version": "80.32.32",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3512,6 +4514,7 @@
           "platform": "fireos-android-apk",
           "version": "81.00.51",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3540,6 +4543,7 @@
           "platform": "fireos-android-apk",
           "version": "83.00.35",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3568,6 +4572,7 @@
           "platform": "fireos-android-apk",
           "version": "85.00.31",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -3587,22 +4592,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk": {
-        "checked_at": "2026-11-26T05:37:54.943180+00:00",
+        "checked_at": "2026-11-26T07:08:59.825039+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:37:54.943180+00:00",
+        "next_attempt_at": "2026-12-03T07:08:59.825039+00:00",
         "candidate": {
+          "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.00.49",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327874794,
+          "etag": "\"64bcea54beac1a548b0f429d03c538be-40\""
         },
         "revision": {
-          "version": "89.00.49"
+          "version": "89.00.49",
+          "etag": "\"64bcea54beac1a548b0f429d03c538be-40\"",
+          "content_length": 327874794,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "0d38a02e6c9198215909b856fc13f4253c39b660be75b98cf91ab94ce00d0244",
@@ -3610,22 +4620,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk": {
-        "checked_at": "2026-11-26T05:38:07.199342+00:00",
+        "checked_at": "2026-11-26T07:09:11.271429+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:38:07.199342+00:00",
+        "next_attempt_at": "2026-12-03T07:09:11.271429+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.00.51",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327874794,
+          "etag": "\"acaa97fee10d1048e72d5f59febf393d-40\""
         },
         "revision": {
-          "version": "89.00.51"
+          "version": "89.00.51",
+          "etag": "\"acaa97fee10d1048e72d5f59febf393d-40\"",
+          "content_length": 327874794,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "f81a5e936f175740c28ec1e3f28fbc292e82b5b11b5fd7f26052f24af9e29dca",
@@ -3633,22 +4648,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk": {
-        "checked_at": "2026-11-26T05:38:18.865681+00:00",
+        "checked_at": "2026-11-26T07:09:21.589576+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:38:18.865681+00:00",
+        "next_attempt_at": "2026-12-03T07:09:21.589576+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "89.01.11",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 327801142,
+          "etag": "\"7b2a6d63dc95dfd1b8e9eaaf04ae8874-40\""
         },
         "revision": {
-          "version": "89.01.11"
+          "version": "89.01.11",
+          "etag": "\"7b2a6d63dc95dfd1b8e9eaaf04ae8874-40\"",
+          "content_length": 327801142,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "5e5559e9bcd38c98d6604db97ce1a696a7229e115fddf2e15e4ec0d631f2d2a8",
@@ -3656,22 +4676,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk": {
-        "checked_at": "2026-11-26T05:38:31.193538+00:00",
+        "checked_at": "2026-11-26T07:09:30.409527+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:38:31.193538+00:00",
+        "next_attempt_at": "2026-12-03T07:09:30.409527+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "90.00.43",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 248921485,
+          "etag": "\"15942ff8fc97266f457f50e5c53b769a-30\""
         },
         "revision": {
-          "version": "90.00.43"
+          "version": "90.00.43",
+          "etag": "\"15942ff8fc97266f457f50e5c53b769a-30\"",
+          "content_length": 248921485,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "ad5159af6329756174bbbb926624c08ee23422719654927a7ac74de00f4d7828",
@@ -3679,22 +4704,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk": {
-        "checked_at": "2026-11-26T05:38:41.776543+00:00",
+        "checked_at": "2026-11-26T07:09:39.213373+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:38:41.776543+00:00",
+        "next_attempt_at": "2026-12-03T07:09:39.213373+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "90.01.9",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 256474509,
+          "etag": "\"072f9ef2170fe0ac2fa98fe6642fdfee-31\""
         },
         "revision": {
-          "version": "90.01.9"
+          "version": "90.01.9",
+          "etag": "\"072f9ef2170fe0ac2fa98fe6642fdfee-31\"",
+          "content_length": 256474509,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "b6ac78a6e6af211379ad6ccbe65192d5a3057a0f30e257e6241ac0bce1fef776",
@@ -3702,22 +4732,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk": {
-        "checked_at": "2026-11-26T05:38:51.543041+00:00",
+        "checked_at": "2026-11-26T07:09:48.507249+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:38:51.543041+00:00",
+        "next_attempt_at": "2026-12-03T07:09:48.507249+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "91.00.33",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 259874595,
+          "etag": "\"9739b99b7ccde2e5dbcd21d54115b0eb-31\""
         },
         "revision": {
-          "version": "91.00.33"
+          "version": "91.00.33",
+          "etag": "\"9739b99b7ccde2e5dbcd21d54115b0eb-31\"",
+          "content_length": 259874595,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "97ffc0efe2ff87559cb89ba8c6a8095850ebb7be67aed1caec164f2a25d3ec4e",
@@ -3729,11 +4764,12 @@
         "consecutive_failures": 0,
         "next_attempt_at": "2026-11-26T11:38:57.769962+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "91.01.11",
-          "url": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "official-current-fireos-redirect"
           ],
           "advertised_by": "https://www.sonos.com/redir/controller_software_android2",
@@ -3754,22 +4790,27 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk": {
-        "checked_at": "2026-11-26T05:39:07.934945+00:00",
+        "checked_at": "2026-11-26T07:09:53.428792+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-12-03T05:39:07.934945+00:00",
+        "next_attempt_at": "2026-12-03T07:09:53.428792+00:00",
         "candidate": {
+          "url": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk",
           "family": "s2",
           "platform": "fireos-android-apk",
           "version": "91.01.7",
           "sources": [
-            "official-current-fireos-redirect"
+            "firmware-observation:data/discovery/firmware-frontier.json"
           ],
-          "wayback_timestamp": null,
-          "wayback_digest": null,
-          "url": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk"
+          "current": false,
+          "http_status": 200,
+          "content_length": 259882787,
+          "etag": "\"48da58979543c03db1cb3c7a729e1694-31\""
         },
         "revision": {
-          "version": "91.01.7"
+          "version": "91.01.7",
+          "etag": "\"48da58979543c03db1cb3c7a729e1694-31\"",
+          "content_length": 259882787,
+          "http_status": 200
         },
         "status": "preserved",
         "sha256": "f9ef59a86bd696dd412bb34f97dff65986921c6bd518e1cbb187ac3eac934252",
@@ -3786,6 +4827,7 @@
           "platform": "fireos-android-apk",
           "version": "1305",
           "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json",
             "public-archive-index"
           ],
           "current": false,
@@ -4248,7 +5290,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:e4bb44c3b172b5d3cce7be48afc20e654a77ac3e37b693b6c96d951610f36e6a": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:09:58.909447+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:09:58.909447+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
           "family": "legacy",
@@ -4266,10 +5310,20 @@
           },
           "wayback_timestamp": "20210419121122",
           "wayback_digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4"
-        }
+        },
+        "revision": {
+          "version": "1303",
+          "wayback_timestamp": "20210419121122",
+          "wayback_digest": "6JQQ46UIRFIJ2BV6P76QOG27T5ILFWU4"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:e5f88826916713855e94e1f4b9632d84866210166c0bf95427b6a8b433002dcc": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:09:59.652185+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:09:59.652185+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
           "family": "legacy",
@@ -4287,10 +5341,20 @@
           },
           "wayback_timestamp": "20210422173744",
           "wayback_digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP"
-        }
+        },
+        "revision": {
+          "version": "1305",
+          "wayback_timestamp": "20210422173744",
+          "wayback_digest": "2ZXBDVOSOTGTO3QE6YMRYM5F3YARG3XP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:578645f4b682916803b34307f3e4aac1813b677a3c65c8f70e1dcd594163bc0c": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:10:03.588818+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:10:03.588818+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
           "family": "legacy",
@@ -4308,10 +5372,20 @@
           },
           "wayback_timestamp": "20210615091901",
           "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP"
-        }
+        },
+        "revision": {
+          "version": "1312",
+          "wayback_timestamp": "20210615091901",
+          "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:20ebf74414f4dc26f963560c6b1757582a8e69be834bf46fc026bf04daadbbc5": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:10:04.801141+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:10:04.801141+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
           "family": "legacy",
@@ -4329,10 +5403,20 @@
           },
           "wayback_timestamp": "20210619121235",
           "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP"
-        }
+        },
+        "revision": {
+          "version": "1312",
+          "wayback_timestamp": "20210619121235",
+          "wayback_digest": "IXSJOVYC6RX2FAWKJQNPIF4ACMQQMASP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:7f204e20c69ee80675373ecb22068a46cf0df6feaca15c4a1a803a61f3e0c3e4": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:10:07.264478+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:10:07.264478+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
           "family": "legacy",
@@ -4350,10 +5434,20 @@
           },
           "wayback_timestamp": "20210916102256",
           "wayback_digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH"
-        }
+        },
+        "revision": {
+          "version": "1322",
+          "wayback_timestamp": "20210916102256",
+          "wayback_digest": "QQH63542AZL37T6N2AJZ4LIBECALSQVH"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:a943167035d5e2c89537897b71d8fbaab8341dcbf86d9187a8fa700989191598": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:13:03.417912+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:13:03.417912+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
           "family": "legacy",
@@ -4371,10 +5465,20 @@
           },
           "wayback_timestamp": "20210929233833",
           "wayback_digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX"
-        }
+        },
+        "revision": {
+          "version": "133",
+          "wayback_timestamp": "20210929233833",
+          "wayback_digest": "WDDA5G6E56VTAMGWRKGISKVM6WAHRWZX"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:2de8b9aa7f4cf35958f99bc42bc00a2801ac6adcc336e623fd5f8b5440f42379": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:13:19.037438+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:13:19.037438+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
           "family": "legacy",
@@ -4392,10 +5496,20 @@
           },
           "wayback_timestamp": "20211022084736",
           "wayback_digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ"
-        }
+        },
+        "revision": {
+          "version": "1332",
+          "wayback_timestamp": "20211022084736",
+          "wayback_digest": "6RVI5II4HZCRD7EFL4X26EM4ULDNOKMJ"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:96ebea6af08ae83aa4e34d86f5224b03a581087c8b3424cc8ca04c0a54b620ad": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:15:19.394421+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:15:19.394421+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
           "family": "legacy",
@@ -4413,10 +5527,20 @@
           },
           "wayback_timestamp": "20211203074125",
           "wayback_digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S"
-        }
+        },
+        "revision": {
+          "version": "134",
+          "wayback_timestamp": "20211203074125",
+          "wayback_digest": "Y4FURBSIVZ7VFCKJ3W6R5VSQKDXKZP7S"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 104] Connection reset by peer>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:2fd0d0d16ad49474e9cb0967e2b2339e323ceb68fe9f3bde52707b962ab3f8b3": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:15:20.883202+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:15:20.883202+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
           "family": "legacy",
@@ -4434,10 +5558,20 @@
           },
           "wayback_timestamp": "20220118132836",
           "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF"
-        }
+        },
+        "revision": {
+          "version": "1341",
+          "wayback_timestamp": "20220118132836",
+          "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:49f66a259fea3ed5d04cf1d3f1da205160691b94f7de74c201fe45cfba62af15": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:15:21.836691+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:15:21.836691+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
           "family": "legacy",
@@ -4455,10 +5589,20 @@
           },
           "wayback_timestamp": "20220121143240",
           "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF"
-        }
+        },
+        "revision": {
+          "version": "1341",
+          "wayback_timestamp": "20220121143240",
+          "wayback_digest": "HDUOPGKXFP5FEQ2GSGYSJKCOXCY3KRHF"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:5d294606e61b2c3e1cfa23b28aba15f5dd790cac343ac72d1f77efb51ec2bc00": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:15:51.456730+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:15:51.456730+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
           "family": "legacy",
@@ -4476,10 +5620,21 @@
           },
           "wayback_timestamp": "20220122223042",
           "wayback_digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN"
-        }
+        },
+        "revision": {
+          "version": "1341",
+          "wayback_timestamp": "20220122223042",
+          "wayback_digest": "EVW4KRFETJZB5ZZAXHPG46NT5ZXGDYJN"
+        },
+        "status": "preserved",
+        "sha256": "c405bb18ae0558fe6c5b36cae5f4da3ae0b32a141ee514c8274eaa2e57489bd2",
+        "release_asset": "SonosAndroidController1341--c405bb18ae05.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:fa6eac231b8146f57b6c30ede7c364c393bb297190cf32f4fcb5ee103edaed2e": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:15:52.882278+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:15:52.882278+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
           "family": "legacy",
@@ -4497,10 +5652,20 @@
           },
           "wayback_timestamp": "20220519083448",
           "wayback_digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC"
-        }
+        },
+        "revision": {
+          "version": "1461",
+          "wayback_timestamp": "20220519083448",
+          "wayback_digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:70b796fcd200454bad508064b45eabc64fe5fa47c25b47af89b623c6998845e5": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:17:38.173893+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:17:38.173893+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
           "family": "s2",
@@ -4518,10 +5683,21 @@
           },
           "wayback_timestamp": "20241005225439",
           "wayback_digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG"
-        }
+        },
+        "revision": {
+          "version": "80.09.04",
+          "wayback_timestamp": "20241005225439",
+          "wayback_digest": "7HXQNG6KZOUHDNBBEUXMD2SIJJYUZFQG"
+        },
+        "status": "preserved",
+        "sha256": "3edee14222451593aa04ca2b233cdbdb0e9183b1e98dacba8376aad99533eaf0",
+        "release_asset": "Sonos_80.09.04--3edee1422245.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:2bb4a95952aaf2c2df47430a639343bbd86c58fff388276577898a06e6cae01e": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:18:28.518811+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:18:28.518811+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
           "family": "s2",
@@ -4539,10 +5715,21 @@
           },
           "wayback_timestamp": "20220711112338",
           "wayback_digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P"
-        }
+        },
+        "revision": {
+          "version": "68.3-30100_32bit",
+          "wayback_timestamp": "20220711112338",
+          "wayback_digest": "NCEEFXM6MOGQMCZ2L2KXI3LRBBV3AM6P"
+        },
+        "status": "preserved",
+        "sha256": "74e3f7d55c62750083120e7e6e27d8bac7f438b9e28694fc7dee0b0b9527582e",
+        "release_asset": "Sonos_68.3-30100_32bit--74e3f7d55c62.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:4ea99725608c9798aa2b7b22078746e83707fc416d50d33ed6c2fcf8c27b5790": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:20:10.795799+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:20:10.795799+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
           "family": "s2",
@@ -4560,10 +5747,21 @@
           },
           "wayback_timestamp": "20250909210844",
           "wayback_digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX"
-        }
+        },
+        "revision": {
+          "version": "80.27.8",
+          "wayback_timestamp": "20250909210844",
+          "wayback_digest": "QC7WBKUKFGWYP6H7MZQ7CMJANI7RXOBX"
+        },
+        "status": "preserved",
+        "sha256": "7ea308199d3b529564011c7ea17fa706756b33884229cea28d02a1fa680f8c59",
+        "release_asset": "Sonos_80.27.8--7ea308199d3b.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:710c365400a8789c97b25c7f7da10ad1aa13835ea5b0ae523c2586aa350a70c4": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:20:26.360636+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:20:26.360636+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
           "family": "s2",
@@ -4581,10 +5779,20 @@
           },
           "wayback_timestamp": "20250404160652",
           "wayback_digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB"
-        }
+        },
+        "revision": {
+          "version": "80.18.24",
+          "wayback_timestamp": "20250404160652",
+          "wayback_digest": "KCHEGWILSQEB7P67MJATX4RTIV2VLBSB"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:c471a3d9fc21243049d5dbe5c14ba76021de408451c81e59f161804deae89d0e": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:20:27.494653+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:20:27.494653+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
           "family": "s2",
@@ -4602,10 +5810,20 @@
           },
           "wayback_timestamp": "20230205151206",
           "wayback_digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM"
-        }
+        },
+        "revision": {
+          "version": "70.4-36090_32bit",
+          "wayback_timestamp": "20230205151206",
+          "wayback_digest": "Q2PRZ6XLQKJAOMVWN2757IX6HEWUPKNM"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:606a6ad23701ec1f1e14788c4853340a80e914874844aa2eba32aac152023122": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:24.162517+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:24:24.162517+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
           "family": "s2",
@@ -4623,10 +5841,20 @@
           },
           "wayback_timestamp": "20220814155951",
           "wayback_digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG"
-        }
+        },
+        "revision": {
+          "version": "69.1-31120_32bit",
+          "wayback_timestamp": "20220814155951",
+          "wayback_digest": "3CDSKYSTWE2KPR62FQF2E6YIVHZR4XEG"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 104] Connection reset by peer>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:48d6baa154125b7fdd332aab7fefbc3f7b86ab2e1e437eb43d06dfbb2f5351dc": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:26.646275+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:24:26.646275+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
           "family": "s2",
@@ -4644,10 +5872,20 @@
           },
           "wayback_timestamp": "20220927103639",
           "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
-        }
+        },
+        "revision": {
+          "version": "69.1-33120_32bit",
+          "wayback_timestamp": "20220927103639",
+          "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:d61edd359da25c2ca42e3fb02d5e9a3b118d90a1dae81451286e65eed0cc91fe": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:28.167066+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:24:28.167066+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
           "family": "s2",
@@ -4665,10 +5903,20 @@
           },
           "wayback_timestamp": "20221003013800",
           "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
-        }
+        },
+        "revision": {
+          "version": "69.1-33120_32bit",
+          "wayback_timestamp": "20221003013800",
+          "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:797e4bb8335c2d3c967331377226653a26e4693e8552feaca134a352bf8b6499": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:28.732063+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:24:28.732063+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
           "family": "s2",
@@ -4686,10 +5934,20 @@
           },
           "wayback_timestamp": "20221007180005",
           "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
-        }
+        },
+        "revision": {
+          "version": "69.1-33120_32bit",
+          "wayback_timestamp": "20221007180005",
+          "wayback_digest": "AFWCY5SWKIIKWIJ5OYFB2XVK4YJQDQJP"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:4150b96329ea18fec261204cac3faa93234153455a4124d4f03a5ec8663d0766": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:33.871144+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:24:33.871144+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
           "family": "s1",
@@ -4707,10 +5965,21 @@
           },
           "wayback_timestamp": "20251219062406",
           "wayback_digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI"
-        }
+        },
+        "revision": {
+          "version": "57.22-71190_32bit",
+          "wayback_timestamp": "20251219062406",
+          "wayback_digest": "JCV2XCJ25JUTUAQQSPTV4J76MEHQBGZI"
+        },
+        "status": "preserved",
+        "sha256": "ee8e34e5510b18e19948dcdd882e71715aa3cba71f79f7b4e87afb87c8f31e38",
+        "release_asset": "Sonos_57.22-71190_32bit--ee8e34e5510b.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:133a4d7ae98e450b852ee82f34823923e15d7f81bc26b7ed155f31b73b6a599f": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:53.792347+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:24:53.792347+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
           "family": "s1",
@@ -4728,10 +5997,21 @@
           },
           "wayback_timestamp": "20250420170811",
           "wayback_digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4"
-        }
+        },
+        "revision": {
+          "version": "57.22-61300_32bit",
+          "wayback_timestamp": "20250420170811",
+          "wayback_digest": "3GWLEWFQBMMFJX6RJMDHQHLAS5XY3NW4"
+        },
+        "status": "preserved",
+        "sha256": "3ba97ae74d4503bf7c58e834f402505291fffa21517284e35003dee9ee118e66",
+        "release_asset": "Sonos_57.22-61300_32bit--3ba97ae74d45.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:253336c1a22a45bf654c46d0bd7c201dffe2b566f25fd6bcbe9aea640c8b0d08": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:24:54.654198+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:24:54.654198+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
           "family": "s2",
@@ -4749,10 +6029,20 @@
           },
           "wayback_timestamp": "20230401195618",
           "wayback_digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW"
-        }
+        },
+        "revision": {
+          "version": "72.2-39150_32bit",
+          "wayback_timestamp": "20230401195618",
+          "wayback_digest": "BBUBK362BKDIUGJNYCFWOZHZJ2HD34EW"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:8031552bebfcc34185f92758bd7e76152009ee9bbd11b98474fb64794bbdbb31": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:25:10.209666+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:25:10.209666+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
           "family": "s2",
@@ -4770,10 +6060,20 @@
           },
           "wayback_timestamp": "20231129144008",
           "wayback_digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL"
-        }
+        },
+        "revision": {
+          "version": "76.2-46300_32bit",
+          "wayback_timestamp": "20231129144008",
+          "wayback_digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:9dce28ca6e1c9c00b6391f98921fcabe679d1f809b3947726265671c6ba20fe3": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:25:11.101220+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:25:11.101220+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -4791,10 +6091,20 @@
           },
           "wayback_timestamp": "20221129172319",
           "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
-        }
+        },
+        "revision": {
+          "version": "70.3-35094_32bit",
+          "wayback_timestamp": "20221129172319",
+          "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:663032cefc3477d0b2b87da3dd37c14735cc3837918c1ed318e7304749e9240f": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:25:11.737818+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:25:11.737818+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -4812,10 +6122,20 @@
           },
           "wayback_timestamp": "20221202163548",
           "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
-        }
+        },
+        "revision": {
+          "version": "70.3-35094_32bit",
+          "wayback_timestamp": "20221202163548",
+          "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
+        },
+        "status": "failed",
+        "error": "downloaded installer is not a ZIP/APK",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:b8c60ab154cebe37359fec1953d689e8e5eb535f4560e42c849d09b6e93bc9aa": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-26T07:25:27.280083+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:25:27.280083+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -4833,6 +6153,280 @@
           },
           "wayback_timestamp": "20221203020409",
           "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
+        },
+        "revision": {
+          "version": "70.3-35094_32bit",
+          "wayback_timestamp": "20221203020409",
+          "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB"
+        },
+        "status": "failed",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk": {
+        "checked_at": "2026-11-26T07:25:27.835996+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-12-03T07:25:27.835996+00:00",
+        "candidate": {
+          "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "70.1-12345",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+          "current": false,
+          "http_status": 404,
+          "content_length": null,
+          "etag": null
+        },
+        "revision": {
+          "version": "70.1-12345",
+          "http_status": 404
+        },
+        "status": "failed",
+        "error": "HTTP Error 404: Not Found",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk": {
+        "checked_at": "2026-11-26T07:25:28.152099+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-12-03T07:25:28.152099+00:00",
+        "candidate": {
+          "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "70.1-12345",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+          "current": false,
+          "http_status": 404,
+          "content_length": null,
+          "etag": null
+        },
+        "revision": {
+          "version": "70.1-12345",
+          "http_status": 404
+        },
+        "status": "failed",
+        "error": "HTTP Error 404: Not Found",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk": {
+        "checked_at": "2026-11-26T07:25:38.284185+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:25:38.284185+00:00",
+        "candidate": {
+          "url": "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "78.1-51030_64bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "current": false,
+          "http_status": 200,
+          "content_length": 88171877,
+          "etag": "\"5c9d06d0cc4ade45985451cf915636b3-11\""
+        },
+        "revision": {
+          "version": "78.1-51030_64bit",
+          "etag": "\"5c9d06d0cc4ade45985451cf915636b3-11\"",
+          "content_length": 88171877,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "cbdc26584755c6fab23889dd5b4590b2f75159d28f5f14a877d7d5ab272f3589",
+        "release_asset": "Sonos_78.1-51030_64bit--cbdc26584755c6fab23889dd5b4590b2f75159d28f5f14a877d7d5ab272f3589.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk": {
+        "checked_at": "2026-11-26T07:25:48.745935+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:25:48.745935+00:00",
+        "candidate": {
+          "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.1-56190_32bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 86361394,
+          "etag": "\"4b9939d15d0eeeb0b35a29bb7b3ce91e-11\""
+        },
+        "revision": {
+          "version": "80.1-56190_32bit",
+          "etag": "\"4b9939d15d0eeeb0b35a29bb7b3ce91e-11\"",
+          "content_length": 86361394,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "88c073bf96480af58c7733190e0f398dc6a389c1cc83c60ee19475425ce6daba",
+        "release_asset": "Sonos_80.1-56190_32bit--88c073bf96480af58c7733190e0f398dc6a389c1cc83c60ee19475425ce6daba.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk": {
+        "checked_at": "2026-11-26T07:25:59.463172+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:25:59.463172+00:00",
+        "candidate": {
+          "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.1-56190_64bit",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 88204582,
+          "etag": "\"e2501253f4f8434d29706d7899793d8d-11\""
+        },
+        "revision": {
+          "version": "80.1-56190_64bit",
+          "etag": "\"e2501253f4f8434d29706d7899793d8d-11\"",
+          "content_length": 88204582,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "bd63b123a797354886d1a4e89591c69dc657a0c142ed4b8cd61047b333f306f0",
+        "release_asset": "Sonos_80.1-56190_64bit--bd63b123a797354886d1a4e89591c69dc657a0c142ed4b8cd61047b333f306f0.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk": {
+        "checked_at": "2026-11-26T07:26:20.348459+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:26:20.348459+00:00",
+        "candidate": {
+          "url": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "80.28.33",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 272448205,
+          "etag": "\"33f234b14caa28b89178c858806bc2a7-33\""
+        },
+        "revision": {
+          "version": "80.28.33",
+          "etag": "\"33f234b14caa28b89178c858806bc2a7-33\"",
+          "content_length": 272448205,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "dff8b6555a0a8c84c18c0dd8d15a5ef46d49b39d06cd7502890302030ff3748d",
+        "release_asset": "Sonos_80.28.33--dff8b6555a0a8c84c18c0dd8d15a5ef46d49b39d06cd7502890302030ff3748d.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk": {
+        "checked_at": "2026-11-26T07:26:40.853130+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:26:40.853130+00:00",
+        "candidate": {
+          "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "85.00.12",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 339757559,
+          "etag": "\"45672de678839368e45d43487401fcdd-41\""
+        },
+        "revision": {
+          "version": "85.00.12",
+          "etag": "\"45672de678839368e45d43487401fcdd-41\"",
+          "content_length": 339757559,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "a00500e06f852ef3e5fe8099827b663ebc5dc8b0c9d509e97e5372abcc80d5a2",
+        "release_asset": "Sonos_85.00.12--a00500e06f852ef3e5fe8099827b663ebc5dc8b0c9d509e97e5372abcc80d5a2.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk": {
+        "checked_at": "2026-11-26T07:27:05.571861+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:27:05.571861+00:00",
+        "candidate": {
+          "url": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "88.01.9",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "advertised_by": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/passportAndroidBeta.html",
+          "current": false,
+          "http_status": 200,
+          "content_length": 339022164,
+          "etag": "\"b2b8e572564432fb6969b97257d285e7-41\""
+        },
+        "revision": {
+          "version": "88.01.9",
+          "etag": "\"b2b8e572564432fb6969b97257d285e7-41\"",
+          "content_length": 339022164,
+          "http_status": 200
+        },
+        "status": "preserved",
+        "sha256": "aa3fcc7a6c75d0c6cfb5640b710bb55115f87f5f9cc0d2d403159efd43babd5a",
+        "release_asset": "Sonos_88.01.9--aa3fcc7a6c75d0c6cfb5640b710bb55115f87f5f9cc0d2d403159efd43babd5a.apk",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk": {
+        "checked_at": "2026-11-26T07:27:06.254452+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-12-03T07:27:06.254452+00:00",
+        "candidate": {
+          "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "unknown",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "current": false,
+          "http_status": 404,
+          "content_length": null,
+          "etag": null
+        },
+        "revision": {
+          "version": "unknown",
+          "http_status": 404
+        },
+        "status": "failed",
+        "error": "HTTP Error 404: Not Found",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
+      },
+      "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk": {
+        "status": "needs-refresh",
+        "candidate": {
+          "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk",
+          "family": "s2",
+          "platform": "fireos-android-apk",
+          "version": "unknown",
+          "sources": [
+            "firmware-observation:data/discovery/firmware-frontier.json"
+          ],
+          "current": false,
+          "http_status": 404,
+          "content_length": null,
+          "etag": null
         }
       }
     }
@@ -4849,9 +6443,20 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "The read operation timed out",
         "http_status": null,
-        "checked_at": "2026-11-26T05:33:48.699164+00:00",
+        "checked_at": "2026-11-26T07:10:54.804252+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-26T09:10:54.804252+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T07:11:10.352937+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
+        "next_attempt_at": "2026-11-26T08:11:10.352937+00:00"
       }
     },
     {
@@ -4915,6 +6520,18 @@
     {
       "phase": "discovery",
       "error": {
+        "checked_at": "2026-11-26T07:12:22.130665+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:12:22.130665+00:00",
+        "status": "failed",
+        "error": "HTTP Error 502: Bad Gateway",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 502
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
@@ -4935,6 +6552,17 @@
       }
     },
     {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1206.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T07:12:47.968893+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T08:12:47.968893+00:00"
+      }
+    },
+    {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
       "error": "HTTP Error 404: Not Found"
     },
@@ -4952,11 +6580,133 @@
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
       "error": "downloaded installer is not a ZIP/APK",
       "acquisition_id": "wayback:ea4d6a2c8789024ca1edd09684fae15fc92d352c84012952ea6c5dc3d5062062"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:e4bb44c3b172b5d3cce7be48afc20e654a77ac3e37b693b6c96d951610f36e6a"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:e5f88826916713855e94e1f4b9632d84866210166c0bf95427b6a8b433002dcc"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:578645f4b682916803b34307f3e4aac1813b677a3c65c8f70e1dcd594163bc0c"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:20ebf74414f4dc26f963560c6b1757582a8e69be834bf46fc026bf04daadbbc5"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:7f204e20c69ee80675373ecb22068a46cf0df6feaca15c4a1a803a61f3e0c3e4"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "acquisition_id": "wayback:a943167035d5e2c89537897b71d8fbaab8341dcbf86d9187a8fa700989191598"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "acquisition_id": "wayback:2de8b9aa7f4cf35958f99bc42bc00a2801ac6adcc336e623fd5f8b5440f42379"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "error": "<urlopen error [Errno 104] Connection reset by peer>",
+      "acquisition_id": "wayback:96ebea6af08ae83aa4e34d86f5224b03a581087c8b3424cc8ca04c0a54b620ad"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:2fd0d0d16ad49474e9cb0967e2b2339e323ceb68fe9f3bde52707b962ab3f8b3"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:49f66a259fea3ed5d04cf1d3f1da205160691b94f7de74c201fe45cfba62af15"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:fa6eac231b8146f57b6c30ede7c364c393bb297190cf32f4fcb5ee103edaed2e"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "acquisition_id": "wayback:710c365400a8789c97b25c7f7da10ad1aa13835ea5b0ae523c2586aa350a70c4"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:c471a3d9fc21243049d5dbe5c14ba76021de408451c81e59f161804deae89d0e"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "error": "<urlopen error [Errno 104] Connection reset by peer>",
+      "acquisition_id": "wayback:606a6ad23701ec1f1e14788c4853340a80e914874844aa2eba32aac152023122"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:48d6baa154125b7fdd332aab7fefbc3f7b86ab2e1e437eb43d06dfbb2f5351dc"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:d61edd359da25c2ca42e3fb02d5e9a3b118d90a1dae81451286e65eed0cc91fe"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:797e4bb8335c2d3c967331377226653a26e4693e8552feaca134a352bf8b6499"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:253336c1a22a45bf654c46d0bd7c201dffe2b566f25fd6bcbe9aea640c8b0d08"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "acquisition_id": "wayback:8031552bebfcc34185f92758bd7e76152009ee9bbd11b98474fb64794bbdbb31"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:9dce28ca6e1c9c00b6391f98921fcabe679d1f809b3947726265671c6ba20fe3"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "downloaded installer is not a ZIP/APK",
+      "acquisition_id": "wayback:663032cefc3477d0b2b87da3dd37c14735cc3837918c1ed318e7304749e9240f"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "acquisition_id": "wayback:b8c60ab154cebe37359fec1953d689e8e5eb535f4560e42c849d09b6e93bc9aa"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk",
+      "error": "HTTP Error 404: Not Found"
     }
   ],
-  "pending_total": 28,
+  "pending_total": 1,
   "discovery_status": "partial",
   "attempted_this_run": 32,
-  "added_this_run": 0,
+  "added_this_run": 6,
   "unpublished_captures": []
 }

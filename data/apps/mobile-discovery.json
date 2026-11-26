@@ -2,7 +2,7 @@
   "status": "ok",
   "errors": [],
   "schema_version": 1,
-  "checked": "2026-11-26T06:31:52.088001+00:00",
+  "checked": "2026-11-26T07:08:41.499177+00:00",
   "current_only": false,
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
@@ -13,8 +13,8 @@
   "wayback": {
     "provider": "shared-installer-history"
   },
-  "candidate_total": 34,
-  "available_live_total": 33,
+  "candidate_total": 51,
+  "available_live_total": 46,
   "candidates": [
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
@@ -22,6 +22,7 @@
       "platform": "fireos-android-apk",
       "version": "120",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -35,6 +36,7 @@
       "platform": "fireos-android-apk",
       "version": "1206",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -48,6 +50,7 @@
       "platform": "fireos-android-apk",
       "version": "1221",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -61,6 +64,7 @@
       "platform": "fireos-android-apk",
       "version": "1303",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -74,6 +78,7 @@
       "platform": "fireos-android-apk",
       "version": "1305",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -87,6 +92,7 @@
       "platform": "fireos-android-apk",
       "version": "1312",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -100,6 +106,7 @@
       "platform": "fireos-android-apk",
       "version": "1322",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -113,6 +120,7 @@
       "platform": "fireos-android-apk",
       "version": "133",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -126,6 +134,7 @@
       "platform": "fireos-android-apk",
       "version": "1332",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -139,6 +148,7 @@
       "platform": "fireos-android-apk",
       "version": "134",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -152,6 +162,7 @@
       "platform": "fireos-android-apk",
       "version": "1341",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -165,6 +176,7 @@
       "platform": "fireos-android-apk",
       "version": "1461",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -178,6 +190,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-59130_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -191,6 +204,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-61300_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -204,6 +218,7 @@
       "platform": "fireos-android-apk",
       "version": "57.22-71190_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -217,6 +232,7 @@
       "platform": "fireos-android-apk",
       "version": "68.3-30100_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -230,6 +246,7 @@
       "platform": "fireos-android-apk",
       "version": "69.1-31120_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -243,6 +260,7 @@
       "platform": "fireos-android-apk",
       "version": "69.1-33120_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -251,11 +269,40 @@
       "etag": "\"d673bce05d300a8af0c77fdb034732e5-12\""
     },
     {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.1-12345",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.1-12345",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
       "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "70.3-35094_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -269,6 +316,7 @@
       "platform": "fireos-android-apk",
       "version": "70.4-36090_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -282,6 +330,7 @@
       "platform": "fireos-android-apk",
       "version": "72.2-39150_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -295,6 +344,7 @@
       "platform": "fireos-android-apk",
       "version": "76.2-46300_32bit",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -303,11 +353,25 @@
       "etag": "\"f6229f2c0c357b4cf371b23b5f768010-11\""
     },
     {
+      "url": "https://update-software.sonos.com/software/nvasc21FQF/Sonos_78.1-51030_64bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "78.1-51030_64bit",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 88171877,
+      "etag": "\"5c9d06d0cc4ade45985451cf915636b3-11\""
+    },
+    {
       "url": "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "80.09.04",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -316,11 +380,40 @@
       "etag": "\"7967ace64d25fafb3ea5ca1c1fdbff7f-30\""
     },
     {
+      "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.1-56190_32bit",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+      "current": false,
+      "http_status": 200,
+      "content_length": 86361394,
+      "etag": "\"4b9939d15d0eeeb0b35a29bb7b3ce91e-11\""
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/Sonos_80.1-56190_64bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.1-56190_64bit",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+      "current": false,
+      "http_status": 200,
+      "content_length": 88204582,
+      "etag": "\"e2501253f4f8434d29706d7899793d8d-11\""
+    },
+    {
       "url": "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "80.15.01",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -334,6 +427,7 @@
       "platform": "fireos-android-apk",
       "version": "80.18.24",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -347,6 +441,7 @@
       "platform": "fireos-android-apk",
       "version": "80.24.32",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -360,6 +455,7 @@
       "platform": "fireos-android-apk",
       "version": "80.27.6",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -373,6 +469,7 @@
       "platform": "fireos-android-apk",
       "version": "80.27.8",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -381,11 +478,26 @@
       "etag": "\"032d4403bbee62367e3048632890154f-29\""
     },
     {
+      "url": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/Sonos_80.28.33.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "80.28.33",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/passportAndroidBeta.html",
+      "current": false,
+      "http_status": 200,
+      "content_length": 272448205,
+      "etag": "\"33f234b14caa28b89178c858806bc2a7-33\""
+    },
+    {
       "url": "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "80.28.36",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -399,6 +511,7 @@
       "platform": "fireos-android-apk",
       "version": "80.32.32",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -412,6 +525,7 @@
       "platform": "fireos-android-apk",
       "version": "81.00.51",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -425,6 +539,7 @@
       "platform": "fireos-android-apk",
       "version": "83.00.35",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -433,11 +548,26 @@
       "etag": "\"d8628da15d9a64df84def733defc5127-37\""
     },
     {
+      "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/Sonos_85.00.12.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "85.00.12",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+      "current": false,
+      "http_status": 200,
+      "content_length": 339757559,
+      "etag": "\"45672de678839368e45d43487401fcdd-41\""
+    },
+    {
       "url": "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "85.00.31",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "public-archive-index"
       ],
       "current": false,
@@ -446,11 +576,104 @@
       "etag": "\"6f4efaf620c6748ab5cdc42de12b5bea-41\""
     },
     {
+      "url": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/Sonos_88.01.9.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "88.01.9",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "advertised_by": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/passportAndroidBeta.html",
+      "current": false,
+      "http_status": 200,
+      "content_length": 339022164,
+      "etag": "\"b2b8e572564432fb6969b97257d285e7-41\""
+    },
+    {
+      "url": "https://update-beta.sonos.com/software/542ce839-0855-4d1a-ba48-9454ee1df149/Sonos_89.00.49.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "89.00.49",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 327874794,
+      "etag": "\"64bcea54beac1a548b0f429d03c538be-40\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/96a2b7a2-ca3e-4107-8d2a-592a4510afba/Sonos_89.00.51.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "89.00.51",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 327874794,
+      "etag": "\"acaa97fee10d1048e72d5f59febf393d-40\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/bc9f8c04-4eb9-448f-ab66-94bcec5e7b80/Sonos_89.01.11.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "89.01.11",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 327801142,
+      "etag": "\"7b2a6d63dc95dfd1b8e9eaaf04ae8874-40\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/63a302da-752e-4cf3-92f9-ced0d5992d36/Sonos_90.00.43.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "90.00.43",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 248921485,
+      "etag": "\"15942ff8fc97266f457f50e5c53b769a-30\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/c7cf5010-c7ef-4651-bf72-aa5741b7a4c0/Sonos_90.01.9.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "90.01.9",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 256474509,
+      "etag": "\"072f9ef2170fe0ac2fa98fe6642fdfee-31\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b/Sonos_91.00.33.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "91.00.33",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 259874595,
+      "etag": "\"9739b99b7ccde2e5dbcd21d54115b0eb-31\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
       "version": "91.01.11",
-      "url": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "official-current-fireos-redirect"
       ],
       "advertised_by": "https://www.sonos.com/redir/controller_software_android2",
@@ -458,6 +681,45 @@
       "http_status": 200,
       "content_length": 259903267,
       "etag": "\"4c568627cc42005bab7041f6cb93bbd6-31\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/513aeedc-cea7-4e87-b4df-ee3c3301a4f2/Sonos_91.01.7.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "91.01.7",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 259882787,
+      "etag": "\"48da58979543c03db1cb3c7a729e1694-31\""
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "unknown",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-armeabi-v7a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "unknown",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
     }
   ]
 }
