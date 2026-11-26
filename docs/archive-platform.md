@@ -137,7 +137,8 @@ channel-agnostic. A channel never imports another project's URL table: it may
 only produce leads, and a lead becomes an observation solely when Sonos itself
 answers. Public client diagnostics supply additional native manifest leads without importing another
 archive's manifest collection or retaining raw logs. The same extraction covers
-issue bodies and comment threads; comment scans keep durable per-thread cursors
+issue bodies and comment threads across a declared list of diagnostic
+markers; comment scans keep durable per-thread cursors
 and requeue a thread when its activity changes. Timestamp windows subdivide
 before GitHub's result cap, and a one-second window that still overflows drains
 through a bounded identity-deduplicated page scan. The community forum archive

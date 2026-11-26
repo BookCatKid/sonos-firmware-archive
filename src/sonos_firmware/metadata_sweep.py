@@ -21,6 +21,11 @@ from .discovery import USER_AGENT
 
 PROFILE_FIELDS = ("cmaj", "cmin", "cbld", "subm", "rev", "reg")
 BASELINE = {"cmaj": 4, "cmin": 1, "cbld": 1, "subm": 100, "rev": 1, "reg": 2}
+# A diagnostic marker worth searching for in public issues. Each entry becomes
+# a body-and-comment query; add a marker here to widen the channel.
+CLIENT_REPORT_MARKERS = ('"manifestURL"', '"manifestRevision"',
+                         '"update-firmware.sonos.com"', '"update.upm"',
+                         '"AvailableSoftwareUpdate"')
 RELEASE_NOTES_URL = 'https://support.sonos.com/en-us/article/release-notes-sonos-system-updates'
 
 
@@ -318,9 +323,8 @@ def discover_client_reports(previous, *, pages=2, comments=4, fetch=fetch_client
     """Search primary client reports, subdividing windows before GitHub's cap."""
     from datetime import datetime, timedelta, timezone
     state = deepcopy(previous)
-    queries = ('"manifestURL" sonos in:body,comments is:issue is:public',
-               '"manifestRevision" sonos in:body,comments is:issue is:public',
-               '"update-firmware.sonos.com" sonos in:body,comments is:issue is:public')
+    queries = tuple(query for marker in CLIENT_REPORT_MARKERS
+                    for query in (marker+' sonos in:body,comments is:issue is:public',))
     contexts = state.setdefault('queries', {})
     for query in queries:
         legacy = contexts.pop(query.replace('in:body,comments', 'in:body'), None)
