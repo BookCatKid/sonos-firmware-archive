@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "target": "google-play",
+  "provider": "google-play",
+  "status": "failed",
+  "executed": true,
+  "started_at": "2026-11-26T05:31:49.571979+00:00",
+  "steps": [
+    {
+      "name": "sweep_android_store_history",
+      "status": "failed",
+      "exit_code": 1,
+      "output_tail": "archived com.sonos.acr@572383122\narchived com.sonos.acr@572383121\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@802900006\n",
+      "failure_kind": "source-reported-incomplete",
+      "source_status": "partial"
+    }
+  ],
+  "errors": [
+    {
+      "step": "sweep_android_store_history",
+      "exit_code": 1,
+      "kind": "source-reported-incomplete"
+    }
+  ],
+  "pending": [
+    {
+      "step": "sweep_android_store_history",
+      "reason": "source reports incomplete work"
+    }
+  ],
+  "finished_at": "2026-11-26T05:33:37.737019+00:00",
+  "next_due": "2026-11-26T06:33:37.737019+00:00"
+}
