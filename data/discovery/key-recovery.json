@@ -4,9 +4,9 @@
     "BookCatKid/sonos-firmware-archive": {
       "0cfddc3f6ac5c485ccc435885c42c52a9338e28b": {
         "995bf2b898a6563d177d6f29c07d9865cd717195f98cd9b33c41021bf6fd58ba": {
-          "checked_at": "2026-11-26T06:29:59.774917+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:29:59.774917+00:00",
+          "checked_at": "2026-11-26T08:03:10.688260+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:10.688260+00:00",
           "status": "failed",
           "source": {
             "sha256": "d44aea33085f69c725699cc40b804394212b7a3d56c6327f4c952fdc6c9871e6",
@@ -24,9 +24,9 @@
           "error_type": "ValueError"
         },
         "acf2e2aa04f7728297182a08683a6cabd5d088b2d5e1e71f9eef02c279c5b223": {
-          "checked_at": "2026-11-26T06:30:00.680941+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:00.680941+00:00",
+          "checked_at": "2026-11-26T08:03:11.397089+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:11.397089+00:00",
           "status": "failed",
           "source": {
             "sha256": "cb4eb7d3e13ee079bf770dd5d579897c59a763fb554c6751bd95fdd0e8d8014a",
@@ -335,13 +335,145 @@
             "section_type": 5
           },
           "error_type": "ValueError"
+        },
+        "1df3640e642a013c27116196af7a8422c038c268abb7f3f2872924b02a100df1": {
+          "checked_at": "2026-11-26T08:03:12.205107+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:12.205107+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0dd8735ad94ef79f485c08b20162781f799c4fc77c9fdebefec03ae09e8426af",
+            "bytes": 109004,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-bb417d43b703bf5c100040d93cabad6ed02c444ec618a440856783358a69828c-0dd8735ad94ef79f485c08b20162781f799c4fc77c9fdebefec03ae09e8426af.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-5",
+            "model": 5,
+            "source_sha256": "bb417d43b703bf5c100040d93cabad6ed02c444ec618a440856783358a69828c",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "b451cb1ff053c7f1ed1a8e1059631fc500dd0f4faa8ed05a8a9bc7de373bf761": {
+          "checked_at": "2026-11-26T08:03:12.912453+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:12.912453+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "5510e9760a5211f8fd234a9cc3dd86970b486f3a9fe72c8cdfc44dc0c228feba",
+            "bytes": 109008,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-e1692f2dd7276bc346cb958e7663d6e33c054353e39c18509630f41d17a0f236-5510e9760a5211f8fd234a9cc3dd86970b486f3a9fe72c8cdfc44dc0c228feba.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-5",
+            "model": 5,
+            "source_sha256": "e1692f2dd7276bc346cb958e7663d6e33c054353e39c18509630f41d17a0f236",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "024d1677308f7dd6d723457db911b8b273022a59c1e80e3eb97e4518906b2bc0": {
+          "checked_at": "2026-11-26T08:03:13.519497+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:13.519497+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "782d52b6bebd9cde7f5333c6936bea2f33bf56aa732338953b5a5eaf1003f0ce",
+            "bytes": 109032,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-e501acf24f9540db0edc1811a78753da23afb29d7b98b01cda9133e3a4953573-782d52b6bebd9cde7f5333c6936bea2f33bf56aa732338953b5a5eaf1003f0ce.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-5",
+            "model": 5,
+            "source_sha256": "e501acf24f9540db0edc1811a78753da23afb29d7b98b01cda9133e3a4953573",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "45114ec3444d0b556fd312898084d30b65a9acbc0dc94bfb7a37c44ea7935e17": {
+          "checked_at": "2026-11-26T08:03:14.229060+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:14.229060+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "6c79b8bc869c8b80d927f84891b3815cb93f4183d84a56a056c3a091473e72bf",
+            "bytes": 2261138,
+            "release_tag": "firmware-28.1-83040",
+            "release_asset": "28.1-83040-1-5.upd",
+            "kind": "upd-section",
+            "package_id": "28.1-83040-1-5",
+            "model": 5,
+            "section_index": 6,
+            "section_sha256": "6fb7e792ef4c38ff4c51627d0935808cedfe8d28afb255b48568034522341312",
+            "section_bytes": 512,
+            "section_type": 9
+          },
+          "error_type": "ValueError"
+        },
+        "7881d0846006b71fa27f74dbafbcc4afbdfaa5a5ac9e9b1498769a0a9dd9ed6e": {
+          "checked_at": "2026-11-26T08:03:14.937553+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:14.937553+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "6c79b8bc869c8b80d927f84891b3815cb93f4183d84a56a056c3a091473e72bf",
+            "bytes": 2261138,
+            "release_tag": "firmware-28.1-83040",
+            "release_asset": "28.1-83040-1-5.upd",
+            "kind": "upd-section",
+            "package_id": "28.1-83040-1-5",
+            "model": 5,
+            "section_index": 7,
+            "section_sha256": "6fb7e792ef4c38ff4c51627d0935808cedfe8d28afb255b48568034522341312",
+            "section_bytes": 512,
+            "section_type": 10
+          },
+          "error_type": "ValueError"
+        },
+        "2cf2a107d2b4128835fe4f33f06d38e099a46cc3b5e9a958a1c9f8696df13e98": {
+          "checked_at": "2026-11-26T08:03:15.646279+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:15.646279+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "6c79b8bc869c8b80d927f84891b3815cb93f4183d84a56a056c3a091473e72bf",
+            "bytes": 2261138,
+            "release_tag": "firmware-28.1-83040",
+            "release_asset": "28.1-83040-1-5.upd",
+            "kind": "upd-section",
+            "package_id": "28.1-83040-1-5",
+            "model": 5,
+            "section_index": 8,
+            "section_sha256": "a26e1383bfc2e26430970c6776c6378ff40fbc75cf6a8611049f2a45227dfcf1",
+            "section_bytes": 128,
+            "section_type": 4294967295
+          },
+          "error_type": "ValueError"
         }
       },
       "87da92d5173e329c366300810f9d94f525bf2d65": {
         "97d99051d2ce2b28acd198e8a98a3bd4efa8dd55526bb40f8aa915b1ebf856c4": {
-          "checked_at": "2026-11-26T06:30:06.458467+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:06.458467+00:00",
+          "checked_at": "2026-11-26T08:03:16.744802+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:16.744802+00:00",
           "status": "failed",
           "source": {
             "sha256": "e0dac684ca91b182c64a309a9da4960716788a1e56acea547b4929f6af6302e5",
@@ -665,13 +797,165 @@
             "section_type": 1
           },
           "error_type": "ValueError"
+        },
+        "9633182a0333d25cb1000b7114a01882cd2701c58b355e7ffe1840db9843215a": {
+          "checked_at": "2026-11-26T08:03:17.452700+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:17.452700+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "cb69fd3f7d64c096bc7e582dc4331eeec43600bd3ae10dc06cd21e46b101b1a0",
+            "bytes": 109260,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-28ad72442c1355830e2687909234ef4f41bcba13f33b814f8ee4800ba093bd97-cb69fd3f7d64c096bc7e582dc4331eeec43600bd3ae10dc06cd21e46b101b1a0.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-13",
+            "model": 13,
+            "source_sha256": "28ad72442c1355830e2687909234ef4f41bcba13f33b814f8ee4800ba093bd97",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "b2bb2f4c57965318d6b9adacb564079d3e61adcd99bba275e8225019be8cad26": {
+          "checked_at": "2026-11-26T08:03:18.160061+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:18.160061+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "5924ba53ff8ca4d70d9c2172376cf0653a762d8e9568191a92e50fdd18453198",
+            "bytes": 109256,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-e772288dd4ef948a226197ba8d7dba89b25b521c59ef9ab05843d3db78936ad0-5924ba53ff8ca4d70d9c2172376cf0653a762d8e9568191a92e50fdd18453198.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-13",
+            "model": 13,
+            "source_sha256": "e772288dd4ef948a226197ba8d7dba89b25b521c59ef9ab05843d3db78936ad0",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "1ff278ea1e781e36ef9015a431ab740565922219564517e8b1b7b052feb02a35": {
+          "checked_at": "2026-11-26T08:03:18.867626+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:18.867626+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4b5c0dcd5a63731d9f5dabcfe5cab3a62dd4b593d9d91071e80fa53890385659",
+            "bytes": 109260,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-ef1422ca614f5de8cfe0c0fd35f7b521bec781221405f1f830d022bee3c27647-4b5c0dcd5a63731d9f5dabcfe5cab3a62dd4b593d9d91071e80fa53890385659.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-13",
+            "model": 13,
+            "source_sha256": "ef1422ca614f5de8cfe0c0fd35f7b521bec781221405f1f830d022bee3c27647",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "2e5e41256389631d7b7fc7672ba5c985cafcb4d8cc3b9d9b95bef1fb33fb314d": {
+          "checked_at": "2026-11-26T08:03:19.795506+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:19.795506+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+            "bytes": 9904177,
+            "release_tag": "firmware-34.16-37101",
+            "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd",
+            "kind": "upd-section",
+            "package_id": "34.16-37101-1-13",
+            "model": 13,
+            "section_index": 0,
+            "section_sha256": "4d728ce51aedaae66c24c5fbb06f6707bd80234dad70e1a0757318fbc36218d1",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "a38efbff931262275f06156d656a737cef1bbb36626325f30971278b9f84c687": {
+          "checked_at": "2026-11-26T08:03:20.621722+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:20.621722+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+            "bytes": 9904177,
+            "release_tag": "firmware-34.16-37101",
+            "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd",
+            "kind": "upd-section",
+            "package_id": "34.16-37101-1-13",
+            "model": 13,
+            "section_index": 1,
+            "section_sha256": "9b4e2dd1b03788b974e94142bf7e2617c8d55490c734bb8ad81764f2fcfa16f9",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "15631196497d33b36a3e38c5895ceec69fa0642d3c62013ad3eba9376e7d14f6": {
+          "checked_at": "2026-11-26T08:03:21.343701+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:21.343701+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+            "bytes": 9904177,
+            "release_tag": "firmware-34.16-37101",
+            "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd",
+            "kind": "upd-section",
+            "package_id": "34.16-37101-1-13",
+            "model": 13,
+            "section_index": 2,
+            "section_sha256": "f588cfa62985f3b9ea77542dd6c78fe460f7013885ed93f2b568f96218643cd1",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "0c49cd231226edca1fac74d2ee5b16107f1d11d0ed0d7ec40a7f9514506d81b1": {
+          "checked_at": "2026-11-26T08:03:22.065826+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:22.065826+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+            "bytes": 9904177,
+            "release_tag": "firmware-34.16-37101",
+            "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd",
+            "kind": "upd-section",
+            "package_id": "34.16-37101-1-13",
+            "model": 13,
+            "section_index": 3,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "8046d7d71a1161ed17f5c661096a2bfe2cac0f3a": {
         "c43d944adf1d1a455027411f25237062321bc210452dfee344586a64417a551e": {
-          "checked_at": "2026-11-26T06:30:12.872908+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:12.872908+00:00",
+          "checked_at": "2026-11-26T08:03:23.009137+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:23.009137+00:00",
           "status": "failed",
           "source": {
             "sha256": "6bffab2481fe5dba3f7629ec76fc98b176e94ea1582e7436e5a20291e559543c",
@@ -689,9 +973,9 @@
           "error_type": "ValueError"
         },
         "f9d9c04a9015d5e7acb8b28f3b06013e1d18aabcefab9302dfbd34ae9b40c5f6": {
-          "checked_at": "2026-11-26T06:30:13.524122+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:13.524122+00:00",
+          "checked_at": "2026-11-26T08:03:23.845320+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:23.845320+00:00",
           "status": "failed",
           "source": {
             "sha256": "6bffab2481fe5dba3f7629ec76fc98b176e94ea1582e7436e5a20291e559543c",
@@ -991,13 +1275,145 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "62e727c03ce25b56265106d5ca38a5939364b19491376635982d8b847046c1cc": {
+          "checked_at": "2026-11-26T08:03:24.553389+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:24.553389+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c7411b269c89e22345cf772b646ed6b6852664e971fab32662746e601ef97ef5",
+            "bytes": 109336,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-df44b4965233b86ebcf1310430eafc47e491fbbdd2b00adfdc7c53a3e6f71401-c7411b269c89e22345cf772b646ed6b6852664e971fab32662746e601ef97ef5.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-14",
+            "model": 14,
+            "source_sha256": "df44b4965233b86ebcf1310430eafc47e491fbbdd2b00adfdc7c53a3e6f71401",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "eddc29df52623b30ae2fdefd9586464093b0c6e13ca23096e716102af508d7dc": {
+          "checked_at": "2026-11-26T08:03:25.361204+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:25.361204+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "115be18523e79fb5e8102440e5446b7d3a6986f070a36b99ef7c55513ceae4fe",
+            "bytes": 109332,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-b64e57059d4ec7d430b9c9f054aef2a96fe4ff7892e5403d511a2e569142b6f4-115be18523e79fb5e8102440e5446b7d3a6986f070a36b99ef7c55513ceae4fe.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-14",
+            "model": 14,
+            "source_sha256": "b64e57059d4ec7d430b9c9f054aef2a96fe4ff7892e5403d511a2e569142b6f4",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "8f86a9a1b10641727789e66cdcc54da14415ed777e7dbe9ab21dc61695a9777a": {
+          "checked_at": "2026-11-26T08:03:25.968666+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:25.968666+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "34670b55065ab754d3a69ec8bfbb1a0c846b13d4178661693ffde679cea1cae2",
+            "bytes": 109320,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-935f09ff730d986ce58e4e001c6475c38f151d5acac7a4d8dc60ff6124e56c74-34670b55065ab754d3a69ec8bfbb1a0c846b13d4178661693ffde679cea1cae2.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-14",
+            "model": 14,
+            "source_sha256": "935f09ff730d986ce58e4e001c6475c38f151d5acac7a4d8dc60ff6124e56c74",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "f350bf3691d2b83862c3d5123f31b4e6938e26aa61193bbf889e5e65a098fc2a": {
+          "checked_at": "2026-11-26T08:03:26.700148+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:26.700148+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b64e57059d4ec7d430b9c9f054aef2a96fe4ff7892e5403d511a2e569142b6f4",
+            "bytes": 12740430,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-14.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-14",
+            "model": 14,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "11df3826d8cb54a803718efbb3c36e1c9f6bd6817cbd6c04b24508a2134e0b71": {
+          "checked_at": "2026-11-26T08:03:27.531567+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:27.531567+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b64e57059d4ec7d430b9c9f054aef2a96fe4ff7892e5403d511a2e569142b6f4",
+            "bytes": 12740430,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-14.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-14",
+            "model": 14,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "9c9839f8b90815e2a46ccdd904fa71108c6bd7f0cbbcfc100fc24bc2fc8a3e47": {
+          "checked_at": "2026-11-26T08:03:28.259287+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:28.259287+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b64e57059d4ec7d430b9c9f054aef2a96fe4ff7892e5403d511a2e569142b6f4",
+            "bytes": 12740430,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-14.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-14",
+            "model": 14,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
         }
       },
       "8cb7e8b66c9984623bce23125ef6a0c88b1d4cc3": {
         "15ff017f771e2070892d74aab27dac7bced5ac616fdaee09d6d9d62e987c0c4c": {
-          "checked_at": "2026-11-26T06:30:19.388367+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:19.388367+00:00",
+          "checked_at": "2026-11-26T08:03:29.036808+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:29.036808+00:00",
           "status": "failed",
           "source": {
             "sha256": "95bf425966da1124bd3d2aa8f0c94b21390e1ac794fbbe009bcb2397a14dec42",
@@ -1015,9 +1431,9 @@
           "error_type": "ValueError"
         },
         "229e53412fcbd8cab6aea07b81ef5fecc4e988f9ae06792b15602b795875f6cf": {
-          "checked_at": "2026-11-26T06:30:20.322939+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:20.322939+00:00",
+          "checked_at": "2026-11-26T08:03:29.858776+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:29.858776+00:00",
           "status": "failed",
           "source": {
             "sha256": "a43eafc4bf71ce13d8219f272226e9dc097ce7360d79003c23c483d954acde57",
@@ -1321,13 +1737,145 @@
             "section_type": 1
           },
           "error_type": "ValueError"
+        },
+        "9fe32bc68759fe5d06bf6c342e17de58cb0901757dd43e69be4f9263933b676d": {
+          "checked_at": "2026-11-26T08:03:30.566574+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:30.566574+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "462deda9cc5c960332536dcab630d8facf2710ec91b4be90ee4ea86d1340338f",
+            "bytes": 109224,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-e28cf2b405b6571e26b159b0e7e258d833d49881fc5a775f182b66c8b955d1ea-462deda9cc5c960332536dcab630d8facf2710ec91b4be90ee4ea86d1340338f.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-20",
+            "model": 20,
+            "source_sha256": "e28cf2b405b6571e26b159b0e7e258d833d49881fc5a775f182b66c8b955d1ea",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "4b73656f6b9e6b5044db539c43f73ae90f1564eb693d1f425b76281275024018": {
+          "checked_at": "2026-11-26T08:03:31.174066+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:31.174066+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8c671ea9aec926cf1fd5e4ef55063d6078898a0abeeebc0a1f2397b2d00a7e10",
+            "bytes": 109252,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-757d66d453e91aed4251a7ba9e1ed7479955e5173e18ba3318b2bbc255e4d54d-8c671ea9aec926cf1fd5e4ef55063d6078898a0abeeebc0a1f2397b2d00a7e10.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-20",
+            "model": 20,
+            "source_sha256": "757d66d453e91aed4251a7ba9e1ed7479955e5173e18ba3318b2bbc255e4d54d",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "89f5f244183d86aeaad4d2deda08c5cb721de217bb0b9942b8662256731fcf2e": {
+          "checked_at": "2026-11-26T08:03:31.881744+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:31.881744+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "17404b605a7b0de16f7b782cad5564ca2532300156d5fa61b4438c4a6c8b531b",
+            "bytes": 109244,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-62f81e3b3777178aa2c78afd780925e73d7b5c55be6dabcf1cab86a56c04a2ee-17404b605a7b0de16f7b782cad5564ca2532300156d5fa61b4438c4a6c8b531b.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-20",
+            "model": 20,
+            "source_sha256": "62f81e3b3777178aa2c78afd780925e73d7b5c55be6dabcf1cab86a56c04a2ee",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "9a793731401eba0821c78d7c94305f63264e2d892d725447932cf6b98364df4d": {
+          "checked_at": "2026-11-26T08:03:33.008608+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:33.008608+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "e28cf2b405b6571e26b159b0e7e258d833d49881fc5a775f182b66c8b955d1ea",
+            "bytes": 11421747,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "57.14-37030-1-20.upd",
+            "kind": "upd-section",
+            "package_id": "57.14-37030-1-20",
+            "model": 20,
+            "section_index": 1,
+            "section_sha256": "06307173c7cc36773f775cef581a5efdf6027175038f828b6eb45035e56e1092",
+            "section_bytes": 17,
+            "section_type": 21
+          },
+          "error_type": "ValueError"
+        },
+        "fec7170ce98390484da30612413cbad1de66d9376e38d65f94d5187054402381": {
+          "checked_at": "2026-11-26T08:03:33.633945+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:33.633945+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "e28cf2b405b6571e26b159b0e7e258d833d49881fc5a775f182b66c8b955d1ea",
+            "bytes": 11421747,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "57.14-37030-1-20.upd",
+            "kind": "upd-section",
+            "package_id": "57.14-37030-1-20",
+            "model": 20,
+            "section_index": 2,
+            "section_sha256": "ceb451f4accc0d3fd9a63a639bceb0f34469276424495b1b2d0813705158521f",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "783262de79d4e5a301662f21bfb2ce19d922fdbfcd7233d6a26b4465931febd2": {
+          "checked_at": "2026-11-26T08:03:34.358918+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:34.358918+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "e28cf2b405b6571e26b159b0e7e258d833d49881fc5a775f182b66c8b955d1ea",
+            "bytes": 11421747,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "57.14-37030-1-20.upd",
+            "kind": "upd-section",
+            "package_id": "57.14-37030-1-20",
+            "model": 20,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "fd5f06180d724cf26e42548a8501133a273ed516": {
         "4d564cdfb86ffa8f35b950ed611b380dd887d0782e9fd4511b5b8b23f696744a": {
-          "checked_at": "2026-11-26T06:30:26.120175+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:26.120175+00:00",
+          "checked_at": "2026-11-26T08:03:35.420124+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:35.420124+00:00",
           "status": "failed",
           "source": {
             "sha256": "cac31ad4ff9d4d3252cddb49d5ab9a093a455f4f0a54f7c38e88bc147296cb48",
@@ -1345,9 +1893,9 @@
           "error_type": "ValueError"
         },
         "abda4759e3c3ba5b7a22e2711e0a9a9a34492ce979b835bd46a7e886a15ce501": {
-          "checked_at": "2026-11-26T06:30:26.894211+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:26.894211+00:00",
+          "checked_at": "2026-11-26T08:03:36.170844+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:36.170844+00:00",
           "status": "failed",
           "source": {
             "sha256": "cac31ad4ff9d4d3252cddb49d5ab9a093a455f4f0a54f7c38e88bc147296cb48",
@@ -1647,13 +2195,145 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "bb2ed055c073d5de0aa0e88c34caa2a7df72bf10b598e0eb82617d54e56b366a": {
+          "checked_at": "2026-11-26T08:03:36.779196+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:36.779196+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "bf269b85c44f8d99558d6dc08f74c3b71b4a055b6d96a8d0abdbd00ee8253b7f",
+            "bytes": 109256,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-5790566b4c1d13c4158e88822b2696b6e0288c3ecf8d59c3d347088920c6ba96-bf269b85c44f8d99558d6dc08f74c3b71b4a055b6d96a8d0abdbd00ee8253b7f.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-21",
+            "model": 21,
+            "source_sha256": "5790566b4c1d13c4158e88822b2696b6e0288c3ecf8d59c3d347088920c6ba96",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "c94fc5ae19709a7b757c8465602cf5286201cc7135b2dc090022044bafaa3c14": {
+          "checked_at": "2026-11-26T08:03:37.486964+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:37.486964+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "dc68a35e677dedd8f9d2fdd0687a9a4fd406d4397286f5e9f2f198cb6b103ef1",
+            "bytes": 109272,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-afa56de8ee811b11ccc4d4064960fb92d29887330812af7fcb8616fbf7319794-dc68a35e677dedd8f9d2fdd0687a9a4fd406d4397286f5e9f2f198cb6b103ef1.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-21",
+            "model": 21,
+            "source_sha256": "afa56de8ee811b11ccc4d4064960fb92d29887330812af7fcb8616fbf7319794",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "29421e21de7c1e0702e80897117143c207960b96449bddc801f5727a367cc9ea": {
+          "checked_at": "2026-11-26T08:03:38.095040+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:38.095040+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "3f6859629d63bd87569efe091cab66596dc1cdcfbcb74306f344f95b2a1132b2",
+            "bytes": 109268,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-238c821610a4812dfb708c0b6604677e85363461494118b4c8233a4e7ce0b162-3f6859629d63bd87569efe091cab66596dc1cdcfbcb74306f344f95b2a1132b2.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-21",
+            "model": 21,
+            "source_sha256": "238c821610a4812dfb708c0b6604677e85363461494118b4c8233a4e7ce0b162",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "d75fff838149d3faac7e34f6495c78d131d2fcda8f9a0a3d3cc7c5dfb3b4c943": {
+          "checked_at": "2026-11-26T08:03:39.070800+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:39.070800+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "afa56de8ee811b11ccc4d4064960fb92d29887330812af7fcb8616fbf7319794",
+            "bytes": 28054580,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-21.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-21",
+            "model": 21,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "f1d96faf2dbcbeb9da9191b7fe337ceaaa358269ae43395737912dd08efb4cff": {
+          "checked_at": "2026-11-26T08:03:39.938956+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:39.938956+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "afa56de8ee811b11ccc4d4064960fb92d29887330812af7fcb8616fbf7319794",
+            "bytes": 28054580,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-21.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-21",
+            "model": 21,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "965a730bc29224cadc309c152f75047b15101f026de14dce404f94ce3517ac16": {
+          "checked_at": "2026-11-26T08:03:40.793765+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:40.793765+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "afa56de8ee811b11ccc4d4064960fb92d29887330812af7fcb8616fbf7319794",
+            "bytes": 28054580,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-21.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-21",
+            "model": 21,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
         }
       },
       "73a52aa1366144a1bda8d256999fa0fa2cc2f0bb": {
         "d7a5b25568a5fb79ebf79cbca058fcf6854f0300db32fd1cac28c32d1eec8de0": {
-          "checked_at": "2026-11-26T06:30:33.862107+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:33.862107+00:00",
+          "checked_at": "2026-11-26T08:03:41.629225+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:41.629225+00:00",
           "status": "failed",
           "source": {
             "sha256": "a8b4d564a0a88b9b9d19a448a0db591022a58bafe4b900b79d0c0461f235a752",
@@ -1671,9 +2351,9 @@
           "error_type": "ValueError"
         },
         "f95fa812ffb6a8e4ca6cbbc77fdb13195da2642d90c13a2d93ac961bcc093a3b": {
-          "checked_at": "2026-11-26T06:30:34.597461+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:34.597461+00:00",
+          "checked_at": "2026-11-26T08:03:42.452644+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:42.452644+00:00",
           "status": "failed",
           "source": {
             "sha256": "a8b4d564a0a88b9b9d19a448a0db591022a58bafe4b900b79d0c0461f235a752",
@@ -1973,13 +2653,145 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "e884bbad4a401afdb8147593b5b462aeca95888fe7bfb940ca98d42aed337d2f": {
+          "checked_at": "2026-11-26T08:03:43.260794+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:43.260794+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "869a9fe7f3e95d5eec9bf8e0796a75223f20fe3ab7192b02a56289233a0555eb",
+            "bytes": 109244,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-5b3f705888061eb1dce2048ff912590ad06db1dc33a5c1b3a99f4e58d4e31c56-869a9fe7f3e95d5eec9bf8e0796a75223f20fe3ab7192b02a56289233a0555eb.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-22",
+            "model": 22,
+            "source_sha256": "5b3f705888061eb1dce2048ff912590ad06db1dc33a5c1b3a99f4e58d4e31c56",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "4d861d0b0dc6c0cac1999952b823e21c8e60b1a84f5581a057d29b1bf2f89236": {
+          "checked_at": "2026-11-26T08:03:44.068803+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:44.068803+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "bec2bbb8fb569a36f28ef3c31348d6c111c722c4de9a3f147383e7b5c2db3642",
+            "bytes": 109264,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-b561f087671403e487a9f8e2594d5cad6f3af5bed771f7c999469a1958397bfb-bec2bbb8fb569a36f28ef3c31348d6c111c722c4de9a3f147383e7b5c2db3642.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-22",
+            "model": 22,
+            "source_sha256": "b561f087671403e487a9f8e2594d5cad6f3af5bed771f7c999469a1958397bfb",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "13d4831b3da9444f18596f508fb233aaae7057ccec9724cdb68fa437863201d9": {
+          "checked_at": "2026-11-26T08:03:44.676524+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:44.676524+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4c4644b16595be4b6ffa2bfb00303c1fee38b41a303830faba014fb1cbc2df35",
+            "bytes": 109256,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-1ec6579959d49785391606cae0f858186edff814ffba7bbf25e2c160f3f4044f-4c4644b16595be4b6ffa2bfb00303c1fee38b41a303830faba014fb1cbc2df35.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-22",
+            "model": 22,
+            "source_sha256": "1ec6579959d49785391606cae0f858186edff814ffba7bbf25e2c160f3f4044f",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "558182ea83c710dd4720c4ab1d73158fd9e56079937a989b4bbe22e671255f79": {
+          "checked_at": "2026-11-26T08:03:45.499821+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:45.499821+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b561f087671403e487a9f8e2594d5cad6f3af5bed771f7c999469a1958397bfb",
+            "bytes": 10332148,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-22.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-22",
+            "model": 22,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "1d7aa9f2da5416b1dbf9abe83c95f0d0014f1b2ef7b8490f19e98ee3c41cea84": {
+          "checked_at": "2026-11-26T08:03:46.223206+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:46.223206+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b561f087671403e487a9f8e2594d5cad6f3af5bed771f7c999469a1958397bfb",
+            "bytes": 10332148,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-22.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-22",
+            "model": 22,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "9650c95fe2659628df9c2fbae514a4bc8227c4877600b9e84a3da7575cf99329": {
+          "checked_at": "2026-11-26T08:03:47.046716+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:47.046716+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b561f087671403e487a9f8e2594d5cad6f3af5bed771f7c999469a1958397bfb",
+            "bytes": 10332148,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-22.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-22",
+            "model": 22,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
         }
       },
       "ced4316a9249b0297a452ecddbc1f6c619277789": {
         "e833ff8beb9080428a61ef609a0484733bfd9ebf882143964a5bca26fdb6db25": {
-          "checked_at": "2026-11-26T06:30:41.338286+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:41.338286+00:00",
+          "checked_at": "2026-11-26T08:03:48.124109+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:48.124109+00:00",
           "status": "failed",
           "source": {
             "sha256": "5c2a3e79b59b23d7f7fedf469001c1738a1d529ee61a741a2fde23c7b098c224",
@@ -1997,9 +2809,9 @@
           "error_type": "ValueError"
         },
         "8bcd379c34e1d4bdaac9dd16ca4bd3d184245513f1f3ad7d0317541972d14366": {
-          "checked_at": "2026-11-26T06:30:42.242443+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:42.242443+00:00",
+          "checked_at": "2026-11-26T08:03:49.302067+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:49.302067+00:00",
           "status": "failed",
           "source": {
             "sha256": "5c2a3e79b59b23d7f7fedf469001c1738a1d529ee61a741a2fde23c7b098c224",
@@ -2299,13 +3111,145 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "2600d902be0d703d9f1657987cde00cccaeb86d18d8fce8781e9ec6921f54497": {
+          "checked_at": "2026-11-26T08:03:50.009780+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:50.009780+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "19177b7db2aee71589d87bee33c232196bef33cb2254d9ec964e53392547dc51",
+            "bytes": 109436,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-4e5f49e45d355275a61e14c882e8d2dcfebd8276ed9eec77350f379df7d34469-19177b7db2aee71589d87bee33c232196bef33cb2254d9ec964e53392547dc51.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-23",
+            "model": 23,
+            "source_sha256": "4e5f49e45d355275a61e14c882e8d2dcfebd8276ed9eec77350f379df7d34469",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "aea726833c663984b436521253b4c725190092e5693d18686d7d20d853d5bd7b": {
+          "checked_at": "2026-11-26T08:03:50.717227+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:50.717227+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2c83efd26bb2e86cbec818e6e6fdd06ac1bab2b5eeeb0590527664ea46a7ec31",
+            "bytes": 109412,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-7fab6ca08eac0d50f0eb9bada2dd55518706ce2a094865a7de0b541d475b8752-2c83efd26bb2e86cbec818e6e6fdd06ac1bab2b5eeeb0590527664ea46a7ec31.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-23",
+            "model": 23,
+            "source_sha256": "7fab6ca08eac0d50f0eb9bada2dd55518706ce2a094865a7de0b541d475b8752",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "6990f70e5163fc6d357fcced4473c8ea4cb2b0fbfff13fed58f25a2c45c97c06": {
+          "checked_at": "2026-11-26T08:03:51.324592+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:51.324592+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a4adcd339be88cc1670398a6ec0ea756f8994d3e8447dc196cc3461b65ed1313",
+            "bytes": 109428,
+            "release_tag": "firmware-57.19-46310",
+            "release_asset": "inventory-e132411b38ce7e45c8355ad7264e5cb5bea4700de7f34a532303beda64bf88be-a4adcd339be88cc1670398a6ec0ea756f8994d3e8447dc196cc3461b65ed1313.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.19-46310-1-23",
+            "model": 23,
+            "source_sha256": "e132411b38ce7e45c8355ad7264e5cb5bea4700de7f34a532303beda64bf88be",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "3facac8c7f28dfd97c5937bd7ed28a53e4765927ac64ec9a8e3740be842fd6d4": {
+          "checked_at": "2026-11-26T08:03:52.219201+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:52.219201+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "7fab6ca08eac0d50f0eb9bada2dd55518706ce2a094865a7de0b541d475b8752",
+            "bytes": 37358504,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-23.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-23",
+            "model": 23,
+            "section_index": 3,
+            "section_sha256": "01e15232e7a9fc3aa8fd44ac56df7ee6e368e6c467bd73f9d35c4cfae0e086d8",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "e36c473fb7cdb1ad133fbd55dfec4f5fe6d0e6e0f47bfc00a5e46a7d19ea832e": {
+          "checked_at": "2026-11-26T08:03:53.108471+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:53.108471+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "7fab6ca08eac0d50f0eb9bada2dd55518706ce2a094865a7de0b541d475b8752",
+            "bytes": 37358504,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-23.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-23",
+            "model": 23,
+            "section_index": 4,
+            "section_sha256": "32e3373c0f99b2f7582a1aea8ea8a5f0e4f995a026d0ab9c998b848d25540c32",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7ab053b0bf39d260344d826b044850a5914d07e05e943dd9f888a5dde2eb806f": {
+          "checked_at": "2026-11-26T08:03:54.090611+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:54.090611+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "7fab6ca08eac0d50f0eb9bada2dd55518706ce2a094865a7de0b541d475b8752",
+            "bytes": 37358504,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-23.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-23",
+            "model": 23,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
         }
       },
       "9e4031d6408a0fbbae483de4e75327caa30bdbc5": {
         "7d2af00dd2439c25eaace47f3491a8771a197c1bee608641ba2e003b81a3c837": {
-          "checked_at": "2026-11-26T06:30:49.189134+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:49.189134+00:00",
+          "checked_at": "2026-11-26T08:03:55.452270+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:55.452270+00:00",
           "status": "failed",
           "source": {
             "sha256": "d5217afa1858bb66634d9c6fb466ce002a8e78f4ddbbfc53b45242868c9a2d29",
@@ -2323,9 +3267,9 @@
           "error_type": "ValueError"
         },
         "b1af038cddcf56473f8eb0d911cde7f0d200380ef69cd19ffdc429199dd5611f": {
-          "checked_at": "2026-11-26T06:30:49.954006+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:49.954006+00:00",
+          "checked_at": "2026-11-26T08:03:56.393149+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:03:56.393149+00:00",
           "status": "failed",
           "source": {
             "sha256": "d5217afa1858bb66634d9c6fb466ce002a8e78f4ddbbfc53b45242868c9a2d29",
@@ -2625,13 +3569,141 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "919cbf300db1c66cda64967bb56ec5f716c8358294c648092e5abe492e6907fe": {
+          "checked_at": "2026-11-26T08:03:57.100996+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:57.100996+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "be37afd2c02fcfa97a9cd23488c2593eaee060278acee460ca7d30a9dd8e3d33",
+            "bytes": 109484,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-2a372abc07dd32e480a826d7d9f5eafc2d264538d8020a612497ae5a14165ff4-be37afd2c02fcfa97a9cd23488c2593eaee060278acee460ca7d30a9dd8e3d33.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-24",
+            "model": 24,
+            "source_sha256": "2a372abc07dd32e480a826d7d9f5eafc2d264538d8020a612497ae5a14165ff4",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "0a2d173717dd6d337e675a17680ef3e3fb41baa44ed8685769ee088ae0657caa": {
+          "checked_at": "2026-11-26T08:03:57.711726+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:57.711726+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a4671a8550508b0f8d9a010e8c518813db26f2faf163d9df0f768454135e68e5",
+            "bytes": 109476,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13-a4671a8550508b0f8d9a010e8c518813db26f2faf163d9df0f768454135e68e5.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-24",
+            "model": 24,
+            "source_sha256": "316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "cb5f64f5d953a84f302e162c61a2a070755136b7a5507a0021d269eca77c90dd": {
+          "checked_at": "2026-11-26T08:03:58.552647+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:58.552647+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13",
+            "bytes": 20874412,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-24.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-24",
+            "model": 24,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "f24a2cbab87f129d1270db08e031b92bbe922fe8a996011c1f9538f511871a07": {
+          "checked_at": "2026-11-26T08:03:59.495469+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:03:59.495469+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13",
+            "bytes": 20874412,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-24.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-24",
+            "model": 24,
+            "section_index": 4,
+            "section_sha256": "32e3373c0f99b2f7582a1aea8ea8a5f0e4f995a026d0ab9c998b848d25540c32",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "d794a2e02274f094fab87353d178106cb0dea8bae6271b23ff20dd3c39ddf01a": {
+          "checked_at": "2026-11-26T08:04:00.636903+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:00.636903+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13",
+            "bytes": 20874412,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-24.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-24",
+            "model": 24,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "b691fdb897fb9a052de6dafda6b0f10eeb8418ac9f5db60808622d4f11e291e5": {
+          "checked_at": "2026-11-26T08:04:01.478222+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:01.478222+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "316e9725a5175709e3660303e814f378913cc691d0d56a19eaa98f6c50db0d13",
+            "bytes": 20874412,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-24.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-24",
+            "model": 24,
+            "section_index": 12,
+            "section_sha256": "fb88bb3d7e782ecceecebc7b55fa5561674ca2b906ec6f71de6e298896e48fae",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
         }
       },
       "83fb98ffd324255b26fdab99105a1a02a82bae93": {
         "c7c9bf159bce36e44879cd7282e42f75d9cc27c6fa206fbe0280a3dc4dba5355": {
-          "checked_at": "2026-11-26T06:30:57.886847+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:57.886847+00:00",
+          "checked_at": "2026-11-26T08:04:02.567974+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:02.567974+00:00",
           "status": "failed",
           "source": {
             "sha256": "c42a1472c7b766952a9c2fad0397a9433524e2dda7946f748828fb143aace204",
@@ -2649,9 +3721,9 @@
           "error_type": "ValueError"
         },
         "02301b28c8f907387376a9f66e27a6e35cd965e2d07d89455ef505b497552d15": {
-          "checked_at": "2026-11-26T06:30:58.814087+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:30:58.814087+00:00",
+          "checked_at": "2026-11-26T08:04:03.555596+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:03.555596+00:00",
           "status": "failed",
           "source": {
             "sha256": "c42a1472c7b766952a9c2fad0397a9433524e2dda7946f748828fb143aace204",
@@ -2951,13 +4023,141 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "902f2dd0de795c4765114f33bf9915b4ac59ee16d957dd28487d37b1eca313de": {
+          "checked_at": "2026-11-26T08:04:04.263543+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:04.263543+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "dfc8dc071a7f0262d78bb8b9ad78319e4b7bfe02edf958699651cba9f89d0d14",
+            "bytes": 109280,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-73c312b4615639cb94873dc3dc2a258a8348ce0980508f627fbbf8b827f18c75-dfc8dc071a7f0262d78bb8b9ad78319e4b7bfe02edf958699651cba9f89d0d14.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-25",
+            "model": 25,
+            "source_sha256": "73c312b4615639cb94873dc3dc2a258a8348ce0980508f627fbbf8b827f18c75",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "f5172f3539b66b93156c8f7b7581b72b28a9e13a8be74a49c21e9efa9b9b2860": {
+          "checked_at": "2026-11-26T08:04:04.870891+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:04.870891+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8eeb7f0872bfb3b415d05e57784d1a70c4b5413d76c846116b308c85fddbe2bf",
+            "bytes": 109264,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca-8eeb7f0872bfb3b415d05e57784d1a70c4b5413d76c846116b308c85fddbe2bf.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-25",
+            "model": 25,
+            "source_sha256": "de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "eeecb728203dbad94c2611dfeb2d0e834909c7d261dda1dfb3655537dd17714d": {
+          "checked_at": "2026-11-26T08:04:05.877104+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:05.877104+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca",
+            "bytes": 42034086,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-25.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-25",
+            "model": 25,
+            "section_index": 3,
+            "section_sha256": "4079921e347153fa4e693e38b9e511277ba81c3c5c342d8342809fe362318519",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "f8c12ff6edefb33b04f1095ff181c9fc378a5543df906be33c787b684a12b124": {
+          "checked_at": "2026-11-26T08:04:06.871497+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:06.871497+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca",
+            "bytes": 42034086,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-25.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-25",
+            "model": 25,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "5ecca40425a2b51bbfe2ec8903c79b21db447bcbab24e1f440dc68ce016adb20": {
+          "checked_at": "2026-11-26T08:04:07.765842+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:07.765842+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca",
+            "bytes": 42034086,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-25.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-25",
+            "model": 25,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "42840576cb7158fc6d3215f4c89f188db7f625160724920bdb3ceacd94c54942": {
+          "checked_at": "2026-11-26T08:04:08.657858+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:08.657858+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "de2d9dc9e636db54dada85a7098779c47a98b5614410c4e2cc1894d9a20204ca",
+            "bytes": 42034086,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-25.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-25",
+            "model": 25,
+            "section_index": 10,
+            "section_sha256": "9be980b1e840082d98cca224b599f9b17cb465e21c5e5e4711b0035c9b7a251d",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
         }
       },
       "c9d56d385d3e0449fcc91dd57c315b387dbfa873": {
         "2c0e129ac8755b1f722f6f038960aad757d78e31f1ae9b589f59049000c169b5": {
-          "checked_at": "2026-11-26T06:31:05.898328+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:05.898328+00:00",
+          "checked_at": "2026-11-26T08:04:09.323046+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:09.323046+00:00",
           "status": "failed",
           "source": {
             "sha256": "a2058bfc7a7dd6108b37c8661fa92840d301e84cdb2d525182cb7f43a01619cf",
@@ -2975,9 +4175,9 @@
           "error_type": "ValueError"
         },
         "aafd8d95ec5c26f011a2d06ff1ef0487360462146392ee14d8a226a7e877e8cd": {
-          "checked_at": "2026-11-26T06:31:06.606572+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:06.606572+00:00",
+          "checked_at": "2026-11-26T08:04:10.029156+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:10.029156+00:00",
           "status": "failed",
           "source": {
             "sha256": "c99c3d7ee78e51d9ffd40cf743f261e4fe21986fc5f5815588d3969b23cc2f39",
@@ -3275,13 +4475,133 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "e3b291770c8205089ebe871cae5a833d613ff4fe5bf12080f60ba8478fc789e2": {
+          "checked_at": "2026-11-26T08:04:11.353819+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:11.353819+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "93d3295492f602f2633278aceb083d26839935ac03a9a1e88c2b661dc07857f1",
+            "bytes": 49650108,
+            "release_tag": "firmware-62.1-86220",
+            "release_asset": "62.1-86220-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "62.1-86220-1-27",
+            "model": 27,
+            "section_index": 2,
+            "section_sha256": "10918666974f3461130311cfa498278cb86f37d721fe0b47b2d23f72e2240578",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "910a343573989cda5f595bb85cd5a3ed17d5b43c641723def820b7631ecf63ea": {
+          "checked_at": "2026-11-26T08:04:12.278566+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:12.278566+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "93d3295492f602f2633278aceb083d26839935ac03a9a1e88c2b661dc07857f1",
+            "bytes": 49650108,
+            "release_tag": "firmware-62.1-86220",
+            "release_asset": "62.1-86220-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "62.1-86220-1-27",
+            "model": 27,
+            "section_index": 3,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "a213cb6b73ae133671c4b543c9a3219335e7441e2904863d26323e11d8d66371": {
+          "checked_at": "2026-11-26T08:04:13.303203+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:13.303203+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "93d3295492f602f2633278aceb083d26839935ac03a9a1e88c2b661dc07857f1",
+            "bytes": 49650108,
+            "release_tag": "firmware-62.1-86220",
+            "release_asset": "62.1-86220-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "62.1-86220-1-27",
+            "model": 27,
+            "section_index": 8,
+            "section_sha256": "efc72d9875b586a2cee4fdc4bb43af650afe696d50dfcbdc1a2f4c85c716b966",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "12f35a5960524896f6589fe171c15f49035381b68a8c384adffc7d6e3fdc22a0": {
+          "checked_at": "2026-11-26T08:04:15.428475+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:15.428475+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "ade55160c72bcfc2e78bd2b167b6896705c262e8e452ce5c84bbc74aa92bbe01",
+            "bytes": 50444796,
+            "release_tag": "firmware-64.3-19080",
+            "release_asset": "64.3-19080-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "64.3-19080-1-27",
+            "model": 27,
+            "section_index": 0,
+            "section_sha256": "48a349b9d257196967a495a69713225280292bbc6facdbebce0bff8bf0449362",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "a34c139ad8253233f061fab582ca33b66066945ee9c4dd43bead9dc71208792e": {
+          "checked_at": "2026-11-26T08:04:16.454588+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:16.454588+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "ade55160c72bcfc2e78bd2b167b6896705c262e8e452ce5c84bbc74aa92bbe01",
+            "bytes": 50444796,
+            "release_tag": "firmware-64.3-19080",
+            "release_asset": "64.3-19080-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "64.3-19080-1-27",
+            "model": 27,
+            "section_index": 1,
+            "section_sha256": "846ea510332fda3ba5dd1de9c853a949b8b49607587fdde103b85bfc6f839e10",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "467557f65ac11cd0369c8249ef8157dc85e701613c51645696b23817557ec10c": {
+          "checked_at": "2026-11-26T08:04:17.582205+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:17.582205+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "ade55160c72bcfc2e78bd2b167b6896705c262e8e452ce5c84bbc74aa92bbe01",
+            "bytes": 50444796,
+            "release_tag": "firmware-64.3-19080",
+            "release_asset": "64.3-19080-1-27.upd",
+            "kind": "upd-section",
+            "package_id": "64.3-19080-1-27",
+            "model": 27,
+            "section_index": 2,
+            "section_sha256": "10918666974f3461130311cfa498278cb86f37d721fe0b47b2d23f72e2240578",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "13c6f1c74b396d2ad490381d12ccdd7c545fe1d7": {
         "e298f86770a6657d05c558951e847ca6cda2c54f3abfd5185d451f042d0daf77": {
-          "checked_at": "2026-11-26T06:31:12.124683+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:12.124683+00:00",
+          "checked_at": "2026-11-26T08:04:18.427540+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:18.427540+00:00",
           "status": "failed",
           "source": {
             "sha256": "68ed355758e62097f0a9f615a46014dc476f7e70576b857783f697375e0d8f8c",
@@ -3299,9 +4619,9 @@
           "error_type": "ValueError"
         },
         "3e8541d77f823150fc5a29435c2a1c86402e5173f277e4d7612e7435ff399038": {
-          "checked_at": "2026-11-26T06:31:12.875396+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:12.875396+00:00",
+          "checked_at": "2026-11-26T08:04:19.259662+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:19.259662+00:00",
           "status": "failed",
           "source": {
             "sha256": "68ed355758e62097f0a9f615a46014dc476f7e70576b857783f697375e0d8f8c",
@@ -3601,13 +4921,141 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "d6eed4621de3e87521af3f315e35fe230da8091ff47a11164e0faff8303a5174": {
+          "checked_at": "2026-11-26T08:04:19.867673+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:19.867673+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "b52096adf4be959c6c2877fff2eea009239b164a9a1cda9234a7bef22bbbd99a",
+            "bytes": 109252,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-ba9c8d2268d809144f95675c82a594e6110354bcb6b542809d1122fc05c787f1-b52096adf4be959c6c2877fff2eea009239b164a9a1cda9234a7bef22bbbd99a.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-28",
+            "model": 28,
+            "source_sha256": "ba9c8d2268d809144f95675c82a594e6110354bcb6b542809d1122fc05c787f1",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "f08701715b4fd4a7dfd942f47d23b3686a3cc313471d8183b4e5bd2f3973c083": {
+          "checked_at": "2026-11-26T08:04:20.575750+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:20.575750+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2bfac13b1557bcf052ae927a6465e34d1913f673cb1d3276637aa0e9e9ee5eb9",
+            "bytes": 109248,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e-2bfac13b1557bcf052ae927a6465e34d1913f673cb1d3276637aa0e9e9ee5eb9.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-28",
+            "model": 28,
+            "source_sha256": "634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "57e26bfae427d5848e1b2be2f1cb7cd338d2f11cb96fd9a0aab25db6d0a739c1": {
+          "checked_at": "2026-11-26T08:04:21.408307+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:21.408307+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e",
+            "bytes": 15396644,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-28.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-28",
+            "model": 28,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "5ad1b3de520c4ee3adc7157c16ce45149b763861f59109c3cc177300b039d06e": {
+          "checked_at": "2026-11-26T08:04:22.241533+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:22.241533+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e",
+            "bytes": 15396644,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-28.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-28",
+            "model": 28,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "15ad1afd21b36d806d20e1e5efc907b8e8b17e2fbab27866023a6e1bcdb335c8": {
+          "checked_at": "2026-11-26T08:04:23.074389+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:23.074389+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e",
+            "bytes": 15396644,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-28.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-28",
+            "model": 28,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "cb4418386f1806cc4cc10345f5a2e6896a39e85dcaf3c5a811543f4ff593bcda": {
+          "checked_at": "2026-11-26T08:04:23.907290+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:23.907290+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "634639c095d335d2f8780b1c0205e44c0824940946fed2277993a56b65ecb93e",
+            "bytes": 15396644,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-28.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-28",
+            "model": 28,
+            "section_index": 10,
+            "section_sha256": "46a0b5074c194d72ebb1db82b2047f50b882c744fd2cf53572a150d9180bc5b8",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
         }
       },
       "5940a717079fb4f50ec9ae6f91a8dfb159789c1f": {
         "557f6a9afec7e7a69df425d2736099f1cf1e5fbc4107138177adab6469fae9de": {
-          "checked_at": "2026-11-26T06:31:19.255584+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:19.255584+00:00",
+          "checked_at": "2026-11-26T08:04:24.752132+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:24.752132+00:00",
           "status": "failed",
           "source": {
             "sha256": "e82347f8398c463c0862547e6def3c95406e906d9322a6db51807eb42825b453",
@@ -3625,9 +5073,9 @@
           "error_type": "ValueError"
         },
         "f4a73c420c9fb3486238485a7275bf65bd8fd145c4834c448ddccc185d03a42e": {
-          "checked_at": "2026-11-26T06:31:20.006843+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:20.006843+00:00",
+          "checked_at": "2026-11-26T08:04:25.484857+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:25.484857+00:00",
           "status": "failed",
           "source": {
             "sha256": "e82347f8398c463c0862547e6def3c95406e906d9322a6db51807eb42825b453",
@@ -3927,13 +5375,141 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "1e22ab28886dcc00318a4300e4c47abcdbe991b87afa9070b57166fd3eaa0d05": {
+          "checked_at": "2026-11-26T08:04:26.193137+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:26.193137+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "fb7017ad124f51997f31dd33ee7802ed882f50aab0a8847e87727322d14b7e22",
+            "bytes": 109276,
+            "release_tag": "firmware-57.14-37030",
+            "release_asset": "inventory-1118ae37a109543b8a4098f2363bc5ea45c276e1a6776d03525d16c08edac9c9-fb7017ad124f51997f31dd33ee7802ed882f50aab0a8847e87727322d14b7e22.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.14-37030-1-29",
+            "model": 29,
+            "source_sha256": "1118ae37a109543b8a4098f2363bc5ea45c276e1a6776d03525d16c08edac9c9",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "8b67cd4bcb71352f768fb4cecf897b5ee19163abe63b5d1ce3c602663d9e41bd": {
+          "checked_at": "2026-11-26T08:04:26.901129+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:26.901129+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "854b964e50f2262da7bb2aeb2fc3c0aed96d86c6fc949c611a0f50c61221c9a0",
+            "bytes": 109292,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "inventory-3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0-854b964e50f2262da7bb2aeb2fc3c0aed96d86c6fc949c611a0f50c61221c9a0.tar.xz",
+            "kind": "inventory-bundle",
+            "package_id": "57.15-39070-1-29",
+            "model": 29,
+            "source_sha256": "3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0",
+            "repository": "BookCatKid/sonos-firmware-archive",
+            "inventory_limits": {
+              "expanded_bytes": 536870912,
+              "files": 100000,
+              "depth": 64,
+              "decoder_seconds": 300
+            }
+          },
+          "error_type": "ValueError"
+        },
+        "95a3d22d19826d58d30ddb32fc2a41a84ae3c8d5866d8b7ec1c5e9ed0f9c6c01": {
+          "checked_at": "2026-11-26T08:04:27.632887+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:27.632887+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0",
+            "bytes": 15266537,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-29.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-29",
+            "model": 29,
+            "section_index": 3,
+            "section_sha256": "cf8c62cfd93536d17866c0fd566c3f64af77f754590ea0177b84d3bfbf5e591b",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "130167e7a5043a03810db0b5caedd33deed1bd9ef823b7241825a038144fb9e2": {
+          "checked_at": "2026-11-26T08:04:28.365618+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:28.365618+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0",
+            "bytes": 15266537,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-29.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-29",
+            "model": 29,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "defae7faa627d8c41bd2c77d6040c32dd23e67615c5c17cbe4eda8672637268e": {
+          "checked_at": "2026-11-26T08:04:29.098386+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:29.098386+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0",
+            "bytes": 15266537,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-29.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-29",
+            "model": 29,
+            "section_index": 5,
+            "section_sha256": "3bf33a8b71080cce0bf883a5b5f4eec8244b4d01764db6ccbf990fe7536b93fb",
+            "section_bytes": 150358,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "9cdda2495213c59479ad7431aada450b8214d83e9869113300ec75a58614ad47": {
+          "checked_at": "2026-11-26T08:04:29.830786+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:29.830786+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "3026f65a0b43da68445948a25926886589d5b672a0bef797fc86a5d5fbbe5cc0",
+            "bytes": 15266537,
+            "release_tag": "firmware-57.15-39070",
+            "release_asset": "57.15-39070-1-29.upd",
+            "kind": "upd-section",
+            "package_id": "57.15-39070-1-29",
+            "model": 29,
+            "section_index": 10,
+            "section_sha256": "d92dc0f6448d874bb70e16763a91a6af5426df349ea55302cb9045fbf132ad93",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
         }
       },
       "efa0f2d1e890129b15646050b238fd1bba817f2f": {
         "68ddc2584fd3a71350f27c4e0bdf72ae914cd241b6867adbc351baa7d59ae218": {
-          "checked_at": "2026-11-26T06:31:25.689863+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:25.689863+00:00",
+          "checked_at": "2026-11-26T08:04:30.679684+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:30.679684+00:00",
           "status": "failed",
           "source": {
             "sha256": "f51ef35455e1fca35ee149b2879d1e2c689560ba9b986fccccca0eed9a1301c6",
@@ -3951,9 +5527,9 @@
           "error_type": "ValueError"
         },
         "d6e97edbdfecce55da0ac41df4897f97d13b048c412c7cc1dd610ff81170bc91": {
-          "checked_at": "2026-11-26T06:31:26.349831+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:26.349831+00:00",
+          "checked_at": "2026-11-26T08:04:31.619560+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:31.619560+00:00",
           "status": "failed",
           "source": {
             "sha256": "f51ef35455e1fca35ee149b2879d1e2c689560ba9b986fccccca0eed9a1301c6",
@@ -4249,13 +5825,133 @@
             "section_type": 17
           },
           "error_type": "ValueError"
+        },
+        "894a2d10a7e74274569b3b320fd3bfabd36914d62be056d7554c9923f08cea3c": {
+          "checked_at": "2026-11-26T08:04:32.759809+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:32.759809+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 0,
+            "section_sha256": "b7cb12f82ffc1d1405684405d5361d515c6d0298d8cdb12815b6287def19f1c0",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "cd8521f1e542242843a9e2a67ee272f4dafcc58f650cfc1faeced15e991e703c": {
+          "checked_at": "2026-11-26T08:04:33.499180+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:33.499180+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 1,
+            "section_sha256": "5ddf2650ffb04a488a9584e751e75b1a7c4b6b0cd6c9c922e0e2b5668fe5a3fe",
+            "section_bytes": 15,
+            "section_type": 21
+          },
+          "error_type": "ValueError"
+        },
+        "975453856f21483c5681e20d86803310a29737d27da790ada9fc81a601811ffa": {
+          "checked_at": "2026-11-26T08:04:34.237008+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:34.237008+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 2,
+            "section_sha256": "7328f99923f3dd60269007b71317c9d1533a0cf31fa50c634962699a916d9868",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "ed0bbfca513ea787cdea3f726bc0529f23383d353466f9758ede222c3d9c6d18": {
+          "checked_at": "2026-11-26T08:04:34.975654+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:34.975654+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "c39933bcbb1db8a1c27bdbe927130e985218ccf1ec2916355b87ca6401012ca4": {
+          "checked_at": "2026-11-26T08:04:35.815880+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:35.815880+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "a9214bea06fd4b03f0d9d1a0989f24a684aff25dba0c7014650bbd7668c7809e": {
+          "checked_at": "2026-11-26T08:04:36.555701+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:36.555701+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b1004e6068dd664a04b2838a68b5abb32ba5ff88727a8bbc402d5f8faccbc4",
+            "bytes": 18662815,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-30.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-30",
+            "model": 30,
+            "section_index": 11,
+            "section_sha256": "07623ef08ea2c9a16d78b724cfba0474bc7aa109953ae6e97679a5794dee9918",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
         }
       },
       "8e78af6201f25586cb8b605e677f44080a835d6b": {
         "f69458163a4f564438c05f839087b5023ab981a7ed17bc8089923fd7745f7ee0": {
-          "checked_at": "2026-11-26T06:31:32.391579+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:32.391579+00:00",
+          "checked_at": "2026-11-26T08:04:37.403764+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:37.403764+00:00",
           "status": "failed",
           "source": {
             "sha256": "acbaffbf4ce82f310bccd2b6ec250893c1a41e27e358afd1e1a1d875ec3a1218",
@@ -4273,9 +5969,9 @@
           "error_type": "ValueError"
         },
         "53237030b3a32cc88499eb041c1b9d681adb0c5e4d30960deba526bc60d38b9d": {
-          "checked_at": "2026-11-26T06:31:33.256181+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:33.256181+00:00",
+          "checked_at": "2026-11-26T08:04:38.241197+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:38.241197+00:00",
           "status": "failed",
           "source": {
             "sha256": "acbaffbf4ce82f310bccd2b6ec250893c1a41e27e358afd1e1a1d875ec3a1218",
@@ -4571,13 +6267,133 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "9de74147cedf85a4357150c7281240d99515a2784e89c22d81b0f0e683746d09": {
+          "checked_at": "2026-11-26T08:04:38.979266+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:38.979266+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "5573407ae3388165112ce1f717175f68f8958d3c3787ff1624e1c3bd0abfc1a3",
+            "bytes": 18671283,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-32",
+            "model": 32,
+            "section_index": 9,
+            "section_sha256": "124a917b58c811354931a7381ecbf93c828577d57ae35104f41f99af3aec641a",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "94bce478f6831de58afcfddbdb88ec3c8fd09b5c0c10171cbeea1d500f48db30": {
+          "checked_at": "2026-11-26T08:04:40.117819+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:40.117819+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "49ac89d569ffeaf3f107c7c49dca092f5841d126f65f235f0a032b9ca8f39507",
+            "bytes": 18700259,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-32",
+            "model": 32,
+            "section_index": 0,
+            "section_sha256": "b7cb12f82ffc1d1405684405d5361d515c6d0298d8cdb12815b6287def19f1c0",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "f6fda1faef048b5b3acceaa8cb8630176db9a02d7834e234f215de78c1243c1e": {
+          "checked_at": "2026-11-26T08:04:40.855901+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:40.855901+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "49ac89d569ffeaf3f107c7c49dca092f5841d126f65f235f0a032b9ca8f39507",
+            "bytes": 18700259,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-32",
+            "model": 32,
+            "section_index": 1,
+            "section_sha256": "2f23a6609f1b7ced2d885733fb6eb4963165930d6e5c2a82b3f46e3d3a46d238",
+            "section_bytes": 23,
+            "section_type": 21
+          },
+          "error_type": "ValueError"
+        },
+        "12bfa4036198e2af00354b9c107b748d037c8fcab41371a034fb8bd071432093": {
+          "checked_at": "2026-11-26T08:04:41.594146+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:41.594146+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "49ac89d569ffeaf3f107c7c49dca092f5841d126f65f235f0a032b9ca8f39507",
+            "bytes": 18700259,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-32",
+            "model": 32,
+            "section_index": 2,
+            "section_sha256": "e70003b95937440606ba7bdb914a4bb6a5dd1f3bc98a308dfe1e3520b5a169ef",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "ef1dfb5993aee024b3d8e95076e0b147c8ae0c874ae3e961100274e3a2963974": {
+          "checked_at": "2026-11-26T08:04:42.432767+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:42.432767+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "49ac89d569ffeaf3f107c7c49dca092f5841d126f65f235f0a032b9ca8f39507",
+            "bytes": 18700259,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-32",
+            "model": 32,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "6bf243a6ec244ab5e84fabbede89836d6a6b0b72b6657ddafe31323bfae55617": {
+          "checked_at": "2026-11-26T08:04:43.172092+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:43.172092+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "49ac89d569ffeaf3f107c7c49dca092f5841d126f65f235f0a032b9ca8f39507",
+            "bytes": 18700259,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-32.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-32",
+            "model": 32,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "6d8856b5767a077e6716870a4f87689614570b9e": {
         "122e43c69b55138a8aa0d936fd3bb2bee8f830793808298924c54cf3bc4fa85f": {
-          "checked_at": "2026-11-26T06:31:40.308844+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:40.308844+00:00",
+          "checked_at": "2026-11-26T08:04:44.298370+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:44.298370+00:00",
           "status": "failed",
           "source": {
             "sha256": "898f1b9a597acfb7ce7dec4c99aec2913d35772d0498a1d0b2efc9bfb58fda88",
@@ -4595,9 +6411,9 @@
           "error_type": "ValueError"
         },
         "b9004d0f2507ae1faef99b00510242127330963c1f935784407e46aa7515dd6f": {
-          "checked_at": "2026-11-26T06:31:41.375934+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:41.375934+00:00",
+          "checked_at": "2026-11-26T08:04:45.112751+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:45.112751+00:00",
           "status": "failed",
           "source": {
             "sha256": "898f1b9a597acfb7ce7dec4c99aec2913d35772d0498a1d0b2efc9bfb58fda88",
@@ -4893,13 +6709,133 @@
             "section_type": 1
           },
           "error_type": "ValueError"
+        },
+        "6dce603f61e7251da5096bd2c9eaa195064420282efff7c01610027ec815ae21": {
+          "checked_at": "2026-11-26T08:04:46.137048+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:46.137048+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8d8fa96c05b57b531da934721828655e66cf84f111f9d51ba4626775e45673b5",
+            "bytes": 49074185,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-33",
+            "model": 33,
+            "section_index": 1,
+            "section_sha256": "293551f91f0ce6e9048ce8676ac2b334d0c501bccf22972a5304d4e3fd0e4093",
+            "section_bytes": 13,
+            "section_type": 21
+          },
+          "error_type": "ValueError"
+        },
+        "6721a0fb85b93fa69dd768daafae30a402389089272ab73a799037d9708cf46c": {
+          "checked_at": "2026-11-26T08:04:47.075862+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:47.075862+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8d8fa96c05b57b531da934721828655e66cf84f111f9d51ba4626775e45673b5",
+            "bytes": 49074185,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-33",
+            "model": 33,
+            "section_index": 2,
+            "section_sha256": "f869209e01c495acdbf0b793a9d00af5249fe042ed17f6d03f69cb0047213a8b",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "14dc87dca59fcebd37d047281bc0edc8d1afa52701e8797e2817db0209fb62ae": {
+          "checked_at": "2026-11-26T08:04:48.301282+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:48.301282+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8d8fa96c05b57b531da934721828655e66cf84f111f9d51ba4626775e45673b5",
+            "bytes": 49074185,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-33",
+            "model": 33,
+            "section_index": 3,
+            "section_sha256": "10918666974f3461130311cfa498278cb86f37d721fe0b47b2d23f72e2240578",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "a69d79afbede1879a5bba45d6a4b272321cf0e56685c540331b68d2b8dacaf85": {
+          "checked_at": "2026-11-26T08:04:49.325602+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:49.325602+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8d8fa96c05b57b531da934721828655e66cf84f111f9d51ba4626775e45673b5",
+            "bytes": 49074185,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-33",
+            "model": 33,
+            "section_index": 4,
+            "section_sha256": "70520da638ba1ef3977d962ecfadb5cb24850ec13b4a783a7e305d40ae62437e",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "dc24cd35bd0f4f50a0016e0ad7d0d66f054ec381602f6310e90e797555c73d8b": {
+          "checked_at": "2026-11-26T08:04:50.350479+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:50.350479+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "8d8fa96c05b57b531da934721828655e66cf84f111f9d51ba4626775e45673b5",
+            "bytes": 49074185,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-33",
+            "model": 33,
+            "section_index": 9,
+            "section_sha256": "9af6e47fc00f388eade2b4f3a7dcaaf9e306e475fb08e0737a7f66e211b72f7e",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "89a46ffedea5ab6c8ce77159552e194160d0816362c2c488621984c7cafdecca": {
+          "checked_at": "2026-11-26T08:04:52.075097+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:52.075097+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "5ea80893474f6343c431dcf2f724604e5ee1c77f1bc871d4f4347f3147c2f0e1",
+            "bytes": 49342329,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-33.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-33",
+            "model": 33,
+            "section_index": 0,
+            "section_sha256": "b7cb12f82ffc1d1405684405d5361d515c6d0298d8cdb12815b6287def19f1c0",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "4c06d2370192647af627afd3566cc2f021b5eac2": {
         "62b3023044b41aa9f72a654ee414f2e2d8c7c6a3d4e2e8e2ed6157fb65d89dab": {
-          "checked_at": "2026-11-26T06:31:49.958741+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:49.958741+00:00",
+          "checked_at": "2026-11-26T08:04:53.025403+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:53.025403+00:00",
           "status": "failed",
           "source": {
             "sha256": "68129cc65ab5493995c6ffe9f4aca07e6475d43c3e315d94dca7569f1b270fbc",
@@ -4917,9 +6853,9 @@
           "error_type": "ValueError"
         },
         "2a5bd55aedcda1eb5e0c7dd19e96352545ebcefed04f88044f13e712359d631a": {
-          "checked_at": "2026-11-26T06:31:50.720865+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:50.720865+00:00",
+          "checked_at": "2026-11-26T08:04:53.764417+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:04:53.764417+00:00",
           "status": "failed",
           "source": {
             "sha256": "68129cc65ab5493995c6ffe9f4aca07e6475d43c3e315d94dca7569f1b270fbc",
@@ -5215,13 +7151,133 @@
             "section_type": 1
           },
           "error_type": "ValueError"
+        },
+        "44da9d2bd03e95053c562fa895e1876fd97ebdaacb637e9c1897d64eac214e66": {
+          "checked_at": "2026-11-26T08:04:54.603690+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:54.603690+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9a05b59395fb8d21d0725c88a96450524fa8259ae2aead1947a83a2a21a82a4b",
+            "bytes": 19200636,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-34",
+            "model": 34,
+            "section_index": 1,
+            "section_sha256": "f26081bc6b0b2296d534ed21ab65d25d79ca8c062da8b7dc4f68f8ebbef5551b",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7652ce164ce5190444d9fdf6620d1cc79cbe6473ced1d15789d32a22753375bb": {
+          "checked_at": "2026-11-26T08:04:55.342806+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:55.342806+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9a05b59395fb8d21d0725c88a96450524fa8259ae2aead1947a83a2a21a82a4b",
+            "bytes": 19200636,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-34",
+            "model": 34,
+            "section_index": 2,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "ef1135c10ad9e192b225e5a50e5b398861531ef0eb6a4cc6a032ee27a355d4ea": {
+          "checked_at": "2026-11-26T08:04:56.383398+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:56.383398+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9a05b59395fb8d21d0725c88a96450524fa8259ae2aead1947a83a2a21a82a4b",
+            "bytes": 19200636,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-34",
+            "model": 34,
+            "section_index": 3,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "15d9756531a3b1121a5ecb53c2ac1f7dbdefe83cc5733aefe65f0155160c2762": {
+          "checked_at": "2026-11-26T08:04:57.223523+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:57.223523+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9a05b59395fb8d21d0725c88a96450524fa8259ae2aead1947a83a2a21a82a4b",
+            "bytes": 19200636,
+            "release_tag": "firmware-65.1-21040",
+            "release_asset": "65.1-21040-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "65.1-21040-1-34",
+            "model": 34,
+            "section_index": 8,
+            "section_sha256": "9ad0d4d729845949604c76374ac7bd089f777c2723be4391703a23a03c9433aa",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "583bbd31b4e1168aef998b27e8d5473cbd7ea1c5275e8cebf9d2afec8a387a4a": {
+          "checked_at": "2026-11-26T08:04:58.363405+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:58.363405+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b182a24987b3309c36572121ec7d6d27df72012ff2e7d3b2abaad776815868",
+            "bytes": 19229628,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-34",
+            "model": 34,
+            "section_index": 0,
+            "section_sha256": "b7cb12f82ffc1d1405684405d5361d515c6d0298d8cdb12815b6287def19f1c0",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "41b1a995cd4eb52d35b7d641181493e423260b2b211768e4a9c7d4de789d2256": {
+          "checked_at": "2026-11-26T08:04:59.103740+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:04:59.103740+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "c2b182a24987b3309c36572121ec7d6d27df72012ff2e7d3b2abaad776815868",
+            "bytes": 19229628,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-34.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-34",
+            "model": 34,
+            "section_index": 1,
+            "section_sha256": "f26081bc6b0b2296d534ed21ab65d25d79ca8c062da8b7dc4f68f8ebbef5551b",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "552e8388ee19100c81dc9f7da977b9341234fe03": {
         "668447f771bfff36dfa812abf0decdfbf84979d0928393297f57a3a9ce1e0703": {
-          "checked_at": "2026-11-26T06:31:58.602787+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:58.602787+00:00",
+          "checked_at": "2026-11-26T08:05:00.448090+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:00.448090+00:00",
           "status": "failed",
           "source": {
             "sha256": "33c692132936e7658afb07ce57364fd8ec74e2723552f4c66631be95a494fe38",
@@ -5239,9 +7295,9 @@
           "error_type": "ValueError"
         },
         "c365130b3561ffb00ef0ba166074f870028b6e6264e9661537d36adf306b3498": {
-          "checked_at": "2026-11-26T06:31:59.687467+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:31:59.687467+00:00",
+          "checked_at": "2026-11-26T08:05:01.776663+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:01.776663+00:00",
           "status": "failed",
           "source": {
             "sha256": "33c692132936e7658afb07ce57364fd8ec74e2723552f4c66631be95a494fe38",
@@ -5537,13 +7593,133 @@
             "section_type": 2
           },
           "error_type": "ValueError"
+        },
+        "ddabc8ab96e4177ce9baf2e4595dbb18ef00f5f2ef3ce972b1e50b7d892b2bfe": {
+          "checked_at": "2026-11-26T08:05:02.809422+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:02.809422+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4b637bd919707e811d0831b201bee51deabaa2435833be8ab66280c2a1608b94",
+            "bytes": 51895532,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-35",
+            "model": 35,
+            "section_index": 4,
+            "section_sha256": "c2da40e8939bade72e26e0d9c1982641c7d998a5cdef9306184cabbebcdc402b",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7531ffc4087afa3b2a16dbce24e6a8879f902690de0135bf187722c893d9c532": {
+          "checked_at": "2026-11-26T08:05:03.743465+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:03.743465+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4b637bd919707e811d0831b201bee51deabaa2435833be8ab66280c2a1608b94",
+            "bytes": 51895532,
+            "release_tag": "firmware-66.4-23090",
+            "release_asset": "66.4-23090-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "66.4-23090-1-35",
+            "model": 35,
+            "section_index": 11,
+            "section_sha256": "1717de9e16a4bf6bf3eff5bd3c4b740f10a9d85e2e76851838a0650b6d75318f",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "6d35dc339c6daa76491874fc5c879ae658dc996d8c9911bbd9fd1c7fd7cd8aec": {
+          "checked_at": "2026-11-26T08:05:05.883217+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:05.883217+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "cf17af016e13477d3e89a7feb2013339867a384e19294f76db08a8aa392efddc",
+            "bytes": 54389363,
+            "release_tag": "firmware-67.1-27100",
+            "release_asset": "67.1-27100-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "67.1-27100-1-35",
+            "model": 35,
+            "section_index": 0,
+            "section_sha256": "d25ec66da170da6a85d67ba4e2697f31625aaf84d424e3e9ba5b9c7ae0735fd3",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
+        },
+        "5293bad26757b13d398a64cd70e8a1216e2f68546516a3ac3deade33efd3f6cf": {
+          "checked_at": "2026-11-26T08:05:07.522860+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:07.522860+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "cf17af016e13477d3e89a7feb2013339867a384e19294f76db08a8aa392efddc",
+            "bytes": 54389363,
+            "release_tag": "firmware-67.1-27100",
+            "release_asset": "67.1-27100-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "67.1-27100-1-35",
+            "model": 35,
+            "section_index": 1,
+            "section_sha256": "06307173c7cc36773f775cef581a5efdf6027175038f828b6eb45035e56e1092",
+            "section_bytes": 17,
+            "section_type": 21
+          },
+          "error_type": "ValueError"
+        },
+        "fbf441d3e7efe035a2f24b93801e5d204ed4000b10b34bd9f6ff31f978443b57": {
+          "checked_at": "2026-11-26T08:05:08.561286+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:08.561286+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "cf17af016e13477d3e89a7feb2013339867a384e19294f76db08a8aa392efddc",
+            "bytes": 54389363,
+            "release_tag": "firmware-67.1-27100",
+            "release_asset": "67.1-27100-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "67.1-27100-1-35",
+            "model": 35,
+            "section_index": 2,
+            "section_sha256": "eeb2dd215dd29067c18095100d319405c9c539cbc18497920a967b8bae775574",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "e19b628bc639fee2df2c93be1bf4dad8030c6138bde95f6b9ca499eb8f0feb55": {
+          "checked_at": "2026-11-26T08:05:09.600607+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:09.600607+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "cf17af016e13477d3e89a7feb2013339867a384e19294f76db08a8aa392efddc",
+            "bytes": 54389363,
+            "release_tag": "firmware-67.1-27100",
+            "release_asset": "67.1-27100-1-35.upd",
+            "kind": "upd-section",
+            "package_id": "67.1-27100-1-35",
+            "model": 35,
+            "section_index": 3,
+            "section_sha256": "1f85b0af38f6aac065f1af8ddca2e4645565adace4818fa3d8b0584b344ea24e",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
         }
       },
       "3af77ce81e8a4e8d4797ce60641c97513dd9c5d6": {
         "8cb48e8ac8ca99b8025e8a3b5d4309fb5bfc1e13f36b90bd60fdc8205803e7ae": {
-          "checked_at": "2026-11-26T06:32:08.638584+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:08.638584+00:00",
+          "checked_at": "2026-11-26T08:05:11.093257+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:11.093257+00:00",
           "status": "failed",
           "source": {
             "sha256": "ab30e334d2c5dd3869047124d07d19e8c3e27a02d0710fa9e6b7470a1c69a84e",
@@ -5561,9 +7737,9 @@
           "error_type": "ValueError"
         },
         "0cf880d2881c7cec6544a0e5d62ae3b0804ac6fca063ab0e9368bcd8844fe0e6": {
-          "checked_at": "2026-11-26T06:32:09.475656+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:09.475656+00:00",
+          "checked_at": "2026-11-26T08:05:12.086700+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:12.086700+00:00",
           "status": "failed",
           "source": {
             "sha256": "ab30e334d2c5dd3869047124d07d19e8c3e27a02d0710fa9e6b7470a1c69a84e",
@@ -5859,13 +8035,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "14e54d0d3539fb793f3021f3c164c181b4a1d86e40841c350a78d24f087892e5": {
+          "checked_at": "2026-11-26T08:05:13.027328+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:13.027328+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "03df4c51a0b10ec5f9e26a55458701643da868288c7accbdcc74675364c2ce8c",
+            "bytes": 54189909,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-36",
+            "model": 36,
+            "section_index": 2,
+            "section_sha256": "ecdcc356d5ae78e3028cc9085ca954fb03f82efb19faa1c2436747efaa046d7d",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "9092512762e496399f1389980dc10fc169d19e862a777fc8a96e99157b2e687f": {
+          "checked_at": "2026-11-26T08:05:14.068119+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:14.068119+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "03df4c51a0b10ec5f9e26a55458701643da868288c7accbdcc74675364c2ce8c",
+            "bytes": 54189909,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-36",
+            "model": 36,
+            "section_index": 3,
+            "section_sha256": "10918666974f3461130311cfa498278cb86f37d721fe0b47b2d23f72e2240578",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "dafcd9f85fd93a22936709c7f33c2b76e3707e5ee0906dd51823d2def3018ac1": {
+          "checked_at": "2026-11-26T08:05:15.205135+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:15.205135+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "03df4c51a0b10ec5f9e26a55458701643da868288c7accbdcc74675364c2ce8c",
+            "bytes": 54189909,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-36",
+            "model": 36,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "cef3ea6885f60c214a0977db517451d8f574df0d1cf214f7a1a2998907dce240": {
+          "checked_at": "2026-11-26T08:05:16.242769+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:16.242769+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "03df4c51a0b10ec5f9e26a55458701643da868288c7accbdcc74675364c2ce8c",
+            "bytes": 54189909,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-36",
+            "model": 36,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "8f97a8521682c5cad64cd15fdd096271985b9285c229410c906763fb42916126": {
+          "checked_at": "2026-11-26T08:05:17.396816+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:17.396816+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "03df4c51a0b10ec5f9e26a55458701643da868288c7accbdcc74675364c2ce8c",
+            "bytes": 54189909,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-36",
+            "model": 36,
+            "section_index": 10,
+            "section_sha256": "c929ff8f731630ac0768d39fd57557bc5d28b9631996e09ec688121b905841f6",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "eb867ed64dd497f398fe63d80844ad880172d001c14caee70e028697c8c71904": {
+          "checked_at": "2026-11-26T08:05:19.578143+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:19.578143+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "e23ad6e9556791f94a532831d269df3ec9b8855e0110aeb9433b048800c936ee",
+            "bytes": 54202197,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-36.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-36",
+            "model": 36,
+            "section_index": 0,
+            "section_sha256": "e20881f61be85204539326b5003e5b1837a600a4f28ce83de9e9fe177506557d",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "affbd516ac88a5372dc5dc246f4dea5a1f8162b7": {
         "292a52ce6d9742d87179827d095d7a7ec500014448152a45f11727229e3ad9a8": {
-          "checked_at": "2026-11-26T06:32:17.713889+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:17.713889+00:00",
+          "checked_at": "2026-11-26T08:05:20.434811+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:20.434811+00:00",
           "status": "failed",
           "source": {
             "sha256": "2fe6f21d13c48c8666e11a36f089d20e19be49e5bec0a9b35110690881e02d79",
@@ -5883,9 +8179,9 @@
           "error_type": "ValueError"
         },
         "70ac4b194af479c2a918078e5db2565d9651750825e0580b1d4c904a08adcd0d": {
-          "checked_at": "2026-11-26T06:32:18.487985+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:18.487985+00:00",
+          "checked_at": "2026-11-26T08:05:21.680935+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:21.680935+00:00",
           "status": "failed",
           "source": {
             "sha256": "2fe6f21d13c48c8666e11a36f089d20e19be49e5bec0a9b35110690881e02d79",
@@ -6181,13 +8477,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "c9aaf2f9788d795f2885e473c67920aaf5bcb7c55c2d3ae34693b28ef5c961f0": {
+          "checked_at": "2026-11-26T08:05:22.531367+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:22.531367+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0840d32567238c144e4d845243b23db2a5d76f73ffe115461f5a063a46bf148b",
+            "bytes": 24435682,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-37",
+            "model": 37,
+            "section_index": 2,
+            "section_sha256": "3c7518791be1934c87502a0b7692546478da2491a6b7c5e420da84c1c55f524f",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "d292530b2a75cc6d515ac137c662992613a461ed0cd61b6cc8bdc50275add8dc": {
+          "checked_at": "2026-11-26T08:05:23.380567+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:23.380567+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0840d32567238c144e4d845243b23db2a5d76f73ffe115461f5a063a46bf148b",
+            "bytes": 24435682,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-37",
+            "model": 37,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "4cdd99ae9cda30733b8a131af717f23a99d05b05c23f432c786895b7c0c2819e": {
+          "checked_at": "2026-11-26T08:05:24.530831+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:24.530831+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0840d32567238c144e4d845243b23db2a5d76f73ffe115461f5a063a46bf148b",
+            "bytes": 24435682,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-37",
+            "model": 37,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "ae0c69f718264010385ffe39834c49a7c502def1c97849cc3431b9c13b1f2859": {
+          "checked_at": "2026-11-26T08:05:25.480333+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:25.480333+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0840d32567238c144e4d845243b23db2a5d76f73ffe115461f5a063a46bf148b",
+            "bytes": 24435682,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-37",
+            "model": 37,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "894b0f82255e06e473dcddfb4770c074bf7b2dc27ff9f4c4018da994f54bf2c7": {
+          "checked_at": "2026-11-26T08:05:26.329682+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:26.329682+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "0840d32567238c144e4d845243b23db2a5d76f73ffe115461f5a063a46bf148b",
+            "bytes": 24435682,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-37",
+            "model": 37,
+            "section_index": 10,
+            "section_sha256": "966d015252dcac972183e9e5a770f0163d8ffa20ffdbc086c91a0009062c6366",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "b34e10f34023e03420f9afb0f519ab979601ab9d04045f4603850c8073b4c982": {
+          "checked_at": "2026-11-26T08:05:27.478220+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:27.478220+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "dac5e1a45088947ae36820720bb82d19b4b5f9f72529107687024bc1eaab164a",
+            "bytes": 24443874,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-37.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-37",
+            "model": 37,
+            "section_index": 0,
+            "section_sha256": "e20881f61be85204539326b5003e5b1837a600a4f28ce83de9e9fe177506557d",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "73faa22a2c82c6244ce2acfad362064f4313f649": {
         "49f6b13d4625856091548e47662cd2a66a7d873f9afd8dd7be656732add3933d": {
-          "checked_at": "2026-11-26T06:32:28.213955+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:28.213955+00:00",
+          "checked_at": "2026-11-26T08:05:29.280003+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:29.280003+00:00",
           "status": "failed",
           "source": {
             "sha256": "9a6e4fed812a587fad966dd0a1254b6c9862c64f93f7af4b6b4d35d334494570",
@@ -6205,9 +8621,9 @@
           "error_type": "ValueError"
         },
         "555075dcc8d33a6a3844e7ad2cb429885c33a61d1f7d383602c78934879b3e79": {
-          "checked_at": "2026-11-26T06:32:29.372715+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:29.372715+00:00",
+          "checked_at": "2026-11-26T08:05:30.685927+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:30.685927+00:00",
           "status": "failed",
           "source": {
             "sha256": "9a6e4fed812a587fad966dd0a1254b6c9862c64f93f7af4b6b4d35d334494570",
@@ -6503,13 +8919,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "8ec26514fd717714ffe076d83c7fba92e935f2be529bf963e628bc2e6bebab9c": {
+          "checked_at": "2026-11-26T08:05:32.005788+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:32.005788+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4f20c61cafa029423834b891737d11b0ae68af0525656723c9474ad14acc5538",
+            "bytes": 87157431,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-38",
+            "model": 38,
+            "section_index": 2,
+            "section_sha256": "20aa4a7c55625e0556b81e065d474a8b3d40fec89b80108a1e1109eab01cdfd7",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "5dceab21ca60acb915bc4b57432c57fb5fe0eb8b9f7501d86811ccfd3d53f62a": {
+          "checked_at": "2026-11-26T08:05:33.438756+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:33.438756+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4f20c61cafa029423834b891737d11b0ae68af0525656723c9474ad14acc5538",
+            "bytes": 87157431,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-38",
+            "model": 38,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "68ad4ca9ec44ae64b97896cfec521538d8f5d5511e81ee77ff99603f2b5f1744": {
+          "checked_at": "2026-11-26T08:05:34.655272+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:34.655272+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4f20c61cafa029423834b891737d11b0ae68af0525656723c9474ad14acc5538",
+            "bytes": 87157431,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-38",
+            "model": 38,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "4a8af7b11fa34fb93413c8c9e164e212f4c5c5a5b65ca6da122e68fa8fd74340": {
+          "checked_at": "2026-11-26T08:05:35.971659+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:35.971659+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4f20c61cafa029423834b891737d11b0ae68af0525656723c9474ad14acc5538",
+            "bytes": 87157431,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-38",
+            "model": 38,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "ed8701b815efcd0ed020d47e1903fd0fa448ad0f63ff4c7570466a7fd840b971": {
+          "checked_at": "2026-11-26T08:05:37.187721+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:37.187721+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "4f20c61cafa029423834b891737d11b0ae68af0525656723c9474ad14acc5538",
+            "bytes": 87157431,
+            "release_tag": "firmware-80.1-55014",
+            "release_asset": "80.1-55014-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-55014-1-38",
+            "model": 38,
+            "section_index": 10,
+            "section_sha256": "3cc845d7ccea24f9801242c8e419f0db462e98fd49e260d330ec0094230221d5",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "7304074a5b81e0c1e1e353f52680fa868d34d67d9751831984b2413f281c8e34": {
+          "checked_at": "2026-11-26T08:05:39.510117+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:39.510117+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "fc687bd1639c31113c59259f7b81cefc25b40d62aa892e22b25886490063c93b",
+            "bytes": 87399095,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-38.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-38",
+            "model": 38,
+            "section_index": 0,
+            "section_sha256": "e20881f61be85204539326b5003e5b1837a600a4f28ce83de9e9fe177506557d",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "61c5662ca6ef444dee98dfbf9df82bb03b3b0acb": {
         "28bb9fa0f3dfaac8d780643531757600e8d6f239c9d3907573863015f96ab528": {
-          "checked_at": "2026-11-26T06:32:43.366698+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:43.366698+00:00",
+          "checked_at": "2026-11-26T08:05:41.027778+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:41.027778+00:00",
           "status": "failed",
           "source": {
             "sha256": "d1393c234233a7a3b6afd06564e571c6c058eec857fe24d02149eb0a8d1b1243",
@@ -6527,9 +9063,9 @@
           "error_type": "ValueError"
         },
         "c172d8cc0ef9b0b37b768d32c54db6490330ce1c953e767c41d55d486123ff6d": {
-          "checked_at": "2026-11-26T06:32:44.753401+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:44.753401+00:00",
+          "checked_at": "2026-11-26T08:05:42.930833+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:42.930833+00:00",
           "status": "failed",
           "source": {
             "sha256": "d1393c234233a7a3b6afd06564e571c6c058eec857fe24d02149eb0a8d1b1243",
@@ -6825,13 +9361,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "f1dfd145bd2c2dc22572bcf2aa7a4f6ba4913381c5f25a823e28faaa441ccca3": {
+          "checked_at": "2026-11-26T08:05:44.143359+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:44.143359+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a6535ad0336c7461eb3ce263a83f173cb630c6b520957ca8c76a667cdd3bf3a5",
+            "bytes": 84721923,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-40",
+            "model": 40,
+            "section_index": 2,
+            "section_sha256": "b87f0a5299ca8373e00b935fbd5cd33cbde73c7b2578ac262090bdd5d26718cb",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "30c4c1a48aa314c7205e99b9b1d0fc01619d0d83fc260e61a739b99bfe7837f8": {
+          "checked_at": "2026-11-26T08:05:45.254748+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:45.254748+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a6535ad0336c7461eb3ce263a83f173cb630c6b520957ca8c76a667cdd3bf3a5",
+            "bytes": 84721923,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-40",
+            "model": 40,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "2e2688e774e9f06cbc15a6ec9a56c2efaf7f24ce12131c03c3b69c868036b1a7": {
+          "checked_at": "2026-11-26T08:05:46.470300+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:46.470300+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a6535ad0336c7461eb3ce263a83f173cb630c6b520957ca8c76a667cdd3bf3a5",
+            "bytes": 84721923,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-40",
+            "model": 40,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "1ea566ba9c3836ecf115ffd1d4116e2feda52a7cace8921691347240dd91a071": {
+          "checked_at": "2026-11-26T08:05:47.682033+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:47.682033+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a6535ad0336c7461eb3ce263a83f173cb630c6b520957ca8c76a667cdd3bf3a5",
+            "bytes": 84721923,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-40",
+            "model": 40,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "aedcdc01262a2596372d1ababa5e3fe02b3869616659ea7b0f9b49722df0e686": {
+          "checked_at": "2026-11-26T08:05:48.994801+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:48.994801+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a6535ad0336c7461eb3ce263a83f173cb630c6b520957ca8c76a667cdd3bf3a5",
+            "bytes": 84721923,
+            "release_tag": "firmware-80.1-56190",
+            "release_asset": "80.1-56190-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "80.1-56190-1-40",
+            "model": 40,
+            "section_index": 10,
+            "section_sha256": "92ee5d403c5ad2eca30aff1826738e6f7865e4e7634f1cc2635e40cc9396525b",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "9e14f6b64bc2149ee945b4e4d10bf7cc1177158433322336bde6811c06868963": {
+          "checked_at": "2026-11-26T08:05:51.624715+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:51.624715+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "ba40421fc93c3128cb92d93d0a9885828b72eccbf64e3c3e0d9197aa5bcfd481",
+            "bytes": 90932595,
+            "release_tag": "firmware-81.1-58074",
+            "release_asset": "81.1-58074-1-40.upd",
+            "kind": "upd-section",
+            "package_id": "81.1-58074-1-40",
+            "model": 40,
+            "section_index": 0,
+            "section_sha256": "388fc53a4e81b1b23d6c81e9d643d4cdcaf4aaa1e529318eb16834ee919d7c02",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "5a348050ec122d33560adae24180cf1605c28efc": {
         "02018da26b3d395c1b845fd4e27719c4e3918c063c607ef65b5c56ab2e6be6d1": {
-          "checked_at": "2026-11-26T06:32:59.313029+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:32:59.313029+00:00",
+          "checked_at": "2026-11-26T08:05:54.328663+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:54.328663+00:00",
           "status": "failed",
           "source": {
             "sha256": "0693f342d793ba07a06c0c82c059443afd3cfd7a31e0bbbd3a1341205314e884",
@@ -6849,9 +9505,9 @@
           "error_type": "ValueError"
         },
         "3f11f8ff531b90c90e8cb71308dc05797e15a307230b0c7fec4786aad5dcdc1e": {
-          "checked_at": "2026-11-26T06:33:00.821598+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:00.821598+00:00",
+          "checked_at": "2026-11-26T08:05:55.814507+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:05:55.814507+00:00",
           "status": "failed",
           "source": {
             "sha256": "0693f342d793ba07a06c0c82c059443afd3cfd7a31e0bbbd3a1341205314e884",
@@ -7147,13 +9803,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "00278b91f70dd94b58842257e39a3a2e260a952f6778d1709496185eb6317569": {
+          "checked_at": "2026-11-26T08:05:57.703111+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:57.703111+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "491212f3f83da98f9d5f37f6af27f645da13ae2618d6070ed5cf8b02cd203926",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-41",
+            "model": 41,
+            "section_index": 2,
+            "section_sha256": "47bafcb554315a915436f3c923316ccd477630e4e8f99e16ac4ec1b8aa3b91a8",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "78c88d06e80ffc946663eb12b2a081ef970be7eb9682eff1b9f3eaa18b4a2a90": {
+          "checked_at": "2026-11-26T08:05:59.088110+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:05:59.088110+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "491212f3f83da98f9d5f37f6af27f645da13ae2618d6070ed5cf8b02cd203926",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-41",
+            "model": 41,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7107f54ce4a68a7e4bb759d87d998f2d71795707c25d4156f08a0a7c25ccd4b9": {
+          "checked_at": "2026-11-26T08:06:00.471289+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:00.471289+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "491212f3f83da98f9d5f37f6af27f645da13ae2618d6070ed5cf8b02cd203926",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-41",
+            "model": 41,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "69f4678d634300e56386572d284b8dbd0cf9b60120cba6ef96d075bc44b4e4df": {
+          "checked_at": "2026-11-26T08:06:01.955099+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:01.955099+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "491212f3f83da98f9d5f37f6af27f645da13ae2618d6070ed5cf8b02cd203926",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-41",
+            "model": 41,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "77cb8595f90e455bd0f5febaab711a229601d9a4a2c4555c80287e3fa87771a8": {
+          "checked_at": "2026-11-26T08:06:03.538098+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:03.538098+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "491212f3f83da98f9d5f37f6af27f645da13ae2618d6070ed5cf8b02cd203926",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-41",
+            "model": 41,
+            "section_index": 10,
+            "section_sha256": "c98ee47968a85e069885e91c94587c5da06f48057c3ce858846dac6c501ce16c",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "d93077533d9a9085523f14330c6a8717dd6c4c430f3dab70702f80d3458a9a24": {
+          "checked_at": "2026-11-26T08:06:06.740184+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:06.740184+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "48e7fe0c9f2d35f375884862c06a7ae4536d15a1ed3d850c068335179c1aef7a",
+            "bytes": 114849906,
+            "release_tag": "firmware-82.3-60160",
+            "release_asset": "82.3-60160-1-41.upd",
+            "kind": "upd-section",
+            "package_id": "82.3-60160-1-41",
+            "model": 41,
+            "section_index": 0,
+            "section_sha256": "7b9db78ab76abb9ba9a095cdebc16cac5a240d5db203bc5b154bf3d5a39052fa",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "4156015872873a373d8ac47cd25345142e4f1000": {
         "866dbbaaed2184ba9ee1b66ca36620a0e84f70063f87d11d123203a7fb460597": {
-          "checked_at": "2026-11-26T06:33:16.147595+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:16.147595+00:00",
+          "checked_at": "2026-11-26T08:06:08.055803+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:08.055803+00:00",
           "status": "failed",
           "source": {
             "sha256": "8c6ddbfb97f35d8ce6c90d4a61d6514fa51f03b130a9f197d4a75b80e46a7445",
@@ -7171,9 +9947,9 @@
           "error_type": "ValueError"
         },
         "5e4ceb2facdc1022d995e501ed5caa10045960dc9d326de44a14ae08da59f942": {
-          "checked_at": "2026-11-26T06:33:17.214502+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:17.214502+00:00",
+          "checked_at": "2026-11-26T08:06:09.269395+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:09.269395+00:00",
           "status": "failed",
           "source": {
             "sha256": "8c6ddbfb97f35d8ce6c90d4a61d6514fa51f03b130a9f197d4a75b80e46a7445",
@@ -7469,13 +10245,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "10a8a01378c858a213cfe55aab08cd21a4fe2eb4627c8404af95d728976129bf": {
+          "checked_at": "2026-11-26T08:06:10.268478+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:10.268478+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2e7c6cf836ad4652f75c2be8790d0030ad284d1d3c92bcc491c0829131c644c4",
+            "bytes": 44617442,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-42",
+            "model": 42,
+            "section_index": 2,
+            "section_sha256": "ae8a344ef18790a88ed8727cd59126e660410e7c010838708b0d9d14943052be",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "28857dc7c9a2acdfd0291794c00ca7f7b0719d5469d898d6fc40937f414ff5be": {
+          "checked_at": "2026-11-26T08:06:11.269160+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:11.269160+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2e7c6cf836ad4652f75c2be8790d0030ad284d1d3c92bcc491c0829131c644c4",
+            "bytes": 44617442,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-42",
+            "model": 42,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "f790cac40494bfcac9b9c1afd6a1a442f2c5825ea8ff77f87def81ade66933e1": {
+          "checked_at": "2026-11-26T08:06:12.169816+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:12.169816+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2e7c6cf836ad4652f75c2be8790d0030ad284d1d3c92bcc491c0829131c644c4",
+            "bytes": 44617442,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-42",
+            "model": 42,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "8713b0f7ac44ed28f7632e366279b41e5208db4a55c05e498c9ad01d3a98271d": {
+          "checked_at": "2026-11-26T08:06:13.373097+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:13.373097+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2e7c6cf836ad4652f75c2be8790d0030ad284d1d3c92bcc491c0829131c644c4",
+            "bytes": 44617442,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-42",
+            "model": 42,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "3f0f03cca4b4d39f3857ebc881c14ce56ed25f50c0845976881dd0d0144363e7": {
+          "checked_at": "2026-11-26T08:06:14.371638+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:14.371638+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2e7c6cf836ad4652f75c2be8790d0030ad284d1d3c92bcc491c0829131c644c4",
+            "bytes": 44617442,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-42",
+            "model": 42,
+            "section_index": 10,
+            "section_sha256": "e8d0172f4af9f6ac9374d81042c2b8c0cb23f39e2897e07fa16fc18039528d91",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "99990a661efd92cda8bc4c4ba602757f893139038b0ae7158e6e06a3b56a0ac8": {
+          "checked_at": "2026-11-26T08:06:16.172312+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:16.172312+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "ed0afda587a9fa43ba89a19cb3b1be6c71a73c2bf2942e15fd719032e0c62135",
+            "bytes": 44621538,
+            "release_tag": "firmware-82.3-60160",
+            "release_asset": "82.3-60160-1-42.upd",
+            "kind": "upd-section",
+            "package_id": "82.3-60160-1-42",
+            "model": 42,
+            "section_index": 0,
+            "section_sha256": "7b9db78ab76abb9ba9a095cdebc16cac5a240d5db203bc5b154bf3d5a39052fa",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "c6b89d8a89ebec87884e21e988fbc5eaef454239": {
         "9e8d8b16323bda26eae12d6662b447dbec94334898d921fce08800969fc33f98": {
-          "checked_at": "2026-11-26T06:33:26.838376+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:26.838376+00:00",
+          "checked_at": "2026-11-26T08:06:17.622757+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:17.622757+00:00",
           "status": "failed",
           "source": {
             "sha256": "618ef2e98eb5ba994b46e37afd81e98d8d0fda1a8d6ee9eb9a18ed10e5418337",
@@ -7493,9 +10389,9 @@
           "error_type": "ValueError"
         },
         "c1fe4431f7111fb7a8d23b66add735b2bf5384ed1a2a7296094320573a382ba6": {
-          "checked_at": "2026-11-26T06:33:27.835618+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:27.835618+00:00",
+          "checked_at": "2026-11-26T08:06:18.665781+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:18.665781+00:00",
           "status": "failed",
           "source": {
             "sha256": "618ef2e98eb5ba994b46e37afd81e98d8d0fda1a8d6ee9eb9a18ed10e5418337",
@@ -7791,13 +10687,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "357310684f95941fdd93e6de9c943c33a14a31ba32de8744e13067ffd1787593": {
+          "checked_at": "2026-11-26T08:06:20.329120+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:20.329120+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9919a598c03ad285d5dcc9e2cefc034a65acdee57a0d37a9f15d7fe5afe05d2e",
+            "bytes": 54761963,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-46",
+            "model": 46,
+            "section_index": 2,
+            "section_sha256": "19e22ef9bff2971c0df718487c6a9ef3233c3853026a8ce5ffa2e5b9d8f9e695",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "07bbeefb11cfcfbbfb8ddac4ae6c38f3262b2b1f2ed4ae313472bab3c703afa0": {
+          "checked_at": "2026-11-26T08:06:21.473714+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:21.473714+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9919a598c03ad285d5dcc9e2cefc034a65acdee57a0d37a9f15d7fe5afe05d2e",
+            "bytes": 54761963,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-46",
+            "model": 46,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "731ef49319fafee9fce82e150bc481bd6150199e476f6d39a23972eeb57d16e5": {
+          "checked_at": "2026-11-26T08:06:22.510049+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:22.510049+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9919a598c03ad285d5dcc9e2cefc034a65acdee57a0d37a9f15d7fe5afe05d2e",
+            "bytes": 54761963,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-46",
+            "model": 46,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "73ff4f9ce9ec3a56ab4507bd8b658b0b8b0b7abb7821c76bcf89b08392aac1f2": {
+          "checked_at": "2026-11-26T08:06:23.646487+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:23.646487+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9919a598c03ad285d5dcc9e2cefc034a65acdee57a0d37a9f15d7fe5afe05d2e",
+            "bytes": 54761963,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-46",
+            "model": 46,
+            "section_index": 5,
+            "section_sha256": "a2ff8a5096f7e06b174292941fb644eabfc52d35607a2283d0b22ad0259d1dd3",
+            "section_bytes": 172287,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "97c9aa70f5e8d2e15a53e7a98416e58ba7b5cc88cf2a78e8f3f3b83a29fb0bda": {
+          "checked_at": "2026-11-26T08:06:24.682910+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:24.682910+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "9919a598c03ad285d5dcc9e2cefc034a65acdee57a0d37a9f15d7fe5afe05d2e",
+            "bytes": 54761963,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-46",
+            "model": 46,
+            "section_index": 11,
+            "section_sha256": "17d1907e85679b1a7e89fa7aa50dc311dd39e46e084c927302fc008aba6c78e4",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "d1186190920816a4e0b54d09a2eaeb5b4073ea6cbf6db89d5abd0a887c69e6dd": {
+          "checked_at": "2026-11-26T08:06:26.519806+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:26.519806+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "2d4e78a29b3dbc13c97a2782f9a826a856f826bf4097903c30842b8cfce7a74a",
+            "bytes": 55574795,
+            "release_tag": "firmware-98.0-82170",
+            "release_asset": "98.0-82170-1-46.upd",
+            "kind": "upd-section",
+            "package_id": "98.0-82170-1-46",
+            "model": 46,
+            "section_index": 0,
+            "section_sha256": "091fcdff16ee13c6a34790b2af717826b64f75135d6a59903037395d17b8172b",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "4469cb77823252824904a09879af356617271f79": {
         "711cf6d5149c0495a5ac8ee52f2a37c021f3158adf548fec643bc750adacb463": {
-          "checked_at": "2026-11-26T06:33:39.167585+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:39.167585+00:00",
+          "checked_at": "2026-11-26T08:06:28.146889+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:28.146889+00:00",
           "status": "failed",
           "source": {
             "sha256": "a1feeea60070ff2ee92115f4238a2ba84b9cfd87690c2f1b66c88a8ad8457b33",
@@ -7815,9 +10831,9 @@
           "error_type": "ValueError"
         },
         "78751e9561cbf44c320a30d7141c2ccbfe6ca81e382a63a9af41f198c0ac7257": {
-          "checked_at": "2026-11-26T06:33:40.485001+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:40.485001+00:00",
+          "checked_at": "2026-11-26T08:06:29.862358+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:29.862358+00:00",
           "status": "failed",
           "source": {
             "sha256": "a1feeea60070ff2ee92115f4238a2ba84b9cfd87690c2f1b66c88a8ad8457b33",
@@ -8113,13 +11129,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "f617f8cba92323795150f47f05b5c8c7cd335dedfd35e1fa9c83e2148512269d": {
+          "checked_at": "2026-11-26T08:06:32.426487+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:32.426487+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a66613e74ed41833b460c8a57160ec2371e5a377ee3787bdbe252e5d55a1f3f3",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-49",
+            "model": 49,
+            "section_index": 2,
+            "section_sha256": "2d56c945cd1dd380c24b5e935565b64352f8902fe12ffe4eb783a0bbea7059e3",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "fb658faeb605a948f21fa590cd3ca6ac4bb94fadf0b16abf1b3750a638352e77": {
+          "checked_at": "2026-11-26T08:06:33.659106+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:33.659106+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a66613e74ed41833b460c8a57160ec2371e5a377ee3787bdbe252e5d55a1f3f3",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-49",
+            "model": 49,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "737d693482a91c06530a15100128297e7006694ccd68670eb73b2efd680e8fcf": {
+          "checked_at": "2026-11-26T08:06:34.883147+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:34.883147+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a66613e74ed41833b460c8a57160ec2371e5a377ee3787bdbe252e5d55a1f3f3",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-49",
+            "model": 49,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7f6383520e07fa5b57d92da9ae7eb38f424f6574dda500bfd00cafbd61663629": {
+          "checked_at": "2026-11-26T08:06:36.208987+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:36.208987+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a66613e74ed41833b460c8a57160ec2371e5a377ee3787bdbe252e5d55a1f3f3",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-49",
+            "model": 49,
+            "section_index": 5,
+            "section_sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+            "section_bytes": 149511,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "3bdecbefca0a1340cb497170fa488d546749847f87136b235aa8e4fed7e092ef": {
+          "checked_at": "2026-11-26T08:06:37.340132+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:37.340132+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "a66613e74ed41833b460c8a57160ec2371e5a377ee3787bdbe252e5d55a1f3f3",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.2-59204",
+            "release_asset": "82.2-59204-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.2-59204-1-49",
+            "model": 49,
+            "section_index": 10,
+            "section_sha256": "af8130829962c6b885014c2b5baa5115283287aadcbfdfc58667a990e9775907",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "6efcde94148709f5164d3ddd45aac7496b674621d1c7dea9297c07d1c37c37f9": {
+          "checked_at": "2026-11-26T08:06:40.667204+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:40.667204+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "07c78a9a6d847e1d32039930f2132647535f5435be5817d7a8578c04f377226c",
+            "bytes": 86707682,
+            "release_tag": "firmware-82.3-60160",
+            "release_asset": "82.3-60160-1-49.upd",
+            "kind": "upd-section",
+            "package_id": "82.3-60160-1-49",
+            "model": 49,
+            "section_index": 0,
+            "section_sha256": "7b9db78ab76abb9ba9a095cdebc16cac5a240d5db203bc5b154bf3d5a39052fa",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "f28d3c15f69a514984436e9ec129cc1a89aec6f3": {
         "b3450f3d6ab0d3ac79eadd551646aa909f5d734213b2612550aa6296669636c7": {
-          "checked_at": "2026-11-26T06:33:58.264481+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:58.264481+00:00",
+          "checked_at": "2026-11-26T08:06:42.432902+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:42.432902+00:00",
           "status": "failed",
           "source": {
             "sha256": "75f432dfe8340f7b4549134252b12006889231c9250dd45f0517e4ebe990aedf",
@@ -8137,9 +11273,9 @@
           "error_type": "ValueError"
         },
         "4e31aada4b11fcefe17342cc6a66ea1dc68cd011fb43bfadd50806eb79c7fcc8": {
-          "checked_at": "2026-11-26T06:33:59.629139+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:33:59.629139+00:00",
+          "checked_at": "2026-11-26T08:06:43.691140+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:43.691140+00:00",
           "status": "failed",
           "source": {
             "sha256": "75f432dfe8340f7b4549134252b12006889231c9250dd45f0517e4ebe990aedf",
@@ -8435,13 +11571,133 @@
             "section_type": 21
           },
           "error_type": "ValueError"
+        },
+        "180d2cd3343d11b9f3a336d0bee9a1069b4863e760613a6e4b73e09076f9b653": {
+          "checked_at": "2026-11-26T08:06:46.247149+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:46.247149+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "58ca8f584774482f1cc6ac767ec6870327cc37fc3b78485eab23e4d506b0ac11",
+            "bytes": 103149519,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-51",
+            "model": 51,
+            "section_index": 2,
+            "section_sha256": "f0ace2cc52b30d1660653f5db87dc9bd721afe521a828d69422a339200a14d55",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "1b2d8a42dfac92b940817cf1598511bf3e8582b278191304026efb8251270929": {
+          "checked_at": "2026-11-26T08:06:47.500380+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:47.500380+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "58ca8f584774482f1cc6ac767ec6870327cc37fc3b78485eab23e4d506b0ac11",
+            "bytes": 103149519,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-51",
+            "model": 51,
+            "section_index": 3,
+            "section_sha256": "c611bcc816a20f1e6104e25b606c7d782c936c8d3cf35c66c9010fed37108416",
+            "section_bytes": 132,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "7c23b21c9ce3ac0afe5d88c4360b08dfce0cd914800753b06612aab05aa19373": {
+          "checked_at": "2026-11-26T08:06:48.855253+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:48.855253+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "58ca8f584774482f1cc6ac767ec6870327cc37fc3b78485eab23e4d506b0ac11",
+            "bytes": 103149519,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-51",
+            "model": 51,
+            "section_index": 4,
+            "section_sha256": "6473acbdb9dde8dd5e6fd2e31a413961f8f74882ade7a101e6fb7cfba1bcf494",
+            "section_bytes": 28,
+            "section_type": 2
+          },
+          "error_type": "ValueError"
+        },
+        "5ca426ab3e2662d803cf00b11a8c3bd1c0a9fc932fee2912122ef98e23a7878b": {
+          "checked_at": "2026-11-26T08:06:50.315755+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:50.315755+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "58ca8f584774482f1cc6ac767ec6870327cc37fc3b78485eab23e4d506b0ac11",
+            "bytes": 103149519,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-51",
+            "model": 51,
+            "section_index": 5,
+            "section_sha256": "a2ff8a5096f7e06b174292941fb644eabfc52d35607a2283d0b22ad0259d1dd3",
+            "section_bytes": 172287,
+            "section_type": 22
+          },
+          "error_type": "ValueError"
+        },
+        "920e368e92b8ac89c1d54259e6637551222718436b6fcea7f7956bf23b0b2498": {
+          "checked_at": "2026-11-26T08:06:51.670723+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:51.670723+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "58ca8f584774482f1cc6ac767ec6870327cc37fc3b78485eab23e4d506b0ac11",
+            "bytes": 103149519,
+            "release_tag": "firmware-97.1-80312",
+            "release_asset": "97.1-80312-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "97.1-80312-1-51",
+            "model": 51,
+            "section_index": 10,
+            "section_sha256": "9024414f57293ed7e4e2baf9354d03ed83829f7e2ba0087fe8a23d21eb12dd1b",
+            "section_bytes": 364,
+            "section_type": 17
+          },
+          "error_type": "ValueError"
+        },
+        "82418e0b36a411281cd4d95035d42cff332e0990ff4999702cbe9a3f80e643cb": {
+          "checked_at": "2026-11-26T08:06:54.732337+00:00",
+          "consecutive_failures": 1,
+          "next_attempt_at": "2026-11-26T09:06:54.732337+00:00",
+          "status": "failed",
+          "source": {
+            "sha256": "622146afc339fde5553a50bc5ee7c9470d90b02d9854288c37180ba3c070e36f",
+            "bytes": 104797663,
+            "release_tag": "firmware-98.0-82170",
+            "release_asset": "98.0-82170-1-51.upd",
+            "kind": "upd-section",
+            "package_id": "98.0-82170-1-51",
+            "model": 51,
+            "section_index": 0,
+            "section_sha256": "091fcdff16ee13c6a34790b2af717826b64f75135d6a59903037395d17b8172b",
+            "section_bytes": 12,
+            "section_type": 1
+          },
+          "error_type": "ValueError"
         }
       },
       "0cffd0659d3c9e6a93c99bf6c0e72fc1eeadc296": {
         "47d84f1bd793057eddee14d213c7c69beda95bfb157ac1009bb18485df8157c7": {
-          "checked_at": "2026-11-26T06:34:15.804122+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:15.804122+00:00",
+          "checked_at": "2026-11-26T08:06:57.550505+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:57.550505+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8459,9 +11715,9 @@
           "error_type": "ValueError"
         },
         "93773fb6a10214bae1a4c01d006989fdd06cf9f4e5fc7d5768255a301de044eb": {
-          "checked_at": "2026-11-26T06:34:17.452074+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:17.452074+00:00",
+          "checked_at": "2026-11-26T08:06:59.364133+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:06:59.364133+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8479,9 +11735,9 @@
           "error_type": "ValueError"
         },
         "45e8ffd8ea33341551fe65fbb619553f450ff5edf96725865cf3e8abaf20a83c": {
-          "checked_at": "2026-11-26T06:34:19.095943+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:19.095943+00:00",
+          "checked_at": "2026-11-26T08:07:00.870410+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:00.870410+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8499,9 +11755,9 @@
           "error_type": "ValueError"
         },
         "6142146288c1ca3efed6c62ff9aa66b23855fa7e998847f776f18fef795001f5": {
-          "checked_at": "2026-11-26T06:34:20.637180+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:20.637180+00:00",
+          "checked_at": "2026-11-26T08:07:02.390746+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:02.390746+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8519,9 +11775,9 @@
           "error_type": "ValueError"
         },
         "7a0ca592d855d34d6465469389019d6fb7fd6f9ec9cb828e9be830e491c17773": {
-          "checked_at": "2026-11-26T06:34:22.381412+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:22.381412+00:00",
+          "checked_at": "2026-11-26T08:07:04.007391+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:04.007391+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8539,9 +11795,9 @@
           "error_type": "ValueError"
         },
         "8f93e73a9ca4cbbd08af667fe3fcd4f9dcc7f7b052ddfe4820dbc75588859e1e": {
-          "checked_at": "2026-11-26T06:34:23.926194+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:23.926194+00:00",
+          "checked_at": "2026-11-26T08:07:05.629124+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:05.629124+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8559,9 +11815,9 @@
           "error_type": "ValueError"
         },
         "505dc19ccadf598d9c00291f65c277f1d6843ff2667bc0f2098c731042a5d749": {
-          "checked_at": "2026-11-26T06:34:25.571654+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:25.571654+00:00",
+          "checked_at": "2026-11-26T08:07:07.150179+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:07.150179+00:00",
           "status": "failed",
           "source": {
             "sha256": "90c6f576da61e626823bb76759f68dc288c92db66dab883edddcc7e54e51b80f",
@@ -8579,9 +11835,9 @@
           "error_type": "ValueError"
         },
         "d388d7e8faeb3a69a09694d56381f58485c06f0c479a82dc77a6d02dfe6936ad": {
-          "checked_at": "2026-11-26T06:34:31.135347+00:00",
-          "consecutive_failures": 1,
-          "next_attempt_at": "2026-11-26T07:34:31.135347+00:00",
+          "checked_at": "2026-11-26T08:07:08.581536+00:00",
+          "consecutive_failures": 2,
+          "next_attempt_at": "2026-11-26T10:07:08.581536+00:00",
           "status": "failed",
           "source": {
             "sha256": "567ee5386284ff738d3e9445e74ebf64def0b8dfeca0ab7ad0b10f574a860c9c",
@@ -8736,11 +11992,11 @@
         ],
         "recovery_revision": 4,
         "model": 5,
-        "checked_at": "2026-11-26T07:14:30.139747+00:00",
-        "eligible_sources": 98,
+        "checked_at": "2026-11-26T08:03:09.982981+00:00",
+        "eligible_sources": 101,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 98,
+        "pending_sources": 101,
         "status": "attempts-failed"
       },
       "87da92d5173e329c366300810f9d94f525bf2d65": {
@@ -8753,11 +12009,11 @@
         ],
         "recovery_revision": 4,
         "model": 13,
-        "checked_at": "2026-11-26T07:14:36.156739+00:00",
-        "eligible_sources": 199,
+        "checked_at": "2026-11-26T08:03:15.734204+00:00",
+        "eligible_sources": 202,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 199,
+        "pending_sources": 202,
         "status": "attempts-failed"
       },
       "8046d7d71a1161ed17f5c661096a2bfe2cac0f3a": {
@@ -8770,11 +12026,11 @@
         ],
         "recovery_revision": 4,
         "model": 14,
-        "checked_at": "2026-11-26T07:14:42.630825+00:00",
-        "eligible_sources": 190,
+        "checked_at": "2026-11-26T08:03:22.078033+00:00",
+        "eligible_sources": 193,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 190,
+        "pending_sources": 193,
         "status": "attempts-failed"
       },
       "8cb7e8b66c9984623bce23125ef6a0c88b1d4cc3": {
@@ -8787,11 +12043,11 @@
         ],
         "recovery_revision": 4,
         "model": 20,
-        "checked_at": "2026-11-26T07:14:49.316672+00:00",
-        "eligible_sources": 199,
+        "checked_at": "2026-11-26T08:03:28.325927+00:00",
+        "eligible_sources": 202,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 199,
+        "pending_sources": 202,
         "status": "attempts-failed"
       },
       "fd5f06180d724cf26e42548a8501133a273ed516": {
@@ -8804,11 +12060,11 @@
         ],
         "recovery_revision": 4,
         "model": 21,
-        "checked_at": "2026-11-26T07:14:56.307432+00:00",
-        "eligible_sources": 211,
+        "checked_at": "2026-11-26T08:03:34.371570+00:00",
+        "eligible_sources": 214,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 211,
+        "pending_sources": 214,
         "status": "attempts-failed"
       },
       "73a52aa1366144a1bda8d256999fa0fa2cc2f0bb": {
@@ -8821,11 +12077,11 @@
         ],
         "recovery_revision": 4,
         "model": 22,
-        "checked_at": "2026-11-26T07:15:04.654957+00:00",
-        "eligible_sources": 190,
+        "checked_at": "2026-11-26T08:03:40.806468+00:00",
+        "eligible_sources": 193,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 190,
+        "pending_sources": 193,
         "status": "attempts-failed"
       },
       "ced4316a9249b0297a452ecddbc1f6c619277789": {
@@ -8838,11 +12094,11 @@
         ],
         "recovery_revision": 4,
         "model": 23,
-        "checked_at": "2026-11-26T07:15:11.242281+00:00",
-        "eligible_sources": 211,
+        "checked_at": "2026-11-26T08:03:47.060560+00:00",
+        "eligible_sources": 214,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 211,
+        "pending_sources": 214,
         "status": "attempts-failed"
       },
       "9e4031d6408a0fbbae483de4e75327caa30bdbc5": {
@@ -8855,11 +12111,11 @@
         ],
         "recovery_revision": 4,
         "model": 24,
-        "checked_at": "2026-11-26T07:15:21.902395+00:00",
-        "eligible_sources": 211,
+        "checked_at": "2026-11-26T08:03:54.104954+00:00",
+        "eligible_sources": 213,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 211,
+        "pending_sources": 213,
         "status": "attempts-failed"
       },
       "83fb98ffd324255b26fdab99105a1a02a82bae93": {
@@ -8872,11 +12128,11 @@
         ],
         "recovery_revision": 4,
         "model": 25,
-        "checked_at": "2026-11-26T07:15:29.646620+00:00",
-        "eligible_sources": 211,
+        "checked_at": "2026-11-26T08:04:01.491311+00:00",
+        "eligible_sources": 213,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 211,
+        "pending_sources": 213,
         "status": "attempts-failed"
       },
       "c9d56d385d3e0449fcc91dd57c315b387dbfa873": {
@@ -8889,7 +12145,7 @@
         ],
         "recovery_revision": 4,
         "model": 27,
-        "checked_at": "2026-11-26T07:15:40.437184+00:00",
+        "checked_at": "2026-11-26T08:04:08.718640+00:00",
         "eligible_sources": 148,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -8906,11 +12162,11 @@
         ],
         "recovery_revision": 4,
         "model": 28,
-        "checked_at": "2026-11-26T07:15:48.948497+00:00",
-        "eligible_sources": 218,
+        "checked_at": "2026-11-26T08:04:17.595648+00:00",
+        "eligible_sources": 220,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 218,
+        "pending_sources": 220,
         "status": "attempts-failed"
       },
       "5940a717079fb4f50ec9ae6f91a8dfb159789c1f": {
@@ -8923,11 +12179,11 @@
         ],
         "recovery_revision": 4,
         "model": 29,
-        "checked_at": "2026-11-26T07:15:56.808457+00:00",
-        "eligible_sources": 213,
+        "checked_at": "2026-11-26T08:04:23.920612+00:00",
+        "eligible_sources": 215,
         "selected_sources": 8,
         "attempted_sources": 8,
-        "pending_sources": 213,
+        "pending_sources": 215,
         "status": "attempts-failed"
       },
       "efa0f2d1e890129b15646050b238fd1bba817f2f": {
@@ -8940,7 +12196,7 @@
         ],
         "recovery_revision": 4,
         "model": 30,
-        "checked_at": "2026-11-26T07:16:04.265219+00:00",
+        "checked_at": "2026-11-26T08:04:29.841890+00:00",
         "eligible_sources": 134,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -8957,7 +12213,7 @@
         ],
         "recovery_revision": 4,
         "model": 32,
-        "checked_at": "2026-11-26T07:16:11.897424+00:00",
+        "checked_at": "2026-11-26T08:04:36.566454+00:00",
         "eligible_sources": 135,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -8974,7 +12230,7 @@
         ],
         "recovery_revision": 4,
         "model": 33,
-        "checked_at": "2026-11-26T07:16:20.098119+00:00",
+        "checked_at": "2026-11-26T08:04:43.182909+00:00",
         "eligible_sources": 139,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -8991,7 +12247,7 @@
         ],
         "recovery_revision": 4,
         "model": 34,
-        "checked_at": "2026-11-26T07:16:31.138965+00:00",
+        "checked_at": "2026-11-26T08:04:52.086549+00:00",
         "eligible_sources": 137,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9008,7 +12264,7 @@
         ],
         "recovery_revision": 4,
         "model": 35,
-        "checked_at": "2026-11-26T07:16:38.880441+00:00",
+        "checked_at": "2026-11-26T08:04:59.115009+00:00",
         "eligible_sources": 146,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9025,7 +12281,7 @@
         ],
         "recovery_revision": 4,
         "model": 36,
-        "checked_at": "2026-11-26T07:16:50.125787+00:00",
+        "checked_at": "2026-11-26T08:05:09.610290+00:00",
         "eligible_sources": 105,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9042,7 +12298,7 @@
         ],
         "recovery_revision": 4,
         "model": 37,
-        "checked_at": "2026-11-26T07:16:59.697639+00:00",
+        "checked_at": "2026-11-26T08:05:19.587766+00:00",
         "eligible_sources": 105,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9059,7 +12315,7 @@
         ],
         "recovery_revision": 4,
         "model": 38,
-        "checked_at": "2026-11-26T07:17:07.417575+00:00",
+        "checked_at": "2026-11-26T08:05:27.487825+00:00",
         "eligible_sources": 105,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9076,7 +12332,7 @@
         ],
         "recovery_revision": 4,
         "model": 40,
-        "checked_at": "2026-11-26T07:17:20.679509+00:00",
+        "checked_at": "2026-11-26T08:05:39.519860+00:00",
         "eligible_sources": 98,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9093,7 +12349,7 @@
         ],
         "recovery_revision": 4,
         "model": 41,
-        "checked_at": "2026-11-26T07:17:34.398432+00:00",
+        "checked_at": "2026-11-26T08:05:51.634450+00:00",
         "eligible_sources": 70,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9110,7 +12366,7 @@
         ],
         "recovery_revision": 4,
         "model": 42,
-        "checked_at": "2026-11-26T07:17:49.908548+00:00",
+        "checked_at": "2026-11-26T08:06:06.751835+00:00",
         "eligible_sources": 77,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9127,7 +12383,7 @@
         ],
         "recovery_revision": 4,
         "model": 46,
-        "checked_at": "2026-11-26T07:17:59.391752+00:00",
+        "checked_at": "2026-11-26T08:06:16.179699+00:00",
         "eligible_sources": 28,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9144,7 +12400,7 @@
         ],
         "recovery_revision": 4,
         "model": 49,
-        "checked_at": "2026-11-26T07:18:11.285505+00:00",
+        "checked_at": "2026-11-26T08:06:26.529123+00:00",
         "eligible_sources": 84,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9161,7 +12417,7 @@
         ],
         "recovery_revision": 4,
         "model": 51,
-        "checked_at": "2026-11-26T07:18:24.864756+00:00",
+        "checked_at": "2026-11-26T08:06:40.674653+00:00",
         "eligible_sources": 28,
         "selected_sources": 8,
         "attempted_sources": 8,
@@ -9178,10 +12434,10 @@
         ],
         "recovery_revision": 4,
         "model": 52,
-        "checked_at": "2026-11-26T07:18:39.294982+00:00",
+        "checked_at": "2026-11-26T08:06:54.739053+00:00",
         "eligible_sources": 14,
-        "selected_sources": 6,
-        "attempted_sources": 6,
+        "selected_sources": 8,
+        "attempted_sources": 8,
         "pending_sources": 14,
         "status": "attempts-failed"
       }
