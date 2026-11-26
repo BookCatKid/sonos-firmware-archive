@@ -1,20 +1,20 @@
 {
-  "binary_executable_text_bytes_scanned": 787123412,
+  "binary_executable_text_bytes_scanned": 1226069485,
   "binary_incomplete_scans": 1,
   "binary_linked_gpl_versions": [],
-  "binary_pending_inputs": 2233,
+  "binary_pending_inputs": 2376,
   "binary_scan_errors": 0,
-  "binary_scanned_inputs": 28,
-  "candidate_checks": 3101,
+  "binary_scanned_inputs": 32,
+  "candidate_checks": 3173,
   "candidate_states": {
-    "access-denied": 3062,
+    "access-denied": 3134,
     "verified": 39
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
   "full_compressed_stream_verified_source_archives": 1190,
   "fully_published_releases": 38,
-  "generated": "2026-11-26T16:47:02+00:00",
+  "generated": "2026-11-26T16:52:38+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
