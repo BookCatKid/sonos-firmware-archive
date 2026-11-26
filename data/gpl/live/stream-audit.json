@@ -1,14 +1,13 @@
 {
-  "batches": 8,
-  "bytes_downloaded": 1979989116,
-  "downloaded": 161,
+  "bytes_downloaded": 0,
+  "downloaded": 0,
   "failed": 0,
   "mismatched": 0,
-  "processed": 177,
+  "processed": 0,
   "remaining_after": 0,
-  "remaining_before": 177,
-  "reused": 16,
-  "selected": 177,
+  "remaining_before": 0,
+  "reused": 0,
+  "selected": 0,
   "status": "ok",
-  "verified": 177
+  "verified": 0
 }
