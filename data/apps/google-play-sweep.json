@@ -68,10 +68,10 @@
       "version_selector": "430354030",
       "arch": "arm64",
       "profile": "Pv",
-      "checked_at": "2026-11-26T05:33:32.477062+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T06:33:32.477062+00:00",
-      "checked": "2026-11-26T05:33:32.477090+00:00",
+      "checked_at": "2026-11-26T06:44:26.496581+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-26T08:44:26.496581+00:00",
+      "checked": "2026-11-26T06:44:26.496603+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -81,10 +81,10 @@
       "version_selector": "430354030",
       "arch": "armv7",
       "profile": "XK",
-      "checked_at": "2026-11-26T05:33:32.840083+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T06:33:32.840083+00:00",
-      "checked": "2026-11-26T05:33:32.840121+00:00",
+      "checked_at": "2026-11-26T06:44:27.451439+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-26T08:44:27.451439+00:00",
+      "checked": "2026-11-26T06:44:27.451461+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383121"
@@ -94,10 +94,10 @@
       "version_selector": "430354030",
       "arch": "x86_64",
       "profile": "x8",
-      "checked_at": "2026-11-26T05:33:33.745144+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T06:33:33.745144+00:00",
-      "checked": "2026-11-26T05:33:33.745170+00:00",
+      "checked_at": "2026-11-26T06:44:27.766750+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-26T08:44:27.766750+00:00",
+      "checked": "2026-11-26T06:44:27.766775+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -163,6 +163,127 @@
       "consecutive_failures": 1,
       "next_attempt_at": "2026-11-26T06:33:37.664192+00:00",
       "checked": "2026-11-26T05:33:37.664215+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayAnonymousDeliveryUnavailable"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "arm64",
+      "profile": "D2",
+      "discovered_from": "google-play-delivery",
+      "checked_at": "2026-11-26T06:44:46.594764+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T06:44:46.594764+00:00",
+      "checked": "2026-11-26T06:44:46.594785+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "Gj",
+      "discovered_from": "google-play-delivery",
+      "checked_at": "2026-11-26T06:44:57.876718+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T06:44:57.876718+00:00",
+      "checked": "2026-11-26T06:44:57.876740+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr2",
+      "version_selector": "1270401011",
+      "arch": "x86_64",
+      "profile": "x8",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile",
+      "checked_at": "2026-11-26T06:45:24.065654+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T06:45:24.065654+00:00",
+      "checked": "2026-11-26T06:45:24.065676+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr2",
+      "version_selector": "1270401011",
+      "arch": "x86",
+      "profile": "x8",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile",
+      "checked_at": "2026-11-26T06:45:37.175826+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T06:45:37.175826+00:00",
+      "checked": "2026-11-26T06:45:37.175847+00:00",
+      "exit_code": 0,
+      "status": "archived"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "x86",
+      "profile": "7M",
+      "checked_at": "2026-11-26T06:45:38.053341+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:45:38.053341+00:00",
+      "checked": "2026-11-26T06:45:38.053366+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayAnonymousDeliveryUnavailable"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "arm64",
+      "profile": "eV",
+      "checked_at": "2026-11-26T06:45:38.881562+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:45:38.881562+00:00",
+      "checked": "2026-11-26T06:45:38.881587+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "armv7",
+      "profile": "IV",
+      "checked_at": "2026-11-26T06:45:39.815944+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:45:39.815944+00:00",
+      "checked": "2026-11-26T06:45:39.815967+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383121"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "arm64",
+      "profile": "iq",
+      "checked_at": "2026-11-26T06:45:40.653785+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:45:40.653785+00:00",
+      "checked": "2026-11-26T06:45:40.653809+00:00",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "430354030",
+      "arch": "armv7",
+      "profile": "Gb",
+      "checked_at": "2026-11-26T06:45:41.659347+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:45:41.659347+00:00",
+      "checked": "2026-11-26T06:45:41.659373+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -232,12 +353,56 @@
           "discovered_from": "google-play-profile"
         }
       ]
+    },
+    "com.sonos.acr2|x86_64|x8": {
+      "checked_at": "2026-11-26T06:44:25.145621+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-26T12:44:25.145621+00:00",
+      "versions": [
+        {
+          "arch": "x86_64",
+          "profile": "x8",
+          "package": "com.sonos.acr2",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
+          "discovered_from": "google-play-profile"
+        }
+      ]
+    },
+    "com.sonos.acr|x86_64|x8": {
+      "checked_at": "2026-11-26T06:44:25.259109+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:44:25.259109+00:00",
+      "error": "GooglePlayAnonymousListingUnavailable"
+    },
+    "com.sonos.acr2|x86|x8": {
+      "checked_at": "2026-11-26T06:44:25.421205+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-26T12:44:25.421205+00:00",
+      "versions": [
+        {
+          "arch": "x86",
+          "profile": "x8",
+          "package": "com.sonos.acr2",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
+          "discovered_from": "google-play-profile"
+        }
+      ]
+    },
+    "com.sonos.acr|x86|x8": {
+      "checked_at": "2026-11-26T06:44:25.550096+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:44:25.550096+00:00",
+      "error": "GooglePlayAnonymousListingUnavailable"
     }
   },
   "observed_variants": {},
   "sdk_hints": [],
   "cooldown_failures": 0,
-  "updated": "2026-11-26T05:33:37.675254+00:00",
+  "updated": "2026-11-26T06:45:41.665197+00:00",
   "pending_selectors": [
     {
       "package": "com.sonos.acr",
@@ -7748,45 +7913,40 @@
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383122",
       "arch": "arm64",
-      "profile": "D2",
+      "profile": "eV",
       "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
       "arch": "armv7",
-      "profile": "Gj"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "x86_64",
-      "profile": "7M"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "x86",
-      "profile": "7M"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "arm64",
-      "profile": "eV"
-    },
-    {
-      "package": "com.sonos.acr",
-      "version_selector": "572383122",
-      "arch": "armv7",
       "profile": "IV"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
       "arch": "arm64",
-      "profile": "iq"
+      "profile": "iq",
+      "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
@@ -9269,18 +9429,6 @@
       "version_selector": "1270401011",
       "arch": "armv7",
       "profile": "XK"
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "1270401011",
-      "arch": "x86_64",
-      "profile": "x8"
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "1270401011",
-      "arch": "x86",
-      "profile": "x8"
     },
     {
       "package": "com.sonos.acr2",
@@ -17505,22 +17653,3629 @@
     {
       "package": "com.sonos.acr2",
       "version_selector": "890000051",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570381090",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570483220",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570486101",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "570587010",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571844230",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "571946310",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572150280",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572259130",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261160",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572261300",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572267080",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572271190",
+      "arch": "armv7",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "XK"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "Gj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "IV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572374170",
       "arch": "armv7",
       "profile": "wD"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "Pv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "x86_64",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "x86",
+      "profile": "x8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "tv",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "x86_64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "x86",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
       "arch": "armv7",
-      "profile": "Gj",
+      "profile": "IV",
       "discovered_from": "google-play-delivery"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "Gb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "D2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "Fj"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "B1"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "HE"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "1Z"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "Hb"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "7M"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "8r"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "VP"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "F-"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "L8"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "eV"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "Yc"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "iq"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "b2"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "lv"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "p6"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "arm64",
+      "profile": "wD"
+    },
+    {
+      "package": "com.sonos.acr",
+      "version_selector": "572383121",
+      "arch": "armv7",
+      "profile": "wD"
     }
   ],
-  "attempt_total": 12,
-  "archived_total": 4,
-  "failed_total": 8,
-  "discovery_errors": [],
-  "pending_total": 2879,
+  "attempt_total": 21,
+  "archived_total": 8,
+  "failed_total": 13,
+  "discovery_errors": [
+    {
+      "package": "com.sonos.acr",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    },
+    {
+      "package": "com.sonos.acr",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    }
+  ],
+  "pending_total": 3475,
   "status": "partial",
-  "discovery_pending_total": 82
+  "discovery_pending_total": 78
 }
