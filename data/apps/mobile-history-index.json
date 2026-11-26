@@ -755,27 +755,7 @@
       "more_pages": false
     },
     {
-      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-      "records": 0,
-      "more_pages": false
-    },
-    {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-      "records": 0,
-      "more_pages": true
-    },
-    {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-      "records": 0,
-      "more_pages": false
-    },
-    {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-      "records": 0,
-      "more_pages": false
-    },
-    {
-      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
       "records": 0,
       "more_pages": false
     }
@@ -790,12 +770,63 @@
       "next_attempt_at": "2026-11-26T06:33:48.699164+00:00"
     },
     {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "The read operation timed out",
+      "http_status": null,
+      "checked_at": "2026-11-26T06:34:06.262629+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:34:06.262629+00:00"
+    },
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "http_status": null,
+      "checked_at": "2026-11-26T06:34:32.331058+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
+    },
+    {
+      "checked_at": "2026-11-26T06:34:39.223363+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:34:39.223363+00:00",
+      "status": "failed",
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index",
+      "http_status": 503
+    },
+    {
+      "checked_at": "2026-11-26T06:34:39.374218+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:34:39.374218+00:00",
+      "status": "failed",
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+      "http_status": 503
+    },
+    {
+      "checked_at": "2026-11-26T06:34:39.478490+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:34:39.478490+00:00",
+      "status": "failed",
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+      "http_status": 503
+    },
+    {
       "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
       "error": "<urlopen error [Errno 111] Connection refused>",
       "http_status": null,
       "checked_at": "2026-11-26T05:34:44.885330+00:00",
       "consecutive_failures": 1,
       "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+    },
+    {
+      "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController120.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+      "error": "<urlopen error [Errno 111] Connection refused>",
+      "http_status": null,
+      "checked_at": "2026-11-26T06:35:03.344107+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-26T07:35:03.344107+00:00"
     }
   ],
   "wayback": {
@@ -1000,9 +1031,26 @@
         "checked_at": "2026-11-26T05:34:25.081432+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T05:34:25.081432+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2008-2009-index|sonos.com/": {
+        "next_page": 1,
+        "pages": 1,
+        "status": "complete",
+        "checked_at": "2026-11-26T06:34:39.093180+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T06:34:39.093180+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2008-2009-index|update-software.sonos.com/": {
+        "checked_at": "2026-11-26T06:34:39.223363+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.223363+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index",
+        "http_status": 503
       }
     },
-    "next_query": 2,
+    "next_query": 4,
     "query_revision": "25a292a1d6088214dd064f35c926f948c9fee635f3c865752217c6d5ce741545",
     "query_specs": {
       "sonos.com/": "ab5f7d5bdcaa31feb1f3a4d3f3a04046875b802f3d547561f9e0d32d60424953",
@@ -1012,50 +1060,149 @@
       "sonos.com": "sonos.com/",
       "update-software.sonos.com": "update-software.sonos.com/"
     },
-    "errors": [],
+    "errors": [
+      {
+        "checked_at": "2026-11-26T06:34:39.223363+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.223363+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index",
+        "http_status": 503
+      }
+    ],
     "observations": [
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-        "records": 0,
-        "more_pages": true
-      },
-      {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=sonos.com%2F&matchType=domain&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
         "records": 0,
         "more_pages": false
       }
     ],
-    "pending_queries": 259,
+    "pending_queries": 258,
     "status": "partial"
   },
   "wayback_directories": {
     "schema_version": 2,
-    "query_revision": "9d8069235e287e31f13291865350b0bcbc7ba8e7a994277b92f84844d94e7b60",
+    "query_revision": "12adc3dc9a2432d4b95b7f63fbf5f532b19589ee9e5a21a646bf2d3c6b82f6fd",
     "query_specs": {
-      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "140077aa0754884405f75415b4a9c751bba6fae950c4e572fbc2f5b358664345"
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "140077aa0754884405f75415b4a9c751bba6fae950c4e572fbc2f5b358664345",
+      "https://update-software.sonos.com/software/android/acr/": "6104852bf67531e091fdde3abeaf3681c73b3af5f9dd321ecaabb36fa5f74dbf",
+      "https://update-software.sonos.com/software/72ynP0v9lu/": "5d66890e411006384ae201b48c46257cdd77adc3563426fcc768650acb8324b9",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/": "b6ba7ef721d533220c79dca6155cc6b9c3d1f8bc4cb883d39aa3b08264a76c77",
+      "https://update-software.sonos.com/software/npgNL9nqYX/": "6a601bf57c3474fb8d1316985c8ea77070a20e68d25d2d24c43f799e9a5c9862",
+      "https://update-software.sonos.com/software/dpnugadm/": "e9202b7a60d0adcd27e6b93c760dc62bd1531bb2d520c20c08bfb11b3f28bd59",
+      "https://update-software.sonos.com/software/flfowmpo/": "df5e8d4408b2a61c95c10baee08c4038f2f649a75b223887e179bd64f5606cf1",
+      "https://update-software.sonos.com/software/gjocspcx/": "24ebf5979a6d028b5a09ef91f350f8ca3ba82792f665946dfdc609565a789e54",
+      "https://update-software.sonos.com/software/ziyilgwh/": "ef8839fd9fa88883f7851bb054013b5f077a6e555b2d58299e7ad22249b3d55b",
+      "https://update-software.sonos.com/software/fgiespzv/": "22688c8d50022080bf177770e72fba214aed256c676188ea6a72f6124206a57c",
+      "https://update-software.sonos.com/software/vgnciqkn/": "ce2f56d0a09258ea18357b5f527d7da2fe0889e6074a27011f8f995a7ec42cd6",
+      "https://update-software.sonos.com/software/wfdshdmg/": "ae1dca0e8a328539c64d56457c73f535fbc92f0e686bb94facc3522700a759c1",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/": "d15ec59ba2136f0dce63ee28056d7744200d64ea0e0fb8ee7dd8a3ab3a0a83af",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/": "6a64f641e986d0a4464d8e05b60929cb23b3cb05b1688c9cacdad6756b4c5e25",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/": "072b31c51ede85d393860d81e7602d8b0e9241671b3317a2831afd93d9e2fde3",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/": "11ecc886dbee4c7a50742c5760a06fa7340e3ad3f721f96d590870b3d9180d73",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/": "07928ff9480fe56f782c72d206f41a8170f3798746efc0f105b50b57ab5fb974",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/": "c11fa54b77d3c60602faafd55c44e36a268ab906f53432d0f01f048913444256",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/": "d015559de5b155d796e56d8499105f82cf09cb97f4ec14023ae521ed05bd97a1",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/": "0a1c5e936fc5b8e3ecdefa44a1cea0367e83733fd9971bbbd95a66a3d7839ffb",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/": "41eda64a2317eadac1dddea0d55fa9e26e444c49d5679a5f6ae4a2f25f1ba411",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/": "f4eadcd56c80d555664e31821bedb8db0f7f9e37120631513255e9ad37d022da",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/": "9fafe0b2b2c8284e936f833e71758bac0ed9748efa01f175a014368d6619375c"
     },
     "query_roots": {
-      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/",
+      "https://update-software.sonos.com/software/android/acr/": "update-software.sonos.com/software/android/acr/",
+      "https://update-software.sonos.com/software/72ynP0v9lu/": "update-software.sonos.com/software/72ynP0v9lu/",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/": "update-software.sonos.com/software/sLUvGZEjVv/",
+      "https://update-software.sonos.com/software/npgNL9nqYX/": "update-software.sonos.com/software/npgNL9nqYX/",
+      "https://update-software.sonos.com/software/dpnugadm/": "update-software.sonos.com/software/dpnugadm/",
+      "https://update-software.sonos.com/software/flfowmpo/": "update-software.sonos.com/software/flfowmpo/",
+      "https://update-software.sonos.com/software/gjocspcx/": "update-software.sonos.com/software/gjocspcx/",
+      "https://update-software.sonos.com/software/ziyilgwh/": "update-software.sonos.com/software/ziyilgwh/",
+      "https://update-software.sonos.com/software/fgiespzv/": "update-software.sonos.com/software/fgiespzv/",
+      "https://update-software.sonos.com/software/vgnciqkn/": "update-software.sonos.com/software/vgnciqkn/",
+      "https://update-software.sonos.com/software/wfdshdmg/": "update-software.sonos.com/software/wfdshdmg/",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/": "update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/": "update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/": "update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/": "update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/": "update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/": "update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/": "update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/": "update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/": "update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/": "update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/": "update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/"
     },
     "cursors": {
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": null
     },
-    "next_host": 0,
-    "retries": {},
+    "next_host": 2,
+    "retries": {
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "The read operation timed out",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:34:06.262629+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:06.262629+00:00"
+      },
+      "https://update-software.sonos.com/software/android/acr/": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:34:32.331058+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
+      }
+    },
     "index_retry": {},
-    "completed_hosts": [
-      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+    "completed_hosts": [],
+    "pending_hosts": [
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/",
+      "https://update-software.sonos.com/software/72ynP0v9lu/",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/",
+      "https://update-software.sonos.com/software/android/acr/",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/",
+      "https://update-software.sonos.com/software/dpnugadm/",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/",
+      "https://update-software.sonos.com/software/fgiespzv/",
+      "https://update-software.sonos.com/software/flfowmpo/",
+      "https://update-software.sonos.com/software/gjocspcx/",
+      "https://update-software.sonos.com/software/npgNL9nqYX/",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/",
+      "https://update-software.sonos.com/software/vgnciqkn/",
+      "https://update-software.sonos.com/software/wfdshdmg/",
+      "https://update-software.sonos.com/software/ziyilgwh/"
     ],
-    "pending_hosts": [],
-    "status": "ok",
-    "observations": [
+    "status": "partial",
+    "observations": [],
+    "errors": [
       {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "records": 0,
-        "more_pages": false
+        "error": "The read operation timed out",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:34:06.262629+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:06.262629+00:00"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:34:32.331058+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:32.331058+00:00"
       }
-    ],
-    "errors": []
+    ]
   },
   "commoncrawl_directories": {
     "collections": {
@@ -1211,43 +1358,179 @@
         "checked_at": "2026-11-26T05:34:29.350652+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T05:34:29.350652+00:00"
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/software/72ynP0v9lu/": {
+        "checked_at": "2026-11-26T06:34:39.374218+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.374218+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 503
+      },
+      "https://index.commoncrawl.org/CC-MAIN-2026-47-index|update-software.sonos.com/software/sLUvGZEjVv/": {
+        "checked_at": "2026-11-26T06:34:39.478490+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.478490+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 503
       }
     },
-    "next_query": 2,
-    "query_revision": "0072044e29950488fe958e872997c8135c1a1b41e659aa979ed3db70fd765433",
+    "next_query": 4,
+    "query_revision": "e320d0bf7c4d85ed50b1b689eeeb03866dffbb0ddf89a1e527bb9526db1db7ec",
     "query_specs": {
-      "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "3dd17532866f64f90037c3dc0f1b5b4e5d4c1d96fd941f694c13de8a8ca453be"
+      "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "3dd17532866f64f90037c3dc0f1b5b4e5d4c1d96fd941f694c13de8a8ca453be",
+      "update-software.sonos.com/software/android/acr/": "e7b83a5e0e4949be5f3d18862f68b4a1942daea4b6f1a664e5c60e6fa32017de",
+      "update-software.sonos.com/software/72ynP0v9lu/": "aefa26f158254878d486f4e596d8f885ab7482f3a55b4c104c7f19804550acc3",
+      "update-software.sonos.com/software/sLUvGZEjVv/": "dc5077a0c3414d04132ea387c47fbdd04ec10591ab2a7cca365585e0f7c7723e",
+      "update-software.sonos.com/software/npgNL9nqYX/": "a980d1c7b724c81de1c57601287cdc2e87b9efa3113955dab2adf26861225508",
+      "update-software.sonos.com/software/dpnugadm/": "ad06108718538c5b425382a35902e2b81e251cd68aed0117a84692a6651b058d",
+      "update-software.sonos.com/software/flfowmpo/": "66ff9d891f5acf398fafd311da655bb17a4524976f5c8645dd619d9376e9891d",
+      "update-software.sonos.com/software/gjocspcx/": "56c700ff1f38b0f937a55a73816f6ec4e56c2e1b7bdb4cea79461aa68d0a362b",
+      "update-software.sonos.com/software/ziyilgwh/": "6c8e62c5dd869616f7128fd02fa40de12c58891283d92dd6299f9bc306767c43",
+      "update-software.sonos.com/software/fgiespzv/": "820dabedc6315353922adbeec932098906ea131f1550cb868274e93969580a42",
+      "update-software.sonos.com/software/vgnciqkn/": "9a2e85514312f6f9c06910c3d268ff71bf3786da2fba4da50ff428cf0df8290d",
+      "update-software.sonos.com/software/wfdshdmg/": "298c496986a971ef11d4836e46b272a574fbf27ae0a68d5d9513487213f4dd3f",
+      "update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/": "042de4c00229e2e4244767c40e9ca41b20f21defa4992b115228ed89ccc43dc5",
+      "update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/": "7597ac65c885a0e4a3e97e9d7162fe12bf1de3d42e5ec85e6495ce982e2d016a",
+      "update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/": "a7cc421fdf6fea38b014696eb0e1b18cccbeb218d6a0bc2c3d2a6b54dc63d320",
+      "update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/": "1a873c422d645bbaf7d0c942e77bb844686a401241834d2785d7082a9a9cf5f8",
+      "update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/": "07749218f1cbc01904fa7507bd84664beac70b806973d31ce457880dfa96e0ed",
+      "update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/": "ff18d9f41f048b221d4afd479d0b18156330240f8840490973c6a8eb7d08a538",
+      "update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/": "6a41fa2cef259da88db8ecba7b050a94b56246c0744428313439d2ea227cec19",
+      "update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/": "3bad56f60de651a610704ef13c0c8ef0931ac03e3c98ef60b6f90d1910a3a1fc",
+      "update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/": "aef06f144924c2d08624aec9929b5e25405e4cbb2d038eb5e78c08e094357c38",
+      "update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/": "d4b2f6566e8b58e370e715bd7c67ba88ad15d5a2ba77b9a8792d7dd3645ba5de",
+      "update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/": "fd0b5c271e68399fa73489653d827fc2d4c48897b54868469108c2d3d3cbb4c9"
     },
     "query_roots": {
-      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/"
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/",
+      "https://update-software.sonos.com/software/android/acr/": "update-software.sonos.com/software/android/acr/",
+      "https://update-software.sonos.com/software/72ynP0v9lu/": "update-software.sonos.com/software/72ynP0v9lu/",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/": "update-software.sonos.com/software/sLUvGZEjVv/",
+      "https://update-software.sonos.com/software/npgNL9nqYX/": "update-software.sonos.com/software/npgNL9nqYX/",
+      "https://update-software.sonos.com/software/dpnugadm/": "update-software.sonos.com/software/dpnugadm/",
+      "https://update-software.sonos.com/software/flfowmpo/": "update-software.sonos.com/software/flfowmpo/",
+      "https://update-software.sonos.com/software/gjocspcx/": "update-software.sonos.com/software/gjocspcx/",
+      "https://update-software.sonos.com/software/ziyilgwh/": "update-software.sonos.com/software/ziyilgwh/",
+      "https://update-software.sonos.com/software/fgiespzv/": "update-software.sonos.com/software/fgiespzv/",
+      "https://update-software.sonos.com/software/vgnciqkn/": "update-software.sonos.com/software/vgnciqkn/",
+      "https://update-software.sonos.com/software/wfdshdmg/": "update-software.sonos.com/software/wfdshdmg/",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/": "update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/": "update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/": "update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/": "update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/": "update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/": "update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/": "update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/": "update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/": "update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/": "update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/": "update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/"
     },
-    "errors": [],
-    "observations": [
+    "errors": [
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-        "records": 0,
-        "more_pages": false
+        "checked_at": "2026-11-26T06:34:39.374218+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.374218+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 503
       },
       {
-        "url": "https://index.commoncrawl.org/CC-MAIN-2008-2009-index?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2F&matchType=prefix&output=json&pageSize=1&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
-        "records": 0,
-        "more_pages": false
+        "checked_at": "2026-11-26T06:34:39.478490+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:34:39.478490+00:00",
+        "status": "failed",
+        "error": "HTTP Error 503: Service Temporarily Unavailable",
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
+        "http_status": 503
       }
     ],
-    "pending_queries": 128,
+    "observations": [],
+    "pending_queries": 2988,
     "status": "partial"
   },
   "wayback_exact": {
     "schema_version": 2,
-    "query_revision": "a9ecde2344647f734f03e21fbbd865a624a9a4309c6bf05397577c3ab9ba0a06",
+    "query_revision": "0773cda062d1d1981d182f89c236cfda45bff610833ffe542b2499c1ec7f2a53",
     "query_specs": {
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": "2472a63342b162e352cd9081dfbf7d371f8d2416e9574aa85ff0d1b5f9878b9f",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk": "f53d55adba3365d672dc8a9dd5cfcd5daeecd4fe50255157d4af817786de7242",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk": "5a2803ba49a9188b0f3de594a36ed0c1ee0bd35641ff447115fc7dcb125bfea6",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk": "d166e66223669a1641bae4d4d022677d0bfde3a132a1af11b197cb8e2173f8a7",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "492d2b016e5644da0db3879ad6d0f9f99f92a25dff9dcafb66dd325bb239bf78",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk": "4817d726b231c2f05010556c689447a49d706287490bcfe866b99099e7fc2fe4",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk": "b71d846a09bff792896f45c8517729bf814185b7390bc215ae01b938303dc783",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk": "b19e0064966f3be40306a75cc948f1d23d73334090cd15d730bda038131bfaa8",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk": "5dae0c7a49af55cb53af13f75d4939033b6a1fecb432abf0b4aa1e25f978a44a",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk": "acd59e1c2f90c2eff8cfaa2222708c79607e1edefd6fe94eeddbbcbedca5ca11",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk": "ab7ed54aca54114b87d99c33028a7e9a306251034e8c747b243b5f7751874fa6",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk": "69b5e58a42e049c1b990a06ae00cb0f3a15fc24d143785dbd520689c34f408a5",
+      "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk": "9d4f4ad94342e231f849451ddd38d80f79645f4750286d47806351d535be2e49",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk": "e82d6f433ac100c404615afb4e3a6b19b0e2cc137c6f401e4f9395952412231f",
+      "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk": "07d6eee614a32afeb976a91ab9edba8a903475ad12c814fb0d57870bb38a610f",
+      "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk": "a02bfd4ba22a53005fbeddd182224bd9339eae77ffbc7eebfb28971b52dc4435",
+      "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk": "d80e61e9817faaf7309340ecb68f020f1a9fbc41b1560f71e30769e96c7fed8b",
+      "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk": "10a36ac0125ba2d8350bcbc379464bc0e0a2d0ab328a4bb2f4e8e6e8a9da52f1",
+      "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk": "c08b0a5c83c6afe33ae9ffc7c8572caef3236c61b60b657fbd6c197299857796",
+      "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk": "3be3a4ec1a7bf234f06911d3916b18a5fce0dc95995c1d1baf9275b3660623a2",
+      "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk": "db837c0f32eb4159d25a4c5b33747bf6b1b998cec21975ec67eff3b65cc8860e",
+      "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk": "6f777315ad9d84921ed56ea47e760790cae1d4a26609582ed5d5ac3f51f591b9",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk": "d807f2b46b246d4b1531cc83f739541b07b08b9b4a36406428847924af565381",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk": "150f3565737babbbbc1f16be776ccae6c3587431eb79790d61f5ef2cbc6d5ee7",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk": "c22c58ec1885bac7a7afa2a761eed7b4ec67ace17f31e7b06cae2010431ff9b5",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk": "c89237149718171f43234224ab29be4d863eb675af9e490ac18a4fa889483738",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk": "ff92ee22fa5820b411cd205805135de747376cd517c29df9cfb1dd121a385d27",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk": "0e34b75c3f174515e1fdbb680309453d6f02d7df1a3a2ef9fca144df10b0ed23",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk": "cffde2a800fa7e0b0a518a0d222ed0bdd79d8bec56c441c0592c84f8c3705722",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk": "c03c21e1c1a3f4c479cf13ce26bbafbfc4e076d6a599c1011a4fc54d18f2791f",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk": "f0c1ac78a838e3ab662d3fc378a8f6387b8c254ff392ba56d80b9a708ababac0",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk": "45fc51fd795b13db965ea0b3b2fe0d9574f7cba55882dd02d6f411c9d348129e",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk": "d6f8cc4a867ff1a06a1eb5f7ef73593cc179ff79929b9780cec0477e6ba5ae53",
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "60bac3801de1aad00b2f70abcbecf1621083df8a8fd5182a7cbdfbd88e7df286"
     },
     "query_roots": {
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk": "update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk": "update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk": "update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+      "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk": "update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+      "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk": "update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+      "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk": "update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk": "update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk": "update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk": "update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk": "update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk": "update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk": "update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk": "update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk": "update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk": "update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk": "update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk": "update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk": "update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk": "update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk": "update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk": "update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk": "update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": "update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk"
     },
     "cursors": {},
-    "next_host": 0,
+    "next_host": 1,
     "retries": {
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
@@ -1256,12 +1539,53 @@
         "checked_at": "2026-11-26T05:34:44.885330+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+      },
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController120.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:35:03.344107+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:35:03.344107+00:00"
       }
     },
     "index_retry": {},
     "completed_hosts": [],
     "pending_hosts": [
-      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk"
+      "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
+      "https://update-software.sonos.com/software/0b5d34f8-812b-4c06-ac6b-f691016516a1/Sonos_80.24.32.apk",
+      "https://update-software.sonos.com/software/31cb6d88-9f81-463d-8118-5b35be99f345/Sonos_80.15.01.apk",
+      "https://update-software.sonos.com/software/3a94bfca-7161-47ad-bf73-ac1349eb2452/Sonos_81.00.51.apk",
+      "https://update-software.sonos.com/software/4fad90ac-03c2-42b2-a1d8-bd66be62489d/Sonos_83.00.35.apk",
+      "https://update-software.sonos.com/software/5dbcd956-e255-443d-8c39-257488c85973/Sonos_80.27.6.apk",
+      "https://update-software.sonos.com/software/65e29bb7-6a71-4f8d-a4e1-c50e1144463c/Sonos_80.28.36.apk",
+      "https://update-software.sonos.com/software/72ynP0v9lu/Sonos_57.22-59130_32bit.apk",
+      "https://update-software.sonos.com/software/78962754-cd03-411a-9305-418a6521c79e/Sonos_85.00.31.apk",
+      "https://update-software.sonos.com/software/7f04a54b-2bdb-4be2-9acd-c5bef365d055/Sonos_80.32.32.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1305.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1312.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController133.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
+      "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "https://update-software.sonos.com/software/c4059f9d-a79b-4619-bbd5-5f0b3fd792ed/Sonos_80.09.04.apk",
+      "https://update-software.sonos.com/software/dpnugadm/Sonos_68.3-30100_32bit.apk",
+      "https://update-software.sonos.com/software/f16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3/Sonos_80.27.8.apk",
+      "https://update-software.sonos.com/software/f6888596-b334-4cbb-aec7-137a5976d9ba/Sonos_80.18.24.apk",
+      "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
+      "https://update-software.sonos.com/software/flfowmpo/Sonos_69.1-31120_32bit.apk",
+      "https://update-software.sonos.com/software/gjocspcx/Sonos_69.1-33120_32bit.apk",
+      "https://update-software.sonos.com/software/npgNL9nqYX/Sonos_57.22-71190_32bit.apk",
+      "https://update-software.sonos.com/software/sLUvGZEjVv/Sonos_57.22-61300_32bit.apk",
+      "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
+      "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk"
     ],
     "status": "partial",
     "observations": [],
@@ -1273,6 +1597,14 @@
         "checked_at": "2026-11-26T05:34:44.885330+00:00",
         "consecutive_failures": 1,
         "next_attempt_at": "2026-11-26T06:34:44.885330+00:00"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController120.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "<urlopen error [Errno 111] Connection refused>",
+        "http_status": null,
+        "checked_at": "2026-11-26T06:35:03.344107+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-26T07:35:03.344107+00:00"
       }
     ]
   },
