@@ -12,9 +12,9 @@
   },
   "completeness_proven": false,
   "external_upstream_links": 297,
-  "full_compressed_stream_verified_source_archives": 651,
+  "full_compressed_stream_verified_source_archives": 933,
   "fully_published_releases": 38,
-  "generated": "2026-11-26T06:31:51+00:00",
+  "generated": "2026-11-26T06:47:17+00:00",
   "limitations": [
     "The version grammar is unbounded in principle; unsuccessful probes do not prove a release never existed.",
     "HTTP 403 is not treated as proof of absence.",
@@ -22,7 +22,7 @@
   ],
   "published_downloads": 1447,
   "published_source_archives": 1367,
-  "published_source_archives_awaiting_full_stream_verification": 716,
+  "published_source_archives_awaiting_full_stream_verification": 434,
   "release_coverage": {
     "10.0": {
       "complete_publication": true,
@@ -63,7 +63,7 @@
     "10.4": {
       "complete_publication": true,
       "expected_assets": 40,
-      "full_compressed_stream_verified": 11,
+      "full_compressed_stream_verified": 38,
       "published_assets": 40,
       "published_source_archives": 38,
       "remaining_assets": 0,
@@ -72,7 +72,7 @@
     "10.5": {
       "complete_publication": true,
       "expected_assets": 40,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 38,
       "published_assets": 40,
       "published_source_archives": 38,
       "remaining_assets": 0,
@@ -81,7 +81,7 @@
     "10.6": {
       "complete_publication": true,
       "expected_assets": 40,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 38,
       "published_assets": 40,
       "published_source_archives": 38,
       "remaining_assets": 0,
@@ -90,7 +90,7 @@
     "11.0": {
       "complete_publication": true,
       "expected_assets": 40,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 38,
       "published_assets": 40,
       "published_source_archives": 38,
       "remaining_assets": 0,
@@ -99,7 +99,7 @@
     "11.1": {
       "complete_publication": true,
       "expected_assets": 40,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 38,
       "published_assets": 40,
       "published_source_archives": 38,
       "remaining_assets": 0,
@@ -108,7 +108,7 @@
     "12.0": {
       "complete_publication": true,
       "expected_assets": 38,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 36,
       "published_assets": 38,
       "published_source_archives": 36,
       "remaining_assets": 0,
@@ -117,7 +117,7 @@
     "12.1": {
       "complete_publication": true,
       "expected_assets": 39,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 37,
       "published_assets": 39,
       "published_source_archives": 37,
       "remaining_assets": 0,
@@ -126,7 +126,7 @@
     "12.2": {
       "complete_publication": true,
       "expected_assets": 39,
-      "full_compressed_stream_verified": 0,
+      "full_compressed_stream_verified": 30,
       "published_assets": 39,
       "published_source_archives": 37,
       "remaining_assets": 0,
