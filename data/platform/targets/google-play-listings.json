@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "target": "google-play-listings",
+  "provider": "google-play-listings",
+  "status": "ok",
+  "executed": true,
+  "started_at": "2026-11-26T05:31:36.973055+00:00",
+  "steps": [
+    {
+      "name": "check_new_google_play_apps",
+      "status": "ok",
+      "exit_code": 0,
+      "output_tail": "com.sonos.acr2: updated_on=Nov 11, 2026\ncom.sonos.acr: updated_on=Nov 12, 2026\nGoogle Play listings: status=ok\n",
+      "source_status": "ok"
+    },
+    {
+      "name": "store-google-play-metadata",
+      "status": "ok",
+      "exit_code": 0,
+      "output_tail": ""
+    }
+  ],
+  "errors": [],
+  "pending": [],
+  "finished_at": "2026-11-26T05:31:37.558371+00:00",
+  "next_due": "2026-11-26T11:31:37.558371+00:00"
+}
