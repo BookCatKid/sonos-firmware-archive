@@ -131,10 +131,14 @@ def _distribution_scope(state, evidence):
     return reachable
 
 
-def _release_version_candidates(observed):
-    """Observed release versions plus their adjacent patch releases."""
-    candidates = list(observed)
-    for version in observed:
+def _release_version_candidates(observed, build, majors):
+    """Observed release versions that suit the build, plus adjacent patches."""
+    versions = list(observed)
+    allowed = majors.get(build.split('.')[0])
+    if allowed:
+        versions = [version for version in versions if version.split('.')[0] in allowed] or versions
+    candidates = list(versions)
+    for version in versions:
         parts = version.split('.')
         try:
             patch = int(parts[-1])
@@ -183,10 +187,15 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
         if match[2] not in template['examples']:
             template['examples'].append(match[2])
         version = re.search(r'-v(\d+(?:[.]\d+)+)-', parsed.path)
+        build = re.search(r'/(\d+)[.]\d+-\d+-v', parsed.path)
         if version:
             release = state.setdefault('versions', [])
             if version[1] not in release:
                 release.append(version[1])
+            if build:
+                majors = state.setdefault('version_majors', {}).setdefault(build[1], [])
+                if version[1].split('.')[0] not in majors:
+                    majors.append(version[1].split('.')[0])
     for context_id in saved:
         for template_id in templates:
             jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0, 'examples_done': []})
@@ -214,7 +223,8 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=24):
             suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
             job['ordinal'] += 1
         versions = ([context['app_version']] if context.get('app_version')
-                    else _release_version_candidates(state.get('versions', [])))
+                    else _release_version_candidates(state.get('versions', []), context['build'],
+                                                     state.get('version_majors', {})))
         if not versions:
             state['sequence'] = state.setdefault('sequence', 0)+1
             job['last_queued'] = state['sequence']
