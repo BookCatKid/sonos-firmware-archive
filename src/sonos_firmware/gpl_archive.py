@@ -32,8 +32,6 @@ VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+$")
 VERSION_IN_URL = re.compile(r"(?:https?://(?:www\.)?sonos\.com)?/documents/gpl/([0-9]+\.[0-9]+)/", re.I)
 USER_AGENT = "Mozilla/5.0 (compatible; Sonos-GPL-Preservation/1.0)"
 MIN_DELAY = 2.0
-MAX_INDEX_BYTES = 512 * 1024
-DEFAULT_FREE_RESERVE = 512 * 1024 * 1024
 UPSTREAM_HOSTS = {"ftp.gnu.org", "www.uclibc.org"}
 
 
@@ -193,7 +191,7 @@ class HttpResult:
     retry_after: float | None = None
 
 
-def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -> HttpResult:
+def get_page(url: str, *, timeout: int = 25) -> HttpResult:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT,
                                                "Accept": "text/html,application/xhtml+xml", "Connection": "close"})
     for attempt in range(3):
@@ -210,9 +208,7 @@ def get_page(url: str, *, timeout: int = 25, max_bytes: int = MAX_INDEX_BYTES) -
                 raise
         else:
             with response:
-                data = response.read(max_bytes + 1)
-                if len(data) > max_bytes:
-                    raise ValueError(f"GPL index exceeds {max_bytes} bytes: {url}")
+                data = response.read()
                 return HttpResult(response.status, data, response.headers.get("Content-Type", ""), response.url)
         time.sleep(2 ** (attempt + 1))
     raise AssertionError("unreachable retry exhaustion")
@@ -247,13 +243,14 @@ def offline_candidates(root: Path) -> dict[str, set[str]]:
     """Find versions actually mentioned in archived metadata or documentation."""
     found: dict[str, set[str]] = {}
     for path in sorted((*root.glob("docs/**/*.md"), *root.glob("data/**/*.json"), *root.glob("data/**/*.html"))):
-        if "data/gpl/live/" in path.relative_to(root).as_posix() or path.stat().st_size > 20_000_000:
+        if "data/gpl/live/" in path.relative_to(root).as_posix():
             continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        for match in VERSION_IN_URL.finditer(text):
-            version = match.group(1)
-            if VERSION_RE.fullmatch(version):
-                found.setdefault(version, set()).add(str(path.relative_to(root)))
+        with path.open(encoding='utf-8', errors='replace') as stream:
+            for line in stream:
+                for match in VERSION_IN_URL.finditer(line):
+                    version = match.group(1)
+                    if VERSION_RE.fullmatch(version):
+                        found.setdefault(version, set()).add(str(path.relative_to(root)))
     return found
 
 
@@ -343,7 +340,7 @@ def artifact_checkpoint(result: dict, prior: dict | None = None, *, success_hour
 
 
 def download_artifact(
-    item: dict, destination_root: Path, *, min_free_bytes: int = DEFAULT_FREE_RESERVE,
+    item: dict, destination_root: Path, *,
     request: Callable[[urllib.request.Request], object] | None = None,
     chunk_size: int = 1024 * 1024,
 ) -> dict:
@@ -390,14 +387,14 @@ def download_artifact(
             current = 0
         length = response.headers.get("Content-Length")
         required = int(length) if length and length.isdecimal() else 0
-        if shutil.disk_usage(destination_root).free - min_free_bytes < required:
+        if shutil.disk_usage(destination_root).free < required:
             return {"state": "insufficient-space", "filename": filename, "need_bytes": required,
                     "free_bytes": shutil.disk_usage(destination_root).free}
         written = current
         received = 0
         with scratch.open("ab" if current else "wb") as stream:
             while chunk := response.read(chunk_size):
-                if shutil.disk_usage(destination_root).free <= min_free_bytes:
+                if shutil.disk_usage(destination_root).free < len(chunk):
                     return {"state": "insufficient-space", "filename": filename, "partial_bytes": written}
                 stream.write(chunk)
                 written += len(chunk)

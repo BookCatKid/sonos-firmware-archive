@@ -22,10 +22,7 @@ def main():
     parser.add_argument('--repository', required=True)
     parser.add_argument('--catalog', type=Path, default=ROOT / 'data/catalog.json')
     parser.add_argument('--ledger', type=Path, default=ROOT / 'data/key-recovery-ledger.json')
-    parser.add_argument('--max-sources', type=int, default=8)
     args = parser.parse_args()
-    if args.max_sources <= 0:
-        parser.error('--max-sources must be positive')
     catalog = json.loads(args.catalog.read_text()) if args.catalog.exists() else {'packages': []}
     ledger = json.loads(args.ledger.read_text()) if args.ledger.exists() else {'recovered_keys': {}, 'missing_keys': []}
     recipients = recipient_models(ledger)
@@ -38,7 +35,7 @@ def main():
                 origins[fingerprint] = {'method': 'public-model26-mdp3', 'model': model, 'recipient_id': fingerprint}
             else:
                 origins[fingerprint] = recover_catalog_key(ROOT, catalog, model, fingerprint, output,
-                                        args.repository, max_sources=args.max_sources)
+                                        args.repository)
             return output
         return run
     result = prepare_keys(args.directory, recipients, os.environ,

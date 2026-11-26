@@ -188,7 +188,7 @@ class GPLArchiveTests(unittest.TestCase):
             def resume(request):
                 self.assertEqual(request.headers["Range"], "bytes=17-")
                 return FakeResponse(data[17:], 206, {"Content-Type": "application/x-xz", "Content-Range": f"bytes 17-{len(data)-1}/{len(data)}", "Content-Length": str(len(data)-17)})
-            first = download_artifact(link, store, min_free_bytes=0, request=resume)
+            first = download_artifact(link, store, request=resume)
             self.assertEqual(first["state"], "verified")
             self.assertEqual(first["sha256"], sha256_bytes(data))
             self.assertEqual(first["members"], 1)
@@ -196,7 +196,7 @@ class GPLArchiveTests(unittest.TestCase):
             def again(request):
                 self.assertNotIn("Range", request.headers)
                 return FakeResponse(data, 200, {"Content-Type": "application/x-xz", "Content-Length": str(len(data))})
-            second = download_artifact(link, store, min_free_bytes=0, request=again)
+            second = download_artifact(link, store, request=again)
             self.assertEqual(second["sha256"], first["sha256"])
             self.assertEqual(len(list((store / "sha256").rglob(first["sha256"]))), 1)
 
@@ -211,7 +211,7 @@ class GPLArchiveTests(unittest.TestCase):
             scratch.write_bytes(data[:7])
             def wrong(request):
                 return FakeResponse(data[7:], 206, {"Content-Range": "bytes 0-100/200"})
-            result = download_artifact(item, store, min_free_bytes=0, request=wrong)
+            result = download_artifact(item, store, request=wrong)
             self.assertEqual(result["state"], "invalid-resume-range")
             self.assertEqual(scratch.read_bytes(), data[:7])
 
@@ -406,7 +406,7 @@ class GPLBinaryELFTests(unittest.TestCase):
 
 
 class GPLMultiReleaseProgressTests(unittest.TestCase):
-    def test_bounded_next_archives_more_than_one_incomplete_version(self):
+    def test_next_archives_all_due_incomplete_versions(self):
         import argparse
         import importlib.util
         from unittest.mock import patch
@@ -429,11 +429,11 @@ class GPLMultiReleaseProgressTests(unittest.TestCase):
                         "source_url": "https://www.sonos.com/documents/gpl/6.4/done.tar.xz"}}
             }}))
             args = argparse.Namespace(output=root, next=True, version=[], include_upstream=False,
-                                      retry_errors=False, continue_errors=True, filename=[], limit=2,
-                                      max_total_bytes=0, publish=False, store=root / "blobs",
-                                      reserve_bytes=0, delay=2.5, repo="owner/repo")
+                                      retry_errors=False, continue_errors=True, filename=[],
+                                      publish=False, store=root / "blobs",
+                                      delay=2.5, repo="owner/repo")
             calls = []
-            def fake_download(link, store, *, min_free_bytes):
+            def fake_download(link, store):
                 calls.append(link["filename"])
                 return {"state": "http-error", "filename": link["filename"], "http_status": 403}
             with patch.object(module, "download_artifact", side_effect=fake_download), patch.object(module, "pause"):
@@ -443,9 +443,9 @@ class GPLMultiReleaseProgressTests(unittest.TestCase):
                 self.assertTrue(saved["6.4"]["done.tar.xz"]["published"])
                 self.assertEqual(saved["7.0"]["first.tar.xz"]["http_status"], 403)
                 self.assertEqual(saved["7.1"]["second.tar.xz"]["http_status"], 403)
-            args.limit = 0
-            with self.assertRaisesRegex(ValueError, "requires --limit"):
-                module.archive(args)
+            # No quota field is consulted; an empty due queue is a normal success.
+            again = module.archive(args)
+            self.assertEqual(again, 0)
 
 
 class GPLLegacyAssetCollisionTests(unittest.TestCase):

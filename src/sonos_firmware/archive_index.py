@@ -10,12 +10,13 @@ from urllib.parse import urlencode, unquote_plus, urlsplit, urlunsplit, parse_qs
 
 from .crawl import official, PACKAGE
 from .discovery import USER_AGENT, Candidate
+from .deadline import winding_down
 from .retry import error_checkpoint, due, retry_after_seconds
 
 def fetch_index(url):
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': USER_AGENT}), timeout=45) as response:
-            body = response.read(2_000_001)
+            body = response.read()
     except (urllib.error.URLError, ssl.SSLError) as error:
         # A different TLS implementation/trust store can serve metadata when
         # urllib's certificate chain fails. Keep certificate validation enabled
@@ -30,14 +31,10 @@ def fetch_index(url):
                                              response.headers, None)
             chunks = bytearray()
             for chunk in response.iter_content():
-                if len(chunks) + len(chunk) > 2_000_000:
-                    raise ValueError('archive index page exceeds 2 MB')
                 chunks.extend(chunk)
             body = bytes(chunks)
         finally:
             response.close()
-    if len(body) > 2_000_000:
-        raise ValueError('archive index page exceeds 2 MB')
     if not body.strip():
         return []
     try:
@@ -104,17 +101,15 @@ def paused_index_hosts(index):
         and urlsplit(row.get('url') or 'https://web.archive.org').hostname == 'web.archive.org' for row in index.get('errors', [])) else set()
 
 
-def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **options):
+def discover_archives(previous, fetch=fetch_index, *, seed_urls=(), roots=None,
+                      extensions=('upm', 'upd'), match_type=None, allowed=official):
     """Combine independent indexes behind one capture/publication contract."""
     from .commoncrawl import discover
     from .source_urls import sonos_url
-    if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
-        raise ValueError('archive index page budget must be positive')
     retained = previous.get('wayback_directories', previous.get('wayback_exact', {})).get('query_roots', {})
     urls = [*seed_urls, *previous.get('query_seeds', []),
             *previous.get('entries', {}), *previous.get('artifacts', {}),
             *retained]
-    roots = options.get('roots')
     if roots is None:
         # Keep the domain-wide search while learning narrower host searches
         # from our own first-party observations. No version URL list is used.
@@ -125,9 +120,8 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
             if sonos_url(url):
                 host = urlsplit(url).hostname
                 roots.setdefault(host, host+'/')
-        options = {**options, 'roots': roots, 'match_type': options.get('match_type') or 'domain'}
+        match_type = match_type or 'domain'
     directory_roots = {}
-    extensions = options.get('extensions', ('upm', 'upd'))
     for url in [*retained, *urls]:
         if isinstance(url, str) and url.startswith('http://'):
             url = 'https://'+url[7:]
@@ -153,17 +147,11 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
                     records[url] = {**row, 'captures': captures}
             state[field] = records
         return state
-    # Divide each provider's existing page budget fairly between broad traversal
-    # and observed directories. A one-page budget alternates across worker restarts.
-    lane = previous.get('index_query_lane', 0) % 2
-    budgets = [pages, 0] if not directory_roots else [pages//2, pages//2]
-    if directory_roots and pages % 2:
-        budgets[lane] += 1
-    configuration = {'extensions': list(extensions), 'match_type': options.get('match_type') or 'prefix',
+    configuration = {'extensions': list(extensions), 'match_type': match_type or 'prefix',
                      'source_match_type': 'prefix'}
     def traverse(provider, implementation, cooldown, **arguments):
         states = [provider_state(provider, provider), provider_state(provider+'_directories', provider)]
-        for index, budget in enumerate(budgets):
+        for index in range(2 if directory_roots else 1):
             deadlines = [state.get(cooldown, {}) for state in states]
             if provider == 'wayback':
                 deadlines.append(previous.get('wayback_exact', {}).get('index_retry', {}))
@@ -178,22 +166,15 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
                                key=lambda row: row.get('checked_at', ''))
                 for state in states:
                     state.update(collections=collections, registry=registry)
-            if budget:
-                settings = {**arguments, 'roots': directory_roots, 'match_type': 'prefix'} if index else arguments
-                states[index] = implementation(states[index], pages=budget, **settings)
-            else:
-                pending = (states[index].get('query_roots') != (directory_roots if index else roots) or
-                           previous.get('query_configuration') != configuration)
-                states[index] = {**states[index], 'observations': [],
-                    'errors': states[index].get('errors', []),
-                    'status': 'partial' if pending else states[index].get('status', 'partial')}
-                states[index]['query_roots'] = directory_roots if index else roots
+            settings = {**arguments, 'roots': directory_roots, 'match_type': 'prefix'} if index else arguments
+            states[index] = implementation(states[index], **settings)
         return states
     wayback, wayback_directories = traverse('wayback', lambda state, **kw: discover_sources(state, fetch=fetch, **kw),
-                                     'index_retry', **options)
+                                     'index_retry', roots=roots, extensions=extensions, match_type=match_type or 'prefix',
+                                     allowed=allowed)
     commoncrawl, commoncrawl_directories = traverse('commoncrawl', lambda state, **kw: discover(state, fetch, **kw),
-        'host_retry', roots=roots, extensions=extensions, allowed=options.get('allowed', official),
-        match_type=options.get('match_type') or 'prefix')
+        'host_retry', roots=roots, extensions=extensions, allowed=allowed,
+        match_type=match_type or 'prefix')
     # Directory discovery can time out while an exact URL query still works.
     # Retain that independent route over our own observations, with its own
     # continuation and retry state. A server cooldown still applies to both.
@@ -207,8 +188,8 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
     if cooldown:
         exact['index_retry'] = cooldown
     if exact_roots and (wayback.get('errors') or wayback_directories.get('errors')):
-        exact = discover_sources(exact, fetch=fetch, pages=1, roots=exact_roots,
-                                 extensions=extensions, allowed=options.get('allowed', official), match_type='exact')
+        exact = discover_sources(exact, fetch=fetch, roots=exact_roots,
+                                 extensions=extensions, allowed=allowed, match_type='exact')
     else:
         exact = {**exact, 'observations': [], 'errors': [], 'status': 'ok'}
     results = (wayback, wayback_directories, commoncrawl, commoncrawl_directories, exact)
@@ -225,7 +206,6 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
             'wayback': cursors(wayback), 'commoncrawl': cursors(commoncrawl),
             'wayback_directories': cursors(wayback_directories), 'commoncrawl_directories': cursors(commoncrawl_directories),
             'wayback_exact': cursors(exact),
-            'index_query_lane': (lane+pages) % 2 if directory_roots else lane,
             'query_configuration': configuration,
             'observations': [row for result in results for row in result['observations']],
             'errors': [row for result in results for row in result['errors']],
@@ -233,10 +213,8 @@ def discover_archives(previous, fetch=fetch_index, pages=2, *, seed_urls=(), **o
                                 (results if directory_roots else (wayback, commoncrawl))) else 'partial'}
 
 
-def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
+def discover_sources(previous, fetch=fetch_index, *, roots=None,
                      extensions=('upm', 'upd'), allowed=official, match_type=None):
-    if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
-        raise ValueError('archive index page budget must be positive')
     if previous.get('schema_version') not in {None, 1, 2}:
         raise ValueError('unsupported archive index checkpoint schema')
     match_type = match_type or ('domain' if roots is None else 'prefix')
@@ -288,9 +266,8 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
     errors = []
     position = previous.get('next_host', 0)
     finished_this_run = set()
-    attempted = 0
-    for _ in range(pages * len(hosts)):
-        if attempted >= pages or not due(index_retry) or len(finished_this_run) == len(hosts):
+    while hosts and not winding_down():
+        if not due(index_retry) or len(finished_this_run) == len(hosts):
             break
         host = hosts[position % len(hosts)]
         position += 1
@@ -299,7 +276,6 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
         if not due(retries.get(host)):
             finished_this_run.add(host)
             continue
-        attempted += 1
         query = {'url': roots[host], 'matchType': match_type, 'output': 'json', 'gzip': 'false',
                  'fl': 'timestamp,original,digest',
                  'filter': ['statuscode:200', 'original:.*[.]'+suffixes+'([?].*)?$'],
@@ -330,6 +306,8 @@ def discover_sources(previous, fetch=fetch_index, pages=2, *, roots=None,
                 _remember(entries, artifacts, original, capture, extensions)
             if invalid:
                 raise ValueError(f'archive index page contains {invalid} malformed capture records; page retained for retry')
+            if resume and resume == cursors.get(host):
+                raise ValueError('archive index continuation did not advance')
             cursors[host] = resume
             retries.pop(host, None)
             index_retry = {}

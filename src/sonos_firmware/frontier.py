@@ -10,6 +10,9 @@ import urllib.error
 from copy import deepcopy
 from dataclasses import asdict
 from collections import Counter, defaultdict, deque
+from concurrent.futures import ThreadPoolExecutor
+from queue import SimpleQueue, Empty
+from threading import Event
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlencode, urlsplit
 
@@ -21,6 +24,7 @@ from .metadata_sweep import discover_profiles, capture_response, _profile_at, _v
 from .source_urls import advertised_url
 from .source_links import distribution_url, distribution_urls
 from .retry import checkpoint, select, due
+from .deadline import winding_down
 
 
 def observed_artifacts(root):
@@ -153,13 +157,12 @@ def _release_version_candidates(observed, build, majors):
     return candidates
 
 
-def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, deadline=None):
+def _installer_root_stream(state, contexts, observed_urls):
     """Learn native campaign shapes and enumerate their numeric fields fairly.
 
     Build/token/app-version come from our installer captures. Release shapes
     come from our Sonos observations; neither versions nor URL lists are imported.
     """
-    state = deepcopy(previous)
     templates = state.setdefault('templates', {})
     saved = state.setdefault('contexts', {})
     jobs = state.setdefault('jobs', {})
@@ -205,13 +208,8 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, d
         for template_id in templates:
             jobs.setdefault(context_id+':'+template_id, {'ordinal': 0, 'last_queued': 0})
     state.setdefault('sequence', 0)
-    roots = []
     counts = Counter(template['prefix'] for template in templates.values())
     prefixes = sorted(counts, key=lambda prefix: (-counts[prefix], prefix))
-    # A build without a known release version reuses campaign shapes already
-    # observed for its own build generation, which pairs a version with a
-    # suffix exactly as Sonos published it. These candidates share the budget
-    # with exact-version pivots, alternating one for one.
     known = {normalize(url) for url in observed_urls}
     pair_queue = deque()
     if prefixes:
@@ -219,20 +217,19 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, d
             if context.get('app_version'):
                 continue
             pairs = state.get('campaign_pairs', {}).get(context['build'].split('.')[0], [])
-            for pair in pairs[:8]:
+            for pair in pairs:
                 candidate = (prefixes[0]+context['build']+'-v'+pair['version']+'-'+
                              context['token']+'-'+pair['suffix']+'/update.upm')
                 if candidate not in known:
                     pair_queue.append(candidate)
     step = 0
-    while (pair_queue or jobs) and (limit is None or step < limit):
-        if deadline is not None and time.monotonic() >= deadline:
-            break
+    while (pair_queue or jobs) and not winding_down():
         step += 1
         if pair_queue and (step % 2 or not jobs):
             candidate = pair_queue.popleft()
             if candidate not in known:
-                roots.append(candidate)
+                known.add(candidate)
+                yield candidate
             continue
         if not jobs:
             break
@@ -245,6 +242,7 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, d
         if not versions:
             state['sequence'] = state.setdefault('sequence', 0)+1
             job['last_queued'] = state['sequence']
+            jobs.pop(identity)
             continue
         # Each version is combined with every observed suffix before a wider
         # suffix range is generated.
@@ -270,59 +268,63 @@ def installer_manifest_roots(previous, contexts, observed_urls, *, limit=None, d
             numbers = iter(coordinates)
             suffix = ''.join(str(next(numbers)) if p is None else p for p in template['shape'])
         candidate = template['prefix']+context['build']+'-v'+version+'-'+context['token']+'-'+suffix+'/update.upm'
-        if candidate not in known:
-            roots.append(candidate)
         state['sequence'] += 1
         job['last_queued'] = state['sequence']
-    return state, list(dict.fromkeys(roots))
+        if candidate not in known:
+            known.add(candidate)
+            yield candidate
 
 
-def _configure_namespace(namespaces, base, model_max):
+
+def installer_manifest_roots(previous, contexts, observed_urls):
+    """Drain installer-derived candidates, without an item or time allocation."""
+    state = deepcopy(previous)
+    return state, list(_installer_root_stream(state, contexts, observed_urls))
+
+
+def _configure_namespace(namespaces, base):
     row = namespaces.setdefault(base, {'next_model': 0})
-    if 'initial_model_max' not in row and row.get('status') == 'complete':
-        # A completed range is refreshed after a week.
-        row['next_attempt_at'] = ''
-    row['initial_model_max'] = model_max
-    row['model_max'] = max(row.get('model_max', model_max), model_max)
+    if row.get('status') in {'complete', 'range-complete'}:
+        row.pop('next_attempt_at', None)
+    for field in ('model_max', 'initial_model_max', 'pass'):
+        row.pop(field, None)
     return row
 
 
-def _add_namespace(namespaces, base, source, model_max, **evidence):
+def _add_namespace(namespaces, base, source, **evidence):
     if not expand_metadata_base(base, [0], advertised_by=evidence.get('advertised_by')):
         return
-    row = _configure_namespace(namespaces, base, model_max)
+    row = _configure_namespace(namespaces, base)
     row.update(source=source, **evidence)
     row.pop('parent_namespace', None)
     peer = host_counterpart(Candidate('', 0, base, source, ''))
     if peer:
-        other = _configure_namespace(namespaces, peer.url, model_max)
+        other = _configure_namespace(namespaces, peer.url)
         other.update(**evidence)
         other.setdefault('source', 'host-counterpart')
         if other['source'] == 'host-counterpart':
             other['parent_namespace'] = base
 
 
-def _namespace_candidates(namespaces, limit, blocked_hosts, scheduling):
-    for row in namespaces.values():
-        if row['next_model'] > row['model_max'] and due(row):
-            row['model_max'] = 2*row['model_max'] + 1
-            row['next_model'] = 0
-            row['pass'] = row.get('pass', 0) + 1
-    records = {key: row for key, row in namespaces.items() if row.get('status') == 'failed'}
-    active = sorted((base for base, row in namespaces.items() if due(row) and
-                     urlsplit(base).hostname not in blocked_hosts),
-                    key=lambda base: namespaces[base].get('checked_at', ''))
-    queue = select(active, records, key=lambda key: key, limit=limit, state=scheduling, queue='inference')
-    batch = max(1, limit // len(queue)) if queue else 0
-    rows = []
-    for base in queue:
-        record = namespaces[base]
-        models = range(record['next_model'], min(record['next_model'] + batch, record['model_max'] + 1))
-        for candidate in expand_metadata_base(base, models, advertised_by=record.get('advertised_by')):
-            rows.append({**asdict(candidate), 'source': record['source'], 'inferred_namespace': base,
-                         'advance_inference': True,
-                         **({'metadata_sha256': record['metadata_sha256']} if record.get('metadata_sha256') else {})})
-    return rows
+def _namespace_candidates(namespaces, blocked_hosts):
+    """Yield candidates round-robin, advancing model cursors after each probe."""
+    while not winding_down():
+        active = sorted((base for base, row in namespaces.items()
+                         if due(row) and urlsplit(base).hostname not in blocked_hosts),
+                        key=lambda base: namespaces[base].get('checked_at', ''))
+        if not active:
+            return
+        for base in active:
+            record = namespaces[base]
+            if not due(record) or urlsplit(base).hostname in blocked_hosts:
+                continue
+            candidates = expand_metadata_base(base, [record['next_model']],
+                                              advertised_by=record.get('advertised_by'))
+            for candidate in candidates:
+                yield {**asdict(candidate), 'source': record['source'],
+                       'inferred_namespace': base, 'advance_inference': True,
+                       **({'metadata_sha256': record['metadata_sha256']}
+                          if record.get('metadata_sha256') else {})}
 
 
 def _advance_namespace(namespaces, row, result):
@@ -331,9 +333,7 @@ def _advance_namespace(namespaces, row, result):
         return
     if result.get('available') or result.get('http_status') in {404, 410}:
         record['next_model'] += 1
-        complete = record['next_model'] > record['model_max']
-        record.update(checkpoint(record, success=True, success_hours=0),
-                      status='range-complete' if complete else 'scanning')
+        record.update(checkpoint(record, success=True, success_hours=0), status='scanning')
         record.pop('error', None)
     else:
         record.update(checkpoint(record), status='failed',
@@ -350,19 +350,14 @@ def protocol_roots(profile=None):
         for generation, major, build in profiles]
 
 
-def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fetch=None, probe_fn=None,
+def discover(state: dict, evidence: Path, *, fetch=None, probe_fn=None,
              metadata_fetch=fetch_update_metadata, index_fetch=None, artifact_roots=(), known_artifacts=(),
-             profile_limit=0, profile_count=1200, profile_fetch=None, model_max=255, version_hints=(), inference_limit=128,
-             installer_pivots=(), pivot_limit=None):
-    start = time.monotonic()
-    scheduling = {'retry_rotation': deepcopy(state.get('retry_rotation', {}))}
-    if not isinstance(model_max, int) or isinstance(model_max, bool) or model_max < 0:
-        raise ValueError('initial metadata model maximum must be a nonnegative integer')
-    if not isinstance(inference_limit, int) or isinstance(inference_limit, bool) or not 1 <= inference_limit <= 4096:
-        raise ValueError('inferred candidate limit must be between 1 and 4096')
+             profile_fetch=None, version_hints=(), installer_pivots=()):
+    # Every source cooperatively follows the same workflow wind-down signal.
+    # There is no independent local or per-phase runtime budget.
     namespaces = {key: dict(row) for key, row in state.get('inferred_namespaces', {}).items()}
     for base in namespaces:
-        _configure_namespace(namespaces, base, model_max)
+        _configure_namespace(namespaces, base)
     # A reported manifest can disappear while its versioned payloads survive.
     # Its native campaign path supplies a build to probe independently.
     for url in state.get('public_client_reports', {}).get('roots', {}):
@@ -371,11 +366,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         folder = url.rsplit('/', 1)[0]
         build = re.match(r'(\d+[.]\d+-\d+)-v', urlsplit(folder).path.rsplit('/', 1)[-1])
         if build:
-            _add_namespace(namespaces, folder+'/^'+build[1], 'observed-manifest-path', model_max)
-    if (not isinstance(profile_limit, int) or isinstance(profile_limit, bool) or
-        not isinstance(profile_count, int) or isinstance(profile_count, bool) or
-        not 0 <= profile_limit <= profile_count <= 10000):
-        raise ValueError('invalid metadata profile limits')
+            _add_namespace(namespaces, folder+'/^'+build[1], 'observed-manifest-path')
     static = {}
     for root in artifact_roots:
         if not isinstance(root, dict):
@@ -395,21 +386,8 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     observed.extend(row.get('metadata', {}).get('base_url') for row in state.get('manifests', [])
                     if row.get('metadata', {}).get('base_url'))
     observed.extend(row['url'] for row in state.get('candidates', []) if row.get('source') == 'image')
-    pivot_state, pivot_roots = installer_manifest_roots(state.get('installer_pivot_search', {}), installer_pivots,
-                                                       observed, limit=pivot_limit,
-                                                       deadline=start + seconds*.7)
-    roots.extend(pivot_roots)
-    # Profile exploration must reach the modern manifest routers too, rather
-    # than repeatedly varying only the legacy UPS endpoint. Alternate observed
-    # version hints with the same continuing synthetic profile space.
-    profile_cursor = state.get('protocol_profile_cursor', 0)
-    if profile_limit:
-        hints = _version_profiles({'packages': known_artifacts,
-                                  'evidence': [{'version': v} for v in version_hints]})
-        profile = (hints[(profile_cursor//2) % len(hints)] if profile_cursor % 2 == 0
-                   else _profile_at(profile_cursor//2))
-        roots.extend(protocol_roots(profile))
-        profile_cursor += 1
+    pivot_state = deepcopy(state.get('installer_pivot_search', {}))
+    pivot_stream = _installer_root_stream(pivot_state, installer_pivots, observed)
     scoped_urls = _distribution_scope(state, evidence)
     saved_documents = [row for row in state.get('documents', []) if row['url'] in scoped_urls]
     authorities = {url: witness for url, witness in state.get('advertised_sources', {}).items() if url in scoped_urls}
@@ -428,14 +406,16 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         roots.extend(archive['entries'])
         roots.extend(url.rsplit('/', 1)[0] + '/update.upm' for url in archive.get('artifacts', {}) if official(url))
     bootstrap_errors = []
-    metadata = discover_profiles(state.get('metadata_profiles', {}), evidence,
-        {'packages': known_artifacts, 'evidence': [{'version': version} for version in version_hints]},
-        limit=profile_limit, count=profile_count,
-        deadline=start + seconds * .2, **({'fetch': profile_fetch} if profile_fetch else {}))
-    bootstrap_errors.extend(metadata['errors'])
+    prior_metadata = state.get('metadata_profiles', {})
+    metadata = {**prior_metadata,
+                'profiles': dict(prior_metadata.get('profiles', {})),
+                'responses': dict(prior_metadata.get('responses', {})),
+                'errors': []}
+    roots.extend(url for row in metadata['profiles'].values() if row.get('status') == 'observed'
+                 for url in protocol_roots(row['profile']))
     try:
-        if any(row.get('http_status') in {403, 429} for row in metadata['errors']):
-            raise ValueError('baseline UPS request deferred after a profile access challenge')
+        if prior_metadata.get('source_backoff') and not due(prior_metadata['source_backoff']):
+            raise ValueError('baseline UPS request deferred until its recorded source cooldown')
         ups, _ = metadata_fetch()
         captured = capture_response(ups, evidence, metadata['responses'])
         if captured.get('parse_error'):
@@ -458,7 +438,7 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
                 folder = url.split('^', 1)[0].rstrip('/') if '^' in url else url.rsplit('/', 1)[0]
                 roots.append(folder + '/update.upm')
                 authorities[folder + '/update.upm'] = UPDATE_METADATA_URL
-                _add_namespace(namespaces, url, 'metadata-base', model_max, metadata_sha256=response['sha256'],
+                _add_namespace(namespaces, url, 'metadata-base', metadata_sha256=response['sha256'],
                                advertised_by=UPDATE_METADATA_URL)
     # Resume our own observed frontier; never read a third-party URL inventory.
     pending = [url for url in state.get('pending_manifest_urls', []) if url in scoped_urls]
@@ -466,20 +446,16 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
     pending.extend(row['url'] for row in state.get('candidates', []) if landing_url(row['url']))
     known_urls = [m['url'] for m in state.get('manifests', [])]
     known_urls.extend(m['url'] for m in saved_documents)
-    # Reserve a small rotating slice for current feeds, then resume the FIFO.
-    # A one-request budget reserves nothing and drains deferred work.
-    cursor = state.get('protocol_cursor', 0)
-    reserved = min(len(live_roots), max_manifests // 4)
-    priority = [live_roots[(cursor + offset) % len(live_roots)] for offset in range(reserved)]
-    cursor = (cursor + reserved) % len(live_roots) if live_roots else 0
+    # Probe current feeds before saved backlog to capture mutable responses promptly.
+    priority = live_roots
     initial = [{'url': url, **({'advertised_by': authorities[url]} if url in authorities else {})}
                for url in dict.fromkeys(priority + pending + roots + known_urls)
                if advertised_url(url, authorities.get(url))]
     paused_hosts = {urlsplit(UPDATE_METADATA_URL).hostname} if any(
         error.get('http_status') in {403, 429} for error in bootstrap_errors) else set()
     observed = {'packages': [{'source_url': row['url'], 'version': row['version']} for row in known_artifacts]}
-    graph = crawl_manifests(observed, initial, [], evidence, max_manifests=max_manifests,
-                            deadline=start + seconds * .7, explore_channels=True, fetch=fetch, paused_hosts=paused_hosts)
+    graph = crawl_manifests(observed, initial, [], evidence,
+                            explore_channels=True, fetch=fetch, paused_hosts=paused_hosts)
     manifests = {(m['url'], m['sha256']): m for m in state.get('manifests', [])}
     for manifest in graph['manifests']:
         key = manifest['url'], manifest['sha256']
@@ -499,10 +475,10 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
             candidates[url].pop('captures', None)
             if artifact.get('version') != 'unknown':
                 base = url.rsplit('/', 1)[0] + '/^' + artifact['version']
-                _add_namespace(namespaces, base, 'archive-directory', model_max)
+                _add_namespace(namespaces, base, 'archive-directory')
     for directory in graph.get('directories', []):
         base = directory['directory'].rstrip('/') + '/^' + directory['version']
-        _add_namespace(namespaces, base, 'observed-directory', model_max)
+        _add_namespace(namespaces, base, 'observed-directory')
     for url, row in static.items():
         candidates[url] = {**candidates.get(url, {}), **row}
     for row in list(candidates.values()):
@@ -512,33 +488,22 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         counterpart = host_counterpart(Candidate(**fields))
         if counterpart:
             candidates.setdefault(counterpart.url, {**row, **asdict(counterpart), 'parent_url': row['url']})
-    inference = _namespace_candidates(namespaces, inference_limit, graph.get('blocked_hosts', []), scheduling)
-    for row in inference:
-        prior = candidates.get(row['url'])
-        if not prior or prior.get('inferred_only'):
-            candidates[row['url']] = {**(prior or {}), **row, 'inferred_only': True}
-        else:
-            prior.update(inferred_namespace=row['inferred_namespace'], advance_inference=True)
     prior_probes = state.get('probes', {})
     checks = {}
     blocked = set(graph.get('blocked_hosts', []))
-    # Unchecked endpoints take precedence over repeatedly checking known ones.
-    inference_order = {row['url']: index for index, row in enumerate(inference)}
-    rows = sorted(candidates.values(), key=lambda c: (
-        c['url'] in prior_probes and not c.get('advance_inference'),
-        inference_order.get(c['url'], prior_probes.get(c['url'], {}).get('attempt_sequence', 0))))
+    rows = deque(sorted(candidates.values(), key=lambda row: (row['url'] in prior_probes,
+                    prior_probes.get(row['url'], {}).get('attempt_sequence', 0))))
     sequence = state.get('probe_sequence', 0)
-    for row in rows:
+
+    def check(row):
+        nonlocal sequence
         host = urlsplit(row['url']).hostname
-        if host in blocked:
-            continue
-        if row.get('source') == 'forum-archive':
-            continue
+        if host in blocked or row.get('source') == 'forum-archive':
+            return
         namespace = namespaces.get(row.get('inferred_namespace'))
-        if row.get('advance_inference') and (namespace['next_model'] != row['package_model'] or not due(namespace)):
-            continue
-        if time.monotonic() >= start + seconds:
-            break
+        if row.get('advance_inference') and (not namespace or
+                namespace['next_model'] != row['package_model'] or not due(namespace)):
+            return
         fields = {key: row.get(key) for key in Candidate.__dataclass_fields__}
         result = {**row, **(probe_fn or probe)(Candidate(**fields))}
         sequence += 1
@@ -550,26 +515,175 @@ def discover(state: dict, evidence: Path, *, seconds=900, max_manifests=1024, fe
         if result.get('http_status') in {403, 429}:
             blocked.add(host)
         time.sleep(.1)
+
+    # Round-robin the open-ended sources. One work unit per source per turn
+    # is fairness, not a quota: all sources can run for the entire shared
+    # four-hour window, with no fixed number of attempts or phase percentages.
+    attempted_roots = {item['url'] for item in initial}
+    model_stream = _namespace_candidates(namespaces, blocked)
+
+    def ingest_root(url, witness=None):
+        if url in attempted_roots or not advertised_url(url, witness):
+            return
+        attempted_roots.add(url)
+        roots.append(url)
+        if witness:
+            authorities[url] = witness
+        if winding_down():
+            graph['pending_manifest_urls'].append(url)
+            return
+        batch = crawl_manifests(
+            observed,
+            [{'url': url, **({'advertised_by': witness} if witness else {})}],
+            [], evidence, explore_channels=True, fetch=fetch,
+            paused_hosts=blocked)
+        for record in batch['manifests']:
+            identity = record['url'], record['sha256']
+            manifests[identity] = {**manifests.get(identity, {}), **record}
+        for record in batch.get('documents', []):
+            identity = record['url'], record['sha256']
+            documents[identity] = {**documents.get(identity, {}), **record}
+        for found in batch.get('candidates', []):
+            if found.url not in candidates:
+                candidates[found.url] = asdict(found)
+                rows.append(candidates[found.url])
+                counterpart = host_counterpart(found)
+                if counterpart and counterpart.url not in candidates:
+                    candidates[counterpart.url] = {**asdict(counterpart),
+                                                    'parent_url': found.url}
+                    rows.append(candidates[counterpart.url])
+        for directory in batch.get('directories', []):
+            _add_namespace(namespaces, directory['directory'].rstrip('/') + '/^' + directory['version'],
+                           'observed-directory')
+        for key in ('manifests', 'documents', 'edges', 'failures', 'directories', 'pending_manifest_urls'):
+            graph.setdefault(key, []).extend(batch.get(key, []))
+        graph.setdefault('advertised_sources', {}).update(batch.get('advertised_sources', {}))
+        graph['blocked'] = graph.get('blocked', False) or batch.get('blocked', False)
+        graph['deadline_reached'] = graph.get('deadline_reached', False) or batch.get('deadline_reached', False)
+        blocked.update(batch.get('blocked_hosts', []))
+        graph['blocked_hosts'] = sorted(blocked)
+
+    def ingest_profile(profile, response):
+        for url in protocol_roots(profile):
+            ingest_root(url)
+        for record in response.get('records', []):
+            url = record.get('uri', '').replace('http://', 'https://', 1)
+            if record['type'] in {7, 14} and not advertised_url(url, UPDATE_METADATA_URL):
+                bootstrap_errors.append({'source': 'legacy-ups-uri', 'url': url,
+                                         'error': 'UPS URI uses an unsupported host or path'})
+                continue
+            if record['type'] == 14:
+                ingest_root(url, UPDATE_METADATA_URL)
+            elif record['type'] == 7:
+                _add_namespace(namespaces, url, 'metadata-base',
+                               metadata_sha256=response['sha256'], advertised_by=UPDATE_METADATA_URL)
+                folder = url.split('^', 1)[0].rstrip('/') if '^' in url else url.rsplit('/', 1)[0]
+                ingest_root(folder + '/update.upm', UPDATE_METADATA_URL)
+
+    profile_events = SimpleQueue()
+    profile_catalog = {'packages': known_artifacts,
+                       'evidence': [{'version': version} for version in version_hints]}
+    # The profile source runs independently. An endless numeric search cannot
+    # prevent discovered manifests, pivot candidates, or package probes from
+    # using the rest of the runner.
+    profile_pool = ThreadPoolExecutor(max_workers=1)
+    profile_stop = Event()
+    profile_future = profile_pool.submit(discover_profiles, metadata, evidence, profile_catalog,
+        stop=profile_stop,
+        on_capture=lambda profile, captured: profile_events.put((profile, captured)),
+        **({'fetch': profile_fetch} if profile_fetch else {}))
+    try:
+        while not winding_down():
+            progress = False
+            if rows:
+                check(rows.popleft())
+                progress = True
+            if winding_down():
+                break
+            try:
+                profile, response = profile_events.get_nowait()
+            except Empty:
+                pass
+            else:
+                ingest_profile(profile, response)
+                progress = True
+            if winding_down():
+                break
+            if pivot_stream is not None:
+                try:
+                    pivot = next(pivot_stream)
+                except StopIteration:
+                    pivot_stream = None
+                else:
+                    ingest_root(pivot)
+                    progress = True
+            if winding_down():
+                break
+            if model_stream is None and namespaces:
+                model_stream = _namespace_candidates(namespaces, blocked)
+            if model_stream is not None:
+                try:
+                    row = next(model_stream)
+                except StopIteration:
+                    model_stream = None
+                else:
+                    prior = candidates.get(row['url'])
+                    if prior and not prior.get('inferred_only'):
+                        row = {**prior, 'advance_inference': True,
+                               'inferred_namespace': row['inferred_namespace']}
+                    check(row)
+                    if row.get('discovered_available'):
+                        candidates[row['url']] = {**row, 'inferred_only': True}
+                    progress = True
+            if not progress:
+                if profile_future.done() and pivot_stream is None and not rows and model_stream is None:
+                    break
+                time.sleep(.05)
+    finally:
+        # Stop only between requests; an in-flight metadata request is allowed
+        # to finish before retaining the checkpoint.
+        profile_stop.set()
+        profile_pool.shutdown(wait=True)
+    try:
+        metadata = profile_future.result()
+    except Exception as error:
+        bootstrap_errors.append({'source': 'legacy-ups-profile', 'error': str(error)})
+    else:
+        bootstrap_errors.extend(metadata.get('errors', []))
+    while True:
+        try:
+            profile, response = profile_events.get_nowait()
+        except Empty:
+            break
+        # A profile completed after the soft signal. Keep every discovered URL
+        # pending for the next worker rather than silently dropping its evidence.
+        for url in protocol_roots(profile):
+            if url not in attempted_roots:
+                roots.append(url)
+                graph['pending_manifest_urls'].append(url)
+                attempted_roots.add(url)
+        for record in response.get('records', []):
+            url = record.get('uri', '').replace('http://', 'https://', 1)
+            if record['type'] == 7 and advertised_url(url, UPDATE_METADATA_URL):
+                _add_namespace(namespaces, url, 'metadata-base',
+                               metadata_sha256=response['sha256'], advertised_by=UPDATE_METADATA_URL)
     retained = {url: {key: value for key, value in row.items() if key != 'advance_inference'}
                 for url, row in candidates.items() if not row.get('inferred_only') or row.get('discovered_available')}
     probes = {url: row for url, row in {**prior_probes, **checks}.items() if url in retained}
-    inference_pending = sum(max(0, row['model_max'] + 1 - row['next_model']) for row in namespaces.values())
+    inference_pending = len(namespaces)
     authorities.update(graph.get('advertised_sources', {}))
     deferred = list(dict.fromkeys(graph['pending_manifest_urls'] + [f['url'] for f in graph['failures']
                         if f.get('attempted') and advertised_url(f['url'], authorities.get(f['url']))]))
     result = {'schema_version': 1, 'roots': roots, 'manifests': list(manifests.values()),
-              **scheduling,
               'documents': list(documents.values()),
               'candidates': list(retained.values()), 'probes': probes,
               'inferred_namespaces': namespaces, 'inference_pending': inference_pending,
-              'model_exploration': {'policy': 'expanding-passes', 'namespaces': len(namespaces),
-                                    'pending_in_current_ranges': inference_pending},
+              'model_exploration': {'policy': 'unbounded-model-cursors', 'namespaces': len(namespaces),
+                                    'pending_namespaces': inference_pending},
               'pending_manifest_urls': deferred, 'graph': graph, 'advertised_sources': authorities,
-              'checked_this_run': len(checks), 'unchecked_this_run': len(candidates) - len(checks),
+              'checked_this_run': len(checks), 'unchecked_this_run': sum(url not in checks for url in candidates),
               'checked_urls': list(checks),
               'probe_sequence': sequence,
-              'protocol_cursor': cursor,
-              'protocol_profile_cursor': profile_cursor,
               'installer_pivot_search': pivot_state,
               'scope_exclusions': {'documents': len(state.get('documents', []))-len(saved_documents),
                                    'queued_urls': excluded_pending},

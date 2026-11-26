@@ -8,8 +8,19 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch, Mock
 
-from sonos_firmware.metadata_sweep import (BASELINE, PROFILE_FIELDS, build_profiles, discover_client_reports,
+from sonos_firmware.metadata_sweep import (BASELINE, PROFILE_FIELDS, _profile_at, _profile_key, _version_profiles, discover_client_reports,
                                           discover_profiles, discover_version_hints)
+
+
+def profile_preview(catalog, count):
+    """Finite fixture sample of the open-ended production profile generator."""
+    profiles = {_profile_key(profile): profile for profile in _version_profiles(catalog)}
+    index = 1
+    while len(profiles) < count:
+        candidate = _profile_at(index)
+        profiles.setdefault(_profile_key(candidate), candidate)
+        index += 1
+    return list(profiles.values())[:count]
 
 
 class MetadataSweepTests(unittest.TestCase):
@@ -143,7 +154,7 @@ class MetadataSweepTests(unittest.TestCase):
     def test_public_version_hints_feed_profile_queries_and_survive_a_source_outage(self):
         hints = discover_version_hints({}, fetch=lambda: b'<p>Sonos 99.1-12345</p>')
         self.assertEqual(hints['versions'], ['99.1-12345'])
-        planned = build_profiles({'evidence': [{'version': v} for v in hints['versions']]}, 100)
+        planned = profile_preview({'evidence': [{'version': v} for v in hints['versions']]}, 100)
         self.assertTrue(any(row['cmaj'] == 99 and row['cmin'] == 1 and row['cbld'] == 12345 for row in planned))
         fetch = Mock()
         discover_version_hints(hints, fetch=fetch)
@@ -287,8 +298,8 @@ class MetadataSweepTests(unittest.TestCase):
             "packages": [{"version": "97.1-80312"}],
             "evidence": [{"version": "86.8-78270"}],
         }
-        first = build_profiles(catalog, 800)
-        second = build_profiles(catalog, 800)
+        first = profile_preview(catalog, 800)
+        second = profile_preview(catalog, 800)
         self.assertEqual(first, second)
         self.assertEqual(len(first), 800)
         self.assertEqual(

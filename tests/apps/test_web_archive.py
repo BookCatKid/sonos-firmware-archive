@@ -128,11 +128,12 @@ class WebArchiveTests(unittest.TestCase):
         self.assertEqual(result['observations']['fresh/archive']['controller']['status'], 'partial')
         self.assertEqual({row['app'] for row in result['deployments']}, {'pro', 'controller'})
 
-    def test_resource_budget_is_a_durable_gap(self):
-        result = self.run_archive(max_assets=1)
-        self.assertEqual(result['status'], 'partial')
-        self.assertEqual(result['deployments'][0]['pending_urls'], ['https://pro.sonos.com/_next/static/app.js'])
-        self.assertFalse(result['deployments'][0]['complete'])
+    def test_all_discovered_assets_are_captured_in_one_run(self):
+        result = self.run_archive()
+        self.assertEqual(result['status'], 'ok')
+        self.assertEqual(result['deployments'][0]['pending_urls'], [])
+        self.assertTrue(result['deployments'][0]['complete'])
+        self.assertEqual(result['deployments'][0]['captured_total'], 2)
 
     def test_public_login_shell_and_its_scripts_are_preserved_without_claiming_controller_access(self):
         entry = web.APPS['controller']['entry_url']
@@ -203,17 +204,18 @@ class WebArchiveTests(unittest.TestCase):
         self.assertFalse(deployment['complete'])
         self.assertEqual(result['status'], 'partial')
 
-    def test_bounded_batches_resume_pending_urls_and_retain_every_prior_capture(self):
+    def test_entire_asset_graph_and_repeated_capture_preserve_all_evidence(self):
         def fetch(url):
             result = self.fetch(url)
             if url.endswith('/'):
                 result['body'] = b'<script src="/_next/static/a.js"></script><script src="/_next/static/b.js"></script>'
             return result
         with patch.object(web, 'fetch', side_effect=fetch):
-            first = self.run_archive(max_assets=2)
-            self.assertEqual(first['status'], 'partial')
+            first = self.run_archive()
+            self.assertEqual(first['status'], 'ok')
+            self.assertEqual(first['deployments'][0]['pending_urls'], [])
             result = web.archive_apps(('pro',), self.root/'next-worker', self.receipt, 'fresh/archive',
-                                      capture_id='next', upload=True, max_assets=2)
+                                      capture_id='next', upload=True)
         self.assertEqual(result['status'], 'ok')
         deployment, = result['deployments']
         self.assertTrue(deployment['complete'])

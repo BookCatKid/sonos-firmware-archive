@@ -24,11 +24,10 @@ class FirmwareSectionTests(unittest.TestCase):
             self.assertEqual(len(rows), 1)
             self.assertEqual((root/'file').read_bytes(), b'data')
 
-    def test_compressed_tar_members_and_metadata_obey_the_same_budget(self):
+    def test_compressed_tar_members_have_no_artificial_byte_ceiling(self):
         import bz2
         import gzip
         import lzma
-        from sonos_firmware.firmware_inventory import _Budget, InventoryLimits
         raw = tar_payload([('bin/tool', b'payload', tarfile.REGTYPE)])
         for encode in (gzip.compress, bz2.compress, lzma.compress):
             with self.subTest(compression=encode.__module__), tempfile.TemporaryDirectory() as temporary:
@@ -36,13 +35,9 @@ class FirmwareSectionTests(unittest.TestCase):
                 rows = unpack_tar(encode(raw), root)
                 self.assertEqual(rows[0]['sha256'], hashlib.sha256(b'payload').hexdigest())
                 self.assertEqual((root/'bin/tool').read_bytes(), b'payload')
-                # Padding and extended metadata are also bounded, before a
-                # compressed stream can consume arbitrary worker storage.
-                with self.assertRaisesRegex(ValueError, 'resource budget'):
-                    unpack_tar(encode(raw + bytes(32768)), root,
-                        budget=_Budget(InventoryLimits(expanded_bytes=100, files=1)))
+                self.assertEqual(unpack_tar(encode(raw + bytes(32768)), root)[0]['path'], 'bin/tool')
 
-    def test_tar_extended_headers_are_bounded_before_metadata_is_parsed(self):
+    def test_truncated_tar_extended_headers_are_rejected(self):
         import gzip
         header = tarfile.TarInfo('pax')
         header.type = tarfile.XHDTYPE
@@ -54,7 +49,7 @@ class FirmwareSectionTests(unittest.TestCase):
                     with self.assertRaises((ValueError, tarfile.ReadError)):
                         unpack_tar(body, Path(temporary))
 
-    def test_legacy_scan_uses_bounded_views_and_a_deadline(self):
+    def test_legacy_scan_uses_streamed_views_without_a_work_quota(self):
         import gzip
         import zlib
         payload = b'\x1f\x8b\x08invalid' * 20 + gzip.compress(b'kernel')
@@ -66,15 +61,12 @@ class FirmwareSectionTests(unittest.TestCase):
             @property
             def eof(self):
                 return self.decoder.eof
-            def decompress(self, data, limit):
+            def decompress(self, data):
                 seen.append(data)
-                return self.decoder.decompress(data, limit)
+                return self.decoder.decompress(data)
         with patch('sonos_firmware.firmware_inventory.zlib.decompressobj', Decoder):
             self.assertEqual(legacy_kernel_data(payload)[1], b'kernel')
         self.assertTrue(all(isinstance(data, memoryview) and len(data) <= 65536 for data in seen))
-        with patch('sonos_firmware.firmware_inventory.time.monotonic', side_effect=[0, 2]):
-            with self.assertRaisesRegex(ValueError, 'resource budget'):
-                legacy_kernel_data(payload, seconds=1)
 
     def test_legacy_zimage_gzip_stream_accepts_filename_and_trailing_wrapper(self):
         import gzip

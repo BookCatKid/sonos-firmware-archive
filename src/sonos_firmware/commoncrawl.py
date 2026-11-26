@@ -13,6 +13,7 @@ from urllib.parse import urlencode, urlsplit
 from urllib.response import addinfourl
 
 from .discovery import USER_AGENT
+from .deadline import winding_down
 from .retry import checkpoint, due, error_checkpoint, retry_after_seconds
 
 REGISTRY = 'https://index.commoncrawl.org/collinfo.json'
@@ -130,11 +131,9 @@ def open_capture(original, capture, *, allowed, timeout=60):
         raise
 
 
-def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=None):
+def discover(previous, fetch, *, roots, extensions, allowed, match_type=None):
     """Resume every advertised collection; a failed query cannot pin the cursor."""
     from .archive_index import _capture, _observations, _remember
-    if not isinstance(pages, int) or isinstance(pages, bool) or pages <= 0:
-        raise ValueError('Common Crawl page budget must be positive')
     state = {**previous, 'collections': dict(previous.get('collections', {})),
              'queries': {k: dict(v) for k, v in previous.get('queries', {}).items()}}
     errors, observations = [], []
@@ -187,17 +186,17 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
             ordered.append(endpoints[opposite])
     jobs = [(endpoint, root) for endpoint in ordered for root in roots.values()]
     position = state.get('next_query', 0)
-    attempted = set()
-    for _ in range(len(jobs)):
-        if len(attempted) >= pages or not due(state.get('host_retry')):
+    visited = set()
+    while jobs and not winding_down():
+        if len(visited) == len(jobs) or not due(state.get('host_retry')):
             break
         endpoint, root = jobs[position % len(jobs)]
         position += 1
         identity = endpoint+'|'+root
         prior = state['queries'].get(identity, {})
-        if not due(prior):
+        if identity in visited or not due(prior):
+            visited.add(identity)
             continue
-        attempted.add(identity)
         query = {'url': root, 'matchType': match_type or ('domain' if root == 'sonos.com/' else 'prefix'),
                  'output': 'json', 'pageSize': 1,
                  'filter': ['=status:200', '~url:(?i).*[.]('+'|'.join(re.escape(ext) for ext in extensions)+')([?].*)?$']}
@@ -237,7 +236,10 @@ def discover(previous, fetch, *, pages, roots, extensions, allowed, match_type=N
                 'status': 'complete' if complete else 'pending',
                 **(checkpoint(prior, success=True, success_hours=168) if complete else {})}
             observations.append({'url': url, 'records': len(rows), 'more_pages': not complete})
+            if complete:
+                visited.add(identity)
         except Exception as error:
+            visited.add(identity)
             state['queries'][identity] = {**prior, **error_checkpoint(error, prior), 'status': 'failed',
                 'error': str(error), 'url': endpoint, 'http_status': getattr(error, 'code', None)}
             if isinstance(error, urllib.error.HTTPError):

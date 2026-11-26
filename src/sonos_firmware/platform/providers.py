@@ -7,26 +7,17 @@ def firmware(c: Context):
     report = c.work / 'discovery.json'
     roots = tuple(arg for root in c.options.get('artifact_roots', []) for arg in
                   ('--artifact-root', json.dumps({**root, 'refresh_hours': c.target.interval_hours})))
+    # Work on verified/preserved inputs first. The speculative numeric frontier
+    # can run until wind-down without preventing publication and extraction.
     return [
-        c.script('firmware/discover_firmware.py', '--evidence-dir', c.observations / 'manifests', '--work-dir', c.work / 'publish',
-                 '--report', report, '--seconds', c.options.get('seconds', 2400),
-                 '--profile-limit', c.options.get('profile_limit', 4),
-                 '--profile-count', c.options.get('profile_count', 4800),
-                 '--model-max', c.options.get('model_max', 255),
-                 '--inference-limit', c.options.get('inference_limit', 128),
-                 '--index-pages', c.options.get('index_pages', 6),
-                 '--saved-manifest-limit', c.options.get('saved_manifest_limit', 16),
-                 '--pivot-limit', c.options.get('pivot_limit', 96),
-                 '--publish', '--repository', c.repository, '--max-packages', c.options.get('limit', 48), *roots, report=str(report)),
         c.task('archive-historical-firmware', '--work-dir', c.work / 'history', '--repository', c.repository,
-               '--limit', c.options.get('history_limit', 16),
-               '--manifest-limit', c.options.get('history_manifest_limit', 16),
-               after_failure=True, report=str(c.work / 'history/replay.json')),
+               report=str(c.work / 'history/replay.json')),
         c.task('extract-firmware', '--work-dir', c.work / 'extract', '--repository', c.repository,
-               '--max-packages', c.options.get('extraction_limit', 48),
-               '--inventory-limit', c.options.get('inventory_limit', 48),
-               '--inventory-limits', json.dumps(c.options.get('inventory_limits', {})),
                after_failure=True, report=str(c.work / 'extract/extraction.json')),
+        c.script('firmware/discover_firmware.py', '--evidence-dir', c.observations / 'manifests',
+                 '--work-dir', c.work / 'publish', '--report', report,
+                 '--publish', '--repository', c.repository, *roots,
+                 after_failure=True, report=str(report)),
     ]
 
 
@@ -34,11 +25,10 @@ def desktop(c: Context):
     discovery = c.root / 'data/apps/desktop-discovery.json'
     return [c.script('apps/discover_desktop_installers.py', '--output', discovery,
                      '--archive-root', c.root,
-                     '--history-limit', c.options.get('metadata_limit', 64),
                      '--refresh-hours', c.target.interval_hours,
                      '--observations', c.observations / 'package-index', report=str(discovery)),
             c.script('apps/archive_desktop_installers.py', '--discovery', discovery,
-                     '--repo', c.repository, '--limit', c.options.get('limit', 64),
+                     '--repo', c.repository,
                      '--refresh-hours', c.target.interval_hours,
                      '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168),
                      report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True),
@@ -49,7 +39,7 @@ def mobile(c: Context):
     discovery = c.root / 'data/apps/mobile-discovery.json'
     return [c.script('apps/discover_mobile_installers.py', '--output', discovery, '--archive-root', c.root, report=str(discovery)),
             c.script('apps/archive_mobile_installers.py', '--discovery', discovery,
-                     '--repo', c.repository, '--limit', c.options.get('limit', 12),
+                     '--repo', c.repository,
                      '--refresh-hours', c.target.interval_hours,
                      '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168),
                      report=str(c.root / ('data/apps/' + c.target.provider + '-archive.json')), after_failure=True),
@@ -58,8 +48,7 @@ def mobile(c: Context):
 
 def installer_history(c, kind):
     return c.task('archive-installer-history', '--kind', kind, '--work-dir', c.work/'history',
-                  '--repository', c.repository, '--limit', c.options.get('history_limit', 32),
-                  '--pages', c.options.get('history_pages', 4),
+                  '--repository', c.repository,
                   '--refresh-hours', c.target.interval_hours,
                   '--historical-refresh-hours', c.options.get('historical_refresh_hours', 168), after_failure=True,
                   report=str(c.work/'history/replay.json'))
@@ -67,7 +56,6 @@ def installer_history(c, kind):
 
 def web(c: Context):
     return [c.script('apps/archive_web_apps.py', '--capture-dir', c.work / 'captures', '--upload', '--repo', c.repository,
-                     '--max-assets', c.options.get('max_assets', 500),
                      report=str(c.root / 'data/apps/web-app-archive.json'))]
 
 
@@ -82,21 +70,17 @@ def apple(c: Context):
 def android_history(c: Context):
     # Acquisition is scheduled independently of a listing's observed-change flag.
     return [c.script('apps/sweep_android_store_history.py', '--apkeep', c.options.get('apkeep', 'apkeep'),
-                     '--repo', c.repository, '--limit', c.options.get('limit', 24),
-                     '--discovery-limit', c.options.get('discovery_limit', 24),
+                     '--repo', c.repository,
                      '--refresh-hours', c.target.interval_hours,
-                     '--seconds', c.options.get('seconds', 1200),
                      '--observations', c.observations / 'apkpure',
                      report=str(c.root / 'data/apps/android-store-history-sweep.json'))]
 
 
 def google_play(c: Context):
     return [c.script('apps/sweep_android_store_history.py', '--source', 'google-play-direct',
-                     '--repo', c.repository, '--limit', c.options.get('limit', 12),
-                     '--discovery-limit', c.options.get('discovery_limit', 4),
+                     '--repo', c.repository,
                      '--metadata-hints', c.root / 'data/apps/android-store-history-sweep.json',
                      '--refresh-hours', c.target.interval_hours,
-                     '--seconds', c.options.get('seconds', 1200),
                      report=str(c.root / 'data/apps/google-play-sweep.json'))]
 
 
@@ -110,8 +94,7 @@ def google_play_listings(c: Context):
 def release_audit(c: Context):
     report = c.root / 'data/platform/audits/release-assets.json'
     return [c.script('archive/audit_release_assets.py', '--repo', c.repository, '--output', report,
-                     '--recover-documents', '--recovery-limit', c.options.get('recovery_limit', 8),
-                     '--max-document-bytes', c.options.get('max_document_bytes', 2_000_000), report=str(report))]
+                     '--recover-documents', report=str(report))]
 
 
 def gpl_indexes(c: Context):
@@ -122,14 +105,10 @@ def gpl_indexes(c: Context):
 
 def gpl(c: Context):
     return [c.task('scan-preserved-binaries', '--work-dir', c.work/'binary-scan', '--repository', c.repository,
-                   '--limit', c.options.get('binary_limit', 4), '--max-bytes', c.options.get('binary_scan_bytes', 768*1024*1024),
-                   '--max-source-bytes', c.options.get('binary_source_bytes', 1024*1024*1024),
-                   '--max-entry-bytes', c.options.get('binary_entry_bytes', 300*1024*1024),
                    report=str(c.root/'data/gpl/live/binary-evidence.json')),
-            c.script('gpl/discover_gpl_sitemaps.py', '--limit', c.options.get('sitemap_limit', 8), '--delay', 2.5,
+            c.script('gpl/discover_gpl_sitemaps.py', '--delay', 2.5,
                      report=str(c.root / 'data/gpl/live/site-evidence.json'), after_failure=True),
-            c.script('gpl/archive_gpl_direct.py', 'discover', '--limit', c.options.get('limit', 96), '--delay', 2.5,
-                     '--discovery-window', c.options.get('discovery_window', 512),
+            c.script('gpl/archive_gpl_direct.py', 'discover', '--delay', 2.5,
                      report=str(c.root / 'data/gpl/live/discovery.json'), after_failure=True),
             c.script('gpl/archive_gpl_direct.py', 'report', after_failure=True)]
 
@@ -137,7 +116,6 @@ def gpl(c: Context):
 def gpl_archive(c: Context):
     return [c.script('gpl/archive_gpl_direct.py', 'archive', '--next', '--include-upstream',
                      '--continue-errors', '--publish', '--store', c.work / 'objects',
-                     '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 90),
                      '--delay', 2.5, '--repo', c.repository),
             c.script('gpl/archive_gpl_direct.py', 'report', after_failure=True)]
 
@@ -147,14 +125,37 @@ def gpl_audit(c: Context):
     # pending set; the coverage check is the gate on the result. Ordering the
     # gate first would let a large unattempted backlog skip the repair entirely.
     return [c.script('gpl/audit_gpl_published_streams.py', '--store', c.work / 'audit',
-                     '--reserve-bytes', 2_000_000_000, '--limit', c.options.get('limit', 25), '--delay', 2.5,
-                     '--seconds', c.options.get('seconds', 900),
+                     '--delay', 2.5,
                      report=str(c.root/'data/gpl/live/stream-audit.json')),
             c.script('gpl/audit_gpl_link_coverage.py',
                      '--output', c.root / 'data/gpl/live/link-coverage.json',
                      after_failure=True,
                      report=str(c.root/'data/gpl/live/link-coverage.json')),
             c.script('gpl/archive_gpl_direct.py', 'report', after_failure=True)]
+
+
+# Built-in provider configuration is closed over real, supported knobs.
+# Unknown keys are rejected instead of silently accepted (including retired
+# work quotas). Third-party providers define their own option contracts.
+SUPPORTED_OPTIONS = {
+    'firmware': {'artifact_roots'},
+    'desktop': {'historical_refresh_hours'},
+    'mobile': {'historical_refresh_hours'},
+    'android-history': {'apkeep'},
+    'gpl-indexes': {'version'},
+    **{provider: set() for provider in (
+        'web', 'apple-listings', 'google-play', 'gpl', 'gpl-archive',
+        'gpl-audit', 'google-play-listings', 'release-audit')},
+}
+
+
+def validate_options(provider, options):
+    allowed = SUPPORTED_OPTIONS.get(provider)
+    if allowed is None:
+        return
+    unknown = set(options) - allowed
+    if unknown:
+        raise ValueError(f"unsupported {provider} provider option(s): {', '.join(sorted(unknown))}")
 
 
 BUILTINS = {'firmware': firmware, 'desktop': desktop, 'mobile': mobile, 'web': web,

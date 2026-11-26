@@ -137,13 +137,14 @@ class PlaySweepTests(unittest.TestCase):
             patch.object(SWEEP, 'datetime', types.SimpleNamespace(now=self.clock.now, fromisoformat=datetime.fromisoformat)),
             patch.object(SWEEP.time, 'monotonic', side_effect=lambda: self.clock.elapsed),
             patch.object(SWEEP.time, 'sleep', side_effect=self.clock.sleep),
+            patch.object(SWEEP, 'winding_down', side_effect=lambda: self.clock.elapsed >= 100),
+            patch.object(SWEEP, 'remaining', side_effect=lambda: max(0, 100-self.clock.elapsed)),
             patch.object(retry, '_now', side_effect=lambda now=None: now or self.clock.current),
         ):
             mocked.start()
             self.addCleanup(mocked.stop)
         self.argv = ['sweep', '--source', 'google-play-direct', '--package', 'com.sonos.acr2',
-                     '--repo', 'fresh/archive', '--ledger', str(self.ledger), '--receipt', str(self.receipt),
-                     '--limit', '1', '--discovery-limit', '1', '--seconds', '100']
+                     '--repo', 'fresh/archive', '--ledger', str(self.ledger), '--receipt', str(self.receipt)]
 
     def run_sweep(self, acquire, discover=None):
         with patch.object(sys, 'argv', self.argv), \
@@ -160,10 +161,10 @@ class PlaySweepTests(unittest.TestCase):
             calls.append(command)
             return types.SimpleNamespace(returncode=0, stdout='verified publication')
         self.run_sweep(acquire)
-        self.assertEqual(len(calls), 1)
-        self.assertEqual(calls[0][calls[0].index('--version-code')+1], '123')
-        self.assertIn('fresh/archive', calls[0])
-        self.assertEqual(json.loads(self.ledger.read_text())['discovery_pending_total'], 1)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(all(command[command.index('--version-code')+1] == '123' for command in calls))
+        self.assertTrue(all('fresh/archive' in command for command in calls))
+        self.assertEqual(json.loads(self.ledger.read_text())['discovery_pending_total'], 0)
 
     def test_429_waits_then_retries_same_delivery_instead_of_discarding_it(self):
         calls = []
@@ -175,7 +176,7 @@ class PlaySweepTests(unittest.TestCase):
                 return types.SimpleNamespace(returncode=1, stdout='throttled')
             return types.SimpleNamespace(returncode=0, stdout='verified')
         self.run_sweep(acquire)
-        self.assertEqual(calls, [(0, 'one'), (3, 'one')])
+        self.assertEqual(calls, [(0, 'one'), (3, 'one'), (3, 'two')])
         self.assertEqual(self.clock.sleeps, [3])
         state = json.loads(self.ledger.read_text())
         self.assertEqual(state['attempts'][0]['status'], 'archived')
@@ -205,7 +206,7 @@ class PlaySweepTests(unittest.TestCase):
                 return types.SimpleNamespace(returncode=1, stdout='maintenance')
             return types.SimpleNamespace(returncode=0, stdout='verified')
         self.run_sweep(acquire)
-        self.assertEqual(calls, [(0, 'one'), (3, 'one')])
+        self.assertEqual(calls, [(0, 'one'), (3, 'one'), (3, 'two')])
         self.assertEqual(self.clock.sleeps, [3])
         self.assertEqual(json.loads(self.ledger.read_text())['pending_total'], 0)
 
@@ -229,15 +230,15 @@ class PlaySweepTests(unittest.TestCase):
         SWEEP.cooldown(state, {'status_code': 429, 'retry_after': 3*86400})
         self.assertEqual(state['next_request_at'], (self.clock.current+timedelta(days=3)).isoformat())
 
-    def test_timed_out_attempt_is_checkpointed_and_kept_pending(self):
-        def timeout(command, **kwargs):
-            self.assertLessEqual(kwargs['timeout'], 100)
-            self.clock.elapsed += 100
-            return types.SimpleNamespace(returncode=124, stdout='StoreAcquisitionTimedOut')
-        self.assertEqual(self.run_sweep(timeout), 1)
+    def test_failed_attempt_is_checkpointed_without_a_worker_timeout(self):
+        self.profiles[:] = [{'arch': 'arm64', 'profile': 'one'}]
+        def failed(command, **kwargs):
+            self.assertNotIn('timeout', kwargs)
+            return types.SimpleNamespace(returncode=1, stdout='source unavailable')
+        self.assertEqual(self.run_sweep(failed), 1)
         state = json.loads(self.ledger.read_text())
         record, = state['attempts']
-        self.assertEqual(record['exit_code'], 124)
+        self.assertEqual(record['exit_code'], 1)
         self.assertEqual(record['status'], 'failed')
         self.assertEqual(record['next_attempt_at'], (self.clock.current+timedelta(hours=1)).isoformat())
         self.assertEqual(state['pending_total'], 1)
@@ -252,24 +253,24 @@ class PlaySweepTests(unittest.TestCase):
         def down(*args):
             raise StoreError('NetworkError')
         self.run_sweep(acquire, down)
-        self.assertEqual(acquired, [('123', 'one'), ('7', 'one')])
+        self.assertEqual(acquired, [('123', 'one'), ('123', 'two'), ('7', 'one'), ('7', 'two')])
         pending = json.loads(self.ledger.read_text())['pending_selectors']
         self.assertIn(('7', 'two'), [(p['version_selector'], p['profile']) for p in pending])
 
 
-class ProcessBudgetTests(unittest.TestCase):
-    def test_timeout_stops_nested_acquisition_processes(self):
+class ProcessLifetimeTests(unittest.TestCase):
+    def test_acquisition_runs_child_to_completion_and_rejects_timeout_quota(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            child = f"import time; from pathlib import Path; time.sleep(3); Path({str(root/'escaped')!r}).touch()"
-            parent = (f"import subprocess, sys, time; from pathlib import Path; "
-                      f"subprocess.Popen([sys.executable, '-c', {child!r}]); "
-                      f"Path({str(root/'ready')!r}).touch(); time.sleep(30)")
-            result = android_store.run_acquisition([sys.executable, '-c', parent], cwd=root, timeout=2)
-            self.assertEqual(result.returncode, 124)
-            self.assertTrue((root/'ready').exists())
-            time.sleep(1.5)
-            self.assertFalse((root/'escaped').exists())
+            path = root / 'finished'
+            program = (f'import time; from pathlib import Path; '
+                       f'time.sleep(.08); Path({str(path)!r}).touch()')
+            command = [sys.executable, '-c', program]
+            with self.assertRaisesRegex(TypeError, 'unexpected keyword argument'):
+                android_store.run_acquisition(command, cwd=root, timeout=2)
+            result = android_store.run_acquisition(command, cwd=root)
+            self.assertEqual(result.returncode, 0)
+            self.assertTrue(path.exists())
 
 
 @unittest.skipUnless(importlib.util.find_spec('goopdl') is not None, 'install the google-play extra for SDK contract tests')

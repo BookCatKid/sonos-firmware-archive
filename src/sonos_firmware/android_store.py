@@ -79,20 +79,11 @@ def run_apkeep(command, *, timeout=None):
     return result
 
 
-def run_acquisition(command, *, cwd, timeout):
-    """Bound a worker attempt, including any apkeep/Java child processes."""
-    with subprocess.Popen(command, cwd=cwd, text=True, stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT, start_new_session=True) as process:
-        try:
-            output, _ = process.communicate(timeout=timeout)
-            return subprocess.CompletedProcess(command, process.returncode, output)
-        except subprocess.TimeoutExpired:
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
-            process.communicate()
-            return subprocess.CompletedProcess(command, 124, 'StoreAcquisitionTimedOut')
+def run_acquisition(command, *, cwd):
+    """Wait for a child acquisition to finish, without imposing an elapsed-time cap."""
+    result = subprocess.run(command, cwd=cwd, text=True, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT)
+    return result
 
 
 def play_client(auth_dir, arch, profile=None):

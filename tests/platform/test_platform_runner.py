@@ -151,13 +151,12 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(is_due(root, target, now=finished+timedelta(hours=23)))
             self.assertTrue(is_due(root, target, now=finished+timedelta(hours=24)))
 
-    def test_normal_gpl_target_configures_batch_size_and_time_budget(self):
+    def test_normal_gpl_target_has_no_per_run_quota(self):
         root = Path(__file__).resolve().parents[2]
         target = targets(root)['gpl-audit']
-        report = plan(target, root, 'owner/repo', options={'limit': 3, 'seconds': 120})
+        report = plan(target, root, 'owner/repo')
         command = report['steps'][0]['command']
-        self.assertEqual(command[command.index('--limit')+1], '3')
-        self.assertEqual(command[command.index('--seconds')+1], '120')
+        self.assertFalse(any(flag in command for flag in ('--limit', '--seconds', '--max-total-bytes')))
         self.assertEqual(report['steps'][0]['report'], str(root/'data/gpl/live/stream-audit.json'))
 
     def test_credentials_are_not_written_into_run_reports(self):
@@ -396,7 +395,7 @@ class ExtractionCheckpointTests(unittest.TestCase):
 
 
 class HistoryBootstrapTests(unittest.TestCase):
-    def test_unattempted_discovery_survives_limit_and_later_listing_outage(self):
+    def test_all_eligible_discovery_is_attempted_and_survives_listing_outage(self):
         import importlib.util
         from unittest.mock import patch
         from types import SimpleNamespace
@@ -413,7 +412,7 @@ class HistoryBootstrapTests(unittest.TestCase):
                 state = json.loads((directory/'state.json').read_text())
                 self.assertEqual({row['version_selector'] for row in state['pending_selectors']}, {'first', 'later'})
                 return SimpleNamespace(returncode=1, stdout='fixture acquisition failure')
-            with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2', '--limit', '1',
+            with patch.object(sys, 'argv', ['sweep', '--package', 'com.sonos.acr2',
                     '--receipt', str(directory/'archive.json'), '--ledger', str(directory/'state.json')]), \
                  patch.object(module, 'discover_versions', side_effect=[['first', 'later'], OSError('listing outage')]), \
                  patch.object(module, 'discover_apkpure', return_value={'variants': [], 'errors': []}), \
@@ -467,7 +466,7 @@ class HistoryBootstrapTests(unittest.TestCase):
             receipt = Path(temporary) / 'archive.json'
             ledger = Path(temporary) / 'state.json'
             argv = ['sweep', '--package', 'com.sonos.acr2', '--receipt', str(receipt),
-                    '--ledger', str(ledger), '--limit', '1', '--repo', 'owner/repo']
+                    '--ledger', str(ledger), '--repo', 'owner/repo']
             acquired = []
             def acquire(command, **kwargs):
                 acquired.append(command[command.index('--version-selector') + 1])
@@ -483,7 +482,7 @@ class HistoryBootstrapTests(unittest.TestCase):
                 from sonos_firmware import retry
                 with patch.object(retry, '_now', return_value=datetime.now(timezone.utc)+timedelta(hours=2)):
                     self.assertEqual(module.main(), 1)
-            self.assertEqual(acquired, ['old', 'new', 'old'])
+            self.assertEqual(acquired, ['old', 'new', 'old', 'new'])
             document = json.loads(ledger.read_text())
             self.assertEqual(document['pending_total'], 2)
             self.assertEqual(document['status'], 'partial')

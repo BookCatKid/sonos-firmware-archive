@@ -13,6 +13,7 @@ import yaml
 
 from . import retry
 from .storage import atomic_json
+from .deadline import winding_down
 
 REPOSITORY = 'microsoft/winget-pkgs'
 VENDOR_PATH = 'manifests/s/Sonos'
@@ -178,28 +179,22 @@ class ManifestHistory:
                 elif row['type'] == 'blob' and path.lower().endswith(('.yaml', '.yml')):
                     self.add('blob', row['sha'], path)
 
-    def advance(self, *, limit=64, refresh_hours=6):
-        if limit <= 0:
-            raise ValueError('metadata work budget must be positive')
+    def advance(self, *, refresh_hours=6):
         paths = self.state['paths']
-        selected = retry.select(list(paths), paths, key=lambda path: path, limit=1,
-                                state=self.state, queue='commit-pages')
-        used = 0
+        selected = retry.select(list(paths), paths, key=lambda path: path)
         for path in selected:
             record = paths[path]
             try:
                 self.page(path, record, refresh_hours)
             except Exception as error:
                 record.update(retry.checkpoint(record), error=str(error))
-            used += 1
             self.save()
         processed = set()
-        while used < limit:
+        while not winding_down():
             jobs = self.state['jobs']
             pending = [key for key, job in jobs.items() if job.get('status') != 'ok' and key not in processed]
             pending.sort(key=lambda key: (jobs[key]['role'] == 'parent', -len(Path(jobs[key]['path']).parts)))
-            selected = retry.select(pending, jobs, key=lambda key: key, limit=1,
-                                    state=self.state, queue='git-objects')
+            selected = retry.select(pending, jobs, key=lambda key: key)
             if not selected:
                 break
             key = selected[0]
@@ -213,7 +208,6 @@ class ManifestHistory:
                 if type(error).__name__ == 'GitHubSourcePaused':
                     self.save()
                     break
-            used += 1
             processed.add(key)
             self.save()
         self.save()

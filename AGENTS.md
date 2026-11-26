@@ -59,11 +59,13 @@ any other archive.
 
 ## Execution constraints
 
-12. **Use the worker's resources.** Budgets exist only as runaway guards.
-    Do not cap job time, batch sizes, page counts, download sizes or decoder
-    runtimes below what the Actions runner can comfortably do; a slow run is
-    cheaper than another run. Stream large downloads instead of buffering
-    them only when a cap would otherwise cause a real failure.
+12. **Use the worker's resources.** No per-run item, batch, page, download,
+    scan or step quotas. Continue eligible work until exhausted or the shared four-hour
+    soft wind-down. Finish the active operation normally and checkpoint it;
+    never terminate a running subprocess on that signal. Keep only protocol-imposed or structural
+    limits, including per-release asset capacity, and real disk-space checks.
+    Commit checkpointed progress after the worker returns. Hosted Actions
+    itself imposes an external job runtime; four hours is not a hard kill.
 13. **No repeated full-matrix validation runs.** Use focused local checks and,
     when CI proof is needed, one targeted validation deployment plus a single
     normal target dispatch. A complete end-to-end run is never a pre-merge

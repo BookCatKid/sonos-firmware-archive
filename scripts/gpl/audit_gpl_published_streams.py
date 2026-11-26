@@ -17,6 +17,7 @@ import urllib.error
 import sys
 from pathlib import Path
 
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.gpl_archive import (
     artifact_checkpoint, atomic_json, download_artifact, load_json, pause, timestamp, valid_version,
 )
@@ -68,26 +69,20 @@ def pending(receipts: dict, *, versions: set[str] | None) -> list[tuple[str, str
     return result
 
 
-def run(args: argparse.Namespace, *, download=download_artifact, wait=pause,
-        deadline=None, clock=time.monotonic) -> dict:
-    if args.limit < 1:
-        raise ValueError("audit --limit must be positive")
+def run(args: argparse.Namespace, *, download=download_artifact, wait=pause) -> dict:
     for version in args.version:
         valid_version(version)
     records = load_json(args.output / "artifacts.json", {"schema_version": 1, "artifacts": {}})
-    # Limit by *published source records*, including zero-byte/network-free dedup
-    # records, to keep metadata commits bounded and deterministic.
     queue = pending(records, versions=set(args.version) if args.version else None)
     identity = lambda row: json.dumps(row[:2])
     observations = {identity(row): row[2].get('stream_integrity', {}) for row in queue}
-    selected = select(queue, observations, key=identity, limit=args.limit, force=args.retry_failed,
-                      state=records, queue='compressed-stream-audits')
+    selected = select(queue, observations, key=identity, force=args.retry_failed)
     proofs = strong_proofs(records)
     stats = {"selected": len(selected), "downloaded": 0, "verified": 0,
              "reused": 0, "mismatched": 0, "failed": 0, "bytes_downloaded": 0,
              "remaining_before": len(queue), "processed": 0}
     for version, name, item in selected:
-        if deadline is not None and clock() >= deadline:
+        if winding_down():
             break
         stats['processed'] += 1
         previous = item.get('stream_integrity', {})
@@ -109,7 +104,7 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause,
                     "url": item.get("source_url") or item.get("fetch_url"),
                     "fetch_url": item.get("fetch_url")}
             try:
-                outcome = download(link, args.store, min_free_bytes=args.reserve_bytes)
+                outcome = download(link, args.store)
             except (OSError, TimeoutError, urllib.error.URLError) as error:
                 outcome = {"state": "network-error", "filename": name,
                            "error_type": type(error).__name__}
@@ -165,52 +160,17 @@ def run(args: argparse.Namespace, *, download=download_artifact, wait=pause,
     return stats
 
 
-def drain(args: argparse.Namespace, *, download=download_artifact, wait=pause,
-          clock=time.monotonic) -> dict:
-    """Continue the normal worker's queue within its configured CI time budget.
-
-    Every batch uses the same canonical receipts and retry scheduler. No extra
-    checkout, proof import, pre-existing payload store or release is required.
-    """
-    if not math.isfinite(args.seconds) or args.seconds <= 0:
-        raise ValueError('audit --seconds must be positive and finite')
-    deadline = clock() + args.seconds
-    total = None
-    while True:
-        batch = run(args, download=download, wait=wait, deadline=deadline, clock=clock)
-        if total is None:
-            total = {key: 0 for key in ('selected', 'processed', 'downloaded', 'verified',
-                                       'reused', 'mismatched', 'failed', 'bytes_downloaded')}
-            total.update(remaining_before=batch['remaining_before'], batches=0)
-        for key in ('selected', 'processed', 'downloaded', 'verified', 'reused',
-                    'mismatched', 'failed', 'bytes_downloaded'):
-            total[key] += batch[key]
-        total.update(batches=total['batches']+1, remaining_after=batch['remaining_after'],
-                     status=batch['status'])
-        atomic_json(args.output / 'stream-audit.json', total)
-        # Never busy-loop waiting for retries, or launch another batch after
-        # a source/storage failure. Scheduled runs resume the saved queue.
-        if (not batch['remaining_after'] or not batch['processed'] or batch['failed'] or
-                batch['mismatched'] or clock() >= deadline):
-            print(json.dumps(total, indent=2), flush=True)
-            return total
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DATA)
     parser.add_argument("--store", type=Path, default=ROOT / "artifacts/gpl-stream-audit")
     parser.add_argument("--version", action="append", default=[])
-    parser.add_argument("--limit", type=int, default=20)
-    parser.add_argument('--seconds', type=float, default=900,
-                        help='CI work budget; --limit bounds each resumable batch, not the whole run')
-    parser.add_argument("--reserve-bytes", type=int, default=2_000_000_000)
     parser.add_argument("--delay", type=float, default=2.5)
     parser.add_argument("--retry-failed", action="store_true",
                         help="retry eligible failures immediately, bypassing their saved cooldown")
     args = parser.parse_args()
     try:
-        drain(args)
+        run(args)
         return 0
     except (OSError, ValueError, KeyError, RuntimeError) as error:
         print(f"GPL stream audit: {error}", file=sys.stderr)

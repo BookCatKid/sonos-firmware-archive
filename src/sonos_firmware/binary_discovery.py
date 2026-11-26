@@ -88,12 +88,7 @@ def preserved_sources(root, repository, errors=None):
     return list(sources.values())
 
 
-def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*1024,
-                       max_source_bytes=1024*1024*1024, max_entry_bytes=300*1024*1024,
-                       acquire=download_verified, scan=None):
-    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0
-           for value in (limit, max_bytes, max_source_bytes, max_entry_bytes)):
-        raise ValueError('binary discovery limits must be positive integers')
+def discover_preserved(root, work, repository, *, acquire=download_verified, scan=None):
     path = root/'data/gpl/live/binary-evidence.json'
     document = _load(path, {'schema_version': 1, 'scans': {}, 'version_evidence': {}, 'repositories': {}})
     if document.get('schema_version') != 1:
@@ -101,10 +96,9 @@ def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*10
     records = document.setdefault('repositories', {}).setdefault(repository, {})
     errors = []
     sources = preserved_sources(root, repository, errors)
-    digest = hashlib.sha256(Path(__file__).read_bytes() + Path(gpl_binary_evidence.__file__).read_bytes() +
-                            Path(gpl_binary_evidence.firmware_inventory.__file__).read_bytes()).hexdigest()
-    settings = {'decoder': digest, 'max_bytes': max_bytes, 'max_source_bytes': max_source_bytes,
-                'max_entry_bytes': max_entry_bytes}
+    digest = hashlib.sha256(Path(__file__).read_bytes() +
+                            Path(gpl_binary_evidence.__file__).read_bytes()).hexdigest()
+    settings = {'decoder': digest}
     revision = hashlib.sha256(json.dumps(settings, sort_keys=True).encode()).hexdigest()
     document.setdefault('revisions', {})[revision] = settings
     eligible = {key: row for key, row in records.items() if row.get('revision') == revision}
@@ -116,8 +110,7 @@ def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*10
         previous = eligible.get(candidate['sha256'], {})
         if previous.get('status') == 'failed' and previous.get('source_revision') != candidate['source_revision']:
             eligible.pop(candidate['sha256'], None)
-    queue = select(sources, eligible, key=lambda row: row['sha256'], limit=limit,
-                   state=document, queue=repository)
+    queue = select(sources, eligible, key=lambda row: row['sha256'])
     work.mkdir(parents=True, exist_ok=True)
     attempted = 0
 
@@ -143,14 +136,14 @@ def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*10
         attempted += 1
         next_source = records.get(identity, {}).get('next_source', 0)
         try:
-            locations = [row for row in candidate['sources'] if row['bytes'] <= max_source_bytes]
+            locations = candidate['sources']
             if not locations:
-                raise ValueError('preserved binary exceeds the configured acquisition byte limit')
+                raise ValueError('preserved source has no verified download location')
             start = next_source % len(locations)
             locations = locations[start:] + locations[:start]
             with tempfile.TemporaryDirectory(dir=work, prefix='binary-') as temporary:
                 last_error = None
-                for source in locations[:4]:
+                for source in locations:
                     next_source = (next_source + 1) % len(locations)
                     payload = Path(temporary)/source['release_asset']
                     try:
@@ -168,7 +161,7 @@ def discover_preserved(root, work, repository, *, limit=4, max_bytes=768*1024*10
                 inspection = payload.parent/named_archive
                 if inspection != payload:
                     inspection.hardlink_to(payload)
-                result = (scan or gpl_binary_evidence.scan_binary)(inspection, max_bytes=max_bytes, max_entry_bytes=max_entry_bytes)
+                result = (scan or gpl_binary_evidence.scan_binary)(inspection)
             previous = document['scans'].get(identity, {})
             evidence = previous.get('version_evidence', {})
             for version, refs in result['version_evidence'].items():

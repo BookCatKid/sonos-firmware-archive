@@ -17,6 +17,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.gpl_archive import (
     USER_AGENT, VERSION_IN_URL, atomic_json, get_page, load_json, pause,
     sha256_bytes, timestamp, valid_version,
@@ -32,8 +33,6 @@ SEEDS = (
     "https://support.sonos.com/sitemap-index.xml",
 )
 HOSTS = {"www.sonos.com", "support.sonos.com"}
-MAX_XML_BYTES = 2 * 1024 * 1024
-MAX_CHILD_SITEMAPS = 1500
 SITEMAP_SUFFIXES = ("/sitemap.xml", "/sitemap-index.xml", "/sitemap_index.xml")
 
 
@@ -45,8 +44,6 @@ def allowed_sitemap(url: str) -> bool:
 
 
 def parse_xml_sitemap(body: bytes) -> tuple[str, list[str]]:
-    if len(body) > MAX_XML_BYTES:
-        raise ValueError("sitemap too large")
     try:
         doc = ET.fromstring(body)
     except ET.ParseError as error:
@@ -95,7 +92,7 @@ def scan(args: argparse.Namespace) -> int:
     requests = 0
     leads = {version: set(urls) for version, urls in state.get("version_evidence", {}).items()}
     related = set(state.get("related_pages", []))
-    while queue and requests < args.limit:
+    while queue and not winding_down():
         url = queue.pop(0)
         if not allowed_sitemap(url):
             print(f"skip out-of-scope sitemap: {url}")
@@ -109,7 +106,7 @@ def scan(args: argparse.Namespace) -> int:
             continue
         result = {"checked_at": timestamp(), "url": url, "state": "inconclusive"}
         try:
-            response = get_page(url, max_bytes=MAX_XML_BYTES)
+            response = get_page(url)
             result["http_status"] = response.status
             if response.status == 200:
                 kind, urls = parse_xml_sitemap(response.data)
@@ -117,8 +114,6 @@ def scan(args: argparse.Namespace) -> int:
                               url_count=len(urls), sitemap_kind=kind)
                 if kind == "sitemapindex":
                     children = sorted({item for item in urls if allowed_sitemap(item)})
-                    if len(children) > MAX_CHILD_SITEMAPS:
-                        raise ValueError("sitemap lists too many children")
                     result["sitemap_children"] = children
                     queue.extend(children)
                 else:
@@ -148,7 +143,7 @@ def scan(args: argparse.Namespace) -> int:
         state["updated"] = timestamp()
         atomic_json(args.output, state)
         requests += 1
-        print(f"sitemap {requests}/{args.limit}: {url} {result['state']} links={result.get('url_count', 0)} GPL_versions={result.get('gpl_versions', [])}", flush=True)
+        print(f"sitemap {requests}: {url} {result['state']} links={result.get('url_count', 0)} GPL_versions={result.get('gpl_versions', [])}", flush=True)
         if result["state"] in {"rate-limited", "error"}:
             break
         pause(args.delay)
@@ -163,13 +158,10 @@ def scan(args: argparse.Namespace) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUT)
-    parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--seed", action="append")
     parser.add_argument("--recheck", action="store_true")
     parser.add_argument("--delay", type=float, default=2.5)
     args = parser.parse_args()
-    if args.limit <= 0:
-        parser.error("--limit must be positive")
     try:
         return scan(args)
     except (OSError, ValueError) as error:

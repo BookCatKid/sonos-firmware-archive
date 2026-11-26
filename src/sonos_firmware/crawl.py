@@ -1,4 +1,4 @@
-"""Bounded, evidence-seeded update-list traversal. Never guess campaign codes."""
+"""Evidence-seeded update-list traversal. Never guess campaign codes."""
 from __future__ import annotations
 
 import hashlib
@@ -12,6 +12,7 @@ from dataclasses import replace
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
+from .deadline import winding_down
 from .discovery import Candidate, USER_AGENT, parse_manifest, official_firmware_url as official
 from .source_urls import advertised_url, open_advertised, sonos_url
 from .source_links import discover_urls, distribution_urls, PAYLOAD_SUFFIXES
@@ -54,9 +55,9 @@ def rejected_url_kind(url: str) -> str:
     return 'out-of-scope'
 
 def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
-                    evidence_dir: Path, max_manifests=256, delay=.25, fetch=None, include_history=True,
-                    explore_channels=False, deadline=None, paused_hosts=()) -> dict:
-    """Return raw snapshot receipts, source edges and failures, including limits.
+                    evidence_dir: Path, delay=.25, fetch=None, include_history=True,
+                    explore_channels=False, paused_hosts=()) -> dict:
+    """Return raw snapshot receipts, source edges and failures.
 
     Only explicit seed/history links or the literal sibling update.upm are visited.
     Official-host redirects are checked before following, never after a disclosure.
@@ -161,13 +162,11 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
         with incoming as response:
             if landing_url(url) and urlsplit(response.url).path.lower().endswith(PAYLOAD_SUFFIXES):
                 return None, response.url, None
-            body = response.read(2_000_001)
-            if len(body) > 2_000_000:
-                raise ValueError('manifest exceeds 2MB limit')
+            body = response.read()
             return body, response.url, response.headers.get('Content-Location')
 
-    while queue and attempts < max_manifests:
-        if deadline is not None and time.monotonic() >= deadline:
+    while queue:
+        if winding_down():
             break
         url = queue.popleft()
         # Channel availability is independent: a missing or malformed Prod
@@ -277,7 +276,7 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
     return {'manifests': manifests, 'documents': documents, 'candidates': list(candidates.values()),
             'directories': [{'version': v, 'directory': d} for v,d in sorted(directories)],
             'edges': edges, 'failures': failures, 'blocked': blocked,
-            'limits_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
+            'deadline_reached': bool(queue), 'pending_manifest_urls': list(queue) + deferred,
             'blocked_hosts': sorted(blocked_hosts), 'advertised_sources': authorities,
             'scope': 'manifest and landing-page links, base URLs, content locations, package siblings and channel counterparts; no opaque-code guessing'}
 
@@ -285,13 +284,13 @@ def crawl_manifests(catalog: dict, initial: list[dict], seed_urls: list[str],
 def discovery_incomplete(graph: dict, manifests: list, challenged: bool) -> bool:
     """Fail closed on real discovery gaps; ignore out-of-scope policy rejections.
 
-    Incomplete when probing was challenged, the crawl was blocked or capped,
+    Incomplete when probing was challenged, the crawl was blocked or interrupted,
     a fetch/parse failed (anything but a clean 404), an in-scope artifact or
     manifest URL sat on an unrecognized host ('unsupported'), or a manifest
     carried an unrecognized-structure warning. Landing pages and unsupported
     download locations remain gaps; unrelated static resources can be excluded.
     """
-    if challenged or graph.get("blocked") or graph.get("limits_reached"):
+    if challenged or graph.get("blocked") or graph.get("deadline_reached"):
         return True
     if any(f["kind"] not in ("not-found", "out-of-scope") for f in graph["failures"]):
         return True

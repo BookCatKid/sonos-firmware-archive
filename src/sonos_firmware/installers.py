@@ -127,30 +127,12 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     raise last_error
 
 
-def _archive_output(command, destination, *, limit, seconds=600, allow_partial=False):
-    """Read an archive through stdout; never execute or extract its member paths.
-
-    A disk image can contain members the decoder refuses while still serving the
-    one requested here, in which case it reports failure after writing complete
-    output. Callers that parse the result pass allow_partial, so the parse itself
-    is what proves the output usable.
-    """
-    with destination.open('wb') as stream, subprocess.Popen(
-            command, stdout=stream, stderr=subprocess.DEVNULL) as process:
-        deadline = time.monotonic()+seconds
-        try:
-            while process.poll() is None:
-                if destination.stat().st_size > limit or time.monotonic() >= deadline:
-                    raise ValueError('installer metadata decoder exceeded its resource budget')
-                time.sleep(.05)
-            size = destination.stat().st_size
-            failed = process.returncode and not (allow_partial and size)
-            if failed or size > limit:
-                raise ValueError('installer metadata decoder failed or exceeded its output budget')
-        finally:
-            if process.poll() is None:
-                process.kill()
-                process.wait()
+def _archive_output(command, destination, *, allow_partial=False):
+    """Read archive decoder output to EOF without arbitrary size or time ceilings."""
+    with destination.open('wb') as stream:
+        result = subprocess.run(command, stdout=stream, stderr=subprocess.DEVNULL)
+    if result.returncode and not (allow_partial and destination.stat().st_size):
+        raise ValueError('installer metadata decoder failed')
 
 
 def _complete_member(output, expected):
@@ -194,8 +176,6 @@ def _inspect_desktop(candidate, path):
                     m.filename.endswith('.app/Contents/Info.plist')), key=lambda m: m.filename.count('/'))
                 build_only = None
                 for member in members:
-                    if member.file_size > 1_000_000:
-                        raise ValueError('installer plist exceeds its metadata budget')
                     try:
                         parsed = parse(bundle.read(member), member.filename)
                     except (ValueError, plistlib.InvalidFileException, ExpatError):
@@ -216,8 +196,7 @@ def _inspect_desktop(candidate, path):
         selection = '*.app/Contents/Info.plist' if not executable else None
         listing = work/'listing.txt'
         _archive_output([tool, 'l', '-slt', *(('-r',) if selection else ()), *archive_type, '--', str(path),
-                         *([selection] if selection else [])], listing, limit=4*1024*1024,
-                        allow_partial=True)
+                         *([selection] if selection else [])], listing, allow_partial=True)
         listing_text = listing.read_text(errors='replace')
         # A decoder that reports errors may have stopped before listing every
         # member, so a build-only helper bundle is not proof of the installer's
@@ -227,12 +206,12 @@ def _inspect_desktop(candidate, path):
         for block in listing_text.split('\n\n'):
             entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
 
-        def member_bytes(member, name, limit=1_000_000):
+        def member_bytes(member, name):
             """Read one member; a failed or short extraction is not usable."""
             output = work/name
             try:
                 _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output,
-                                limit=limit, allow_partial=True)
+                                allow_partial=True)
             except ValueError:
                 return None
             return _complete_member(output, member.get('Size', ''))
@@ -426,11 +405,9 @@ def observed_candidates(path, kind):
     return candidates
 
 
-def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_hours=168, current_refresh_hours=6):
+def archive_history(root, work, repository, kind, *, refresh_hours=168, current_refresh_hours=6):
     if kind not in {'desktop', 'mobile'}:
         raise ValueError('installer history kind must be desktop or mobile')
-    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in (limit, pages)):
-        raise ValueError('installer history limits must be positive integers')
     path = root/'data/apps'/f'{kind}-history-index.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
     extensions = ('exe', 'dmg') if kind == 'desktop' else ('apk',)
@@ -445,7 +422,7 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
             seeds.extend(row.get('url') for row in rows if isinstance(row, dict))
         except (OSError, ValueError, AttributeError) as error:
             native['errors'].append({'source': str(discovery), 'error': str(error)})
-    index = discover_sources(previous, pages=pages, extensions=extensions, allowed=official_source,
+    index = discover_sources(previous, extensions=extensions, allowed=official_source,
                              seed_urls=seeds)
     atomic_json(path, index)
     candidates, errors = [], [*native['errors'], *index['errors']]
@@ -468,7 +445,7 @@ def archive_history(root, work, repository, kind, *, limit=8, pages=1, refresh_h
     result = preserve(source(default_platform='fireos-android-apk' if kind == 'mobile' else '',
                              refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours),
                       discovery, root/'data/apps'/f'{kind}-archive.json', repository,
-                      root=root, limit=limit, paused_hosts=paused, discovery_reference=path)
+                      root=root, paused_hosts=paused, discovery_reference=path)
     return {'status': result['status'], 'artifact_total': result['artifact_total'],
             'attempted': result['attempted_this_run'], 'errors': result['errors'],
             'pending': result['pending_total'], 'index_status': index['status']}

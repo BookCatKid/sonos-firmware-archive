@@ -55,16 +55,20 @@ Each target writes outcomes, errors, pending counts, and its next due time under
 `data/platform/targets/`. The workflow retains its run report and metadata
 checkpoint even when a step or metadata commit fails.
 
-Queues retain cursors, unattempted leads, retry deadlines, and a rotation between
-new and failed work. Per-run budgets control batch size, not lifetime discovery
-coverage. HTTP throttling honors Retry-After across runs; a paused host does not
+Queues retain cursors, unattempted leads, server-specified retry times, and a
+rotation between new and failed work. There are no per-run item, page, download,
+scan, or subprocess duration quotas. Each GitHub Actions job begins cooperative
+wind-down after four hours: work already in progress finishes and is checkpointed,
+and the next unit is deferred to a later job. No self-imposed hard job timeout
+terminates active work. GitHub's hosted runner still has its external lifetime.
+HTTP throttling honors Retry-After across runs; a paused host does not
 pause unrelated sources. Changed recovery methods, inspectors, or source hashes
 can make older work eligible again.
 
-Provider options can be set in the target's `options`, or overridden for a plan:
+Provider options can be set in the target's configured options, or overridden for a plan. Unsupported options (including retired quota names) fail validation rather than silently being ignored:
 
 ```bash
-sonos-archive run firmware --plan --set limit=8 --set index_pages=2
+sonos-archive run desktop --plan --set historical_refresh_hours=168
 ```
 
 Budgets exist to bound a single run, not to limit lifetime coverage: every

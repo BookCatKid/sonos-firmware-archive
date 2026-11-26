@@ -41,7 +41,7 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             report = scan_binary(path)
             self.assertFalse(report['complete'])
             self.assertEqual(report['format'], 'unreadable-zip')
-    def test_nested_apk_is_decompressed_within_the_aggregate_scan_budget(self):
+    def test_nested_apk_is_decompressed_in_full(self):
         inner = io.BytesIO()
         with zipfile.ZipFile(inner, 'w', zipfile.ZIP_DEFLATED) as archive:
             archive.writestr('classes.dex', b'/documents/gpl/22.17/gpl.html')
@@ -52,9 +52,6 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             result = scan_binary(path)
             self.assertTrue(result['complete'])
             self.assertEqual(result['version_evidence']['22.17'][0]['entry'], 'base.apk!classes.dex')
-            limited = scan_binary(path, max_bytes=len(inner.getvalue()))
-            self.assertFalse(limited['complete'])
-            self.assertLessEqual(limited['bytes_scanned'], len(inner.getvalue()))
 
     def test_published_tar_bundle_scans_unextended_firmware_executables(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -133,14 +130,14 @@ class GPLBinaryReferenceTests(unittest.TestCase):
             self.assertFalse(report['complete'])
             self.assertTrue(any('no executable' in msg for msg in report['limitations']))
 
-    def test_does_not_claim_full_scan_when_budget_exceeded(self):
+    def test_scans_complete_member_without_byte_ceiling(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'app.apk'
             with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as zip:
                 zip.writestr('classes.dex', b'https://www.sonos.com/documents/gpl/19.12/gpl.html' + b'X' * 8192)
-            result = scan_binary(path, max_bytes=100)
-            self.assertFalse(result['complete'])
-            self.assertTrue(result['limitations'])
+            result = scan_binary(path)
+            self.assertTrue(result['complete'])
+            self.assertIn('19.12', result['version_evidence'])
 
     def test_binary_discovery_does_not_infer_unrelated_numbers(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -169,14 +166,15 @@ class GPLBinaryReferenceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'source.apk'
             path.write_bytes(b'https://www.sonos.com/documents/gpl/22.17/gpl.html')
-            args=Namespace(output=Path(tmp)/'out',binary=[path],recheck=False,discovery_window=1,limit=1,delay=2.5)
+            args=Namespace(output=Path(tmp)/'out',binary=[path],recheck=False,delay=0)
             requested=[]
             def fake_get_page(url):
                 requested.append(url)
                 return HttpResult(403,b'<Error><Code>AccessDenied</Code></Error>','application/xml',url)
             with patch.object(mod,'offline_candidates',return_value={}), \
                  patch.object(mod,'get_page',side_effect=fake_get_page), \
-                 patch.object(mod,'pause'):
+                 patch.object(mod,'pause'), \
+                 patch.object(mod,'winding_down',side_effect=lambda: len(requested)>=1):
                 self.assertEqual(mod.discover(args),0)
             self.assertEqual(requested,['https://www.sonos.com/documents/gpl/22.17/gpl.html'])
             import json

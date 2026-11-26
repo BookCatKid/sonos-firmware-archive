@@ -169,12 +169,16 @@ class APKPureSweepFixture:
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.ledger, self.receipt = self.root/'state.json', self.root/'receipt.json'
-        self.argv = ['sweep', '--package', PACKAGE, '--limit', '1', '--ledger', str(self.ledger),
+        self.argv = ['sweep', '--package', PACKAGE, '--ledger', str(self.ledger),
                      '--receipt', str(self.receipt), '--repo', 'fresh/archive']
         self.parsed = apkpure.parse_versions({'retcode': 0, 'version_list': [row(), row('armeabi-v7a')]}, PACKAGE)
         mocked = patch.object(SWEEP, 'discover_sdk_levels', return_value={'levels': [29], 'errors': []})
         mocked.start()
         self.addCleanup(mocked.stop)
+        # Model a workflow with 100 seconds until cooperative wind-down.
+        cutoff = patch.object(SWEEP, 'remaining', return_value=100)
+        cutoff.start()
+        self.addCleanup(cutoff.stop)
 
     def run_sweep(self, metadata=None, acquire=None):
         with patch.object(sys, 'argv', self.argv), \
@@ -221,8 +225,9 @@ class APKPureSweepTests(APKPureSweepFixture, unittest.TestCase):
             state = json.loads(self.ledger.read_text())
             variants = [v for v in state['pending_selectors'] if v.get('variant')]
             self.assertEqual(len(variants), 2)
-            acquired.append(command[command.index('--variant-arch')+1])
-            self.assertEqual(command[command.index('--version-code')+1], '123')
+            if '--variant-arch' in command:
+                acquired.append(command[command.index('--variant-arch')+1])
+                self.assertEqual(command[command.index('--version-code')+1], '123')
             return types.SimpleNamespace(returncode=1, stdout='fixture unavailable')
         self.assertEqual(self.run_sweep(acquire=acquire), 1)
         def outage(*args, **kwargs):
@@ -234,7 +239,7 @@ class APKPureSweepTests(APKPureSweepFixture, unittest.TestCase):
     def test_metadata_only_variants_supply_google_hints_without_any_receipts(self):
         self.run_sweep()
         self.assertFalse(self.receipt.exists())
-        self.argv = ['sweep', '--source', 'google-play-direct', '--package', PACKAGE, '--limit', '1',
+        self.argv = ['sweep', '--source', 'google-play-direct', '--package', PACKAGE,
             '--ledger', str(self.root/'play.json'), '--receipt', str(self.receipt), '--metadata-hints', str(self.ledger)]
         with patch.object(SWEEP, 'play_profiles', return_value=[{'arch': 'arm64', 'profile': 'device'}]), \
              patch.object(SWEEP, 'play_version', side_effect=StoreError('ListingUnavailable')):
@@ -274,8 +279,8 @@ class APKPureSweepTests(APKPureSweepFixture, unittest.TestCase):
         with patch.object(Path, 'read_text', read_text):
             self.assertEqual(self.run_sweep(), 1)
         state = json.loads(self.ledger.read_text())
-        self.assertEqual(len(state['attempts']), 1)
-        self.assertTrue(state['attempts'][0].get('asset_url'))
+        self.assertEqual(len(state['attempts']), 3)
+        self.assertTrue(any(row.get('asset_url') for row in state['attempts']))
 
     def test_unavailable_apkeep_does_not_block_structured_asset_acquisition(self):
         acquired = []
@@ -285,8 +290,8 @@ class APKPureSweepTests(APKPureSweepFixture, unittest.TestCase):
              patch.object(SWEEP, 'run_acquisition', side_effect=lambda command, **kwargs:
                  (acquired.append(command) or types.SimpleNamespace(returncode=1, stdout='fixture failure'))):
             self.assertEqual(SWEEP.main(), 1)
-        self.assertEqual(len(acquired), 1)
-        self.assertIn('--asset-url', acquired[0])
+        self.assertEqual(len(acquired), 2)
+        self.assertTrue(all('--asset-url' in command for command in acquired))
         state = json.loads(self.ledger.read_text())
         self.assertEqual(state['status'], 'partial')
         self.assertEqual(state['discovery_errors'][0]['error'], 'FileNotFoundError')
@@ -369,7 +374,7 @@ class SDKContextSweepTests(APKPureSweepFixture, unittest.TestCase):
         self.assertEqual(state['sdk_index']['error'], 'IndexRateLimited')
         self.assertNotIn('next_request_at', state)
         self.assertEqual(len(state['observed_variants']), 2)
-        self.assertEqual(len(state['attempts']), 1)
+        self.assertEqual(len(state['attempts']), 3)
 
     def test_sdk_hints_outside_the_index_are_pending_work(self):
         self.parsed = apkpure.parse_versions({'retcode': 0, 'version_list': [row(target_sdk_version='99')]}, PACKAGE)

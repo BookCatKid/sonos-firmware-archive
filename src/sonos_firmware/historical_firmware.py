@@ -82,10 +82,8 @@ def remember_manifest(frontier, manifest):
     metadata['unresolved_links'] = unresolved
 
 
-def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8, acquire=None):
+def replay_preserved_manifests(root, evidence, repository, frontier, *, acquire=None):
     """Reparse our own immutable XML even when its original URL has changed."""
-    if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
-        raise ValueError('saved manifest batch limit must be positive')
     from . import discovery
     acquire = acquire or download_verified
     catalog_path = root/'data/catalog.json'
@@ -110,7 +108,7 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
         if observations.get(identity, {}).get('parser_revision') != revision:
             observations[identity] = {'status': 'pending'}
     pending = [key for key in sources if observations.get(key, {}).get('status') != 'parsed']
-    queue = select(pending, observations, key=str, limit=limit, state=state, queue='saved-manifests')
+    queue = select(pending, observations, key=str)
     attempted = 0
     for identity in queue:
         row = sources[identity]
@@ -149,7 +147,7 @@ def replay_preserved_manifests(root, evidence, repository, frontier, *, limit=8,
     return report
 
 
-def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
+def archive_manifests(root, work, repository, frontier, *, paused=False):
     blocked = {'web.archive.org'} if paused is True else set(paused or ())
     path = root/'data/discovery/historical-manifest-acquisition.json'
     state = acquisition_state(root, path)
@@ -172,9 +170,7 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
     eligible = [identity for identity, row in observations.items() if row.get('manifest') or
                 (capture_host(row['archive_capture']) not in blocked and
                  not backoff.paused(capture_host(row['archive_capture'])))]
-    queue = select(eligible, observations, key=lambda identity: identity,
-                   limit=0 if backoff.paused('publication') else limit,
-                   state=state, queue=repository)
+    queue = select(eligible, observations, key=lambda identity: identity)
     attempted = preserved = 0
     series = {}
     def publisher_for(capture):
@@ -262,14 +258,12 @@ def archive_manifests(root, work, repository, frontier, *, limit, paused=False):
             'paused': bool(blocked) or backoff.paused('publication'), 'paused_hosts': sorted(blocked)}
 
 
-def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
-    if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in (limit, manifest_limit)):
-        raise ValueError('historical acquisition limit must be positive')
+def archive_history(root, work, repository):
     frontier_path = root/'data/discovery/firmware-frontier.json'
     frontier = json.loads(frontier_path.read_text()) if frontier_path.exists() else {}
     index = frontier.get('archive_index', {})
     paused = paused_index_hosts(index)
-    manifests = archive_manifests(root, work, repository, frontier, limit=manifest_limit, paused=paused)
+    manifests = archive_manifests(root, work, repository, frontier, paused=paused)
     atomic_json(frontier_path, frontier)
     state_path = root/'data/discovery/historical-firmware-acquisition.json'
     previous = acquisition_state(root, state_path).get('sources', {}).get(repository, {})
@@ -296,7 +290,7 @@ def archive_history(root, work, repository, *, limit=8, manifest_limit=8):
     rows = sorted(candidates.values(), key=lambda row: (row['archive_capture']['timestamp'], row['url'], row['acquisition_id']))
     manifests.pop('paused')
     paused = set(manifests.pop('paused_hosts'))
-    result = archive_candidates(root, repository, rows, work, limit=limit, state_path=state_path,
+    result = archive_candidates(root, repository, rows, work, state_path=state_path,
                                 paused_hosts=paused)
     result['errors'].extend(errors)
     result['manifests'] = manifests

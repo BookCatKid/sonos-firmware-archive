@@ -97,11 +97,11 @@ class BinaryDiscoveryTests(unittest.TestCase):
             spec = importlib.util.spec_from_file_location('automatic_binary_feedback', script)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            args = Namespace(output=root/'data/gpl/live', binary=[], recheck=False,
-                             discovery_window=1, limit=1, delay=0)
+            args = Namespace(output=root/'data/gpl/live', binary=[], recheck=False, delay=0)
             response = HttpResult(403, b'<Error><Code>AccessDenied</Code></Error>', 'application/xml', '')
             with patch.object(module, 'offline_candidates', return_value={}), \
-                 patch.object(module, 'get_page', return_value=response) as request, patch.object(module, 'pause'):
+                 patch.object(module, 'get_page', return_value=response) as request, patch.object(module, 'pause'), \
+                 patch.object(module, 'winding_down', side_effect=lambda: request.call_count >= 1):
                 self.assertEqual(module.discover(args), 0)
             request.assert_called_once_with('https://www.sonos.com/documents/gpl/22.17/gpl.html')
             self.assertEqual(module.live_catalog(args.output)['releases'], {})
@@ -115,7 +115,7 @@ class BinaryDiscoveryTests(unittest.TestCase):
             self.publish_receipts(root, [first, second])
             def acquire(src, path, repo):
                 path.write_bytes(b'wrong' if src['sha256'] == first['sha256'] else good)
-            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire, limit=2)
+            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire)
             self.assertEqual(result['attempted_this_run'], 2)
             self.assertEqual(result['pending_total'], 1)
             self.assertEqual(result['scans'], {})
@@ -151,43 +151,42 @@ class BinaryDiscoveryTests(unittest.TestCase):
                     raise FileNotFoundError('old capture unavailable')
                 path.write_bytes(body)
             self.assertEqual(len(preserved_sources(root, 'owner/repo')), 1)
-            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire, limit=1)
+            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire)
             self.assertEqual(result['attempted_this_run'], 1)
             self.assertEqual(next(iter(result['scans'].values()))['verified_source']['release_tag'], 'new')
 
-    def test_many_failed_source_aliases_cannot_permanently_hide_a_later_capture(self):
+    def test_all_source_aliases_are_tried_until_later_capture_succeeds(self):
         body = self.apk()
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             rows = [self.source(body, tag=str(n)) for n in range(5)]
             self.publish_receipts(root, rows)
+            attempted = []
             def acquire(src, path, repo):
+                attempted.append(src['release_tag'])
                 if src['release_tag'] != '4':
                     raise FileNotFoundError('fixture unavailable')
                 path.write_bytes(body)
-            first = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire, limit=1)
-            observation = first['repositories']['owner/repo'][rows[0]['sha256']]
-            self.assertEqual(observation['status'], 'failed')
-            observation['next_attempt_at'] = '2000-01-01T00:00:00+00:00'
-            atomic_json(root/'data/gpl/live/binary-evidence.json', first)
-            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire, limit=1)
+            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire)
+            self.assertEqual(attempted, ['0', '1', '2', '3', '4'])
             self.assertEqual(result['status'], 'ok')
             self.assertEqual(next(iter(result['scans'].values()))['verified_source']['release_tag'], '4')
 
-    def test_partial_new_analysis_keeps_earlier_evidence_and_changed_limits_requeue(self):
+    def test_partial_analysis_is_retained_without_any_fake_scan_ceiling(self):
         body = self.apk()
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             self.publish_receipts(root, [self.source(body)])
             acquire = lambda src, path, repo: path.write_bytes(body)
-            discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire)
-            def partial(path, **kwargs):
-                return {'filename': path.name, 'sha256': hashlib.sha256(body).hexdigest(), 'complete': False,
-                        'version_evidence': {}, 'limitations': ['fixture limit']}
-            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire,
-                scan=partial, max_bytes=1000)
+            def partial(path):
+                return {'filename': path.name, 'sha256': hashlib.sha256(body).hexdigest(),
+                        'complete': False, 'bytes_scanned': len(body),
+                        'version_evidence': {'22.17': [{'entry': 'classes.dex', 'format': 'ascii', 'offset': 0}]},
+                        'limitations': ['fixture decoder error']}
+            result = discover_preserved(root, root/'worker', 'owner/repo', acquire=acquire, scan=partial)
             self.assertIn('22.17', result['version_evidence'])
             self.assertEqual(result['pending_total'], 1)
+            self.assertEqual(result['status'], 'partial')
 
     def test_catalog_components_web_resources_and_app_splits_are_all_sources(self):
         source = self.source(b'public fixture')

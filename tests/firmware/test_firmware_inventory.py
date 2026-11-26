@@ -76,12 +76,8 @@ class ExecutableInventoryTests(unittest.TestCase):
                 directory.mkdir()
                 (directory/'tool').write_bytes(elf_fixture(64, 'little', 183))
                 (directory/'external').symlink_to('/unavailable/firmware-link')
-                process = MagicMock()
-                process.poll.return_value = 0
-                process.returncode = 0
-                process.__enter__.return_value = process
-                return process
-            with patch.object(inventory.subprocess, 'Popen', side_effect=decoder):
+                return inventory.subprocess.CompletedProcess(command, 0)
+            with patch.object(inventory.subprocess, 'run', side_effect=decoder):
                 report = extract_package(source, root/'out')
             self.assertTrue(report['complete'], report['errors'])
             entries = {row['path']: row for row in report['sections'][0]['filesystem']['entries']}
@@ -181,14 +177,15 @@ class GenericInventoryTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         steps = plan(targets(root)['firmware'], root, 'owner/repo')['steps']
         self.assertEqual(len(steps), 3)
-        command = steps[0]['command']
+        command = steps[2]['command']
         artifact = json.loads(command[command.index('--artifact-root')+1])
         self.assertEqual(artifact['package_model'], 17)
         self.assertNotIn('version', artifact)
         self.assertNotIn('sha256', artifact)
-        self.assertIn('archive-historical-firmware', steps[1]['command'])
+        self.assertIn('archive-historical-firmware', steps[0]['command'])
+        self.assertIn('extract-firmware', steps[1]['command'])
         self.assertTrue(steps[1]['after_failure'])
-        self.assertIn('--inventory-limit', steps[2]['command'])
+        self.assertNotIn('--inventory-limit', steps[1]['command'])
         self.assertTrue(steps[2]['after_failure'])
 
     def test_every_plaintext_section_is_inventoried_without_a_version_header(self):
@@ -250,8 +247,8 @@ class GenericInventoryTests(unittest.TestCase):
             self.assertEqual(len(report['errors']), 1)
             self.assertEqual((root / 'out' / report['components'][1]['filename']).read_bytes(), b'other payload')
 
-    def test_tar_expansion_budget_is_reported_without_losing_source_payload(self):
-        from sonos_firmware.firmware_inventory import inventory_package, InventoryLimits
+    def test_tar_expansion_extracts_all_bytes_without_work_quota(self):
+        from sonos_firmware.firmware_inventory import inventory_package
         from tests.firmware.test_upd import section
         from tests.firmware.test_anacapad import tar_payload
         import tarfile
@@ -259,13 +256,13 @@ class GenericInventoryTests(unittest.TestCase):
             root = Path(temporary)
             source = root / 'limited.upd'
             source.write_bytes(section(23, 0, tar_payload([('large', bytes(100), tarfile.REGTYPE)])))
-            report = inventory_package(source, root / 'out', limits=InventoryLimits(expanded_bytes=10))
-            self.assertIn('resource budget', report['errors'][0]['message'])
-            self.assertTrue((root / 'out' / report['components'][0]['filename']).is_file())
-            self.assertFalse((root / 'out/limited-section-00-application-archive-files').exists())
+            report = inventory_package(source, root / 'out')
+            self.assertEqual(report['errors'], [])
+            self.assertTrue(report['complete'])
+            self.assertEqual((root / 'out/limited-section-00-application-archive-files/large').stat().st_size, 100)
 
-    def test_failed_section_releases_expansion_budget_for_later_sections(self):
-        from sonos_firmware.firmware_inventory import inventory_package, InventoryLimits
+    def test_bad_archive_section_does_not_block_following_sections(self):
+        from sonos_firmware.firmware_inventory import inventory_package
         from tests.firmware.test_upd import section
         from tests.firmware.test_anacapad import tar_payload
         import tarfile
@@ -275,7 +272,7 @@ class GenericInventoryTests(unittest.TestCase):
             root = Path(temporary)
             source = root/'mixed.upd'
             source.write_bytes(section(23, 0, bad) + section(23, 0, good))
-            report = inventory_package(source, root/'out', limits=InventoryLimits(expanded_bytes=10))
+            report = inventory_package(source, root/'out')
             self.assertEqual(len(report['errors']), 1)
             self.assertEqual(report['sections'][1]['members'][0]['path'], 'second')
             self.assertEqual((root/'out/mixed-section-01-application-archive-files/second').read_bytes(), b'available')
@@ -307,7 +304,7 @@ class GenericInventoryTests(unittest.TestCase):
                 self.assertTrue(report['sections'][0]['uimage']['header_crc_valid'])
                 self.assertTrue(report['sections'][0]['uimage']['data_crc_valid'])
 
-    def test_squashfs_decoder_is_shared_and_budgeted(self):
+    def test_squashfs_decoder_is_shared_and_unbounded(self):
         from sonos_firmware import firmware_inventory as inventory
         from tests.firmware.test_upd import section
         from unittest.mock import patch, MagicMock
@@ -321,12 +318,8 @@ class GenericInventoryTests(unittest.TestCase):
                     directory = Path(command[command.index('-d')+1])
                     directory.mkdir()
                     (directory / 'file').write_bytes(b'content')
-                    process = MagicMock()
-                    process.poll.return_value = 0
-                    process.returncode = 0
-                    process.__enter__.return_value = process
-                    return process
-                with patch.object(inventory.subprocess, 'Popen', side_effect=decoder):
+                    return inventory.subprocess.CompletedProcess(command, 0)
+                with patch.object(inventory.subprocess, 'run', side_effect=decoder):
                     report = inventory.inventory_package(source, root / 'out')
                 self.assertTrue(report['complete'])
                 self.assertEqual(report['sections'][0]['filesystem']['entries'][0]['size'], 7)

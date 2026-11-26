@@ -61,10 +61,8 @@ def acquisition_id(candidate):
     return candidate.get('acquisition_id') or candidate['url']
 
 
-def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path, limit=None,
+def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str, *, root: Path,
              paused_hosts=(), discovery_reference: Path | None = None):
-    if limit is not None and limit <= 0:
-        raise ValueError('acquisition limit must be positive')
     if source.refresh_hours <= 0 or source.current_refresh_hours <= 0:
         raise ValueError('refresh intervals must be positive')
     if bool(source.inspect) != bool(source.inspection_revision):
@@ -247,8 +245,7 @@ def preserve(source: AppSource, discovery: Path, receipt: Path, repository: str,
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
     jobs_due.update({('metadata', digest): prior for digest, prior in metadata_state.items()})
     save()
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit or len(jobs),
-                    state=document, queue=repository)
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'])
     recoveries = [job['row'] for job in chosen if job['kind'] == 'recovery']
     queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for capture in recoveries:

@@ -12,6 +12,7 @@ import tempfile
 import time
 from pathlib import Path
 
+from sonos_firmware.deadline import winding_down
 from sonos_firmware.gpl_binary_evidence import scan_binary
 from sonos_firmware.gpl_archive import (
     HttpResult, artifact_checkpoint, atomic_json, candidates, capture_response, download_artifact,
@@ -98,11 +99,6 @@ def discover(args: argparse.Namespace) -> int:
     # required before discovery. New versions still come from evidence/grammar.
     for version in sorted(known):
         checked.setdefault(version, {k: v for k, v in catalog['releases'][version].items() if k != 'links'})
-    window = getattr(args, 'discovery_window', 512)
-    if not isinstance(window, int) or isinstance(window, bool) or not 1 <= window <= 10000:
-        raise ValueError('GPL discovery window must be between 1 and 10000')
-    if not isinstance(args.limit, int) or isinstance(args.limit, bool) or args.limit < 0:
-        raise ValueError('GPL request budget must be a nonnegative integer')
     pending = dict(state.get('pending_versions', {}))
     for item in candidates(known, evidence=evidence):
         version = item['version']
@@ -112,10 +108,8 @@ def discover(args: argparse.Namespace) -> int:
                                 'evidence': sorted(set(prior.get('evidence', [])) | set(item['evidence']))}
     pending = {version: item for version, item in pending.items() if version not in checked}
     exploration = state.get('exploration', {})
-    cursor, next_lane = exploration.get('next_ordinal', 0), exploration.get('next_fresh_lane', 0)
+    cursor = exploration.get('next_ordinal', 0)
     version_at(cursor)  # Validate the saved ordinal before any network request.
-    if next_lane not in (0, 1):
-        raise ValueError('GPL fresh-work lane must be zero or one')
     backoff = dict(state.get('source_backoff', {}))
     paused = bool(backoff) and not due(backoff)
     total = 0
@@ -129,33 +123,29 @@ def discover(args: argparse.Namespace) -> int:
         state.update(updated=timestamp(), status='partial' if errors or pending else 'ok', errors=errors,
                      checked_this_run=total, pending_versions=pending, pending_version_total=len(pending),
                      source_backoff=backoff,
-                     exploration={'policy': 'continuing-numeric-frontier', 'next_ordinal': cursor,
-                                  'window_size': window, 'next_fresh_lane': next_lane})
+                     exploration={'policy': 'continuing-numeric-frontier', 'next_ordinal': cursor})
         atomic_json(output/'discovery.json', state)
 
     save()
-    speculative = []
-    ordinal = cursor
-    while not paused and args.limit and len(speculative) < window:
-        version = version_at(ordinal)
-        ordinal += 1
-        if version not in checked and version not in pending:
-            speculative.append({'version': version, 'priority': 2, 'evidence': []})
-    lanes = [list(pending.values()), speculative]
-    fresh = []
-    for offset in range(max(map(len, lanes))):
-        for lane in (next_lane, 1-next_lane):
-            if offset < len(lanes[lane]):
-                fresh.append(lanes[lane][offset])
+    backlog = list(pending.values())
     retries = [{'version': version, 'priority': row.get('priority', -1),
                 'evidence': row.get('evidence', [index_url(version)])} for version, row in checked.items()]
-    todo = [] if paused else select(fresh+retries, checked, key=lambda item: item['version'],
-                                    limit=args.limit, force=args.recheck, state=state,
-                                    queue='gpl-index-versions')
-    for item in todo:
+    todo = [] if paused else select(backlog + retries, checked,
+                                   key=lambda item: item['version'], force=args.recheck)
+
+    def frontier():
+        ordinal = cursor
+        while not winding_down():
+            version = version_at(ordinal)
+            ordinal += 1
+            if version not in checked and version not in pending:
+                yield {'version': version, 'priority': 2, 'evidence': []}
+
+    from itertools import chain
+    for item in chain(todo, frontier()):
+        if winding_down():
+            break
         version = item["version"]
-        if version not in checked:
-            next_lane = 1 if version in pending else 0
         try:
             response = get_page(index_url(version))
             record = save_index(version, response, output)
@@ -205,6 +195,8 @@ def indexes(args: argparse.Namespace) -> int:
         raise ValueError("specify --version or --all-known")
     source = args.cache_dir
     for i, version in enumerate(sorted(versions, key=lambda s: tuple(map(int, s.split('.'))))):
+        if winding_down():
+            break
         valid_version(version)
         if source:
             path = source / f"{version}.html"
@@ -292,8 +284,6 @@ def archive(args: argparse.Namespace) -> int:
     if args.next:
         if versions:
             raise ValueError("--next cannot be combined with --version")
-        if not args.limit and not args.max_total_bytes:
-            raise ValueError("--next requires --limit or --max-total-bytes to bound archive work")
         for candidate, entry in sorted(catalog["releases"].items(), key=lambda pair: tuple(map(int, pair[0].split('.')))):
             if entry["state"] != "verified":
                 continue
@@ -330,12 +320,11 @@ def archive(args: argparse.Namespace) -> int:
             previous = prior.get(keys[link['url']])
             if previous and previous.get('state') != 'verified':
                 observations[(version, link['url'])] = previous
-    chosen = select(work, observations, key=lambda item: (item['version'], item['link']['url']),
-                    limit=args.limit or len(work), force=args.retry_errors, state=records,
-                    queue=json.dumps([args.repo, 'all' if args.next else sorted(versions),
-                                      sorted(args.filename or []), bool(args.include_upstream)]))
+    chosen = select(work, observations, key=lambda item: (item['version'], item['link']['url']), force=args.retry_errors)
     selected = {(item['version'], item['link']['url']) for item in chosen}
     for version in versions:
+        if winding_down():
+            break
         valid_version(version)
         record = catalog["releases"].get(version)
         if not record or record["state"] != "verified":
@@ -358,12 +347,12 @@ def archive(args: argparse.Namespace) -> int:
                 version_assets[name] = index_meta
                 atomic_json(args.output / 'artifacts.json', records)
         for link in all_links(record):
+            if winding_down():
+                break
             if (version, link['url']) not in selected:
                 continue
             if args.filename and link["filename"] not in args.filename:
                 continue
-            if args.limit and count >= args.limit:
-                break
             if link["origin"] != "sonos" and not args.include_upstream:
                 continue
             if link["kind"] not in ("source", "attribution"):
@@ -385,7 +374,7 @@ def archive(args: argparse.Namespace) -> int:
                 # stale receipt left by a previously interrupted publication.
             for attempt in range(3):
                 try:
-                    result = download_artifact(link, args.store, min_free_bytes=args.reserve_bytes)
+                    result = download_artifact(link, args.store)
                 except (OSError, TimeoutError) as error:
                     result = {"state": "network-error", "filename": link["filename"], "error": str(error)}
                 if result["state"] not in {"network-error", "incomplete-transfer"} and not (
@@ -422,13 +411,7 @@ def archive(args: argparse.Namespace) -> int:
                     print("stopping on storage or transient failure", flush=True)
                     return 2
                 print("recorded unavailable/invalid source; continuing", flush=True)
-            if args.max_total_bytes and total_bytes >= args.max_total_bytes:
-                break
             pause(args.delay)
-        if args.limit and count >= args.limit:
-            break
-        if args.max_total_bytes and total_bytes >= args.max_total_bytes:
-            break
     print(f"attempted={count} verified_bytes={total_bytes}")
     return 0
 
@@ -520,9 +503,6 @@ def main() -> int:
     p.add_argument("--delay", type=float, default=2.5)
     p.set_defaults(func=indexes)
     p = sub.add_parser("discover", help="Resume prioritized version grammar sweep")
-    p.add_argument('--discovery-window', type=int, default=512,
-                   help='bounded speculative lookahead; the saved ordinal continues beyond each window')
-    p.add_argument("--limit", type=int, default=48)
     p.add_argument("--delay", type=float, default=2.5)
     p.add_argument("--binary", type=Path, action="append", default=[])
     p.add_argument("--recheck", action="store_true")
@@ -535,9 +515,6 @@ def main() -> int:
     p.add_argument("--retry-errors", action="store_true", help="Retry recorded failures immediately instead of waiting for backoff")
     p.add_argument("--filename", action="append", default=[], help="Only archive these exact source filenames")
     p.add_argument("--store", type=Path, default=ROOT / "artifacts/gpl-direct")
-    p.add_argument("--limit", type=int, default=0)
-    p.add_argument("--max-total-bytes", type=int, default=0)
-    p.add_argument("--reserve-bytes", type=int, default=512 * 1024 * 1024)
     p.add_argument("--delay", type=float, default=2.5)
     p.add_argument("--publish", action="store_true")
     p.add_argument("--repo", default="BookCatKid/sonos-firmware-archive")

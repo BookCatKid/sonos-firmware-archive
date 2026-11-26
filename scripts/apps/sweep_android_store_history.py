@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from sonos_firmware import retry
+from sonos_firmware.deadline import remaining, winding_down
 from sonos_firmware.android_store import play_profiles, play_version, safe_error, run_apkeep, store_apps, StoreError, run_acquisition
 from sonos_firmware.releases import receipt_matches_repository
 from sonos_firmware.storage import atomic_json
@@ -91,17 +92,22 @@ def cooldown(state, error):
     return True
 
 
-def wait_for_source(state, deadline, save):
+def wait_for_source(state, save):
+    """Honor real server cooldowns without introducing a local run deadline."""
     while not retry.due({'next_attempt_at': state.get('next_request_at')}):
-        remaining = (datetime.fromisoformat(state['next_request_at']) - datetime.now(timezone.utc)).total_seconds()
+        seconds = (datetime.fromisoformat(state['next_request_at']) -
+                   datetime.now(timezone.utc)).total_seconds()
         save()
-        if remaining >= deadline - time.monotonic():
+        if winding_down():
             return False
-        time.sleep(min(30, max(0, remaining)))
-    return time.monotonic() < deadline
+        left = remaining()
+        if left is not None and seconds >= left:
+            return False
+        time.sleep(min(30, max(0, seconds)))
+    return not winding_down()
 
 
-def sdk_contexts(state, observations, deadline, save, errors):
+def sdk_contexts(state, observations, save, errors):
     """Refresh public SDK metadata independently of APKPure's rate limit."""
     record = state.setdefault('sdk_index', {})
     levels = {29, *record.get('levels', [])}
@@ -111,12 +117,11 @@ def sdk_contexts(state, observations, deadline, save, errors):
             levels.update(parse_sdk_levels(json.loads(cached.read_text())['xml']))
         except (OSError, ValueError, TypeError, KeyError, SyntaxError, StoreError):
             pass
-    index_deadline = min(deadline, time.monotonic()+30)
     if retry.due(record):
-        while wait_for_source(record, index_deadline, save):
+        while wait_for_source(record, save):
             try:
                 result = discover_sdk_levels(observations=observations,
-                    timeout=max(1, index_deadline-time.monotonic()))
+                    timeout=120)
                 levels.update(result['levels'])
                 issues = result.get('errors', [])
                 record.update(retry.checkpoint(record, success=not issues, success_hours=168),
@@ -151,20 +156,15 @@ def main() -> int:
     parser.add_argument('--source', choices=('apkpure-recovery', 'google-play-direct'), default='apkpure-recovery')
     parser.add_argument('--apkeep', default='apkeep')
     parser.add_argument('--repo', default='BookCatKid/sonos-firmware-archive')
-    parser.add_argument('--limit', type=int, default=24, help='acquisition work budget per run, never a lifetime limit')
-    parser.add_argument('--discovery-limit', type=int)
     parser.add_argument('--refresh-hours', type=float, default=6)
-    parser.add_argument('--seconds', type=float, default=1200, help='worker budget including rate-limit waits')
     parser.add_argument('--package', choices=PACKAGES, action='append')
     parser.add_argument('--receipt', type=Path, default=ROOT / 'data/apps/android-store-archive.json')
     parser.add_argument('--ledger', type=Path)
     parser.add_argument('--observations', type=Path, help='ephemeral metadata cache, retained by the common worker')
     parser.add_argument('--metadata-hints', type=Path, help='optional discovered numeric codes from another store ledger')
     args = parser.parse_args()
-    if args.discovery_limit is None:
-        args.discovery_limit = 4 if args.source == 'google-play-direct' else 24
-    if min(args.limit, args.discovery_limit, args.seconds, args.refresh_hours) <= 0:
-        parser.error('budgets and refresh interval must be positive')
+    if args.refresh_hours <= 0:
+        parser.error('refresh interval must be positive')
     if args.ledger is None:
         args.ledger = ROOT / ('data/apps/google-play-sweep.json' if args.source == 'google-play-direct'
                               else 'data/apps/android-store-history-sweep.json')
@@ -199,7 +199,6 @@ def main() -> int:
     discovery = state.setdefault('discovery', {})
     observed = state.setdefault('observed_variants', {})
     errors = []
-    deadline = time.monotonic() + args.seconds
 
     def save():
         pending = [row for key, row in queue.items() if key not in archived]
@@ -257,7 +256,7 @@ def main() -> int:
             discovery_jobs = [{**profile, 'package': package} for profile in profiles for package in packages]
         else:
             profiles = []
-            levels = sdk_contexts(state, args.observations, deadline, save, errors)
+            levels = sdk_contexts(state, args.observations, save, errors)
             discovery_jobs = [{'package': package, 'metadata_source': 'apkeep'} for package in packages]
             discovery_jobs += [{'package': package, 'metadata_source': 'apkpure-api', 'sdk': sdk}
                                for sdk in levels for package in packages]
@@ -281,11 +280,10 @@ def main() -> int:
                             remember(parsed['variants'])
                         except (OSError, ValueError, TypeError, StoreError):
                             pass
-        chosen = retry.select(discovery_jobs, discovery, key=profile_identity,
-                              limit=args.discovery_limit, state=state, queue='store-discovery')
+        chosen = retry.select(discovery_jobs, discovery, key=profile_identity)
         for job in chosen:
             key = profile_identity(job)
-            while wait_for_source(state, deadline, save):
+            while wait_for_source(state, save):
                 try:
                     parse_errors = []
                     if args.source == 'google-play-direct':
@@ -294,11 +292,11 @@ def main() -> int:
                                   'discovered_from': 'google-play-profile'}]
                     elif job['metadata_source'] == 'apkpure-api':
                         result = discover_apkpure(job['package'], sdk=job['sdk'], observations=args.observations,
-                                                 timeout=max(1, deadline-time.monotonic()))
+                                                 timeout=120)
                         leads, parse_errors = result['variants'], result['errors']
                     else:
                         leads = [{**job, 'version_selector': selector, 'rank': rank} for rank, selector in enumerate(
-                            discover_versions(args.apkeep, job['package'], timeout=max(1, deadline-time.monotonic())))]
+                            discover_versions(args.apkeep, job['package'], timeout=120))]
                     for lead in leads:
                         queue.setdefault(identity(lead), {}).update(lead)
                     refresh = 168 if job.get('sdk') is not None and not leads and not parse_errors else args.refresh_hours
@@ -360,10 +358,10 @@ def main() -> int:
         pending = [row for key, row in queue.items() if row['package'] in packages and key not in archived]
         pending.sort(key=lambda row: (row.get('discovered_from') not in {
             'google-play-profile', 'google-play-delivery', 'apkpure-api'}, row.get('rank', 0), row['package']))
-        chosen = retry.select(pending, attempted, key=identity, limit=args.limit, state=state, queue='store-acquisition')
+        chosen = retry.select(pending, attempted, key=identity)
         for job in chosen:
             key = identity(job)
-            while wait_for_source(state, deadline, save):
+            while wait_for_source(state, save):
                 result_path = Path(temporary) / 'result.json'
                 result_path.unlink(missing_ok=True)
                 command = [sys.executable, str(ROOT / 'scripts/apps/archive_android_store_apps.py'),
@@ -378,7 +376,7 @@ def main() -> int:
                         command += ['--asset-url', job['asset_url'], '--asset-type', job['asset_type'],
                                     '--version-code', job['version_code'], '--variant-arch', job['arch'],
                                     '--variant', job['variant']]
-                completed = run_acquisition(command, cwd=ROOT, timeout=max(1, deadline-time.monotonic()))
+                completed = run_acquisition(command, cwd=ROOT)
                 result = json.loads(result_path.read_text()) if result_path.exists() else {}
                 record = {**job, **retry.checkpoint(attempted.get(key), success=completed.returncode == 0),
                           'checked': datetime.now(timezone.utc).isoformat(),
@@ -417,8 +415,7 @@ def main() -> int:
             if not retry.due({'next_attempt_at': state.get('next_request_at')}):
                 break
     if args.source == 'apkpure-recovery':
-        # Fresh metadata can reveal a SDK not in the publisher index yet. It
-        # must count as pending work even when this worker has spent its budget.
+        # Fresh metadata may reveal an SDK not yet in the publisher index.
         existing = {profile_identity(job) for job in discovery_jobs}
         for sdk in state.get('sdk_hints', []):
             for package in packages:

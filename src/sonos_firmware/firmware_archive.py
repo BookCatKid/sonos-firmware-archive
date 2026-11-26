@@ -121,7 +121,7 @@ def register_document(path, manifest, publication):
     return record
 
 
-def _historical_origins(root, paths, wanted, history, *, limit):
+def _historical_origins(root, paths, wanted, history):
     """Resume optional searches of this checkout's own metadata changes."""
     if not wanted:
         return
@@ -156,7 +156,7 @@ def _historical_origins(root, paths, wanted, history, *, limit):
     if wanted[origin] is not None:
         pending.sort(key=lambda row: abs(row[1]-wanted[origin]))
     failed = False
-    for revision, _ in (pending if limit is None else pending[:limit]):
+    for revision, _ in pending:
         try:
             changes = subprocess.check_output(['git', 'show', '--format=', '--no-ext-diff',
                 '--no-textconv', '--unified=0', revision, '--', *specs], cwd=root,
@@ -185,8 +185,7 @@ def _historical_origins(root, paths, wanted, history, *, limit):
     history['status'] = 'unavailable' if failed else 'partial' if remaining() else 'searched'
 
 
-def reconcile_documents(root, repository, assets, work, *, previous=None, limit=8,
-                        max_bytes=2_000_000, fetch=None):
+def reconcile_documents(root, repository, assets, work, *, previous=None, fetch=None):
     """Restore interrupted source receipts using publication and origin digests.
 
     Unattributed captures remain pending. Release filenames alone never become
@@ -196,8 +195,6 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
     from .releases import download_verified
     from .source_links import discover_urls
     from .source_urls import sonos_url
-    if (limit is not None and limit < 1) or max_bytes < 1:
-        raise ValueError('document recovery budgets must be positive')
     if fetch is None and os.environ.get('GITHUB_ACTIONS') != 'true':
         raise ValueError('source document recovery runs in CI; local tests must supply fixture acquisition')
     fetch = fetch or download_verified
@@ -264,7 +261,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
             except (ValueError, TypeError, OverflowError, OSError):
                 created = None
             wanted[row['origin']] = created
-    _historical_origins(root, history_paths, wanted, history, limit=limit*4)
+    _historical_origins(root, history_paths, wanted, history)
     for row in history.get('matches', {}).values():
         remember(row['url'])
     external = {}
@@ -288,8 +285,7 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
         prior = eligible.get(row['identity'], {})
         if prior.get('state') == 'origin-unresolved' and not prior.get('origin_known') and row['origin'] in origin_hosts:
             prior.pop('next_attempt_at', None)
-    chosen = select(candidates, eligible, key=lambda row: row['identity'],
-                    limit=limit, state=result, queue='orphan-source-documents')
+    chosen = select(candidates, eligible, key=lambda row: row['identity'])
     for row in chosen:
         external.pop(row['identity'], None)
         prior = state['observations'].get(row['identity'], {})
@@ -301,47 +297,45 @@ def reconcile_documents(root, repository, assets, work, *, previous=None, limit=
         try:
             if asset.get('sha256') and asset['sha256'] != digest:
                 raise ValueError('capture filename conflicts with the published digest')
-            if not isinstance(asset['bytes'], int) or isinstance(asset['bytes'], bool) or not 0 < asset['bytes'] <= max_bytes:
-                observation['state'] = 'resource-deferred'
-            else:
-                origin = urls.get(row['origin'])
-                work.mkdir(parents=True, exist_ok=True)
-                destination = work/digest
-                fetch(capture, destination, repository)
-                with destination.open('rb') as stream:
-                    body = stream.read(max_bytes+1)
-                if len(body) != asset['bytes'] or hashlib.sha256(body).hexdigest() != digest:
-                    raise ValueError('source document body conflicts with its capture identity')
-                for url in discover_urls('', body):
-                    remember(url)
-                metadata = {'format': row['format']}
-                if row['kind'] == 'manifest':
-                    metadata, parsed = parse_manifest(destination, origin)
-                    remember(metadata)
-                    for candidate in parsed:
-                        remember(urljoin(candidate.url, 'update.upm'))
-                    if metadata.get('base_url'):
-                        remember(urljoin(metadata['base_url'], 'update.upm'))
-                origin = urls.get(row['origin'])
-                if row['kind'] == 'manifest' and origin is not None:
-                    metadata, _ = parse_manifest(destination, origin)
-                backoff.clear('document-downloads')
-                result['verified'].append(capture)
-                observation.update(sha256=digest, bytes=asset['bytes'], origin_known=row['origin'] in origin_hosts)
-                if origin is not None:
-                    publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
-                    manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
-                                'provenance': 'recovered-publication-with-matching-content-and-origin-digests'}
-                    if row['kind'] == 'page':
-                        manifest.update(document_type='landing-page')
-                    register_document(root/'data/catalog.json', manifest, publication)
-                    result['recovered'].append({**capture, 'source_url': origin})
-                    observation.update(state='recovered', source_url=origin)
-                elif row['origin'] in origin_hosts and not sonos_url('https://'+origin_hosts[row['origin']]+'/'):
-                    observation.update(state='external-origin',
-                                       origin_host=origin_hosts[row['origin']], origin_url=origin_urls[row['origin']])
-                    external[row['identity']] = {key: observation[key] for key in
-                        ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
+            if not isinstance(asset['bytes'], int) or isinstance(asset['bytes'], bool) or asset['bytes'] <= 0:
+                raise ValueError('invalid document receipt size')
+            origin = urls.get(row['origin'])
+            work.mkdir(parents=True, exist_ok=True)
+            destination = work/digest
+            fetch(capture, destination, repository)
+            body = destination.read_bytes()
+            if len(body) != asset['bytes'] or hashlib.sha256(body).hexdigest() != digest:
+                raise ValueError('source document body conflicts with its capture identity')
+            for url in discover_urls('', body):
+                remember(url)
+            metadata = {'format': row['format']}
+            if row['kind'] == 'manifest':
+                metadata, parsed = parse_manifest(destination, origin)
+                remember(metadata)
+                for candidate in parsed:
+                    remember(urljoin(candidate.url, 'update.upm'))
+                if metadata.get('base_url'):
+                    remember(urljoin(metadata['base_url'], 'update.upm'))
+            origin = urls.get(row['origin'])
+            if row['kind'] == 'manifest' and origin is not None:
+                metadata, _ = parse_manifest(destination, origin)
+            backoff.clear('document-downloads')
+            result['verified'].append(capture)
+            observation.update(sha256=digest, bytes=asset['bytes'], origin_known=row['origin'] in origin_hosts)
+            if origin is not None:
+                publication = publication_receipt(repository, row['tag'], row['name'], capture, asset)
+                manifest = {'url': origin, 'sha256': digest, 'bytes': asset['bytes'], 'metadata': metadata,
+                            'provenance': 'recovered-publication-with-matching-content-and-origin-digests'}
+                if row['kind'] == 'page':
+                    manifest.update(document_type='landing-page')
+                register_document(root/'data/catalog.json', manifest, publication)
+                result['recovered'].append({**capture, 'source_url': origin})
+                observation.update(state='recovered', source_url=origin)
+            elif row['origin'] in origin_hosts and not sonos_url('https://'+origin_hosts[row['origin']]+'/'):
+                observation.update(state='external-origin',
+                                   origin_host=origin_hosts[row['origin']], origin_url=origin_urls[row['origin']])
+                external[row['identity']] = {key: observation[key] for key in
+                    ('release_tag', 'release_asset', 'sha256', 'bytes', 'origin_sha256', 'origin_host')}
         except Exception as error:
             observation.update(state='recovery-error', error_type=type(error).__name__,
                                **error_checkpoint(error, prior))
@@ -476,9 +470,9 @@ def register_capture(root, capture, *, catalog_path=None):
     return record
 
 
-def archive_candidates(root, repository, candidates, work, *, limit=None, catalog_path=None, state_path=None,
+def archive_candidates(root, repository, candidates, work, *, catalog_path=None, state_path=None,
                        paused_hosts=()):
-    """Acquire bounded batches, retaining progress and exact interrupted captures."""
+    """Acquire eligible sources, retaining progress and exact interrupted captures."""
     state_path = state_path or acquisition_path(root)
     state = acquisition_state(root, state_path)
     source_id = lambda row: row.get('acquisition_id') or row['url']
@@ -530,8 +524,7 @@ def archive_candidates(root, repository, candidates, work, *, limit=None, catalo
                 for row in candidates if selectable(row))
     jobs_due = {('recovery', id(row)): row for row in pending}
     jobs_due.update({('source', identity): row for identity, row in eligibility.items()})
-    chosen = select(jobs, jobs_due, key=lambda job: job['key'], limit=0 if backoff.paused('publication') else limit,
-                    state=state, queue=repository)
+    chosen = select(jobs, jobs_due, key=lambda job: job['key'])
     recovery = [job['row'] for job in chosen if job['kind'] == 'recovery']
     queue = [job['row'] for job in chosen if job['kind'] == 'source']
     for row in recovery:

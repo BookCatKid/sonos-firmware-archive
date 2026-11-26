@@ -21,6 +21,8 @@ class Target:
         target = cls(**{**item, 'metadata': tuple(item['metadata']),
                         'capabilities': tuple(item.get('capabilities', [])),
                         'optional_capabilities': tuple(item.get('optional_capabilities', []))})
+        from .providers import validate_options
+        validate_options(target.provider, target.options)
         if set(target.capabilities) & set(target.optional_capabilities):
             raise ValueError('a capability cannot be both required and optional')
         if not target.name or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in target.name):
