@@ -189,7 +189,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:46:59.438984+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:46:59.438984+00:00",
+      "status": "ok"
     },
     "2221156a2f13f493ac63a0f0e7bf66e9c587c281db3b042dbd1844eb8ef4153a": {
       "role": "parent",
@@ -205,7 +209,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:01.318376+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:01.318376+00:00",
+      "status": "ok"
     },
     "81ab50aebc6247ff55419da0814e7f8e26a089f9854b0a0648da0eeba04b2c92": {
       "role": "parent",
@@ -221,7 +229,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:03.539230+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:03.539230+00:00",
+      "status": "ok"
     },
     "701a0bae7cd3d923d564a79e82acd8dab7cace79348a0c8873bc35bec642b107": {
       "role": "parent",
@@ -237,7 +249,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:05.598852+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:05.598852+00:00",
+      "status": "ok"
     },
     "91746b2ff4b5f14acb2b07b426f90e16465181224da0c581e0d2b7b5ae41344a": {
       "role": "parent",
@@ -253,7 +269,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:07.459796+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:07.459796+00:00",
+      "status": "ok"
     },
     "eb47398e9b51f7bf3c6372054460a33a2fe858fc597249b85eee376c56ecac40": {
       "role": "parent",
@@ -269,7 +289,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:12.364406+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:12.364406+00:00",
+      "status": "ok"
     },
     "38c6eb45c48c7dc42f4de05b1d2125b3ae9994dec7ff846fad6c8c807bd9cc02": {
       "role": "parent",
@@ -285,7 +309,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:14.243817+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:14.243817+00:00",
+      "status": "ok"
     },
     "a037c62c8e28ba702ba68796a3782cb55ac57721891790e8c837a89ef250cf0c": {
       "role": "parent",
@@ -301,7 +329,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:15.987777+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:15.987777+00:00",
+      "status": "ok"
     },
     "5ddac2d9dc0d68558ddfa1debdfb96ddb2a0eca57e6388be2222e8b5c0180363": {
       "role": "parent",
@@ -317,7 +349,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:17.847133+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:17.847133+00:00",
+      "status": "ok"
     },
     "0c93b5977e5f1626b4456cd570402cd89223d077a5fda89195f263d2a8f37229": {
       "role": "parent",
@@ -333,7 +369,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:19.676853+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:19.676853+00:00",
+      "status": "ok"
     },
     "90252d388e7fff2da72f4e94fbe2470bce04318a8d7155fb8df2e25ccbc0696b": {
       "role": "parent",
@@ -349,7 +389,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:21.732952+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:21.732952+00:00",
+      "status": "ok"
     },
     "9e4bbbfbe74fb4beb0c9572bc41d1c3e2387043a24ff78f246acd7f8eccde50c": {
       "role": "parent",
@@ -365,7 +409,11 @@
         "manifests",
         "s",
         "Sonos"
-      ]
+      ],
+      "checked_at": "2026-11-26T16:47:23.298470+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:23.298470+00:00",
+      "status": "ok"
     },
     "5b9db88bbecdc99bd8d66fd05bb0d820c78396de4afb531fdaaa18423b14c4cc": {
       "role": "parent",
@@ -2498,24 +2546,588 @@
       "role": "blob",
       "sha": "4e9eb306a265dd2289e868704510522dabc7cd61",
       "path": "manifests/s/Sonos/Controller/90.0.67300/Sonos.Controller.locale.en-US.yaml",
-      "route": []
+      "route": [],
+      "checked_at": "2026-11-26T16:46:58.502172+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:46:58.502172+00:00",
+      "status": "ok"
     },
     "6ae67e1c0e93eaef4d67cf4d76c46d8ee33291166d45d8eab59ae0835961d508": {
       "role": "blob",
       "sha": "db382e7e5d2df176f099094b633521b3a35b8b8b",
       "path": "manifests/s/Sonos/Controller/90.0.67300/Sonos.Controller.yaml",
-      "route": []
+      "route": [],
+      "checked_at": "2026-11-26T16:46:58.825428+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:46:58.825428+00:00",
+      "status": "ok"
+    },
+    "e2c4e54d50949d9e0327712dcafbd900ed38ba0679beae5d52e65696f90b593e": {
+      "role": "route",
+      "sha": "52f68c9bad6bfe57b4e02b29763b0c30dd67dd26",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:46:59.754212+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:46:59.754212+00:00",
+      "status": "ok"
+    },
+    "f0ef9c4b232b572aee5eab62f85f43e148b155158b47534e561d7b72e06c4ecf": {
+      "role": "route",
+      "sha": "9f7803c215e3b5abd878a15966fb9afb21f28c7f",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:00.199080+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:00.199080+00:00",
+      "status": "ok"
+    },
+    "4073787163d7ea09e23ac169e40330f792994164bfc0872aa9207ed94f682a5e": {
+      "role": "route",
+      "sha": "08730f29f576f1afbc2f3d4ea21222eea677b776",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:00.627653+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:00.627653+00:00",
+      "status": "ok"
+    },
+    "7c65ea174825b8fc699bb3db7689fc7cad00b869ef76ef6b91a632266d94cb84": {
+      "role": "scan",
+      "sha": "52c50f5c32b6f0ea0310771c525d9b7816cc2b40",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:01.011231+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:01.011231+00:00",
+      "status": "ok"
+    },
+    "a1f5f5a2a4bfb4f602679b2a26d8abb66839b024ca1bbb1f47ee4ca248ebcb05": {
+      "role": "route",
+      "sha": "5351c7582e271769e8dd37e94dcae7fe031c8f6b",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:01.670779+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:01.670779+00:00",
+      "status": "ok"
+    },
+    "717dd3b6b411c8358c3480f9a3a4a37b90f64c4b533badb013828313b6be766f": {
+      "role": "route",
+      "sha": "143abb3fbecc73f1ac3046c13c090bad98e7a8e2",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:02.198679+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:02.198679+00:00",
+      "status": "ok"
+    },
+    "3a244dd47680a9a5c460812d9b4aea84ce2eac6f2ca7422712f803a73cc36334": {
+      "role": "route",
+      "sha": "214f648af11c01f669b33e8251d358630b932e8f",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:02.612363+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:02.612363+00:00",
+      "status": "ok"
+    },
+    "655bbcc868e1647dfd820ac17b93b881e31248ca4de0e3cb2b5cb1b544b2f1d0": {
+      "role": "scan",
+      "sha": "6d40e51c776a829afba87481b05440f68a735b5a",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:03.019126+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:03.019126+00:00",
+      "status": "ok"
+    },
+    "d23694691c84437136d1154693d478e26a02a5bbae832cbdbf919cd00d9e6432": {
+      "role": "route",
+      "sha": "597e69ccb14e3ea1e52ef2894712ed30df08846a",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:03.854435+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:03.854435+00:00",
+      "status": "ok"
+    },
+    "7ad4bc0fae3109424c7c7951e9337ca9b2bf036fee9a2e8d5974725fe8d5aa5f": {
+      "role": "route",
+      "sha": "1cddf04ad15cf3d1d84039996ec9a61c9d7c10cb",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:04.310838+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:04.310838+00:00",
+      "status": "ok"
+    },
+    "0b8a9e1594a1bdfbdc113b899b8d3ff8d7b4bee0a5b713b8703c08e47c777868": {
+      "role": "route",
+      "sha": "dd7aad0736f4f59b0669bfd43f056e87e8a9ae36",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:04.820683+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:04.820683+00:00",
+      "status": "ok"
+    },
+    "bae82f9d9b4bd09ed6fcb788e6627b43291883a6f3cddf686cba94b9d150f5a0": {
+      "role": "scan",
+      "sha": "7c7c461166a55d587845b9d709ca20587693edf6",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:05.212445+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:05.212445+00:00",
+      "status": "ok"
+    },
+    "eca697a78574c8b381029ce4a998a43ac669af458fca7318e7ef353bc02d60c2": {
+      "role": "route",
+      "sha": "2df9bee04e04dccec156580d1a340371da3a188d",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:05.898212+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:05.898212+00:00",
+      "status": "ok"
+    },
+    "be004172c6fcd093b21c8d87c17dcb29ecda2c9794d32e8f7c5f9c3774805eca": {
+      "role": "route",
+      "sha": "f2d0590f79e5dfab76bf9aa50b563bf767bdafd6",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:06.248562+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:06.248562+00:00",
+      "status": "ok"
+    },
+    "de4806349723e0a7aedc10b21d67818c6d3666f71d26c0ffdcb5576a8115b406": {
+      "role": "route",
+      "sha": "278e3a3e8a4d23101719720e16015c83bf71fe39",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:06.519207+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:06.519207+00:00",
+      "status": "ok"
+    },
+    "6def9dde4d5892e909de2d03a67a89ede4db743bccaa257821cb1c77b8ba07d7": {
+      "role": "scan",
+      "sha": "9a0898c6f10883e9ce82b311f7a7a54bd9197c2b",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:07.014418+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:07.014418+00:00",
+      "status": "ok"
+    },
+    "5f98bab67aa8f58caf4e55578119eba499116e258dff9aa21e445f51c4bea9f1": {
+      "role": "route",
+      "sha": "340ef8092ef144612f1ac5b3fb54f72517b3610a",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:08.427340+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:08.427340+00:00",
+      "status": "ok"
+    },
+    "0f5655f68b91a02179bdb75dd0a1d9c2d909b6f335a6d94d5c287efe412e2be0": {
+      "role": "route",
+      "sha": "50f02b8b04b59c774ae28bf6cb2373f82356bdbf",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:09.172445+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:09.172445+00:00",
+      "status": "ok"
+    },
+    "4cd7701153b5c88c5cf865d10218bdf709eb5bf084153d2f2e864e222f6e8395": {
+      "role": "route",
+      "sha": "93c6e0143794dcee2a05a8344abe14ac699cec11",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:10.035991+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:10.035991+00:00",
+      "status": "ok"
+    },
+    "6ba218d765a307f2a844cd4d26e512a3cde89c5241bee1bd3bc6c9bc4aba94da": {
+      "role": "scan",
+      "sha": "67de58e826e7c744a9bac611bc1a9d1bbaab11e9",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:10.458393+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:10.458393+00:00",
+      "status": "ok"
+    },
+    "e5e47a78a359f2ec4a5dd5945e70774a01d077da7c917855b290c6961c49594b": {
+      "role": "scan",
+      "sha": "5a6e4f363d79ab8841492ea5b00d4fdf1e8077a0",
+      "path": "manifests/s/Sonos/Controller/83.1.61130",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:11.041330+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:11.041330+00:00",
+      "status": "ok"
+    },
+    "bcb31a097d4b22ab044f7ce64b03f60d685055d808a7c76274da4e7fb2c14b3f": {
+      "role": "blob",
+      "sha": "4cdd79f0d7ebfaf6a2b92072b75422518c24a8f9",
+      "path": "manifests/s/Sonos/Controller/83.1.61130/Sonos.Controller.installer.yaml",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:11.365182+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:11.365182+00:00",
+      "status": "ok"
+    },
+    "c14649e5ce7ea1d2f75a810db39a0679afbeca367988b8cdd6503e2d03ffb89b": {
+      "role": "blob",
+      "sha": "0e3a95713ee263c2a9ad0fab95a30878be879b1f",
+      "path": "manifests/s/Sonos/Controller/83.1.61130/Sonos.Controller.locale.en-US.yaml",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:11.647114+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:11.647114+00:00",
+      "status": "ok"
+    },
+    "5b473c6677a38d4c5a1934e7877b0e31f5b6bd08f8bcbf009379d2fe08812d4a": {
+      "role": "blob",
+      "sha": "fafb7f8f4933926282edd1b15c6633f15f12ef88",
+      "path": "manifests/s/Sonos/Controller/83.1.61130/Sonos.Controller.yaml",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:11.960025+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:11.960025+00:00",
+      "status": "ok"
+    },
+    "e27b47ef2f7fd6f066f8afe955068c027a05f9ac49ff231734c15ddff63d2377": {
+      "role": "route",
+      "sha": "3b283fc55f11e00b9582871c9d8b793c5707f7ae",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:12.726230+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:12.726230+00:00",
+      "status": "ok"
+    },
+    "f7c0301a47798ff33d4e2bb29c61d91b4aab9ffa570dc4d20cd68c125370efa6": {
+      "role": "route",
+      "sha": "f146c2add9a2d42db569574fdea8418e93d6e303",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:13.031944+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:13.031944+00:00",
+      "status": "ok"
+    },
+    "81cfe07cf66890de8818dbbf19e0c7f04cfa9d368c50ffc93661f00bdc185775": {
+      "role": "route",
+      "sha": "03544a98e9967cbc92c45e4ba3614f80b01587ef",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:13.442987+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:13.442987+00:00",
+      "status": "ok"
+    },
+    "0f5de9772a4890da34a8324dc5a96a29c314a858e2474c3dcf8b441ca7b136b7": {
+      "role": "scan",
+      "sha": "4ef1b9008b8d3d10529cacc7137835a81719bffe",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:13.827501+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:13.827501+00:00",
+      "status": "ok"
+    },
+    "03bc56d8cc7ec5ceb6a5bc0e8923140e0315ab77e91b6e1fea4b26fc66defb25": {
+      "role": "route",
+      "sha": "dce97bf0ad3f3003ce112ac4742535237f9717c1",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:14.528127+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:14.528127+00:00",
+      "status": "ok"
+    },
+    "2a69e9b7f570b20c80f124dd2c311146eda40a56051ad6013bcfc9ebecd4bdee": {
+      "role": "route",
+      "sha": "0e8b3e18478e266184f924f46adde3d296efd228",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:15.020346+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:15.020346+00:00",
+      "status": "ok"
+    },
+    "8c28d89a7a01db54d41c939ee83dc54bf9ff2fa70f6c5485872431e925aff272": {
+      "role": "route",
+      "sha": "9645389d5b58d9267f93b53ff535298811fb128b",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:15.313916+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:15.313916+00:00",
+      "status": "ok"
+    },
+    "7ccdb3470ffcd7630963aeeb3e67b339995b3b86aa0ae35f572f8fbbcc02392c": {
+      "role": "scan",
+      "sha": "90d98198ff0dfe07076f3e675a6e35a2840147ae",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:15.597160+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:15.597160+00:00",
+      "status": "ok"
+    },
+    "6e046f29553af9fc4397e5b860c3678403318842898b4b4bd98f399e9f9ef959": {
+      "role": "route",
+      "sha": "e97d9939b74e7cae0b33f810ff865f7d52a460e4",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:16.343836+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:16.343836+00:00",
+      "status": "ok"
+    },
+    "208a36f9716f7930fe3dbd2207858f9f132f36242ab3cfe1fa88a1571130b4f3": {
+      "role": "route",
+      "sha": "4bbec5be0d8d9272f2cf33794e81f7701dd4cd7c",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:16.783644+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:16.783644+00:00",
+      "status": "ok"
+    },
+    "12b966f9554a9f114d8bc73ad6f5ddd8b2aa51fa72c507ac4949f34ab2569c35": {
+      "role": "route",
+      "sha": "9fc11e7996c0add064d64bbedbe91c71756a42cc",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:17.116831+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:17.116831+00:00",
+      "status": "ok"
+    },
+    "8455b79a932e9d119abeac8b750ace1ae2f16f67222ffe0c7ccd2ebf483f8d21": {
+      "role": "scan",
+      "sha": "e9a4d4d199073f4c9f7f4a595806c09ec3284cdd",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:17.405191+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:17.405191+00:00",
+      "status": "ok"
+    },
+    "98049e77892669a66cfc919531fac288f44de5b3c30dc60fe5ca4ea1970e647d": {
+      "role": "route",
+      "sha": "6bef435152301518c3d7450c947e8c2f4a0e5b6f",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:18.158570+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:18.158570+00:00",
+      "status": "ok"
+    },
+    "f38cf7a79fc74d4ffcf1d5ff461c096725c4bf33373f79e6d5fd2aad5a093126": {
+      "role": "route",
+      "sha": "0003b4052318bd05992463dfe004b2957a9ca5e1",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:18.648291+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:18.648291+00:00",
+      "status": "ok"
+    },
+    "50b9e6fdf10006a6c2f117632cc45d31aadf849953c06258dce5ce6196f37dcb": {
+      "role": "route",
+      "sha": "341c959bcb6eb88dc3c07acd9f0a35c0445cb244",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:19.042936+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:19.042936+00:00",
+      "status": "ok"
+    },
+    "cc7033f6f9f0285bd6b39370463f38fa10bfbc2db42874a2b7c641017a189163": {
+      "role": "scan",
+      "sha": "355110267aa7be26a7df4ce8f0297158d93532db",
+      "path": "manifests/s/Sonos/S1Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:19.371967+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:19.371967+00:00",
+      "status": "ok"
+    },
+    "48eec1c33dc8fc08ce338a3521d8839bd21953f20d965a251789fd889d86c439": {
+      "role": "route",
+      "sha": "c39875acf345aadc4b093678d1d3aecdd2f2475c",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:20.100039+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:20.100039+00:00",
+      "status": "ok"
+    },
+    "f921cb74246c760b507d7f231cd222cd760e167282ff2a64181eeaef8248d6f4": {
+      "role": "route",
+      "sha": "0cfe8a6d0034854e9e1feb0c0b68a0c987e77b41",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:20.547429+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:20.547429+00:00",
+      "status": "ok"
+    },
+    "9df61854b93a1eaf8ed86694ec863b2d3cf97efb94cff9b87bfbc0a9740eab48": {
+      "role": "route",
+      "sha": "12723ac8803b7f379d680fb6c950dfa0f1e882d6",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:20.945449+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:20.945449+00:00",
+      "status": "ok"
+    },
+    "797228c224fa49c83a7bbf0787d15fe555e3744bf15b5b1d1e6e2446d60864de": {
+      "role": "scan",
+      "sha": "67d3def2e543df3569d9029eb02b6b68a18e901e",
+      "path": "manifests/s/Sonos/S1Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:21.400345+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:21.400345+00:00",
+      "status": "ok"
+    },
+    "1c911adcf094fe623483a081b299814abe6bfcc25197881af4d0c2cdef26b264": {
+      "role": "route",
+      "sha": "6f62380cabfa493176a19c97765b8b75bc1b898b",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:22.024113+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:22.024113+00:00",
+      "status": "ok"
+    },
+    "1b5600c422c873c8ab954ff2c937c635e2e56fee1bab62b1f7a289590d2507fe": {
+      "role": "route",
+      "sha": "f6adf87bc9e865e53bd8177ce3058ac96258691f",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:22.343229+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:22.343229+00:00",
+      "status": "ok"
+    },
+    "87a25d7a66b8cd7fd92fc320e36672d4dd78e8494f0c65713c55adca132c2f2b": {
+      "role": "route",
+      "sha": "9c56db9c19e48253576d0981fc3ea5b7089156bb",
+      "path": "manifests/s/Sonos",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:22.601827+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:22.601827+00:00",
+      "status": "ok"
+    },
+    "fc20fbc87e135d678c67547c95597ec35f9e96a2fa4df096ee3cd2d378d43ba5": {
+      "role": "scan",
+      "sha": "681917ba6d4cb083e46a3782278471f5b15c9aeb",
+      "path": "manifests/s/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-26T16:47:22.989474+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:22.989474+00:00",
+      "status": "ok"
+    },
+    "22781b2d7d3c2870af94ca6ea6fcdddac3df9e07bc21f5f1680e144adaa28160": {
+      "role": "route",
+      "sha": "fd583b3a8ef6243c2b1726e7c5d94672084fe8e1",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-26T16:47:23.578371+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:23.578371+00:00",
+      "status": "ok"
+    },
+    "b9ee8fb6c0144fc37fc4613e51de674d131dd1be3bdfd14bac61c0b29e9bb869": {
+      "role": "route",
+      "sha": "c1e6a55fff747e77ee268776262704da937fb04d",
+      "path": "manifests/s",
+      "route": [
+        "Sonos"
+      ]
     }
   },
   "paths": {
     "manifests/s/Sonos": {
-      "anchor": null,
+      "anchor": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
       "new_head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
       "complete": true,
       "head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
-      "checked_at": "2026-11-26T05:31:53.496532+00:00",
+      "checked_at": "2026-11-26T16:46:57.638389+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-26T11:31:53.496532+00:00"
+      "next_attempt_at": "2026-11-26T22:46:57.638389+00:00"
     }
   },
   "candidates": {
@@ -2982,18 +3594,32 @@
         "path": "manifests/s/Sonos/S1Controller/57.9.23010/Sonos.S1Controller.installer.yaml",
         "git_blob": "4ee26740087f3b43d1606533bd8bc648bd21953e"
       }
+    },
+    "5b3b5173cbc053144cbc99bcc27d8b6f07b467c3dcf054d74e4b1cb4b4e34b20": {
+      "url": "https://update-software.sonos.com/software/m4BvN2Mx7s/Sonos_83.1-61210.exe",
+      "expected_sha256": "d3dcbfb41537ff8dd953430ea0d54dbce05167b67ff7d3c53a0db3d5ea273be1",
+      "version": "83.1.61130",
+      "platform": "windows",
+      "sources": [
+        "winget-history:manifests/s/Sonos/Controller/83.1.61130/Sonos.Controller.installer.yaml:4cdd79f0d7ebfaf6a2b92072b75422518c24a8f9"
+      ],
+      "advertised_by": {
+        "repository": "microsoft/winget-pkgs",
+        "path": "manifests/s/Sonos/Controller/83.1.61130/Sonos.Controller.installer.yaml",
+        "git_blob": "4cdd79f0d7ebfaf6a2b92072b75422518c24a8f9"
+      }
     }
   },
   "parser_revision": "216495b1f86e30be9686d245167134d00cfd7d0b576c2198b707c8a636f16e22",
   "retry_rotation": {
     "commit-pages": {
-      "next_lane": "retry"
+      "next_lane": "fresh"
     },
     "git-objects": {
       "next_lane": "retry"
     }
   },
-  "pending_total": 67,
+  "pending_total": 54,
   "errors": [],
   "status": "partial"
 }
