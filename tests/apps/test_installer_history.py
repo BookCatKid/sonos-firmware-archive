@@ -281,7 +281,7 @@ class DesktopMetadataTests(unittest.TestCase):
             {'verification': result, 'source_urls': ['https://update-software.sonos.com/software/t/Sonos_90.0-67171.dmg'],
              'sha256': '0'})], ['17.2'])
 
-    def test_a_classic_build_only_bundle_keeps_metadata_without_a_campaign_context(self):
+    def test_a_classic_build_only_bundle_keeps_metadata_and_defers_its_version(self):
         result = self.inspect([
             ('Sonos/Sonos S1 Controller.app/Contents/Info.plist',
              {'CFBundleIdentifier': 'com.sonos.macController', 'CFBundleVersion': '??.??'}),
@@ -290,9 +290,11 @@ class DesktopMetadataTests(unittest.TestCase):
         metadata = result['desktop_metadata']
         self.assertNotIn('app_version', metadata)
         self.assertEqual(metadata['bundle_version'], '57.22.59130')
-        self.assertEqual(installers.installer_pivot_contexts(
+        contexts = installers.installer_pivot_contexts(
             {'verification': result, 'source_urls': ['https://update-software.sonos.com/software/t/Sonos_57.22-59130.dmg'],
-             'sha256': '0'}), [])
+             'sha256': '0'})
+        self.assertEqual([(c['build'], c['token'], c['app_version']) for c in contexts],
+                         [('57.22-59130', 't', None)])
 
     def test_a_non_sonos_bundle_is_not_metadata(self):
         result = self.inspect([('Other.app/Contents/Info.plist',

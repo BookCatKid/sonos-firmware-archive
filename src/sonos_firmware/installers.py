@@ -242,18 +242,16 @@ def desktop_inspection_priority(record):
 
 def installer_pivot_contexts(record):
     verification = record.get('verification')
-    metadata = verification.get('desktop_metadata') if isinstance(verification, dict) else None
+    metadata = verification.get('desktop_metadata') if isinstance(verification, dict) else {}
     if not isinstance(metadata, dict):
-        return []
+        metadata = {}
     def usable(value):
         return isinstance(value, str) and re.fullmatch(r'\d+(?:[.]\d+)+', value)
 
-    app = metadata.get('app_version')
-    # A campaign installer whose application version is unknown still supplies
-    # the build and token that identify its release family.
-    app = app if usable(app) else None
-    if app is None and not usable(metadata.get('installer_version')):
-        return []
+    # A campaign installer URL carries the build and token that identify its
+    # release family; the application version is an additional observation,
+    # not a requirement.
+    app = metadata.get('app_version') if usable(metadata.get('app_version')) else None
     result = []
     for url in record.get('source_urls') or []:
         if not sonos_url(url):
