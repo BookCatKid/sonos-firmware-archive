@@ -30,7 +30,7 @@ jobs:
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: main
       - uses: actions/setup-python@v7
@@ -69,7 +69,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
@@ -77,7 +77,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -e .
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6
         if: matrix.java
         continue-on-error: ${{ matrix.java_optional }}
         with:
@@ -109,7 +109,7 @@ jobs:
           python -m pip install -e '.[google-play]'
           python -c "from pathlib import Path; from sonos_firmware.apk import ROOT; assert ROOT.resolve() == Path.cwd().resolve(), 'APK tools must resolve from the source checkout'"
       - name: Restore small discovery observations
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
           key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -136,7 +136,7 @@ jobs:
           sonos-archive run "$TARGET" "${args[@]}"
       - name: Retain discovery observations
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: ${{ runner.temp }}/sonos-discovery-metadata/${{ matrix.target }}
           key: observations-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}

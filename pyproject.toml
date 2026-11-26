@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=84"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,11 +10,11 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 dependencies = [
-  "cryptography>=41",
-  "curl-cffi>=0.13",
-  "jsonschema>=4.21",
-  "PyYAML>=6.0",
-  "warcio>=1.7.5",
+  "cryptography>=50",
+  "curl-cffi>=0.17",
+  "jsonschema>=4.26",
+  "PyYAML>=6.0.4",
+  "warcio>=1.8.2",
 ]
 
 [project.optional-dependencies]
