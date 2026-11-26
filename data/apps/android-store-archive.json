@@ -9400,7 +9400,7 @@
       "source_kind": "google-play-direct",
       "source_version_selector": "1270401011",
       "source_url": "https://play.google.com/store/apps/details?id=com.sonos.acr2",
-      "acquired_at": "2026-11-26T05:32:46.364801+00:00",
+      "acquired_at": "2026-11-26T07:29:58.184172+00:00",
       "acquisition_tool": {
         "name": "sonos-firmware-archive",
         "backend": "google-play-device-anonymous",
@@ -9412,7 +9412,7 @@
       },
       "delivery_profile": {
         "arch": "arm64",
-        "device": "Pv",
+        "device": "D2",
         "authentication": "anonymous",
         "split_apk": true,
         "include_dex_metadata": true,
@@ -9525,7 +9525,31 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "3e9ab90b7df748be48f0e7d893b2887aaa776326107ea5d5802e8901d3a33a8e"
+      "delivery_sha256": "3e9ab90b7df748be48f0e7d893b2887aaa776326107ea5d5802e8901d3a33a8e",
+      "delivery_profiles": [
+        {
+          "arch": "arm64",
+          "device": "D2",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        },
+        {
+          "arch": "arm64",
+          "device": "Pv",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        }
+      ],
+      "source_urls": [
+        "https://play.google.com/store/apps/details?id=com.sonos.acr2"
+      ],
+      "source_version_selectors": [
+        "1270401011"
+      ]
     },
     {
       "source_kind": "google-play-direct",
@@ -22538,13 +22562,185 @@
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
       "delivery_sha256": "81b66cc7419422c46fab408ebf3f2a7dc79a028c5c8c8d0c6933cc997b14643e"
+    },
+    {
+      "source_kind": "google-play-direct",
+      "source_version_selector": "572383122",
+      "source_url": "https://play.google.com/store/apps/details?id=com.sonos.acr",
+      "acquired_at": "2026-11-26T07:29:37.298938+00:00",
+      "acquisition_tool": {
+        "name": "sonos-firmware-archive",
+        "backend": "google-play-device-anonymous",
+        "protocol_revision": "2f03e8babee8adf791d4f3a3b17c268a704be76c",
+        "download_tool": {
+          "name": "goopdl",
+          "revision": "b66bf60d686fd93724b7c9f1963fe8bf4070b89d"
+        }
+      },
+      "delivery_profile": {
+        "arch": "arm64",
+        "device": "iq",
+        "authentication": "anonymous",
+        "split_apk": true,
+        "include_dex_metadata": true,
+        "include_additional_files": true
+      },
+      "family": "s1",
+      "package": "com.sonos.acr",
+      "version_code": "572383122",
+      "version_name": "11.16.2",
+      "release_tag": "apps-google-play-s1",
+      "complete_wrapper": null,
+      "components": [
+        {
+          "name": "base.apk",
+          "bytes": 61029712,
+          "sha256": "9855e8124876a953461699ee9dea09f7056d993540d178f2447579a02b15e746",
+          "path": "base.apk",
+          "verified": true,
+          "signer_sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
+          "signer_subject": "CN=Sonos Inc.,OU=Unknown,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "signers": [
+            {
+              "sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
+              "subject": "CN=Sonos Inc.,OU=Unknown,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+            }
+          ],
+          "schemes": [
+            "v2",
+            "v3"
+          ],
+          "metadata": {
+            "package": "com.sonos.acr",
+            "version_code": "572383122",
+            "version_name": "11.16.2",
+            "split": null
+          },
+          "release_tag": "apps-google-play-s1",
+          "release_asset": "com.sonos.acr--11.16.2--base--9855e8124876a953461699ee9dea09f7056d993540d178f2447579a02b15e746.apk",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s1/com.sonos.acr--11.16.2--base--9855e8124876a953461699ee9dea09f7056d993540d178f2447579a02b15e746.apk"
+        },
+        {
+          "name": "com.sonos.acr-572383122.dm",
+          "bytes": 12520,
+          "sha256": "49e1eceb27a5cefe556e54d1baa7bbeb50e96b07f5ec0591ad02497b9e837139",
+          "path": "com.sonos.acr-572383122.dm",
+          "release_tag": "apps-google-play-s1",
+          "release_asset": "com.sonos.acr--11.16.2--com.sonos.acr-572383122--49e1eceb27a5cefe556e54d1baa7bbeb50e96b07f5ec0591ad02497b9e837139.dm",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s1/com.sonos.acr--11.16.2--com.sonos.acr-572383122--49e1eceb27a5cefe556e54d1baa7bbeb50e96b07f5ec0591ad02497b9e837139.dm"
+        }
+      ],
+      "repository": "BookCatKid/sonos-firmware-archive",
+      "delivery_sha256": "72c63ffa1caa6a33ab2a174248cff64f9c2ee7b385a1f3ea02fb98dd14ad702b",
+      "delivery_profiles": [
+        {
+          "arch": "arm64",
+          "device": "iq",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        },
+        {
+          "arch": "arm64",
+          "device": "eV",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        }
+      ],
+      "source_urls": [
+        "https://play.google.com/store/apps/details?id=com.sonos.acr"
+      ],
+      "source_version_selectors": [
+        "572383122"
+      ]
+    },
+    {
+      "source_kind": "google-play-direct",
+      "source_version_selector": "572383121",
+      "source_url": "https://play.google.com/store/apps/details?id=com.sonos.acr",
+      "acquired_at": "2026-11-26T07:29:44.459844+00:00",
+      "acquisition_tool": {
+        "name": "sonos-firmware-archive",
+        "backend": "google-play-device-anonymous",
+        "protocol_revision": "2f03e8babee8adf791d4f3a3b17c268a704be76c",
+        "download_tool": {
+          "name": "goopdl",
+          "revision": "b66bf60d686fd93724b7c9f1963fe8bf4070b89d"
+        }
+      },
+      "delivery_profile": {
+        "arch": "armv7",
+        "device": "IV",
+        "authentication": "anonymous",
+        "split_apk": true,
+        "include_dex_metadata": true,
+        "include_additional_files": true
+      },
+      "family": "s1",
+      "package": "com.sonos.acr",
+      "version_code": "572383121",
+      "version_name": "11.16.2",
+      "release_tag": "apps-google-play-s1",
+      "complete_wrapper": null,
+      "components": [
+        {
+          "name": "base.apk",
+          "bytes": 54103384,
+          "sha256": "274a66f233f507bc387bd0e07f656c4c8a56ef0faeb1beef964d052c781d7bdb",
+          "path": "base.apk",
+          "verified": true,
+          "signer_sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
+          "signer_subject": "CN=Sonos Inc.,OU=Unknown,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "signers": [
+            {
+              "sha256": "4f1cb188a01ef0f7c763bb2d4bd0cd52b52a830cc852bfc4e4191af83c4cd196",
+              "subject": "CN=Sonos Inc.,OU=Unknown,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+            }
+          ],
+          "schemes": [
+            "v2",
+            "v3"
+          ],
+          "metadata": {
+            "package": "com.sonos.acr",
+            "version_code": "572383121",
+            "version_name": "11.16.2",
+            "split": null
+          },
+          "release_tag": "apps-google-play-s1",
+          "release_asset": "com.sonos.acr--11.16.2--base--274a66f233f507bc387bd0e07f656c4c8a56ef0faeb1beef964d052c781d7bdb.apk",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s1/com.sonos.acr--11.16.2--base--274a66f233f507bc387bd0e07f656c4c8a56ef0faeb1beef964d052c781d7bdb.apk"
+        },
+        {
+          "name": "com.sonos.acr-572383121.dm",
+          "bytes": 12520,
+          "sha256": "b32f6b35376fccf4888af2decd36c600c3c0e4577a1f6e486a00c9d4134d3429",
+          "path": "com.sonos.acr-572383121.dm",
+          "release_tag": "apps-google-play-s1",
+          "release_asset": "com.sonos.acr--11.16.2--com.sonos.acr-572383121--b32f6b35376fccf4888af2decd36c600c3c0e4577a1f6e486a00c9d4134d3429.dm",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s1/com.sonos.acr--11.16.2--com.sonos.acr-572383121--b32f6b35376fccf4888af2decd36c600c3c0e4577a1f6e486a00c9d4134d3429.dm"
+        }
+      ],
+      "repository": "BookCatKid/sonos-firmware-archive",
+      "delivery_sha256": "32fac8ad0857d412ce1b3131a48eeb83352476a443f3cef9b395995a15dd1ba6"
     }
   ],
-  "updated": "2026-11-26T07:28:22.694008+00:00",
-  "artifact_total": 117,
+  "updated": "2026-11-26T07:29:59.100919+00:00",
+  "artifact_total": 119,
   "pending_captures": [],
   "repository": "BookCatKid/sonos-firmware-archive",
-  "source_kind": "apkpure-recovery",
+  "source_kind": "google-play-direct",
   "pending_total": 0,
   "status": "ok",
   "errors": []
