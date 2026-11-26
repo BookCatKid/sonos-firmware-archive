@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-26T07:28:42.754616+00:00",
+  "updated": "2026-11-26T16:51:16.820838+00:00",
   "scope": "apkpure-recovery",
   "attempt_total": 124,
-  "archived_total": 123,
-  "failed_total": 1,
+  "archived_total": 124,
+  "failed_total": 0,
   "attempts": [
     {
       "package": "com.sonos.acr2",
@@ -353,42 +353,71 @@
       "version_selector": "20260917.7f4c363",
       "metadata_source": "apkeep",
       "rank": 25,
-      "checked_at": "2026-11-26T07:28:42.752414+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T08:28:42.752414+00:00",
-      "checked": "2026-11-26T07:28:42.752443+00:00",
-      "exit_code": 124,
-      "status": "failed",
-      "error": "StoreAcquisitionTimedOut"
+      "checked_at": "2026-11-26T16:47:55.898706+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:47:55.898706+00:00",
+      "checked": "2026-11-26T16:47:55.898731+00:00",
+      "exit_code": 0,
+      "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261006.65c4a1e",
-      "checked": "2026-11-22T13:38:19.413864+00:00",
+      "metadata_source": "apkeep",
+      "rank": 26,
+      "checked_at": "2026-11-26T16:48:31.881412+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:48:31.881412+00:00",
+      "checked": "2026-11-26T16:48:31.881431+00:00",
+      "exit_code": 0,
       "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261015.ec5ada6",
-      "checked": "2026-11-22T13:38:26.282709+00:00",
+      "metadata_source": "apkeep",
+      "rank": 27,
+      "checked_at": "2026-11-26T16:49:20.688162+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:49:20.688162+00:00",
+      "checked": "2026-11-26T16:49:20.688185+00:00",
+      "exit_code": 0,
       "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261023.590619d",
-      "checked": "2026-11-22T13:38:32.753307+00:00",
+      "metadata_source": "apkeep",
+      "rank": 28,
+      "checked_at": "2026-11-26T16:49:55.868847+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:49:55.868847+00:00",
+      "checked": "2026-11-26T16:49:55.868868+00:00",
+      "exit_code": 0,
       "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261103.afb484e",
-      "checked": "2026-11-22T13:38:38.473261+00:00",
+      "metadata_source": "apkeep",
+      "rank": 29,
+      "checked_at": "2026-11-26T16:50:32.667640+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:50:32.667640+00:00",
+      "checked": "2026-11-26T16:50:32.667662+00:00",
+      "exit_code": 0,
       "status": "archived"
     },
     {
       "package": "com.sonos.acr2",
       "version_selector": "20261110.b463dd1",
-      "checked": "2026-11-22T13:38:44.689434+00:00",
+      "metadata_source": "apkeep",
+      "rank": 30,
+      "checked_at": "2026-11-26T16:51:16.819061+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T16:51:16.819061+00:00",
+      "checked": "2026-11-26T16:51:16.819083+00:00",
+      "exit_code": 0,
       "status": "archived"
     },
     {
@@ -3938,6 +3967,22 @@
       "variants": [],
       "sdk_hints": [],
       "compatible_variant_count": 0
+    },
+    "com.sonos.acr2|||apkpure-api|sdk=2": {
+      "checked_at": "2026-11-26T16:47:02.091428+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-12-03T16:47:02.091428+00:00",
+      "variants": [],
+      "sdk_hints": [],
+      "compatible_variant_count": 0
+    },
+    "com.sonos.acr|||apkpure-api|sdk=2": {
+      "checked_at": "2026-11-26T16:47:02.314835+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-12-03T16:47:02.314835+00:00",
+      "variants": [],
+      "sdk_hints": [],
+      "compatible_variant_count": 0
     }
   },
   "observed_variants": {
@@ -5600,47 +5645,10 @@
     ],
     "cooldown_failures": 0
   },
-  "pending_selectors": [
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20260917.7f4c363",
-      "metadata_source": "apkeep",
-      "rank": 25
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20261006.65c4a1e",
-      "metadata_source": "apkeep",
-      "rank": 26
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20261015.ec5ada6",
-      "metadata_source": "apkeep",
-      "rank": 27
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20261023.590619d",
-      "metadata_source": "apkeep",
-      "rank": 28
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20261103.afb484e",
-      "metadata_source": "apkeep",
-      "rank": 29
-    },
-    {
-      "package": "com.sonos.acr2",
-      "version_selector": "20261110.b463dd1",
-      "metadata_source": "apkeep",
-      "rank": 30
-    }
-  ],
+  "pending_selectors": [],
   "discovery_errors": [],
-  "pending_total": 6,
-  "status": "partial",
+  "pending_total": 0,
+  "status": "ok",
   "cooldown_failures": 0,
-  "discovery_pending_total": 2
+  "discovery_pending_total": 0
 }

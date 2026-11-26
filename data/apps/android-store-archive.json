@@ -9744,17 +9744,15 @@
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "91.01.11-release+20261110.b463dd1",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDQwMTAxMV83YWNlNmI0OA?filename=Sonos.xapk&is_hot=false&k=3389e88f98ed750493827c559a3125406b0a67cc&package_name=com.sonos.acr2&token=1795671244-cc61da5b68-0-09dffdd3401a626776d0131db5924c8c",
-      "acquired_at": "2026-11-26T05:34:49.505783+00:00",
+      "source_version_selector": "20261110.b463dd1",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:51:10.642427+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "da1f25777b1ce37bf72fdd132203e531-5273bcbeca2a791b567ffba3a15a9e118532c72dc408978b197e9224380c38e8"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270401011",
@@ -10171,7 +10169,22 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "f8e120153f6cc10fa453b138ba5038a05d82c93987cdceedc61ec4670dcbf2ab"
+      "delivery_sha256": "f8e120153f6cc10fa453b138ba5038a05d82c93987cdceedc61ec4670dcbf2ab",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "da1f25777b1ce37bf72fdd132203e531-5273bcbeca2a791b567ffba3a15a9e118532c72dc408978b197e9224380c38e8"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDQwMTAxMV83YWNlNmI0OA?filename=Sonos.xapk&is_hot=false&k=3389e88f98ed750493827c559a3125406b0a67cc&package_name=com.sonos.acr2&token=1795671244-cc61da5b68-0-09dffdd3401a626776d0131db5924c8c"
+      ],
+      "source_version_selectors": [
+        "20261110.b463dd1",
+        "91.01.11-release+20261110.b463dd1"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
@@ -11572,17 +11585,15 @@
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "91.01.7-release+20261103.afb484e",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDQwMTAwN19jOWI5YjFmZQ?filename=Sonos.xapk&is_hot=false&k=df9b43b84b38bbbb24d3762fd269a97b6b0a67cc&package_name=com.sonos.acr2&token=1795671244-c6b151a612-0-b30bbd1351bddfe27f662d59dca08098",
-      "acquired_at": "2026-11-26T05:40:12.453321+00:00",
+      "source_version_selector": "20261103.afb484e",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:50:27.042813+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "fce43d5714d8a3eabb166b227b289f74-9dd3e4017d4dbd0eb67ce673f47b93fdede30c6222e2a05b2834b40d248bf745"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270401007",
@@ -11999,7 +12010,22 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "86341f6eb549a26de0e63449a16b07a4dde9cdf8a4bb340e81e55414f903a7b8"
+      "delivery_sha256": "86341f6eb549a26de0e63449a16b07a4dde9cdf8a4bb340e81e55414f903a7b8",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "fce43d5714d8a3eabb166b227b289f74-9dd3e4017d4dbd0eb67ce673f47b93fdede30c6222e2a05b2834b40d248bf745"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDQwMTAwN19jOWI5YjFmZQ?filename=Sonos.xapk&is_hot=false&k=df9b43b84b38bbbb24d3762fd269a97b6b0a67cc&package_name=com.sonos.acr2&token=1795671244-c6b151a612-0-b30bbd1351bddfe27f662d59dca08098"
+      ],
+      "source_version_selectors": [
+        "20261103.afb484e",
+        "91.01.7-release+20261103.afb484e"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
@@ -12459,17 +12485,15 @@
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "91.00.33-release+20261023.590619d",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDMwMDAzM19kOWY2ZmQ3NA?filename=Sonos.xapk&is_hot=false&k=f761991dfac63804d56b235cac3c148a6b0a67cc&package_name=com.sonos.acr2&token=1795671244-9a957ecad2-0-2250142b88a386858f66395d332c1b7d",
-      "acquired_at": "2026-11-26T05:42:51.029509+00:00",
+      "source_version_selector": "20261023.590619d",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:49:52.190986+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "9d14bac7ab4db153322b944db1acce56-6e2e2159c09e6c00226467d519ba1c8e934fbad4e7da5eddca2ba9af57cd1480"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270300033",
@@ -12886,7 +12910,22 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "cc81ea924c222ee97877d24610db69096806534cfe41dc8f1e8294ee24a2ba6f"
+      "delivery_sha256": "cc81ea924c222ee97877d24610db69096806534cfe41dc8f1e8294ee24a2ba6f",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "9d14bac7ab4db153322b944db1acce56-6e2e2159c09e6c00226467d519ba1c8e934fbad4e7da5eddca2ba9af57cd1480"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDMwMDAzM19kOWY2ZmQ3NA?filename=Sonos.xapk&is_hot=false&k=f761991dfac63804d56b235cac3c148a6b0a67cc&package_name=com.sonos.acr2&token=1795671244-9a957ecad2-0-2250142b88a386858f66395d332c1b7d"
+      ],
+      "source_version_selectors": [
+        "20261023.590619d",
+        "91.00.33-release+20261023.590619d"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
@@ -13653,17 +13692,15 @@
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "90.01.9-release+20261015.ec5ada6",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDIwMTAwOV85OGM0NDQzOA?filename=Sonos.xapk&is_hot=false&k=766dacc3dfd294f218ff623d28c7c3886b0a67cc&package_name=com.sonos.acr2&token=1795671244-fa0b7d2bbb-0-f1c2198e3e99ddd5cd9305cd590425e1",
-      "acquired_at": "2026-11-26T05:48:20.383059+00:00",
+      "source_version_selector": "20261015.ec5ada6",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:49:16.180135+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "f562ce1d8340a69465768f6f22855e1f-879dcc3f61410cb88f864a1ed0aea905bc573950764b8da56d3ee38d7e05c662"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270201009",
@@ -14080,7 +14117,22 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "cab2df6da88506f9f9543daef8e2d9f84d3de9c5a6bcfeb166bed1d3f739e4c1"
+      "delivery_sha256": "cab2df6da88506f9f9543daef8e2d9f84d3de9c5a6bcfeb166bed1d3f739e4c1",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "f562ce1d8340a69465768f6f22855e1f-879dcc3f61410cb88f864a1ed0aea905bc573950764b8da56d3ee38d7e05c662"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDIwMTAwOV85OGM0NDQzOA?filename=Sonos.xapk&is_hot=false&k=766dacc3dfd294f218ff623d28c7c3886b0a67cc&package_name=com.sonos.acr2&token=1795671244-fa0b7d2bbb-0-f1c2198e3e99ddd5cd9305cd590425e1"
+      ],
+      "source_version_selectors": [
+        "20261015.ec5ada6",
+        "90.01.9-release+20261015.ec5ada6"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
@@ -14138,17 +14190,15 @@
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "90.00.43-release+20261006.65c4a1e",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDEwMDA0M181Yjc4MGRlNA?filename=Sonos.xapk&is_hot=false&k=d16bcd643490a458abd026ed63fa2cf86b0a67cc&package_name=com.sonos.acr2&token=1795671244-601180046a-0-e02c47d7c60fe6bc5303340ea0caaf2c",
-      "acquired_at": "2026-11-26T05:50:47.175230+00:00",
+      "source_version_selector": "20261006.65c4a1e",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:48:28.108055+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "07c6685d986dac9893f1d6355c789455-a64a4e5096c9b001d275bc40788a56363638586c6cec1b7014c2acd879d431a8"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270100043",
@@ -14565,21 +14615,34 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "722cdf17e21cce0edd820df1708a82ed435129a699242786ea832b3470068d65"
+      "delivery_sha256": "722cdf17e21cce0edd820df1708a82ed435129a699242786ea832b3470068d65",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "07c6685d986dac9893f1d6355c789455-a64a4e5096c9b001d275bc40788a56363638586c6cec1b7014c2acd879d431a8"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDEwMDA0M181Yjc4MGRlNA?filename=Sonos.xapk&is_hot=false&k=d16bcd643490a458abd026ed63fa2cf86b0a67cc&package_name=com.sonos.acr2&token=1795671244-601180046a-0-e02c47d7c60fe6bc5303340ea0caaf2c"
+      ],
+      "source_version_selectors": [
+        "20261006.65c4a1e",
+        "90.00.43-release+20261006.65c4a1e"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
-      "source_version_selector": "89.01.11-release+20260917.7f4c363",
-      "source_url": "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDAwMTAxMV8xZmNjYmUwMg?filename=Sonos.xapk&is_hot=false&k=f6ca19f2c8da593c644e7e246478138d6b0a67cc&package_name=com.sonos.acr2&token=1795671244-8b869f4ecb-0-1cba1a642b84551d49d481ec5ceea500",
-      "acquired_at": "2026-11-26T05:52:24.868349+00:00",
+      "source_version_selector": "20260917.7f4c363",
+      "source_url": "https://apkpure.com/sonos/com.sonos.acr2",
+      "acquired_at": "2026-11-26T16:47:50.195477+00:00",
       "acquisition_tool": {
-        "name": "sonos-firmware-archive",
-        "backend": "apkpure-api"
+        "name": "apkeep",
+        "version": "1.0.0",
+        "backend": "apk-pure"
       },
-      "delivery_profile": {
-        "arch": "armeabi-v7a",
-        "variant": "61b962c83c03cd9332292907587e1104-53a49b2790327d149cd86e7c40548551f17167acad7390261b958b634c9124db"
-      },
+      "delivery_profile": null,
       "family": "s2",
       "package": "com.sonos.acr2",
       "version_code": "1270001011",
@@ -14996,7 +15059,22 @@
         }
       ],
       "repository": "BookCatKid/sonos-firmware-archive",
-      "delivery_sha256": "944cd022f2052e7ef2263f480e48645acdf684e8d3059a357463e5cf9e459481"
+      "delivery_sha256": "944cd022f2052e7ef2263f480e48645acdf684e8d3059a357463e5cf9e459481",
+      "delivery_profiles": [
+        {},
+        {
+          "arch": "armeabi-v7a",
+          "variant": "61b962c83c03cd9332292907587e1104-53a49b2790327d149cd86e7c40548551f17167acad7390261b958b634c9124db"
+        }
+      ],
+      "source_urls": [
+        "https://apkpure.com/sonos/com.sonos.acr2",
+        "https://data.winudf.com/XAPK/Y29tLnNvbm9zLmFjcjJfMTI3MDAwMTAxMV8xZmNjYmUwMg?filename=Sonos.xapk&is_hot=false&k=f6ca19f2c8da593c644e7e246478138d6b0a67cc&package_name=com.sonos.acr2&token=1795671244-8b869f4ecb-0-1cba1a642b84551d49d481ec5ceea500"
+      ],
+      "source_version_selectors": [
+        "20260917.7f4c363",
+        "89.01.11-release+20260917.7f4c363"
+      ]
     },
     {
       "source_kind": "apkpure-recovery",
@@ -22736,11 +22814,11 @@
       "delivery_sha256": "32fac8ad0857d412ce1b3131a48eeb83352476a443f3cef9b395995a15dd1ba6"
     }
   ],
-  "updated": "2026-11-26T07:29:59.100919+00:00",
+  "updated": "2026-11-26T16:51:16.737328+00:00",
   "artifact_total": 119,
   "pending_captures": [],
   "repository": "BookCatKid/sonos-firmware-archive",
-  "source_kind": "google-play-direct",
+  "source_kind": "apkpure-recovery",
   "pending_total": 0,
   "status": "ok",
   "errors": []
