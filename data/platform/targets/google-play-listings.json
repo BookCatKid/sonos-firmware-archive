@@ -4,7 +4,7 @@
   "provider": "google-play-listings",
   "status": "ok",
   "executed": true,
-  "started_at": "2026-11-26T05:31:36.973055+00:00",
+  "started_at": "2026-11-26T06:31:50.663642+00:00",
   "steps": [
     {
       "name": "check_new_google_play_apps",
@@ -22,6 +22,6 @@
   ],
   "errors": [],
   "pending": [],
-  "finished_at": "2026-11-26T05:31:37.558371+00:00",
-  "next_due": "2026-11-26T11:31:37.558371+00:00"
+  "finished_at": "2026-11-26T06:31:51.607805+00:00",
+  "next_due": "2026-11-26T12:31:51.607805+00:00"
 }
