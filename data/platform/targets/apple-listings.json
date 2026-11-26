@@ -4,7 +4,7 @@
   "provider": "apple-listings",
   "status": "ok",
   "executed": true,
-  "started_at": "2026-11-26T16:46:55.525591+00:00",
+  "started_at": "2026-11-26T17:58:29.319618+00:00",
   "steps": [
     {
       "name": "check_new_apple_apps",
@@ -22,6 +22,6 @@
   ],
   "errors": [],
   "pending": [],
-  "finished_at": "2026-11-26T16:46:56.015315+00:00",
-  "next_due": "2026-11-26T22:46:56.015315+00:00"
+  "finished_at": "2026-11-26T17:58:29.732974+00:00",
+  "next_due": "2026-11-26T23:58:29.732974+00:00"
 }
