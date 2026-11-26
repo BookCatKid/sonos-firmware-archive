@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "repositories": {
+    "BookCatKid/sonos-firmware-archive": {
+      "connectx": {
+        "checked_at": "2026-11-26T07:18:51.654538+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-11-26T08:18:51.654538+00:00",
+        "status": "extracted",
+        "revision": {
+          "sha256": "5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a",
+          "recipient": "f2acc70d8db3ee388c534d99d4bff64d9dab8154",
+          "key_available": true,
+          "ready_recipients": [
+            "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+          ],
+          "policy": "all-sections"
+        }
+      }
+    }
+  }
+}

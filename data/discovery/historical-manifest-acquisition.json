@@ -6180,6 +6180,696 @@
         "checked_at": "2026-11-26T06:29:58.154552+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T06:29:58.154552+00:00"
+      },
+      "0b3427987dd802cf17ae9398e56a3ba08204822459cc96afa92138a1c36070c0": {
+        "status": "preserved",
+        "url": "https://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+        "archive_capture": {
+          "timestamp": "20260910091833",
+          "digest": "NN3VNSQ4ZHX3EFLPCYRFFY6RNDL3HS4F",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-test.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52"
+        },
+        "manifest": {
+          "url": "https://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+          "archive_capture": {
+            "timestamp": "20260910091833",
+            "digest": "NN3VNSQ4ZHX3EFLPCYRFFY6RNDL3HS4F",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-test.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52"
+          },
+          "sha256": "2524e17d818e3764a7e2c7c4bf7c7202a6e87e962b3167626713ba8aab69efce",
+          "bytes": 14366,
+          "metadata": {
+            "base_url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/^96.0-75280",
+            "manifest_version": "1.1",
+            "revision": "988c757a-44e1-477c-96dc-d3d5892bffa3",
+            "system_version": "96.0-75280",
+            "default_version": "96.0-75280",
+            "warnings": [],
+            "landing_links": [
+              "https://www.sonos.com/icr2_appstore",
+              "market://details?id=com.sonos.acr2"
+            ],
+            "manifest_links": [],
+            "unresolved_links": [
+              {
+                "url": "market://details?id=com.sonos.acr2",
+                "manifest_url": "https://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+                "error": "historical manifest link uses an unsupported URL"
+              }
+            ]
+          },
+          "candidates": [
+            {
+              "version": "2.2.1",
+              "package_model": 53,
+              "url": "https://update-firmware-test.sonos.com/firmware/roundhouse/dev/2.2.1-524524467-Alpha-11/round_dfu_2.2.1-524524467-prod.bin",
+              "source": "image",
+              "filename": "round_dfu_2.2.1-524524467-prod.bin",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-86141",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg",
+              "source": "image",
+              "filename": "28.1-86141-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "3.12.4",
+              "package_model": 44,
+              "url": "https://update-firmware-test.sonos.com/firmware/ace/dev/3.12.4-136c7ecbe-Alpha-5/duke_dfu_3.12.4-136c7ecbe-prod.bin",
+              "source": "image",
+              "filename": "duke_dfu_3.12.4-136c7ecbe-prod.bin",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 1,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-1.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-1.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-3.exe",
+              "source": "image",
+              "filename": "34.16-37101-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg",
+              "source": "image",
+              "filename": "34.16-37101-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 5,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-5.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-5.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-6.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 7,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-7.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-7.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-8.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-9.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-12.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-13.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 16,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-16.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-16.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-20.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "38.9-46251",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg",
+              "source": "image",
+              "filename": "38.9-46251-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "47.2-59120",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg",
+              "source": "image",
+              "filename": "47.2-59120-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "55.1-74250",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-17.upd",
+              "source": "image",
+              "filename": "55.1-74250-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-8.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-12.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-17.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-13.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-14.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-20.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-21.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-22.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-23.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-24.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-28.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-29.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "64.3-21150",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe",
+              "source": "image",
+              "filename": "64.3-21150-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-8.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-12.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-17.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "85.00.12",
+              "package_model": 47,
+              "url": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
+              "source": "image",
+              "filename": "passportAndroidBeta.html",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 8,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-8.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 9,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-9.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 12,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-12.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 13,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-13.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 14,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-14.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 17,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-17.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 20,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-20.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "86.8-75280",
+              "package_model": 22,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep20/dev/86.8-75280-v17.2.6-F903DC10F94F58F5-Alpha-1/86.8-75280-1-22.upd",
+              "source": "image",
+              "filename": "86.8-75280-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "90.0-67300",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-67300-v17.2.1-Lp7WoQPkxr-RC-1/90.0-67300-1-3.exe",
+              "source": "image",
+              "filename": "90.0-67300-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "90.0-75190",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-3.exe",
+              "source": "image",
+              "filename": "90.0-75190-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "90.0-75190",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-4.dmg",
+              "source": "image",
+              "filename": "90.0-75190-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 8,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-8.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 9,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-9.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 12,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-12.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 13,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-13.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 14,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-14.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 17,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-17.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 20,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-20.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 21,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-21.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 22,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-22.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 23,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-23.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 24,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-24.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 25,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-25.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-25.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 26,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-26.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-26.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 27,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-27.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-27.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 28,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-28.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 29,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-29.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 30,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-30.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-30.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 32,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-32.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-32.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 33,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-33.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-33.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 34,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-34.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-34.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 35,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-35.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-35.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 36,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-36.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-36.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 37,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-37.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-37.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 38,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-38.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-38.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 40,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-40.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-40.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 41,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-41.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-41.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 42,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-42.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-42.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 44,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-44.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-44.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 46,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-46.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-46.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 49,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-49.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-49.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 51,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-51.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-51.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 52,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-52.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-52.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "96.0-75280",
+              "package_model": 53,
+              "url": "https://update-firmware-test.sonos.com/firmware/products/players/cep25/dev/96.0-75280-v18.6-0DE12E5D85D1A66D-Alpha-1/96.0-75280-1-53.upd",
+              "source": "default-base",
+              "filename": "96.0-75280-1-53.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20260910091833id_/http://update-test.sonos.com/firmware/swgen/2/latest/update.upm?sonosid=Anonymous&householdid=nohhid&cmaj=81&cmin=0&cbld=52",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20260910"
+        },
+        "checked_at": "2026-11-26T07:14:29.652898+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-03T07:14:29.652898+00:00"
       }
     }
   },

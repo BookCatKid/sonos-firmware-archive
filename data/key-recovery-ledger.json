@@ -4231,6 +4231,12 @@
         },
         {
           "artifact_status": "preserved",
+          "package_id": "connectx",
+          "package_model": 17,
+          "version": "86.4-73207"
+        },
+        {
+          "artifact_status": "preserved",
           "package_id": "86.8-78270-1-17",
           "package_model": 17,
           "version": "86.8-78270"
@@ -4717,7 +4723,7 @@
   },
   "schema_version": 1,
   "summary": {
-    "encrypted_upd_packages": 722,
+    "encrypted_upd_packages": 723,
     "unidentified_encrypted_packages": 0,
     "missing_upd_section_manifests": 0,
     "plaintext_upd_packages": 25,

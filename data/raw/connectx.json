@@ -1,0 +1,127 @@
+{
+  "source": "connectx.upd",
+  "source_sha256": "5e4c5bf49d02a9c61fa93c010b5e6c44a0fc5f178e7ff2414f7d4d2711e1501a",
+  "components": [
+    {
+      "package_id": "connectx",
+      "section_index": 0,
+      "section_type": 1,
+      "kind": "section-1",
+      "filename": "connectx-section-1.bin",
+      "bytes": 12,
+      "sha256": "ed45723c8add31e6e37edbebfaed8b5080e88b2fc6917dd3f0c56d830854d239",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 1,
+      "section_type": 21,
+      "kind": "section-21",
+      "filename": "connectx-section-21.bin",
+      "bytes": 128,
+      "sha256": "14274137933edaf29f96fa76f40718ee7934d5fc123bc60b723d928bae5fada4",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 2,
+      "section_type": 2,
+      "kind": "section-2",
+      "filename": "connectx-section-2.bin",
+      "bytes": 28,
+      "sha256": "7546bb7078cbd6bed0aa17a69545e156aaea35be168fe5bb052abc0664c94955",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 3,
+      "section_type": 2,
+      "kind": "section-2",
+      "filename": "connectx-section-2-section-03.bin",
+      "bytes": 132,
+      "sha256": "b4183ae7a503b6d41c6bf067c37c4808e2f25d3efba0a9fa1a75e746aca552d9",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 4,
+      "section_type": 2,
+      "kind": "section-2",
+      "filename": "connectx-section-2-section-04.bin",
+      "bytes": 28,
+      "sha256": "72a07112f150b88982440cb3fadc7d51afb90e01956ddee8f82a9aa43370be1b",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 5,
+      "section_type": 22,
+      "kind": "section-22",
+      "filename": "connectx-section-22.bin",
+      "bytes": 149511,
+      "sha256": "3b2e7146bb019dbfb9f5816924692b2d3a955c5af5996307148cff3dc2fdcac3",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 6,
+      "section_type": 23,
+      "kind": "section-23",
+      "filename": "connectx-section-23.bin",
+      "bytes": 13660160,
+      "sha256": "405d2322d12f125f97888cdcc4e3fe860101a9fcac4a4957883dc596b2916514",
+      "source_encrypted": false,
+      "recipient_id": null
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 7,
+      "section_type": 3,
+      "kind": "preinstall",
+      "filename": "connectx-preinstall.sh",
+      "bytes": 1409,
+      "sha256": "0b270cda22438c49e20336547d4a7d46f0dc3c3c0d23e30b5c47d759ca875f13",
+      "source_encrypted": true,
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 8,
+      "section_type": 6,
+      "kind": "kernel",
+      "filename": "connectx-kernel.uImage",
+      "bytes": 1493520,
+      "sha256": "44d50ba3b0460db2e7abec45fc68c5db675ca351a64868ed98174d1da1fdbab4",
+      "source_encrypted": true,
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 9,
+      "section_type": 4,
+      "kind": "rootfs",
+      "filename": "connectx-rootfs.squashfs",
+      "bytes": 4390912,
+      "sha256": "2cabf6c4569f13c7f2045203fd4f7d8dbb482778012d84e6aaa5a7af512e30ef",
+      "source_encrypted": true,
+      "recipient_id": "f2acc70d8db3ee388c534d99d4bff64d9dab8154"
+    },
+    {
+      "package_id": "connectx",
+      "section_index": 10,
+      "section_type": 17,
+      "kind": "section-17",
+      "filename": "connectx-section-17.bin",
+      "bytes": 364,
+      "sha256": "379bee658f193443430831ea1948f8a73885b81ab229880d31e5958e484e43a0",
+      "source_encrypted": false,
+      "recipient_id": null
+    }
+  ]
+}
