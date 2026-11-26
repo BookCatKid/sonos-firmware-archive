@@ -3,6 +3,7 @@ import tempfile
 import subprocess
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from sonos_firmware.platform.model import Step, Target
 from sonos_firmware.platform.registry import targets
@@ -233,6 +234,26 @@ class TargetRegistrationTests(unittest.TestCase):
                 self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
                                           '--if-due', '--repository', 'owner/repo']), 0)
             self.assertEqual(visited, ['5'])
+
+    def test_incomplete_coverage_does_not_fail_the_command(self):
+        import contextlib
+        import io
+        from sonos_firmware.platform import cli
+        partial = {'schema_version': 1, 'target': 'configured-source', 'status': 'partial',
+                   'executed': True, 'steps': [], 'errors': [], 'pending': []}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root/'config').mkdir()
+            (root/'config/targets.json').write_text(json.dumps({'schema_version': 1, 'targets': [
+                {'name': 'configured-source', 'provider': 'fixture', 'description': 'Configured source',
+                 'interval_hours': 6, 'metadata': ['data/source'], 'options': {}}]}))
+            with patch.object(cli, 'run', return_value=partial), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
+                                          '--repository', 'owner/repo']), 0)
+            with patch.object(cli, 'run', return_value={**partial, 'status': 'failed'}), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(['--root', str(root), 'run', 'configured-source', '--execute',
+                                          '--repository', 'owner/repo']), 1)
 
     def test_registering_and_planning_target_needs_only_configuration(self):
         import contextlib

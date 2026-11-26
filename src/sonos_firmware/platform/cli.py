@@ -72,7 +72,7 @@ def main(argv=None):
         if args.report:
             atomic_json(args.report, report)
         print(json.dumps(report, indent=2))
-        return 1 if report['status'] in {'failed', 'blocked', 'partial'} else 0
+        return 1 if report['status'] in {'failed', 'blocked'} else 0
     except (KeyError, ValueError) as error:
         parser.error(str(error))
 
