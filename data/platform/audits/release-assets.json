@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "checked": "2026-11-26T06:44:21.505973+00:00",
+  "checked": "2026-11-26T08:16:50.895997+00:00",
   "repository": "BookCatKid/sonos-firmware-archive",
-  "release_total": 158,
-  "github_asset_total": 5266,
-  "recorded_asset_total": 5716,
+  "release_total": 163,
+  "github_asset_total": 6072,
+  "recorded_asset_total": 6600,
   "missing_total": 575,
   "mismatched_total": 0,
-  "unrecorded_extra_total": 125,
-  "duplicated_extra_total": 76,
+  "unrecorded_extra_total": 47,
+  "duplicated_extra_total": 33,
   "external_origin_extra_total": 0,
-  "unexplained_extra_total": 49,
+  "unexplained_extra_total": 14,
   "missing": [
     {
       "release_tag": "apps-web-controller",
@@ -4041,1147 +4041,6 @@
   "mismatched": [],
   "unrecorded_extras": [
     {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15--base--e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689.apk",
-      "bytes": 57936894,
-      "sha256": "e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15--base--e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689.apk",
-      "created_at": "2026-11-26T06:39:14Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15.1--base--5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953.apk",
-      "bytes": 58195916,
-      "sha256": "5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15.1--base--5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953.apk",
-      "created_at": "2026-11-26T06:37:05Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15.2--base--da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c.apk",
-      "bytes": 58150860,
-      "sha256": "da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15.2--base--da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c.apk",
-      "created_at": "2026-11-26T06:35:55Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.3--base--d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70.apk",
-      "bytes": 50512566,
-      "sha256": "d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.3--base--d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70.apk",
-      "created_at": "2026-11-26T06:33:41Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.4--base--82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5.apk",
-      "bytes": 49987305,
-      "sha256": "82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.4--base--82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5.apk",
-      "created_at": "2026-11-26T06:33:21Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.5--base--3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039.apk",
-      "bytes": 50081507,
-      "sha256": "3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.5--base--3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039.apk",
-      "created_at": "2026-11-26T06:32:59Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.6--base--9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71.apk",
-      "bytes": 50085604,
-      "sha256": "9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.6--base--9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71.apk",
-      "created_at": "2026-11-26T06:32:41Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--base--309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa.apk",
-      "bytes": 101752467,
-      "sha256": "309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--base--309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa.apk",
-      "created_at": "2026-11-26T06:43:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--com.sonos.acr2--309de95a2622.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.armeabi_v7a--25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce.apk",
-      "bytes": 91306476,
-      "sha256": "25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.armeabi_v7a--25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce.apk",
-      "created_at": "2026-11-26T06:43:12Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.armeabi_v7a--25806cb8f2c5.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.de--1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e.apk",
-      "bytes": 627097,
-      "sha256": "1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.de--1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e.apk",
-      "created_at": "2026-11-26T06:43:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.de--1d67ea4cd97b.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.es--9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0.apk",
-      "bytes": 614809,
-      "sha256": "9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.es--9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0.apk",
-      "created_at": "2026-11-26T06:43:19Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.es--9e44488e8ba8.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.fr--fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a.apk",
-      "bytes": 643481,
-      "sha256": "fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.fr--fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a.apk",
-      "created_at": "2026-11-26T06:43:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.fr--fe22f32539cf.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.it--25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6.apk",
-      "bytes": 614809,
-      "sha256": "25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.it--25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6.apk",
-      "created_at": "2026-11-26T06:43:22Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.it--25d2ac50c139.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.ja--9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba.apk",
-      "bytes": 659865,
-      "sha256": "9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.ja--9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba.apk",
-      "created_at": "2026-11-26T06:43:24Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.ja--9c6de939b80c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.ko--f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967.apk",
-      "bytes": 627097,
-      "sha256": "f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.ko--f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967.apk",
-      "created_at": "2026-11-26T06:43:26Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.ko--f7ce26be4712.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--base--541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b.apk",
-      "bytes": 102825539,
-      "sha256": "541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--base--541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b.apk",
-      "created_at": "2026-11-26T06:41:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--com.sonos.acr2--541eaf8ba0f3.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--complete--2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c.xapk",
-      "bytes": 199274901,
-      "sha256": "2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--complete--2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c.xapk",
-      "created_at": "2026-11-26T06:41:40Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--complete--2a8e75f8b071.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:41:37Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--manifest--dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335.json",
-      "bytes": 2206,
-      "sha256": "dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--manifest--dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335.json",
-      "created_at": "2026-11-26T06:41:39Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.armeabi_v7a--4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5.apk",
-      "bytes": 89073957,
-      "sha256": "4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.armeabi_v7a--4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5.apk",
-      "created_at": "2026-11-26T06:41:13Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.armeabi_v7a--4f309686b24d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.de--c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76.apk",
-      "bytes": 618706,
-      "sha256": "c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.de--c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76.apk",
-      "created_at": "2026-11-26T06:41:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.de--c77a9668551c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.es--8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb.apk",
-      "bytes": 602322,
-      "sha256": "8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.es--8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb.apk",
-      "created_at": "2026-11-26T06:41:19Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.es--8173ba5be025.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.fr--af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7.apk",
-      "bytes": 630994,
-      "sha256": "af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.fr--af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7.apk",
-      "created_at": "2026-11-26T06:41:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.fr--af5f45fa2f0d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.it--afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55.apk",
-      "bytes": 606418,
-      "sha256": "afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.it--afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55.apk",
-      "created_at": "2026-11-26T06:41:23Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.it--afee408e4ddb.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ja--e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990.apk",
-      "bytes": 651474,
-      "sha256": "e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ja--e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990.apk",
-      "created_at": "2026-11-26T06:41:24Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ja--e7cd485f97ca.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ko--f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315.apk",
-      "bytes": 614610,
-      "sha256": "f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ko--f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315.apk",
-      "created_at": "2026-11-26T06:41:26Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ko--f905fdf58e58.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.mdpi--77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d.apk",
-      "bytes": 275515,
-      "sha256": "77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.mdpi--77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d.apk",
-      "created_at": "2026-11-26T06:41:28Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.mdpi--77879c273cac.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.pt--128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c.apk",
-      "bytes": 913618,
-      "sha256": "128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.pt--128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c.apk",
-      "created_at": "2026-11-26T06:41:30Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.pt--128bafdd94a1.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ru--5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3.apk",
-      "bytes": 807122,
-      "sha256": "5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ru--5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3.apk",
-      "created_at": "2026-11-26T06:41:31Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ru--5a45ed9f170d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.tr--2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16.apk",
-      "bytes": 598226,
-      "sha256": "2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.tr--2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16.apk",
-      "created_at": "2026-11-26T06:41:33Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.tr--2e7d5d4eafc4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.zh--b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20.apk",
-      "bytes": 1044690,
-      "sha256": "b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.zh--b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20.apk",
-      "created_at": "2026-11-26T06:41:35Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.zh--b8a3eeb7e839.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--base--e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74.apk",
-      "bytes": 102825539,
-      "sha256": "e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--base--e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74.apk",
-      "created_at": "2026-11-26T06:39:48Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--com.sonos.acr2--e2d68c92f2eb.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--complete--487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d.xapk",
-      "bytes": 199274901,
-      "sha256": "487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--complete--487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d.xapk",
-      "created_at": "2026-11-26T06:40:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--complete--487ed01e49e9.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:40:18Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--manifest--bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65.json",
-      "bytes": 2206,
-      "sha256": "bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--manifest--bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65.json",
-      "created_at": "2026-11-26T06:40:19Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.armeabi_v7a--a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167.apk",
-      "bytes": 89073957,
-      "sha256": "a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.armeabi_v7a--a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167.apk",
-      "created_at": "2026-11-26T06:39:52Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.armeabi_v7a--a7d81597aaee.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.de--1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809.apk",
-      "bytes": 618706,
-      "sha256": "1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.de--1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809.apk",
-      "created_at": "2026-11-26T06:39:58Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.de--1c760984a80a.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.es--bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b.apk",
-      "bytes": 602322,
-      "sha256": "bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.es--bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b.apk",
-      "created_at": "2026-11-26T06:40:00Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.es--bc92a351f19e.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.fr--851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f.apk",
-      "bytes": 630994,
-      "sha256": "851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.fr--851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f.apk",
-      "created_at": "2026-11-26T06:40:01Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.fr--851f0378d0ab.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.it--9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83.apk",
-      "bytes": 606418,
-      "sha256": "9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.it--9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83.apk",
-      "created_at": "2026-11-26T06:40:03Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.it--9887d2843570.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ja--c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd.apk",
-      "bytes": 651474,
-      "sha256": "c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ja--c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd.apk",
-      "created_at": "2026-11-26T06:40:05Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ja--c46677e52cbc.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ko--6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5.apk",
-      "bytes": 614610,
-      "sha256": "6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ko--6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5.apk",
-      "created_at": "2026-11-26T06:40:06Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ko--6ca90a188ed6.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.mdpi--f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957.apk",
-      "bytes": 275515,
-      "sha256": "f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.mdpi--f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957.apk",
-      "created_at": "2026-11-26T06:40:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.mdpi--f96580bf2fad.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.pt--bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a.apk",
-      "bytes": 913618,
-      "sha256": "bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.pt--bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a.apk",
-      "created_at": "2026-11-26T06:40:10Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.pt--bf8035411e1e.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ru--640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368.apk",
-      "bytes": 807122,
-      "sha256": "640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ru--640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368.apk",
-      "created_at": "2026-11-26T06:40:12Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ru--640bff73a9a4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.tr--76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784.apk",
-      "bytes": 598226,
-      "sha256": "76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.tr--76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784.apk",
-      "created_at": "2026-11-26T06:40:14Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.tr--76245766a20b.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.zh--9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2.apk",
-      "bytes": 1044690,
-      "sha256": "9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.zh--9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2.apk",
-      "created_at": "2026-11-26T06:40:16Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.zh--9a5703cde220.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--base--7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6.apk",
-      "bytes": 90392025,
-      "sha256": "7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--base--7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6.apk",
-      "created_at": "2026-11-26T06:38:45Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--base--9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d.apk",
-      "bytes": 90461657,
-      "sha256": "9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--base--9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d.apk",
-      "created_at": "2026-11-26T06:37:45Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--com.sonos.acr2--9ab8f83082f4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec.xapk",
-      "bytes": 196950463,
-      "sha256": "b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--complete--b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec.xapk",
-      "created_at": "2026-11-26T06:38:58Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a.xapk",
-      "bytes": 187832720,
-      "sha256": "d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--complete--d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a.xapk",
-      "created_at": "2026-11-26T06:38:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--d66cb7dbfdd1.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:38:13Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--manifest--078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb.json",
-      "bytes": 2307,
-      "sha256": "078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--manifest--078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb.json",
-      "created_at": "2026-11-26T06:38:15Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--manifest--c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb.json",
-      "bytes": 1761,
-      "sha256": "c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--manifest--c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb.json",
-      "created_at": "2026-11-26T06:38:56Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.arm64_v8a--dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691.apk",
-      "bytes": 106285295,
-      "sha256": "dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.arm64_v8a--dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691.apk",
-      "created_at": "2026-11-26T06:38:49Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.armeabi_v7a--12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429.apk",
-      "bytes": 89893157,
-      "sha256": "12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.armeabi_v7a--12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429.apk",
-      "created_at": "2026-11-26T06:37:49Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.armeabi_v7a--12617734737c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.de--dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb.apk",
-      "bytes": 626898,
-      "sha256": "dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.de--dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb.apk",
-      "created_at": "2026-11-26T06:37:54Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.de--dff027f5f953.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.es--eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e.apk",
-      "bytes": 610514,
-      "sha256": "eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.es--eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e.apk",
-      "created_at": "2026-11-26T06:37:56Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.es--eb4d9697d194.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.fr--ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349.apk",
-      "bytes": 639186,
-      "sha256": "ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.fr--ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349.apk",
-      "created_at": "2026-11-26T06:37:58Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.fr--ad95cc997c92.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.it--d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a.apk",
-      "bytes": 614610,
-      "sha256": "d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.it--d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a.apk",
-      "created_at": "2026-11-26T06:37:59Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.it--d47d5c894568.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ja--f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06.apk",
-      "bytes": 659666,
-      "sha256": "f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ja--f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06.apk",
-      "created_at": "2026-11-26T06:38:01Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ja--f6784a04a665.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ko--b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb.apk",
-      "bytes": 622802,
-      "sha256": "b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ko--b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb.apk",
-      "created_at": "2026-11-26T06:38:03Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ko--b7b303fc89ab.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.mdpi--98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14.apk",
-      "bytes": 263227,
-      "sha256": "98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.mdpi--98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14.apk",
-      "created_at": "2026-11-26T06:38:54Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.mdpi--b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675.apk",
-      "bytes": 279611,
-      "sha256": "b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.mdpi--b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675.apk",
-      "created_at": "2026-11-26T06:38:05Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.mdpi--b78f3ec62074.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.pt--4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f.apk",
-      "bytes": 925906,
-      "sha256": "4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.pt--4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f.apk",
-      "created_at": "2026-11-26T06:38:06Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.pt--4bf37dff6ea4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ru--6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b.apk",
-      "bytes": 819410,
-      "sha256": "6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ru--6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b.apk",
-      "created_at": "2026-11-26T06:38:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ru--6b738f52c551.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.tr--285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c.apk",
-      "bytes": 606418,
-      "sha256": "285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.tr--285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c.apk",
-      "created_at": "2026-11-26T06:38:10Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.tr--285be225b3f4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.zh--9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a.apk",
-      "bytes": 1061074,
-      "sha256": "9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.zh--9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a.apk",
-      "created_at": "2026-11-26T06:38:11Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.zh--9a94e768020a.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--base--05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df.apk",
-      "bytes": 90531365,
-      "sha256": "05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--base--05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df.apk",
-      "created_at": "2026-11-26T06:36:26Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--complete--736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000.xapk",
-      "bytes": 180632140,
-      "sha256": "736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--complete--736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000.xapk",
-      "created_at": "2026-11-26T06:36:38Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--manifest--8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555.json",
-      "bytes": 1768,
-      "sha256": "8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--manifest--8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555.json",
-      "created_at": "2026-11-26T06:36:37Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--split-config.armeabi_v7a--a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46.apk",
-      "bytes": 89827621,
-      "sha256": "a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--split-config.armeabi_v7a--a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46.apk",
-      "created_at": "2026-11-26T06:36:31Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--split-config.mdpi--e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721.apk",
-      "bytes": 263227,
-      "sha256": "e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--split-config.mdpi--e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721.apk",
-      "created_at": "2026-11-26T06:36:35Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--base--67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776.apk",
-      "bytes": 92027080,
-      "sha256": "67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--base--67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776.apk",
-      "created_at": "2026-11-26T06:35:00Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--complete--9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832.xapk",
-      "bytes": 166698110,
-      "sha256": "9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--complete--9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832.xapk",
-      "created_at": "2026-11-26T06:35:28Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--manifest--17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca.json",
-      "bytes": 2308,
-      "sha256": "17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--manifest--17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca.json",
-      "created_at": "2026-11-26T06:35:27Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.arm64_v8a--c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056.apk",
-      "bytes": 66013423,
-      "sha256": "c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.arm64_v8a--c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056.apk",
-      "created_at": "2026-11-26T06:35:04Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.de--9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2.apk",
-      "bytes": 630994,
-      "sha256": "9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.de--9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2.apk",
-      "created_at": "2026-11-26T06:35:08Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.es--f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310.apk",
-      "bytes": 618706,
-      "sha256": "f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.es--f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310.apk",
-      "created_at": "2026-11-26T06:35:10Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.fr--587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896.apk",
-      "bytes": 647378,
-      "sha256": "587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.fr--587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896.apk",
-      "created_at": "2026-11-26T06:35:11Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.it--4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e.apk",
-      "bytes": 622802,
-      "sha256": "4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.it--4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e.apk",
-      "created_at": "2026-11-26T06:35:13Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ja--179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328.apk",
-      "bytes": 667858,
-      "sha256": "179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ja--179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328.apk",
-      "created_at": "2026-11-26T06:35:15Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ko--a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88.apk",
-      "bytes": 630994,
-      "sha256": "a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ko--a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88.apk",
-      "created_at": "2026-11-26T06:35:17Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.pt--6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be.apk",
-      "bytes": 938194,
-      "sha256": "6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.pt--6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be.apk",
-      "created_at": "2026-11-26T06:35:18Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ru--d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7.apk",
-      "bytes": 827602,
-      "sha256": "d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ru--d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7.apk",
-      "created_at": "2026-11-26T06:35:20Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.tr--c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa.apk",
-      "bytes": 614610,
-      "sha256": "c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.tr--c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa.apk",
-      "created_at": "2026-11-26T06:35:22Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.xxhdpi--aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676.apk",
-      "bytes": 1373460,
-      "sha256": "aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.xxhdpi--aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676.apk",
-      "created_at": "2026-11-26T06:35:23Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.zh--78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d.apk",
-      "bytes": 1073362,
-      "sha256": "78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.zh--78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d.apk",
-      "created_at": "2026-11-26T06:35:25Z",
-      "recorded_as": []
-    },
-    {
       "release_tag": "apps-web-controller",
       "release_asset": "20261124T071034Z--favicon--f1a0d0c97685.ico",
       "bytes": 7452,
@@ -5219,11 +4078,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261126T070839Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -5259,11 +4122,15 @@
         },
         {
           "release_tag": "apps-web-pro",
-          "release_asset": "20261126T063223Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261126T070906Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
           "release_asset": "20261126T053217Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-pro",
+          "release_asset": "20261126T063223Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         }
       ]
     },
@@ -5281,11 +4148,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+          "release_asset": "20261126T070839Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         }
       ]
     },
@@ -5327,11 +4198,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+          "release_asset": "20261126T070839Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         }
       ]
     },
@@ -5373,11 +4248,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+          "release_asset": "20261126T070839Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         }
       ]
     },
@@ -5419,11 +4298,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+          "release_asset": "20261126T070839Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         }
       ]
     },
@@ -5465,11 +4348,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+          "release_asset": "20261126T070839Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         }
       ]
     },
@@ -5600,6 +4487,146 @@
       "recorded_as": []
     },
     {
+      "release_tag": "firmware-28.1-86141",
+      "release_asset": "28.1-86141-1-4.dmg",
+      "bytes": 14570415,
+      "sha256": "69f34c9e98bd6ffb2be7ae889fca03f10287511ea9ef34b8a8544de2c3c3edae",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-28.1-86141/28.1-86141-1-4.dmg",
+      "created_at": "2026-08-31T21:13:35Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-28.1-86141",
+          "release_asset": "28.1-86141-1-4--69f34c9e98bd6ffb2be7ae889fca03f10287511ea9ef34b8a8544de2c3c3edae.dmg"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-1.upd",
+      "bytes": 4871556,
+      "sha256": "8a1673b29ce23ac28038b0ed1916d21daa562aef19faacb93629404c48886ceb",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-1.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-1--8a1673b29ce23ac28038b0ed1916d21daa562aef19faacb93629404c48886ceb.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-12.upd",
+      "bytes": 4167459,
+      "sha256": "d4cc8d619e450c183d302610e12c7d2bd35dc3a56147b765cc2e17e98a313768",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-12.upd",
+      "created_at": "2026-08-31T21:13:45Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-12--d4cc8d619e450c183d302610e12c7d2bd35dc3a56147b765cc2e17e98a313768.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-13.upd",
+      "bytes": 9904177,
+      "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-13.upd",
+      "created_at": "2026-08-31T21:13:46Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-16.upd",
+      "bytes": 4727312,
+      "sha256": "84632e02bdce626bf10ae846839e90d66e510a627320fff8690c2bdb998733f2",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-16.upd",
+      "created_at": "2026-08-31T21:13:46Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-16--84632e02bdce626bf10ae846839e90d66e510a627320fff8690c2bdb998733f2.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-5.upd",
+      "bytes": 2097157,
+      "sha256": "151ff1da61c4f17b9751ae6f96afc88deac376b4aa061a175db07c21db5d0f3c",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-5.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-5--151ff1da61c4f17b9751ae6f96afc88deac376b4aa061a175db07c21db5d0f3c.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-6.upd",
+      "bytes": 20846558,
+      "sha256": "020db66f9cda104240987e43a8f1024a21b8def760f91cbd71b95e0a40595b66",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-6.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-6--020db66f9cda104240987e43a8f1024a21b8def760f91cbd71b95e0a40595b66.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-7.upd",
+      "bytes": 3042569,
+      "sha256": "54f0908a8f77024da0ac7afde6b812bb360740d66460c714bb84fe7a96d22706",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-7.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-7--54f0908a8f77024da0ac7afde6b812bb360740d66460c714bb84fe7a96d22706.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-8.upd",
+      "bytes": 8306684,
+      "sha256": "3e1c827005dd4be569f86ac06212e2e523b2478491b7f06707fa80185a08482a",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-8.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-8--3e1c827005dd4be569f86ac06212e2e523b2478491b7f06707fa80185a08482a.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-9.upd",
+      "bytes": 9243867,
+      "sha256": "fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-9.upd",
+      "created_at": "2026-08-31T21:13:45Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-9--fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7.upd"
+        }
+      ]
+    },
+    {
       "release_tag": "manifest-snapshots-2026-08-31",
       "release_asset": "96.1-79270.upm",
       "bytes": 13623,
@@ -5623,7 +4650,7 @@
       "recorded_as": [
         {
           "release_tag": "firmware-34.16-37101",
-          "release_asset": "34.16-37101-1-13.upd"
+          "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd"
         }
       ]
     },
@@ -5695,7 +4722,7 @@
       "recorded_as": [
         {
           "release_tag": "firmware-34.16-37101",
-          "release_asset": "34.16-37101-1-9.upd"
+          "release_asset": "34.16-37101-1-9--fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7.upd"
         }
       ]
     },
@@ -6064,832 +5091,6 @@
   ],
   "duplicated_extras": [
     {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--base--309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa.apk",
-      "bytes": 101752467,
-      "sha256": "309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--base--309de95a2622ea295ac86269166f1ba1719b60f688e040648382154d888e8aaa.apk",
-      "created_at": "2026-11-26T06:43:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--com.sonos.acr2--309de95a2622.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.armeabi_v7a--25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce.apk",
-      "bytes": 91306476,
-      "sha256": "25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.armeabi_v7a--25806cb8f2c5f53b65fe0fe9856f513465f84b9acd593765a1db4ce71831c0ce.apk",
-      "created_at": "2026-11-26T06:43:12Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.armeabi_v7a--25806cb8f2c5.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.de--1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e.apk",
-      "bytes": 627097,
-      "sha256": "1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.de--1d67ea4cd97baffb963226a34a10eaf6e72fd7c345f6d381cbce4b7f71e1334e.apk",
-      "created_at": "2026-11-26T06:43:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.de--1d67ea4cd97b.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.es--9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0.apk",
-      "bytes": 614809,
-      "sha256": "9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.es--9e44488e8ba8427b937ec26d0ea52bed6f1ba2d450db9b1a06b9a3fc522a41f0.apk",
-      "created_at": "2026-11-26T06:43:19Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.es--9e44488e8ba8.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.fr--fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a.apk",
-      "bytes": 643481,
-      "sha256": "fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.fr--fe22f32539cfc05ad35de4b9e93e44abf5e1255453b5f1901e2ee7f101595c1a.apk",
-      "created_at": "2026-11-26T06:43:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.fr--fe22f32539cf.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.it--25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6.apk",
-      "bytes": 614809,
-      "sha256": "25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.it--25d2ac50c139cd6ac25f7b404b1e3d04bdfea8f72a5063b347a71ea155aa0bd6.apk",
-      "created_at": "2026-11-26T06:43:22Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.it--25d2ac50c139.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.ja--9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba.apk",
-      "bytes": 659865,
-      "sha256": "9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.ja--9c6de939b80c1eb3a4dabd8754246dff4a3998fae08c3a39b64af6b2593f76ba.apk",
-      "created_at": "2026-11-26T06:43:24Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.ja--9c6de939b80c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--split-config.ko--f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967.apk",
-      "bytes": 627097,
-      "sha256": "f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--86.01.5-release%2B20260610.d4401d2--split-config.ko--f7ce26be4712cac6288effcb13159337f53f9e3714aaa8bfd1ce7dbf8d8b7967.apk",
-      "created_at": "2026-11-26T06:43:26Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--86.01.5-release+20260610.d4401d2--config.ko--f7ce26be4712.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--base--541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b.apk",
-      "bytes": 102825539,
-      "sha256": "541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--base--541eaf8ba0f3f6298456a29f79640478934b7c223cf17ad8adc2ceadc1acf11b.apk",
-      "created_at": "2026-11-26T06:41:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--com.sonos.acr2--541eaf8ba0f3.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--complete--2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c.xapk",
-      "bytes": 199274901,
-      "sha256": "2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--complete--2a8e75f8b0711f389fb0bd18b685e45427703a08183199f73f05b0435d9cfc6c.xapk",
-      "created_at": "2026-11-26T06:41:40Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--complete--2a8e75f8b071.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:41:37Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.armeabi_v7a--4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5.apk",
-      "bytes": 89073957,
-      "sha256": "4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.armeabi_v7a--4f309686b24d8a9d59d67666e0cbdd94023b10103498edab438afbd3c0c542b5.apk",
-      "created_at": "2026-11-26T06:41:13Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.armeabi_v7a--4f309686b24d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.de--c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76.apk",
-      "bytes": 618706,
-      "sha256": "c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.de--c77a9668551c96b927a7178ab4f414d18cf65081c3497e1e3f2b5f1356851a76.apk",
-      "created_at": "2026-11-26T06:41:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.de--c77a9668551c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.es--8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb.apk",
-      "bytes": 602322,
-      "sha256": "8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.es--8173ba5be02529f2958fb7292f7d9853acf2b24fa9ed1efbfd0d525a31ea8beb.apk",
-      "created_at": "2026-11-26T06:41:19Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.es--8173ba5be025.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.fr--af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7.apk",
-      "bytes": 630994,
-      "sha256": "af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.fr--af5f45fa2f0d02a80672f950a7147f08af0870e30a8502bd3e984f9051e41aa7.apk",
-      "created_at": "2026-11-26T06:41:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.fr--af5f45fa2f0d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.it--afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55.apk",
-      "bytes": 606418,
-      "sha256": "afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.it--afee408e4ddb9daa426eddbdff08dfae50aa6f257cbd330f8113c6c531c14f55.apk",
-      "created_at": "2026-11-26T06:41:23Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.it--afee408e4ddb.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ja--e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990.apk",
-      "bytes": 651474,
-      "sha256": "e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ja--e7cd485f97cab40426262d6c3e3f6f14f3dee150579982c6293252cc49117990.apk",
-      "created_at": "2026-11-26T06:41:24Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ja--e7cd485f97ca.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ko--f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315.apk",
-      "bytes": 614610,
-      "sha256": "f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ko--f905fdf58e58ad1e65b118a27e28898dfe97e140270bcda739697f69984fe315.apk",
-      "created_at": "2026-11-26T06:41:26Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ko--f905fdf58e58.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.mdpi--77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d.apk",
-      "bytes": 275515,
-      "sha256": "77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.mdpi--77879c273cace93583e36b3be3768452653671f02acb1df831bbe7c4853a197d.apk",
-      "created_at": "2026-11-26T06:41:28Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.mdpi--77879c273cac.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.pt--128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c.apk",
-      "bytes": 913618,
-      "sha256": "128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.pt--128bafdd94a14e63b7706f2dea63bcb19ac49c5ab15a72df8f2e048509276e5c.apk",
-      "created_at": "2026-11-26T06:41:30Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.pt--128bafdd94a1.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.ru--5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3.apk",
-      "bytes": 807122,
-      "sha256": "5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.ru--5a45ed9f170d79e3e5b78fd36dedc5882944670b5cea249b396802ef41db4ec3.apk",
-      "created_at": "2026-11-26T06:41:31Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.ru--5a45ed9f170d.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.tr--2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16.apk",
-      "bytes": 598226,
-      "sha256": "2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.tr--2e7d5d4eafc440b15e04c83e81d7cbd5de28cc1e6811cb5ba1b2a740aefdcb16.apk",
-      "created_at": "2026-11-26T06:41:33Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.tr--2e7d5d4eafc4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--split-config.zh--b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20.apk",
-      "bytes": 1044690,
-      "sha256": "b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--split-config.zh--b8a3eeb7e8397301229cd54dc040c9bad0ea05fd771d7f780fa415e517a35e20.apk",
-      "created_at": "2026-11-26T06:41:35Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--config.zh--b8a3eeb7e839.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--base--e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74.apk",
-      "bytes": 102825539,
-      "sha256": "e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--base--e2d68c92f2eb3835708adf6970c92e6215699f3f086288dc9ab780f2755f7d74.apk",
-      "created_at": "2026-11-26T06:39:48Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--com.sonos.acr2--e2d68c92f2eb.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--complete--487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d.xapk",
-      "bytes": 199274901,
-      "sha256": "487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--complete--487ed01e49e990615f56e830565c5019b70af22f4962aa903b6f80e03102199d.xapk",
-      "created_at": "2026-11-26T06:40:21Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--complete--487ed01e49e9.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:40:18Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.armeabi_v7a--a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167.apk",
-      "bytes": 89073957,
-      "sha256": "a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.armeabi_v7a--a7d81597aaeeeffda0679426b27704d40daada22c887e678296ce9fad9fd4167.apk",
-      "created_at": "2026-11-26T06:39:52Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.armeabi_v7a--a7d81597aaee.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.de--1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809.apk",
-      "bytes": 618706,
-      "sha256": "1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.de--1c760984a80a51f351716287a2fe9c81a8226e961bf6f076076e9c0db8c24809.apk",
-      "created_at": "2026-11-26T06:39:58Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.de--1c760984a80a.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.es--bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b.apk",
-      "bytes": 602322,
-      "sha256": "bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.es--bc92a351f19e4b8ba051607528e606f52c1f2a6b02ede5c1e1b32180227b709b.apk",
-      "created_at": "2026-11-26T06:40:00Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.es--bc92a351f19e.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.fr--851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f.apk",
-      "bytes": 630994,
-      "sha256": "851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.fr--851f0378d0ab97087d8686aaacb4288e26167ab453d6a88681132441c5778e2f.apk",
-      "created_at": "2026-11-26T06:40:01Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.fr--851f0378d0ab.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.it--9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83.apk",
-      "bytes": 606418,
-      "sha256": "9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.it--9887d2843570bb17e0fb4e710095f4edf52582a9f8bfec0cb7afcacebde6ed83.apk",
-      "created_at": "2026-11-26T06:40:03Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.it--9887d2843570.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ja--c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd.apk",
-      "bytes": 651474,
-      "sha256": "c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ja--c46677e52cbc9e3d6113dead341f68dc17f4a98ff3440c5ed497de7d00a25bcd.apk",
-      "created_at": "2026-11-26T06:40:05Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ja--c46677e52cbc.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ko--6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5.apk",
-      "bytes": 614610,
-      "sha256": "6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ko--6ca90a188ed66ff880fbd118ae7a8cc9f5ec48762adef5298dd2e3c36823c4d5.apk",
-      "created_at": "2026-11-26T06:40:06Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ko--6ca90a188ed6.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.mdpi--f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957.apk",
-      "bytes": 275515,
-      "sha256": "f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.mdpi--f96580bf2fadd7e487d8efe05b6bcbae0bfe806c6de8ad486a1c92edcc257957.apk",
-      "created_at": "2026-11-26T06:40:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.mdpi--f96580bf2fad.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.pt--bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a.apk",
-      "bytes": 913618,
-      "sha256": "bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.pt--bf8035411e1e1b792fcdbb27635c4942263b5ecc68d5f52764bcb8120f3dc87a.apk",
-      "created_at": "2026-11-26T06:40:10Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.pt--bf8035411e1e.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.ru--640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368.apk",
-      "bytes": 807122,
-      "sha256": "640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.ru--640bff73a9a482e9772320653bc7213c02c6375806c848df62942bf747982368.apk",
-      "created_at": "2026-11-26T06:40:12Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.ru--640bff73a9a4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.tr--76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784.apk",
-      "bytes": 598226,
-      "sha256": "76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.tr--76245766a20b0beba7e986488ae5953e089c1bddc1812cdf9cf400d908efe784.apk",
-      "created_at": "2026-11-26T06:40:14Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.tr--76245766a20b.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--split-config.zh--9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2.apk",
-      "bytes": 1044690,
-      "sha256": "9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--split-config.zh--9a5703cde2201265f1c58693bbd8d2166cedf6793339e4389100aded80f9cbd2.apk",
-      "created_at": "2026-11-26T06:40:16Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--config.zh--9a5703cde220.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--base--9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d.apk",
-      "bytes": 90461657,
-      "sha256": "9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--base--9ab8f83082f492f5309e1d11c5c8eef2a01f7717b4f2da5a355c4b7bd481857d.apk",
-      "created_at": "2026-11-26T06:37:45Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--com.sonos.acr2--9ab8f83082f4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a.xapk",
-      "bytes": 187832720,
-      "sha256": "d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--complete--d66cb7dbfdd165dd108468c20631c860e5d08b25f1a1b70681828623f6f68d6a.xapk",
-      "created_at": "2026-11-26T06:38:17Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--d66cb7dbfdd1.xapk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "bytes": 7525,
-      "sha256": "bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png",
-      "created_at": "2026-11-26T06:38:13Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.11-release+20261110.b463dd1--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--80.27.8-release+20250829.74c4ed0--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.01.7-release+20261103.afb484e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--91.00.33-release+20261023.590619d--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.01.9-release+20261015.ec5ada6--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        },
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--icon--bf5a5bb225804b2a3ddf82389fc5d2662018145658866bcb9619bfe1e4354c7c.png"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.armeabi_v7a--12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429.apk",
-      "bytes": 89893157,
-      "sha256": "12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.armeabi_v7a--12617734737ca1d1dfbde49664a1c5e249125c5b2d04be81a4b8302a71203429.apk",
-      "created_at": "2026-11-26T06:37:49Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.armeabi_v7a--12617734737c.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.de--dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb.apk",
-      "bytes": 626898,
-      "sha256": "dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.de--dff027f5f953c07a8ff7c460386de20f7c1ca0f0ef25d14463bf53748b9286fb.apk",
-      "created_at": "2026-11-26T06:37:54Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.de--dff027f5f953.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.es--eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e.apk",
-      "bytes": 610514,
-      "sha256": "eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.es--eb4d9697d194c3d25cf52a59ace33d66e06cc5336392c47007eefa806cbe627e.apk",
-      "created_at": "2026-11-26T06:37:56Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.es--eb4d9697d194.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.fr--ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349.apk",
-      "bytes": 639186,
-      "sha256": "ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.fr--ad95cc997c920eca2ccc615a6f5201b06a7a53d2a7eea561e8609ab57d52e349.apk",
-      "created_at": "2026-11-26T06:37:58Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.fr--ad95cc997c92.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.it--d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a.apk",
-      "bytes": 614610,
-      "sha256": "d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.it--d47d5c8945687c7aaa7b23b8288bbc1a87feec2c086781eb4799b64128213c6a.apk",
-      "created_at": "2026-11-26T06:37:59Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.it--d47d5c894568.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ja--f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06.apk",
-      "bytes": 659666,
-      "sha256": "f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ja--f6784a04a665e0c6c789a1a634f171f1a584c4078f71b96cd3086c5668aabe06.apk",
-      "created_at": "2026-11-26T06:38:01Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ja--f6784a04a665.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ko--b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb.apk",
-      "bytes": 622802,
-      "sha256": "b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ko--b7b303fc89abdc05053a0848f3941fe98d02922284ab32fca51c923eae18f6bb.apk",
-      "created_at": "2026-11-26T06:38:03Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ko--b7b303fc89ab.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.mdpi--b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675.apk",
-      "bytes": 279611,
-      "sha256": "b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.mdpi--b78f3ec620741a00b22d3c098291dc1b3d47de66437825abe444063d5a5ea675.apk",
-      "created_at": "2026-11-26T06:38:05Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.mdpi--b78f3ec62074.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.pt--4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f.apk",
-      "bytes": 925906,
-      "sha256": "4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.pt--4bf37dff6ea4ca0734fa3c180ebae21d5a7f8e2ff07b29d6b1b291aacf38788f.apk",
-      "created_at": "2026-11-26T06:38:06Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.pt--4bf37dff6ea4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.ru--6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b.apk",
-      "bytes": 819410,
-      "sha256": "6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.ru--6b738f52c5511cfeafd0ec61ad9d1f6b0cada008de0312111c524257f93a166b.apk",
-      "created_at": "2026-11-26T06:38:08Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.ru--6b738f52c551.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.tr--285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c.apk",
-      "bytes": 606418,
-      "sha256": "285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.tr--285be225b3f4fc8740c8eb9ca1cd6b8506b629a25b4c754abc548351ea904f6c.apk",
-      "created_at": "2026-11-26T06:38:10Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.tr--285be225b3f4.apk"
-        }
-      ]
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.zh--9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a.apk",
-      "bytes": 1061074,
-      "sha256": "9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.zh--9a94e768020a9f54174c0e690eb48d7abd34c4b7e7ab328aeecbb9c5ebc6683a.apk",
-      "created_at": "2026-11-26T06:38:11Z",
-      "recorded_as": [
-        {
-          "release_tag": "apps-google-play-recovery-s2",
-          "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--config.zh--9a94e768020a.apk"
-        }
-      ]
-    },
-    {
       "release_tag": "apps-web-controller",
       "release_asset": "20261124T071034Z--favicon--f1a0d0c97685.ico",
       "bytes": 7452,
@@ -6927,11 +5128,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261126T070839Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -6967,11 +5172,15 @@
         },
         {
           "release_tag": "apps-web-pro",
-          "release_asset": "20261126T063223Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261126T070906Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
           "release_asset": "20261126T053217Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-pro",
+          "release_asset": "20261126T063223Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         }
       ]
     },
@@ -6989,11 +5198,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+          "release_asset": "20261126T070839Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         }
       ]
     },
@@ -7035,11 +5248,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+          "release_asset": "20261126T070839Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         }
       ]
     },
@@ -7081,11 +5298,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+          "release_asset": "20261126T070839Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         }
       ]
     },
@@ -7127,11 +5348,15 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+          "release_asset": "20261126T070839Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         }
       ]
     },
@@ -7173,11 +5398,155 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261126T063150Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+          "release_asset": "20261126T070839Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         },
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T053139Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261126T063150Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-28.1-86141",
+      "release_asset": "28.1-86141-1-4.dmg",
+      "bytes": 14570415,
+      "sha256": "69f34c9e98bd6ffb2be7ae889fca03f10287511ea9ef34b8a8544de2c3c3edae",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-28.1-86141/28.1-86141-1-4.dmg",
+      "created_at": "2026-08-31T21:13:35Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-28.1-86141",
+          "release_asset": "28.1-86141-1-4--69f34c9e98bd6ffb2be7ae889fca03f10287511ea9ef34b8a8544de2c3c3edae.dmg"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-1.upd",
+      "bytes": 4871556,
+      "sha256": "8a1673b29ce23ac28038b0ed1916d21daa562aef19faacb93629404c48886ceb",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-1.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-1--8a1673b29ce23ac28038b0ed1916d21daa562aef19faacb93629404c48886ceb.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-12.upd",
+      "bytes": 4167459,
+      "sha256": "d4cc8d619e450c183d302610e12c7d2bd35dc3a56147b765cc2e17e98a313768",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-12.upd",
+      "created_at": "2026-08-31T21:13:45Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-12--d4cc8d619e450c183d302610e12c7d2bd35dc3a56147b765cc2e17e98a313768.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-13.upd",
+      "bytes": 9904177,
+      "sha256": "4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-13.upd",
+      "created_at": "2026-08-31T21:13:46Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-16.upd",
+      "bytes": 4727312,
+      "sha256": "84632e02bdce626bf10ae846839e90d66e510a627320fff8690c2bdb998733f2",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-16.upd",
+      "created_at": "2026-08-31T21:13:46Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-16--84632e02bdce626bf10ae846839e90d66e510a627320fff8690c2bdb998733f2.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-5.upd",
+      "bytes": 2097157,
+      "sha256": "151ff1da61c4f17b9751ae6f96afc88deac376b4aa061a175db07c21db5d0f3c",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-5.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-5--151ff1da61c4f17b9751ae6f96afc88deac376b4aa061a175db07c21db5d0f3c.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-6.upd",
+      "bytes": 20846558,
+      "sha256": "020db66f9cda104240987e43a8f1024a21b8def760f91cbd71b95e0a40595b66",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-6.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-6--020db66f9cda104240987e43a8f1024a21b8def760f91cbd71b95e0a40595b66.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-7.upd",
+      "bytes": 3042569,
+      "sha256": "54f0908a8f77024da0ac7afde6b812bb360740d66460c714bb84fe7a96d22706",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-7.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-7--54f0908a8f77024da0ac7afde6b812bb360740d66460c714bb84fe7a96d22706.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-8.upd",
+      "bytes": 8306684,
+      "sha256": "3e1c827005dd4be569f86ac06212e2e523b2478491b7f06707fa80185a08482a",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-8.upd",
+      "created_at": "2026-08-31T21:13:43Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-8--3e1c827005dd4be569f86ac06212e2e523b2478491b7f06707fa80185a08482a.upd"
+        }
+      ]
+    },
+    {
+      "release_tag": "firmware-34.16-37101",
+      "release_asset": "34.16-37101-1-9.upd",
+      "bytes": 9243867,
+      "sha256": "fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7",
+      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/firmware-34.16-37101/34.16-37101-1-9.upd",
+      "created_at": "2026-08-31T21:13:45Z",
+      "recorded_as": [
+        {
+          "release_tag": "firmware-34.16-37101",
+          "release_asset": "34.16-37101-1-9--fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7.upd"
         }
       ]
     },
@@ -7205,7 +5574,7 @@
       "recorded_as": [
         {
           "release_tag": "firmware-34.16-37101",
-          "release_asset": "34.16-37101-1-13.upd"
+          "release_asset": "34.16-37101-1-13--4bdfdd788a11cc0844357fe6bd50b00071a15fd44b9d87f4ae52e666eb0f34a4.upd"
         }
       ]
     },
@@ -7277,7 +5646,7 @@
       "recorded_as": [
         {
           "release_tag": "firmware-34.16-37101",
-          "release_asset": "34.16-37101-1-9.upd"
+          "release_asset": "34.16-37101-1-9--fdfe94e01adbd823dcd9b59b327caef05896fc97be6f0a8835cdf7a70a28d5b7.upd"
         }
       ]
     },
@@ -7646,321 +6015,6 @@
   ],
   "external_origin_extras": [],
   "unexplained_extras": [
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15--base--e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689.apk",
-      "bytes": 57936894,
-      "sha256": "e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15--base--e43397d56afb6b2536224075a9854832ce21c017cc47c03b56fd40c76c122689.apk",
-      "created_at": "2026-11-26T06:39:14Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15.1--base--5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953.apk",
-      "bytes": 58195916,
-      "sha256": "5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15.1--base--5e47a3a08788748d543854be3ddefdb8b9d3905e9a8206692e6dd7c499730953.apk",
-      "created_at": "2026-11-26T06:37:05Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.15.2--base--da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c.apk",
-      "bytes": 58150860,
-      "sha256": "da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.15.2--base--da176ca1a3840a1ecd5f5d273323803a0e8a37b09aa27a377952bbb4ca14084c.apk",
-      "created_at": "2026-11-26T06:35:55Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.3--base--d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70.apk",
-      "bytes": 50512566,
-      "sha256": "d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.3--base--d000e43b4f67569d1d9197d6434be68c5e1de025ad8025bb2d0234f4cab67f70.apk",
-      "created_at": "2026-11-26T06:33:41Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.4--base--82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5.apk",
-      "bytes": 49987305,
-      "sha256": "82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.4--base--82ce9d8f9dfc5632ef9a328c80acdc87c80b35a540bb5d1d423043bf6b9680f5.apk",
-      "created_at": "2026-11-26T06:33:21Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.5--base--3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039.apk",
-      "bytes": 50081507,
-      "sha256": "3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.5--base--3d938b9400608c86c9e8ceac6eacf6cfc6eb051e6b17f9e1cc6f3e5123f98039.apk",
-      "created_at": "2026-11-26T06:32:59Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s1",
-      "release_asset": "com.sonos.acr--11.2.6--base--9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71.apk",
-      "bytes": 50085604,
-      "sha256": "9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s1/com.sonos.acr--11.2.6--base--9aa8b1b1ffc31ce16807ac2706c4aeee1f8aa16b5f7274978788dec5be76db71.apk",
-      "created_at": "2026-11-26T06:32:41Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.00.43-release+20260804.fcdf713--manifest--dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335.json",
-      "bytes": 2206,
-      "sha256": "dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.00.43-release%2B20260804.fcdf713--manifest--dbac5c42c29681693cf03e83f7e2dd9e1d24744375005c8e1f5770a954310335.json",
-      "created_at": "2026-11-26T06:41:39Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--88.01.10-release+20260820.6b5fa78--manifest--bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65.json",
-      "bytes": 2206,
-      "sha256": "bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--88.01.10-release%2B20260820.6b5fa78--manifest--bf3479954aa83dc879b22ac6cd2755611f086d9ea092edd16572f1933a918d65.json",
-      "created_at": "2026-11-26T06:40:19Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--base--7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6.apk",
-      "bytes": 90392025,
-      "sha256": "7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--base--7265f81eb77fa2859208552e36874d2623fb1684017e176f232367de9dd01eb6.apk",
-      "created_at": "2026-11-26T06:38:45Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--complete--b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec.xapk",
-      "bytes": 196950463,
-      "sha256": "b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--complete--b7cd4cba6a9822897d02f8aefa2e841136a7f3e072a1b82593b6c3d739c4bbec.xapk",
-      "created_at": "2026-11-26T06:38:58Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--manifest--078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb.json",
-      "bytes": 2307,
-      "sha256": "078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--manifest--078e35835ed5a23de84daefffe5f280f8a00910c17d935155b018a6e2c06d6bb.json",
-      "created_at": "2026-11-26T06:38:15Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--manifest--c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb.json",
-      "bytes": 1761,
-      "sha256": "c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--manifest--c306e933722928037c51c6293df41451df8b1c1e8156a698cae1d1dab918d2bb.json",
-      "created_at": "2026-11-26T06:38:56Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.arm64_v8a--dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691.apk",
-      "bytes": 106285295,
-      "sha256": "dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.arm64_v8a--dedae229a19f21a4d6f10c15ffd0fdf8fcd04998d626f1bb93fd5ca89bb32691.apk",
-      "created_at": "2026-11-26T06:38:49Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.00.49-release+20260831.6cdc927--split-config.mdpi--98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14.apk",
-      "bytes": 263227,
-      "sha256": "98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.00.49-release%2B20260831.6cdc927--split-config.mdpi--98785e2f68813fa9b084a62c301471c2ff6133f4f848e2d6cf45a8c91367df14.apk",
-      "created_at": "2026-11-26T06:38:54Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--base--05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df.apk",
-      "bytes": 90531365,
-      "sha256": "05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--base--05f5a731042aed65c4411da56e3139e99f177f2696f7358de84f751d05d524df.apk",
-      "created_at": "2026-11-26T06:36:26Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--complete--736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000.xapk",
-      "bytes": 180632140,
-      "sha256": "736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--complete--736e0b50515307f1f2dc7d367af4f779d4aef1310367bafe79ea39db6d27f000.xapk",
-      "created_at": "2026-11-26T06:36:38Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--manifest--8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555.json",
-      "bytes": 1768,
-      "sha256": "8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--manifest--8dde510cbc35f639f6c207e30d8a13d6084dae13da4d6057c8c8e8af9e548555.json",
-      "created_at": "2026-11-26T06:36:37Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--split-config.armeabi_v7a--a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46.apk",
-      "bytes": 89827621,
-      "sha256": "a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--split-config.armeabi_v7a--a6e33bfea9f9e1f2c3cd1d1dc31031aa26d18e60937d8ad8f02840b6d8e8be46.apk",
-      "created_at": "2026-11-26T06:36:31Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--89.01.11-release+20260917.7f4c363--split-config.mdpi--e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721.apk",
-      "bytes": 263227,
-      "sha256": "e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--89.01.11-release%2B20260917.7f4c363--split-config.mdpi--e305c197f6620e2ebe4209a37ac54cf6f3fa36947b5653c1f935b4abdeaae721.apk",
-      "created_at": "2026-11-26T06:36:35Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--base--67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776.apk",
-      "bytes": 92027080,
-      "sha256": "67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--base--67b7d589431de9532418c57316dff70b224fa6a3b895b66e28a1ae0eea19f776.apk",
-      "created_at": "2026-11-26T06:35:00Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--complete--9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832.xapk",
-      "bytes": 166698110,
-      "sha256": "9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--complete--9915a14670739d09860a11dac78acdf91b645baf6e31cf666b461c2fcb369832.xapk",
-      "created_at": "2026-11-26T06:35:28Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--manifest--17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca.json",
-      "bytes": 2308,
-      "sha256": "17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--manifest--17fb33928d47521b59a0e7f34347d5f185d7c3d513199cf20a7ec90cb92948ca.json",
-      "created_at": "2026-11-26T06:35:27Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.arm64_v8a--c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056.apk",
-      "bytes": 66013423,
-      "sha256": "c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.arm64_v8a--c83f04a0fb179a018f6883251e5696b36a0e3e475f66d346d9fafb033e49e056.apk",
-      "created_at": "2026-11-26T06:35:04Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.de--9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2.apk",
-      "bytes": 630994,
-      "sha256": "9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.de--9c87f01defbd16db5666fad8ce168c6e4d27694d973bdd5a0cf8bb9cacc128e2.apk",
-      "created_at": "2026-11-26T06:35:08Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.es--f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310.apk",
-      "bytes": 618706,
-      "sha256": "f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.es--f7600a5f056e62907aecee73bd6ba68a11d1a334a866b7ae2ef47fec4e796310.apk",
-      "created_at": "2026-11-26T06:35:10Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.fr--587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896.apk",
-      "bytes": 647378,
-      "sha256": "587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.fr--587431758788bc730c687ba9262d398c528bce94776a393e2bd4c6e58d608896.apk",
-      "created_at": "2026-11-26T06:35:11Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.it--4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e.apk",
-      "bytes": 622802,
-      "sha256": "4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.it--4d61c63ae252b659c208ff27de157ef25e95ce579f1dcca6be8da8681f482b2e.apk",
-      "created_at": "2026-11-26T06:35:13Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ja--179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328.apk",
-      "bytes": 667858,
-      "sha256": "179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ja--179e5b435aabbdb909e9af0bee96dad6f2a5b6007942078bff37ec972d48c328.apk",
-      "created_at": "2026-11-26T06:35:15Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ko--a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88.apk",
-      "bytes": 630994,
-      "sha256": "a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ko--a3ae024f246ca4eafee788dc9e36c40d175b1cb2774e938a69a0ee4f1de18b88.apk",
-      "created_at": "2026-11-26T06:35:17Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.pt--6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be.apk",
-      "bytes": 938194,
-      "sha256": "6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.pt--6394957232fe65700ef4a9c7f49f0373896c7f5231949a79938adfada5b5f2be.apk",
-      "created_at": "2026-11-26T06:35:18Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.ru--d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7.apk",
-      "bytes": 827602,
-      "sha256": "d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.ru--d7888d59da610d17b1db70383c9eb5efec9d3b07e3530b3c1b501d3cc41e85a7.apk",
-      "created_at": "2026-11-26T06:35:20Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.tr--c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa.apk",
-      "bytes": 614610,
-      "sha256": "c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.tr--c78593dcf7645f0d253ccd328f4b48057f41cf15ff56ef04acfdeb7aa1b03cfa.apk",
-      "created_at": "2026-11-26T06:35:22Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.xxhdpi--aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676.apk",
-      "bytes": 1373460,
-      "sha256": "aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.xxhdpi--aff4fc8e5962294c839c6b9cb20ce2987d2b8f6e6933be6dd81d100167043676.apk",
-      "created_at": "2026-11-26T06:35:23Z",
-      "recorded_as": []
-    },
-    {
-      "release_tag": "apps-google-play-recovery-s2",
-      "release_asset": "com.sonos.acr2--90.00.43-release+20261006.65c4a1e--split-config.zh--78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d.apk",
-      "bytes": 1073362,
-      "sha256": "78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d",
-      "url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-recovery-s2/com.sonos.acr2--90.00.43-release%2B20261006.65c4a1e--split-config.zh--78e47a1e54b8d5ddbc56d5f44542c34e6809132e6c8a010c5dd069b6cba0146d.apk",
-      "created_at": "2026-11-26T06:35:25Z",
-      "recorded_as": []
-    },
     {
       "release_tag": "apps-web-controller",
       "release_asset": "sonos-controller-20261006T012717Z--cf97fe5b9446--complete.tar.gz",
