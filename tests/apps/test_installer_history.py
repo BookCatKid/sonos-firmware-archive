@@ -311,3 +311,48 @@ class DesktopMetadataTests(unittest.TestCase):
                                  'CFBundleShortVersionString': '1.2.3'})])
         self.assertIn('discovery_errors', result)
 
+
+
+class DecoderOutputTests(unittest.TestCase):
+    class Process:
+        def __init__(self, output, returncode):
+            self.output, self.returncode = output, returncode
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self):
+            return self.returncode
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exception):
+            return False
+
+    def run_decoder(self, output, returncode, allow_partial):
+        def launch(command, stdout=None, stderr=None):
+            if output and stdout is not None:
+                stdout.write(output)
+                stdout.flush()
+            return self.Process(output, returncode)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary)/'output'
+            with patch.object(installers.subprocess, 'Popen', side_effect=launch), \
+                    patch.object(installers.time, 'sleep', return_value=None):
+                try:
+                    installers._archive_output(['decoder'], destination, limit=1024,
+                                               allow_partial=allow_partial)
+                except ValueError as error:
+                    return str(error)
+                return destination.read_bytes()
+
+    def test_a_partial_archive_is_usable_when_its_output_parses(self):
+        self.assertEqual(self.run_decoder(b'<plist/>', 2, True), b'<plist/>')
+
+    def test_a_partial_archive_without_output_is_a_failure(self):
+        self.assertIn('decoder failed', self.run_decoder(b'', 2, True))
+
+    def test_a_failure_remains_a_failure_when_partial_output_is_not_allowed(self):
+        self.assertIn('decoder failed', self.run_decoder(b'<plist/>', 2, False))

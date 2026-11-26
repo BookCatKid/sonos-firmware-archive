@@ -127,8 +127,14 @@ def acquire(candidate, destination, *, blocked=None, inspection_required=False):
     raise last_error
 
 
-def _archive_output(command, destination, *, limit, seconds=600):
-    """Read an archive through stdout; never execute or extract its member paths."""
+def _archive_output(command, destination, *, limit, seconds=600, allow_partial=False):
+    """Read an archive through stdout; never execute or extract its member paths.
+
+    A disk image can contain members the decoder refuses while still serving the
+    one requested here, in which case it reports failure after writing complete
+    output. Callers that parse the result pass allow_partial, so the parse itself
+    is what proves the output usable.
+    """
     with destination.open('wb') as stream, subprocess.Popen(
             command, stdout=stream, stderr=subprocess.DEVNULL) as process:
         deadline = time.monotonic()+seconds
@@ -137,7 +143,9 @@ def _archive_output(command, destination, *, limit, seconds=600):
                 if destination.stat().st_size > limit or time.monotonic() >= deadline:
                     raise ValueError('installer metadata decoder exceeded its resource budget')
                 time.sleep(.05)
-            if process.returncode or destination.stat().st_size > limit:
+            size = destination.stat().st_size
+            failed = process.returncode and not (allow_partial and size)
+            if failed or size > limit:
                 raise ValueError('installer metadata decoder failed or exceeded its output budget')
         finally:
             if process.poll() is None:
@@ -192,7 +200,8 @@ def _inspect_desktop(candidate, path):
         selection = '*.app/Contents/Info.plist' if not executable else None
         listing = work/'listing.txt'
         _archive_output([tool, 'l', '-slt', *(('-r',) if selection else ()), *archive_type, '--', str(path),
-                         *([selection] if selection else [])], listing, limit=4*1024*1024)
+                         *([selection] if selection else [])], listing, limit=4*1024*1024,
+                        allow_partial=True)
         entries = []
         for block in listing.read_text(errors='replace').split('\n\n'):
             entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
@@ -200,7 +209,8 @@ def _inspect_desktop(candidate, path):
             resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:[.]txt|/|$)', e.get('Path', ''))]
             for member in resources:
                 output = work/'version-resource'
-                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output, limit=1_000_000)
+                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output,
+                                limit=1_000_000, allow_partial=True)
                 data = output.read_bytes()
                 for text in (data.decode('utf-16le', errors='ignore'), data.decode('utf-8', errors='ignore')):
                     pattern = r'ProductVersion[\s\x00\",:=]+([0-9]+(?:[.,][ ]*[0-9]+)+)'
@@ -216,7 +226,8 @@ def _inspect_desktop(candidate, path):
                         key=lambda e: e['Path'].count('/'))
         for member in plists:
             output = work/'Info.plist'
-            _archive_output([tool, 'x', '-so', '--', str(path), member['Path']], output, limit=1_000_000)
+            _archive_output([tool, 'x', '-so', '--', str(path), member['Path']], output,
+                            limit=1_000_000, allow_partial=True)
             try:
                 return parse(output.read_bytes(), member['Path'])
             except ValueError:
