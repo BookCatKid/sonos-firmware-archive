@@ -76,7 +76,7 @@ class ApkInspectionTests(unittest.TestCase):
         self.assertEqual(mobile.inspection_revision, apk.inspection_revision())
         desktop = installers.source(default_platform='windows')
         self.assertIs(desktop.inspect, installers.inspect_desktop)
-        self.assertEqual(desktop.inspection_revision, 'desktop-metadata-4')
+        self.assertEqual(desktop.inspection_revision, 'desktop-metadata-5')
         self.assertFalse(desktop.inspection_blocks_publication)
 
     def test_missing_optional_java_defers_acquisition_before_downloading(self):

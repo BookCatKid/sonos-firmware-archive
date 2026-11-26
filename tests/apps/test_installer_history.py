@@ -348,11 +348,27 @@ class DecoderOutputTests(unittest.TestCase):
                     return str(error)
                 return destination.read_bytes()
 
+    def plist(self, version='1.2.3'):
+        import plistlib
+        return plistlib.dumps({'CFBundleIdentifier': 'com.sonos.controller',
+                               'CFBundleShortVersionString': version})
+
     def test_a_partial_archive_is_usable_when_its_output_parses(self):
-        self.assertEqual(self.run_decoder(b'<plist/>', 2, True), b'<plist/>')
+        import plistlib
+        body = self.plist()
+        result = self.run_decoder(body, 2, True)
+        self.assertEqual(result, body)
+        self.assertEqual(plistlib.loads(result)['CFBundleShortVersionString'], '1.2.3')
 
     def test_a_partial_archive_without_output_is_a_failure(self):
         self.assertIn('decoder failed', self.run_decoder(b'', 2, True))
 
     def test_a_failure_remains_a_failure_when_partial_output_is_not_allowed(self):
-        self.assertIn('decoder failed', self.run_decoder(b'<plist/>', 2, False))
+        self.assertIn('decoder failed', self.run_decoder(self.plist(), 2, False))
+
+    def test_a_short_member_is_not_usable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)/'member'
+            output.write_bytes(b'prefix')
+            self.assertIsNone(installers._complete_member(output, '40'))
+            self.assertEqual(installers._complete_member(output, '6'), b'prefix')

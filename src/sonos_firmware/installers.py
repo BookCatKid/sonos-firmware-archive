@@ -153,6 +153,15 @@ def _archive_output(command, destination, *, limit, seconds=600, allow_partial=F
                 process.wait()
 
 
+def _complete_member(output, expected):
+    """Return a member's bytes only when the decoder wrote all of them."""
+    if not output.exists():
+        return None
+    if isinstance(expected, str) and expected.isdigit() and output.stat().st_size != int(expected):
+        return None
+    return output.read_bytes()
+
+
 def _inspect_desktop(candidate, path):
     """Observe the actual app version needed to discover native manifest URLs.
 
@@ -205,13 +214,22 @@ def _inspect_desktop(candidate, path):
         entries = []
         for block in listing.read_text(errors='replace').split('\n\n'):
             entries.append(dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line))
+
+        def member_bytes(member, name, limit=1_000_000):
+            """Read one member; a failed or short extraction is not usable."""
+            output = work/name
+            try:
+                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output,
+                                limit=limit, allow_partial=True)
+            except ValueError:
+                return None
+            return _complete_member(output, member.get('Size', ''))
         if executable:
             resources = [e for e in entries if re.search(r'(?i)(?:^|/)VERSION(?:[.]txt|/|$)', e.get('Path', ''))]
             for member in resources:
-                output = work/'version-resource'
-                _archive_output([tool, 'x', '-so', *archive_type, '--', str(path), member['Path']], output,
-                                limit=1_000_000, allow_partial=True)
-                data = output.read_bytes()
+                data = member_bytes(member, 'version-resource')
+                if data is None:
+                    continue
                 for text in (data.decode('utf-16le', errors='ignore'), data.decode('utf-8', errors='ignore')):
                     pattern = r'ProductVersion[\s\x00\",:=]+([0-9]+(?:[.,][ ]*[0-9]+)+)'
                     # Prefer the application's StringFileInfo value over
@@ -224,14 +242,20 @@ def _inspect_desktop(candidate, path):
             raise ValueError('installer has no readable Sonos ProductVersion resource')
         plists = sorted((e for e in entries if e.get('Path', '').endswith('.app/Contents/Info.plist')),
                         key=lambda e: e['Path'].count('/'))
+        build_only = None
         for member in plists:
-            output = work/'Info.plist'
-            _archive_output([tool, 'x', '-so', '--', str(path), member['Path']], output,
-                            limit=1_000_000, allow_partial=True)
+            data = member_bytes(member, 'Info.plist')
+            if data is None:
+                continue
             try:
-                return parse(output.read_bytes(), member['Path'])
+                parsed = parse(data, member['Path'])
             except ValueError:
                 continue
+            if parsed['desktop_metadata'].get('app_version'):
+                return parsed
+            build_only = build_only or parsed
+        if build_only:
+            return build_only
         raise ValueError('installer disk image has no readable application plist')
 
 
@@ -299,7 +323,7 @@ def source(*, refresh_hours=168, current_refresh_hours=6, default_platform='', p
                      'Exact public Sonos installer captures with verified hashes and source provenance.',
                      default_platform=default_platform, refresh_hours=refresh_hours, current_refresh_hours=current_refresh_hours,
                      inspect=inspect_official if mobile else inspect_desktop,
-                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-4',
+                     inspection_revision=inspection_revision() if mobile else 'desktop-metadata-5',
                      inspect_if=None if mobile else pivotable,
                      inspection_blocks_publication=mobile,
                      inspection_priority=None if mobile else desktop_inspection_priority)
