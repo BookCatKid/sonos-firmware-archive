@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "target": "apple-listings",
+  "provider": "apple-listings",
+  "status": "ok",
+  "executed": true,
+  "started_at": "2026-11-26T05:31:38.048961+00:00",
+  "steps": [
+    {
+      "name": "check_new_apple_apps",
+      "status": "ok",
+      "exit_code": 0,
+      "output_tail": "Apple App Store: status=ok\n",
+      "source_status": "ok"
+    },
+    {
+      "name": "store-apple-metadata",
+      "status": "ok",
+      "exit_code": 0,
+      "output_tail": ""
+    }
+  ],
+  "errors": [],
+  "pending": [],
+  "finished_at": "2026-11-26T05:31:38.588882+00:00",
+  "next_due": "2026-11-26T11:31:38.588882+00:00"
+}
