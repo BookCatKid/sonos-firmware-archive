@@ -4,13 +4,13 @@
   "provider": "google-play",
   "status": "failed",
   "executed": true,
-  "started_at": "2026-11-26T17:59:01.024505+00:00",
+  "started_at": "2026-11-27T01:00:07.680975+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
       "status": "failed",
       "exit_code": 1,
-      "output_tail": "archived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr@572383122\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@1270401011\narchived com.sonos.acr2@802900006\narchived com.sonos.acr2@802900006\n",
+      "output_tail": "",
       "failure_kind": "source-reported-incomplete",
       "source_status": "partial"
     }
@@ -28,6 +28,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T18:29:29.880404+00:00",
-  "next_due": "2026-11-26T19:29:29.880404+00:00"
+  "finished_at": "2026-11-27T01:18:33.464755+00:00",
+  "next_due": "2026-11-27T02:18:33.464755+00:00"
 }
