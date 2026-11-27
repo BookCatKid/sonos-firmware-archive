@@ -4,7 +4,7 @@
   "provider": "firmware",
   "status": "partial",
   "executed": true,
-  "started_at": "2026-11-26T18:02:04.819088+00:00",
+  "started_at": "2026-11-27T01:00:06.343449+00:00",
   "steps": [
     {
       "name": "archive-historical-firmware",
@@ -24,7 +24,7 @@
       "name": "discover_firmware",
       "status": "partial",
       "exit_code": 0,
-      "output_tail": "manifests=130 candidates=4727 checked=0 pending=2747\n",
+      "output_tail": "manifests=130 candidates=4728 checked=0 pending=2747\n",
       "source_status": "partial"
     }
   ],
@@ -43,6 +43,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T22:03:25.831728+00:00",
-  "next_due": "2026-11-26T23:03:25.831728+00:00"
+  "finished_at": "2026-11-27T05:03:17.271511+00:00",
+  "next_due": "2026-11-27T06:03:17.271511+00:00"
 }
