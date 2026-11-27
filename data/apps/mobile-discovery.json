@@ -2,7 +2,7 @@
   "status": "ok",
   "errors": [],
   "schema_version": 1,
-  "checked": "2026-11-26T17:58:30.911431+00:00",
+  "checked": "2026-11-27T00:59:59.703374+00:00",
   "current_only": false,
   "official_redirect": {
     "url": "https://www.sonos.com/redir/controller_software_android2",
@@ -13,8 +13,8 @@
   "wayback": {
     "provider": "shared-installer-history"
   },
-  "candidate_total": 51,
-  "available_live_total": 46,
+  "candidate_total": 52,
+  "available_live_total": 47,
   "candidates": [
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController120.apk",
@@ -30,6 +30,19 @@
       "http_status": 200,
       "content_length": 62361240,
       "etag": "\"cd5181486e105d741d8bc96fd9ece669-8\""
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1201.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1201",
+      "sources": [
+        "public-archive-index"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 62372908,
+      "etag": "\"7b21a68f49f7dbc42a798171d607e107-8\""
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
@@ -286,34 +299,6 @@
       "etag": "\"d673bce05d300a8af0c77fdb034732e5-12\""
     },
     {
-      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
-      "family": "s2",
-      "platform": "fireos-android-apk",
-      "version": "70.1-12345",
-      "sources": [
-        "firmware-observation:data/discovery/firmware-frontier.json"
-      ],
-      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
-      "current": false,
-      "http_status": 404,
-      "content_length": null,
-      "etag": null
-    },
-    {
-      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
-      "family": "s2",
-      "platform": "fireos-android-apk",
-      "version": "70.1-12345",
-      "sources": [
-        "firmware-observation:data/discovery/firmware-frontier.json"
-      ],
-      "advertised_by": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/update.upm",
-      "current": false,
-      "http_status": 404,
-      "content_length": null,
-      "etag": null
-    },
-    {
       "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
       "family": "s2",
       "platform": "fireos-android-apk",
@@ -409,7 +394,6 @@
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
-      "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
       "current": false,
       "http_status": 200,
       "content_length": 86361394,
@@ -423,7 +407,6 @@
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
-      "advertised_by": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
       "current": false,
       "http_status": 200,
       "content_length": 88204582,
@@ -512,7 +495,6 @@
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
-      "advertised_by": "https://update-beta.sonos.com/software/d278c50f-723f-494c-aab7-b3760c35ac96/passportAndroidBeta.html",
       "current": false,
       "http_status": 200,
       "content_length": 272448205,
@@ -586,7 +568,6 @@
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
-      "advertised_by": "https://update-beta.sonos.com/software/76c26d7b-8406-4bcc-ba6a-fda233a64235/passportAndroidBeta.html",
       "current": false,
       "http_status": 200,
       "content_length": 339757559,
@@ -615,7 +596,6 @@
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json"
       ],
-      "advertised_by": "https://update-beta.sonos.com/software/8c19852f-4ac8-45ca-91bd-a50c4c9e9aca/passportAndroidBeta.html",
       "current": false,
       "http_status": 200,
       "content_length": 339022164,
@@ -734,6 +714,32 @@
       "http_status": 200,
       "content_length": 259882787,
       "etag": "\"48da58979543c03db1cb3c7a729e1694-31\""
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "unknown",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-armeabi-v7a.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "unknown",
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
     },
     {
       "url": "https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-11-arm64-v8a.apk",
