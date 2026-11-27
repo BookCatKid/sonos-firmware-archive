@@ -4,7 +4,7 @@
   "provider": "google-play",
   "status": "failed",
   "executed": true,
-  "started_at": "2026-11-27T01:00:07.680975+00:00",
+  "started_at": "2026-11-27T09:39:02.309814+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
@@ -28,6 +28,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-27T01:18:33.464755+00:00",
-  "next_due": "2026-11-27T02:18:33.464755+00:00"
+  "finished_at": "2026-11-27T09:55:48.771016+00:00",
+  "next_due": "2026-11-27T10:55:48.771016+00:00"
 }
