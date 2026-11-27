@@ -1394,7 +1394,7 @@
       "sha256": "bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27",
       "source_url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
       "provenance": "official-live-corroborated-by-wayback-cdx",
-      "release_tag": "manifest-snapshots-2026-11-26",
+      "release_tag": "manifest-history-20260828",
       "release_asset": "manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
       "alternate_publications": [
         {
@@ -1404,11 +1404,8 @@
           "bytes": 10643,
           "repository": "BookCatKid/sonos-firmware-archive",
           "published": true
-        }
-      ],
-      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
-      "publications": {
-        "BookCatKid/sonos-firmware-archive": {
+        },
+        {
           "status": "verified",
           "repository": "BookCatKid/sonos-firmware-archive",
           "release_tag": "manifest-snapshots-2026-11-26",
@@ -1417,16 +1414,39 @@
           "sha256": "bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27",
           "bytes": 10643
         }
+      ],
+      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+      "publications": {
+        "BookCatKid/sonos-firmware-archive": {
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_tag": "manifest-history-20260828",
+          "release_asset": "manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
+          "sha256": "bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27",
+          "bytes": 10643
+        }
       },
       "publication": {
         "status": "verified",
         "repository": "BookCatKid/sonos-firmware-archive",
-        "release_tag": "manifest-snapshots-2026-11-26",
+        "release_tag": "manifest-history-20260828",
         "release_asset": "manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
-        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-snapshots-2026-11-26/manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27-ef089689af9f24d13d01b3569e44a3e0e49441b71edca0d4384400cd02f9fdb8.upm",
         "sha256": "bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27",
         "bytes": 10643
-      }
+      },
+      "retrievals": [
+        {
+          "url": "https://web.archive.org/web/20260828055129id_/http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055129",
+            "digest": "76QLFHJL5LRX73IAPLTXRD2XEXG3SA2N",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F80.1-56190-v16.3.3-5g1N0fceQI-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm"
+          }
+        }
+      ]
     },
     {
       "version": "81.1-58074",
@@ -1523,7 +1543,7 @@
       "sha256": "b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c",
       "source_url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
       "provenance": "official-live-corroborated-by-wayback-cdx",
-      "release_tag": "manifest-snapshots-2026-11-26",
+      "release_tag": "manifest-history-20260828",
       "release_asset": "manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
       "alternate_publications": [
         {
@@ -1533,11 +1553,8 @@
           "bytes": 10603,
           "repository": "BookCatKid/sonos-firmware-archive",
           "published": true
-        }
-      ],
-      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
-      "publications": {
-        "BookCatKid/sonos-firmware-archive": {
+        },
+        {
           "status": "verified",
           "repository": "BookCatKid/sonos-firmware-archive",
           "release_tag": "manifest-snapshots-2026-11-26",
@@ -1546,16 +1563,39 @@
           "sha256": "b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c",
           "bytes": 10603
         }
+      ],
+      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+      "publications": {
+        "BookCatKid/sonos-firmware-archive": {
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_tag": "manifest-history-20260828",
+          "release_asset": "manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
+          "sha256": "b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c",
+          "bytes": 10603
+        }
       },
       "publication": {
         "status": "verified",
         "repository": "BookCatKid/sonos-firmware-archive",
-        "release_tag": "manifest-snapshots-2026-11-26",
+        "release_tag": "manifest-history-20260828",
         "release_asset": "manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
-        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-snapshots-2026-11-26/manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c-5398bf968a13e4d01f4a19cdaca26f10d84fc69ab44fea2618c32153ed534d79.upm",
         "sha256": "b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c",
         "bytes": 10603
-      }
+      },
+      "retrievals": [
+        {
+          "url": "https://web.archive.org/web/20260828055145id_/http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055145",
+            "digest": "P4R2ZXPQPH6B5TOQ6AB44O2BWAALM7BE",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F81.1-58210-v16.4.4-mXM1doJeKr-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm"
+          }
+        }
+      ]
     },
     {
       "version": "82.2-59204",
@@ -1566,7 +1606,7 @@
       "sha256": "56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0",
       "source_url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
       "provenance": "official-live-corroborated-by-wayback-cdx",
-      "release_tag": "manifest-snapshots-2026-11-26",
+      "release_tag": "manifest-history-20260828",
       "release_asset": "manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
       "alternate_publications": [
         {
@@ -1576,11 +1616,8 @@
           "bytes": 10792,
           "repository": "BookCatKid/sonos-firmware-archive",
           "published": true
-        }
-      ],
-      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
-      "publications": {
-        "BookCatKid/sonos-firmware-archive": {
+        },
+        {
           "status": "verified",
           "repository": "BookCatKid/sonos-firmware-archive",
           "release_tag": "manifest-snapshots-2026-11-26",
@@ -1589,16 +1626,39 @@
           "sha256": "56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0",
           "bytes": 10792
         }
+      ],
+      "advertised_by": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+      "publications": {
+        "BookCatKid/sonos-firmware-archive": {
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_tag": "manifest-history-20260828",
+          "release_asset": "manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
+          "sha256": "56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0",
+          "bytes": 10792
+        }
       },
       "publication": {
         "status": "verified",
         "repository": "BookCatKid/sonos-firmware-archive",
-        "release_tag": "manifest-snapshots-2026-11-26",
+        "release_tag": "manifest-history-20260828",
         "release_asset": "manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
-        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-snapshots-2026-11-26/manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20260828/manifest-56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0-3d8e2a05bd3158d689b20c514a42a96ef0cf0c23f545d1bf37816b41cb9bb806.upm",
         "sha256": "56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0",
         "bytes": 10792
-      }
+      },
+      "retrievals": [
+        {
+          "url": "https://web.archive.org/web/20260828055254id_/http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055254",
+            "digest": "UEFNCGCMYLOINCUF5PUS6VQRNN2MPY67",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F82.2-59204-v16.5-tNGSLOBaIg-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm"
+          }
+        }
+      ]
     },
     {
       "version": "82.3-60160",
@@ -5435,6 +5495,69 @@
         "bytes": 12383
       },
       "provenance": "independent-public-protocol-discovery"
+    },
+    {
+      "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+      "bytes": 712,
+      "source_url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+      "publications": {
+        "BookCatKid/sonos-firmware-archive": {
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_tag": "manifest-history-20150201",
+          "release_asset": "manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20150201/manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+          "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+          "bytes": 712
+        }
+      },
+      "version": "28.1-83251",
+      "default_version": null,
+      "revision": "1416988667",
+      "filename": "manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+      "release_tag": "manifest-history-20150201",
+      "release_asset": "manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+      "publication": {
+        "status": "verified",
+        "repository": "BookCatKid/sonos-firmware-archive",
+        "release_tag": "manifest-history-20150201",
+        "release_asset": "manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+        "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20150201/manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+        "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+        "bytes": 712
+      },
+      "provenance": "independent-public-archive-replay",
+      "retrievals": [
+        {
+          "url": "https://web.archive.org/web/20141230023929id_/http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "archive_capture": {
+            "timestamp": "20141230023929",
+            "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+          }
+        },
+        {
+          "url": "https://web.archive.org/web/20150201090550id_/http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "archive_capture": {
+            "timestamp": "20150201090550",
+            "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+          }
+        }
+      ],
+      "alternate_publications": [
+        {
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_tag": "manifest-history-20141230",
+          "release_asset": "manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/manifest-history-20141230/manifest-b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2-6593bfa00bbcda580049621775ed718609281123426a32c54f305db6dbaf3e2f.upm",
+          "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+          "bytes": 712
+        }
+      ]
     }
   ],
   "packages": [

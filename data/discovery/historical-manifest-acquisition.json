@@ -6872,7 +6872,7 @@
         "next_attempt_at": "2026-12-03T07:14:29.652898+00:00"
       },
       "a8bd8bb08b764e590c7bbf52d439652ac790e6e75f4793a51d411575fae11d67": {
-        "status": "failed",
+        "status": "preserved",
         "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
         "archive_capture": {
           "timestamp": "20141230023929",
@@ -6898,7 +6898,8 @@
             "default_version": null,
             "warnings": [],
             "landing_links": [],
-            "manifest_links": []
+            "manifest_links": [],
+            "unresolved_links": []
           },
           "candidates": [
             {
@@ -6939,13 +6940,13 @@
           "provenance": "independent-public-archive-replay",
           "release_tag": "manifest-history-20141230"
         },
-        "checked_at": "2026-11-27T09:39:08.156961+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T10:39:08.156961+00:00",
+        "checked_at": "2026-11-27T19:30:02.556163+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-04T19:30:02.556163+00:00",
         "error": "HTTP Error 404: Not Found"
       },
       "2bb7d06ffd637d3c65fb0595c9ef5b56cd36d27ac0da3e26f61864c0104ce2ee": {
-        "status": "failed",
+        "status": "preserved",
         "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
         "archive_capture": {
           "timestamp": "20150201090550",
@@ -6971,7 +6972,8 @@
             "default_version": null,
             "warnings": [],
             "landing_links": [],
-            "manifest_links": []
+            "manifest_links": [],
+            "unresolved_links": []
           },
           "candidates": [
             {
@@ -7012,13 +7014,13 @@
           "provenance": "independent-public-archive-replay",
           "release_tag": "manifest-history-20150201"
         },
-        "checked_at": "2026-11-27T09:39:23.021156+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T10:39:23.021156+00:00",
+        "checked_at": "2026-11-27T19:30:05.125053+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-04T19:30:05.125053+00:00",
         "error": "HTTP Error 404: Not Found"
       },
       "87c3e3822f18d516de21b79bf79e863f9058c83ce5b3093589bcdee004b0dfc9": {
-        "status": "failed",
+        "status": "preserved",
         "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
         "archive_capture": {
           "timestamp": "20260828055129",
@@ -7026,13 +7028,546 @@
           "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F80.1-56190-v16.3.3-5g1N0fceQI-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
           "original_url": "http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm"
         },
-        "checked_at": "2026-11-27T09:40:23.142950+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T10:40:23.142950+00:00",
-        "error": "<urlopen error timed out>"
+        "checked_at": "2026-11-27T19:30:07.398792+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-04T19:30:07.398792+00:00",
+        "error": "<urlopen error timed out>",
+        "manifest": {
+          "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055129",
+            "digest": "76QLFHJL5LRX73IAPLTXRD2XEXG3SA2N",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F80.1-56190-v16.3.3-5g1N0fceQI-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm"
+          },
+          "sha256": "bd8405afafdd06ee210e4a0d84eab50938db16f0493877f1c76d6c31087ecd27",
+          "bytes": 10643,
+          "metadata": {
+            "base_url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/^80.1-56190",
+            "manifest_version": "1.1",
+            "revision": "d72137c5-b8ce-47e8-a728-dcbe8ae66c06",
+            "system_version": "80.1-56190",
+            "default_version": "80.1-56190",
+            "warnings": [],
+            "landing_links": [
+              "https://www.sonos.com/icr2_appstore",
+              "market://details?id=com.sonos.acr2"
+            ],
+            "manifest_links": [],
+            "unresolved_links": [
+              {
+                "url": "market://details?id=com.sonos.acr2",
+                "manifest_url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+                "error": "historical manifest link uses an unsupported URL"
+              }
+            ]
+          },
+          "candidates": [
+            {
+              "version": "28.1-86141",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg",
+              "source": "image",
+              "filename": "28.1-86141-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 1,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-1.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-1.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-3.exe",
+              "source": "image",
+              "filename": "34.16-37101-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg",
+              "source": "image",
+              "filename": "34.16-37101-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 5,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-5.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-5.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-6.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 7,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-7.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-7.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-8.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-9.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-12.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-13.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 16,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-16.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-16.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-20.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "38.9-46251",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg",
+              "source": "image",
+              "filename": "38.9-46251-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "47.2-59120",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg",
+              "source": "image",
+              "filename": "47.2-59120-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "55.1-74250",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-17.upd",
+              "source": "image",
+              "filename": "55.1-74250-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-8.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-12.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-17.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-13.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-14.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-20.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-21.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-22.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-23.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-24.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-28.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-29.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "64.3-21150",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe",
+              "source": "image",
+              "filename": "64.3-21150-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-8.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-12.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-17.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Dev/80.1-56190-v16.3.3-2rZ4DF8eqv-RC-2/80.1-56190-1-3.exe",
+              "source": "image",
+              "filename": "80.1-56190-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Dev/80.1-56190-v16.3.3-2rZ4DF8eqv-RC-2/80.1-56190-1-4.dmg",
+              "source": "image",
+              "filename": "80.1-56190-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-8.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-9.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 10,
+              "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/ios.html",
+              "source": "image",
+              "filename": "ios.html",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 11,
+              "url": "https://update-beta.sonos.com/software/2rZ4DF8eqv/android.html",
+              "source": "image",
+              "filename": "android.html",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-12.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-13.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-14.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-17.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-20.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-21.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-22.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-23.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-24.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 25,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-25.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-25.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 26,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-26.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-26.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 27,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-27.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-27.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-28.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-29.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 30,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-30.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-30.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 32,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-32.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-32.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 33,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-33.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-33.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 34,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-34.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-34.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 35,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-35.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-35.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 36,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-36.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-36.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 37,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-37.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-37.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 38,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-38.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-38.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "80.1-56190",
+              "package_model": 40,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/80.1-56190-1-40.upd",
+              "source": "default-base",
+              "filename": "80.1-56190-1-40.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20260828055129id_/http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20260828"
+        }
       },
       "ed82c7ffff7f94f0694ca6e7a7c8be733d6947623555403f859e3c26ecb25c97": {
-        "status": "failed",
+        "status": "preserved",
         "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
         "archive_capture": {
           "timestamp": "20260828055254",
@@ -7040,13 +7575,554 @@
           "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F82.2-59204-v16.5-tNGSLOBaIg-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
           "original_url": "http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm"
         },
-        "checked_at": "2026-11-27T09:41:23.213350+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T10:41:23.213350+00:00",
-        "error": "<urlopen error timed out>"
+        "checked_at": "2026-11-27T19:30:09.227327+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-04T19:30:09.227327+00:00",
+        "error": "<urlopen error timed out>",
+        "manifest": {
+          "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055254",
+            "digest": "UEFNCGCMYLOINCUF5PUS6VQRNN2MPY67",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F82.2-59204-v16.5-tNGSLOBaIg-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm"
+          },
+          "sha256": "56f4dfcbd1366d99b0bc645ca70d330788bda21d808bf1123fd55bf2288a6ca0",
+          "bytes": 10792,
+          "metadata": {
+            "base_url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/^82.2-59204",
+            "manifest_version": "1.1",
+            "revision": "65c9a9cc-44f4-4ece-84e1-246b9c98528d",
+            "system_version": "82.2-59204",
+            "default_version": "82.2-59204",
+            "warnings": [],
+            "landing_links": [
+              "https://www.sonos.com/icr2_appstore",
+              "market://details?id=com.sonos.acr2"
+            ],
+            "manifest_links": [],
+            "unresolved_links": [
+              {
+                "url": "market://details?id=com.sonos.acr2",
+                "manifest_url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+                "error": "historical manifest link uses an unsupported URL"
+              }
+            ]
+          },
+          "candidates": [
+            {
+              "version": "28.1-86141",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg",
+              "source": "image",
+              "filename": "28.1-86141-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 1,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-1.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-1.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-3.exe",
+              "source": "image",
+              "filename": "34.16-37101-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg",
+              "source": "image",
+              "filename": "34.16-37101-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 5,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-5.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-5.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-6.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 7,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-7.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-7.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-8.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-9.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-12.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-13.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 16,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-16.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-16.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-20.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "38.9-46251",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg",
+              "source": "image",
+              "filename": "38.9-46251-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "47.2-59120",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg",
+              "source": "image",
+              "filename": "47.2-59120-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "55.1-74250",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-17.upd",
+              "source": "image",
+              "filename": "55.1-74250-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-8.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-12.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-17.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-13.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-14.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-20.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-21.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-22.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-23.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-24.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-28.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-29.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "64.3-21150",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe",
+              "source": "image",
+              "filename": "64.3-21150-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-8.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-12.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-17.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-3.exe",
+              "source": "image",
+              "filename": "82.2-59204-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-4.dmg",
+              "source": "image",
+              "filename": "82.2-59204-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-8.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-9.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-12.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-13.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-14.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-17.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-20.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-21.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-22.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-23.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-24.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 25,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-25.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-25.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 26,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-26.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-26.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 27,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-27.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-27.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-28.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-29.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 30,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-30.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-30.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 32,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-32.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-32.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 33,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-33.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-33.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 34,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-34.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-34.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 35,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-35.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-35.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 36,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-36.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-36.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 37,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-37.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-37.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 38,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-38.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-38.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 40,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-40.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-40.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 41,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-41.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-41.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 42,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-42.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-42.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "82.2-59204",
+              "package_model": 49,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/82.2-59204-1-49.upd",
+              "source": "default-base",
+              "filename": "82.2-59204-1-49.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20260828055254id_/http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20260828"
+        }
       },
       "cc0074d8a768020942f8fd4a85689fe4935a3e778af782027bc02f9996390919": {
-        "status": "failed",
+        "status": "preserved",
         "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
         "archive_capture": {
           "timestamp": "20260828055145",
@@ -7054,10 +8130,551 @@
           "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F81.1-58210-v16.4.4-mXM1doJeKr-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
           "original_url": "http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm"
         },
-        "checked_at": "2026-11-27T09:42:26.503150+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T10:42:26.503150+00:00",
-        "error": "<urlopen error _ssl.c:1018: The handshake operation timed out>"
+        "checked_at": "2026-11-27T19:30:10.916784+00:00",
+        "consecutive_failures": 0,
+        "next_attempt_at": "2026-12-04T19:30:10.916784+00:00",
+        "error": "<urlopen error _ssl.c:1018: The handshake operation timed out>",
+        "manifest": {
+          "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+          "archive_capture": {
+            "timestamp": "20260828055145",
+            "digest": "P4R2ZXPQPH6B5TOQ6AB44O2BWAALM7BE",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F81.1-58210-v16.4.4-mXM1doJeKr-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm"
+          },
+          "sha256": "b177f6aae8987df937817b14d1408e9c49740c8d509c8bfab796f69c44b5478c",
+          "bytes": 10603,
+          "metadata": {
+            "base_url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/^81.1-58210",
+            "manifest_version": "1.1",
+            "revision": "2751f5fd-4dad-46ed-b1ec-cb4ce937d68a",
+            "system_version": "81.1-58210",
+            "default_version": "81.1-58210",
+            "warnings": [],
+            "landing_links": [
+              "https://www.sonos.com/icr2_appstore",
+              "market://details?id=com.sonos.acr2"
+            ],
+            "manifest_links": [],
+            "unresolved_links": [
+              {
+                "url": "market://details?id=com.sonos.acr2",
+                "manifest_url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+                "error": "historical manifest link uses an unsupported URL"
+              }
+            ]
+          },
+          "candidates": [
+            {
+              "version": "28.1-86141",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/28.1-86141-v5.3.2-twphva-LR-1/28.1-86141-1-4.dmg",
+              "source": "image",
+              "filename": "28.1-86141-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 1,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-1.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-1.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-3.exe",
+              "source": "image",
+              "filename": "34.16-37101-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-LR-1/34.16-37101-1-4.dmg",
+              "source": "image",
+              "filename": "34.16-37101-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 5,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-5.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-5.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-6.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 7,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-7.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-7.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-8.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-9.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-12.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-13.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 16,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-16.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-16.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-17.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "34.16-37101",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/34.16-37101-v7.1-nzhemz-MS-1/34.16-37101-1-20.upd",
+              "source": "image",
+              "filename": "34.16-37101-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "38.9-46251",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/38.9-46251-v8.1.1-mvckho-LR-1/38.9-46251-1-4.dmg",
+              "source": "image",
+              "filename": "38.9-46251-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "47.2-59120",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-4.dmg",
+              "source": "image",
+              "filename": "47.2-59120-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "55.1-74250",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/55.1-74250-v11.0-ytwbbr-GA-1/55.1-74250-1-17.upd",
+              "source": "image",
+              "filename": "55.1-74250-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-8.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-12.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.19-46310",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.19-46310-v11.12-rozcvdwa-GA-1/57.19-46310-1-17.upd",
+              "source": "image",
+              "filename": "57.19-46310-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-13.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-14.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-20.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-21.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-22.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-23.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-24.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-28.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "57.5-87010",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/57.5-87010-v11.2.6-aocdfj-GA-1/57.5-87010-1-29.upd",
+              "source": "image",
+              "filename": "57.5-87010-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "64.3-21150",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/64.3-21150-v13.2.3-hkzgqn-LR-1/64.3-21150-1-3.exe",
+              "source": "image",
+              "filename": "64.3-21150-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-8.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-12.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "73.0-42060",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/73.0-42060-v15.5-eqsrsbpq-GA-1/73.0-42060-1-17.upd",
+              "source": "image",
+              "filename": "73.0-42060-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 3,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-3.exe",
+              "source": "image",
+              "filename": "81.1-58210-1-3.exe",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 4,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-4.dmg",
+              "source": "image",
+              "filename": "81.1-58210-1-4.dmg",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 8,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-8.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-8.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-9.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-9.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 12,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-12.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-12.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 13,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-13.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-13.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 14,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-14.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-14.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 17,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-17.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-17.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 20,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-20.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-20.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 21,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-21.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-21.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 22,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-22.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-22.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 23,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-23.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-23.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 24,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-24.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-24.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 25,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-25.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-25.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 26,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-26.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-26.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 27,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-27.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-27.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 28,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-28.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-28.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 29,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-29.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-29.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 30,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-30.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-30.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 32,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-32.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-32.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 33,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-33.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-33.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 34,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-34.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-34.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 35,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-35.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-35.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 36,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-36.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-36.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 37,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-37.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-37.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 38,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-38.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-38.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 40,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-40.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-40.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 41,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-41.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-41.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 42,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-42.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-42.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "81.1-58210",
+              "package_model": 49,
+              "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-2/81.1-58210-1-49.upd",
+              "source": "default-base",
+              "filename": "81.1-58210-1-49.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20260828055145id_/http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20260828"
+        }
       }
     }
   },
