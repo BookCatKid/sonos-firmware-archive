@@ -19950,13 +19950,13 @@
         "verification": "empty-tar"
       },
       "libusb-1.0.23.txz--source-15a46e0bf17a02322cd33d553026daa6e615e4978efdd6f3da45b13f5ce4c095": {
-        "checked_at": "2026-11-26T16:46:59.419923+00:00",
-        "consecutive_failures": 3,
+        "checked_at": "2026-11-27T01:00:01.142181+00:00",
+        "consecutive_failures": 4,
         "downloaded_bytes": 108,
         "fetch_url": "https://www.sonos.com/documents/gpl/14.12/libusb-1.0.23.txz",
         "filename": "libusb-1.0.23.txz",
         "kind": "source",
-        "next_attempt_at": "2026-11-26T20:46:59.419923+00:00",
+        "next_attempt_at": "2026-11-27T09:00:01.142181+00:00",
         "origin": "sonos",
         "source_url": "https://www.sonos.com/documents/gpl/14.12/libusb-1.0.23.txz",
         "state": "invalid-artifact",
@@ -39440,5 +39440,5 @@
     }
   },
   "schema_version": 1,
-  "updated": "2026-11-26T17:03:15+00:00"
+  "updated": "2026-11-27T01:00:01+00:00"
 }
