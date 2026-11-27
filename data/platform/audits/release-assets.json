@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "checked": "2026-11-27T05:05:37.014644+00:00",
+  "checked": "2026-11-27T13:45:53.103455+00:00",
   "repository": "BookCatKid/sonos-firmware-archive",
-  "release_total": 165,
-  "github_asset_total": 8465,
-  "recorded_asset_total": 8946,
+  "release_total": 167,
+  "github_asset_total": 8551,
+  "recorded_asset_total": 9032,
   "missing_total": 575,
   "mismatched_total": 0,
   "unrecorded_extra_total": 94,
@@ -4078,7 +4078,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261127T093855Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4099,6 +4099,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -4134,7 +4138,7 @@
         },
         {
           "release_tag": "apps-web-pro",
-          "release_asset": "20261127T010038Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261127T093933Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -4155,6 +4159,10 @@
         {
           "release_tag": "apps-web-pro",
           "release_asset": "20261126T175911Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-pro",
+          "release_asset": "20261127T010038Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         }
       ]
     },
@@ -4172,7 +4180,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+          "release_asset": "20261127T093855Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4193,6 +4201,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         }
       ]
     },
@@ -4234,7 +4246,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+          "release_asset": "20261127T093855Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4255,6 +4267,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         }
       ]
     },
@@ -4296,7 +4312,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+          "release_asset": "20261127T093855Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4317,6 +4333,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         }
       ]
     },
@@ -4358,7 +4378,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+          "release_asset": "20261127T093855Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4379,6 +4399,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         }
       ]
     },
@@ -4420,7 +4444,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+          "release_asset": "20261127T093855Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -4441,6 +4465,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         }
       ]
     },
@@ -5910,7 +5938,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261127T093855Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-controller",
@@ -5931,6 +5959,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -5966,7 +5998,7 @@
         },
         {
           "release_tag": "apps-web-pro",
-          "release_asset": "20261127T010038Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+          "release_asset": "20261127T093933Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         },
         {
           "release_tag": "apps-web-pro",
@@ -5987,6 +6019,10 @@
         {
           "release_tag": "apps-web-pro",
           "release_asset": "20261126T175911Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
+        },
+        {
+          "release_tag": "apps-web-pro",
+          "release_asset": "20261127T010038Z--favicon--f1a0d0c976850ccf8e12e5cd512955d8c54bbd13f7e960bd67606d5f40c30719.ico"
         }
       ]
     },
@@ -6004,7 +6040,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+          "release_asset": "20261127T093855Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         },
         {
           "release_tag": "apps-web-controller",
@@ -6025,6 +6061,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--login--c8ff91d9b0914560eebd6fc7c7d8af86e189483183aaed96975173b9518ce521.html"
         }
       ]
     },
@@ -6066,7 +6106,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+          "release_asset": "20261127T093855Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -6087,6 +6127,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--logo512x512--9102530dd0a09107a26218f626df63273900b450e74a9ccab6d538cc3da0c16e.png"
         }
       ]
     },
@@ -6128,7 +6172,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+          "release_asset": "20261127T093855Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -6149,6 +6193,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--logo64x64_2x--9e1956a9de4b869e92f5b235c17c999b84209e04f37481d0abf2133d84e64eea.png"
         }
       ]
     },
@@ -6190,7 +6238,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+          "release_asset": "20261127T093855Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         },
         {
           "release_tag": "apps-web-controller",
@@ -6211,6 +6259,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--manifest--2af76b22355a6bbcda10dde74d0c76e6dfb79607fa0642e8451c12c83b7764fa.webmanifest"
         }
       ]
     },
@@ -6252,7 +6304,7 @@
         },
         {
           "release_tag": "apps-web-controller",
-          "release_asset": "20261127T010000Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+          "release_asset": "20261127T093855Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         },
         {
           "release_tag": "apps-web-controller",
@@ -6273,6 +6325,10 @@
         {
           "release_tag": "apps-web-controller",
           "release_asset": "20261126T175829Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
+        },
+        {
+          "release_tag": "apps-web-controller",
+          "release_asset": "20261127T010000Z--maskable_icon_x512--0ce078dfa2908da410f862e3c524cfd1435bb93987371079148b97356e807aa4.png"
         }
       ]
     },
