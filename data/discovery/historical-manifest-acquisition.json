@@ -6870,6 +6870,194 @@
         "checked_at": "2026-11-26T07:14:29.652898+00:00",
         "consecutive_failures": 0,
         "next_attempt_at": "2026-12-03T07:14:29.652898+00:00"
+      },
+      "a8bd8bb08b764e590c7bbf52d439652ac790e6e75f4793a51d411575fae11d67": {
+        "status": "failed",
+        "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+        "archive_capture": {
+          "timestamp": "20141230023929",
+          "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+        },
+        "manifest": {
+          "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "archive_capture": {
+            "timestamp": "20141230023929",
+            "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+          },
+          "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+          "bytes": 712,
+          "metadata": {
+            "base_url": null,
+            "manifest_version": "1",
+            "revision": "1416988667",
+            "system_version": "28.1-83251",
+            "default_version": null,
+            "warnings": [],
+            "landing_links": [],
+            "manifest_links": []
+          },
+          "candidates": [
+            {
+              "version": "24.1-75101",
+              "package_model": 2,
+              "url": "https://update.sonos.com/firmware/Gold/24.1-75101-v4.3-CR100-L2/24.1-75101-1-2.upd",
+              "source": "image",
+              "filename": "24.1-75101-1-2.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83040",
+              "package_model": 10,
+              "url": "https://www.sonos.com/redir/icr_appstore",
+              "source": "image",
+              "filename": "icr_appstore",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83140",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83140-1-6.upd",
+              "source": "image",
+              "filename": "28.1-83140-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83251",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83251-1-9.upd",
+              "source": "image",
+              "filename": "28.1-83251-1-9.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20141230023929id_/http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20141230"
+        },
+        "checked_at": "2026-11-27T09:39:08.156961+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-27T10:39:08.156961+00:00",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "2bb7d06ffd637d3c65fb0595c9ef5b56cd36d27ac0da3e26f61864c0104ce2ee": {
+        "status": "failed",
+        "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+        "archive_capture": {
+          "timestamp": "20150201090550",
+          "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+        },
+        "manifest": {
+          "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "archive_capture": {
+            "timestamp": "20150201090550",
+            "digest": "J6GYQO26H2GGBJRN44DZUTB33653IQAI",
+            "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FGold%2F28.1-83251-v5.2-pcyakr-RC4%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+            "original_url": "http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm"
+          },
+          "sha256": "b2b628797b082cd245e66e2a15b6a3ae0c7a71c9f8dd07ed95f433b3736989a2",
+          "bytes": 712,
+          "metadata": {
+            "base_url": null,
+            "manifest_version": "1",
+            "revision": "1416988667",
+            "system_version": "28.1-83251",
+            "default_version": null,
+            "warnings": [],
+            "landing_links": [],
+            "manifest_links": []
+          },
+          "candidates": [
+            {
+              "version": "24.1-75101",
+              "package_model": 2,
+              "url": "https://update.sonos.com/firmware/Gold/24.1-75101-v4.3-CR100-L2/24.1-75101-1-2.upd",
+              "source": "image",
+              "filename": "24.1-75101-1-2.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83040",
+              "package_model": 10,
+              "url": "https://www.sonos.com/redir/icr_appstore",
+              "source": "image",
+              "filename": "icr_appstore",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83140",
+              "package_model": 6,
+              "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83140-1-6.upd",
+              "source": "image",
+              "filename": "28.1-83140-1-6.upd",
+              "advertised_by": null
+            },
+            {
+              "version": "28.1-83251",
+              "package_model": 9,
+              "url": "https://update-firmware.sonos.com/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/28.1-83251-1-9.upd",
+              "source": "image",
+              "filename": "28.1-83251-1-9.upd",
+              "advertised_by": null
+            }
+          ],
+          "parse_error": null,
+          "fetched_from": "https://web.archive.org/web/20150201090550id_/http://update-firmware.sonos.com:80/firmware/Gold/28.1-83251-v5.2-pcyakr-RC4/GOLD/update_1416988667.upm",
+          "provenance": "independent-public-archive-replay",
+          "release_tag": "manifest-history-20150201"
+        },
+        "checked_at": "2026-11-27T09:39:23.021156+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-27T10:39:23.021156+00:00",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "87c3e3822f18d516de21b79bf79e863f9058c83ce5b3093589bcdee004b0dfc9": {
+        "status": "failed",
+        "url": "https://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm",
+        "archive_capture": {
+          "timestamp": "20260828055129",
+          "digest": "76QLFHJL5LRX73IAPLTXRD2XEXG3SA2N",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F80.1-56190-v16.3.3-5g1N0fceQI-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-firmware.sonos.com/firmware/Prod/80.1-56190-v16.3.3-5g1N0fceQI-GA-1/update.upm"
+        },
+        "checked_at": "2026-11-27T09:40:23.142950+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-27T10:40:23.142950+00:00",
+        "error": "<urlopen error timed out>"
+      },
+      "ed82c7ffff7f94f0694ca6e7a7c8be733d6947623555403f859e3c26ecb25c97": {
+        "status": "failed",
+        "url": "https://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm",
+        "archive_capture": {
+          "timestamp": "20260828055254",
+          "digest": "UEFNCGCMYLOINCUF5PUS6VQRNN2MPY67",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F82.2-59204-v16.5-tNGSLOBaIg-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-firmware.sonos.com/firmware/Prod/82.2-59204-v16.5-tNGSLOBaIg-GA-1/update.upm"
+        },
+        "checked_at": "2026-11-27T09:41:23.213350+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-27T10:41:23.213350+00:00",
+        "error": "<urlopen error timed out>"
+      },
+      "cc0074d8a768020942f8fd4a85689fe4935a3e778af782027bc02f9996390919": {
+        "status": "failed",
+        "url": "https://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm",
+        "archive_capture": {
+          "timestamp": "20260828055145",
+          "digest": "P4R2ZXPQPH6B5TOQ6AB44O2BWAALM7BE",
+          "index_url": "https://web.archive.org/cdx/search/cdx?url=update-firmware.sonos.com%2Ffirmware%2FProd%2F81.1-58210-v16.4.4-mXM1doJeKr-GA-1%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aupm%7Cupd%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+          "original_url": "http://update-firmware.sonos.com/firmware/Prod/81.1-58210-v16.4.4-mXM1doJeKr-GA-1/update.upm"
+        },
+        "checked_at": "2026-11-27T09:42:26.503150+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-27T10:42:26.503150+00:00",
+        "error": "<urlopen error _ssl.c:1018: The handshake operation timed out>"
       }
     }
   },
