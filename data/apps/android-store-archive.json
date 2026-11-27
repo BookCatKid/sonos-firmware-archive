@@ -24083,10 +24083,159 @@
       "source_version_selectors": [
         "802900006"
       ]
+    },
+    {
+      "source_kind": "google-play-direct",
+      "source_version_selector": "802900006",
+      "source_url": "https://play.google.com/store/apps/details?id=com.sonos.acr2",
+      "acquired_at": "2026-11-27T19:37:57.576025+00:00",
+      "acquisition_tool": {
+        "name": "sonos-firmware-archive",
+        "backend": "google-play-device-anonymous",
+        "protocol_revision": "2f03e8babee8adf791d4f3a3b17c268a704be76c",
+        "download_tool": {
+          "name": "goopdl",
+          "revision": "b66bf60d686fd93724b7c9f1963fe8bf4070b89d"
+        }
+      },
+      "delivery_profile": {
+        "arch": "armv7",
+        "device": "Fj",
+        "authentication": "anonymous",
+        "split_apk": true,
+        "include_dex_metadata": true,
+        "include_additional_files": true
+      },
+      "family": "s2",
+      "package": "com.sonos.acr2",
+      "version_code": "802900006",
+      "version_name": "80.29.6-release+20250918.549b8db",
+      "release_tag": "apps-google-play-s2",
+      "complete_wrapper": null,
+      "components": [
+        {
+          "name": "base.apk",
+          "bytes": 52328080,
+          "sha256": "07e6e053dea807ce8b839e11f70c9fa26ffae3a34671ce4c1a449074ad5a1a7d",
+          "path": "base.apk",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "signers": [
+            {
+              "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+              "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+            }
+          ],
+          "schemes": [
+            "v2",
+            "v3"
+          ],
+          "metadata": {
+            "package": "com.sonos.acr2",
+            "version_code": "802900006",
+            "version_name": "80.29.6-release+20250918.549b8db",
+            "split": null
+          },
+          "release_tag": "apps-google-play-s2",
+          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--base--07e6e053dea807ce8b839e11f70c9fa26ffae3a34671ce4c1a449074ad5a1a7d.apk",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s2/com.sonos.acr2--80.29.6-release%2B20250918.549b8db--base--07e6e053dea807ce8b839e11f70c9fa26ffae3a34671ce4c1a449074ad5a1a7d.apk"
+        },
+        {
+          "name": "com.sonos.acr2-802900006-config.arm64_v8a.apk",
+          "bytes": 95656294,
+          "sha256": "4013612d197044e93224f1bb1c81caf25c4b2781c4bf72696c69eadcfa2b1e88",
+          "path": "com.sonos.acr2-802900006-config.arm64_v8a.apk",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "signers": [
+            {
+              "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+              "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+            }
+          ],
+          "schemes": [
+            "v1",
+            "v2",
+            "v3"
+          ],
+          "metadata": {
+            "package": "com.sonos.acr2",
+            "version_code": "802900006",
+            "version_name": null,
+            "split": "config.arm64_v8a"
+          },
+          "release_tag": "apps-google-play-s2",
+          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--split-config.arm64_v8a--4013612d197044e93224f1bb1c81caf25c4b2781c4bf72696c69eadcfa2b1e88.apk",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s2/com.sonos.acr2--80.29.6-release%2B20250918.549b8db--split-config.arm64_v8a--4013612d197044e93224f1bb1c81caf25c4b2781c4bf72696c69eadcfa2b1e88.apk"
+        },
+        {
+          "name": "com.sonos.acr2-802900006-config.xxhdpi.apk",
+          "bytes": 1771895,
+          "sha256": "bb4af6fd6656dcd9bf692adbb66d0a350160e687adc154ef6326af04cc508d12",
+          "path": "com.sonos.acr2-802900006-config.xxhdpi.apk",
+          "verified": true,
+          "signer_sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+          "signer_subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US",
+          "signers": [
+            {
+              "sha256": "7c34eb3cfbda05faf56e8890a2abbac14b3036e6e4358849b98e8819b6b7b329",
+              "subject": "CN=Sonos\\, Inc.,OU=Sonos Software Release Team,O=Sonos\\, Inc.,L=Santa Barbara,ST=CA,C=US"
+            }
+          ],
+          "schemes": [
+            "v1",
+            "v2",
+            "v3"
+          ],
+          "metadata": {
+            "package": "com.sonos.acr2",
+            "version_code": "802900006",
+            "version_name": null,
+            "split": "config.xxhdpi"
+          },
+          "release_tag": "apps-google-play-s2",
+          "release_asset": "com.sonos.acr2--80.29.6-release+20250918.549b8db--split-config.xxhdpi--bb4af6fd6656dcd9bf692adbb66d0a350160e687adc154ef6326af04cc508d12.apk",
+          "status": "verified",
+          "repository": "BookCatKid/sonos-firmware-archive",
+          "release_url": "https://github.com/BookCatKid/sonos-firmware-archive/releases/download/apps-google-play-s2/com.sonos.acr2--80.29.6-release%2B20250918.549b8db--split-config.xxhdpi--bb4af6fd6656dcd9bf692adbb66d0a350160e687adc154ef6326af04cc508d12.apk"
+        }
+      ],
+      "repository": "BookCatKid/sonos-firmware-archive",
+      "delivery_sha256": "a637f7251bb1e801ce9c09637e64403b9608f7dd1c67463f5c842c16f709e8cc",
+      "delivery_profiles": [
+        {
+          "arch": "armv7",
+          "device": "Fj",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        },
+        {
+          "arch": "arm64",
+          "device": "Fj",
+          "authentication": "anonymous",
+          "split_apk": true,
+          "include_dex_metadata": true,
+          "include_additional_files": true
+        }
+      ],
+      "source_urls": [
+        "https://play.google.com/store/apps/details?id=com.sonos.acr2"
+      ],
+      "source_version_selectors": [
+        "802900006"
+      ]
     }
   ],
-  "updated": "2026-11-26T18:11:12.756093+00:00",
-  "artifact_total": 125,
+  "updated": "2026-11-27T19:37:58.377760+00:00",
+  "artifact_total": 126,
   "pending_captures": [],
   "repository": "BookCatKid/sonos-firmware-archive",
   "source_kind": "google-play-direct",
