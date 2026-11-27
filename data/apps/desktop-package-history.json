@@ -5512,9 +5512,9 @@
       "sha": "ffe9528588328fb523c61fc01e19f5ae20d2d46a",
       "path": "manifests/Sonos/Controller/11.1.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:50.818519+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:50.818519+00:00",
+      "checked_at": "2026-11-27T01:00:03.995759+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:03.995759+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5523,9 +5523,9 @@
       "sha": "e7ec7f087b15a2e2cb7ae8cc6be01665f7f75f29",
       "path": "manifests/Sonos/Controller/12.0.1.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:51.073977+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:51.073977+00:00",
+      "checked_at": "2026-11-27T01:00:03.998896+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:03.998896+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5534,9 +5534,9 @@
       "sha": "1a73f809638cdc0ae0a46aa7c29414b170abe9e6",
       "path": "manifests/Sonos/Controller/12.0.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:51.303139+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:51.303139+00:00",
+      "checked_at": "2026-11-27T01:00:04.001931+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.001931+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5545,9 +5545,9 @@
       "sha": "390b7312077d761d922ed91381e8d7cbdc9c63b2",
       "path": "manifests/Sonos/Controller/12.1.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:51.579874+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:51.579874+00:00",
+      "checked_at": "2026-11-27T01:00:04.004928+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.004928+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5556,9 +5556,9 @@
       "sha": "526b516e3ff4e80a9b05899244ce71fc4de4d234",
       "path": "manifests/Sonos/Controller/12.2.2.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:51.861845+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:51.861845+00:00",
+      "checked_at": "2026-11-27T01:00:04.007904+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.007904+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5567,9 +5567,9 @@
       "sha": "dab1eb2e7af1c816ba7d7caa141d09b7250c4920",
       "path": "manifests/Sonos/Controller/13.0.0.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:52.146268+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:52.146268+00:00",
+      "checked_at": "2026-11-27T01:00:04.010861+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.010861+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5578,9 +5578,9 @@
       "sha": "302f08fdea523e26ebadcf9c5fc82fd4122db5cf",
       "path": "manifests/Sonos/S1Controller/11.2.2.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:52.717123+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:52.717123+00:00",
+      "checked_at": "2026-11-27T01:00:04.013759+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.013759+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5589,9 +5589,9 @@
       "sha": "6ff5b1ffaf3989e29a792380b458455109d14f91",
       "path": "manifests/Sonos/S1Controller/11.2.4.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:52.937204+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:52.937204+00:00",
+      "checked_at": "2026-11-27T01:00:04.016630+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.016630+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5600,9 +5600,9 @@
       "sha": "52b884fed23da185e1b304bc9e6313ca1ef9ae4e",
       "path": "manifests/Sonos/S1Controller/11.2.6.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:53.247649+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:53.247649+00:00",
+      "checked_at": "2026-11-27T01:00:04.019490+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.019490+00:00",
       "status": "pending",
       "error": "installer record has no URL"
     },
@@ -5611,11 +5611,767 @@
       "sha": "214b4cde8892709d03169d022ae6ca925835ea2e",
       "path": "manifests/Sonos/S1Controller/11.2.yaml",
       "route": [],
-      "checked_at": "2026-11-26T17:59:53.527832+00:00",
-      "consecutive_failures": 1,
-      "next_attempt_at": "2026-11-26T18:59:53.527832+00:00",
+      "checked_at": "2026-11-27T01:00:04.022360+00:00",
+      "consecutive_failures": 2,
+      "next_attempt_at": "2026-11-27T03:00:04.022360+00:00",
       "status": "pending",
       "error": "installer record has no URL"
+    },
+    "93acb4528a33aad57393c6f80d2b64253e96c576e63c75892a1fae77070c5976": {
+      "role": "route",
+      "sha": "a20fe4e652cc08db256949f01201107aab1e2550",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:04.374457+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:04.374457+00:00",
+      "status": "ok"
+    },
+    "3d478734c2f6d1c1c8fb18f4adc50414d0a910e0476f1cc6b10872a58fd1b334": {
+      "role": "parent",
+      "sha": "d65905ebe2537e020a8c5229464fb82ac01acaff",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:18.943100+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:18.943100+00:00",
+      "status": "ok"
+    },
+    "e756cf84d85ba3013b5a2373e125dc6c10e3cf6b62fbd087b8600eb0cc6fc213": {
+      "role": "route",
+      "sha": "f84ebb2a45cc4ce823b342002658a28ae31ddaed",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:05.214328+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:05.214328+00:00",
+      "status": "ok"
+    },
+    "aace34629f242227525d7d96295bf3aef1fd533ed65f789495440d4e95443593": {
+      "role": "parent",
+      "sha": "a10efb9fcf79fdb8c43f67708a11312334a0e12f",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:19.317832+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:19.317832+00:00",
+      "status": "ok"
+    },
+    "36e635752ccfee363ff699d6d9298372fde124cd560588e18d70fc7fe896016d": {
+      "role": "route",
+      "sha": "9a0a03bd5563d7142fddb82d710e668353608923",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:06.903439+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:06.903439+00:00",
+      "status": "ok"
+    },
+    "348ef017dd23d178d3cc1ff884c8c46009155df9da827e6e64d8ea7f90a9e493": {
+      "role": "parent",
+      "sha": "40db04a78380bb485ce9dd77275136043fbe7130",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:20.552405+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:20.552405+00:00",
+      "status": "ok"
+    },
+    "9e4f74e8493cbdf7f2223cf098176298c38f713de01d8b4eba0b635a0aa60db0": {
+      "role": "route",
+      "sha": "ce0d468b770a43976f3da81557258ad98ed35b07",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:08.777195+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:08.777195+00:00",
+      "status": "ok"
+    },
+    "b27d66a46e813cf48c88ee29dfd8be857b12a2531fc0891729b289924f53719c": {
+      "role": "parent",
+      "sha": "cba5d41f4c5b23283e4b27451df1edf963da5484",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:21.724716+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:21.724716+00:00",
+      "status": "ok"
+    },
+    "d190882dc58c2fe5ef823d847bc5351f940138f0a76b50b8c10f1d2d75e6ff25": {
+      "role": "route",
+      "sha": "2644cd68d3a89e50d6f436aee9af9e4de8ddaa63",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:10.430643+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:10.430643+00:00",
+      "status": "ok"
+    },
+    "cb3f076584bb380792a9278a446b3bf7edb28b585e944b505b9648b398d7b041": {
+      "role": "parent",
+      "sha": "cc99bc3f9c429e55d7998a243d5ab7b2442d96cd",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:22.836425+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:22.836425+00:00",
+      "status": "ok"
+    },
+    "f78d848283870f59ef401b8c88b5e67acb9e0cbd0f33553870becdada62c4141": {
+      "role": "route",
+      "sha": "cc68b0db89eab6f3021986890210c8e04dcf91fe",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:12.025854+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:12.025854+00:00",
+      "status": "ok"
+    },
+    "65c9a063d075656269987b2b2bfc2161d7aa9cfefe0e5b32ebe1ba03feba29aa": {
+      "role": "parent",
+      "sha": "15df986318b8c1b0b7d079bd4e5c7d470447bdda",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:23.840786+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:23.840786+00:00",
+      "status": "ok"
+    },
+    "b5cb9796edc66d6e1524643807622eff7c3ec1311a509b8692c47ff3eebf5dda": {
+      "role": "route",
+      "sha": "84c7302e8c8d6a3a2e6f55ae0e9d4b77c7242577",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:13.583520+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:13.583520+00:00",
+      "status": "ok"
+    },
+    "5baaf1e87cef22420ebc24ed3370a3c8cb801d91b1d5b01592209081ca3a626c": {
+      "role": "parent",
+      "sha": "1b6e89d9a0de5ecb71b908a6dcd4fd59ef5a5e7e",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:24.827730+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:24.827730+00:00",
+      "status": "ok"
+    },
+    "cf4cbd5e3131a4e32aaa6d62957b1988257159a7254ab8624e6a5d6061b3bcc1": {
+      "role": "route",
+      "sha": "397b4dc1c0d6d78330c459b71bce785df0036210",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:14.979278+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:14.979278+00:00",
+      "status": "ok"
+    },
+    "f6ab36bddde5521b017c243138346f2c97058269e13a4458d0309734c4594a7e": {
+      "role": "parent",
+      "sha": "1b20f9e71515a043e4937102d427acfe40e10f99",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:25.847751+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:25.847751+00:00",
+      "status": "ok"
+    },
+    "b43d31bd319aad596bcfd5476c0d2d1b8e7fbdd599c5267e8e8156ad9afd8bcb": {
+      "role": "route",
+      "sha": "26f6fadb0a2a65d981f70298b823b1724d80b9ff",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:16.336904+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:16.336904+00:00",
+      "status": "ok"
+    },
+    "101f5ef83070437ae3e9e4a1e42ce13e1b198932610d15dfe554f9b028c09b3b": {
+      "role": "parent",
+      "sha": "9951ce3a879ab08fff5b10627f73667886b1e8de",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:26.279092+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:26.279092+00:00",
+      "status": "ok"
+    },
+    "67fb7576674d2405110b97d49b87c160d8e1db3049a97a58274fc8f2cbfed52f": {
+      "role": "route",
+      "sha": "d59e111bd63be6a85f9e5d5d84ffd834536efd94",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:17.781862+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:17.781862+00:00",
+      "status": "ok"
+    },
+    "6d430d162ba19cad35f20d8e5a3a94f474ae3d96bedd1cd6f11d5665366a3935": {
+      "role": "parent",
+      "sha": "d39d8c99532c8bf044041dd11fb8a1407eb003e3",
+      "path": "",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:27.330792+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:27.330792+00:00",
+      "status": "ok"
+    },
+    "630d0a634419737b598fcec141af11c8b22d8d60a106879baa289b015b3102fe": {
+      "role": "route",
+      "sha": "e710cb3b98ad503f0800722b6f20c3e2c2bea826",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:04.849752+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:04.849752+00:00",
+      "status": "ok"
+    },
+    "64b8b707596cd4c5567dcb7211b4068b4a9f83b76d0b26f4fd7ea1fea5620020": {
+      "role": "route",
+      "sha": "f36d461366fbacab7dde7a3e9f87a383dadafab2",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:05.652837+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:05.652837+00:00",
+      "status": "ok"
+    },
+    "e16ec5202c0bd2e678130958306e09017b0a4327f7169611165e720c0a1e1476": {
+      "role": "scan",
+      "sha": "82429545139bcb84008d5472b093c32116242280",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:06.140433+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:06.140433+00:00",
+      "status": "ok"
+    },
+    "f3b3f2028d40cd92ba88431c7d5b5bf52568044b63480d6ccb466fdbf5565ace": {
+      "role": "scan",
+      "sha": "a43458f6cd166370f24d8a97227c36580fc0fdf7",
+      "path": "manifests/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:06.529178+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:06.529178+00:00",
+      "status": "ok"
+    },
+    "ebf9d4d900d513b4204481552b1d5ca1f60097e606ce4646a67c61ee326293ac": {
+      "role": "route",
+      "sha": "29227b5fa41001e1ac03c506feee6198f682c0f9",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:07.429001+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:07.429001+00:00",
+      "status": "ok"
+    },
+    "1451a01126e4a0b5bb1ee7c95c13ccb7065f799d4310331b8aa94ff32d6dc212": {
+      "role": "scan",
+      "sha": "5345ef2e8ae8c3a96ca46dbc1b5b360a9ada649f",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:07.870398+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:07.870398+00:00",
+      "status": "ok"
+    },
+    "618a258092247ceebbfb623530c7a92ed47a1a8b053f017657cec655f3b09526": {
+      "role": "scan",
+      "sha": "36dc91fa301f1d3dbf1508d14fce535c40946492",
+      "path": "manifests/Sonos/S1Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:08.275875+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:08.275875+00:00",
+      "status": "ok"
+    },
+    "c90bf16323fa6ee7d66ac11449939938f442fe939767501aa9391fa63b9f170e": {
+      "role": "route",
+      "sha": "226c0a04490b230f9cdcca434f3d95e8a4e441ca",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:09.180642+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:09.180642+00:00",
+      "status": "ok"
+    },
+    "2cd97686d2366da64d69220621bbf626a0b272f989fbcb552d48a29588f2b583": {
+      "role": "scan",
+      "sha": "7a88578166c33cc9e3e738a1c9e1b8f965dabb60",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:09.613488+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:09.613488+00:00",
+      "status": "ok"
+    },
+    "26cc69f1a844b12921530beb35317ce207eb8cc816c4ee9c3234e6b6aa015482": {
+      "role": "scan",
+      "sha": "bdb143e3bdaa69efee528d2a7a579a771533bd83",
+      "path": "manifests/Sonos/S1Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:10.012481+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:10.012481+00:00",
+      "status": "ok"
+    },
+    "94b6e10d77d1ed6cf41946cefa61932d5d6e7216fd29ca2a86bc55304eed96bb": {
+      "role": "route",
+      "sha": "e4dcc961531779e9e3bc4c95ebb6f563be03a48f",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:10.869348+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:10.869348+00:00",
+      "status": "ok"
+    },
+    "f28bc0443a97a3a89a2e4e94d005303abf0d3f81126e1b30269317a7cabcf10a": {
+      "role": "scan",
+      "sha": "0d197e7d1e6dbff24f66cf40e84de10319c858e1",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:11.228166+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:11.228166+00:00",
+      "status": "ok"
+    },
+    "bb589cc2b1629592f914cbd4bec05b9124df4cb34cfcd53f3c8402fcd1b90b57": {
+      "role": "scan",
+      "sha": "0cd44f972d57e4470611f95816f12947366fdadb",
+      "path": "manifests/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:11.570156+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:11.570156+00:00",
+      "status": "ok"
+    },
+    "56c871c311cae5c11b2a68374435224bc7ca5896618487a127a779eed2ef7b0c": {
+      "role": "route",
+      "sha": "7a4efce2b74ada609892ddea2a7e38d49148b15b",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:12.433846+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:12.433846+00:00",
+      "status": "ok"
+    },
+    "18f07f5e406f4b411b545d5b67faf2a3ee342466f8b86781eed03abffaecabab": {
+      "role": "scan",
+      "sha": "dad0e5c9b2346ad4d1453052280a9381df8de4b2",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:12.852114+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:12.852114+00:00",
+      "status": "ok"
+    },
+    "60ccd0501ec1b8c72e473da9b5b531a66710e37cdfc3cf31a3f275215399a8d5": {
+      "role": "scan",
+      "sha": "36882e04fad8e9fc9d4c7989c345a7c373313aae",
+      "path": "manifests/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:13.225876+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:13.225876+00:00",
+      "status": "ok"
+    },
+    "40061a1ccbb0d9fac281a874e29c01cff52c25720ee506f71a261af66052cc40": {
+      "role": "route",
+      "sha": "23369ea28ecee657974ae7a509f2b6ff0e88bdb3",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:13.936246+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:13.936246+00:00",
+      "status": "ok"
+    },
+    "23424baacf5e7de4f39e1a083af50a6a3e92ed74c79ba25013622397202a42f8": {
+      "role": "scan",
+      "sha": "126e002a666b196aaceb5333b3fd4cd31cd45f66",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:14.315974+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:14.315974+00:00",
+      "status": "ok"
+    },
+    "05333dbc00aed6e971b5506b83c9f3f979a4ab8bfc00dec6808365d21def988c": {
+      "role": "scan",
+      "sha": "4d0595f4bb69525b5af142fbeb7bded35f17c6e5",
+      "path": "manifests/Sonos/S1Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:14.671526+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:14.671526+00:00",
+      "status": "ok"
+    },
+    "ca240211f495088b4ae6bc65477f083d3311910508f58378f983384b644094be": {
+      "role": "route",
+      "sha": "d6b6b54b8237a4ae3c444edcb76f191e0a6ed60f",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:15.360695+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:15.360695+00:00",
+      "status": "ok"
+    },
+    "3843d0a7c8a8a6b493e750e3e82c41e66a0b869b616927aafbb8af1eb7880774": {
+      "role": "scan",
+      "sha": "c68351692a7093039951315d564d665988ff295b",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:15.682373+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:15.682373+00:00",
+      "status": "ok"
+    },
+    "7d0194100af712b8b82e9655c92d46ae5b61c06b70580bc8f37ef793fca7946e": {
+      "role": "scan",
+      "sha": "0528ff04dc3fb1db65e72765c8e0085cd400d8f1",
+      "path": "manifests/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:15.992243+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:15.992243+00:00",
+      "status": "ok"
+    },
+    "718df9b06cdefbb88d183a7067b016b2b11bd27cc38203cc1a29ba8116782aff": {
+      "role": "route",
+      "sha": "527ea3b0b0ff2f4b5179c34de36acb2b44f9983d",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:16.726180+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:16.726180+00:00",
+      "status": "ok"
+    },
+    "5f1244edb9d20d1d7d8be840aff334a4b6f41cf977ff9cba99ff9a6d3246b088": {
+      "role": "scan",
+      "sha": "bdbc152c525b6e2797a9039cbbac6e09ec36de69",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:17.097479+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:17.097479+00:00",
+      "status": "ok"
+    },
+    "66d51ab25e42807c21dfacac253ad65cdb940fd9e9351ae9af0401919dc90e35": {
+      "role": "scan",
+      "sha": "f535213ef3919ca27d443cf846c625434cc9814d",
+      "path": "manifests/Sonos/Controller",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:17.427708+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:17.427708+00:00",
+      "status": "ok"
+    },
+    "4addc4d74d44ba5062fb96a27c42dd4f54114c81aee5f2c83b69c94de3b07f8a": {
+      "role": "route",
+      "sha": "02f064f0bcf355f443626c8e2697c6d6aac84b13",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:18.157289+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:18.157289+00:00",
+      "status": "ok"
+    },
+    "ce3da04a727a880785adec863e9c587277c32e07798273571e180ce7f502e653": {
+      "role": "scan",
+      "sha": "7e1a2cf3aef2b3bc3b55b9acd387eeb60468b761",
+      "path": "manifests/Sonos",
+      "route": [],
+      "checked_at": "2026-11-27T01:00:18.599845+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:18.599845+00:00",
+      "status": "ok"
+    },
+    "c6e2590fbdbed7a427e8327ce384e67978f9ea2622c7a3082b32982b48758d45": {
+      "role": "route",
+      "sha": "34ebc57b1de7e66cf501917274e8f2a1b03fb5db",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:19.707433+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:19.707433+00:00",
+      "status": "ok"
+    },
+    "2c3bea079186b46b7b99a4d61873f6ed8eb8601f8c08828b61661bee39e2ca82": {
+      "role": "route",
+      "sha": "491cd8e686a42f2337095a01554c5f493b4653f3",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:20.188900+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:20.188900+00:00",
+      "status": "ok"
+    },
+    "bf00097d8e9c1fd9023cb2685fca3e1753845c468c99c955e184a5710b552192": {
+      "role": "route",
+      "sha": "2191a5520bab1ea69d26a17c641d5c1a87eac865",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:20.966859+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:20.966859+00:00",
+      "status": "ok"
+    },
+    "8db7e1f3ebe95dbf050c15a99c9df630a89c320283c90fa8886a35f033083905": {
+      "role": "route",
+      "sha": "5c8948a4a980663ce6b9a35ae3ddeed2c76217e0",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:21.369056+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:21.369056+00:00",
+      "status": "ok"
+    },
+    "4c25b781f6752e664d0dda9ca108bded4dff363d20d26720bc97fd22d7be9470": {
+      "role": "route",
+      "sha": "1105c8ac182bd34dfa14203b52c79b4a5a9029d2",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:22.079483+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:22.079483+00:00",
+      "status": "ok"
+    },
+    "7c58192a3ac0f238912e8b5c5bbb05cbc431e36f8d20aef801aea6d9075e6931": {
+      "role": "route",
+      "sha": "b5218ead7d4a469106b8aadc73a145f38e5a8095",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:22.479076+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:22.479076+00:00",
+      "status": "ok"
+    },
+    "ccb27b802903e56a76415e07c502e2d43b923198730877c7beef5876ba157c89": {
+      "role": "route",
+      "sha": "29864c56d018ee22fc9bee9078e4e8a0c2bcd984",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:23.132610+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:23.132610+00:00",
+      "status": "ok"
+    },
+    "1b12c1fb689ee71bdc79091f8362e48a21c580982a8c381a1acb577d9022f040": {
+      "role": "route",
+      "sha": "6bfd5765a35bfb60ee8e6e6b078cc638ff069bed",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:23.501745+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:23.501745+00:00",
+      "status": "ok"
+    },
+    "e8ec63e5c58c01fd21346913ccb0e279e000027cdb607bdef49a9124781b7b67": {
+      "role": "route",
+      "sha": "6d5007da86f88ec2f421bcf5b53702e271266357",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:24.169414+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:24.169414+00:00",
+      "status": "ok"
+    },
+    "0b76e83cb08dc3bed9d5e0b4c6746f861f445519fe37847f92ea8c2c04254960": {
+      "role": "route",
+      "sha": "f942c90331e278b274e51ca267f0498a89b567dc",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:24.515779+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:24.515779+00:00",
+      "status": "ok"
+    },
+    "232407869007bc3645c18c1ffec89f7d82a666b07d84575dd9a41490c713a7a6": {
+      "role": "route",
+      "sha": "bad303e919148a6a77734d47c519745a526d4c15",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:25.139393+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:25.139393+00:00",
+      "status": "ok"
+    },
+    "32ce32babeea15e1771dda030480871c73133be1ec9f8ae1939427684d7230f7": {
+      "role": "route",
+      "sha": "5bb25e780bb726325f87728c977b6b88282bdfa7",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:25.525162+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:25.525162+00:00",
+      "status": "ok"
+    },
+    "da02fde2ef3f4171cd8684f46a74827bdbac6db367387f0b430278ffa065a8a0": {
+      "role": "route",
+      "sha": "d15ae322752de64d438120b8604935b44a2a52f1",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:26.626483+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:26.626483+00:00",
+      "status": "ok"
+    },
+    "30cf8afc6384979cabb4b67daa51abb79cb32ad3e2ac236ac0ae934c9f73aa09": {
+      "role": "route",
+      "sha": "27910f307a7391b5b82f5cfd5abe1d707322e183",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:26.968666+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:26.968666+00:00",
+      "status": "ok"
+    },
+    "a2aa40dcd63cb13a5488b209ec64da4f75ac849c254a07a0de29730815ae8565": {
+      "role": "route",
+      "sha": "7bf5f11742557caea63eac66f084efdfd4f5cb4c",
+      "path": "",
+      "route": [
+        "manifests",
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:27.679175+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:27.679175+00:00",
+      "status": "ok"
+    },
+    "1b8cb729424319b81de86b939384e9ac2b9b1314d649aca893cce7dd2735343b": {
+      "role": "route",
+      "sha": "5b6a4eed58b1037c8626cd9ef5fff0ccc18f0fbb",
+      "path": "manifests",
+      "route": [
+        "s",
+        "Sonos"
+      ],
+      "checked_at": "2026-11-27T01:00:28.040765+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-28T01:00:28.040765+00:00",
+      "status": "ok"
     }
   },
   "paths": {
@@ -5624,11 +6380,19 @@
       "new_head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
       "complete": true,
       "head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
-      "checked_at": "2026-11-26T16:46:57.638389+00:00",
+      "checked_at": "2026-11-27T01:00:02.709672+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-26T22:46:57.638389+00:00"
+      "next_attempt_at": "2026-11-27T07:00:02.709672+00:00"
     },
-    "manifests/Sonos": {}
+    "manifests/Sonos": {
+      "anchor": null,
+      "new_head_sha": "a460e378fc9e1001229626071d5663cf341c1e5b",
+      "complete": true,
+      "head_sha": "a460e378fc9e1001229626071d5663cf341c1e5b",
+      "checked_at": "2026-11-27T01:00:03.992090+00:00",
+      "consecutive_failures": 0,
+      "next_attempt_at": "2026-11-27T07:00:03.992090+00:00"
+    }
   },
   "candidates": {
     "4eb5d18d6d1ee7693c2812c461759a51a1d2a19290ea263c16ff8c01b95eeec0": {
@@ -6129,7 +6893,7 @@
       "next_lane": "retry"
     }
   },
-  "pending_total": 11,
+  "pending_total": 10,
   "errors": [
     {
       "source": "a2424111f10c6ece523948dbb68c4a410884e51f50ae3e8243eacdf44ac18538",

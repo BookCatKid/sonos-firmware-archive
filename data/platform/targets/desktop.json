@@ -4,7 +4,7 @@
   "provider": "desktop",
   "status": "partial",
   "executed": true,
-  "started_at": "2026-11-26T17:58:31.122294+00:00",
+  "started_at": "2026-11-27T01:00:00.627085+00:00",
   "steps": [
     {
       "name": "discover_desktop_installers",
@@ -17,13 +17,16 @@
       "name": "archive_desktop_installers",
       "status": "failed",
       "exit_code": 1,
-      "output_tail": "https://github.com/BookCatKid/sonos-firmware-archive/releases/tag/apps-unknown-windows\nverified artifacts=170 attempted=243 new=29\n",
+      "output_tail": "verified artifacts=233 attempted=462 new=63\n",
       "failure_kind": "source-reported-incomplete",
       "source_status": "partial"
     },
     {
       "name": "archive-installer-history",
-      "status": "skipped"
+      "status": "partial",
+      "exit_code": 0,
+      "output_tail": "m/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Prod/47.2-59120-v9.3-fctsul-LR-1/47.2-59120-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/58.1-77280-v12.0-jajuoi-GA-1/58.1-77280-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Prod/58.1-77280-v12.0-jajuoi-GA-1/58.1-77280-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-test.sonos.com/firmware/Prod/64.3-19080-v13.2-qelzft-LR-1/64.3-19080-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-test.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/64.3-19080-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Prod/64.3-19080-v13.2-udvsve-GA-1/64.3-19080-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-stage.sonos.com/firmware/swgen/2/latest/70.1-12345-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/90.0-65110-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-test.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/90.0-65110-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Dev/90.0-65110-v17.2-whwYLjEZmn-Alpha-4/90.0-65110-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-4/90.0-75190-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-test.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-5/90.0-75190-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Prod/90.0-75190-v17.2.3-lDpGfsxQdy-RC-4/90.0-75190-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/firmware/Prod/90.0-81181-v17.2.4-7GphjB3HVD-RC-1/90.0-81181-1-3.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update.sonos.com/software/pc/dcr/sonosdesktopcontroller40.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdc/SonosDesktopController.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController361.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController37.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController37g.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdc/SonosDesktopController.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController37g.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/mac/mdcr/sonosdesktopcontroller40.dmg\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"url\": \"https://update-firmware.sonos.com/software/pc/dcr/sonosdesktopcontroller40.exe\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    }\n  ],\n  \"pending\": 3,\n  \"index_status\": \"partial\"\n}\n",
+      "source_status": "partial"
     }
   ],
   "errors": [
@@ -44,9 +47,9 @@
     },
     {
       "step": "archive-installer-history",
-      "reason": "four-hour soft wind-down requested"
+      "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-26T21:59:58.253854+00:00",
-  "next_due": "2026-11-26T22:59:58.253854+00:00"
+  "finished_at": "2026-11-27T05:00:02.353010+00:00",
+  "next_due": "2026-11-27T06:00:02.353010+00:00"
 }
