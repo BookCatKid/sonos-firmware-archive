@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-11-27T09:38:56.281285+00:00",
+  "checked": "2026-11-27T19:26:42.797355+00:00",
   "scope": "official-public-google-play-listing-metadata",
   "listings": [
     {
@@ -9,7 +9,7 @@
       "url": "https://play.google.com/store/apps/details?id=com.sonos.acr2&hl=en_US&gl=US",
       "http_status": 200,
       "updated_on": "Nov 11, 2026",
-      "page_sha256": "a5503573ff5c35ed6b3088eaeb38e4d99fca3a2feb2c02eff79f9e73be0e73e5"
+      "page_sha256": "4c13abb41f4bb99ae2e05a85d1de2da0b646a032586401a75be13077fc0ce61c"
     },
     {
       "package": "com.sonos.acr",
@@ -17,7 +17,7 @@
       "url": "https://play.google.com/store/apps/details?id=com.sonos.acr&hl=en_US&gl=US",
       "http_status": 200,
       "updated_on": "Nov 12, 2026",
-      "page_sha256": "7f6fff704c9ad5ea3582439c08efddc526e4ec95abb1c15c9c0f1018e069f8d5"
+      "page_sha256": "8bff6030b0add3e0043e5c4e791ec26e33e576f7b93c64cb5d1af5fc054f5932"
     }
   ]
 }
