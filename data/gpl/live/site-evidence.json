@@ -4,12 +4,12 @@
   "schema_version": 1,
   "sitemaps": {
     "https://support.sonos.com/da-dk/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:30.243004+00:00",
+      "checked_at": "2026-11-27T09:41:20.415948+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:30.243004+00:00",
+      "next_attempt_at": "2026-11-28T09:41:20.415948+00:00",
       "sha256": "562020c4357c2e98ed031d276c9d8c5e59445721ad3301e58653a75118877fb6",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -18,12 +18,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/de-at/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:32.943936+00:00",
+      "checked_at": "2026-11-27T09:41:22.974046+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:32.943936+00:00",
+      "next_attempt_at": "2026-11-28T09:41:22.974046+00:00",
       "sha256": "cb8ed066eb78f46b984566d2bf86bb825ec329291e3e2828ca0c7a19273c75fe",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -32,12 +32,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/de-ch/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:35.560649+00:00",
+      "checked_at": "2026-11-27T09:41:25.647571+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:35.560649+00:00",
+      "next_attempt_at": "2026-11-28T09:41:25.647571+00:00",
       "sha256": "b77e18ef81fcf3fe02883af9325767a8acee3e5da242a202247c9ceabed6e729",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -46,12 +46,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/de-de/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:38.178756+00:00",
+      "checked_at": "2026-11-27T09:41:28.282358+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:38.178756+00:00",
+      "next_attempt_at": "2026-11-28T09:41:28.282358+00:00",
       "sha256": "3b94342914501e45eb04942e1a151c030b737cac8135237e1d1808fc6c24da1d",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -60,12 +60,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-au/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:40.878155+00:00",
+      "checked_at": "2026-11-27T09:41:30.921257+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:40.878155+00:00",
+      "next_attempt_at": "2026-11-28T09:41:30.921257+00:00",
       "sha256": "151cb3d33ee721107e220a2665f352f08ab36d90db359c6b2ea95ea23ba40409",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -74,12 +74,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-ca/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:43.484175+00:00",
+      "checked_at": "2026-11-27T09:41:33.610682+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:43.484175+00:00",
+      "next_attempt_at": "2026-11-28T09:41:33.610682+00:00",
       "sha256": "e235ba6e406e84d6b1da54efe99a1021953accb1042f8224ee3b3fce063dac60",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -88,12 +88,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-gb/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:40.923512+00:00",
+      "checked_at": "2026-11-27T09:41:36.167346+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:40.923512+00:00",
+      "next_attempt_at": "2026-11-28T09:41:36.167346+00:00",
       "sha256": "0b6cb208d66fd31bf034c10059ff69f108eb2f7ca88ac3505761c6cf5ecb97d5",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -102,12 +102,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-ie/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:43.567440+00:00",
+      "checked_at": "2026-11-27T09:41:38.801307+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:43.567440+00:00",
+      "next_attempt_at": "2026-11-28T09:41:38.801307+00:00",
       "sha256": "8b91b46e01aeba3d83f210e26dced6c9f3f3be62e5de4880c961546610a3a17f",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -116,12 +116,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-in/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:46.425226+00:00",
+      "checked_at": "2026-11-27T09:41:41.404791+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:46.425226+00:00",
+      "next_attempt_at": "2026-11-28T09:41:41.404791+00:00",
       "sha256": "f96ffbc0c15274488a2a257fcea9ff2e0aed449baae9bf19d29fd0e999cb387c",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -130,12 +130,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-nz/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:49.019112+00:00",
+      "checked_at": "2026-11-27T09:41:44.040796+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:49.019112+00:00",
+      "next_attempt_at": "2026-11-28T09:41:44.040796+00:00",
       "sha256": "86b194c42fdc18937e9e4210ca6157d815249438f2c217414643ac4bffae3098",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -144,12 +144,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en-us/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:51.706309+00:00",
+      "checked_at": "2026-11-27T09:41:46.644862+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:51.706309+00:00",
+      "next_attempt_at": "2026-11-28T09:41:46.644862+00:00",
       "sha256": "a3284b2eb4ffa8e764976385f3ef02f48eca41998dced79c59d1fb3624cf6d2f",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -158,12 +158,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/en/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:54.361828+00:00",
+      "checked_at": "2026-11-27T09:41:49.246225+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:54.361828+00:00",
+      "next_attempt_at": "2026-11-28T09:41:49.246225+00:00",
       "sha256": "1a95af153dcba65cb3432670a14bf93d0f7fc1e6d7fd61674fb5ea5dff6dd5ba",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -172,12 +172,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-ar/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:56.980018+00:00",
+      "checked_at": "2026-11-27T09:41:51.957214+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:56.980018+00:00",
+      "next_attempt_at": "2026-11-28T09:41:51.957214+00:00",
       "sha256": "fd1a90956c6266a4090e3f31087b4021a01e21bb111c6faf7e561abbd388b272",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -186,12 +186,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-cl/sitemap.xml": {
-      "checked_at": "2026-11-26T06:47:59.663430+00:00",
+      "checked_at": "2026-11-27T09:41:54.548202+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T06:47:59.663430+00:00",
+      "next_attempt_at": "2026-11-28T09:41:54.548202+00:00",
       "sha256": "6f134c5aaa0fda288a3e35d85c2482920e008c5ac21c035a4ad2b1ed8044d0ce",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -200,12 +200,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-co/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:43.738979+00:00",
+      "checked_at": "2026-11-27T09:41:57.125287+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:43.738979+00:00",
+      "next_attempt_at": "2026-11-28T09:41:57.125287+00:00",
       "sha256": "f29abd06a932a4b3b9e82e0db867492a80bf63030773002fb49e9d777e2ec6f7",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -214,12 +214,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-es/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:46.531962+00:00",
+      "checked_at": "2026-11-27T09:41:59.692877+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:46.531962+00:00",
+      "next_attempt_at": "2026-11-28T09:41:59.692877+00:00",
       "sha256": "e7ac615fd26e3bd8fe3d4c5680658d1b92e2e7ff949efbc0210c5299a03a7f87",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -228,12 +228,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-mx/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:49.243562+00:00",
+      "checked_at": "2026-11-27T09:42:02.291400+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:49.243562+00:00",
+      "next_attempt_at": "2026-11-28T09:42:02.291400+00:00",
       "sha256": "1d4d1bc94576fd723f65573a1f9078210c82abd0a6c6c1096959cf73e475132d",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -242,12 +242,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/es-us/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:51.946816+00:00",
+      "checked_at": "2026-11-27T09:42:04.932509+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:51.946816+00:00",
+      "next_attempt_at": "2026-11-28T09:42:04.932509+00:00",
       "sha256": "91b731f9ac685cc6def4399748ebe107fc1d14fe6990416db6a240ec63147a39",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -256,12 +256,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/fi-fi/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:54.633714+00:00",
+      "checked_at": "2026-11-27T09:42:07.505079+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:54.633714+00:00",
+      "next_attempt_at": "2026-11-28T09:42:07.505079+00:00",
       "sha256": "7ccc2984f1ff4d13bc437bc5c4ab04fc3082b41f4b300f3581e2209134d7f6c8",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -270,12 +270,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/fr-be/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:57.327854+00:00",
+      "checked_at": "2026-11-27T09:42:10.188543+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:57.327854+00:00",
+      "next_attempt_at": "2026-11-28T09:42:10.188543+00:00",
       "sha256": "d838ad8c61384d228ef5660b8d1187cb1adf1cfcac8db9e1df8fb42374ea7315",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -284,12 +284,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/fr-ca/sitemap.xml": {
-      "checked_at": "2026-11-26T07:08:59.990900+00:00",
+      "checked_at": "2026-11-27T09:42:12.748778+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:08:59.990900+00:00",
+      "next_attempt_at": "2026-11-28T09:42:12.748778+00:00",
       "sha256": "98468328b1904df2cd1fa7210d72bf818fe849f590d48f8d4d4484704e91bd53",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -298,12 +298,12 @@
       "url_count": 607
     },
     "https://support.sonos.com/fr-ch/sitemap.xml": {
-      "checked_at": "2026-11-26T07:09:02.688426+00:00",
+      "checked_at": "2026-11-27T09:42:15.395966+00:00",
       "consecutive_failures": 0,
       "gpl_related_urls": 0,
       "gpl_versions": [],
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T07:09:02.688426+00:00",
+      "next_attempt_at": "2026-11-28T09:42:15.395966+00:00",
       "sha256": "630ea89405587dfae4ee86896f84ac641cdb5e794ce097909441578f50673a7d",
       "sitemap_children": [],
       "sitemap_kind": "urlset",
@@ -424,10 +424,10 @@
       "url_count": 607
     },
     "https://support.sonos.com/sitemap-index.xml": {
-      "checked_at": "2026-11-26T05:47:24.762232+00:00",
+      "checked_at": "2026-11-27T09:41:15.104244+00:00",
       "consecutive_failures": 0,
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:24.762232+00:00",
+      "next_attempt_at": "2026-11-28T09:41:15.104244+00:00",
       "sha256": "d65cd827d4f10db1185dca5eae181f42911db772c3270a1a89bfe60547bae7e9",
       "sitemap_children": [
         "https://support.sonos.com/da-dk/sitemap.xml",
@@ -1595,10 +1595,10 @@
       "url_count": 4
     },
     "https://www.sonos.com/sitemap.xml": {
-      "checked_at": "2026-11-26T05:47:27.425510+00:00",
+      "checked_at": "2026-11-27T09:41:17.779175+00:00",
       "consecutive_failures": 0,
       "http_status": 200,
-      "next_attempt_at": "2026-11-27T05:47:27.425510+00:00",
+      "next_attempt_at": "2026-11-28T09:41:17.779175+00:00",
       "sha256": "df38f3d8a1f0f93bf326d50650c98e142d832d327902d849a6391467a8039f1c",
       "sitemap_children": [
         "https://www.sonos.com/cs-cz/sitemap.xml",
@@ -1752,6 +1752,6 @@
     }
   },
   "status": "ok",
-  "updated": "2026-11-26T19:21:14+00:00",
+  "updated": "2026-11-27T09:42:15+00:00",
   "version_evidence": {}
 }
