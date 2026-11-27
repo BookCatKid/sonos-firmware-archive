@@ -2,20 +2,32 @@
   "schema_version": 1,
   "target": "android-history",
   "provider": "android-history",
-  "status": "ok",
+  "status": "failed",
   "executed": true,
-  "started_at": "2026-11-26T17:58:28.188049+00:00",
+  "started_at": "2026-11-27T19:43:10.561850+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
-      "status": "ok",
-      "exit_code": 0,
+      "status": "failed",
+      "exit_code": 1,
       "output_tail": "",
-      "source_status": "ok"
+      "failure_kind": "source-reported-incomplete",
+      "source_status": "partial"
     }
   ],
-  "errors": [],
-  "pending": [],
-  "finished_at": "2026-11-26T17:58:28.572826+00:00",
-  "next_due": "2026-11-27T17:58:28.572826+00:00"
+  "errors": [
+    {
+      "step": "sweep_android_store_history",
+      "exit_code": 1,
+      "kind": "source-reported-incomplete"
+    }
+  ],
+  "pending": [
+    {
+      "step": "sweep_android_store_history",
+      "reason": "source reports incomplete work"
+    }
+  ],
+  "finished_at": "2026-11-27T19:43:21.442537+00:00",
+  "next_due": "2026-11-27T20:43:21.442537+00:00"
 }
