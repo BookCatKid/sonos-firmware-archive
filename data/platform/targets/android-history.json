@@ -4,7 +4,7 @@
   "provider": "android-history",
   "status": "failed",
   "executed": true,
-  "started_at": "2026-11-27T19:43:10.561850+00:00",
+  "started_at": "2026-11-28T02:40:09.004370+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
@@ -28,6 +28,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-27T19:43:21.442537+00:00",
-  "next_due": "2026-11-27T20:43:21.442537+00:00"
+  "finished_at": "2026-11-28T02:40:09.326242+00:00",
+  "next_due": "2026-11-28T03:40:09.326242+00:00"
 }
