@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-28T02:40:09.302323+00:00",
+  "updated": "2026-11-28T11:38:20.627175+00:00",
   "scope": "apkpure-recovery",
   "attempt_total": 124,
   "archived_total": 124,
@@ -2381,9 +2381,9 @@
   "repository": "BookCatKid/sonos-firmware-archive",
   "discovery": {
     "com.sonos.acr2|||apkeep": {
-      "checked_at": "2026-11-28T02:40:09.298311+00:00",
-      "consecutive_failures": 2,
-      "next_attempt_at": "2026-11-28T04:40:09.298311+00:00",
+      "checked_at": "2026-11-28T11:38:20.623211+00:00",
+      "consecutive_failures": 3,
+      "next_attempt_at": "2026-11-28T15:38:20.623211+00:00",
       "versions": [
         {
           "package": "com.sonos.acr2",
@@ -2575,9 +2575,9 @@
       "error": "TypeError"
     },
     "com.sonos.acr|||apkeep": {
-      "checked_at": "2026-11-28T02:40:09.299708+00:00",
-      "consecutive_failures": 2,
-      "next_attempt_at": "2026-11-28T04:40:09.299708+00:00",
+      "checked_at": "2026-11-28T11:38:20.624553+00:00",
+      "consecutive_failures": 3,
+      "next_attempt_at": "2026-11-28T15:38:20.624553+00:00",
       "versions": [
         {
           "package": "com.sonos.acr",
