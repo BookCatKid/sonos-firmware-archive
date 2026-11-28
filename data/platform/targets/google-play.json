@@ -4,13 +4,13 @@
   "provider": "google-play",
   "status": "failed",
   "executed": true,
-  "started_at": "2026-11-27T19:26:53.339470+00:00",
+  "started_at": "2026-11-28T02:39:09.746079+00:00",
   "steps": [
     {
       "name": "sweep_android_store_history",
       "status": "failed",
       "exit_code": 1,
-      "output_tail": "archived com.sonos.acr2@802900006\narchived com.sonos.acr2@802900006\n",
+      "output_tail": "",
       "failure_kind": "source-reported-incomplete",
       "source_status": "partial"
     }
@@ -28,6 +28,6 @@
       "reason": "source reports incomplete work"
     }
   ],
-  "finished_at": "2026-11-27T19:42:48.187591+00:00",
-  "next_due": "2026-11-27T20:42:48.187591+00:00"
+  "finished_at": "2026-11-28T02:39:41.002954+00:00",
+  "next_due": "2026-11-28T03:39:41.002954+00:00"
 }

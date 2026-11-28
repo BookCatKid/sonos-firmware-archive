@@ -68,10 +68,10 @@
       "version_selector": "430354030",
       "arch": "arm64",
       "profile": "Pv",
-      "checked_at": "2026-11-27T09:39:30.975236+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:30.975236+00:00",
-      "checked": "2026-11-27T09:39:30.975259+00:00",
+      "checked_at": "2026-11-28T02:39:38.699514+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:38.699514+00:00",
+      "checked": "2026-11-28T02:39:38.699542+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -81,10 +81,10 @@
       "version_selector": "430354030",
       "arch": "armv7",
       "profile": "XK",
-      "checked_at": "2026-11-27T09:39:31.283281+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:31.283281+00:00",
-      "checked": "2026-11-27T09:39:31.283306+00:00",
+      "checked_at": "2026-11-28T02:39:39.032960+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:39.032960+00:00",
+      "checked": "2026-11-28T02:39:39.032989+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383121"
@@ -94,36 +94,36 @@
       "version_selector": "430354030",
       "arch": "x86_64",
       "profile": "x8",
-      "checked_at": "2026-11-27T09:39:31.569255+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:31.569255+00:00",
-      "checked": "2026-11-27T09:39:31.569279+00:00",
+      "checked_at": "2026-11-28T02:39:39.372698+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:39.372698+00:00",
+      "checked": "2026-11-28T02:39:39.372727+00:00",
       "exit_code": 1,
       "status": "failed",
-      "error": "GooglePlayAnonymousDeliveryUnavailable"
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "430354030",
       "arch": "x86",
       "profile": "x8",
-      "checked_at": "2026-11-27T09:39:33.333810+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:33.333810+00:00",
-      "checked": "2026-11-27T09:39:33.333835+00:00",
+      "checked_at": "2026-11-28T02:39:39.728112+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:39.728112+00:00",
+      "checked": "2026-11-28T02:39:39.728140+00:00",
       "exit_code": 1,
       "status": "failed",
-      "error": "GooglePlayAnonymousDeliveryUnavailable"
+      "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "430354030",
       "arch": "tv",
       "profile": "Gb",
-      "checked_at": "2026-11-27T09:39:33.615105+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:33.615105+00:00",
-      "checked": "2026-11-27T09:39:33.615129+00:00",
+      "checked_at": "2026-11-28T02:39:40.573163+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:40.573163+00:00",
+      "checked": "2026-11-28T02:39:40.573192+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayAnonymousDeliveryUnavailable"
@@ -133,10 +133,10 @@
       "version_selector": "430354030",
       "arch": "arm64",
       "profile": "D2",
-      "checked_at": "2026-11-27T09:39:33.898722+00:00",
-      "consecutive_failures": 5,
-      "next_attempt_at": "2026-11-28T01:39:33.898722+00:00",
-      "checked": "2026-11-27T09:39:33.898744+00:00",
+      "checked_at": "2026-11-28T02:39:40.919533+00:00",
+      "consecutive_failures": 6,
+      "next_attempt_at": "2026-11-29T02:39:40.919533+00:00",
+      "checked": "2026-11-28T02:39:40.919560+00:00",
       "exit_code": 1,
       "status": "failed",
       "error": "GooglePlayVersionMismatch: requested 430354030, returned 572383122"
@@ -45443,9 +45443,9 @@
   ],
   "discovery": {
     "com.sonos.acr2|arm64|Pv": {
-      "checked_at": "2026-11-27T19:26:54.674392+00:00",
+      "checked_at": "2026-11-28T02:39:11.089261+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:54.674392+00:00",
+      "next_attempt_at": "2026-11-28T08:39:11.089261+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45459,9 +45459,9 @@
       ]
     },
     "com.sonos.acr|arm64|Pv": {
-      "checked_at": "2026-11-27T19:26:56.144725+00:00",
+      "checked_at": "2026-11-28T02:39:12.573235+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:56.144725+00:00",
+      "next_attempt_at": "2026-11-28T08:39:12.573235+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45475,25 +45475,25 @@
       ]
     },
     "com.sonos.acr2|armv7|XK": {
-      "checked_at": "2026-11-27T19:26:56.764028+00:00",
+      "checked_at": "2026-11-28T02:39:13.240314+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:56.764028+00:00",
+      "next_attempt_at": "2026-11-28T08:39:13.240314+00:00",
       "versions": [
         {
           "arch": "armv7",
           "profile": "XK",
           "package": "com.sonos.acr2",
-          "version_code": "802900006",
-          "version_name": "80.29.6-release+20250918.549b8db",
-          "version_selector": "802900006",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
       ]
     },
     "com.sonos.acr|armv7|XK": {
-      "checked_at": "2026-11-27T19:26:56.861444+00:00",
+      "checked_at": "2026-11-28T02:39:13.399892+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:56.861444+00:00",
+      "next_attempt_at": "2026-11-28T08:39:13.399892+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45507,9 +45507,9 @@
       ]
     },
     "com.sonos.acr2|x86_64|x8": {
-      "checked_at": "2026-11-27T19:26:57.477336+00:00",
+      "checked_at": "2026-11-28T02:39:14.294457+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:57.477336+00:00",
+      "next_attempt_at": "2026-11-28T08:39:14.294457+00:00",
       "versions": [
         {
           "arch": "x86_64",
@@ -45529,9 +45529,9 @@
       "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|x86|x8": {
-      "checked_at": "2026-11-27T19:26:57.765895+00:00",
+      "checked_at": "2026-11-28T02:39:14.446419+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:57.765895+00:00",
+      "next_attempt_at": "2026-11-28T08:39:14.446419+00:00",
       "versions": [
         {
           "arch": "x86",
@@ -45563,9 +45563,9 @@
       "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|arm64|D2": {
-      "checked_at": "2026-11-27T19:26:59.273980+00:00",
+      "checked_at": "2026-11-28T02:39:14.979867+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:59.273980+00:00",
+      "next_attempt_at": "2026-11-28T08:39:14.979867+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45579,9 +45579,9 @@
       ]
     },
     "com.sonos.acr|arm64|D2": {
-      "checked_at": "2026-11-27T19:26:59.363060+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:59.363060+00:00",
+      "checked_at": "2026-11-28T02:39:15.156548+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:15.156548+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45592,12 +45592,13 @@
           "version_selector": "572383122",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|armv7|Gj": {
-      "checked_at": "2026-11-27T19:26:55.159376+00:00",
+      "checked_at": "2026-11-28T02:39:11.553899+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:55.159376+00:00",
+      "next_attempt_at": "2026-11-28T08:39:11.553899+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45611,9 +45612,9 @@
       ]
     },
     "com.sonos.acr|armv7|Gj": {
-      "checked_at": "2026-11-27T19:26:55.253223+00:00",
+      "checked_at": "2026-11-28T02:39:11.681251+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:55.253223+00:00",
+      "next_attempt_at": "2026-11-28T08:39:11.681251+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45627,9 +45628,9 @@
       ]
     },
     "com.sonos.acr2|x86_64|7M": {
-      "checked_at": "2026-11-27T19:26:56.039687+00:00",
+      "checked_at": "2026-11-28T02:39:12.475195+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:56.039687+00:00",
+      "next_attempt_at": "2026-11-28T08:39:12.475195+00:00",
       "versions": [
         {
           "arch": "x86_64",
@@ -45643,9 +45644,9 @@
       ]
     },
     "com.sonos.acr|x86_64|7M": {
-      "checked_at": "2026-11-27T19:26:59.753351+00:00",
+      "checked_at": "2026-11-28T02:39:15.440339+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:59.753351+00:00",
+      "next_attempt_at": "2026-11-28T08:39:15.440339+00:00",
       "versions": [
         {
           "arch": "x86_64",
@@ -45659,9 +45660,9 @@
       ]
     },
     "com.sonos.acr2|x86|7M": {
-      "checked_at": "2026-11-27T19:26:59.849335+00:00",
+      "checked_at": "2026-11-28T02:39:15.539483+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:59.849335+00:00",
+      "next_attempt_at": "2026-11-28T08:39:15.539483+00:00",
       "versions": [
         {
           "arch": "x86",
@@ -45675,9 +45676,9 @@
       ]
     },
     "com.sonos.acr|x86|7M": {
-      "checked_at": "2026-11-27T19:26:59.967387+00:00",
+      "checked_at": "2026-11-28T02:39:15.661366+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:59.967387+00:00",
+      "next_attempt_at": "2026-11-28T08:39:15.661366+00:00",
       "versions": [
         {
           "arch": "x86",
@@ -45691,9 +45692,9 @@
       ]
     },
     "com.sonos.acr2|arm64|eV": {
-      "checked_at": "2026-11-27T19:27:00.441837+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:00.441837+00:00",
+      "checked_at": "2026-11-28T02:39:18.497804+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:18.497804+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45704,12 +45705,13 @@
           "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr|arm64|eV": {
-      "checked_at": "2026-11-27T19:27:00.523391+00:00",
+      "checked_at": "2026-11-28T02:39:18.596017+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:00.523391+00:00",
+      "next_attempt_at": "2026-11-28T08:39:18.596017+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45723,9 +45725,9 @@
       ]
     },
     "com.sonos.acr2|armv7|IV": {
-      "checked_at": "2026-11-27T19:27:01.031339+00:00",
+      "checked_at": "2026-11-28T02:39:19.064890+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:01.031339+00:00",
+      "next_attempt_at": "2026-11-28T08:39:19.064890+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45739,9 +45741,9 @@
       ]
     },
     "com.sonos.acr|armv7|IV": {
-      "checked_at": "2026-11-27T19:27:01.126626+00:00",
+      "checked_at": "2026-11-28T02:39:19.182700+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:01.126626+00:00",
+      "next_attempt_at": "2026-11-28T08:39:19.182700+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45755,9 +45757,9 @@
       ]
     },
     "com.sonos.acr2|arm64|iq": {
-      "checked_at": "2026-11-27T19:27:01.649981+00:00",
+      "checked_at": "2026-11-28T02:39:19.585997+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:01.649981+00:00",
+      "next_attempt_at": "2026-11-28T08:39:19.585997+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45771,9 +45773,9 @@
       ]
     },
     "com.sonos.acr|arm64|iq": {
-      "checked_at": "2026-11-27T19:27:01.744225+00:00",
+      "checked_at": "2026-11-28T02:39:19.703754+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:01.744225+00:00",
+      "next_attempt_at": "2026-11-28T08:39:19.703754+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45799,25 +45801,25 @@
       "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|arm64|Fj": {
-      "checked_at": "2026-11-27T19:27:02.408809+00:00",
+      "checked_at": "2026-11-28T02:39:20.158464+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:02.408809+00:00",
+      "next_attempt_at": "2026-11-28T08:39:20.158464+00:00",
       "versions": [
         {
           "arch": "arm64",
           "profile": "Fj",
           "package": "com.sonos.acr2",
-          "version_code": "802900006",
-          "version_name": "80.29.6-release+20250918.549b8db",
-          "version_selector": "802900006",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
       ]
     },
     "com.sonos.acr|arm64|Fj": {
-      "checked_at": "2026-11-27T19:27:02.494533+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:02.494533+00:00",
+      "checked_at": "2026-11-28T02:39:20.325460+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:20.325460+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45828,12 +45830,13 @@
           "version_selector": "572383122",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|armv7|1Z": {
-      "checked_at": "2026-11-27T19:27:02.871674+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:02.871674+00:00",
+      "checked_at": "2026-11-28T02:39:20.885247+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:20.885247+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45844,12 +45847,13 @@
           "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr|armv7|1Z": {
-      "checked_at": "2026-11-27T19:27:03.156310+00:00",
+      "checked_at": "2026-11-28T02:39:21.018483+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:03.156310+00:00",
+      "next_attempt_at": "2026-11-28T08:39:21.018483+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45863,9 +45867,9 @@
       ]
     },
     "com.sonos.acr2|arm64|HE": {
-      "checked_at": "2026-11-27T19:27:03.761049+00:00",
+      "checked_at": "2026-11-28T02:39:21.429923+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:03.761049+00:00",
+      "next_attempt_at": "2026-11-28T08:39:21.429923+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45879,9 +45883,9 @@
       ]
     },
     "com.sonos.acr|arm64|HE": {
-      "checked_at": "2026-11-27T19:27:03.852834+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:03.852834+00:00",
+      "checked_at": "2026-11-28T02:39:23.036860+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:23.036860+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45892,12 +45896,13 @@
           "version_selector": "572383122",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|armv7|7M": {
-      "checked_at": "2026-11-27T19:27:03.953817+00:00",
+      "checked_at": "2026-11-28T02:39:23.134034+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:03.953817+00:00",
+      "next_attempt_at": "2026-11-28T08:39:23.134034+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45911,9 +45916,9 @@
       ]
     },
     "com.sonos.acr|armv7|7M": {
-      "checked_at": "2026-11-27T19:27:04.049533+00:00",
+      "checked_at": "2026-11-28T02:39:23.238631+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:04.049533+00:00",
+      "next_attempt_at": "2026-11-28T08:39:23.238631+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45927,9 +45932,9 @@
       ]
     },
     "com.sonos.acr2|arm64|VP": {
-      "checked_at": "2026-11-27T19:27:04.605858+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:04.605858+00:00",
+      "checked_at": "2026-11-28T02:39:23.759181+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:23.759181+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45940,12 +45945,13 @@
           "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr|arm64|VP": {
-      "checked_at": "2026-11-27T19:27:04.737837+00:00",
+      "checked_at": "2026-11-28T02:39:23.877032+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:04.737837+00:00",
+      "next_attempt_at": "2026-11-28T08:39:23.877032+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -45959,9 +45965,9 @@
       ]
     },
     "com.sonos.acr2|armv7|D2": {
-      "checked_at": "2026-11-27T19:27:04.829211+00:00",
+      "checked_at": "2026-11-28T02:39:23.988058+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:04.829211+00:00",
+      "next_attempt_at": "2026-11-28T08:39:23.988058+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45975,9 +45981,9 @@
       ]
     },
     "com.sonos.acr|armv7|D2": {
-      "checked_at": "2026-11-27T19:27:04.920404+00:00",
+      "checked_at": "2026-11-28T02:39:24.088752+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:04.920404+00:00",
+      "next_attempt_at": "2026-11-28T08:39:24.088752+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -45991,9 +45997,9 @@
       ]
     },
     "com.sonos.acr2|arm64|Hb": {
-      "checked_at": "2026-11-27T19:27:05.578706+00:00",
+      "checked_at": "2026-11-28T02:39:24.618052+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:05.578706+00:00",
+      "next_attempt_at": "2026-11-28T08:39:24.618052+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46007,9 +46013,9 @@
       ]
     },
     "com.sonos.acr|arm64|Hb": {
-      "checked_at": "2026-11-27T19:27:05.659953+00:00",
+      "checked_at": "2026-11-28T02:39:24.715419+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:05.659953+00:00",
+      "next_attempt_at": "2026-11-28T08:39:24.715419+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46023,9 +46029,9 @@
       ]
     },
     "com.sonos.acr2|armv7|F-": {
-      "checked_at": "2026-11-27T19:27:06.244925+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.244925+00:00",
+      "checked_at": "2026-11-28T02:39:25.199400+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:25.199400+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46036,12 +46042,13 @@
           "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr|armv7|F-": {
-      "checked_at": "2026-11-27T19:27:06.328010+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.328010+00:00",
+      "checked_at": "2026-11-28T02:39:25.326384+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:25.326384+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46052,12 +46059,13 @@
           "version_selector": "572383122",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|arm64|p6": {
-      "checked_at": "2026-11-27T19:27:06.702704+00:00",
+      "checked_at": "2026-11-28T02:39:25.697894+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.702704+00:00",
+      "next_attempt_at": "2026-11-28T08:39:25.697894+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46071,9 +46079,9 @@
       ]
     },
     "com.sonos.acr|arm64|p6": {
-      "checked_at": "2026-11-27T19:27:06.793238+00:00",
+      "checked_at": "2026-11-28T02:39:25.796215+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.793238+00:00",
+      "next_attempt_at": "2026-11-28T08:39:25.796215+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46087,25 +46095,25 @@
       ]
     },
     "com.sonos.acr2|armv7|Fj": {
-      "checked_at": "2026-11-27T19:27:06.884597+00:00",
+      "checked_at": "2026-11-28T02:39:25.901891+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.884597+00:00",
+      "next_attempt_at": "2026-11-28T08:39:25.901891+00:00",
       "versions": [
         {
           "arch": "armv7",
           "profile": "Fj",
           "package": "com.sonos.acr2",
-          "version_code": "802900006",
-          "version_name": "80.29.6-release+20250918.549b8db",
-          "version_selector": "802900006",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
       ]
     },
     "com.sonos.acr|armv7|Fj": {
-      "checked_at": "2026-11-27T19:27:06.970467+00:00",
+      "checked_at": "2026-11-28T02:39:25.994989+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:06.970467+00:00",
+      "next_attempt_at": "2026-11-28T08:39:25.994989+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46119,9 +46127,9 @@
       ]
     },
     "com.sonos.acr2|arm64|B1": {
-      "checked_at": "2026-11-27T19:27:07.425664+00:00",
+      "checked_at": "2026-11-28T02:39:26.511760+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.425664+00:00",
+      "next_attempt_at": "2026-11-28T08:39:26.511760+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46135,9 +46143,9 @@
       ]
     },
     "com.sonos.acr|arm64|B1": {
-      "checked_at": "2026-11-27T19:27:07.523013+00:00",
+      "checked_at": "2026-11-28T02:39:26.614695+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.523013+00:00",
+      "next_attempt_at": "2026-11-28T08:39:26.614695+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46151,9 +46159,9 @@
       ]
     },
     "com.sonos.acr2|armv7|HE": {
-      "checked_at": "2026-11-27T19:27:07.606041+00:00",
+      "checked_at": "2026-11-28T02:39:26.709385+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.606041+00:00",
+      "next_attempt_at": "2026-11-28T08:39:26.709385+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46167,9 +46175,9 @@
       ]
     },
     "com.sonos.acr|armv7|HE": {
-      "checked_at": "2026-11-27T19:27:07.694162+00:00",
+      "checked_at": "2026-11-28T02:39:26.798592+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.694162+00:00",
+      "next_attempt_at": "2026-11-28T08:39:26.798592+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46183,9 +46191,9 @@
       ]
     },
     "com.sonos.acr2|arm64|1Z": {
-      "checked_at": "2026-11-27T19:27:07.892127+00:00",
+      "checked_at": "2026-11-28T02:39:26.963948+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.892127+00:00",
+      "next_attempt_at": "2026-11-28T08:39:26.963948+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46199,9 +46207,9 @@
       ]
     },
     "com.sonos.acr|arm64|1Z": {
-      "checked_at": "2026-11-27T19:27:07.983122+00:00",
+      "checked_at": "2026-11-28T02:39:27.062043+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:07.983122+00:00",
+      "next_attempt_at": "2026-11-28T08:39:27.062043+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46215,9 +46223,9 @@
       ]
     },
     "com.sonos.acr2|armv7|Hb": {
-      "checked_at": "2026-11-27T19:27:08.069461+00:00",
+      "checked_at": "2026-11-28T02:39:29.109764+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.069461+00:00",
+      "next_attempt_at": "2026-11-28T08:39:29.109764+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46231,9 +46239,9 @@
       ]
     },
     "com.sonos.acr|armv7|Hb": {
-      "checked_at": "2026-11-27T19:27:08.186737+00:00",
+      "checked_at": "2026-11-28T02:39:29.223801+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.186737+00:00",
+      "next_attempt_at": "2026-11-28T08:39:29.223801+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46247,9 +46255,9 @@
       ]
     },
     "com.sonos.acr2|arm64|7M": {
-      "checked_at": "2026-11-27T19:27:08.290772+00:00",
+      "checked_at": "2026-11-28T02:39:29.328095+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.290772+00:00",
+      "next_attempt_at": "2026-11-28T08:39:29.328095+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46263,9 +46271,9 @@
       ]
     },
     "com.sonos.acr|arm64|7M": {
-      "checked_at": "2026-11-27T19:27:08.393885+00:00",
+      "checked_at": "2026-11-28T02:39:29.461921+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.393885+00:00",
+      "next_attempt_at": "2026-11-28T08:39:29.461921+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46279,9 +46287,9 @@
       ]
     },
     "com.sonos.acr2|armv7|L8": {
-      "checked_at": "2026-11-27T19:27:08.853885+00:00",
+      "checked_at": "2026-11-28T02:39:30.136915+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.853885+00:00",
+      "next_attempt_at": "2026-11-28T08:39:30.136915+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46295,9 +46303,9 @@
       ]
     },
     "com.sonos.acr|armv7|L8": {
-      "checked_at": "2026-11-27T19:27:08.930835+00:00",
+      "checked_at": "2026-11-28T02:39:30.241533+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:08.930835+00:00",
+      "next_attempt_at": "2026-11-28T08:39:30.241533+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46311,9 +46319,9 @@
       ]
     },
     "com.sonos.acr2|arm64|8r": {
-      "checked_at": "2026-11-27T19:27:09.517247+00:00",
+      "checked_at": "2026-11-28T02:39:30.850937+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:09.517247+00:00",
+      "next_attempt_at": "2026-11-28T08:39:30.850937+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46327,9 +46335,9 @@
       ]
     },
     "com.sonos.acr|arm64|8r": {
-      "checked_at": "2026-11-27T19:27:09.803862+00:00",
+      "checked_at": "2026-11-28T02:39:31.238981+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:09.803862+00:00",
+      "next_attempt_at": "2026-11-28T08:39:31.238981+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46343,9 +46351,9 @@
       ]
     },
     "com.sonos.acr2|armv7|VP": {
-      "checked_at": "2026-11-27T19:27:09.913682+00:00",
+      "checked_at": "2026-11-28T02:39:31.343343+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:09.913682+00:00",
+      "next_attempt_at": "2026-11-28T08:39:31.343343+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46359,9 +46367,9 @@
       ]
     },
     "com.sonos.acr|armv7|VP": {
-      "checked_at": "2026-11-27T19:27:10.006318+00:00",
+      "checked_at": "2026-11-28T02:39:31.440359+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.006318+00:00",
+      "next_attempt_at": "2026-11-28T08:39:31.440359+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46375,9 +46383,9 @@
       ]
     },
     "com.sonos.acr2|arm64|F-": {
-      "checked_at": "2026-11-27T19:27:10.091995+00:00",
+      "checked_at": "2026-11-28T02:39:31.554953+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.091995+00:00",
+      "next_attempt_at": "2026-11-28T08:39:31.554953+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46391,25 +46399,25 @@
       ]
     },
     "com.sonos.acr|arm64|F-": {
-      "checked_at": "2026-11-27T19:27:10.172266+00:00",
+      "checked_at": "2026-11-28T02:39:31.668362+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.172266+00:00",
+      "next_attempt_at": "2026-11-28T08:39:31.668362+00:00",
       "versions": [
         {
           "arch": "arm64",
           "profile": "F-",
           "package": "com.sonos.acr",
-          "version_code": "572383122",
+          "version_code": "572383121",
           "version_name": "11.16.2",
-          "version_selector": "572383122",
+          "version_selector": "572383121",
           "discovered_from": "google-play-profile"
         }
       ]
     },
     "com.sonos.acr2|armv7|Yc": {
-      "checked_at": "2026-11-27T19:27:10.640927+00:00",
+      "checked_at": "2026-11-28T02:39:32.065900+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.640927+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.065900+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46423,9 +46431,9 @@
       ]
     },
     "com.sonos.acr|armv7|Yc": {
-      "checked_at": "2026-11-27T19:27:10.736303+00:00",
+      "checked_at": "2026-11-28T02:39:32.171057+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.736303+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.171057+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46439,9 +46447,9 @@
       ]
     },
     "com.sonos.acr2|arm64|L8": {
-      "checked_at": "2026-11-27T19:27:10.836100+00:00",
+      "checked_at": "2026-11-28T02:39:32.270380+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.836100+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.270380+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46455,9 +46463,9 @@
       ]
     },
     "com.sonos.acr|arm64|L8": {
-      "checked_at": "2026-11-27T19:27:10.920052+00:00",
+      "checked_at": "2026-11-28T02:39:32.370635+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:10.920052+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.370635+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46471,9 +46479,9 @@
       ]
     },
     "com.sonos.acr2|armv7|eV": {
-      "checked_at": "2026-11-27T19:27:11.014046+00:00",
+      "checked_at": "2026-11-28T02:39:32.467349+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.014046+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.467349+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46487,9 +46495,9 @@
       ]
     },
     "com.sonos.acr|armv7|eV": {
-      "checked_at": "2026-11-27T19:27:11.107780+00:00",
+      "checked_at": "2026-11-28T02:39:32.633735+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.107780+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.633735+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46503,9 +46511,9 @@
       ]
     },
     "com.sonos.acr2|arm64|Yc": {
-      "checked_at": "2026-11-27T19:27:11.202407+00:00",
+      "checked_at": "2026-11-28T02:39:32.752057+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.202407+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.752057+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46519,9 +46527,9 @@
       ]
     },
     "com.sonos.acr|arm64|Yc": {
-      "checked_at": "2026-11-27T19:27:11.298013+00:00",
+      "checked_at": "2026-11-28T02:39:32.854129+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.298013+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.854129+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46535,9 +46543,9 @@
       ]
     },
     "com.sonos.acr2|armv7|iq": {
-      "checked_at": "2026-11-27T19:27:11.384874+00:00",
+      "checked_at": "2026-11-28T02:39:32.946229+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.384874+00:00",
+      "next_attempt_at": "2026-11-28T08:39:32.946229+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46551,9 +46559,9 @@
       ]
     },
     "com.sonos.acr|armv7|iq": {
-      "checked_at": "2026-11-27T19:27:11.481105+00:00",
+      "checked_at": "2026-11-28T02:39:33.045396+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:11.481105+00:00",
+      "next_attempt_at": "2026-11-28T08:39:33.045396+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46567,9 +46575,9 @@
       ]
     },
     "com.sonos.acr2|arm64|b2": {
-      "checked_at": "2026-11-27T19:27:12.021835+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.021835+00:00",
+      "checked_at": "2026-11-28T02:39:33.726401+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:33.726401+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46580,12 +46588,13 @@
           "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr|arm64|b2": {
-      "checked_at": "2026-11-27T19:27:12.106396+00:00",
-      "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.106396+00:00",
+      "checked_at": "2026-11-28T02:39:33.851461+00:00",
+      "consecutive_failures": 1,
+      "next_attempt_at": "2026-11-28T03:39:33.851461+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46596,12 +46605,13 @@
           "version_selector": "572383122",
           "discovered_from": "google-play-profile"
         }
-      ]
+      ],
+      "error": "GooglePlayAnonymousListingUnavailable"
     },
     "com.sonos.acr2|armv7|lv": {
-      "checked_at": "2026-11-27T19:27:12.565615+00:00",
+      "checked_at": "2026-11-28T02:39:34.359612+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.565615+00:00",
+      "next_attempt_at": "2026-11-28T08:39:34.359612+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46615,9 +46625,9 @@
       ]
     },
     "com.sonos.acr|armv7|lv": {
-      "checked_at": "2026-11-27T19:27:12.688675+00:00",
+      "checked_at": "2026-11-28T02:39:34.479083+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.688675+00:00",
+      "next_attempt_at": "2026-11-28T08:39:34.479083+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46631,9 +46641,9 @@
       ]
     },
     "com.sonos.acr2|arm64|lv": {
-      "checked_at": "2026-11-27T19:27:12.812573+00:00",
+      "checked_at": "2026-11-28T02:39:34.582129+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.812573+00:00",
+      "next_attempt_at": "2026-11-28T08:39:34.582129+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46647,9 +46657,9 @@
       ]
     },
     "com.sonos.acr|arm64|lv": {
-      "checked_at": "2026-11-27T19:27:12.895486+00:00",
+      "checked_at": "2026-11-28T02:39:34.685556+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.895486+00:00",
+      "next_attempt_at": "2026-11-28T08:39:34.685556+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46663,25 +46673,25 @@
       ]
     },
     "com.sonos.acr2|armv7|p6": {
-      "checked_at": "2026-11-27T19:27:12.984403+00:00",
+      "checked_at": "2026-11-28T02:39:37.329637+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:12.984403+00:00",
+      "next_attempt_at": "2026-11-28T08:39:37.329637+00:00",
       "versions": [
         {
           "arch": "armv7",
           "profile": "p6",
           "package": "com.sonos.acr2",
-          "version_code": "802900006",
-          "version_name": "80.29.6-release+20250918.549b8db",
-          "version_selector": "802900006",
+          "version_code": "1270401011",
+          "version_name": "91.01.11-release+20261110.b463dd1",
+          "version_selector": "1270401011",
           "discovered_from": "google-play-profile"
         }
       ]
     },
     "com.sonos.acr|armv7|p6": {
-      "checked_at": "2026-11-27T19:27:13.075860+00:00",
+      "checked_at": "2026-11-28T02:39:37.428892+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:13.075860+00:00",
+      "next_attempt_at": "2026-11-28T08:39:37.428892+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46695,9 +46705,9 @@
       ]
     },
     "com.sonos.acr2|arm64|wD": {
-      "checked_at": "2026-11-27T19:27:13.622711+00:00",
+      "checked_at": "2026-11-28T02:39:37.897859+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:13.622711+00:00",
+      "next_attempt_at": "2026-11-28T08:39:37.897859+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46711,9 +46721,9 @@
       ]
     },
     "com.sonos.acr|arm64|wD": {
-      "checked_at": "2026-11-27T19:27:13.750975+00:00",
+      "checked_at": "2026-11-28T02:39:38.000738+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:13.750975+00:00",
+      "next_attempt_at": "2026-11-28T08:39:38.000738+00:00",
       "versions": [
         {
           "arch": "arm64",
@@ -46727,9 +46737,9 @@
       ]
     },
     "com.sonos.acr2|armv7|wD": {
-      "checked_at": "2026-11-27T19:27:13.848028+00:00",
+      "checked_at": "2026-11-28T02:39:38.122710+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:13.848028+00:00",
+      "next_attempt_at": "2026-11-28T08:39:38.122710+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46743,9 +46753,9 @@
       ]
     },
     "com.sonos.acr|armv7|wD": {
-      "checked_at": "2026-11-27T19:27:13.935706+00:00",
+      "checked_at": "2026-11-28T02:39:38.245408+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:27:13.935706+00:00",
+      "next_attempt_at": "2026-11-28T08:39:38.245408+00:00",
       "versions": [
         {
           "arch": "armv7",
@@ -46762,7 +46772,7 @@
   "observed_variants": {},
   "sdk_hints": [],
   "cooldown_failures": 0,
-  "updated": "2026-11-27T19:42:48.128292+00:00",
+  "updated": "2026-11-28T02:39:40.937126+00:00",
   "pending_selectors": [
     {
       "package": "com.sonos.acr",
@@ -54256,13 +54266,15 @@
       "package": "com.sonos.acr",
       "version_selector": "572383122",
       "arch": "x86_64",
-      "profile": "x8"
+      "profile": "x8",
+      "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
       "version_selector": "572383122",
       "arch": "x86",
-      "profile": "x8"
+      "profile": "x8",
+      "discovered_from": "google-play-delivery"
     },
     {
       "package": "com.sonos.acr",
@@ -55618,7 +55630,10 @@
       "package": "com.sonos.acr2",
       "version_selector": "1270401011",
       "arch": "armv7",
-      "profile": "XK"
+      "profile": "XK",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1",
+      "discovered_from": "google-play-profile"
     },
     {
       "package": "com.sonos.acr2",
@@ -55680,7 +55695,9 @@
       "version_selector": "1270401011",
       "arch": "armv7",
       "profile": "p6",
-      "discovered_from": "google-play-delivery"
+      "discovered_from": "google-play-profile",
+      "version_code": "1270401011",
+      "version_name": "91.01.11-release+20261110.b463dd1"
     },
     {
       "package": "com.sonos.acr2",
@@ -67176,7 +67193,10 @@
       "package": "com.sonos.acr",
       "version_selector": "572383121",
       "arch": "arm64",
-      "profile": "F-"
+      "profile": "F-",
+      "version_code": "572383121",
+      "version_name": "11.16.2",
+      "discovered_from": "google-play-profile"
     },
     {
       "package": "com.sonos.acr",
@@ -67256,7 +67276,31 @@
       "retry_after": null
     },
     {
+      "package": "com.sonos.acr2",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    },
+    {
       "package": "com.sonos.acr",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    },
+    {
+      "package": "com.sonos.acr2",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    },
+    {
+      "package": "com.sonos.acr",
+      "error": "GooglePlayAnonymousListingUnavailable",
+      "status_code": null,
+      "retry_after": null
+    },
+    {
+      "package": "com.sonos.acr2",
       "error": "GooglePlayAnonymousListingUnavailable",
       "status_code": null,
       "retry_after": null
