@@ -89,7 +89,7 @@
     ]
   },
   "schema_version": 1,
-  "checked": "2026-11-27T19:27:19.770196+00:00",
+  "checked": "2026-11-28T02:39:45.465592+00:00",
   "sources": [
     "microsoft/winget-pkgs",
     "Homebrew/homebrew-cask",
@@ -129,8 +129,8 @@
   "wayback": {
     "provider": "shared-installer-history"
   },
-  "candidate_total": 564,
-  "available_total": 464,
+  "candidate_total": 588,
+  "available_total": 485,
   "candidates": [
     {
       "family": "legacy",
@@ -263,6 +263,24 @@
       "http_status": 404,
       "content_length": null,
       "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-100",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController100.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController100.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 33163261,
+      "etag": "\"df72f616475b5b357b40e652b9170def-4\""
     },
     {
       "family": "legacy",
@@ -514,6 +532,23 @@
       ],
       "advertised_urls": [
         "https://update.sonos.com/software/mac/mdcr/SonosDesktopController361b.dmg"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-362",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController362.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController362.dmg"
       ],
       "current": false,
       "http_status": 404,
@@ -1009,6 +1044,7 @@
       "expected_sha256": null,
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json",
+        "saved-installer-index",
         "derived-cross-platform"
       ],
       "advertised_urls": [
@@ -1018,6 +1054,24 @@
       "http_status": 200,
       "content_length": 14914794,
       "etag": "\"8f179f207b5851283510600e09aea1ff-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-55",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController55.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController55.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 14915369,
+      "etag": "\"148bc69de5a772d2f9881e6460267fb9-2\""
     },
     {
       "family": "legacy",
@@ -1134,9 +1188,28 @@
       "family": "legacy",
       "platform": "macos",
       "version": "classic-64",
+      "url": "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController64.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController64.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 14861477,
+      "etag": "\"72a05f0456cdaa183c655ee0b7fd49ea-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-64",
       "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController64.dmg",
       "expected_sha256": null,
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "saved-installer-index",
         "derived-cross-platform"
       ],
@@ -1151,10 +1224,46 @@
     {
       "family": "legacy",
       "platform": "macos",
+      "version": "classic-70",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController70.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController70.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 15924934,
+      "etag": "\"7831d48414c164e3674061a9db967a15-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-71",
+      "url": "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController71.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController71.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 16040459,
+      "etag": "\"a69bbdd5ed99d3c3ff67464a8597dcf2-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
       "version": "classic-71",
       "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController71.dmg",
       "expected_sha256": null,
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "saved-installer-index",
         "derived-cross-platform"
       ],
@@ -1280,6 +1389,24 @@
     {
       "family": "legacy",
       "platform": "macos",
+      "version": "classic-81",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController81.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController81.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 24396894,
+      "etag": "\"fb082bd15707df149ea41bb423239157-3\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
       "version": "classic-811",
       "url": "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController811.dmg",
       "expected_sha256": null,
@@ -1316,6 +1443,41 @@
     {
       "family": "legacy",
       "platform": "macos",
+      "version": "classic-82",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController82.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController82.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 22530244,
+      "etag": "\"0746af2278057d76e66c67bdee0bc6cc-3\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-831",
+      "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController831.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/mac/mdcr/SonosDesktopController831.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 29181993,
+      "etag": "\"ee5ef9dc126d029c3ed01f6e2182fe26-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
       "version": "classic-84",
       "url": "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController84.dmg",
       "expected_sha256": null,
@@ -1325,6 +1487,24 @@
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/software/mac/mdcr/SonosDesktopController84.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 29244221,
+      "etag": "\"062542566dc2f940a333e58de7a0b0e2-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-84",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController84.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController84.dmg"
       ],
       "current": false,
       "http_status": 200,
@@ -1357,6 +1537,7 @@
       "expected_sha256": null,
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json",
+        "saved-installer-index",
         "derived-cross-platform"
       ],
       "advertised_urls": [
@@ -1407,6 +1588,23 @@
       "family": "legacy",
       "platform": "macos",
       "version": "classic-90",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController90.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController90.dmg"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 31643977,
+      "etag": "\"23cecaa349f81f2bd9dfd469e803d29c-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-90",
       "url": "https://update.sonos.com/software/mac/mdcr/SonosDesktopController90.dmg",
       "expected_sha256": null,
       "sources": [
@@ -1420,6 +1618,23 @@
       "http_status": 200,
       "content_length": 31643977,
       "etag": "\"23cecaa349f81f2bd9dfd469e803d29c-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "macos",
+      "version": "classic-901",
+      "url": "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController901.dmg",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/mac/mdcr/SonosDesktopController901.dmg"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
     },
     {
       "family": "legacy",
@@ -1537,6 +1752,24 @@
       "http_status": 404,
       "content_length": null,
       "etag": null
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-100",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController100.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController100.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 25474480,
+      "etag": "\"31b93af49aacddad649c6b8bb9513703-4\""
     },
     {
       "family": "legacy",
@@ -1802,6 +2035,23 @@
       "http_status": 200,
       "content_length": 6745248,
       "etag": "\"821d733965fa7a5d67c31ed8e4ce86ca\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-362",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController362.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController362.exe"
+      ],
+      "current": false,
+      "http_status": 404,
+      "content_length": null,
+      "etag": null
     },
     {
       "family": "legacy",
@@ -2286,6 +2536,24 @@
     {
       "family": "legacy",
       "platform": "windows",
+      "version": "classic-55",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController55.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController55.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 13688584,
+      "etag": "\"107fbac4914c7198c7fa25fb12d86e74-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
       "version": "classic-60",
       "url": "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController60.exe",
       "expected_sha256": null,
@@ -2398,9 +2666,28 @@
       "family": "legacy",
       "platform": "windows",
       "version": "classic-64",
+      "url": "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController64.exe",
+      "expected_sha256": null,
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController64.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 13933344,
+      "etag": "\"b2c4688a7bd88b44137757d686aa4a01-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-64",
       "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController64.exe",
       "expected_sha256": null,
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "saved-installer-index",
         "derived-cross-platform"
       ],
@@ -2415,10 +2702,46 @@
     {
       "family": "legacy",
       "platform": "windows",
+      "version": "classic-70",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController70.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController70.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 14312688,
+      "etag": "\"724d7ec2a2f194f4e8e7d66479a49d00-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-71",
+      "url": "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController71.exe",
+      "expected_sha256": null,
+      "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController71.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 14356824,
+      "etag": "\"4430d294d4d240526e0d733c7b0d4170-2\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
       "version": "classic-71",
       "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController71.exe",
       "expected_sha256": null,
       "sources": [
+        "firmware-observation:data/discovery/firmware-frontier.json",
         "saved-installer-index",
         "derived-cross-platform"
       ],
@@ -2544,6 +2867,24 @@
     {
       "family": "legacy",
       "platform": "windows",
+      "version": "classic-81",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController81.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController81.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 20029544,
+      "etag": "\"2ac51eccf1832060015bca12fc1eb86c-3\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
       "version": "classic-811",
       "url": "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController811.exe",
       "expected_sha256": null,
@@ -2581,6 +2922,41 @@
     {
       "family": "legacy",
       "platform": "windows",
+      "version": "classic-82",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController82.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController82.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 18708584,
+      "etag": "\"e8d6f23eba8f27f4b5693a6ef4c1429d-3\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-831",
+      "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController831.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update.sonos.com/software/pc/dcr/SonosDesktopController831.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 25654752,
+      "etag": "\"b796156039d6b21d5391c1d4b293651e-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
       "version": "classic-84",
       "url": "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController84.exe",
       "expected_sha256": null,
@@ -2590,6 +2966,24 @@
       ],
       "advertised_urls": [
         "https://update-firmware.sonos.com/software/pc/dcr/SonosDesktopController84.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 25673432,
+      "etag": "\"0ba9f95df68eb1d823d0dba024776043-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-84",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController84.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index",
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController84.exe"
       ],
       "current": false,
       "http_status": 200,
@@ -2623,6 +3017,7 @@
       "expected_sha256": null,
       "sources": [
         "firmware-observation:data/discovery/firmware-frontier.json",
+        "saved-installer-index",
         "derived-cross-platform"
       ],
       "advertised_urls": [
@@ -2673,6 +3068,23 @@
       "family": "legacy",
       "platform": "windows",
       "version": "classic-90",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController90.exe",
+      "expected_sha256": null,
+      "sources": [
+        "derived-cross-platform"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController90.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 26865504,
+      "etag": "\"d4a6237d98d11992ee8d1b3d41ee9c53-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-90",
       "url": "https://update.sonos.com/software/pc/dcr/SonosDesktopController90.exe",
       "expected_sha256": null,
       "sources": [
@@ -2686,6 +3098,23 @@
       "http_status": 200,
       "content_length": 26865504,
       "etag": "\"d4a6237d98d11992ee8d1b3d41ee9c53-4\""
+    },
+    {
+      "family": "legacy",
+      "platform": "windows",
+      "version": "classic-901",
+      "url": "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController901.exe",
+      "expected_sha256": null,
+      "sources": [
+        "saved-installer-index"
+      ],
+      "advertised_urls": [
+        "https://update-software.sonos.com/software/pc/dcr/SonosDesktopController901.exe"
+      ],
+      "current": false,
+      "http_status": 200,
+      "content_length": 26856680,
+      "etag": "\"510290f73289850b19643d87762f8439-4\""
     },
     {
       "family": "legacy",

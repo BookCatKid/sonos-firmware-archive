@@ -6380,18 +6380,18 @@
       "new_head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
       "complete": true,
       "head_sha": "8e05866ecbb3ad11d7a4524fcf6e042a4e3e0382",
-      "checked_at": "2026-11-27T19:26:41.962900+00:00",
+      "checked_at": "2026-11-28T02:39:09.480773+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:41.962900+00:00"
+      "next_attempt_at": "2026-11-28T08:39:09.480773+00:00"
     },
     "manifests/Sonos": {
       "anchor": "a460e378fc9e1001229626071d5663cf341c1e5b",
       "new_head_sha": "a460e378fc9e1001229626071d5663cf341c1e5b",
       "complete": true,
       "head_sha": "a460e378fc9e1001229626071d5663cf341c1e5b",
-      "checked_at": "2026-11-27T19:26:43.155740+00:00",
+      "checked_at": "2026-11-28T02:39:10.472564+00:00",
       "consecutive_failures": 0,
-      "next_attempt_at": "2026-11-28T01:26:43.155740+00:00"
+      "next_attempt_at": "2026-11-28T08:39:10.472564+00:00"
     }
   },
   "candidates": {
