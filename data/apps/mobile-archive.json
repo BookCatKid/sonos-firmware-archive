@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-27T22:00:41.361260+00:00",
+  "updated": "2026-11-28T02:58:30.230993+00:00",
   "discovery": "data/apps/mobile-history-index.json",
   "artifact_total": 47,
-  "gap_total": 44,
+  "gap_total": 49,
   "gaps": [
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1201.apk",
@@ -45,7 +45,7 @@
       "wayback_timestamp": "20200923064748",
       "wayback_digest": "4UZJE2UP7K5PSCVLAKARF4GFULJAUZ4I",
       "reason": "downloaded installer is not a ZIP/APK",
-      "checked_at": "2026-11-27T09:39:04.751767+00:00"
+      "checked_at": "2026-11-28T02:39:12.265875+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
@@ -65,7 +65,7 @@
       "wayback_timestamp": "20201124151138",
       "wayback_digest": "ZCK7MJN3GM66CPTX2XG4W76DDO2CJMQF",
       "reason": "downloaded installer is not a ZIP/APK",
-      "checked_at": "2026-11-27T09:39:15.875167+00:00"
+      "checked_at": "2026-11-28T02:39:13.207523+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
@@ -87,7 +87,7 @@
         "length": "1045320"
       },
       "reason": "Common Crawl capture is truncated or has a non-200 original status",
-      "checked_at": "2026-11-27T22:00:39.739339+00:00"
+      "checked_at": "2026-11-28T02:39:24.817409+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1303.apk",
@@ -312,7 +312,7 @@
         "length": "1043130"
       },
       "reason": "Common Crawl capture is truncated or has a non-200 original status",
-      "checked_at": "2026-11-27T22:00:40.416906+00:00"
+      "checked_at": "2026-11-28T02:39:25.499525+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
@@ -354,7 +354,7 @@
         "length": "1042893"
       },
       "reason": "Common Crawl capture is truncated or has a non-200 original status",
-      "checked_at": "2026-11-27T22:00:41.132729+00:00"
+      "checked_at": "2026-11-28T02:39:26.277940+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
@@ -395,8 +395,8 @@
         "offset": "644546402",
         "length": "1033540"
       },
-      "reason": "HTTP Error 503: Service Unavailable",
-      "checked_at": "2026-11-27T22:00:41.360119+00:00"
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:26.582968+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1341.apk",
@@ -501,6 +501,28 @@
       "wayback_digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
       "reason": "<urlopen error [Errno 111] Connection refused>",
       "checked_at": "2026-11-27T11:47:22.952839+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "family": "legacy",
+      "platform": "fireos-android-apk",
+      "version": "1461",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "commoncrawl:474cbef84bc728fc005752bd4f06bb563a8c2bb8f953a8f7db852ff7f25e5463",
+      "archive_capture": {
+        "timestamp": "20220519083448",
+        "digest": "2CY5UX4YVQQCGQKKREV2EW7PGTFYCRRC",
+        "index_url": "https://index.commoncrawl.org/CC-MAIN-2022-21-index?url=update-software.sonos.com%2F&matchType=domain&output=json&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "original_url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+        "provider": "commoncrawl",
+        "filename": "crawl-data/CC-MAIN-2022-21/segments/1652662526009.35/warc/CC-MAIN-20220519074217-20220519104217-00303.warc.gz",
+        "offset": "673413524",
+        "length": "1043533"
+      },
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:27.333305+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/fgiespzv/Sonos_70.4-36090_32bit.apk",
@@ -752,7 +774,7 @@
         "length": "1044517"
       },
       "reason": "Common Crawl capture is truncated or has a non-200 original status",
-      "checked_at": "2026-11-27T22:00:39.017747+00:00"
+      "checked_at": "2026-11-28T02:39:24.080940+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
@@ -773,6 +795,28 @@
       "wayback_digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
       "reason": "<urlopen error [Errno 111] Connection refused>",
       "checked_at": "2026-11-27T11:47:23.420710+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "76.2-46300_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "commoncrawl:96f1c9051c9aa927574a2b65b571a4b69448f56de97633764598d798433a86d0",
+      "archive_capture": {
+        "timestamp": "20231129144008",
+        "digest": "6IAKNVFSY6T3TQ7V3ZXYO2FDHBURFLRL",
+        "index_url": "https://index.commoncrawl.org/CC-MAIN-2023-50-index?url=update-software.sonos.com%2F&matchType=domain&output=json&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "original_url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+        "provider": "commoncrawl",
+        "filename": "crawl-data/CC-MAIN-2023-50/segments/1700679100112.41/warc/CC-MAIN-20231129141108-20231129171108-00221.warc.gz",
+        "offset": "681084442",
+        "length": "1044461"
+      },
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:27.608187+00:00"
     },
     {
       "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
@@ -833,6 +877,72 @@
       "wayback_digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
       "reason": "<urlopen error [Errno 111] Connection refused>",
       "checked_at": "2026-11-27T11:47:23.681355+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "commoncrawl:360d875e1a9d6bd43fdecf204152a2ca904957c264bf09105721cd20113fa3f6",
+      "archive_capture": {
+        "timestamp": "20221129172319",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://index.commoncrawl.org/CC-MAIN-2022-49-index?url=update-software.sonos.com%2F&matchType=domain&output=json&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+        "provider": "commoncrawl",
+        "filename": "crawl-data/CC-MAIN-2022-49/segments/1669446710710.91/warc/CC-MAIN-20221129164449-20221129194449-00053.warc.gz",
+        "offset": "617623995",
+        "length": "1044668"
+      },
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:27.934260+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "commoncrawl:c04733b78ccd99ad04bc6facd73fc8243eacd6a3cc8266a1ad041ba0945f801d",
+      "archive_capture": {
+        "timestamp": "20221202163548",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://index.commoncrawl.org/CC-MAIN-2022-49-index?url=update-software.sonos.com%2F&matchType=domain&output=json&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+        "provider": "commoncrawl",
+        "filename": "crawl-data/CC-MAIN-2022-49/segments/1669446710909.66/warc/CC-MAIN-20221202150823-20221202180823-00053.warc.gz",
+        "offset": "631714622",
+        "length": "1044669"
+      },
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:29.385629+00:00"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "family": "s2",
+      "platform": "fireos-android-apk",
+      "version": "70.3-35094_32bit",
+      "sources": [
+        "public-archive-index"
+      ],
+      "acquisition_id": "commoncrawl:53aefb9c3e8629a0e7c0a0abf7a0f1cee818a0deabbcd14482d431e686c842d7",
+      "archive_capture": {
+        "timestamp": "20221203020409",
+        "digest": "7GBAOD4HPIXD7VNSR6HL7YCZVNLZSVRB",
+        "index_url": "https://index.commoncrawl.org/CC-MAIN-2022-49-index?url=update-software.sonos.com%2F&matchType=domain&output=json&filter=%3Dstatus%3A200&filter=~url%3A%28%3Fi%29.%2A%5B.%5D%28apk%29%28%5B%3F%5D.%2A%29%3F%24&page=0",
+        "original_url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+        "provider": "commoncrawl",
+        "filename": "crawl-data/CC-MAIN-2022-49/segments/1669446710918.58/warc/CC-MAIN-20221203011523-20221203041523-00053.warc.gz",
+        "offset": "609333678",
+        "length": "1044671"
+      },
+      "reason": "Common Crawl capture is truncated or has a non-200 original status",
+      "checked_at": "2026-11-28T02:39:30.060478+00:00"
     },
     {
       "url": "https://update-stage.sonos.com/firmware/QAtest/70.1-12345-v12.0-SWGen1-FakeRelease1/70.1-12345-1-11-arm64-v8a.apk",
@@ -5242,9 +5352,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk": {
-        "checked_at": "2026-11-27T19:26:51.515866+00:00",
+        "checked_at": "2026-11-28T02:39:23.418000+00:00",
         "consecutive_failures": 0,
-        "next_attempt_at": "2026-11-28T01:26:51.515866+00:00",
+        "next_attempt_at": "2026-11-28T08:39:23.418000+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/07426258-6f57-4f28-923e-8d72e41e686a/Sonos_91.01.11.apk",
           "family": "s2",
@@ -5713,9 +5823,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:b72e8ee19087a87260a3c710ecdcb8509a7faf1c2b9c48f239bac01f25403371": {
-        "checked_at": "2026-11-27T09:39:04.751767+00:00",
-        "consecutive_failures": 5,
-        "next_attempt_at": "2026-11-28T01:39:04.751767+00:00",
+        "checked_at": "2026-11-28T02:39:12.265875+00:00",
+        "consecutive_failures": 6,
+        "next_attempt_at": "2026-11-29T02:39:12.265875+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1206.apk",
           "family": "legacy",
@@ -5744,9 +5854,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "wayback:ea4d6a2c8789024ca1edd09684fae15fc92d352c84012952ea6c5dc3d5062062": {
-        "checked_at": "2026-11-27T09:39:15.875167+00:00",
-        "consecutive_failures": 5,
-        "next_attempt_at": "2026-11-28T01:39:15.875167+00:00",
+        "checked_at": "2026-11-28T02:39:13.207523+00:00",
+        "consecutive_failures": 6,
+        "next_attempt_at": "2026-11-29T02:39:13.207523+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
           "family": "legacy",
@@ -7320,9 +7430,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:f54e92f05dd4e5df3a044d809841ebf042a765a8a171f0f70020d478991f5b6d": {
-        "checked_at": "2026-11-27T22:00:39.017747+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-28T02:00:39.017747+00:00",
+        "checked_at": "2026-11-28T02:39:24.080940+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:39:24.080940+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/vgnciqkn/Sonos_72.2-39150_32bit.apk",
           "family": "s2",
@@ -7351,9 +7461,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:0a87f1282ffbffc01b6a59c7346109eeaac012a0f68e56345821ec9e66242b89": {
-        "checked_at": "2026-11-27T22:00:39.739339+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:39.739339+00:00",
+        "checked_at": "2026-11-28T02:39:24.817409+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:39:24.817409+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1221.apk",
           "family": "legacy",
@@ -7382,9 +7492,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:b3eb579a665f1cf554d69dcab4f04944a3961c641fd6b50bc94a1730735ee45d": {
-        "checked_at": "2026-11-27T22:00:40.416906+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:40.416906+00:00",
+        "checked_at": "2026-11-28T02:39:25.499525+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:39:25.499525+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1322.apk",
           "family": "legacy",
@@ -7413,9 +7523,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:ff43870711a2be399e87e102b6ac79add71e9d855f099624678289f6733f189f": {
-        "checked_at": "2026-11-27T22:00:41.132729+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:41.132729+00:00",
+        "checked_at": "2026-11-28T02:39:26.277940+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:39:26.277940+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1332.apk",
           "family": "legacy",
@@ -7444,9 +7554,9 @@
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:e430991a4c2fb5d4ccf6b8fdc18c2f89035794055b3e975b2f35fa3c371fccad": {
-        "checked_at": "2026-11-27T22:00:41.360119+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:41.360119+00:00",
+        "checked_at": "2026-11-28T02:39:26.582968+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:39:26.582968+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
           "family": "legacy",
@@ -7471,11 +7581,13 @@
           "version": "134"
         },
         "status": "failed",
-        "error": "HTTP Error 503: Service Unavailable",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
         "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:474cbef84bc728fc005752bd4f06bb563a8c2bb8f953a8f7db852ff7f25e5463": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-28T02:39:27.333305+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:39:27.333305+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
           "family": "legacy",
@@ -7495,10 +7607,18 @@
             "offset": "673413524",
             "length": "1043533"
           }
-        }
+        },
+        "revision": {
+          "version": "1461"
+        },
+        "status": "failed",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:96f1c9051c9aa927574a2b65b571a4b69448f56de97633764598d798433a86d0": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-28T02:39:27.608187+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:39:27.608187+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
           "family": "s2",
@@ -7518,10 +7638,18 @@
             "offset": "681084442",
             "length": "1044461"
           }
-        }
+        },
+        "revision": {
+          "version": "76.2-46300_32bit"
+        },
+        "status": "failed",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:360d875e1a9d6bd43fdecf204152a2ca904957c264bf09105721cd20113fa3f6": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-28T02:39:27.934260+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:39:27.934260+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -7541,10 +7669,18 @@
             "offset": "617623995",
             "length": "1044668"
           }
-        }
+        },
+        "revision": {
+          "version": "70.3-35094_32bit"
+        },
+        "status": "failed",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:c04733b78ccd99ad04bc6facd73fc8243eacd6a3cc8266a1ad041ba0945f801d": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-28T02:39:29.385629+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:39:29.385629+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -7564,10 +7700,18 @@
             "offset": "631714622",
             "length": "1044669"
           }
-        }
+        },
+        "revision": {
+          "version": "70.3-35094_32bit"
+        },
+        "status": "failed",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       },
       "commoncrawl:53aefb9c3e8629a0e7c0a0abf7a0f1cee818a0deabbcd14482d431e686c842d7": {
-        "status": "needs-refresh",
+        "checked_at": "2026-11-28T02:39:30.060478+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:39:30.060478+00:00",
         "candidate": {
           "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
           "family": "s2",
@@ -7587,7 +7731,13 @@
             "offset": "609333678",
             "length": "1044671"
           }
-        }
+        },
+        "revision": {
+          "version": "70.3-35094_32bit"
+        },
+        "status": "failed",
+        "error": "Common Crawl capture is truncated or has a non-200 original status",
+        "inspection_revision": "e19954ae9fb807589fb5faba21f0827c11380fd4803b0052cfec5a287c4f3496"
       }
     }
   },
@@ -7610,9 +7760,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "The read operation timed out",
         "http_status": null,
-        "checked_at": "2026-11-27T09:40:01.327011+00:00",
-        "consecutive_failures": 5,
-        "next_attempt_at": "2026-11-28T01:40:01.327011+00:00"
+        "checked_at": "2026-11-28T02:40:15.691012+00:00",
+        "consecutive_failures": 6,
+        "next_attempt_at": "2026-11-29T02:40:15.691012+00:00"
       }
     },
     {
@@ -7632,9 +7782,20 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "HTTP Error 503: Service Unavailable",
         "http_status": 503,
-        "checked_at": "2026-11-27T19:27:04.743121+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:27:04.743121+00:00"
+        "checked_at": "2026-11-28T02:40:20.825806+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:40:20.825806+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2F&matchType=domain&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:40:25.903288+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:40:25.903288+00:00"
       }
     },
     {
@@ -7761,122 +7922,23 @@
     {
       "phase": "discovery",
       "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Ff16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:32:23.640721+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:32:23.640721+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2Fsoftware%2F542ce839-0855-4d1a-ba48-9454ee1df149%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:34:47.342315+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:34:47.342315+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:36:17.223700+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:36:17.223700+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2Fsoftware%2F2rZ4DF8eqv%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:37:25.007203+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:37:25.007203+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2Fsoftware%2Fd278c50f-723f-494c-aab7-b3760c35ac96%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:37:40.351549+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:37:40.351549+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "The read operation timed out",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:39:31.585147+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:39:31.585147+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F72ynP0v9lu%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:39:55.426395+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:39:55.426395+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FnpgNL9nqYX%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:40:25.745494+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:40:25.745494+00:00"
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:47:08.765818+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:47:08.765818+00:00"
       }
     },
     {
       "phase": "discovery",
       "error": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Ffgiespzv%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:29:00.903503+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:29:00.903503+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F4fad90ac-03c2-42b2-a1d8-bd66be62489d%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:34:18.599463+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:34:18.599463+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fbc9f8c04-4eb9-448f-ab66-94bcec5e7b80%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:35:11.622447+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:35:11.622447+00:00"
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:42:00.345967+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:42:00.345967+00:00"
       }
     },
     {
@@ -7885,139 +7947,89 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F513aeedc-cea7-4e87-b4df-ee3c3301a4f2%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "HTTP Error 503: Service Unavailable",
         "http_status": 503,
-        "checked_at": "2026-11-27T19:36:22.310995+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:36:22.310995+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2Fsoftware%2F8c19852f-4ac8-45ca-91bd-a50c4c9e9aca%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:37:55.985092+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:37:55.985092+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fgjocspcx%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:28:12.524004+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:28:12.524004+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F31cb6d88-9f81-463d-8118-5b35be99f345%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "HTTP Error 503: Service Unavailable",
-        "http_status": 503,
-        "checked_at": "2026-11-27T19:30:43.356101+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:30:43.356101+00:00"
+        "checked_at": "2026-11-28T02:44:32.745263+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:44:32.745263+00:00"
       }
     },
     {
       "phase": "discovery",
       "error": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Ff6888596-b334-4cbb-aec7-137a5976d9ba%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "The read operation timed out",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:31:28.499491+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:31:28.499491+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F78962754-cd03-411a-9305-418a6521c79e%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "HTTP Error 503: Service Unavailable",
         "http_status": 503,
-        "checked_at": "2026-11-27T19:34:23.673501+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:34:23.673501+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fc7cf5010-c7ef-4651-bf72-aa5741b7a4c0%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "HTTP Error 503: Service Unavailable",
-        "http_status": 503,
-        "checked_at": "2026-11-27T19:36:01.788295+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:36:01.788295+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fnvasc21FQF%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:36:38.126054+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:36:38.126054+00:00"
+        "checked_at": "2026-11-28T02:42:16.960927+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:42:16.960927+00:00"
       }
     },
     {
       "phase": "discovery",
       "error": {
         "url": "https://web.archive.org/cdx/search/cdx?url=update-stage.sonos.com%2Ffirmware%2Fswgen%2F2%2Flatest%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
-        "error": "<urlopen error [Errno 111] Connection refused>",
-        "http_status": null,
-        "checked_at": "2026-11-27T19:38:11.571198+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T20:38:11.571198+00:00"
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "next_page": 8,
-        "pages": 13,
-        "status": "failed",
-        "checked_at": "2026-11-27T20:14:29.726982+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:14:29.726982+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-47-index",
-        "http_status": 502
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "next_page": 7,
-        "pages": 12,
-        "status": "failed",
-        "checked_at": "2026-11-27T19:42:56.149612+00:00",
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:46:08.542361+00:00",
         "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:42:56.149612+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
-        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index",
-        "http_status": 504
+        "next_attempt_at": "2026-11-28T04:46:08.542361+00:00"
       }
     },
     {
       "phase": "discovery",
       "error": {
-        "next_page": 4,
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fflfowmpo%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "The read operation timed out",
+        "http_status": null,
+        "checked_at": "2026-11-28T02:41:11.000621+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:41:11.000621+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fziyilgwh%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:41:55.268793+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:41:55.268793+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F96a2b7a2-ca3e-4107-8d2a-592a4510afba%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:43:32.250730+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:43:32.250730+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2FsLUvGZEjVv%2F&matchType=prefix&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
+        "error": "HTTP Error 503: Service Unavailable",
+        "http_status": 503,
+        "checked_at": "2026-11-28T02:47:13.878415+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:47:13.878415+00:00"
+      }
+    },
+    {
+      "phase": "discovery",
+      "error": {
+        "next_page": 6,
         "pages": 11,
         "status": "failed",
-        "checked_at": "2026-11-27T20:14:39.895317+00:00",
+        "checked_at": "2026-11-28T02:57:27.922546+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:14:39.895317+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:57:27.922546+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-39-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8026,12 +8038,12 @@
         "next_page": 3,
         "pages": 10,
         "status": "failed",
-        "checked_at": "2026-11-27T19:43:25.220210+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:43:25.220210+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:51:04.560676+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:51:04.560676+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-34-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -8040,12 +8052,12 @@
         "next_page": 1,
         "pages": 2,
         "status": "failed",
-        "checked_at": "2026-11-27T19:43:34.469741+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:43:34.469741+00:00",
-        "error": "HTTP Error 400: Bad Request",
+        "checked_at": "2026-11-28T02:51:14.734989+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:51:14.734989+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2013-20-index",
-        "http_status": 400
+        "http_status": 504
       }
     },
     {
@@ -8054,12 +8066,12 @@
         "next_page": 2,
         "pages": 14,
         "status": "failed",
-        "checked_at": "2026-11-27T19:43:42.672332+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:43:42.672332+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:51:24.914578+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:51:24.914578+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-30-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -8082,25 +8094,11 @@
         "next_page": 1,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T19:44:14.337507+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:44:14.337507+00:00",
+        "checked_at": "2026-11-28T02:51:35.090244+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:51:35.090244+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-21-index",
-        "http_status": 504
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "next_page": 2,
-        "pages": 3,
-        "status": "failed",
-        "checked_at": "2026-11-27T19:44:24.521992+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:44:24.521992+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
-        "url": "https://index.commoncrawl.org/CC-MAIN-2014-15-index",
         "http_status": 504
       }
     },
@@ -8110,9 +8108,9 @@
         "next_page": 1,
         "pages": 8,
         "status": "failed",
-        "checked_at": "2026-11-27T19:44:34.707617+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:44:34.707617+00:00",
+        "checked_at": "2026-11-28T02:51:55.943764+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:51:55.943764+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-17-index",
         "http_status": 504
@@ -8124,9 +8122,9 @@
         "next_page": 2,
         "pages": 4,
         "status": "failed",
-        "checked_at": "2026-11-27T19:44:42.203178+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:44:42.203178+00:00",
+        "checked_at": "2026-11-28T02:52:04.700296+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:52:04.700296+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2014-23-index",
         "http_status": 502
@@ -8138,9 +8136,9 @@
         "next_page": 2,
         "pages": 3,
         "status": "failed",
-        "checked_at": "2026-11-27T20:04:40.486668+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:04:40.486668+00:00",
+        "checked_at": "2026-11-28T02:52:11.970473+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:52:11.970473+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2014-35-index",
         "http_status": 502
@@ -8164,12 +8162,12 @@
         "next_page": 3,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:11:20.198903+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:11:20.198903+00:00",
-        "error": "HTTP Error 400: Bad Request",
+        "checked_at": "2026-11-28T02:52:19.181583+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:52:19.181583+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-08-index",
-        "http_status": 400
+        "http_status": 502
       }
     },
     {
@@ -8178,12 +8176,12 @@
         "next_page": 2,
         "pages": 8,
         "status": "failed",
-        "checked_at": "2026-11-27T19:45:16.838283+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:45:16.838283+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:52:27.510106+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:52:27.510106+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2026-04-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8192,12 +8190,12 @@
         "next_page": 2,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:04:57.064954+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:04:57.064954+00:00",
-        "error": "HTTP Error 400: Bad Request",
+        "checked_at": "2026-11-28T02:52:36.817639+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:52:36.817639+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-51-index",
-        "http_status": 400
+        "http_status": 502
       }
     },
     {
@@ -8206,25 +8204,11 @@
         "next_page": 1,
         "pages": 3,
         "status": "failed",
-        "checked_at": "2026-11-27T19:45:39.515057+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:45:39.515057+00:00",
+        "checked_at": "2026-11-28T02:52:43.991140+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:52:43.991140+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2014-49-index",
-        "http_status": 502
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "next_page": 1,
-        "pages": 2,
-        "status": "failed",
-        "checked_at": "2026-11-27T19:45:51.718533+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:45:51.718533+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
-        "url": "https://index.commoncrawl.org/CC-MAIN-2014-52-index",
         "http_status": 502
       }
     },
@@ -8246,12 +8230,12 @@
         "next_page": 2,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:05:19.015343+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:05:19.015343+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:52:51.190100+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:52:51.190100+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-38-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8305,15 +8289,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 5,
+        "next_page": 6,
         "pages": 8,
         "status": "failed",
-        "checked_at": "2026-11-27T19:47:15.446269+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:47:15.446269+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:56:41.417098+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:56:41.417098+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-33-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8331,15 +8315,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 4,
+        "next_page": 5,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:16:39.947863+00:00",
+        "checked_at": "2026-11-28T02:56:49.685578+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:16:39.947863+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:56:49.685578+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-30-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8376,9 +8360,9 @@
         "next_page": 2,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:05:44.306851+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:05:44.306851+00:00",
+        "checked_at": "2026-11-28T02:53:21.077832+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:53:21.077832+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-26-index",
         "http_status": 504
@@ -8390,9 +8374,9 @@
         "next_page": 8,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:17:45.993302+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:17:45.993302+00:00",
+        "checked_at": "2026-11-28T02:53:29.486685+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:53:29.486685+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-21-index",
         "http_status": 502
@@ -8404,26 +8388,26 @@
         "next_page": 3,
         "pages": 10,
         "status": "failed",
-        "checked_at": "2026-11-27T20:12:00.887392+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:12:00.887392+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:53:39.698140+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:53:39.698140+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-18-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
       "phase": "discovery",
       "error": {
-        "next_page": 2,
+        "next_page": 5,
         "pages": 11,
         "status": "failed",
-        "checked_at": "2026-11-27T20:06:12.953675+00:00",
+        "checked_at": "2026-11-28T02:57:53.081612+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:06:12.953675+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:57:53.081612+00:00",
+        "error": "HTTP Error 400: Bad Request",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-13-index",
-        "http_status": 504
+        "http_status": 400
       }
     },
     {
@@ -8432,9 +8416,9 @@
         "next_page": 2,
         "pages": 3,
         "status": "failed",
-        "checked_at": "2026-11-27T19:48:37.214946+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:48:37.214946+00:00",
+        "checked_at": "2026-11-28T02:53:49.016134+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:53:49.016134+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2015-35-index",
         "http_status": 502
@@ -8443,12 +8427,12 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 2,
+        "next_page": 6,
         "pages": 10,
         "status": "failed",
-        "checked_at": "2026-11-27T20:06:20.120485+00:00",
+        "checked_at": "2026-11-28T02:58:19.098005+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:06:20.120485+00:00",
+        "next_attempt_at": "2026-11-28T03:58:19.098005+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-08-index",
         "http_status": 502
@@ -8460,9 +8444,9 @@
         "next_page": 6,
         "pages": 11,
         "status": "failed",
-        "checked_at": "2026-11-27T20:06:30.302605+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:06:30.302605+00:00",
+        "checked_at": "2026-11-28T02:54:02.958481+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:54:02.958481+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2025-05-index",
         "http_status": 504
@@ -8474,9 +8458,9 @@
         "next_page": 1,
         "pages": 2,
         "status": "failed",
-        "checked_at": "2026-11-27T19:48:52.498607+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:48:52.498607+00:00",
+        "checked_at": "2026-11-28T02:54:09.578349+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:54:09.578349+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2015-48-index",
         "http_status": 502
@@ -8485,15 +8469,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 3,
+        "next_page": 6,
         "pages": 12,
         "status": "failed",
-        "checked_at": "2026-11-27T20:06:40.470712+00:00",
+        "checked_at": "2026-11-28T02:58:02.825771+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:06:40.470712+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:58:02.825771+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-51-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8502,9 +8486,9 @@
         "next_page": 1,
         "pages": 2,
         "status": "failed",
-        "checked_at": "2026-11-27T19:49:12.355061+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-27T23:49:12.355061+00:00",
+        "checked_at": "2026-11-28T02:54:32.990092+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:54:32.990092+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2016-07-index",
         "http_status": 504
@@ -8516,9 +8500,9 @@
         "next_page": 2,
         "pages": 12,
         "status": "failed",
-        "checked_at": "2026-11-27T19:49:22.522181+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:49:22.522181+00:00",
+        "checked_at": "2026-11-28T02:54:43.165118+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:54:43.165118+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-46-index",
         "http_status": 504
@@ -8530,9 +8514,9 @@
         "next_page": 2,
         "pages": 11,
         "status": "failed",
-        "checked_at": "2026-11-27T19:49:31.402488+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:49:31.402488+00:00",
+        "checked_at": "2026-11-28T02:54:48.713454+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:54:48.713454+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-42-index",
         "http_status": 502
@@ -8544,12 +8528,12 @@
         "next_page": 3,
         "pages": 10,
         "status": "failed",
-        "checked_at": "2026-11-27T20:06:50.647158+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:06:50.647158+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:54:55.917991+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:54:55.917991+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-38-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8572,12 +8556,12 @@
         "next_page": 8,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:17:56.166435+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:17:56.166435+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:55:02.206593+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:55:02.206593+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-33-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8586,12 +8570,12 @@
         "next_page": 3,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:07:05.918655+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:07:05.918655+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:47:40.077163+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:47:40.077163+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-30-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8685,15 +8669,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 3,
+        "next_page": 4,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T19:51:45.109517+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:51:45.109517+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:55:12.385556+00:00",
+        "consecutive_failures": 1,
+        "next_attempt_at": "2026-11-28T03:55:12.385556+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-22-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -8711,12 +8695,12 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 4,
+        "next_page": 5,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:15:16.252306+00:00",
+        "checked_at": "2026-11-28T02:55:22.576618+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:15:16.252306+00:00",
+        "next_attempt_at": "2026-11-28T03:55:22.576618+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2024-18-index",
         "http_status": 504
@@ -8791,12 +8775,12 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 6,
+        "next_page": 8,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:12:27.586073+00:00",
+        "checked_at": "2026-11-28T02:57:10.313793+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:12:27.586073+00:00",
+        "next_attempt_at": "2026-11-28T03:57:10.313793+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2023-50-index",
         "http_status": 502
@@ -8819,15 +8803,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 3,
+        "next_page": 5,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:15:32.152930+00:00",
+        "checked_at": "2026-11-28T02:57:15.384957+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:15:32.152930+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:57:15.384957+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2023-40-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8862,9 +8846,9 @@
         "next_page": 1,
         "pages": 3,
         "status": "failed",
-        "checked_at": "2026-11-27T20:07:55.783109+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:07:55.783109+00:00",
+        "checked_at": "2026-11-28T02:48:06.258450+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:48:06.258450+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2017-17-index",
         "http_status": 504
@@ -8901,12 +8885,12 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 1,
+        "next_page": 2,
         "pages": 3,
         "status": "failed",
-        "checked_at": "2026-11-27T20:08:09.952484+00:00",
+        "checked_at": "2026-11-28T02:55:46.792552+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:08:09.952484+00:00",
+        "next_attempt_at": "2026-11-28T03:55:46.792552+00:00",
         "error": "IncompleteRead(48 bytes read)",
         "url": "https://index.commoncrawl.org/CC-MAIN-2017-22-index",
         "http_status": null
@@ -8918,12 +8902,12 @@
         "next_page": 3,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:15:42.321167+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:15:42.321167+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:48:18.369736+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:48:18.369736+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2023-06-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -8958,12 +8942,12 @@
         "next_page": 2,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:12:43.127741+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:12:43.127741+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:48:28.544036+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:48:28.544036+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2022-49-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -8986,9 +8970,9 @@
         "next_page": 4,
         "pages": 13,
         "status": "failed",
-        "checked_at": "2026-11-27T20:12:51.274657+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:12:51.274657+00:00",
+        "checked_at": "2026-11-28T02:48:34.802484+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:48:34.802484+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2022-40-index",
         "http_status": 502
@@ -9026,12 +9010,12 @@
         "next_page": 4,
         "pages": 10,
         "status": "failed",
-        "checked_at": "2026-11-27T20:17:01.095245+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:17:01.095245+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:48:44.993537+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:48:44.993537+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2022-33-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -9063,15 +9047,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 1,
+        "next_page": 2,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:08:53.748861+00:00",
+        "checked_at": "2026-11-28T02:55:53.987858+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:08:53.748861+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:55:53.987858+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2022-27-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -9118,12 +9102,12 @@
         "next_page": 4,
         "pages": 6,
         "status": "failed",
-        "checked_at": "2026-11-27T20:17:07.276154+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:17:07.276154+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:49:00.678510+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:49:00.678510+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2022-05-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -9250,12 +9234,12 @@
         "next_page": 2,
         "pages": 4,
         "status": "failed",
-        "checked_at": "2026-11-27T20:13:21.811608+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:13:21.811608+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-11-28T02:49:06.736745+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:49:06.736745+00:00",
+        "error": "HTTP Error 400: Bad Request",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-50-index",
-        "http_status": 502
+        "http_status": 400
       }
     },
     {
@@ -9264,9 +9248,9 @@
         "next_page": 3,
         "pages": 5,
         "status": "failed",
-        "checked_at": "2026-11-27T20:13:31.201684+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:13:31.201684+00:00",
+        "checked_at": "2026-11-28T02:49:12.648828+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:49:12.648828+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-45-index",
         "http_status": 502
@@ -9275,12 +9259,12 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 2,
+        "next_page": 3,
         "pages": 6,
         "status": "failed",
-        "checked_at": "2026-11-27T20:13:40.496459+00:00",
+        "checked_at": "2026-11-28T02:55:59.079759+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:13:40.496459+00:00",
+        "next_attempt_at": "2026-11-28T03:55:59.079759+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-40-index",
         "http_status": 502
@@ -9318,9 +9302,9 @@
         "next_page": 3,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:13:55.858926+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:13:55.858926+00:00",
+        "checked_at": "2026-11-28T02:49:25.128307+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:49:25.128307+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-29-index",
         "http_status": 502
@@ -9329,29 +9313,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 3,
+        "next_page": 4,
         "pages": 6,
         "status": "failed",
-        "checked_at": "2026-11-27T20:14:04.122129+00:00",
+        "checked_at": "2026-11-28T02:56:09.270657+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:14:04.122129+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
+        "next_attempt_at": "2026-11-28T03:56:09.270657+00:00",
+        "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-24-index",
-        "http_status": 502
-      }
-    },
-    {
-      "phase": "discovery",
-      "error": {
-        "next_page": 2,
-        "pages": 3,
-        "status": "failed",
-        "checked_at": "2026-11-27T20:10:22.226095+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:10:22.226095+00:00",
-        "error": "HTTP Error 502: Bad Gateway",
-        "url": "https://index.commoncrawl.org/CC-MAIN-2019-13-index",
-        "http_status": 502
+        "http_status": 504
       }
     },
     {
@@ -9374,9 +9344,9 @@
         "next_page": 3,
         "pages": 8,
         "status": "failed",
-        "checked_at": "2026-11-27T20:03:31.400902+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T22:03:31.400902+00:00",
+        "checked_at": "2026-11-28T02:49:47.688308+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:49:47.688308+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-16-index",
         "http_status": 502
@@ -9388,9 +9358,9 @@
         "next_page": 2,
         "pages": 8,
         "status": "failed",
-        "checked_at": "2026-11-27T20:03:39.486277+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T22:03:39.486277+00:00",
+        "checked_at": "2026-11-28T02:49:54.882705+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:49:54.882705+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2020-10-index",
         "http_status": 502
@@ -9402,12 +9372,12 @@
         "next_page": 3,
         "pages": 4,
         "status": "failed",
-        "checked_at": "2026-11-27T20:10:51.020093+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:10:51.020093+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:50:01.003802+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:50:01.003802+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2019-26-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -9428,9 +9398,9 @@
         "next_page": 1,
         "pages": 5,
         "status": "failed",
-        "checked_at": "2026-11-27T19:41:33.399663+00:00",
-        "consecutive_failures": 2,
-        "next_attempt_at": "2026-11-27T21:41:33.399663+00:00",
+        "checked_at": "2026-11-28T02:50:11.181392+00:00",
+        "consecutive_failures": 3,
+        "next_attempt_at": "2026-11-28T06:50:11.181392+00:00",
         "error": "HTTP Error 504: Gateway Time-out",
         "url": "https://index.commoncrawl.org/CC-MAIN-2019-30-index",
         "http_status": 504
@@ -9453,15 +9423,15 @@
     {
       "phase": "discovery",
       "error": {
-        "next_page": 5,
+        "next_page": 6,
         "pages": 9,
         "status": "failed",
-        "checked_at": "2026-11-27T20:14:23.582561+00:00",
+        "checked_at": "2026-11-28T02:56:16.789566+00:00",
         "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:14:23.582561+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "next_attempt_at": "2026-11-28T03:56:16.789566+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2019-47-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -9470,9 +9440,9 @@
         "next_page": 3,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:04:13.984828+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:04:13.984828+00:00",
+        "checked_at": "2026-11-28T02:50:25.699121+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:50:25.699121+00:00",
         "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2019-35-index",
         "http_status": 502
@@ -9484,12 +9454,12 @@
         "next_page": 1,
         "pages": 7,
         "status": "failed",
-        "checked_at": "2026-11-27T20:04:24.160833+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T21:04:24.160833+00:00",
-        "error": "HTTP Error 504: Gateway Time-out",
+        "checked_at": "2026-11-28T02:50:32.972755+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:50:32.972755+00:00",
+        "error": "HTTP Error 502: Bad Gateway",
         "url": "https://index.commoncrawl.org/CC-MAIN-2019-43-index",
-        "http_status": 504
+        "http_status": 502
       }
     },
     {
@@ -45609,9 +45579,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1201.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.754635+00:00",
-        "consecutive_failures": 3,
-        "next_attempt_at": "2026-11-28T02:00:38.754635+00:00"
+        "checked_at": "2026-11-28T02:58:30.192028+00:00",
+        "consecutive_failures": 4,
+        "next_attempt_at": "2026-11-28T10:58:30.192028+00:00"
       }
     },
     {
@@ -45620,9 +45590,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F0b5d34f8-812b-4c06-ac6b-f691016516a1%2FSonos_80.24.32.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.092198+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.092198+00:00"
+        "checked_at": "2026-11-28T02:58:29.632592+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.632592+00:00"
       }
     },
     {
@@ -45631,9 +45601,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F5dbcd956-e255-443d-8c39-257488c85973%2FSonos_80.27.6.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.115451+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.115451+00:00"
+        "checked_at": "2026-11-28T02:58:29.657613+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.657613+00:00"
       }
     },
     {
@@ -45642,9 +45612,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Ff16efd8b-7ce4-42d4-a96f-ba8fb2f8e7b3%2FSonos_80.27.8.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.138559+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.138559+00:00"
+        "checked_at": "2026-11-28T02:58:29.682199+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.682199+00:00"
       }
     },
     {
@@ -45653,9 +45623,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F65e29bb7-6a71-4f8d-a4e1-c50e1144463c%2FSonos_80.28.36.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.161709+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.161709+00:00"
+        "checked_at": "2026-11-28T02:58:29.711503+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.711503+00:00"
       }
     },
     {
@@ -45664,9 +45634,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F7f04a54b-2bdb-4be2-9acd-c5bef365d055%2FSonos_80.32.32.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.182539+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.182539+00:00"
+        "checked_at": "2026-11-28T02:58:29.741100+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.741100+00:00"
       }
     },
     {
@@ -45675,9 +45645,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F3a94bfca-7161-47ad-bf73-ac1349eb2452%2FSonos_81.00.51.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.255582+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.255582+00:00"
+        "checked_at": "2026-11-28T02:58:29.770103+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.770103+00:00"
       }
     },
     {
@@ -45686,9 +45656,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F4fad90ac-03c2-42b2-a1d8-bd66be62489d%2FSonos_83.00.35.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.277194+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.277194+00:00"
+        "checked_at": "2026-11-28T02:58:29.795241+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.795241+00:00"
       }
     },
     {
@@ -45697,9 +45667,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F78962754-cd03-411a-9305-418a6521c79e%2FSonos_85.00.31.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.300514+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.300514+00:00"
+        "checked_at": "2026-11-28T02:58:29.824808+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.824808+00:00"
       }
     },
     {
@@ -45708,9 +45678,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-beta.sonos.com%2Fsoftware%2F542ce839-0855-4d1a-ba48-9454ee1df149%2FSonos_89.00.49.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.324133+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.324133+00:00"
+        "checked_at": "2026-11-28T02:58:29.849486+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.849486+00:00"
       }
     },
     {
@@ -45719,9 +45689,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F96a2b7a2-ca3e-4107-8d2a-592a4510afba%2FSonos_89.00.51.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.347599+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.347599+00:00"
+        "checked_at": "2026-11-28T02:58:29.878356+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.878356+00:00"
       }
     },
     {
@@ -45730,9 +45700,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fbc9f8c04-4eb9-448f-ab66-94bcec5e7b80%2FSonos_89.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.368970+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.368970+00:00"
+        "checked_at": "2026-11-28T02:58:29.903923+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.903923+00:00"
       }
     },
     {
@@ -45741,9 +45711,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F63a302da-752e-4cf3-92f9-ced0d5992d36%2FSonos_90.00.43.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.391584+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.391584+00:00"
+        "checked_at": "2026-11-28T02:58:29.936050+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.936050+00:00"
       }
     },
     {
@@ -45752,9 +45722,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fc7cf5010-c7ef-4651-bf72-aa5741b7a4c0%2FSonos_90.01.9.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.412632+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.412632+00:00"
+        "checked_at": "2026-11-28T02:58:29.965093+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.965093+00:00"
       }
     },
     {
@@ -45763,9 +45733,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F350bc1a2-7d6b-4d61-bb6a-62fbd8719c9b%2FSonos_91.00.33.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.433635+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.433635+00:00"
+        "checked_at": "2026-11-28T02:58:29.994918+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:29.994918+00:00"
       }
     },
     {
@@ -45774,9 +45744,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F07426258-6f57-4f28-923e-8d72e41e686a%2FSonos_91.01.11.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.457259+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.457259+00:00"
+        "checked_at": "2026-11-28T02:58:30.024523+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.024523+00:00"
       }
     },
     {
@@ -45785,9 +45755,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2F513aeedc-cea7-4e87-b4df-ee3c3301a4f2%2FSonos_91.01.7.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.480670+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.480670+00:00"
+        "checked_at": "2026-11-28T02:58:30.049642+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.049642+00:00"
       }
     },
     {
@@ -45796,9 +45766,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fandroid%2Facr%2FSonosAndroidController1305.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.503510+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.503510+00:00"
+        "checked_at": "2026-11-28T02:58:30.073940+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.073940+00:00"
       }
     },
     {
@@ -45807,9 +45777,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-software.sonos.com%2Fsoftware%2Fnvasc21FQF%2FSonos_78.1-51030_64bit.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.531431+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.531431+00:00"
+        "checked_at": "2026-11-28T02:58:30.103416+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.103416+00:00"
       }
     },
     {
@@ -45818,9 +45788,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-stage.sonos.com%2Ffirmware%2FQAtest%2F70.1-12345-v12.0-SWGen1-FakeRelease1%2F70.1-12345-1-11-arm64-v8a.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.552712+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.552712+00:00"
+        "checked_at": "2026-11-28T02:58:30.132026+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.132026+00:00"
       }
     },
     {
@@ -45829,9 +45799,9 @@
         "url": "https://web.archive.org/cdx/search/cdx?url=update-stage.sonos.com%2Ffirmware%2FQAtest%2F70.1-12345-v12.0-SWGen1-FakeRelease1%2F70.1-12345-1-11-armeabi-v7a.apk&matchType=exact&output=json&gzip=false&fl=timestamp%2Coriginal%2Cdigest&filter=statuscode%3A200&filter=original%3A.%2A%5B.%5D%28%3Fi%3Aapk%29%28%5B%3F%5D.%2A%29%3F%24&limit=500&showResumeKey=true",
         "error": "<urlopen error [Errno 111] Connection refused>",
         "http_status": null,
-        "checked_at": "2026-11-27T22:00:38.574339+00:00",
-        "consecutive_failures": 1,
-        "next_attempt_at": "2026-11-27T23:00:38.574339+00:00"
+        "checked_at": "2026-11-28T02:58:30.161346+00:00",
+        "consecutive_failures": 2,
+        "next_attempt_at": "2026-11-28T04:58:30.161346+00:00"
       }
     },
     {
@@ -46046,13 +46016,38 @@
     },
     {
       "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController134.apk",
-      "error": "HTTP Error 503: Service Unavailable",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
       "acquisition_id": "commoncrawl:e430991a4c2fb5d4ccf6b8fdc18c2f89035794055b3e975b2f35fa3c371fccad"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/android/acr/SonosAndroidController1461.apk",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
+      "acquisition_id": "commoncrawl:474cbef84bc728fc005752bd4f06bb563a8c2bb8f953a8f7db852ff7f25e5463"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/wfdshdmg/Sonos_76.2-46300_32bit.apk",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
+      "acquisition_id": "commoncrawl:96f1c9051c9aa927574a2b65b571a4b69448f56de97633764598d798433a86d0"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
+      "acquisition_id": "commoncrawl:360d875e1a9d6bd43fdecf204152a2ca904957c264bf09105721cd20113fa3f6"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
+      "acquisition_id": "commoncrawl:c04733b78ccd99ad04bc6facd73fc8243eacd6a3cc8266a1ad041ba0945f801d"
+    },
+    {
+      "url": "https://update-software.sonos.com/software/ziyilgwh/Sonos_70.3-35094_32bit.apk",
+      "error": "Common Crawl capture is truncated or has a non-200 original status",
+      "acquisition_id": "commoncrawl:53aefb9c3e8629a0e7c0a0abf7a0f1cee818a0deabbcd14482d431e686c842d7"
     }
   ],
-  "pending_total": 5,
+  "pending_total": 0,
   "discovery_status": "partial",
-  "attempted_this_run": 5,
+  "attempted_this_run": 0,
   "added_this_run": 0,
   "unpublished_captures": [],
   "last_job_kind": "source"
